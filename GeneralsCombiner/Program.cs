@@ -204,17 +204,8 @@ $@"#ifdef {symbol}
 
         // after your loop, before writing:
         var mergedText = sb.ToString()
-            //.TrimEnd('\r', '\n')   // remove all trailing CR/LF
+            .TrimEnd('\r', '\n')   // remove all trailing CR/LF
             .Replace(IgnoreCommentVersion, CommentVersion);
-
-        // Find last newline position
-        int lastNewLineIndex = mergedText.TrimEnd().LastIndexOf(Environment.NewLine);
-
-        // Remove last empty line if it exists
-        if (lastNewLineIndex != -1)
-        {
-            mergedText = mergedText.Substring(0, lastNewLineIndex);
-        }
 
         // Ensure result directory exists and write out
         Directory.CreateDirectory(Path.GetDirectoryName(destFile)!);
