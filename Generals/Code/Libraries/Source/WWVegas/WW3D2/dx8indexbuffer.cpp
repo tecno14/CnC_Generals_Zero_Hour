@@ -28,9 +28,19 @@
  *                                                                                             *
  *                      $Author:: Jani_p                                                      $*
  *                                                                                             *
+#ifdef OG
  *                     $Modtime:: 7/10/01 1:30p                                               $*
+#endif
+#ifdef ZH
+ *                     $Modtime:: 11/09/01 3:12p                                              $*
+#endif
  *                                                                                             *
+#ifdef OG
  *                    $Revision:: 22                                                          $*
+#endif
+#ifdef ZH
+ *                    $Revision:: 26                                                          $*
+#endif
  *                                                                                             *
  *---------------------------------------------------------------------------------------------*
  * Functions:                                                                                  *
@@ -43,6 +53,9 @@
 #include "dx8caps.h"
 #include "sphere.h"
 #include "thread.h"
+#ifdef ZH
+#include "wwmemlog.h"
+#endif
 
 #define DEFAULT_IB_SIZE 5000
 
@@ -180,7 +193,14 @@ void IndexBufferClass::Copy(unsigned short* indices,unsigned first_index,unsigne
 //
 // ----------------------------------------------------------------------------
 
+#ifdef OG
 IndexBufferClass::WriteLockClass::WriteLockClass(IndexBufferClass* index_buffer_) : index_buffer(index_buffer_)
+
+#endif
+#ifdef ZH
+
+IndexBufferClass::WriteLockClass::WriteLockClass(IndexBufferClass* index_buffer_, int flags) : index_buffer(index_buffer_)
+#endif
 {
 	DX8_THREAD_ASSERT();
 	WWASSERT(index_buffer);
@@ -193,7 +213,12 @@ IndexBufferClass::WriteLockClass::WriteLockClass(IndexBufferClass* index_buffer_
 			0,
 			index_buffer->Get_Index_Count()*sizeof(WORD),
 			(unsigned char**)&indices,
+#ifdef OG
 			0));
+#endif
+#ifdef ZH
+			flags));
+#endif
 		break;
 	case BUFFER_TYPE_SORTING:
 		indices=static_cast<SortingIndexBufferClass*>(index_buffer)->index_buffer;
@@ -244,7 +269,12 @@ IndexBufferClass::AppendLockClass::AppendLockClass(IndexBufferClass* index_buffe
 			start_index*sizeof(unsigned short),
 			index_range*sizeof(unsigned short),
 			(unsigned char**)&indices,
+#ifdef OG
 			NULL));	// Optional pointer to receive the buffer size
+#endif
+#ifdef ZH
+			0));
+#endif
 		break;
 	case BUFFER_TYPE_SORTING:
 		indices=static_cast<SortingIndexBufferClass*>(index_buffer)->index_buffer+start_index;
@@ -291,15 +321,63 @@ DX8IndexBufferClass::DX8IndexBufferClass(unsigned short index_count_,UsageType u
 		((usage&USAGE_DYNAMIC) ? D3DUSAGE_DYNAMIC : 0)|
 		((usage&USAGE_NPATCHES) ? D3DUSAGE_NPATCHES : 0)|
 		((usage&USAGE_SOFTWAREPROCESSING) ? D3DUSAGE_SOFTWAREPROCESSING : 0);
+#ifdef ZH
+	if (!DX8Wrapper::Get_Current_Caps()->Support_TnL()) {
+		usage_flags|=D3DUSAGE_SOFTWAREPROCESSING;
+	}
+#endif
 
+#ifdef OG
 	DX8CALL(CreateIndexBuffer(
+
+#endif
+#ifdef ZH
+	HRESULT ret=DX8Wrapper::_Get_D3D_Device8()->CreateIndexBuffer(
 		sizeof(WORD)*index_count,
 		usage_flags,
 		D3DFMT_INDEX16,
 		(usage&USAGE_DYNAMIC) ? D3DPOOL_DEFAULT : D3DPOOL_MANAGED,
+		&index_buffer);
+
+	if (SUCCEEDED(ret)) {
+		return;
+	}
+
+	WWDEBUG_SAY(("Index buffer creation failed, trying to release assets...\n"));
+
+	// Vertex buffer creation failed, so try releasing least used textures and flushing the mesh cache.
+
+	// Free all textures that haven't been used in the last 5 seconds
+	TextureClass::Invalidate_Old_Unused_Textures(5000);
+
+	// Invalidate the mesh cache
+	WW3D::_Invalidate_Mesh_Cache();
+
+	// Try again...
+	ret=DX8Wrapper::_Get_D3D_Device8()->CreateIndexBuffer(
+#endif
+		sizeof(WORD)*index_count,
+		usage_flags,
+		D3DFMT_INDEX16,
+		(usage&USAGE_DYNAMIC) ? D3DPOOL_DEFAULT : D3DPOOL_MANAGED,
+#ifdef OG
 		&index_buffer));
+
+#endif
+#ifdef ZH
+		&index_buffer);
+
+	if (SUCCEEDED(ret)) {
+		WWDEBUG_SAY(("...Index buffer creation succesful\n"));
+#endif
 }
 
+#ifdef ZH
+	// If it still fails it is fatal
+	DX8_ErrorCode(ret);
+}
+
+#endif
 // ----------------------------------------------------------------------------
 
 DX8IndexBufferClass::~DX8IndexBufferClass()
@@ -317,6 +395,9 @@ SortingIndexBufferClass::SortingIndexBufferClass(unsigned short index_count_)
 	:
 	IndexBufferClass(BUFFER_TYPE_SORTING,index_count_)
 {
+#ifdef ZH
+	WWMEMLOG(MEM_RENDERER);
+#endif
 	WWASSERT(index_count);
 
 	index_buffer=W3DNEWARRAY unsigned short[index_count];
@@ -437,6 +518,9 @@ DynamicIBAccessClass::WriteLockClass::~WriteLockClass()
 
 void DynamicIBAccessClass::Allocate_DX8_Dynamic_Buffer()
 {
+#ifdef ZH
+	WWMEMLOG(MEM_RENDERER);
+#endif
 	WWASSERT(!_DynamicDX8IndexBufferInUse);
 	_DynamicDX8IndexBufferInUse=true;
 
@@ -451,7 +535,12 @@ void DynamicIBAccessClass::Allocate_DX8_Dynamic_Buffer()
 	// Create a new vb if one doesn't exist currently
 	if (!_DynamicDX8IndexBuffer) {
 		unsigned usage=DX8IndexBufferClass::USAGE_DYNAMIC;
+#ifdef OG
 		if (DX8Caps::Support_NPatches()) {
+#endif
+#ifdef ZH
+		if (DX8Wrapper::Get_Current_Caps()->Support_NPatches()) {
+#endif
 			usage|=DX8IndexBufferClass::USAGE_NPATCHES;
 		}
 
@@ -472,6 +561,9 @@ void DynamicIBAccessClass::Allocate_DX8_Dynamic_Buffer()
 
 void DynamicIBAccessClass::Allocate_Sorting_Dynamic_Buffer()
 {
+#ifdef ZH
+	WWMEMLOG(MEM_RENDERER);
+#endif
 	WWASSERT(!_DynamicSortingIndexArrayInUse);
 	_DynamicSortingIndexArrayInUse=true;
 
@@ -501,4 +593,16 @@ void DynamicIBAccessClass::_Reset(bool frame_changed)
 unsigned short DynamicIBAccessClass::Get_Default_Index_Count(void)
 {
 	return _DynamicDX8IndexBufferSize;
+#ifdef ZH
+}
+
+/*Added so that VisualC++ doesn't remove our try/catch blocks around index buffer access.
+This is needed because of a Windows 2000 Kernal bug as explained in the DX 9.0b readme file.*/
+int IndexBufferExceptionFunc(void)
+{
+	int b=1;
+
+	b += _IndexBufferTotalIndices;
+	return b;
+#endif
 }

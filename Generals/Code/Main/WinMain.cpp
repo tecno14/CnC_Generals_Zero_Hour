@@ -52,6 +52,9 @@
 #include "Common/SafeDisc/CdaPfn.h"
 #include "Common/StackDump.h"
 #include "Common/MessageStream.h"
+#ifdef ZH
+#include "Common/Registry.h"
+#endif
 #include "Common/Team.h"
 #include "GameClient/InGameUI.h"
 #include "GameClient/GameClient.h"
@@ -64,6 +67,10 @@
 #include "BuildVersion.h"
 #include "GeneratedVersion.h"
 #include "Resource.h"
+#ifdef ZH
+
+#include <rts/profile.h>
+#endif
 
 #ifdef _INTERNAL
 // for occasional debugging...
@@ -377,13 +384,45 @@ LRESULT CALLBACK WndProc( HWND hWnd, UINT message,
             }
             break;
 
+#ifdef ZH
+			case WM_QUERYENDSESSION:
+			{
+				TheMessageStream->appendMessage(GameMessage::MSG_META_DEMO_INSTANT_QUIT);
+				return 0;	//don't allow Windows to shutdown while game is running.
+			}
+
+#endif
 			// ------------------------------------------------------------------------
 			case WM_CLOSE:
+#ifdef OG
 			TheGameEngine->checkAbnormalQuitting();
 			TheGameEngine->reset();
 			TheGameEngine->setQuitting(TRUE);
 			_exit(EXIT_SUCCESS);
+
+#endif
+#ifdef ZH
+			if (!TheGameEngine->getQuitting())
+			{
+				//user is exiting without using the menus
+
+				//This method didn't work in cinematics because we don't process messages.
+				//But it's the cleanest way to exit that's similar to using menus.
+				TheMessageStream->appendMessage(GameMessage::MSG_META_DEMO_INSTANT_QUIT);
+
+				//This method used to disable quitting.  We just put up the options screen instead.
+				//TheMessageStream->appendMessage(GameMessage::MSG_META_OPTIONS);
+
+				//This method works everywhere but isn't as clean at shutting down.
+				//TheGameEngine->checkAbnormalQuitting();	//old way to log disconnections for ALT-F4
+				//TheGameEngine->reset();
+				//TheGameEngine->setQuitting(TRUE);
+				//_exit(EXIT_SUCCESS);
+#endif
 			return 0;
+#ifdef ZH
+			}
+#endif
 
 			// ------------------------------------------------------------------------
 			case WM_SETFOCUS:
@@ -854,6 +893,12 @@ Int APIENTRY WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance,
 {
 	checkProtection();
 
+#ifdef ZH
+#ifdef _PROFILE
+  Profile::StartRange("init");
+#endif
+
+#endif
 	try {
 
 		_set_se_translator( DumpExceptionInfo ); // Hook that allows stack trace.
@@ -865,7 +910,9 @@ Int APIENTRY WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance,
 		// default in a DevStudio project
 		//
 
+#ifdef OG
 		TheAsciiStringCriticalSection = &critSec1;
+#endif
 		TheUnicodeStringCriticalSection = &critSec2;
 		TheDmaCriticalSection = &critSec3;
 		TheMemoryPoolCriticalSection = &critSec4;
@@ -934,10 +981,41 @@ Int APIENTRY WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance,
 		// install debug callbacks
 	//	WWDebug_Install_Message_Handler(WWDebug_Message_Callback);
 	//	WWDebug_Install_Assert_Handler(WWAssert_Callback);
+#ifdef ZH
 
+
+// Force "splash image" to be loaded from a file, not a resource so same exe can be used in different localizations.
+#if defined _DEBUG || defined _INTERNAL || defined _PROFILE
+#endif
+
+#ifdef OG
  		// [SKB: Jun 24 2003 @ 1:50pm] :
 		// Force to be loaded from a file, not a resource so same exe can be used in germany and retail.
  		gLoadScreenBitmap = (HBITMAP)LoadImage(hInstance, "Install_Final.bmp",	IMAGE_BITMAP, 0, 0, LR_SHARED|LR_LOADFROMFILE);
+
+#endif
+#ifdef ZH
+			// check both localized directory and root dir
+		char filePath[_MAX_PATH];
+		char *fileName = "Install_Final.bmp";
+		static const char *localizedPathFormat = "Data/%s/";
+		sprintf(filePath,localizedPathFormat, GetRegistryLanguage().str());
+		strcat( filePath, fileName );
+		FILE *fileImage = fopen(filePath, "r");
+		if (fileImage) {
+			fclose(fileImage);
+			gLoadScreenBitmap = (HBITMAP)LoadImage(hInstance, filePath, IMAGE_BITMAP, 0, 0, LR_SHARED|LR_LOADFROMFILE);
+		}
+		else {
+			gLoadScreenBitmap = (HBITMAP)LoadImage(hInstance, fileName, IMAGE_BITMAP, 0, 0, LR_SHARED|LR_LOADFROMFILE);
+		}
+#else
+		
+		// in release, the file only ever lives in the root dir
+		gLoadScreenBitmap = (HBITMAP)LoadImage(hInstance, "Install_Final.bmp", IMAGE_BITMAP, 0, 0, LR_SHARED|LR_LOADFROMFILE);
+#endif
+
+#endif
 
 		// register windows class and create application window
 		if( initializeAppWindows( hInstance, nCmdShow, ApplicationIsWindowed) == false )
@@ -1047,7 +1125,9 @@ Int APIENTRY WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance,
 	
 	}
 
+#ifdef OG
 	TheAsciiStringCriticalSection = NULL;
+#endif
 	TheUnicodeStringCriticalSection = NULL;
 	TheDmaCriticalSection = NULL;
 	TheMemoryPoolCriticalSection = NULL;

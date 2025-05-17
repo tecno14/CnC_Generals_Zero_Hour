@@ -90,6 +90,11 @@ AIUpdateModuleData::AIUpdateModuleData()
 #ifdef ALLOW_SURRENDER
 	m_surrenderDuration = LOGICFRAMES_PER_SECOND * 120;
 #endif
+#ifdef ZH
+
+  m_forbidPlayerCommands = FALSE;
+	m_turretsLinked = FALSE;
+#endif
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -137,6 +142,10 @@ const LocomotorTemplateVector* AIUpdateModuleData::findLocomotorTemplateVector(L
 #ifdef ALLOW_SURRENDER
 		{ "SurrenderDuration", INI::parseDurationUnsignedInt, NULL, offsetof(AIUpdateModuleData, m_surrenderDuration) },
 #endif
+#ifdef ZH
+    { "ForbidPlayerCommands",				INI::parseBool,										NULL, offsetof(AIUpdateModuleData, m_forbidPlayerCommands) },
+    { "TurretsLinked",							INI::parseBool,										NULL, offsetof( AIUpdateModuleData, m_turretsLinked ) },
+#endif
 		{ 0, 0, 0, 0 }
 	};
   p.add(dataFieldParse);
@@ -163,7 +172,12 @@ const LocomotorTemplateVector* AIUpdateModuleData::findLocomotorTemplateVector(L
 	AIUpdateModuleData *self = tt->friend_getAIModuleInfo();
 	if (!self) 
 	{
+#ifdef OG
 		DEBUG_CRASH(("Attempted to specify a locomotor for an object without an AIUpdate block."));
+#endif
+#ifdef ZH
+		DEBUG_CRASH( ("Attempted to specify a locomotor for object %s without an AIUpdate block.", tt->getName().str() ) );
+#endif
 		throw INI_INVALID_DATA;
 	}
 
@@ -534,6 +548,9 @@ void AIUpdateInterface::requestAttackPath( ObjectID victimID, const Coord3D* vic
 		/* Requesting path very quickly.  Can cause a spin. */
 		//DEBUG_LOG(("%d Pathfind - repathing in less than 3 frames.  Waiting 2 second\n",TheGameLogic->getFrame()));
 		setQueueForPathTime(2*LOGICFRAMES_PER_SECOND);
+#ifdef ZH
+		setLocomotorGoalNone();
+#endif
 		return;
 	}
 	TheAI->pathfinder()->queueForPath(getObject()->getID());
@@ -664,13 +681,23 @@ void AIUpdateInterface::setTurretTargetObject(WhichTurretType tur, Object* o, Bo
 }
 
 //=============================================================================
+#ifdef OG
 Object* AIUpdateInterface::getTurretTargetObject( WhichTurretType tur )
+#endif
+#ifdef ZH
+Object* AIUpdateInterface::getTurretTargetObject( WhichTurretType tur, Bool clearDeadTargets )
+#endif
 {
 	if( m_turretAI[ tur ] )
 	{
 		Object *obj;
 		Coord3D pos;
+#ifdef OG
 		if( m_turretAI[ tur ]->friend_getTurretTarget( obj, pos ) == TARGET_OBJECT )
+#endif
+#ifdef ZH
+		if( m_turretAI[ tur ]->friend_getTurretTarget( obj, pos, clearDeadTargets ) == TARGET_OBJECT )
+#endif
 		{
 			return obj;
 		}
@@ -1084,6 +1111,9 @@ UpdateSleepTime AIUpdateInterface::update( void )
 			! obj->isDisabledByType( DISABLED_PARALYZED ) &&
 			! obj->isDisabledByType( DISABLED_UNMANNED ) &&
 			! obj->isDisabledByType( DISABLED_EMP ) &&
+#ifdef ZH
+			! obj->isDisabledByType( DISABLED_SUBDUED ) &&
+#endif
 			! obj->isDisabledByType( DISABLED_HACKED ) )
 	{
 		// If we are dead, don't let the turrets do anything anymore, or else they will keep attacking
@@ -1209,11 +1239,23 @@ Bool AIUpdateInterface::hasHigherPathPriority(AIUpdateInterface *otherAI) const
 {
 	Object *other = otherAI->getObject();
 
+#ifdef ZH
+	// Dozers have highest priority.
+	if (getObject()->isKindOf(KINDOF_DOZER) && !other->isKindOf(KINDOF_DOZER)) {
+		return TRUE;
+	}
+	if (!getObject()->isKindOf(KINDOF_DOZER) && other->isKindOf(KINDOF_DOZER)) {
+		return FALSE;
+	}
+
+#endif
 	// Vehicles always have higher priority than infantry.
 	if (getObject()->isKindOf(KINDOF_VEHICLE) && other->isKindOf(KINDOF_INFANTRY)) {
 		return TRUE;
 	}
+#ifdef OG
 	// Vehicles always have higher priority than infantry.
+#endif
 	if (getObject()->isKindOf(KINDOF_INFANTRY) && other->isKindOf(KINDOF_VEHICLE)) {
 		return FALSE;
 	}
@@ -1465,7 +1507,20 @@ Bool AIUpdateInterface::processCollision(PhysicsBehavior *physics, Object *other
 
 			if (!aiOther->isMovingAwayFrom(getObject())) {
 
+#ifdef OG
 				if (other->isKindOf(KINDOF_INFANTRY) && !getObject()->isKindOf(KINDOF_INFANTRY)) {
+
+#endif
+#ifdef ZH
+				if (other->isKindOf(KINDOF_INFANTRY) && !getObject()->isKindOf(KINDOF_INFANTRY)) 
+				{
+					//Kris: Patch 1.01 -- November 5, 2003
+					//Prevent busy units from being told to move out of the way!
+					if( other->testStatus( OBJECT_STATUS_IS_USING_ABILITY ) || other->getAI() && other->getAI()->isBusy() )
+					{
+						return FALSE;
+					}
+#endif
 					aiOther->aiMoveAwayFromUnit(getObject(), CMD_FROM_AI);
 					return FALSE;
 				}
@@ -1862,7 +1917,12 @@ Bool AIUpdateInterface::computeAttackPath( PathfindServicesInterface *pathServic
 		Real dx, dy;
 		dx = victimPos->x - m_path->getLastNode()->getPosition()->x;
 		dy = victimPos->y - m_path->getLastNode()->getPosition()->y;
+#ifdef OG
 		if (sqr(dx)+sqr(dy) < sqr(PATHFIND_CELL_SIZE_F*2)) {
+#endif
+#ifdef ZH
+		if (sqr(dx)+sqr(dy) < sqr(PATHFIND_CELL_SIZE_F*3)) {
+#endif
 			if (m_path) 
 			{
 				m_path->updateLastNode(victimPos); // jam in the coordinates of the target.
@@ -1956,13 +2016,43 @@ Bool AIUpdateInterface::computeAttackPath( PathfindServicesInterface *pathServic
 		// compute a ground-based path
 		m_path = pathServices->findAttackPath( getObject(), m_locomotorSet, getObject()->getPosition(), 
 			victim, &localVictimPos, weapon);
+#ifdef OG
 		TheAI->pathfinder()->setIgnoreObstacleID( INVALID_ID );
 		if (m_path && m_path->getBlockedByAlly()) 
+
+#endif
+#ifdef ZH
+		if (m_path) {
+			Coord3D goal = *m_path->getLastNode()->getPosition();
+			if (!weapon->isGoalPosWithinAttackRange(getObject(), &goal, victim, &localVictimPos)) {
+				// We didn't actually find a path we can attack from. [8/14/2003]
+				// If the move is a short distance, just do a find closest path to our current
+				// position.  This will unstack us if we are on top of another unit. jba.
+				Coord3D objPos = *getObject()->getPosition();
+				goal.sub(&objPos);
+				if (goal.length()<3*PATHFIND_CELL_SIZE_F) {
+					destroyPath();
+					TheAI->pathfinder()->adjustDestination(getObject(), m_locomotorSet, &objPos);
+					m_path = pathServices->findClosestPath(getObject(), m_locomotorSet, getObject()->getPosition(), 
+								&objPos, false, 0.2f, true );
+				}
+				if (m_path==NULL) {
+					return false;
+				}
+			}
+			goal = *m_path->getLastNode()->getPosition();
+			TheAI->pathfinder()->updateGoal(getObject(), &goal, TheTerrainLogic->getLayerForDestination(&goal));
+			if (m_path->getBlockedByAlly()) 
+#endif
 		{
 	 		if( !getObject()->isKindOf(KINDOF_NO_COLLIDE))// If I don't collide with things, I don't need to tell them to get out of the way
 				TheAI->pathfinder()->moveAllies(getObject(), m_path);
 		}
 	}
+#ifdef ZH
+		TheAI->pathfinder()->setIgnoreObstacleID( INVALID_ID );
+	}
+#endif
 
 	// timestamp when the path was created
 	m_pathTimestamp = TheGameLogic->getFrame();
@@ -2051,7 +2141,12 @@ Bool AIUpdateInterface::isPathAvailable( const Coord3D *destination ) const
 
 	const Coord3D *myPos = getObject()->getPosition();
 
+#ifdef OG
 	return TheAI->pathfinder()->quickDoesPathExist( m_locomotorSet, myPos, destination );
+#endif
+#ifdef ZH
+	return TheAI->pathfinder()->clientSafeQuickDoesPathExist( m_locomotorSet, myPos, destination );
+#endif
 
 }  // end isPathAvailable
 
@@ -2068,7 +2163,12 @@ Bool AIUpdateInterface::isQuickPathAvailable( const Coord3D *destination ) const
 
 	const Coord3D *myPos = getObject()->getPosition();
 
+#ifdef OG
 	return TheAI->pathfinder()->quickDoesPathExist( m_locomotorSet, myPos, destination );
+#endif
+#ifdef ZH
+	return TheAI->pathfinder()->clientSafeQuickDoesPathExistForUI( m_locomotorSet, myPos, destination );
+#endif
 
 }  // end isQuickPathAvailable
 
@@ -2256,9 +2356,19 @@ UpdateSleepTime AIUpdateInterface::doLocomotor( void )
 
 		// After our movement for the frame, update our AirborneTarget flag.
 		if(getObject()->getHeightAboveTerrain() > m_curLocomotor->getAirborneTargetingHeight() )
+#ifdef OG
 			getObject()->setStatus(OBJECT_STATUS_AIRBORNE_TARGET);
+#endif
+#ifdef ZH
+			getObject()->setStatus( MAKE_OBJECT_STATUS_MASK( OBJECT_STATUS_AIRBORNE_TARGET ) );
+#endif
 		else
+#ifdef OG
 			getObject()->clearStatus(OBJECT_STATUS_AIRBORNE_TARGET);
+#endif
+#ifdef ZH
+			getObject()->clearStatus( MAKE_OBJECT_STATUS_MASK( OBJECT_STATUS_AIRBORNE_TARGET ) );
+#endif
 
 		m_curMaxBlockedSpeed = FAST_AS_POSSIBLE;
 	}
@@ -2320,6 +2430,15 @@ void AIUpdateInterface::setLocomotorGoalNone()
 //-------------------------------------------------------------------------------------------------
 Bool AIUpdateInterface::isDoingGroundMovement(void) const
 {
+#ifdef ZH
+  
+  if (getObject()->isDisabledByType( DISABLED_UNMANNED ) 
+   && getObject()->isKindOf( KINDOF_PRODUCED_AT_HELIPAD ) )
+  {
+    return TRUE; // an unmanned helicopter gets grounded, eventually.
+  }
+
+#endif
 	if (m_locomotorSet.getValidSurfaces() == LOCOMOTORSURFACE_AIR) 
 	{
 		return FALSE;  // air only loco.
@@ -2557,7 +2676,22 @@ Bool AIUpdateInterface::isAllowedToRespondToAiCommands(const AICommandParms* par
 	UnsignedInt moodParms = getMoodMatrixValue();
 	if ((moodParms & MM_Controller_AI) && (moodParms & MM_Mood_Sleep) && (parms->m_cmd != AICMD_MOVE_TO_POSITION_EVEN_IF_SLEEPING))
 		return FALSE;
+#ifdef ZH
 
+  const AIUpdateModuleData *data = getAIUpdateModuleData();
+#endif
+
+#ifdef ZH
+  Bool forbidden = data->m_forbidPlayerCommands;
+
+  if ( parms->m_cmdSource == CMD_FROM_PLAYER && forbidden )
+    return FALSE; 
+  // THIS IS JUST FOR THE SPECTREGUNSHIP FOR NOW... 
+  // IT LOCKS OUT USER INPUT, 
+  // ALLOWING ONLY THE SPECTREUPDATE TO COMMAND IT VIA CMD_FROM_AI
+  // AUTHOR, LORENZEN... 5/15/03
+
+#endif
 	return TRUE;
 }
 
@@ -2637,6 +2771,11 @@ void AIUpdateInterface::aiDoCommand(const AICommandParms* parms)
 			break;
 		case AICMD_FORCE_ATTACK_OBJECT:
 			privateForceAttackObject(parms->m_obj, parms->m_intValue, parms->m_cmdSource);
+#ifdef ZH
+			break;
+		case AICMD_GUARD_RETALIATE:
+			privateGuardRetaliate( parms->m_obj, &parms->m_pos, parms->m_intValue, parms->m_cmdSource );
+#endif
 			break;
 		case AICMD_ATTACK_TEAM:
 			privateAttackTeam(parms->m_team, parms->m_intValue, parms->m_cmdSource);
@@ -2679,18 +2818,42 @@ void AIUpdateInterface::aiDoCommand(const AICommandParms* parms)
 		case AICMD_GET_REPAIRED:
 			privateGetRepaired(parms->m_obj, parms->m_cmdSource);
 			break;
+#ifdef OG
 		case AICMD_ENTER:
+#endif
+#ifdef ZH
+		case AICMD_ENTER://///////////////////////////////////////////////////////////////
+#endif
 			privateEnter(parms->m_obj, parms->m_cmdSource);
 			break;
 		case AICMD_DOCK:
 			privateDock(parms->m_obj, parms->m_cmdSource);
 			break;
+#ifdef OG
 		case AICMD_EXIT:
+#endif
+#ifdef ZH
+		case AICMD_EXIT:////////////////////////////////////////////////////////////////////
+#endif
 			privateExit(parms->m_obj, parms->m_cmdSource);
 			break;
+#ifdef OG
 		case AICMD_EVACUATE:
+
+#endif
+#ifdef ZH
+		case AICMD_EXIT_INSTANTLY://///////////////////////////////////////////////////////
+			privateExitInstantly( parms->m_obj, parms->m_cmdSource );
+			break;
+		case AICMD_EVACUATE://///////////////////////////////////////////////////////////
+#endif
 			privateEvacuate(parms->m_intValue, parms->m_cmdSource);
 			break;
+#ifdef ZH
+		case AICMD_EVACUATE_INSTANTLY:////////////////////////////////////////////////////
+			privateEvacuateInstantly( parms->m_intValue, parms->m_cmdSource );
+			break;
+#endif
 		case AICMD_EXECUTE_RAILED_TRANSPORT:
 			privateExecuteRailedTransport( parms->m_cmdSource );
 			break;
@@ -2698,17 +2861,85 @@ void AIUpdateInterface::aiDoCommand(const AICommandParms* parms)
 			privateGoProne(&parms->m_damage, parms->m_cmdSource);
 			break;
 		case AICMD_GUARD_POSITION:
+#ifdef ZH
+		{
+			//Kris: Aug 18, 2003 -- If you were retaliating and ordered to enter guard mode, 
+			//the state needs to be cleared before doing so or else we leave the state too
+			//late and clear data AFTER we go into the new guard mode causing units to 
+			//move to zero (bottom left corner).
+			AIStateMachine *state = getStateMachine();
+			if( state && state->getCurrentStateID() == AI_GUARD_RETALIATE )
+			{
+				state->clear();
+			}
+			//end
+
+#endif
 			privateGuardPosition(&parms->m_pos, (GuardMode)parms->m_intValue, parms->m_cmdSource);
 			break;
+#ifdef ZH
+		}
+#endif
 		case AICMD_GUARD_OBJECT:
+#ifdef ZH
+		{
+			//Kris: Aug 18, 2003 -- If you were retaliating and ordered to enter guard mode, 
+			//the state needs to be cleared before doing so or else we leave the state too
+			//late and clear data AFTER we go into the new guard mode causing units to 
+			//move to zero (bottom left corner).
+			AIStateMachine *state = getStateMachine();
+			if( state && state->getCurrentStateID() == AI_GUARD_RETALIATE )
+			{
+				state->clear();
+			}
+			//end
+
+#endif
 			privateGuardObject(parms->m_obj, (GuardMode)parms->m_intValue, parms->m_cmdSource);
 			break;
+#ifdef ZH
+		}
+#endif
 		case AICMD_GUARD_TUNNEL_NETWORK:
+#ifdef ZH
+		{
+			//Kris: Aug 18, 2003 -- If you were retaliating and ordered to enter guard mode, 
+			//the state needs to be cleared before doing so or else we leave the state too
+			//late and clear data AFTER we go into the new guard mode causing units to 
+			//move to zero (bottom left corner).
+			AIStateMachine *state = getStateMachine();
+			if( state && state->getCurrentStateID() == AI_GUARD_RETALIATE )
+			{
+				state->clear();
+			}
+			//end
+
+#endif
 			privateGuardTunnelNetwork((GuardMode)parms->m_intValue, parms->m_cmdSource);
 			break;
+#ifdef ZH
+		}
+#endif
 		case AICMD_GUARD_AREA:
+#ifdef ZH
+		{
+			//Kris: Aug 18, 2003 -- If you were retaliating and ordered to enter guard mode, 
+			//the state needs to be cleared before doing so or else we leave the state too
+			//late and clear data AFTER we go into the new guard mode causing units to 
+			//move to zero (bottom left corner).
+			AIStateMachine *state = getStateMachine();
+			if( state && state->getCurrentStateID() == AI_GUARD_RETALIATE )
+			{
+				state->clear();
+			}
+			//end
+
+#endif
 			privateGuardArea(parms->m_polygon, (GuardMode)parms->m_intValue, parms->m_cmdSource);
 			break;
+#ifdef ZH
+		}
+#endif
 		case AICMD_HACK_INTERNET:
 			privateHackInternet( parms->m_cmdSource );
 			break;
@@ -2773,6 +3004,20 @@ void AIUpdateInterface::privateMoveToPosition( const Coord3D *pos, CommandSource
 	//doesn't want to get reset when ordered to move.
 	//chooseLocomotorSet(LOCOMOTORSET_NORMAL);
 
+#ifdef ZH
+	if (!isIdle() && cmdSource == CMD_FROM_AI) {
+		// This is an internally generated move to, and we are in a non-idle state. [8/19/2003]
+		// Our state could be the source of this command, so 
+		// Move for 20 seconds [8/19/2003]
+		// Things like attack state don't take kindly to being booted out unceremoniously. jba. [8/19/2003]
+		setGoalPositionClipped(pos, cmdSource);
+		m_blockedFrames = 0;
+		m_isBlocked = FALSE;
+		m_isBlockedAndStuck = FALSE;
+		getStateMachine()->setTemporaryState(AI_MOVE_TO, LOGICFRAMES_PER_SECOND * 20);
+	} else {
+		// Normal user or script command, just do it. [8/19/2003]
+#endif
 	getStateMachine()->clear();
 	setGoalPositionClipped(pos, cmdSource);
 	m_blockedFrames = 0;
@@ -2780,6 +3025,9 @@ void AIUpdateInterface::privateMoveToPosition( const Coord3D *pos, CommandSource
 	m_isBlockedAndStuck = FALSE;
 	setLastCommandSource( cmdSource );
 	getStateMachine()->setState( AI_MOVE_TO );
+#ifdef ZH
+	}
+#endif
 
 }
 
@@ -2982,7 +3230,18 @@ void AIUpdateInterface::privateIdle(CommandSourceType cmdSource)
 //----------------------------------------------------------------------------------------
 Bool AIUpdateInterface::isIdle() const
 {
+#ifdef OG
 	return getStateMachine()->isInIdleState();
+
+#endif
+#ifdef ZH
+	const AIStateMachine *state = getStateMachine();
+	if( state->getCurrentStateID() == AI_IDLE )
+	{
+		return TRUE;
+	}
+	return state->isInIdleState();
+#endif
 }
 
 //----------------------------------------------------------------------------------------
@@ -3316,8 +3575,32 @@ void AIUpdateInterface::privateForceAttackObject( Object *victim, Int maxShotsTo
 	Weapon* weapon = getObject()->getCurrentWeapon();
 	if (weapon)
 		weapon->setMaxShotCount(maxShotsToFire);
+#ifdef ZH
 }
 
+//-----------------------------------------------------------------------------------------
+void AIUpdateInterface::privateGuardRetaliate( Object *victim, const Coord3D *pos, Int maxShotsToFire, CommandSourceType cmdSource )
+{
+	if (!victim) {
+		return;
+#endif
+}
+#ifdef ZH
+
+	getStateMachine()->clear();
+	getStateMachine()->setGoalObject( victim );
+	setGoalPositionClipped( pos, cmdSource );
+	setLastCommandSource( cmdSource );
+	getStateMachine()->setState( AI_GUARD_RETALIATE );
+#endif
+
+#ifdef ZH
+	// do this after setting it as the current state, as the max-shots-to-fire is reset in AttackState::onEnter()
+	Weapon* weapon = getObject()->getCurrentWeapon();
+	if (weapon)
+		weapon->setMaxShotCount(maxShotsToFire);
+}
+#endif
 
 //----------------------------------------------------------------------------------------
 /**
@@ -3365,12 +3648,22 @@ void AIUpdateInterface::privateAttackPosition( const Coord3D *pos, Int maxShotsT
 	if (continueRange > 0.0f)
 	{
 		// ick. set this bit so we can find the mine to go target, even if stealthed. (srj)
+#ifdef OG
 		getObject()->setStatus(OBJECT_STATUS_IGNORING_STEALTH, true);
+#endif
+#ifdef ZH
+		getObject()->setStatus( MAKE_OBJECT_STATUS_MASK( OBJECT_STATUS_IGNORING_STEALTH ) );
+#endif
 		PartitionFilterPossibleToAttack filterAttack(ATTACK_NEW_TARGET, getObject(), cmdSource);
 		PartitionFilterSameMapStatus filterMapStatus(getObject());
 		PartitionFilter *filters[] = { &filterAttack, &filterMapStatus, NULL };
 		Object* victim = ThePartitionManager->getClosestObject(&localPos, continueRange, FROM_CENTER_2D, filters);
+#ifdef OG
 		getObject()->setStatus(OBJECT_STATUS_IGNORING_STEALTH, false);
+#endif
+#ifdef ZH
+		getObject()->clearStatus( MAKE_OBJECT_STATUS_MASK( OBJECT_STATUS_IGNORING_STEALTH ) );
+#endif
 
 		if (victim)
 		{
@@ -3666,6 +3959,11 @@ void AIUpdateInterface::privateExit( Object *objectToExit, CommandSourceType cmd
 	if (!objectToExit)
 		return;
 
+#ifdef ZH
+  if ( objectToExit->isDisabledByType( DISABLED_SUBDUED ) )
+    return;
+
+#endif
 	// we must go thru this state (rather than calling exitObjectViaDoor directly!), 
 	// because a few containers might need to delay to allow
 	// us to exit (eg, Chinooks must land), meaning we might have to wait a bit, and coordinate
@@ -3678,6 +3976,36 @@ void AIUpdateInterface::privateExit( Object *objectToExit, CommandSourceType cmd
 
 //----------------------------------------------------------------------------------------
 /**
+#ifdef ZH
+ * Get out of whatever it is inside of this frame
+ */
+void AIUpdateInterface::privateExitInstantly( Object *objectToExit, CommandSourceType cmdSource )
+{
+	Object *us = getObject();
+	if (!objectToExit)
+	{
+		objectToExit = us->getContainedBy();
+	}
+
+	if (!objectToExit)
+		return;
+
+  if ( objectToExit->isDisabledByType( DISABLED_SUBDUED ) )
+    return;
+
+	// we must go thru this state (rather than calling exitObjectViaDoor directly!), 
+	// because a few containers might need to delay to allow
+	// us to exit (eg, Chinooks must land), meaning we might have to wait a bit, and coordinate
+	// with the container by actually NOTIFYING it that we want to exit...
+	getStateMachine()->clear();
+	getStateMachine()->setGoalObject( objectToExit );
+	setLastCommandSource( cmdSource );
+	getStateMachine()->setState( AI_EXIT_INSTANTLY );
+}
+
+//----------------------------------------------------------------------------------------
+/**
+#endif
  * Get out of whatever it is inside of
  */
 void AIUpdateInterface::doQuickExit( const std::vector<Coord3D>* path )
@@ -3700,7 +4028,36 @@ void AIUpdateInterface::doQuickExit( const std::vector<Coord3D>* path )
  * Empty its contents
  */
 void AIUpdateInterface::privateEvacuate( Int exposeStealthUnits, CommandSourceType cmdSource )
+#ifdef ZH
 {
+
+  if ( getObject()->isDisabledByType( DISABLED_SUBDUED ) )
+    return;
+
+	ContainModuleInterface *contain = getObject()->getContain();
+	if( contain )
+#endif
+{
+#ifdef ZH
+		if( exposeStealthUnits )
+		{
+			contain->markAllPassengersDetected();
+		}
+		contain->orderAllPassengersToExit( cmdSource, FALSE );
+	}
+}
+
+//----------------------------------------------------------------------------------------
+/**
+ * Empty its contents this frame
+ */
+void AIUpdateInterface::privateEvacuateInstantly( Int exposeStealthUnits, CommandSourceType cmdSource )
+{
+
+  if ( getObject()->isDisabledByType( DISABLED_SUBDUED ) )
+    return;
+
+#endif
 	ContainModuleInterface *contain = getObject()->getContain();
 	if( contain )
 	{
@@ -3708,7 +4065,12 @@ void AIUpdateInterface::privateEvacuate( Int exposeStealthUnits, CommandSourceTy
 		{
 			contain->markAllPassengersDetected();
 		}
+#ifdef OG
 		contain->orderAllPassengersToExit( cmdSource );
+#endif
+#ifdef ZH
+		contain->orderAllPassengersToExit( cmdSource, TRUE );
+#endif
 	}
 }
 
@@ -3924,8 +4286,16 @@ void AIUpdateInterface::privateGuardArea( const PolygonTrigger *areaToGuard, Gua
 //-------------------------------------------------------------------------------------------------
 void AIUpdateInterface::privateHackInternet( CommandSourceType cmdSource )
 {
+#ifdef OG
 	if (getObject()->isMobile() == FALSE)
 		return;
+
+#endif
+#ifdef ZH
+	// We need to be able to hack in containers
+//	if (getObject()->isMobile() == FALSE)
+//		return;
+#endif
 
 	getStateMachine()->clear();
 	setLastCommandSource( cmdSource );
@@ -3945,12 +4315,33 @@ void AIUpdateInterface::privateHackInternet( CommandSourceType cmdSource )
 /// if we are attacking "fromID", stop that and attack "toID" instead
 void AIUpdateInterface::transferAttack(ObjectID fromID, ObjectID toID)
 {
+#ifdef ZH
+	Object *newTarget = TheGameLogic->findObjectByID( toID );
+
+#endif
 	if (m_currentVictimID == fromID)
 		m_currentVictimID = toID;
 
 	Object* goalObj = getStateMachine()->getGoalObject();
 	if (goalObj && goalObj->getID() == fromID)
+#ifdef OG
 		getStateMachine()->setGoalObject(TheGameLogic->findObjectByID(toID));
+
+#endif
+#ifdef ZH
+		getStateMachine()->setGoalObject( newTarget );
+
+	//Transfer the turrets too this frame.
+	for( Int i = 0; i < MAX_TURRETS; i++ )
+	{
+		goalObj = getTurretTargetObject( (WhichTurretType)i, FALSE );
+		if( goalObj && goalObj->getID() == fromID )
+		{
+			setTurretTargetObject( (WhichTurretType)i, newTarget, TRUE );
+		}
+	}
+
+#endif
 }
 
 //----------------------------------------------------------------------------------------------------------
@@ -4245,6 +4636,17 @@ void AIUpdateInterface::setNextMoodCheckTime( UnsignedInt frame )
 	m_randomlyOffsetMoodCheck = false;
 }
 
+#ifdef ZH
+
+
+Bool AIUpdateInterface::canAutoAcquireWhileStealthed() const 
+{ 
+  if ( getObject() && getObject()->getStealth() && getObject()->getStealth()->isGrantedBySpecialPower() )
+    return TRUE;
+  return getAIUpdateModuleData()->m_autoAcquireEnemiesWhenIdle & AAS_Idle_Stealthed;
+}
+
+#endif
 //----------------------------------------------------------------------------------------------
 /**
  * Return the next object that our mood suggests we should attack.
@@ -4281,25 +4683,53 @@ Object* AIUpdateInterface::getNextMoodTarget( Bool calledByAI, Bool calledDuring
 	//AutoAcquireWhenIdle = Yes Stealthed.
 	if ( calledDuringIdle )
 	{
+#ifdef OG
 		if ((obj->getStatusBits() & OBJECT_STATUS_STEALTHED) != 0) 
+#endif
+#ifdef ZH
+		if( obj->getStatusBits().test( OBJECT_STATUS_STEALTHED ) ) 
+#endif
 		{
+#ifdef OG
 			if ((getAIUpdateModuleData()->m_autoAcquireEnemiesWhenIdle & AAS_Idle_Stealthed) == 0) 
+#endif
+#ifdef ZH
+			if( !canAutoAcquireWhileStealthed() ) 
+#endif
 			{
+#ifdef OG
 				//He's stealthed and idle, but if he's garrisoned, then that's a whole different matter....
+#endif
 				const Object *container = obj->getContainedBy();
+#ifdef OG
 				if( !container )
+#endif
+#ifdef ZH
+  			if( ! (container && container->getContain()->isPassengerAllowedToFire()) )
+#endif
 				{
+#ifdef OG
 					//Not contained
+
+#endif
+#ifdef ZH
+					// Sorry, stealthed and not allowed to idle fire when stealthed.
+					// Being in a firing container is an exception to this veto.
+#endif
 					return NULL;
 				}
+#ifdef OG
 				if( !container->getContain()->isPassengerAllowedToFire() )
 				{
 					//Container doesn't allow for passenger to shoot.
 					return NULL;
+#endif
 				}
 			}
 		}
+#ifdef OG
 	}
+#endif
 
 	UnsignedInt now = TheGameLogic->getFrame();
 
@@ -4308,6 +4738,17 @@ Object* AIUpdateInterface::getNextMoodTarget( Bool calledByAI, Bool calledDuring
 	if (calledByAI && obj->getTeam()->getPrototype()->getTemplateInfo()->m_attackCommonTarget) 
 	{
 		teamVictim = obj->getTeam()->getTeamTargetObject();
+#ifdef ZH
+		if (teamVictim) {
+			// Make sure we can attack the team victim.  Mixed teams can acquire aircraft, and units
+			// like toxin tractors shouldn't acquire aircraft. jba. [8/27/2003]
+			CanAttackResult result = obj->getAbleToAttackSpecificObject( ATTACK_NEW_TARGET, teamVictim, CMD_FROM_AI );
+			if( result != ATTACKRESULT_POSSIBLE && result != ATTACKRESULT_POSSIBLE_AFTER_MOVING ) {
+				teamVictim = NULL; // Can't attack him. jba [8/27/2003]
+			}
+		}
+		
+#endif
 		if (teamVictim && getAttitude()>=AI_NORMAL) 
 			return teamVictim;
 	}
@@ -4352,7 +4793,16 @@ Object* AIUpdateInterface::getNextMoodTarget( Bool calledByAI, Bool calledDuring
 		if (!bmi)
 			return NULL;
 
+#ifdef ZH
+		//Kris: August 26, 2003
+		//Do not allow units that healed me to get acquired! They are our friends!!!
+		if( bmi->getLastDamageInfo()->in.m_damageType != DAMAGE_HEALING )
+		{
+#endif
 		return TheGameLogic->findObjectByID(bmi->getLastDamageInfo()->in.m_sourceID);
+#ifdef ZH
+		}
+#endif
 	}
 	UnsignedInt flags = AI::CAN_ATTACK;
 	if (TheAI->getAiData()->m_attackUsesLineOfSight) {
@@ -4430,17 +4880,8 @@ void AIUpdateInterface::evaluateMoraleBonus( void )
 #endif
 	Bool horde = FALSE;
 	Bool nationalism = FALSE;
-
-	// are we in a horde
-	HordeUpdateInterface *hui;
-	for( BehaviorModule** u = us->getBehaviorModules(); *u; ++u )
-	{
-
-		hui = (*u)->getHordeUpdateInterface();
-		if( hui && hui->isInHorde() )
-			horde = TRUE;
-
-	}  // end for
+#ifdef ZH
+	Bool fanaticism = FALSE;
 
 	// do we have nationalism
 	///@todo Find a better way to represent nationalism without hardcoding here (CBD)
@@ -4449,6 +4890,54 @@ void AIUpdateInterface::evaluateMoraleBonus( void )
 	Player *player = us->getControllingPlayer();
 	if( player && player->hasUpgradeComplete( nationalismTemplate ) )
 		nationalism = TRUE;
+
+	// do we have fanaticism
+	///@todo Find a better way to represent fanaticism without hardcoding here (MAL)
+	static const UpgradeTemplate *fanaticismTemplate = TheUpgradeCenter->findUpgrade( "Upgrade_Fanaticism" );
+	DEBUG_ASSERTCRASH( fanaticismTemplate != NULL, ("AIUpdateInterface::evaluateMoraleBonus - Fanaticism upgrade not found\n") );
+	if( player && player->hasUpgradeComplete( fanaticismTemplate ) )
+		fanaticism = TRUE;
+#endif
+
+	// are we in a horde
+	HordeUpdateInterface *hui;
+	for( BehaviorModule** u = us->getBehaviorModules(); *u; ++u )
+	{
+
+		hui = (*u)->getHordeUpdateInterface();
+		if( hui && hui->isInHorde() )
+#ifdef ZH
+		{
+#endif
+			horde = TRUE;
+
+#ifdef OG
+	}  // end for
+
+#endif
+#ifdef ZH
+			if( !hui->isAllowedNationalism() )
+			{
+				// Sorry CBD and MAL, but the cancer has spread to the lymph nodes.  After Alpha, just pump full of painkillers.
+				nationalism = FALSE;
+				fanaticism = FALSE;
+			}
+		}
+#endif
+
+#ifdef OG
+	// do we have nationalism
+	///@todo Find a better way to represent nationalism without hardcoding here (CBD)
+	static const UpgradeTemplate *nationalismTemplate = TheUpgradeCenter->findUpgrade( "Upgrade_Nationalism" );
+	DEBUG_ASSERTCRASH( nationalismTemplate != NULL, ("AIUpdateInterface::evaluateMoraleBonus - Nationalism upgrade not found\n") );
+	Player *player = us->getControllingPlayer();
+	if( player && player->hasUpgradeComplete( nationalismTemplate ) )
+		nationalism = TRUE;
+#endif
+#ifdef ZH
+	}  // end for
+
+#endif
 
 #ifdef ALLOW_DEMORALIZE
 	// if we are are not demoralized we can have horde and nationalism effects
@@ -4477,8 +4966,21 @@ void AIUpdateInterface::evaluateMoraleBonus( void )
 
 		// nationalism
 		if( nationalism )
+#ifdef ZH
+    {
+#endif
 			us->setWeaponBonusCondition( WEAPONBONUSCONDITION_NATIONALISM );
+#ifdef ZH
+      // fanaticism
+      if ( fanaticism )
+        us->setWeaponBonusCondition( WEAPONBONUSCONDITION_FANATICISM );// FOR THE NEW GC INFANTRY GENERAL
+#endif
 		else
+#ifdef ZH
+        us->clearWeaponBonusCondition( WEAPONBONUSCONDITION_FANATICISM );
+    }
+		else
+#endif
 			us->clearWeaponBonusCondition( WEAPONBONUSCONDITION_NATIONALISM );
 
 	}  // end if
@@ -4499,6 +5001,9 @@ void AIUpdateInterface::evaluateMoraleBonus( void )
 				
 		// we cannot have nationalism bonus condition
 		us->clearWeaponBonusCondition( WEAPONBONUSCONDITION_NATIONALISM );
+#ifdef ZH
+    us->clearWeaponBonusCondition( WEAPONBONUSCONDITION_FANATICISM );
+#endif
 
 	}  // end else
 #endif
@@ -5009,4 +5514,20 @@ Int AIUpdateInterface::friend_getWaypointGoalPathSize() const
 		return 0;
 
 	return getStateMachine()->getGoalPathSize(); 
+#ifdef ZH
 }
+
+// ------------------------------------------------------------------------------------------------
+Bool AIUpdateInterface::hasLocomotorForSurface(LocomotorSurfaceType surfaceType)
+{
+	LocomotorSurfaceTypeMask surfaceMask = (LocomotorSurfaceTypeMask)surfaceType;
+	if (m_locomotorSet.findLocomotor(surfaceMask))
+		return TRUE;
+	else
+		return FALSE;
+#endif
+}
+#ifdef ZH
+
+// ------------------------------------------------------------------------------------------------
+#endif

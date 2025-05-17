@@ -155,7 +155,14 @@ void RebuildHoleBehavior::startRebuildProcess( const ThingTemplate *rebuild, Obj
 	m_spawnerObjectID = spawnerID;
 
 	// start the spawning process for a worker
+#ifdef OG
 	newWorkerRespawnProcess( NULL );
+
+#endif
+#ifdef ZH
+	Object *worker = TheGameLogic->findObjectByID(m_workerID);
+	newWorkerRespawnProcess( worker ); //Kill the worker if we have one.
+#endif
 
 } /// end startRebuildProcess
 
@@ -217,10 +224,8 @@ UpdateSleepTime RebuildHoleBehavior::update( void )
 		//
 		if( reconstructing == NULL )
 		{
-
 			newWorkerRespawnProcess( worker );
 			m_reconstructingID = INVALID_ID;
-
 		}  // end if
 
 	}  // end if
@@ -279,8 +284,20 @@ UpdateSleepTime RebuildHoleBehavior::update( void )
 					// save the id of what we are reconstructing
 					m_reconstructingID = reconstructing->getID();
 
+#ifdef ZH
+					//Kris: Hacking the building to set the hole as the producer... so if the site dies, we 
+					//can transfer the attack back to the hole. The object has OBJECT_STATUS_RECONSTRUCTING
+					//which we check when the object dies.
+					reconstructing->setProducer( hole );
+
+#endif
 					// we want to prevent the player from selecting and doing things with this worker
+#ifdef OG
 					worker->setStatus( OBJECT_STATUS_UNSELECTABLE );
+#endif
+#ifdef ZH
+					worker->setStatus( MAKE_OBJECT_STATUS_MASK( OBJECT_STATUS_UNSELECTABLE ) );
+#endif
 
 					//
 					// we want to prevent the player and the AI from selecting or targeting the hole
@@ -316,8 +333,14 @@ UpdateSleepTime RebuildHoleBehavior::update( void )
 	}  // end if
 
 	// when re-construction is complete, we remove this hole and worker
+#ifdef OG
 	if( reconstructing && 
 			BitTest( reconstructing->getStatusBits(), OBJECT_STATUS_UNDER_CONSTRUCTION ) == FALSE )
+#endif
+#ifdef ZH
+	if( reconstructing && !reconstructing->getStatusBits().test( OBJECT_STATUS_UNDER_CONSTRUCTION ) )
+
+#endif
 	{
 		// Transfer hole name to new building
 		TheScriptEngine->transferObjectName( hole->getName(), reconstructing );

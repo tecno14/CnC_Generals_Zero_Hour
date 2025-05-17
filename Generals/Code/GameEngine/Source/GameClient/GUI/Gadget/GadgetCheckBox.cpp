@@ -343,6 +343,31 @@ void GadgetCheckBoxSetChecked( GameWindow *g, Bool isChecked)
 																					(WindowMsgData)g, 0 );
 
 }
+#ifdef ZH
+
+// GadgetCheckBoxToggle ============================================
+//=============================================================================
+/** Toggle the check state for the check box */
+//=============================================================================
+void GadgetCheckBoxToggle( GameWindow *g)
+{
+	WinInstanceData *instData = g->winGetInstanceData();
+	Bool isChecked = BitTest(instData->m_state, WIN_STATE_SELECTED);
+	if (isChecked)
+	{
+		BitClear(instData->m_state,  WIN_STATE_SELECTED);
+	}
+	else
+	{
+		BitSet(instData->m_state,  WIN_STATE_SELECTED);
+	}
+
+	TheWindowManager->winSendSystemMsg( g->winGetOwner(), GBM_SELECTED,
+																					(WindowMsgData)g, 0 );
+
+}
+
+#endif
 // GadgetCheckBoxIsChecked ======================================================
 /** Check the check state */
 //=============================================================================

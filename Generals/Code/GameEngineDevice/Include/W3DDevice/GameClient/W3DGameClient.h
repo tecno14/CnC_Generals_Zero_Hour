@@ -53,6 +53,9 @@
 #include "Win32Device/GameClient/Win32DIMouse.h"
 #include "Win32Device/GameClient/Win32Mouse.h"
 #include "W3DDevice/GameClient/W3DMouse.h"
+#ifdef ZH
+#include "W3DDevice/GameClient/W3DSnow.h"
+#endif
 
 class ThingTemplate;
 
@@ -89,6 +92,9 @@ public:
 	//---------------------------------------------------------------------------
 	virtual void setTeamColor( Int red, Int green, Int blue );  ///< @todo superhack for demo, remove!!!
 	virtual void adjustLOD( Int adj ); ///< @todo hack for evaluation, remove.
+#ifdef ZH
+	virtual void notifyTerrainObjectMoved(Object *obj);
+#endif
 
 protected:
 
@@ -113,6 +119,11 @@ protected:
 	virtual VideoPlayerInterface *createVideoPlayer( void ) { return NEW BinkVideoPlayer; }
 	/// factory for creating the TerrainVisual
 	virtual TerrainVisual *createTerrainVisual( void ) { return NEW W3DTerrainVisual; }
+#ifdef ZH
+
+	/// factory for creating the snow manager
+	virtual SnowManager *createSnowManager( void ) { return NEW W3DSnowManager; }
+#endif
 
 	virtual void setFrameRate(Real msecsPerFrame) { TheW3DFrameLengthInMsec = msecsPerFrame; }
 

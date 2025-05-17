@@ -37,10 +37,21 @@
 #include "GameClient/InGameUI.h"
 #include "GameClient/GameText.h"
 
+#ifdef ZH
+#ifdef _INTERNAL
+// for occasional debugging...
+//#pragma optimize("", off)
+//#pragma MESSAGE("************************************** WARNING, optimization disabled for debugging purposes")
+#endif
+
+#endif
 // ------------------------------------------------------------------------------------------------
 // ------------------------------------------------------------------------------------------------
 SupplyCenterDockUpdateModuleData::SupplyCenterDockUpdateModuleData( void )
 {
+#ifdef ZH
+	m_grantTemporaryStealthFrames = 0;
+#endif
 }
 
 // ------------------------------------------------------------------------------------------------
@@ -52,6 +63,9 @@ SupplyCenterDockUpdateModuleData::SupplyCenterDockUpdateModuleData( void )
 
 	static const FieldParse dataFieldParse[] = 
 	{
+#ifdef ZH
+		{ "GrantTemporaryStealth",		INI::parseDurationUnsignedInt,  NULL, offsetof( SupplyCenterDockUpdateModuleData, m_grantTemporaryStealthFrames ) },
+#endif
 		{ 0, 0, 0, 0 }
 	};
 
@@ -79,6 +93,9 @@ SupplyCenterDockUpdate::~SupplyCenterDockUpdate()
 // ------------------------------------------------------------------------------------------------
 Bool SupplyCenterDockUpdate::action( Object* docker, Object *drone )
 {
+#ifdef ZH
+	const SupplyCenterDockUpdateModuleData *data = getSupplyCenterDockUpdateModuleData();
+#endif
 	SupplyTruckAIInterface* supplyTruckAI = NULL;
 	if( docker->getAIUpdateInterface() == NULL )
 		return FALSE;
@@ -93,13 +110,56 @@ Bool SupplyCenterDockUpdate::action( Object* docker, Object *drone )
 	Player *ownerPlayer = getObject()->getControllingPlayer();
 	while( supplyTruckAI->loseOneBox() )
 		value += ownerPlayer->getSupplyBoxValue();
+#ifdef ZH
+	
+	// Add money boost from upgrades that give extra money
+	value += supplyTruckAI->getUpgradedSupplyBoost();
+#endif
 	
 	if( value > 0 )
 	{
 		Money *ownerPlayerMoney = ownerPlayer->getMoney();
 		ownerPlayerMoney->deposit(value);
 		ownerPlayer->getScoreKeeper()->addMoneyEarned(value);
+#ifdef ZH
+
+
+		if( data->m_grantTemporaryStealthFrames > 0 )
+		{
+			StealthUpdate *stealth = docker->getStealth();
+			//Only grant temporary stealth to the default stealth update. It's
+			//possible that another type of stealth was granted... like the 
+			//GPS scrambler. We want that to take precendence.
+			if( getObject()->testStatus( OBJECT_STATUS_STEALTHED ) )
+			{
+				if( !stealth )
+				{
+					DEBUG_CRASH( ("SupplyCenterDockUpdate::action() -- It shouldn't be possible for a unit to be OBJECT_STATUS_STEALTHED without a StealthUpdate module!") );
+				}
+				else if( stealth->isTemporaryGrant() || !docker->testStatus( OBJECT_STATUS_CAN_STEALTH ) )
+				{
+					stealth->receiveGrant( TRUE, data->m_grantTemporaryStealthFrames );
+				}
+			}
+		}
+	}
+#endif
 		
+#ifdef ZH
+	Bool displayMoney = value > 0 ? TRUE : FALSE;
+	if( getObject()->testStatus(OBJECT_STATUS_STEALTHED) )
+	{
+		// OY LOOK!  I AM USING LOCAL PLAYER.  Do not put anything other than TheInGameUI->addFloatingText in the block this controls!!!
+		if( !getObject()->isLocallyControlled() && !getObject()->testStatus(OBJECT_STATUS_DETECTED) )
+		{
+			displayMoney = FALSE;
+		}
+	}
+		
+	if( displayMoney )
+	{
+		// OY LOOK!  I AM USING LOCAL PLAYER.  Do not put anything other than TheInGameUI->addFloatingText in the block this controls!!!
+#endif
 		// Setup info for adding a floating text
 		Coord3D pos;
 		const Coord3D *dockerPos;

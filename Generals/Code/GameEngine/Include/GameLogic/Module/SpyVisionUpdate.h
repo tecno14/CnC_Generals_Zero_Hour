@@ -36,22 +36,72 @@
 
 // INCLUDES ///////////////////////////////////////////////////////////////////////////////////////
 #include "GameLogic/Module/UpdateModule.h"
+#ifdef ZH
+#include "GameLogic/Module/UpgradeModule.h"
+
+class Player;
+#endif
 
 //-------------------------------------------------------------------------------------------------
 class SpyVisionUpdateModuleData : public UpdateModuleData
 {
 public:
+#ifdef ZH
+	UpgradeMuxData	m_upgradeMuxData;
+#endif
 
+#ifdef ZH
+	Bool						m_needsUpgrade;
+	Bool						m_selfPowered;
+	UnsignedInt			m_selfPoweredDuration;
+	UnsignedInt			m_selfPoweredInterval;
+	KindOfMaskType	m_spyOnKindof;
+
+#endif
 	SpyVisionUpdateModuleData()
 	{
+#ifdef ZH
+		m_needsUpgrade = FALSE;
+		m_selfPowered = FALSE;
+		m_selfPoweredDuration = 0;
+		m_selfPoweredInterval = 0;
+		m_spyOnKindof = KINDOFMASK_NONE;
+		m_spyOnKindof.flip();
+#endif
 	}
 
+#ifdef OG
 	static void buildFieldParse(MultiIniFieldParse& p);
+
+#endif
+#ifdef ZH
+	static void buildFieldParse(MultiIniFieldParse& p) 
+	{
+		static const FieldParse dataFieldParse[] = 
+		{
+			{ "NeedsUpgrade",					INI::parseBool,									NULL, offsetof( SpyVisionUpdateModuleData, m_needsUpgrade ) },
+			{ "SelfPowered",					INI::parseBool,									NULL, offsetof( SpyVisionUpdateModuleData, m_selfPowered ) },
+			{ "SelfPoweredDuration",	INI::parseDurationUnsignedInt,	NULL, offsetof( SpyVisionUpdateModuleData, m_selfPoweredDuration ) },
+			{ "SelfPoweredInterval",	INI::parseDurationUnsignedInt,	NULL, offsetof( SpyVisionUpdateModuleData, m_selfPoweredInterval ) },
+			{ "SpyOnKindof",					KindOfMaskType::parseFromINI,		NULL, offsetof( SpyVisionUpdateModuleData, m_spyOnKindof ) },
+			{ 0, 0, 0, 0 }
+		};
+
+		UpdateModuleData::buildFieldParse(p);
+		p.add(dataFieldParse);
+		p.add(UpgradeMuxData::getFieldParse(), offsetof( SpyVisionUpdateModuleData, m_upgradeMuxData ));
+	}
+#endif
 };
 
 //-------------------------------------------------------------------------------------------------
 //-------------------------------------------------------------------------------------------------
+#ifdef OG
 class SpyVisionUpdate : public UpdateModule
+#endif
+#ifdef ZH
+class SpyVisionUpdate : public UpdateModule, public UpgradeMux
+#endif
 {
 
 	MEMORY_POOL_GLUE_WITH_USERLOOKUP_CREATE( SpyVisionUpdate, "SpyVisionUpdate" )
@@ -62,16 +112,73 @@ public:
 	SpyVisionUpdate( Thing *thing, const ModuleData* moduleData );
 	// virtual destructor prototype provided by memory pool declaration
 
+#ifdef ZH
+	virtual SpyVisionUpdate* getSpyVisionUpdate() { return this; }
+
+	// module methods
+	static Int getInterfaceMask() { return UpdateModule::getInterfaceMask() | MODULEINTERFACE_UPGRADE; }
+#endif
 	virtual void onDelete( void );
+#ifdef ZH
+	virtual void onCapture( Player *oldOwner, Player *newOwner );
+	virtual void onDisabledEdge( Bool nowDisabled );
+
+	// BehaviorModule
+	virtual UpgradeModuleInterface* getUpgrade() { return this; }
+
+	//Update module
+#endif
 	virtual UpdateSleepTime update( void );
 
 	void activateSpyVision( UnsignedInt duration );
+#ifdef ZH
 
+	void setDisabledUntilFrame( UnsignedInt frame );
+	UnsignedInt getDisabledUntilFrame() const { return m_disabledUntilFrame; }
+#endif
+
+#ifdef ZH
+protected:
+
+	// UpgradeMux functions.  Mux standing, of course, for Majorly Ugly Xhitcode
+	virtual void upgradeImplementation();
+	virtual void getUpgradeActivationMasks(UpgradeMaskType& activation, UpgradeMaskType& conflicting) const
+	{
+		getSpyVisionUpdateModuleData()->m_upgradeMuxData.getUpgradeActivationMasks(activation, conflicting);
+	}
+	virtual void performUpgradeFX()
+	{
+		getSpyVisionUpdateModuleData()->m_upgradeMuxData.performUpgradeFX(getObject());
+	}
+	virtual void processUpgradeRemoval()
+	{
+		// I can't take it any more.  Let the record show that I think the UpgradeMux multiple inheritence is CRAP.
+		getSpyVisionUpdateModuleData()->m_upgradeMuxData.muxDataProcessUpgradeRemoval(getObject());
+	}
+
+	virtual Bool requiresAllActivationUpgrades() const
+	{
+		return getSpyVisionUpdateModuleData()->m_upgradeMuxData.m_requiresAllTriggers;
+	}
+	inline Bool isUpgradeActive() const { return isAlreadyUpgraded(); }
+	virtual Bool isSubObjectsUpgrade() { return false; }
+
+#endif
 private:
 
+#ifdef OG
 	void doActivationWork( Bool setting );
+#endif
+#ifdef ZH
+	void doActivationWork( Player *playerToSetFor, Bool setting );
+#endif
 
 	UnsignedInt m_deactivateFrame;
+#ifdef ZH
+	UnsignedInt m_disabledUntilFrame; //sabotaged, emp'd, etc.
+	Bool m_currentlyActive;
+	Bool m_resetTimersNextUpdate;
+#endif
 };
 
 #endif 

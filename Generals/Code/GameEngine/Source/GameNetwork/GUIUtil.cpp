@@ -40,9 +40,15 @@
 #include "GameClient/GadgetStaticText.h"
 #include "GameClient/GadgetPushButton.h"
 #include "GameClient/GameText.h"
+#ifdef ZH
+#include "GameLogic/GameLogic.h" // SUPERWEAPON_RESTRICT_COUNT
+#endif
 #include "GameNetwork/GameInfo.h"
 #include "Common/PlayerTemplate.h"
 #include "GameNetwork/LANAPICallbacks.h" // for acceptTrueColor, etc
+#ifdef ZH
+#include "GameClient/ChallengeGenerals.h"
+#endif
 
 #ifdef _INTERNAL
 // for occasional debugging...
@@ -253,8 +259,24 @@ void PopulatePlayerTemplateComboBox(Int comboBox, GameWindow *comboArray[], Game
 			continue;
 
 		if (fac->getStartingBuilding().isEmpty())
+#ifdef ZH
 			continue;
 
+		if ( myGame->oldFactionsOnly() && !fac->isOldFaction() )
+#endif
+			continue;
+
+#ifdef ZH
+		// Prevent players from selecting the disabled Generals for use.
+		// This is also enforced at game loading (GameLogic.cpp and UserPreferences.cpp).
+		// @todo: unlock these when something rad happens
+		Bool disallowLockedGenerals = TRUE;
+		const GeneralPersona *general = TheChallengeGenerals->getGeneralByTemplateName(fac->getName());
+		Bool startsLocked = general ? !general->isStartingEnabled() : FALSE;
+		if (disallowLockedGenerals && startsLocked)
+			continue;
+
+#endif
 		AsciiString side;
 		side.format("SIDE:%s", fac->getSide().str());
 		if (seenSides.find(side) != seenSides.end())
@@ -268,13 +290,17 @@ void PopulatePlayerTemplateComboBox(Int comboBox, GameWindow *comboArray[], Game
 	seenSides.clear();
 
 	// disabling observers for Multiplayer test
+#ifdef OG
 #ifndef _PLAYTEST
+#endif
 	if (allowObservers)
 	{
 		def = TheMultiplayerSettings->getColor(PLAYERTEMPLATE_OBSERVER);
 		newIndex = GadgetComboBoxAddEntry(comboArray[comboBox], TheGameText->fetch("GUI:Observer"), def->getColor());
 		GadgetComboBoxSetItemData(comboArray[comboBox], newIndex, (void *)PLAYERTEMPLATE_OBSERVER);
 	}
+#ifdef OG
+#endif
 #endif
 	GadgetComboBoxSetSelectedPos(comboArray[comboBox], 0);
 
@@ -308,6 +334,46 @@ void PopulateTeamComboBox(Int comboBox, GameWindow *comboArray[], GameInfo *myGa
 		GadgetComboBoxSetItemData(comboArray[comboBox], newIndex, (void *)c);
 	}
 	GadgetComboBoxSetSelectedPos(comboArray[comboBox], 0);
+#ifdef ZH
+}
+
+// -----------------------------------------------------------------------------
+static UnicodeString formatMoneyForStartingCashComboBox( const Money & moneyAmount )
+{
+  UnicodeString rtn;
+  rtn.format( TheGameText->fetch( "GUI:StartingMoneyFormat" ), moneyAmount.countMoney() );
+  return rtn;
+}
+
+void PopulateStartingCashComboBox(GameWindow *comboBox, GameInfo *myGame)
+{
+  GadgetComboBoxReset(comboBox);
+
+  const MultiplayerStartingMoneyList & startingCashMap = TheMultiplayerSettings->getStartingMoneyList(); 
+  Int currentSelectionIndex = -1;
+  
+  for ( MultiplayerStartingMoneyList::const_iterator it = startingCashMap.begin(); it != startingCashMap.end(); it++ )
+  {
+    Int newIndex = GadgetComboBoxAddEntry(comboBox, formatMoneyForStartingCashComboBox( *it ), 
+                                          comboBox->winGetEnabled() ? comboBox->winGetEnabledTextColor() : comboBox->winGetDisabledTextColor());
+    GadgetComboBoxSetItemData(comboBox, newIndex, (void *)it->countMoney());
+
+    if ( myGame->getStartingCash().amountEqual( *it ) )
+    {
+      currentSelectionIndex = newIndex;
+    }
+  }
+
+  if ( currentSelectionIndex == -1 )
+  {
+    DEBUG_CRASH( ("Current selection for starting cash not found in list") );
+    currentSelectionIndex = GadgetComboBoxAddEntry(comboBox, formatMoneyForStartingCashComboBox( myGame->getStartingCash() ), 
+                                          comboBox->winGetEnabled() ? comboBox->winGetEnabledTextColor() : comboBox->winGetDisabledTextColor());
+    GadgetComboBoxSetItemData(comboBox, currentSelectionIndex, (void *)it->countMoney() );
+  }
+
+  GadgetComboBoxSetSelectedPos(comboBox, currentSelectionIndex);
+#endif
 }
 
 // -----------------------------------------------------------------------------

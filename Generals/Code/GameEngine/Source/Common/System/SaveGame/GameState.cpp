@@ -1220,9 +1220,19 @@ void GameState::populateSaveGameListbox( GameWindow *listbox, SaveLoadLayoutType
 		if( saveGameInfo->saveFileType == SAVE_FILE_TYPE_MISSION )
 			color = GameMakeColor( 200, 255, 200, 255 );
 		else if( count & 0x1 )
+#ifdef OG
 			color = GameMakeColor( 255, 128, 0, 255 );
+#endif
+#ifdef ZH
+			color = GameMakeColor( 255, 255, 255, 255 );
+#endif
 		else
+#ifdef OG
 			color = GameMakeColor( 255, 192, 0, 255 );
+#endif
+#ifdef ZH
+			color = GameMakeColor( 170, 170, 235, 255 );
+#endif
 
 		// add string to listbox
 		index = GadgetListBoxAddEntryText( listbox, displayLabel, color, -1, 0 );
@@ -1437,7 +1447,12 @@ void GameState::xferSaveData( Xfer *xfer, SnapshotType which )
 				{
 
 					// log the block not found
+#ifdef OG
 					DEBUG_LOG(( "GameState::xferSaveData - Skipping unknown block '%s'\n", token.str() ));
+#endif
+#ifdef ZH
+					DEBUG_LOG(( "GameState::xferSaveData - Skipping unknown block '%s'\n", token ));
+#endif
 
 					//
 					// block was not found, this could have been a block from an older file

@@ -113,6 +113,14 @@ BOOL MeshMoldOptions::OnInitDialog()
 						fileBuf[i] = 0;
 					}
 				}
+#ifdef ZH
+				char *nameStart = fileBuf;
+				for (i=0; i<strlen(fileBuf)-1; i++) {
+					if (fileBuf[i] == '\\') {
+						nameStart = fileBuf+i+1;
+					}
+				}
+#endif
 
 				TVINSERTSTRUCT ins;
 				// not found, so add it.
@@ -121,8 +129,14 @@ BOOL MeshMoldOptions::OnInitDialog()
 				ins.hInsertAfter = TVI_SORT;
 				ins.item.mask = TVIF_PARAM|TVIF_TEXT;
 				ins.item.lParam = -1;
+#ifdef OG
 				ins.item.pszText = fileBuf;
 				ins.item.cchTextMax = strlen(fileBuf);				
+#endif
+#ifdef ZH
+				ins.item.pszText = nameStart;
+				ins.item.cchTextMax = strlen(nameStart);				
+#endif
 				child = m_moldTreeView.InsertItem(&ins);
 
 				++it;

@@ -82,10 +82,15 @@ ProfileFunc			WWDebug_Install_Profile_Stop_Handler(ProfileFunc func);
 /*
 ** Users should not call the following three functions directly!  Use the macros below instead...
 */
+#ifdef OG
 #ifdef WWDEBUG
+#endif
 void					WWDebug_Printf(const char * format,...);
 void					WWDebug_Printf_Warning(const char * format,...);
 void					WWDebug_Printf_Error(const char * format,...);
+#ifdef ZH
+#ifdef WWDEBUG
+#endif
 void					WWDebug_Assert_Fail(const char * expr,const char * file, int line);
 void					WWDebug_Assert_Fail_Print(const char * expr,const char * file, int line,const char * string);
 bool					WWDebug_Check_Trigger(int trigger_num);
@@ -118,6 +123,11 @@ void					WWDebug_DBWin32_Message_Handler( const char * message);
 // WW3d is compiled at warning level 4, causes DEBUG_ASSERTCRASH to generate 
 // the 4127 warning (constant conditional expression)
 #pragma warning(disable:4127)
+#ifdef ZH
+#define WWRELEASE_SAY(x)						WWDebug_Printf x
+#define WWRELEASE_WARNING(x)					WWDebug_Printf_Warning x
+#define WWRELEASE_ERROR(x)						WWDebug_Printf_Error x
+#endif
 /*
 ** The WWASSERT and WWASSERT_PRINT macros will send messages to your
 ** assert handler.

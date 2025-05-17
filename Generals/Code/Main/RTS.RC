@@ -54,6 +54,7 @@ END
 
 // Icon with lowest ID value placed first to ensure application icon
 // remains consistent on all systems.
+#ifdef OG
 IDI_ApplicationIcon     ICON    DISCARDABLE     "Generals.ico"
 
 /////////////////////////////////////////////////////////////////////////////
@@ -62,6 +63,11 @@ IDI_ApplicationIcon     ICON    DISCARDABLE     "Generals.ico"
 //
 
 IDB_LOAD_SCREEN         BITMAP  DISCARDABLE     "Install_Final.bmp"
+#endif
+#ifdef ZH
+IDI_ApplicationIcon     ICON    DISCARDABLE     "GENERALS.ICO"
+
+#endif
 #endif    // English (U.S.) resources
 /////////////////////////////////////////////////////////////////////////////
 
@@ -72,7 +78,9 @@ IDB_LOAD_SCREEN         BITMAP  DISCARDABLE     "Install_Final.bmp"
 //
 // Generated from the TEXTINCLUDE 3 resource.
 //
+#ifdef OG
 1 TYPELIB "../Libraries/Include/EABrowserDispatch/BrowserDispatch.tlb"
+#endif
 
 
 /////////////////////////////////////////////////////////////////////////////

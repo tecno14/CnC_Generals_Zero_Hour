@@ -57,6 +57,9 @@ class Waypoint;
 class WorkerAIInterface;
 class HackInternetAIInterface;
 class AssaultTransportAIInterface;
+#ifdef ZH
+class JetAIUpdate;
+#endif
 
 enum AIStateType;
 enum ObjectID;
@@ -194,6 +197,10 @@ public:
 	LocomotorTemplateMap	m_locomotorTemplates;					///< locomotors for object
 	const TurretAIData*		m_turretData[MAX_TURRETS];
 	UnsignedInt						m_moodAttackCheckRate;				///< how frequently we should recheck for enemies due to moods, when idle
+#ifdef ZH
+  Bool        m_forbidPlayerCommands;     ///< Should isAllowedToRespondToAiCommands() filter out commands from the player, thus making it ai-controllable only?
+  Bool        m_turretsLinked;						///< Turrets are linked together and attack together.
+#endif
 	UnsignedInt						m_autoAcquireEnemiesWhenIdle;
 #ifdef ALLOW_SURRENDER
  	UnsignedInt						m_surrenderDuration;					///< when we surrender, how long we stay surrendered.
@@ -249,6 +256,9 @@ protected:
 	virtual void privateFollowPathAppend( const Coord3D *pos, CommandSourceType cmdSource );
 	virtual void privateAttackObject( Object *victim, Int maxShotsToFire, CommandSourceType cmdSource );					///< attack given object
 	virtual void privateForceAttackObject( Object *victim, Int maxShotsToFire, CommandSourceType cmdSource );					///< attack given object
+#ifdef ZH
+	virtual void privateGuardRetaliate( Object *victim, const Coord3D *pos, Int maxShotsToFire, CommandSourceType cmdSource );				///< retaliate and attack attacker -- but with guard restrictions
+#endif
 	virtual void privateAttackTeam( const Team *team, Int maxShotsToFire, CommandSourceType cmdSource );							///< attack the given team
 	virtual void privateAttackPosition( const Coord3D *pos, Int maxShotsToFire, CommandSourceType cmdSource );						///< attack given spot
 	virtual void privateAttackMoveToPosition( const Coord3D *pos, Int maxShotsToFire, CommandSourceType cmdSource );			///< attack move to the given location
@@ -265,7 +275,13 @@ protected:
 	virtual void privateEnter( Object *obj, CommandSourceType cmdSource );							///< enter the given object
 	virtual void privateDock( Object *obj, CommandSourceType cmdSource );							///< get near given object and wait for enter clearance
 	virtual void privateExit( Object *objectToExit, CommandSourceType cmdSource );			///< get out of this Object
+#ifdef ZH
+	virtual void privateExitInstantly( Object *objectToExit, CommandSourceType cmdSource );			///< get out of this Object this frame
+#endif
 	virtual void privateEvacuate( Int exposeStealthUnits, CommandSourceType cmdSource );												///< empty its contents
+#ifdef ZH
+	virtual void privateEvacuateInstantly( Int exposeStealthUnits, CommandSourceType cmdSource );												///< empty its contents this frame
+#endif
 	virtual void privateExecuteRailedTransport( CommandSourceType cmdSource );					///< execute next leg in railed transport sequence
 	virtual void privateGoProne( const DamageInfo *damageInfo, CommandSourceType cmdSource );												///< life altering state change, if this AI can do it
 	virtual void privateGuardTunnelNetwork( GuardMode guardMode, CommandSourceType cmdSource );			///< guard the given spot
@@ -311,6 +327,10 @@ public:
 	virtual const HackInternetAIInterface* getHackInternetAIInterface() const { return NULL; }
 	virtual AssaultTransportAIInterface* getAssaultTransportAIInterface() { return NULL; }
 	virtual const AssaultTransportAIInterface* getAssaultTransportAIInterface() const { return NULL; }
+#ifdef ZH
+	virtual JetAIUpdate* getJetAIUpdate() { return NULL; }
+	virtual const JetAIUpdate* getJetAIUpdate() const { return NULL; }
+#endif
 
 #ifdef ALLOW_SURRENDER
 	void setSurrendered( const Object *objWeSurrenderedTo, Bool surrendered );
@@ -320,6 +340,9 @@ public:
 
 	virtual void joinTeam( void );			///< This unit just got added to a team & needs to catch up.
 	
+#ifdef ZH
+	Bool areTurretsLinked() const { return getAIUpdateModuleData()->m_turretsLinked; }
+#endif
 
 	// this is present solely for some transports to override, so that they can land before 
 	// allowing people to exit...
@@ -335,6 +358,10 @@ public:
 	virtual Bool isIdle() const;
 	virtual Bool isAttacking() const;
 	virtual Bool isClearingMines() const;
+#ifdef ZH
+	virtual Bool isTaxiingToParking() const { return FALSE; } //only applies to jets interacting with runways.
+
+#endif
 	//Definition of busy -- when explicitly in the busy state. Moving or attacking is not considered busy!
 	virtual Bool isBusy() const;
 
@@ -412,6 +439,10 @@ public:
 	Real getLocomotorDistanceToGoal();
 	const Locomotor *getCurLocomotor() const {return m_curLocomotor;}
 	Locomotor *getCurLocomotor() { return m_curLocomotor; }
+#ifdef ZH
+	LocomotorSetType getCurLocomotorSetType() const { return m_curLocomotorSet; }
+	Bool hasLocomotorForSurface(LocomotorSurfaceType surfaceType);
+#endif
 
 	// turret stuff.
 	WhichTurretType getWhichTurretForWeaponSlot(WeaponSlotType wslot, Real* turretAngle, Real* turretPitch = NULL) const;
@@ -424,7 +455,12 @@ public:
 	Bool getTurretRotAndPitch(WhichTurretType tur, Real* turretAngle, Real* turretPitch) const;
 	Real getTurretTurnRate(WhichTurretType tur) const;
 	void setTurretTargetObject(WhichTurretType tur, Object* o, Bool isForceAttacking = FALSE);
+#ifdef OG
 	Object *getTurretTargetObject( WhichTurretType tur );
+#endif
+#ifdef ZH
+	Object *getTurretTargetObject( WhichTurretType tur, Bool clearDeadTargets = TRUE );
+#endif
 	void setTurretTargetPosition(WhichTurretType tur, const Coord3D* pos);
 	void setTurretEnabled(WhichTurretType tur, Bool enabled);
 	void recenterTurret(WhichTurretType tur);
@@ -476,6 +512,9 @@ public:
 	void friend_endingMove(void);
 
 	void friend_setPath(Path *newPath);
+#ifdef ZH
+	Path* friend_getPath() { return m_path; }
+#endif
 
 	void friend_setGoalObject(Object *obj);
 
@@ -571,7 +610,15 @@ public:
 	void friend_setLastCommandSource( CommandSourceType source ) {m_lastCommandSource = source;}
 
 	Bool canAutoAcquire() const { return getAIUpdateModuleData()->m_autoAcquireEnemiesWhenIdle; }
+#ifdef OG
 	Bool canAutoAcquireWhileStealthed() const { return getAIUpdateModuleData()->m_autoAcquireEnemiesWhenIdle & AAS_Idle_Stealthed; }
+
+#endif
+#ifdef ZH
+
+  Bool canAutoAcquireWhileStealthed() const ;
+
+#endif
 
 protected:
 	

@@ -50,7 +50,12 @@ BSC32=bscmake.exe
 # ADD BSC32 /nologo
 LIB32=link.exe -lib
 # ADD BASE LIB32 /nologo
+#ifdef OG
 # ADD LIB32 /nologo /out:"..\..\..\Libraries\Lib\Compression.lib"
+#endif
+#ifdef ZH
+# ADD LIB32 /nologo
+#endif
 
 !ELSEIF  "$(CFG)" == "Compression - Win32 Debug"
 
@@ -73,7 +78,12 @@ BSC32=bscmake.exe
 # ADD BSC32 /nologo
 LIB32=link.exe -lib
 # ADD BASE LIB32 /nologo
+#ifdef OG
 # ADD LIB32 /nologo /out:"..\..\..\Libraries\Lib\CompressionDebug.lib"
+#endif
+#ifdef ZH
+# ADD LIB32 /nologo
+#endif
 
 !ELSEIF  "$(CFG)" == "Compression - Win32 Internal"
 
@@ -96,7 +106,12 @@ BSC32=bscmake.exe
 # ADD BSC32 /nologo
 LIB32=link.exe -lib
 # ADD BASE LIB32 /nologo
+#ifdef OG
 # ADD LIB32 /nologo /out:"..\..\..\Libraries\Lib\CompressionInternal.lib"
+#endif
+#ifdef ZH
+# ADD LIB32 /nologo
+#endif
 
 !ENDIF 
 

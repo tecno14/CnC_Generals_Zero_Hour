@@ -32,7 +32,9 @@
 #include "GameClient/GadgetStaticText.h"
 #include "GameClient/GadgetListBox.h"
 #include "GameClient/GameText.h"
+#ifdef OG
 #include "GameNetwork/GameInfo.h"
+#endif
 #include "GameNetwork/NetworkInterface.h"
 
 char *DisconnectMenu::m_playerNameTextControlNames[] = {
@@ -176,6 +178,7 @@ void DisconnectMenu::showPlayerControls(Int slot) {
 	control = TheWindowManager->winGetWindowFromId(NULL, id);
 	if (control != NULL) {
 		control->winHide(FALSE);
+#ifdef OG
 		// Disallow voting for 2-player games.  Cheating punk.
 		if ( TheGameInfo && TheGameInfo->getNumPlayers() < 3 )
 		{
@@ -183,9 +186,12 @@ void DisconnectMenu::showPlayerControls(Int slot) {
 		}
 		else
 		{
+#endif
 			control->winEnable(TRUE);
 		}
+#ifdef OG
 	}
+#endif
 
 	id = TheNameKeyGenerator->nameToKey(m_playerVoteCountControlNames[slot]);
 	control = TheWindowManager->winGetWindowFromId(NULL, id);
@@ -211,6 +217,7 @@ void DisconnectMenu::hidePlayerControls(Int slot) {
 	control = TheWindowManager->winGetWindowFromId(NULL, id);
 	if (control != NULL) {
 		control->winHide(TRUE);
+#ifdef OG
 		// Disallow voting for 2-player games.  Cheating punk.
 		if ( TheGameInfo && TheGameInfo->getNumPlayers() < 3 )
 		{
@@ -218,8 +225,11 @@ void DisconnectMenu::hidePlayerControls(Int slot) {
 		}
 		else
 		{
+#endif
 			control->winEnable(TRUE);
+#ifdef OG
 		}
+#endif
 	}
 
 	id = TheNameKeyGenerator->nameToKey(m_playerVoteCountControlNames[slot]);

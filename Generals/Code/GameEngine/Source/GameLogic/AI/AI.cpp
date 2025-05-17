@@ -176,6 +176,9 @@ static const FieldParse TheAIFieldParseTable[] =
 	
 	{ "AttackPriorityDistanceModifier", INI::parseReal,NULL, offsetof( TAiData, m_attackPriorityDistanceModifier) },
  	{ "MaxRecruitRadius",				INI::parseReal,NULL,		offsetof( TAiData, m_maxRecruitDistance ) },
+#ifdef ZH
+	{ "SkirmishBaseDefenseExtraDistance",	INI::parseReal,NULL,	offsetof( TAiData, m_skirmishBaseDefenseExtraDistance ) },
+#endif
 
  	{ "WallHeight",							INI::parseReal,NULL,		offsetof( TAiData, m_wallHeight ) },
 
@@ -200,6 +203,10 @@ static const FieldParse TheAIFieldParseTable[] =
  	{ "AIDozerBoredRadiusModifier",	INI::parseReal,NULL,			offsetof( TAiData, m_aiDozerBoredRadiusModifier ) },
  	{ "AICrushesInfantry",	INI::parseBool,NULL,			offsetof( TAiData, m_aiCrushesInfantry ) },
 
+#ifdef ZH
+ 	{ "MaxRetaliationDistance",	INI::parseReal,NULL,			offsetof( TAiData, m_maxRetaliateDistance ) },
+ 	{ "RetaliationFriendsRadius",	INI::parseReal,NULL,			offsetof( TAiData, m_retaliateFriendsRadius ) },
+#endif
 
 
 	{ NULL,					NULL,						NULL,						0 }  // keep this last
@@ -784,7 +791,14 @@ Object *AI::findClosestRepulsor( const Object *me, Real range)
 
 	// and only stuff that isn't stealthed (and not detected)
 	// (note that stealthed allies aren't hidden from us, but that's ok. jba.)
+#ifdef OG
 	PartitionFilterRejectByObjectStatus filterStealth(OBJECT_STATUS_STEALTHED, OBJECT_STATUS_DETECTED);
+
+#endif
+#ifdef ZH
+	PartitionFilterRejectByObjectStatus filterStealth( MAKE_OBJECT_STATUS_MASK( OBJECT_STATUS_STEALTHED ), 
+																										 MAKE_OBJECT_STATUS_MASK2( OBJECT_STATUS_DETECTED, OBJECT_STATUS_DISGUISED ) );
+#endif
 
 	PartitionFilter *filters[16];
 	Int numFilters = 0;
@@ -917,6 +931,9 @@ m_alertRangeModifier(0),
 m_aggressiveRangeModifier(0),
 m_attackPriorityDistanceModifier(0),
 m_maxRecruitDistance(0),
+#ifdef ZH
+m_skirmishBaseDefenseExtraDistance(0),
+#endif
 m_repulsedDistance(0),
 m_enableRepulsors(false),
 m_forceSkirmishAI(false),
@@ -937,7 +954,15 @@ m_sideBuildLists(NULL),
 m_structuresPoorMod(0.0f),
 m_teamWealthyMod(0.0f),
 m_aiDozerBoredRadiusModifier(2.0),
+#ifdef OG
 m_aiCrushesInfantry(true)
+
+#endif
+#ifdef ZH
+m_aiCrushesInfantry(true), 
+m_maxRetaliateDistance(210.0f), 
+m_retaliateFriendsRadius(120.0f)
+#endif
 //
 {
 }
@@ -966,6 +991,9 @@ void TAiData::crc( Xfer *xfer )
 	xfer->xferReal( &m_aggressiveRangeModifier );
 	xfer->xferReal( &m_attackPriorityDistanceModifier );
 	xfer->xferReal( &m_maxRecruitDistance );
+#ifdef ZH
+	xfer->xferReal( &m_skirmishBaseDefenseExtraDistance );
+#endif
 	xfer->xferReal( &m_repulsedDistance );
 	xfer->xferBool( &m_enableRepulsors );
 	CRCGEN_LOG(("CRC after AI TAiData for frame %d is 0x%8.8X\n", TheGameLogic->getFrame(), ((XferCRC *)xfer)->getCRC()));

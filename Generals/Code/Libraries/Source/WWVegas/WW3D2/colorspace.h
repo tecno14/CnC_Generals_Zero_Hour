@@ -22,15 +22,35 @@
  *                                                                                             *
  *                 Project Name : Colorspace                                                   *
  *                                                                                             *
+#ifdef OG
  *                     $Archive:: /VSS_Sync/ww3d2/colorspace.h                                $*
+#endif
+#ifdef ZH
+ *                     $Archive::                                                             $*
+#endif
  *                                                                                             *
  *              Original Author:: Hector Yee                                                   *
  *                                                                                             *
+#ifdef OG
  *                      $Author:: Vss_sync                                                    $*
+#endif
+#ifdef ZH
+ *                      $Author::                                                             $*
+#endif
  *                                                                                             *
+#ifdef OG
  *                     $Modtime:: 8/29/01 9:50p                                               $*
+#endif
+#ifdef ZH
+ *                     $Modtime::                                                             $*
+#endif
  *                                                                                             *
+#ifdef OG
  *                    $Revision:: 1                                                           $*
+#endif
+#ifdef ZH
+ *                    $Revision::                                                             $*
+#endif
  *                                                                                             *
  *---------------------------------------------------------------------------------------------*
  * Functions:                                                                                  *
@@ -43,6 +63,9 @@
 #ifndef COLORSPACE_H
 #define COLORSPACE_H
 
+#ifdef ZH
+#include "dx8wrapper.h"
+#endif
 #include <wwmath.h>
 
 void RGB_To_HSV(Vector3 &hsv,const Vector3 &rgb);
@@ -146,6 +169,15 @@ inline void Recolor(Vector3 &rgb, const Vector3 &hsv_shift)
 	hsv.Y=WWMath::Clamp(hsv.Y,0.0f,1.0f);
 	hsv.Z=WWMath::Clamp(hsv.Z,0.0f,1.0f);	
 	HSV_To_RGB(rgb,hsv);
+#ifdef ZH
+}
+
+inline void Recolor(unsigned& rgba, const Vector3 &hsv_shift)
+{
+	Vector4 rgba_v = DX8Wrapper::Convert_Color(rgba);
+	Recolor((Vector3&)rgba_v, hsv_shift);
+	rgba = DX8Wrapper::Convert_Color(rgba_v);
+#endif
 }
 
 

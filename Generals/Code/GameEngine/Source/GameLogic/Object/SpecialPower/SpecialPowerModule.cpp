@@ -46,6 +46,9 @@
 #include "GameLogic/Module/DeletionUpdate.h"
 #include "GameLogic/Module/UpdateModule.h"
 #include "GameLogic/Module/SpecialPowerModule.h"
+#ifdef ZH
+#include "GameLogic/Module/SpecialPowerUpdateModule.h"
+#endif
 #include "GameLogic/ScriptEngine.h"
 
 #include "GameClient/Eva.h"
@@ -67,6 +70,9 @@ SpecialPowerModuleData::SpecialPowerModuleData()
 	m_specialPowerTemplate = NULL;
 	m_updateModuleStartsAttack = false;
 	m_startsPaused = FALSE;
+#ifdef ZH
+	m_scriptedSpecialPowerOnly = FALSE;
+#endif
 
 }  // end SpecialPowerModuleData
 
@@ -82,6 +88,9 @@ SpecialPowerModuleData::SpecialPowerModuleData()
 		{ "UpdateModuleStartsAttack", INI::parseBool, NULL, offsetof( SpecialPowerModuleData, m_updateModuleStartsAttack ) },
 		{ "StartsPaused", INI::parseBool, NULL, offsetof( SpecialPowerModuleData, m_startsPaused ) },
 		{ "InitiateSound",							INI::parseAudioEventRTS,					NULL, offsetof( SpecialPowerModuleData, m_initiateSound ) },
+#ifdef ZH
+		{ "ScriptedSpecialPowerOnly", INI::parseBool,									NULL, offsetof( SpecialPowerModuleData, m_scriptedSpecialPowerOnly ) },
+#endif
 		{ 0, 0, 0, 0 }
 	};
 	p.add(dataFieldParse);
@@ -106,7 +115,12 @@ SpecialPowerModule::SpecialPowerModule( Thing *thing, const ModuleData *moduleDa
 	// we won't be able to use the power for X number of frames now
 
 	// if we're pre-built, start counting down
+#ifdef OG
 	if( BitTest( getObject()->getStatusBits(), OBJECT_STATUS_UNDER_CONSTRUCTION ) == FALSE )
+#endif
+#ifdef ZH
+	if( !getObject()->getStatusBits().test( OBJECT_STATUS_UNDER_CONSTRUCTION ) )
+#endif
 	{
 		//A sharedNSync special only startPowerRecharges when first scienced or when executed,
 		//Since a new modue with same SPTemplates may construct at any time.
@@ -161,6 +175,18 @@ SpecialPowerModule::~SpecialPowerModule()
 																		getSpecialPowerModuleData()->m_specialPowerTemplate );
 
 }  // end ~SpecialPowerModule
+#ifdef ZH
+
+//-------------------------------------------------------------------------------------------------
+void SpecialPowerModule::setReadyFrame( UnsignedInt frame )
+{ 
+	m_availableOnFrame = frame; 
+
+	//If a script should change the ready frame, we need to update the paused frame. This value isn't
+	//used directly to determine if paused or not... it uses m_pausedCount.
+	m_pausedOnFrame = TheGameLogic->getFrame();
+}
+#endif
 
 //-------------------------------------------------------------------------------------------------
 //-------------------------------------------------------------------------------------------------
@@ -260,7 +286,19 @@ Bool SpecialPowerModule::isModuleForPower( const SpecialPowerTemplate *specialPo
 	// if the special power template defined in the module data matches the template we want
 	// to check then we are for it!
 	//
+#ifdef OG
 	return modData->m_specialPowerTemplate == specialPowerTemplate;
+
+#endif
+#ifdef ZH
+	if( modData->m_specialPowerTemplate == specialPowerTemplate )
+	{
+		//We match templates.
+		return TRUE;
+	}
+	//We don't match templates.
+	return FALSE;
+#endif
 		
 }  // end canExecutePower
 
@@ -269,7 +307,12 @@ Bool SpecialPowerModule::isModuleForPower( const SpecialPowerTemplate *specialPo
 //-------------------------------------------------------------------------------------------------
 Bool SpecialPowerModule::isReady() const
 {
+#ifdef OG
 #if defined(_DEBUG) || defined(_INTERNAL)
+#endif
+#ifdef ZH
+#if defined(_DEBUG) || defined(_INTERNAL) || defined(_ALLOW_DEBUG_CHEATS_IN_RELEASE)
+#endif
 	// this is a cheat ... remove this for release!
 	if( TheGlobalData->m_specialPowerUsesDelay == FALSE )
 		return TRUE;
@@ -300,8 +343,22 @@ Bool SpecialPowerModule::isReady() const
 	* etc ... */
 //-------------------------------------------------------------------------------------------------
 Real SpecialPowerModule::getPercentReady() const
+#ifdef ZH
 {
+	if( m_pausedCount > 0 && m_pausedPercent == 1.0f )
+#endif
+{
+#ifdef OG
 #if defined(_DEBUG) || defined(_INTERNAL)
+
+#endif
+#ifdef ZH
+			//Don't consider it ready if paused.
+		return 0.99999f;
+	}
+
+#if defined(_DEBUG) || defined(_INTERNAL) || defined(_ALLOW_DEBUG_CHEATS_IN_RELEASE)
+#endif
 	if( TheGlobalData->m_specialPowerUsesDelay == FALSE )
 		return 1.0f;
 #endif
@@ -311,7 +368,13 @@ Real SpecialPowerModule::getPercentReady() const
 		return 1.0f;
 
 	if ( m_pausedCount > 0 )
+#ifdef ZH
+	{
+#endif
 		return m_pausedPercent;
+#ifdef ZH
+	}
+#endif
 
 	// get the module data
 	const SpecialPowerModuleData *modData = getSpecialPowerModuleData();
@@ -344,12 +407,30 @@ Real SpecialPowerModule::getPercentReady() const
 }
 
 //-------------------------------------------------------------------------------------------------
+#ifdef ZH
+// A special power module that is only supposed to be fired via scripts. An example of this
+// are the various cargo plane units we have. Scripters can launch specials from them after
+// specifying a waypoint path for them to follow them.
+//-------------------------------------------------------------------------------------------------
+Bool SpecialPowerModule::isScriptOnly() const
+{
+	const SpecialPowerModuleData *modData = getSpecialPowerModuleData();
+	return modData->m_scriptedSpecialPowerOnly;
+}
+
+//-------------------------------------------------------------------------------------------------
+#endif
 /** A special power has been used ... start the recharge process by computing the frame
 	* we will become fully available on in the future again */
 //-------------------------------------------------------------------------------------------------
 void SpecialPowerModule::startPowerRecharge()
 {
+#ifdef OG
 #if defined(_DEBUG) || defined(_INTERNAL)
+#endif
+#ifdef ZH
+#if defined(_DEBUG) || defined(_INTERNAL) || defined(_ALLOW_DEBUG_CHEATS_IN_RELEASE)
+#endif
 	// this is a cheat ... remove this for release!
 	if( TheGlobalData->m_specialPowerUsesDelay == FALSE )
 		return;
@@ -388,7 +469,12 @@ void SpecialPowerModule::startPowerRecharge()
 
 //-------------------------------------------------------------------------------------------------
 //-------------------------------------------------------------------------------------------------
+#ifdef OG
 void SpecialPowerModule::initiateIntentToDoSpecialPower( const Object *targetObj, const Coord3D *targetPos, UnsignedInt commandOptions, Int locationCount )
+#endif
+#ifdef ZH
+Bool SpecialPowerModule::initiateIntentToDoSpecialPower( const Object *targetObj, const Coord3D *targetPos, const Waypoint *way, UnsignedInt commandOptions )
+#endif
 {
 	Bool valid = false;
 	// tell our update modules that we intend to do this special power.
@@ -400,12 +486,36 @@ void SpecialPowerModule::initiateIntentToDoSpecialPower( const Object *targetObj
 			//Validate that we are calling the correct module!
 			if( isModuleForPower( getSpecialPowerModuleData()->m_specialPowerTemplate ) )
 			{
+#ifdef OG
 				spu->initiateIntentToDoSpecialPower( getSpecialPowerModuleData()->m_specialPowerTemplate, targetObj, targetPos, commandOptions, locationCount );
+
+#endif
+#ifdef ZH
+				if( spu->doesSpecialPowerUpdatePassScienceTest() )
+				{
+					if( spu->initiateIntentToDoSpecialPower( getSpecialPowerModuleData()->m_specialPowerTemplate, targetObj, targetPos, way, commandOptions ) )
+					{
+						//Kris: Aug 2003
+						//We have executed the special power, so don't try to execute any more. This logic
+						//was changed for multi-level spectres. Before, multiple modules would get launched
+						//causing 2 or 3 spectres to be created.
+#endif
 				valid = true;
+#ifdef ZH
+						break;
+#endif
 			}
 		}
 	}
+#ifdef ZH
+		}
+	}
+#endif
 
+#ifdef ZH
+	getObject()->getControllingPlayer()->getAcademyStats()->recordSpecialPowerUsed( getSpecialPowerModuleData()->m_specialPowerTemplate );
+	
+#endif
 	//If we depend on our update module to trigger the special power, make sure we have the
 	//appropriate update module!
 	if( !valid && getSpecialPowerModuleData()->m_updateModuleStartsAttack )
@@ -414,6 +524,10 @@ void SpecialPowerModule::initiateIntentToDoSpecialPower( const Object *targetObj
 		//DEBUG_CRASH(( "Object does not contain special power module (%s) to execute.  Did you forget to add it to the object INI?\n",
 		//							command->m_specialPower->getName().str() ));
 	}
+#ifdef ZH
+
+	return valid;
+#endif
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -489,18 +603,117 @@ void SpecialPowerModule::aboutToDoSpecialPower( const Coord3D *location )
 	// Let EVA do her thing
 	SpecialPowerType type = getSpecialPowerModuleData()->m_specialPowerTemplate->getSpecialPowerType();
 
+#ifdef ZH
+  Player *localPlayer = ThePlayerList->getLocalPlayer();
+
+#endif
 	// Only play the EVA sounds if this is not the local player, and the local player doesn't consider the 
 	// person an enemy.
 	// Kris: Actually, all players need to hear these warnings.
+#ifdef OG
 	//Player *localPlayer = ThePlayerList->getLocalPlayer();
 	//if (localPlayer != getObject()->getControllingPlayer() && localPlayer->getRelationship(getObject()->getTeam()) != ENEMIES) {
 		if (type == SPECIAL_PARTICLE_UPLINK_CANNON)
 			TheEva->setShouldPlay(EVA_SuperweaponLaunched_ParticleCannon);
 		else if (type == SPECIAL_NEUTRON_MISSILE)
 			TheEva->setShouldPlay(EVA_SuperweaponLaunched_Nuke);
+
+#endif
+#ifdef ZH
+  // Ian: But now there are different Eva messages depending on who launched
+	//if (localPlayer != getObject()->getControllingPlayer() && localPlayer->getRelationship(getObject()->getTeam()) != ENEMIES) 
+  {
+		if( type == SPECIAL_PARTICLE_UPLINK_CANNON || type == SUPW_SPECIAL_PARTICLE_UPLINK_CANNON || type == LAZR_SPECIAL_PARTICLE_UPLINK_CANNON )
+    {
+      if ( localPlayer == getObject()->getControllingPlayer() )
+      {
+        TheEva->setShouldPlay(EVA_SuperweaponLaunched_Own_ParticleCannon);
+      }
+      else if ( localPlayer->getRelationship(getObject()->getTeam()) != ENEMIES )
+      {
+        // Note: counting relationship NEUTRAL as ally. Not sure if this makes a difference???
+        TheEva->setShouldPlay(EVA_SuperweaponLaunched_Ally_ParticleCannon);
+      }
+      else
+      {
+        TheEva->setShouldPlay(EVA_SuperweaponLaunched_Enemy_ParticleCannon);
+      }
+    }
+    else if( type == SPECIAL_NEUTRON_MISSILE || type == NUKE_SPECIAL_NEUTRON_MISSILE || type == SUPW_SPECIAL_NEUTRON_MISSILE )
+    {
+      if ( localPlayer == getObject()->getControllingPlayer() )
+      {
+        TheEva->setShouldPlay(EVA_SuperweaponLaunched_Own_Nuke);
+      }
+      else if ( localPlayer->getRelationship(getObject()->getTeam()) != ENEMIES )
+      {
+        // Note: counting relationship NEUTRAL as ally. Not sure if this makes a difference???
+        TheEva->setShouldPlay(EVA_SuperweaponLaunched_Ally_Nuke);
+      }
+      else
+      {
+        TheEva->setShouldPlay(EVA_SuperweaponLaunched_Enemy_Nuke);
+      }
+    }
+#endif
 		else if (type == SPECIAL_SCUD_STORM)
+#ifdef OG
 			TheEva->setShouldPlay(EVA_SuperweaponLaunched_ScudStorm);
 	//}
+
+#endif
+#ifdef ZH
+    {
+      if ( localPlayer == getObject()->getControllingPlayer() )
+      {
+        TheEva->setShouldPlay(EVA_SuperweaponLaunched_Own_ScudStorm);
+      }
+      else if ( localPlayer->getRelationship(getObject()->getTeam()) != ENEMIES )
+      {
+        // Note: counting relationship NEUTRAL as ally. Not sure if this makes a difference???
+        TheEva->setShouldPlay(EVA_SuperweaponLaunched_Ally_ScudStorm);
+      }
+      else
+      {
+        TheEva->setShouldPlay(EVA_SuperweaponLaunched_Enemy_ScudStorm);
+      }
+    }
+		else if (type == SPECIAL_GPS_SCRAMBLER || type == SLTH_SPECIAL_GPS_SCRAMBLER )
+    {
+			// This is Ghetto.  Voices should be ini lines in the special power entry.  You shouldn't have to 
+			// add to an enum to get a new voice
+      if ( localPlayer == getObject()->getControllingPlayer() )
+      {
+        TheEva->setShouldPlay(EVA_SuperweaponLaunched_Own_GPS_Scrambler);
+      }
+      else if ( localPlayer->getRelationship(getObject()->getTeam()) != ENEMIES )
+      {
+        // Note: counting relationship NEUTRAL as ally. Not sure if this makes a difference???
+        TheEva->setShouldPlay(EVA_SuperweaponLaunched_Ally_GPS_Scrambler);
+      }
+      else
+      {
+        TheEva->setShouldPlay(EVA_SuperweaponLaunched_Enemy_GPS_Scrambler);
+      }
+    }
+		else if (type == SPECIAL_SNEAK_ATTACK)
+    {
+      if ( localPlayer == getObject()->getControllingPlayer() )
+      {
+        TheEva->setShouldPlay(EVA_SuperweaponLaunched_Own_Sneak_Attack);
+      }
+      else if ( localPlayer->getRelationship(getObject()->getTeam()) != ENEMIES )
+      {
+        // Note: counting relationship NEUTRAL as ally. Not sure if this makes a difference???
+        TheEva->setShouldPlay(EVA_SuperweaponLaunched_Ally_Sneak_Attack);
+      }
+      else
+      {
+        TheEva->setShouldPlay(EVA_SuperweaponLaunched_Enemy_Sneak_Attack);
+      }
+    }
+	}
+#endif
 
 	// get module data
 	const SpecialPowerModuleData *modData = getSpecialPowerModuleData();
@@ -537,7 +750,12 @@ void SpecialPowerModule::doSpecialPower( UnsignedInt commandOptions )
 
 	//This tells the update module that we want to do our special power. The update modules
 	//will then start processing each frame.
+#ifdef OG
 	initiateIntentToDoSpecialPower( NULL, NULL, commandOptions );
+#endif
+#ifdef ZH
+	initiateIntentToDoSpecialPower( NULL, NULL, NULL, commandOptions );
+#endif
 
 	//Only trigger the special power immediately if the updatemodule doesn't start the attack.
 	//An example of a case that wouldn't trigger immediately is for a unit that needs to 
@@ -559,7 +777,12 @@ void SpecialPowerModule::doSpecialPowerAtObject( Object *obj, UnsignedInt comman
 
 	//This tells the update module that we want to do our special power. The update modules
 	//will then start processing each frame.
+#ifdef OG
 	initiateIntentToDoSpecialPower( obj, NULL, commandOptions );
+#endif
+#ifdef ZH
+	initiateIntentToDoSpecialPower( obj, NULL, NULL, commandOptions );
+#endif
 
 	//Only trigger the special power immediately if the updatemodule doesn't start the attack.
 	//An example of a case that wouldn't trigger immediately is for a unit that needs to 
@@ -573,7 +796,12 @@ void SpecialPowerModule::doSpecialPowerAtObject( Object *obj, UnsignedInt comman
 
 //-------------------------------------------------------------------------------------------------
 //-------------------------------------------------------------------------------------------------
+#ifdef OG
 void SpecialPowerModule::doSpecialPowerAtLocation( const Coord3D *loc, UnsignedInt commandOptions )
+#endif
+#ifdef ZH
+void SpecialPowerModule::doSpecialPowerAtLocation( const Coord3D *loc, Real angle, UnsignedInt commandOptions )
+#endif
 {
 	if (m_pausedCount > 0 || getObject()->isDisabled()) {
 		return;
@@ -581,7 +809,12 @@ void SpecialPowerModule::doSpecialPowerAtLocation( const Coord3D *loc, UnsignedI
 
 	//This tells the update module that we want to do our special power. The update modules
 	//will then start processing each frame.
+#ifdef OG
 	initiateIntentToDoSpecialPower( NULL, loc, commandOptions );
+#endif
+#ifdef ZH
+	initiateIntentToDoSpecialPower( NULL, loc, NULL, commandOptions );
+#endif
 
 	//Only trigger the special power immediately if the updatemodule doesn't start the attack.
 	//An example of a case that wouldn't trigger immediately is for a unit that needs to 
@@ -595,7 +828,12 @@ void SpecialPowerModule::doSpecialPowerAtLocation( const Coord3D *loc, UnsignedI
 
 //-------------------------------------------------------------------------------------------------
 //-------------------------------------------------------------------------------------------------
+#ifdef OG
 void SpecialPowerModule::doSpecialPowerAtMultipleLocations( const Coord3D *locations, Int locCount, UnsignedInt commandOptions )
+#endif
+#ifdef ZH
+void SpecialPowerModule::doSpecialPowerUsingWaypoints( const Waypoint *way, UnsignedInt commandOptions )
+#endif
 {
 	if (m_pausedCount > 0 || getObject()->isDisabled()) {
 		return;
@@ -603,7 +841,12 @@ void SpecialPowerModule::doSpecialPowerAtMultipleLocations( const Coord3D *locat
 
 	//This tells the update module that we want to do our special power. The update modules
 	//will then start processing each frame.
+#ifdef OG
 	initiateIntentToDoSpecialPower( NULL, locations, commandOptions, locCount );
+#endif
+#ifdef ZH
+	initiateIntentToDoSpecialPower( NULL, NULL, way, commandOptions );
+#endif
 
 	//Only trigger the special power immediately if the updatemodule doesn't start the attack.
 	//An example of a case that wouldn't trigger immediately is for a unit that needs to 

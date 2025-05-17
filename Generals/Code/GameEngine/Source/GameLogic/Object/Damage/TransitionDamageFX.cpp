@@ -73,9 +73,20 @@ TransitionDamageFXModuleData::TransitionDamageFXModuleData( void )
 
 	}  // end for i
 
+#ifdef OG
 	m_damageFXTypes = DAMAGE_TYPE_FLAGS_ALL;
 	m_damageOCLTypes = DAMAGE_TYPE_FLAGS_ALL;
 	m_damageParticleTypes = DAMAGE_TYPE_FLAGS_ALL;
+
+#endif
+#ifdef ZH
+	m_damageFXTypes = DAMAGE_TYPE_FLAGS_NONE;
+	m_damageFXTypes.flip();
+	m_damageOCLTypes = DAMAGE_TYPE_FLAGS_NONE;
+	m_damageOCLTypes.flip();
+	m_damageParticleTypes = DAMAGE_TYPE_FLAGS_NONE;
+	m_damageParticleTypes.flip();
+#endif
 
 }  // end TransitionDamageFXModuleData
 
@@ -373,7 +384,12 @@ void TransitionDamageFX::onBodyDamageStateChange( const DamageInfo* damageInfo,
 					pos = getLocalEffectPos( &modData->m_OCL[ newState ][ i ].locInfo, draw );
 					getObject()->convertBonePosToWorldPos( &pos, NULL, &pos, NULL );
 					ObjectCreationList::create( modData->m_OCL[ newState ][ i ].ocl, 
+#ifdef OG
 																			getObject(), &pos, damageSource->getPosition() );
+#endif
+#ifdef ZH
+																			getObject(), &pos, damageSource->getPosition(), INVALID_ANGLE );
+#endif
 
 				}  // end if
 

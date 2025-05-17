@@ -235,7 +235,12 @@ void LANAPI::handleRequestJoin( LANMessage *msg, UnsignedInt senderIP )
 #if defined(_DEBUG) || defined(_INTERNAL)
 			if (TheGlobalData->m_netMinPlayers > 0) {
 #endif
+#ifdef OG
 			if (msg->GameToJoin.iniCRC != TheGlobalData->m_iniCRC ||
+#endif
+#ifdef ZH
+/*			if (msg->GameToJoin.iniCRC != TheGlobalData->m_iniCRC ||
+#endif
 					msg->GameToJoin.exeCRC != TheGlobalData->m_exeCRC)
 			{
 				DEBUG_LOG(("LANAPI::handleRequestJoin - join denied because of CRC mismatch. CRCs are them/us INI:%X/%X exe:%X/%X\n",
@@ -247,6 +252,9 @@ void LANAPI::handleRequestJoin( LANMessage *msg, UnsignedInt senderIP )
 				reply.GameNotJoined.playerIP = senderIP;
 				canJoin = false;
 			}
+#ifdef ZH
+*/
+#endif
 #if defined(_DEBUG) || defined(_INTERNAL)
 			}
 #endif

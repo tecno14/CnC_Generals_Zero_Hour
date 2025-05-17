@@ -34,6 +34,9 @@
 #include "GameLogic/Object.h"
 #include "GameLogic/Module/FireWeaponUpdate.h"
 #include "GameLogic/WeaponStatus.h"
+#ifdef ZH
+#include "GameLogic/GameLogic.h"
+#endif
 
 #ifdef _INTERNAL
 // for occasional debugging...
@@ -45,6 +48,10 @@
 FireWeaponUpdateModuleData::FireWeaponUpdateModuleData()
 {
 	m_weaponTemplate = NULL;
+#ifdef ZH
+  m_initialDelayFrames = 0;
+	m_exclusiveWeaponDelay = 0;
+#endif
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -55,6 +62,10 @@ FireWeaponUpdateModuleData::FireWeaponUpdateModuleData()
 	static const FieldParse dataFieldParse[] = 
 	{
 		{ "Weapon",	INI::parseWeaponTemplate,	NULL, offsetof( FireWeaponUpdateModuleData, m_weaponTemplate ) },
+#ifdef ZH
+		{ "InitialDelay",					INI::parseDurationUnsignedInt,	NULL, offsetof( FireWeaponUpdateModuleData, m_initialDelayFrames ) },
+		{ "ExclusiveWeaponDelay",	INI::parseDurationUnsignedInt,	NULL, offsetof( FireWeaponUpdateModuleData, m_exclusiveWeaponDelay ) },
+#endif
 		{ 0, 0, 0, 0 }
 	};
   p.add(dataFieldParse);
@@ -72,6 +83,12 @@ FireWeaponUpdate::FireWeaponUpdate( Thing *thing, const ModuleData* moduleData )
 		m_weapon = TheWeaponStore->allocateNewWeapon(tmpl, PRIMARY_WEAPON);
 		m_weapon->loadAmmoNow( getObject() );
 	}
+#ifdef ZH
+
+
+  m_initialDelayFrame = TheGameLogic->getFrame() + getFireWeaponUpdateModuleData()->m_initialDelayFrames;
+
+#endif
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -86,12 +103,49 @@ FireWeaponUpdate::~FireWeaponUpdate( void )
 //-------------------------------------------------------------------------------------------------
 UpdateSleepTime FireWeaponUpdate::update( void )
 {
+#ifdef ZH
+  
+  if ( TheGameLogic->getFrame() < m_initialDelayFrame )
+    return UPDATE_SLEEP_NONE;
+
+#endif
 	// If my weapon is ready, shoot it.
+#ifdef OG
 	if( m_weapon && m_weapon->getStatus() == READY_TO_FIRE )
+#endif
+#ifdef ZH
+	if( isOkayToFire() )
+#endif
 	{
 		m_weapon->forceFireWeapon( getObject(), getObject()->getPosition() );
 	}
 	return UPDATE_SLEEP_NONE;
+#ifdef ZH
+}
+
+//-------------------------------------------------------------------------------------------------
+//-------------------------------------------------------------------------------------------------
+Bool FireWeaponUpdate::isOkayToFire()
+{
+	const Object *me = getObject();
+	const FireWeaponUpdateModuleData *data = getFireWeaponUpdateModuleData();
+
+	if( m_weapon == NULL )
+		return FALSE;
+
+	// Weapon is reloading
+	if( m_weapon->getStatus() != READY_TO_FIRE )
+		return FALSE;
+	
+	if( me->testStatus(OBJECT_STATUS_UNDER_CONSTRUCTION) )
+		return FALSE; // no hitting with a 0% building, cheater
+
+	// Firing a real weapon surpresses this module
+	if( data->m_exclusiveWeaponDelay > 0  &&  ( TheGameLogic->getFrame() < (me->getLastShotFiredFrame() + data->m_exclusiveWeaponDelay) ) )
+		return FALSE;
+
+	return TRUE;
+#endif
 }
 
 // ------------------------------------------------------------------------------------------------
@@ -113,7 +167,12 @@ void FireWeaponUpdate::xfer( Xfer *xfer )
 {
 
 	// version
+#ifdef OG
 	XferVersion currentVersion = 1;
+#endif
+#ifdef ZH
+	XferVersion currentVersion = 2;
+#endif
 	XferVersion version = currentVersion;
 	xfer->xferVersion( &version, currentVersion );
 
@@ -122,6 +181,11 @@ void FireWeaponUpdate::xfer( Xfer *xfer )
 
 	// weapon
 	xfer->xferSnapshot( m_weapon );
+#ifdef ZH
+
+  if ( version >= 2 )
+    xfer->xferUnsignedInt( &m_initialDelayFrame );
+#endif
 
 }  // end xfer
 

@@ -50,6 +50,9 @@
 
 class DX8Wrapper;
 struct W3dMaterial3Struct;
+#ifdef ZH
+class StringClass;
+#endif
 
 // Re-written shader class
 // Hector Yee 1/24/01
@@ -144,6 +147,12 @@ public:
 		DETAILCOLOR_SUBR,				// 0110	other - local
 		DETAILCOLOR_BLEND,			// 0111	(localAlpha)*local + (~localAlpha)*other
 		DETAILCOLOR_DETAILBLEND,	//	1000	(otherAlpha)*local + (~otherAlpha)*other
+#ifdef ZH
+		DETAILCOLOR_ADDSIGNED,		// 1001	(local + other - 0.5)
+		DETAILCOLOR_ADDSIGNED2X,	// 1010	(local + other - 0.5) * 2
+		DETAILCOLOR_SCALE2X,			// 1011	local * other * 2
+		DETAILCOLOR_MODALPHAADDCOLOR,	// 1100 local + localAlpha * other
+#endif
 
 		DETAILCOLOR_MAX				//			end of enumeration
 	};
@@ -187,9 +196,16 @@ public:
  		GRADIENT_DISABLE=0,  //	000	disable primary gradient (same as OpenGL 'decal' texture blend)
 		GRADIENT_MODULATE,   //	001	modulate fragment ARGB by gradient ARGB (default)
 		GRADIENT_ADD,        //	010	add gradient RGB to fragment RGB, copy gradient A to fragment A
+#ifdef OG
 		GRADIENT_BUMPENVMAP,	// 011
 		GRADIENT_BUMPENVMAPLUMINANCE,	// 100
 		GRADIENT_DOTPRODUCT3,	// 101
+#endif
+#ifdef ZH
+		GRADIENT_BUMPENVMAP,				// 011	environment-mapped bump mapping
+		GRADIENT_BUMPENVMAPLUMINANCE,	// 100	environment-mapped bump mapping with luminance control
+		GRADIENT_MODULATE2X,				// 101	modulate fragment ARGB by gradient ARGB and multiply RGB by 2
+#endif
 		GRADIENT_MAX			// end of enumeration
  	};
 
@@ -218,9 +234,17 @@ public:
 
 	enum StaticSortCategoryType
 	{
+#ifdef OG
 		SSCAT_OPAQUE,
+#endif
+#ifdef ZH
+		SSCAT_OPAQUE=0,
+#endif
 		SSCAT_ALPHA_TEST,
 		SSCAT_ADDITIVE,
+#ifdef ZH
+		SSCAT_SCREEN,
+#endif
 		SSCAT_OTHER
 	};
 
@@ -348,6 +372,10 @@ public:
 	static void				Invert_Backface_Culling(bool onoff);
 	static bool				Is_Backface_Culling_Inverted(void);
 
+#ifdef ZH
+	const StringClass& Get_Description(StringClass& str) const;
+
+#endif
 	// These are a bunch of predefined shaders for common cases. None of them
 	// have fogging since "no fog" is the surrender default and usage of fog
 	// changes from app to app - if you want a fogging shader just grab one of
@@ -371,6 +399,12 @@ public:
 	// Texturing, no zbuffer reading/writing, no gradients, no blending, no
 	// fogging - mostly for opaque 2D objects.
 	static ShaderClass _PresetOpaque2DShader;
+#ifdef ZH
+
+	// Texturing, default zbuffer reading, no zbuffer writing, no gradients, no blending, no
+	// fogging - mostly for opaque sprites
+	static ShaderClass _PresetOpaqueSpriteShader;
+#endif
 
 	// Texturing, no zbuffer reading/writing, no gradients, additive blending,
 	// no fogging - mostly for additive 2D objects.

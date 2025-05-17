@@ -58,10 +58,18 @@ public:
 	virtual void setDamageState( BodyDamageType newState );	///< control damage state directly.  Will adjust hitpoints.
 	virtual void setAflame( Bool setting ){}///< This is a major change like a damage state.  
 
+#ifdef OG
 	void onVeterancyLevelChanged( VeterancyLevel oldLevel, VeterancyLevel newLevel ) { /* nothing */ }
+#endif
+#ifdef ZH
+	void onVeterancyLevelChanged( VeterancyLevel oldLevel, VeterancyLevel newLevel, Bool provideFeedback ) { /* nothing */ }
+#endif
 
 	virtual void setArmorSetFlag(ArmorSetType ast) { /* nothing */ }
 	virtual void clearArmorSetFlag(ArmorSetType ast) { /* nothing */ }
+#ifdef ZH
+	virtual Bool testArmorSetFlag(ArmorSetType ast){ return FALSE; }
+#endif
 
 	virtual void internalChangeHealth( Real delta );
 

@@ -53,8 +53,19 @@ BSC32=bscmake.exe
 # ADD BSC32 /nologo
 LINK32=link.exe
 # ADD BASE LINK32 /nologo /subsystem:windows /dll /machine:I386
+#ifdef OG
 # ADD LINK32 /nologo /subsystem:windows /dll /pdb:"../../../Run/ParticleEditor.pdb" /map:"../../../Run/ParticleEditor.map" /debug /machine:I386 /out:"../../../Run/ParticleEditor.dll"
 # SUBTRACT LINK32 
+
+#endif
+#ifdef ZH
+# ADD LINK32 /nologo /subsystem:windows /dll /pdb:"..\..\..\Run\ParticleEditor.pdb" /map:"..\..\..\Run\ParticleEditor.map" /debug /machine:I386 /out:"..\..\..\Run\ParticleEditor.dll"
+# Begin Special Build Tool
+SOURCE="$(InputPath)"
+PostBuild_Desc=Copying        Release        DLL        to        Run\ 
+PostBuild_Cmds=post-build-release.bat
+# End Special Build Tool
+#endif
 
 !ELSEIF  "$(CFG)" == "ParticleEditor - Win32 Debug"
 
@@ -80,8 +91,14 @@ BSC32=bscmake.exe
 # ADD BSC32 /nologo
 LINK32=link.exe
 # ADD BASE LINK32 /nologo /subsystem:windows /dll /debug /machine:I386 
+#ifdef OG
 # ADD LINK32 /nologo /subsystem:windows /dll /pdb:"../../../Run/ParticleEditorD.pdb" /map:"../../../Run/ParticleEditorD.map" /debug /machine:I386 /out:"../../../Run/ParticleEditorD.dll"
 # SUBTRACT LINK32  
+#endif
+#ifdef ZH
+# ADD LINK32 /nologo /subsystem:windows /dll /pdb:"..\..\..\Run\ParticleEditorD.pdb" /map:"..\..\..\Run\ParticleEditorD.map" /debug /machine:I386 /out:"..\..\..\Run\ParticleEditorD.dll"
+# SUBTRACT LINK32 /pdb:none
+#endif
 
 !ENDIF 
 

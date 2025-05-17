@@ -293,7 +293,12 @@ void Debug_Statistics::Record_DX8_Skin_Polys_And_Vertices(int pcount,int vcount)
 
 void Debug_Statistics::Record_DX8_Polys_And_Vertices(int pcount,int vcount,const ShaderClass& shader)
 {
+#ifdef OG
 	if (shader.Get_NPatch_Enable()==ShaderClass::NPATCH_ENABLE && DX8Caps::Support_NPatches()) {
+#endif
+#ifdef ZH
+	if (shader.Get_NPatch_Enable()==ShaderClass::NPATCH_ENABLE && DX8Wrapper::Get_Current_Caps()->Support_NPatches()) {
+#endif
 		unsigned level=WW3D::Get_NPatches_Level();
 		level*=level;
 		pcount*=level;
@@ -382,7 +387,6 @@ void Debug_Statistics::End_Statistics()
 	last_frame_sorting_polygons=sorting_polygons;
 	last_frame_sorting_vertices=sorting_vertices;
 	last_frame_draw_calls=draw_calls;
-
 //	DX8MeshRendererClass::End_Statistics();
 	DX8Wrapper::End_Statistics();
 }

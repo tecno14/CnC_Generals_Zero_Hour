@@ -53,8 +53,14 @@ BSC32=bscmake.exe
 # ADD BSC32 /nologo
 LINK32=link.exe
 # ADD BASE LINK32 /nologo /subsystem:windows /dll /machine:I386
+#ifdef OG
 # ADD LINK32 /nologo /subsystem:windows /dll /pdb:"../../../Run/DebugWindow.pdb" /map:"../../../Run/DebugWindow.map" /debug /machine:I386 /out:"../../../Run/DebugWindow.dll"
 # SUBTRACT LINK32 
+#endif
+#ifdef ZH
+# ADD LINK32 /nologo /subsystem:windows /dll /pdb:"..\..\..\Run\DebugWindow.pdb" /map:"..\..\..\Run\DebugWindow.map" /debug /machine:I386 /out:"..\..\..\Run\DebugWindow.dll"
+# SUBTRACT LINK32 /pdb:none
+#endif
 
 !ELSEIF  "$(CFG)" == "DebugWindow - Win32 Debug"
 
@@ -80,8 +86,14 @@ BSC32=bscmake.exe
 # ADD BSC32 /nologo
 LINK32=link.exe
 # ADD BASE LINK32 /nologo /subsystem:windows /dll /debug /machine:I386 
+#ifdef OG
 # ADD LINK32 /nologo /subsystem:windows /dll /pdb:"../../../Run/DebugWindowD.pdb" /map:"../../../Run/DebugWindowD.map" /debug /machine:I386 /out:"../../../Run/DebugWindowD.dll"
 # SUBTRACT LINK32  
+#endif
+#ifdef ZH
+# ADD LINK32 /nologo /subsystem:windows /dll /pdb:"..\..\..\Run\DebugWindowD.pdb" /map:"..\..\..\Run\DebugWindowD.map" /debug /machine:I386 /out:"..\..\..\Run\DebugWindowD.dll"
+# SUBTRACT LINK32 /pdb:none
+#endif
 
 !ENDIF 
 

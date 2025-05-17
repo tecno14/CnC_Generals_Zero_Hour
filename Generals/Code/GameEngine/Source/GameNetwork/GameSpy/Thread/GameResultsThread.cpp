@@ -205,6 +205,7 @@ Bool GameResultsQueue::areGameResultsBeingSent( void )
 	return m_requestCount > 0;
 }
 
+#ifdef OG
 
 //-------------------------------------------------------------------------
 // Wrap ladder results in HTTP POST
@@ -222,7 +223,7 @@ static WrapHTTP( const std::string& hostname, std::string& results )
 	results = szHdr + results;
 } //WrapHTTP
 
-
+#endif
 //-------------------------------------------------------------------------
 
 void GameResultsThreadClass::Thread_Function()
@@ -290,6 +291,9 @@ void GameResultsThreadClass::Thread_Function()
 
 //-------------------------------------------------------------------------
 
+#ifdef ZH
+#ifdef DEBUG_LOGGING
+#endif
 #define CASE(x) case (x): return #x;
 
 static const char *getWSAErrorString( Int error )
@@ -355,6 +359,9 @@ static const char *getWSAErrorString( Int error )
 
 #undef CASE
 
+#ifdef ZH
+#endif
+#endif
 //-------------------------------------------------------------------------
 
 Int GameResultsThreadClass::sendGameResults( UnsignedInt IP, UnsignedShort port, const std::string& results )

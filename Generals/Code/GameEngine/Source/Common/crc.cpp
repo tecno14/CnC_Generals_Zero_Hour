@@ -28,6 +28,9 @@
 #include "Common/CRC.h"
 #include "Common/Debug.h"
 
+#ifdef ZH
+#ifdef _DEBUG
+#endif
 
 void CRC::addCRC( UnsignedByte val )
 {
@@ -78,4 +81,8 @@ UnsignedInt CRC::get( void )
 	return tcrc;
 
 }  // end skip
+
+#ifdef ZH
+#endif
+#endif
 

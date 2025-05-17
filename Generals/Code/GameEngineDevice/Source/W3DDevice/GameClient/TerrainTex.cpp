@@ -67,9 +67,32 @@
 /** Constructor. Calls parent constructor to create a 16 bit per pixel D3D 
 texture of the desired height and mip level. */
 //=============================================================================
+#ifdef OG
 TerrainTextureClass::TerrainTextureClass(int height, MipCountType mipLevelCount) :
+#endif
+#ifdef ZH
+TerrainTextureClass::TerrainTextureClass(int height) :
+#endif
 	TextureClass(TEXTURE_WIDTH, height, 
+#ifdef OG
 		WW3D_FORMAT_A1R5G5B5, mipLevelCount )
+
+#endif
+#ifdef ZH
+		WW3D_FORMAT_A1R5G5B5, MIP_LEVELS_3 )
+{
+}
+
+//=============================================================================
+// TerrainTextureClass::TerrainTextureClass
+//=============================================================================
+/** Constructor. Calls parent constructor to create a 16 bit per pixel D3D 
+texture of the desired height and mip level. */
+//=============================================================================
+TerrainTextureClass::TerrainTextureClass(int height, int width) :
+	TextureClass(width, height, 
+		WW3D_FORMAT_A1R5G5B5, MIP_LEVELS_ALL )
+#endif
 {
 }
 
@@ -88,14 +111,25 @@ int TerrainTextureClass::update(WorldHeightMap *htMap)
 	IDirect3DSurface8 *surface_level;
 	D3DSURFACE_DESC surface_desc;
 	D3DLOCKED_RECT locked_rect;
+#ifdef OG
 	DX8_ErrorCode(D3DTexture->GetSurfaceLevel(0, &surface_level));
+#endif
+#ifdef ZH
+	DX8_ErrorCode(Peek_D3D_Texture()->GetSurfaceLevel(0, &surface_level));
+#endif
 	DX8_ErrorCode(surface_level->GetDesc(&surface_desc));
 	if (surface_desc.Width < TEXTURE_WIDTH) {
+#ifdef OG
 		surface_level->Release();
 		if (surface_desc.Width == 256) {
 			return update256(htMap);
 		}
 		return false;
+#endif
+#ifdef ZH
+		return 0;
+
+#endif
 	}
 
 	DX8_ErrorCode(surface_level->LockRect(&locked_rect, NULL, 0));
@@ -186,9 +220,19 @@ int TerrainTextureClass::update(WorldHeightMap *htMap)
 	}
 	surface_level->UnlockRect();
 	surface_level->Release();
+#ifdef OG
 	DX8_ErrorCode(D3DXFilterTexture(D3DTexture, NULL, 0, D3DX_FILTER_BOX));	
+#endif
+#ifdef ZH
+	DX8_ErrorCode(D3DXFilterTexture(Peek_D3D_Texture(), NULL, 0, D3DX_FILTER_BOX));	
+#endif
 	if (TheWritableGlobalData->m_textureReductionFactor) {
+#ifdef OG
 		D3DTexture->SetLOD(TheWritableGlobalData->m_textureReductionFactor);
+#endif
+#ifdef ZH
+		Peek_D3D_Texture()->SetLOD(TheWritableGlobalData->m_textureReductionFactor);
+#endif
 	}
 	return(surface_desc.Height);
 }
@@ -348,50 +392,111 @@ int TerrainTextureClass::update(WorldHeightMap *htMap)
 }
 #endif
 //=============================================================================
+#ifdef OG
 // TerrainTextureClass::update256
+
+#endif
+#ifdef ZH
+// TerrainTextureClass::setLOD
 //=============================================================================
+/** Sets the lod of the texture to be loaded into the video card.  */
+//=============================================================================
+void TerrainTextureClass::setLOD(Int LOD)
+{
+	if (Peek_D3D_Texture()) Peek_D3D_Texture()->SetLOD(LOD);
+}
+//=============================================================================
+// TerrainTextureClass::update
+#endif
+//=============================================================================
+#ifdef OG
 /** Sets the tile bitmap data into the texture.  Handles the special case for voodoos
 	and the like where the max texture size is 256. The tiles are placed with 1
+#endif
+#ifdef ZH
+/** Sets the tile bitmap data into the texture.  The tiles are placed with 4
+
+#endif
 	pixel borders around them, so that when the tiles are scaled and bilinearly
 	interpolated, you don't get seams between the tiles.  */
 //=============================================================================
+#ifdef OG
 int TerrainTextureClass::update256(WorldHeightMap *htMap)
+#endif
+#ifdef ZH
+Bool TerrainTextureClass::updateFlat(WorldHeightMap *htMap, Int xCell, Int yCell, Int cellWidth, Int pixelsPerCell)
+#endif
 {
 	// D3DTexture is our texture;
 
 	IDirect3DSurface8 *surface_level;
 	D3DSURFACE_DESC surface_desc;
 	D3DLOCKED_RECT locked_rect;
+#ifdef OG
 	DX8_ErrorCode(D3DTexture->GetSurfaceLevel(0, &surface_level));
+#endif
+#ifdef ZH
+	DX8_ErrorCode(Peek_D3D_Texture()->GetSurfaceLevel(0, &surface_level));
+#endif
 	DX8_ErrorCode(surface_level->GetDesc(&surface_desc));
+#ifdef OG
 	if (surface_desc.Width != 256) {
 		surface_level->Release();
 		return surface_desc.Height;
+
+#endif
+#ifdef ZH
+	DEBUG_ASSERTCRASH((Int)surface_desc.Width == cellWidth*pixelsPerCell, ("Bitmap too small."));
+	DEBUG_ASSERTCRASH((Int)surface_desc.Height == cellWidth*pixelsPerCell, ("Bitmap too small."));
+	if (surface_desc.Width != cellWidth*pixelsPerCell) {
+		return false;
+#endif
 	}
 
 	DX8_ErrorCode(surface_level->LockRect(&locked_rect, NULL, 0));
 
+#ifdef OG
 	Int tilePixelExtent = TILE_PIXEL_EXTENT/4;  // We are going from 1024 to 256, so need to divide all the constants by 4.
 	Int tileOffset = TILE_OFFSET/4;
 	Int tilesPerRow = surface_desc.Width/(2*tilePixelExtent+tileOffset);
 	tilesPerRow *= 2;
 	Int numRows = surface_desc.Height/(tilePixelExtent+tileOffset);
+#endif
 
+#ifdef OG
 #ifdef _DEBUG
 	assert(tilesPerRow*numRows >= htMap->m_numBitmapTiles);
 	assert((Int)surface_desc.Width >= tilePixelExtent*tilesPerRow);
 #endif
+#endif
 	if (surface_desc.Format == D3DFMT_A1R5G5B5) {
+#ifdef ZH
+
+		Int pixelBytes = 2;
+#endif
 		Int cellX, cellY;
 #if 0
+#ifdef OG
 		for (cellX = 0; cellX < surface_desc.Width; cellX++) {
 			for (cellY = 0; cellY < surface_desc.Height; cellY++) {
 				UnsignedByte *pBGR = ((UnsignedByte *)locked_rect.pBits)+(cellY*surface_desc.Width+cellX)*2;
 				*((Short*)pBGR) = (((255-2*cellY)>>3)<<10) + ((4*cellX)>>4);
+
+#endif
+#ifdef ZH
+		UnsignedInt X, Y;
+		for (X = 0; X < surface_desc.Width; X++) {
+			for (Y = 0; Y < surface_desc.Height; Y++) {
+				UnsignedByte *pBGR = ((UnsignedByte *)locked_rect.pBits)+(Y*surface_desc.Width+X)*pixelBytes;
+				*((Short*)pBGR) = (((255-2*Y)>>3)<<10) + ((2*X)>>4);
+#endif
 			}
 		}
+#ifdef OG
 		numRows = 0;
 #endif
+#endif
+#ifdef OG
 		Int pixelBytes = 2;
 		for (cellY = 0; cellY < numRows; cellY++) { 
 			for (cellX = 0; cellX < tilesPerRow; cellX++) {
@@ -426,13 +531,27 @@ int TerrainTextureClass::update256(WorldHeightMap *htMap)
 						pBGRX += column*pixelBytes;
 						pBGRX += (tileOffset/2)*pixelBytes;
 						for (i=0; i<tilePixelExtent; i++) {
+#endif
+#ifdef ZH
+		for (cellX = 0; cellX < cellWidth; cellX++) {
+			for (cellY = 0; cellY < cellWidth; cellY++) {
+				UnsignedByte *pBGRX_data = ((UnsignedByte*)locked_rect.pBits);
+				UnsignedByte *pBGR = htMap->getPointerToTileData(xCell+cellX, yCell+cellY, pixelsPerCell);
+				if (pBGR == NULL) continue; // past end of defined terrain. [3/24/2003]
+				Int k, l;
+				for (k=pixelsPerCell-1; k>=0; k--) {
+					UnsignedByte *pBGRX = pBGRX_data + (pixelsPerCell*(cellWidth-cellY-1)+k)*surface_desc.Width*pixelBytes +
+						cellX*pixelsPerCell*pixelBytes;
+					for (l=0; l<pixelsPerCell; l++) {
+
+#endif
 							*((Short*)pBGRX) = 0x8000 + ((pBGR[2]>>3)<<10) + ((pBGR[1]>>3)<<5) + (pBGR[0]>>3);
 							pBGRX +=pixelBytes;
 							pBGR +=TILE_BYTES_PER_PIXEL;
 						}
 					}
-
 				}
+#ifdef OG
 			}
 
 		}
@@ -493,19 +612,28 @@ int TerrainTextureClass::update256(WorldHeightMap *htMap)
 				UnsignedByte *pBGRX = ((UnsignedByte*)locked_rect.pBits) +
 							(row)*rowBytes;
 				memcpy(pBGRX, pBase, rowBytes);
+#endif
 			}
 		}
 
+#ifdef OG
 	}
+#endif
 	surface_level->UnlockRect();
 	surface_level->Release();
+#ifdef OG
 	DX8_ErrorCode(D3DXFilterTexture(D3DTexture, NULL, 0, D3DX_FILTER_BOX));
 	// Note - normal width for the terrain texture is 1024.  We are at 256
 	// probably running on a voodoo.  The height we return is scaled up 
 	// to match the expected width of 1024.  jba.
 	return(surface_desc.Height*4);
-}
+#endif
+#ifdef ZH
+	DX8_ErrorCode(D3DXFilterTexture(Peek_D3D_Texture(), NULL, 0, D3DX_FILTER_BOX));	
+	return(surface_desc.Height);
 
+#endif
+}
 
 //=============================================================================
 // TerrainTextureClass::Apply
@@ -517,8 +645,14 @@ void TerrainTextureClass::Apply(unsigned int stage)
 {
 	// Do the base apply.
 	TextureClass::Apply(stage);
+#ifdef OG
 	DX8Wrapper::Set_DX8_Texture_Stage_State( 0, D3DTSS_ADDRESSU, D3DTADDRESS_CLAMP);
 	DX8Wrapper::Set_DX8_Texture_Stage_State( 0, D3DTSS_ADDRESSV, D3DTADDRESS_CLAMP);
+#endif
+#ifdef ZH
+#if 0 // obsolete [4/1/2003]
+
+#endif
 	if (TheGlobalData && TheGlobalData->m_bilinearTerrainTex || TheGlobalData->m_trilinearTerrainTex) {
 		DX8Wrapper::Set_DX8_Texture_Stage_State(stage, D3DTSS_MINFILTER, D3DTEXF_LINEAR);
 		DX8Wrapper::Set_DX8_Texture_Stage_State(stage, D3DTSS_MAGFILTER, D3DTEXF_LINEAR);
@@ -533,6 +667,10 @@ void TerrainTextureClass::Apply(unsigned int stage)
 	}
 	// Now setup the texture pipeline.
 	if (stage==0) {
+#ifdef ZH
+		DX8Wrapper::Set_DX8_Texture_Stage_State( 0, D3DTSS_ADDRESSU, D3DTADDRESS_CLAMP);
+		DX8Wrapper::Set_DX8_Texture_Stage_State( 0, D3DTSS_ADDRESSV, D3DTADDRESS_CLAMP);
+#endif
 		DX8Wrapper::Set_DX8_Texture_Stage_State( 0, D3DTSS_COLORARG1, D3DTA_TEXTURE );
 		DX8Wrapper::Set_DX8_Texture_Stage_State( 0, D3DTSS_COLORARG2, D3DTA_DIFFUSE );
 		DX8Wrapper::Set_DX8_Texture_Stage_State( 0, D3DTSS_COLOROP,   D3DTOP_MODULATE );
@@ -544,6 +682,9 @@ void TerrainTextureClass::Apply(unsigned int stage)
 		DX8Wrapper::Set_DX8_Render_State(D3DRS_ALPHABLENDENABLE,false);
 
 	}
+#ifdef ZH
+#endif
+#endif
 }
 
 /******************************************************************************
@@ -565,14 +706,22 @@ AlphaTerrainTextureClass::AlphaTerrainTextureClass( TextureClass *pBaseTex ):
 	TextureClass(8, 8, 
 		WW3D_FORMAT_A1R5G5B5, MIP_LEVELS_1 )
 { 
+#ifdef OG
 	if (D3DTexture) {
 		// Release the 8x8 texture.
 		D3DTexture->Release();
 		D3DTexture = NULL;
 	}
+#endif
 	// Attach the base texture's d3d texture.
+#ifdef OG
 	D3DTexture = pBaseTex->Peek_DX8_Texture();
 	D3DTexture->AddRef();
+#endif
+#ifdef ZH
+	IDirect3DTexture8 * d3d_tex = pBaseTex->Peek_D3D_Texture();
+	Set_D3D_Base_Texture(d3d_tex);
+#endif
 }
 
 
@@ -731,6 +880,12 @@ void AlphaTerrainTextureClass::Apply(unsigned int stage)
 LightMapTerrainTextureClass::LightMapTerrainTextureClass(AsciiString name, MipCountType mipLevelCount) :
 TextureClass(name.isEmpty()?"TSNoiseUrb.tga":name.str(),name.isEmpty()?"TSNoiseUrb.tga":name.str(), mipLevelCount )
 { 
+#ifdef ZH
+	Get_Filter().Set_Min_Filter(TextureFilterClass::FILTER_TYPE_BEST);
+	Get_Filter().Set_Mag_Filter(TextureFilterClass::FILTER_TYPE_BEST);
+	Get_Filter().Set_U_Addr_Mode(TextureFilterClass::TEXTURE_ADDRESS_REPEAT);
+	Get_Filter().Set_V_Addr_Mode(TextureFilterClass::TEXTURE_ADDRESS_REPEAT);
+#endif
 }
 
 #define STRETCH_FACTOR ((float)(1/(63.0*MAP_XY_FACTOR/2))) /* covers 63/2 tiles */		
@@ -751,8 +906,14 @@ yet another set of uv coordinates.
 //=============================================================================
 void LightMapTerrainTextureClass::Apply(unsigned int stage)
 {
-	// Do the base apply.
+#ifdef ZH
 	TextureClass::Apply(stage);
+#if 0 // obsolete [4/1/2003]
+#endif
+	// Do the base apply.
+#ifdef OG
+	TextureClass::Apply(stage);
+#endif
 	/* previous setup */
 	if (TheGlobalData && TheGlobalData->m_trilinearTerrainTex) {
 		DX8Wrapper::Set_DX8_Texture_Stage_State(stage, D3DTSS_MIPFILTER, D3DTEXF_LINEAR);
@@ -787,7 +948,12 @@ void LightMapTerrainTextureClass::Apply(unsigned int stage)
 	DX8Wrapper::Set_DX8_Texture_Stage_State( stage, D3DTSS_ADDRESSU, D3DTADDRESS_WRAP);
 	DX8Wrapper::Set_DX8_Texture_Stage_State( stage, D3DTSS_ADDRESSV, D3DTADDRESS_WRAP);
 
+#ifdef OG
 	Matrix4 curView;
+#endif
+#ifdef ZH
+	Matrix4x4 curView;
+#endif
 	DX8Wrapper::_Get_DX8_Transform(D3DTS_VIEW, curView);
 
 
@@ -798,9 +964,19 @@ void LightMapTerrainTextureClass::Apply(unsigned int stage)
 	D3DXMatrixScaling(&scale, STRETCH_FACTOR, STRETCH_FACTOR,1);
 	inv *=scale;
 	if (stage==0) {
+#ifdef OG
 		DX8Wrapper::_Set_DX8_Transform(D3DTS_TEXTURE0, *((Matrix4*)&inv));
+#endif
+#ifdef ZH
+		DX8Wrapper::_Set_DX8_Transform(D3DTS_TEXTURE0, *((Matrix4x4*)&inv));
+#endif
 	}	if (stage==1) {
+#ifdef OG
 		DX8Wrapper::_Set_DX8_Transform(D3DTS_TEXTURE1, *((Matrix4*)&inv));
+#endif
+#ifdef ZH
+		DX8Wrapper::_Set_DX8_Transform(D3DTS_TEXTURE1, *((Matrix4x4*)&inv));
+#endif
 	}
 		
 		
@@ -809,6 +985,9 @@ void LightMapTerrainTextureClass::Apply(unsigned int stage)
 		DX8Wrapper::Set_DX8_Render_State(D3DRS_SRCBLEND,D3DBLEND_DESTCOLOR);
 		DX8Wrapper::Set_DX8_Render_State(D3DRS_DESTBLEND,D3DBLEND_ZERO);
 	} 
+#ifdef ZH
+#endif
+#endif
 }
 
 
@@ -849,7 +1028,12 @@ int AlphaEdgeTextureClass::update(WorldHeightMap *htMap)
 	IDirect3DSurface8 *surface_level;
 	D3DSURFACE_DESC surface_desc;
 	D3DLOCKED_RECT locked_rect;
+#ifdef OG
 	DX8_ErrorCode(D3DTexture->GetSurfaceLevel(0, &surface_level));
+#endif
+#ifdef ZH
+	DX8_ErrorCode(Peek_D3D_Texture()->GetSurfaceLevel(0, &surface_level));
+#endif
 	DX8_ErrorCode(surface_level->LockRect(&locked_rect, NULL, 0));
 	DX8_ErrorCode(surface_level->GetDesc(&surface_desc));
 
@@ -912,7 +1096,12 @@ int AlphaEdgeTextureClass::update(WorldHeightMap *htMap)
 	}
 	surface_level->UnlockRect();
 	surface_level->Release();
+#ifdef OG
 	DX8_ErrorCode(D3DXFilterTexture(D3DTexture, NULL, 0, D3DX_FILTER_BOX));
+#endif
+#ifdef ZH
+	DX8_ErrorCode(D3DXFilterTexture(Peek_D3D_Texture(), NULL, 0, D3DX_FILTER_BOX));
+#endif
 	return(surface_desc.Height);
 }
 
@@ -920,6 +1109,9 @@ void AlphaEdgeTextureClass::Apply(unsigned int stage)
 {
 	// Do the base apply.
 	TextureClass::Apply(stage);
+#ifdef ZH
+#if 0 // obsolete [4/1/2003]
+#endif
 	
 	if (TheGlobalData && TheGlobalData->m_bilinearTerrainTex || TheGlobalData->m_trilinearTerrainTex) {
 		DX8Wrapper::Set_DX8_Texture_Stage_State(stage, D3DTSS_MINFILTER, D3DTEXF_LINEAR);
@@ -969,6 +1161,9 @@ void AlphaEdgeTextureClass::Apply(unsigned int stage)
 		DX8Wrapper::Set_DX8_Render_State(D3DRS_DESTBLEND,D3DBLEND_ZERO);
 
 	}
+#ifdef ZH
+#endif
+#endif
 }
 
 
@@ -989,7 +1184,12 @@ up the "sliding" parameters for the clouds to slide over the terrain. */
 CloudMapTerrainTextureClass::CloudMapTerrainTextureClass(MipCountType mipLevelCount) :
 	TextureClass("TSCloudMed.tga","TSCloudMed.tga", mipLevelCount )
 { 
+#ifdef OG
 	Set_Mip_Mapping( FILTER_TYPE_FAST );
+#endif
+#ifdef ZH
+	Get_Filter().Set_Mip_Mapping( TextureFilterClass::FILTER_TYPE_FAST );
+#endif
 	m_xSlidePerSecond = -0.02f;	 
 	m_ySlidePerSecond =  1.50f * m_xSlidePerSecond;
 	m_curTick = 0;
@@ -1018,6 +1218,10 @@ void CloudMapTerrainTextureClass::Apply(unsigned int stage)
 
 	// Do the base apply.
 	TextureClass::Apply(stage);
+#ifdef ZH
+	return;
+#if 0   // obsolete
+#endif
 	/* previous setup */
 	if (TheGlobalData && TheGlobalData->m_trilinearTerrainTex) {
 		DX8Wrapper::Set_DX8_Texture_Stage_State(stage, D3DTSS_MIPFILTER, D3DTEXF_LINEAR);
@@ -1037,7 +1241,12 @@ void CloudMapTerrainTextureClass::Apply(unsigned int stage)
 	DX8Wrapper::Set_DX8_Texture_Stage_State( stage,  D3DTSS_ADDRESSU, D3DTADDRESS_WRAP);
 	DX8Wrapper::Set_DX8_Texture_Stage_State( stage,  D3DTSS_ADDRESSV, D3DTADDRESS_WRAP);
 
+#ifdef OG
 	Matrix4 curView;
+#endif
+#ifdef ZH
+	Matrix4x4 curView;
+#endif
 	DX8Wrapper::_Get_DX8_Transform(D3DTS_VIEW, curView);
 
 
@@ -1071,7 +1280,12 @@ void CloudMapTerrainTextureClass::Apply(unsigned int stage)
 		DX8Wrapper::Set_DX8_Texture_Stage_State( 0, D3DTSS_COLOROP,   D3DTOP_SELECTARG1 );
 		DX8Wrapper::Set_DX8_Texture_Stage_State( 0, D3DTSS_ALPHAOP,   D3DTOP_DISABLE );
 
+#ifdef OG
 		DX8Wrapper::_Set_DX8_Transform(D3DTS_TEXTURE0, *((Matrix4*)&inv));
+#endif
+#ifdef ZH
+		DX8Wrapper::_Set_DX8_Transform(D3DTS_TEXTURE0, *((Matrix4x4*)&inv));
+#endif
 		
 		// Disable 3rd stage just in case.
 		DX8Wrapper::Set_DX8_Texture_Stage_State( 2, D3DTSS_COLOROP,   D3DTOP_DISABLE );
@@ -1090,8 +1304,16 @@ void CloudMapTerrainTextureClass::Apply(unsigned int stage)
 		DX8Wrapper::Set_DX8_Texture_Stage_State( 1, D3DTSS_ALPHAARG1, D3DTA_CURRENT );
 		DX8Wrapper::Set_DX8_Texture_Stage_State( 1, D3DTSS_ALPHAOP,   D3DTOP_SELECTARG1 );
 
+#ifdef OG
 		DX8Wrapper::_Set_DX8_Transform(D3DTS_TEXTURE1, *((Matrix4*)&inv));
+#endif
+#ifdef ZH
+		DX8Wrapper::_Set_DX8_Transform(D3DTS_TEXTURE1, *((Matrix4x4*)&inv));
+#endif
 	}
+#ifdef ZH
+#endif
+#endif
 }
 
 //=============================================================================
@@ -1161,6 +1383,10 @@ void CloudMapTerrainTextureClass::restore(void)
 /// @todo - get "EXScorch01.tga" from not hard coded location.
 ScorchTextureClass::ScorchTextureClass(MipCountType mipLevelCount) :
 	TextureClass("EXScorch01.tga","EXScorch01.tga", mipLevelCount )
+#ifdef ZH
+// Hack to disable texture reduction.
+//	TextureClass("EXScorch01.tga","EXScorch01.tga", mipLevelCount,WW3D_FORMAT_UNKNOWN,true,false)
+#endif
 { 
 }
 

@@ -45,11 +45,17 @@ class DefaultProductionExitUpdateModuleData : public UpdateModuleData
 public:
 	Coord3D m_unitCreatePoint;
 	Coord3D m_naturalRallyPoint;
+#ifdef ZH
+	Bool		m_useSpawnRallyPoint;
+#endif
 
 	DefaultProductionExitUpdateModuleData()
 	{
 		m_unitCreatePoint.zero();
 		m_naturalRallyPoint.zero();
+#ifdef ZH
+		m_useSpawnRallyPoint = false;
+#endif
 	}
 
 	static void buildFieldParse(MultiIniFieldParse& p) 
@@ -59,6 +65,9 @@ public:
 		{
 			{ "UnitCreatePoint",		INI::parseCoord3D,		NULL, offsetof( DefaultProductionExitUpdateModuleData, m_unitCreatePoint ) },
 			{ "NaturalRallyPoint",  INI::parseCoord3D,		NULL, offsetof( DefaultProductionExitUpdateModuleData, m_naturalRallyPoint ) },
+#ifdef ZH
+			{ "UseSpawnRallyPoint", INI::parseBool,				NULL, offsetof( DefaultProductionExitUpdateModuleData, m_useSpawnRallyPoint ) },
+#endif
 			{ 0, 0, 0, 0 }
 		};
     p.add(dataFieldParse);
@@ -88,6 +97,9 @@ public:
 
 	virtual void setRallyPoint( const Coord3D *pos );				///< define a "rally point" for units to move towards
 	virtual const Coord3D *getRallyPoint( void ) const;			///< define a "rally point" for units to move towards
+#ifdef ZH
+	virtual Bool useSpawnRallyPoint( void ) const;
+#endif
 	virtual Bool getNaturalRallyPoint( Coord3D& rallyPoint, Bool offset = TRUE ) const;			///< get the natural "rally point" for units to move towards
 	virtual Bool getExitPosition( Coord3D& exitPosition ) const;					///< access to the "Door" position of the production object
 	virtual UpdateSleepTime update()										{ return UPDATE_SLEEP_FOREVER; }
@@ -113,6 +125,19 @@ inline const Coord3D *DefaultProductionExitUpdate::getRallyPoint( void ) const
 		return &m_rallyPoint;
 
 	return NULL;
+#ifdef ZH
+}
+
+//-------------------------------------------------------------------------------------------------
+inline Bool DefaultProductionExitUpdate::useSpawnRallyPoint( void ) const
+{
+	// Check if the building has requested spawn units (like those that are airdropped)
+	// to use the rally points of the building.
+	if (getDefaultProductionExitUpdateModuleData()->m_useSpawnRallyPoint)
+		return TRUE;
+	else
+		return FALSE;
+#endif
 }
 
 #endif

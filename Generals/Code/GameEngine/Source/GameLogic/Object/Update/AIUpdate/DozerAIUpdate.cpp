@@ -561,8 +561,14 @@ StateReturnType DozerActionDoActionState::update( void )
 				{
 
 					// clear the under construction status
+#ifdef OG
 					goalObject->clearStatus( OBJECT_STATUS_UNDER_CONSTRUCTION );
 					goalObject->clearStatus( OBJECT_STATUS_RECONSTRUCTING );
+#endif
+#ifdef ZH
+					goalObject->clearStatus( MAKE_OBJECT_STATUS_MASK( OBJECT_STATUS_UNDER_CONSTRUCTION ) );
+					goalObject->clearStatus( MAKE_OBJECT_STATUS_MASK( OBJECT_STATUS_RECONSTRUCTING ) );
+#endif
 
 					// stop playing the construction sound!
 					dozerAI->finishBuildingSound();
@@ -591,6 +597,10 @@ StateReturnType DozerActionDoActionState::update( void )
 
 						// notification for build completeion
 						player->onStructureConstructionComplete( dozer, goalObject, dozerAI->getIsRebuild() );
+#ifdef ZH
+
+						player->getAcademyStats()->recordProduction( goalObject, dozer );
+#endif
 
 						//
 						// Now onCreates were called at construction start.  Now at finish is when we
@@ -608,6 +618,11 @@ StateReturnType DozerActionDoActionState::update( void )
 
 					// Creation is another valid and essential time to call this.  This building now Looks.
 					goalObject->handlePartitionCellMaintenance();
+#ifdef ZH
+					
+					// UnderConstruction just cleared, so update our upgrades
+					goalObject->updateUpgradeModules();
+#endif
 
 					// this object how has influence in the controlling players' tech tree
 					/// @todo need to write this
@@ -1684,13 +1699,29 @@ Object *DozerAIUpdate::construct( const ThingTemplate *what,
 	// what will our initial status bits be, it is important to do this early
 	// before the hooks add/subtract power from a player are executed
 	//
+#ifdef OG
 	UnsignedInt statusBits = OBJECT_STATUS_UNDER_CONSTRUCTION;
+#endif
+#ifdef ZH
+	ObjectStatusMaskType statusBits = MAKE_OBJECT_STATUS_MASK( OBJECT_STATUS_UNDER_CONSTRUCTION );
+#endif
 	if( isRebuild )
+#ifdef OG
 		BitSet( statusBits, OBJECT_STATUS_RECONSTRUCTING );
+#endif
+#ifdef ZH
+		statusBits.set( OBJECT_STATUS_RECONSTRUCTING );
+#endif
 
 	// create an object at the destination location
+#ifdef OG
 	Object *obj = TheThingFactory->newObject( what, owningPlayer->getDefaultTeam(), 
 																						(ObjectStatusBits)statusBits );
+#endif
+#ifdef ZH
+	Object *obj = TheThingFactory->newObject( what, owningPlayer->getDefaultTeam(), statusBits );
+
+#endif
 
 	// even though we haven't actually built anything yet, this keeps things tidy
 	obj->setProducer( getObject() );
@@ -2115,6 +2146,11 @@ void DozerAIUpdate::internalCancelTask( DozerTask task )
 
 	// sanity
 	DEBUG_ASSERTCRASH( task >= 0 && task < DOZER_NUM_TASKS, ("Illegal dozer task '%d'\n", task) );
+#ifdef ZH
+	
+	if(task < 0 || task >= DOZER_NUM_TASKS)
+		return;  //DAMNIT!  You CANNOT assert and then not handle the damn error!  The.  Code.  Must.  Not.  Crash.
+#endif
 
 	// call the single method that gets called for completing and canceling tasks
 	internalTaskCompleteOrCancelled( task );
@@ -2352,12 +2388,29 @@ void DozerAIUpdate::aiDoCommand(const AICommandParms* parms)
 	{
 		case AICMD_MOVE_AWAY_FROM_UNIT:
 			{
+#ifdef ZH
+				Object *otherObj = parms->m_obj;
+				Bool otherIsDozer = false;
+				if (otherObj) {
+					otherIsDozer = otherObj->isKindOf(KINDOF_DOZER);
+				}
+#endif
 				// We only want to do this if we aren't busy doing dozer things. jba.
+#ifdef OG
 				// if we have no task right now, go idle so we can immediately respond to this
 				if( getCurrentTask() != DOZER_TASK_INVALID ) {
+#endif
+#ifdef ZH
+				// Or if the other guy is a dozer too.
+				if( !otherIsDozer && getCurrentTask() != DOZER_TASK_INVALID ) {
+#endif
 					return; // just ignore it.  jba.
 				}
-
+#ifdef ZH
+				// issue the command
+				AIUpdateInterface::aiDoCommand(parms);
+				break;
+#endif
 			}
 
 		// --------------------------------------------------------------------------------------------

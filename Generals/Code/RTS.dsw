@@ -15,7 +15,12 @@ Package=<4>
 
 ###############################################################################
 
+#ifdef OG
 Project: "Compress"=.\Tools\Compress\Compress.dsp - Package Owner=<4>
+#endif
+#ifdef ZH
+Project: "CRCDiff"=.\Tools\CRCDiff\CRCDiff.dsp - Package Owner=<4>
+#endif
 
 Package=<5>
 {{{
@@ -23,9 +28,11 @@ Package=<5>
 
 Package=<4>
 {{{
+#ifdef OG
     Begin Project Dependency
     Project_Dep_Name Compression
     End Project Dependency
+#endif
 }}}
 
 ###############################################################################
@@ -42,7 +49,12 @@ Package=<4>
 
 ###############################################################################
 
+#ifdef OG
 Project: "DatGen"=.\Tools\Launcher\DatGen\DatGen.dsp - Package Owner=<4>
+#endif
+#ifdef ZH
+Project: "DatGen"=.\TOOLS\LAUNCHER\DatGen\DatGen.dsp - Package Owner=<4>
+#endif
 
 Package=<5>
 {{{
@@ -78,7 +90,12 @@ Package=<4>
 
 ###############################################################################
 
+#ifdef OG
 Project: "GUIEdit"=.\Tools\GUIEdit\GUIEdit.dsp - Package Owner=<4>
+#endif
+#ifdef ZH
+Project: "GUIEdit"=.\TOOLS\GUIEdit\GUIEdit.dsp - Package Owner=<4>
+#endif
 
 Package=<5>
 {{{
@@ -86,8 +103,23 @@ Package=<5>
 
 Package=<4>
 {{{
+#ifdef ZH
     Begin Project Dependency
+    Project_Dep_Name GameEngine
+    End Project Dependency
+#endif
+    Begin Project Dependency
+#ifdef ZH
+    Project_Dep_Name GameEngineDevice
+    End Project Dependency
+    Begin Project Dependency
+#endif
     Project_Dep_Name ww3d2
+#ifdef ZH
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name wwdebug
+#endif
     End Project Dependency
     Begin Project Dependency
     Project_Dep_Name wwlib
@@ -96,34 +128,79 @@ Package=<4>
     Project_Dep_Name wwmath
     End Project Dependency
     Begin Project Dependency
+#ifdef OG
     Project_Dep_Name GameEngine
-    End Project Dependency
-    Begin Project Dependency
+#endif
+#ifdef ZH
     Project_Dep_Name wwsaveload
+#endif
     End Project Dependency
     Begin Project Dependency
+#ifdef OG
+    Project_Dep_Name wwsaveload
+#endif
+#ifdef ZH
+    Project_Dep_Name wwutil
+#endif
+    End Project Dependency
+    Begin Project Dependency
+#ifdef OG
     Project_Dep_Name Compression
+#endif
+#ifdef ZH
+    Project_Dep_Name GameSpyPeer
+#endif
     End Project Dependency
     Begin Project Dependency
+#ifdef OG
     Project_Dep_Name GameEngineDevice
+#endif
+#ifdef ZH
+    Project_Dep_Name GameSpyPresence
+#endif
     End Project Dependency
     Begin Project Dependency
     Project_Dep_Name GameSpyHTTP
+#ifdef ZH
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name GameSpyStats
+#endif
     End Project Dependency
     Begin Project Dependency
     Project_Dep_Name GameSpyPatching
     End Project Dependency
     Begin Project Dependency
+#ifdef OG
     Project_Dep_Name GameSpyPeer
-    End Project Dependency
-    Begin Project Dependency
-    Project_Dep_Name GameSpyPresence
-    End Project Dependency
-    Begin Project Dependency
-    Project_Dep_Name GameSpyStats
-    End Project Dependency
-    Begin Project Dependency
+#endif
+#ifdef ZH
     Project_Dep_Name WWDownload
+#endif
+    End Project Dependency
+    Begin Project Dependency
+#ifdef OG
+    Project_Dep_Name GameSpyPresence
+#endif
+#ifdef ZH
+    Project_Dep_Name EABrowserDispatch
+#endif
+    End Project Dependency
+    Begin Project Dependency
+#ifdef OG
+    Project_Dep_Name GameSpyStats
+#endif
+#ifdef ZH
+    Project_Dep_Name Benchmark
+#endif
+    End Project Dependency
+    Begin Project Dependency
+#ifdef OG
+    Project_Dep_Name WWDownload
+#endif
+#ifdef ZH
+    Project_Dep_Name wwshade
+#endif
     End Project Dependency
 }}}
 
@@ -139,6 +216,11 @@ Package=<4>
 {{{
     Begin Project Dependency
     Project_Dep_Name EABrowserDispatch
+#ifdef ZH
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name Compression
+#endif
     End Project Dependency
     Begin Project Dependency
     Project_Dep_Name Benchmark
@@ -159,6 +241,11 @@ Package=<4>
     Project_Dep_Name EABrowserDispatch
     End Project Dependency
     Begin Project Dependency
+#ifdef ZH
+    Project_Dep_Name Compression
+    End Project Dependency
+    Begin Project Dependency
+#endif
     Project_Dep_Name Benchmark
     End Project Dependency
 }}}
@@ -225,7 +312,12 @@ Package=<4>
 
 ###############################################################################
 
+#ifdef OG
 Project: "ImagePacker"=.\Tools\ImagePacker\ImagePacker.dsp - Package Owner=<4>
+#endif
+#ifdef ZH
+Project: "ImagePacker"=.\TOOLS\ImagePacker\ImagePacker.dsp - Package Owner=<4>
+#endif
 
 Package=<5>
 {{{
@@ -234,21 +326,62 @@ Package=<5>
 Package=<4>
 {{{
     Begin Project Dependency
+#ifdef OG
     Project_Dep_Name Compression
-    End Project Dependency
-    Begin Project Dependency
+
+#endif
+#ifdef ZH
     Project_Dep_Name GameEngine
     End Project Dependency
     Begin Project Dependency
     Project_Dep_Name GameEngineDevice
     End Project Dependency
     Begin Project Dependency
+    Project_Dep_Name ww3d2
+#endif
+    End Project Dependency
+    Begin Project Dependency
+#ifdef OG
+    Project_Dep_Name GameEngine
+
+#endif
+#ifdef ZH
+    Project_Dep_Name wwdebug
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name wwlib
+#endif
+    End Project Dependency
+    Begin Project Dependency
+#ifdef OG
+    Project_Dep_Name GameEngineDevice
+#endif
+#ifdef ZH
+    Project_Dep_Name wwmath
+#endif
+    End Project Dependency
+    Begin Project Dependency
+#ifdef OG
+    Project_Dep_Name GameSpyHTTP
+#endif
+#ifdef ZH
+    Project_Dep_Name wwsaveload
+#endif
+    End Project Dependency
+    Begin Project Dependency
+#ifdef OG
+    Project_Dep_Name GameSpyPatching
+#endif
+#ifdef ZH
+    Project_Dep_Name wwutil
+#endif
+    End Project Dependency
+    Begin Project Dependency
+#ifdef ZH
     Project_Dep_Name GameSpyHTTP
     End Project Dependency
     Begin Project Dependency
-    Project_Dep_Name GameSpyPatching
-    End Project Dependency
-    Begin Project Dependency
+#endif
     Project_Dep_Name GameSpyPeer
     End Project Dependency
     Begin Project Dependency
@@ -258,19 +391,44 @@ Package=<4>
     Project_Dep_Name GameSpyStats
     End Project Dependency
     Begin Project Dependency
+#ifdef OG
     Project_Dep_Name ww3d2
+#endif
+#ifdef ZH
+    Project_Dep_Name GameSpyPatching
+#endif
     End Project Dependency
     Begin Project Dependency
+#ifdef OG
     Project_Dep_Name wwlib
-    End Project Dependency
-    Begin Project Dependency
-    Project_Dep_Name wwmath
-    End Project Dependency
-    Begin Project Dependency
+#endif
+#ifdef ZH
     Project_Dep_Name WWDownload
+#endif
     End Project Dependency
     Begin Project Dependency
+#ifdef OG
+    Project_Dep_Name wwmath
+#endif
+#ifdef ZH
+    Project_Dep_Name EABrowserDispatch
+#endif
+    End Project Dependency
+    Begin Project Dependency
+#ifdef OG
+    Project_Dep_Name WWDownload
+#endif
+#ifdef ZH
+    Project_Dep_Name Benchmark
+#endif
+    End Project Dependency
+    Begin Project Dependency
+#ifdef OG
     Project_Dep_Name wwsaveload
+#endif
+#ifdef ZH
+    Project_Dep_Name wwshade
+#endif
     End Project Dependency
 }}}
 
@@ -285,7 +443,12 @@ Package=<5>
 Package=<4>
 {{{
     Begin Project Dependency
+#ifdef OG
     Project_Dep_Name Compression
+#endif
+#ifdef ZH
+    Project_Dep_Name EABrowserDispatch
+#endif
     End Project Dependency
     Begin Project Dependency
     Project_Dep_Name GameEngine
@@ -312,6 +475,11 @@ Package=<4>
     Project_Dep_Name ww3d2
     End Project Dependency
     Begin Project Dependency
+#ifdef ZH
+    Project_Dep_Name wwdebug
+    End Project Dependency
+    Begin Project Dependency
+#endif
     Project_Dep_Name WWDownload
     End Project Dependency
     Begin Project Dependency
@@ -322,6 +490,14 @@ Package=<4>
     End Project Dependency
     Begin Project Dependency
     Project_Dep_Name wwsaveload
+#ifdef ZH
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name wwutil
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name wwshade
+#endif
     End Project Dependency
     Begin Project Dependency
     Project_Dep_Name Benchmark
@@ -399,22 +575,52 @@ Package=<4>
     Project_Dep_Name Benchmark
     End Project Dependency
     Begin Project Dependency
+#ifdef OG
     Project_Dep_Name versionUpdate
+#endif
+#ifdef ZH
+    Project_Dep_Name wwshade
+#endif
     End Project Dependency
     Begin Project Dependency
+#ifdef OG
     Project_Dep_Name launcher
+#endif
+#ifdef ZH
+    Project_Dep_Name profile
+#endif
     End Project Dependency
     Begin Project Dependency
+#ifdef OG
     Project_Dep_Name DebugWindow
+#endif
+#ifdef ZH
+    Project_Dep_Name debug
+#endif
     End Project Dependency
     Begin Project Dependency
+#ifdef OG
     Project_Dep_Name ParticleEditor
-    End Project Dependency
-    Begin Project Dependency
-    Project_Dep_Name Compression
-    End Project Dependency
-    Begin Project Dependency
+#endif
+#ifdef ZH
     Project_Dep_Name buildVersionUpdate
+#endif
+    End Project Dependency
+    Begin Project Dependency
+#ifdef OG
+    Project_Dep_Name Compression
+#endif
+#ifdef ZH
+    Project_Dep_Name versionUpdate
+#endif
+    End Project Dependency
+    Begin Project Dependency
+#ifdef OG
+    Project_Dep_Name buildVersionUpdate
+#endif
+#ifdef ZH
+    Project_Dep_Name launcher
+#endif
     End Project Dependency
 }}}
 
@@ -441,57 +647,156 @@ Package=<5>
 Package=<4>
 {{{
     Begin Project Dependency
+#ifdef OG
     Project_Dep_Name Benchmark
-    End Project Dependency
-    Begin Project Dependency
-    Project_Dep_Name Compression
-    End Project Dependency
-    Begin Project Dependency
-    Project_Dep_Name GameEngine
-    End Project Dependency
-    Begin Project Dependency
-    Project_Dep_Name GameEngineDevice
-    End Project Dependency
-    Begin Project Dependency
+#endif
+#ifdef ZH
     Project_Dep_Name ww3d2
+#endif
     End Project Dependency
     Begin Project Dependency
+#ifdef OG
+    Project_Dep_Name Compression
+#endif
+#ifdef ZH
     Project_Dep_Name wwdebug
+#endif
+    End Project Dependency
+    Begin Project Dependency
+#ifdef OG
+    Project_Dep_Name GameEngine
+#endif
+#ifdef ZH
+    Project_Dep_Name wwlib
+#endif
+    End Project Dependency
+    Begin Project Dependency
+#ifdef OG
+    Project_Dep_Name GameEngineDevice
+#endif
+#ifdef ZH
+    Project_Dep_Name wwmath
+#endif
+    End Project Dependency
+    Begin Project Dependency
+#ifdef OG
+    Project_Dep_Name ww3d2
+#endif
+#ifdef ZH
+    Project_Dep_Name wwsaveload
+#endif
+    End Project Dependency
+    Begin Project Dependency
+#ifdef OG
+    Project_Dep_Name wwdebug
+#endif
+#ifdef ZH
+    Project_Dep_Name wwutil
+#endif
+    End Project Dependency
+    Begin Project Dependency
+#ifdef OG
+    Project_Dep_Name WWDownload
+#endif
+#ifdef ZH
+    Project_Dep_Name GameEngineDevice
+#endif
+    End Project Dependency
+    Begin Project Dependency
+#ifdef OG
+    Project_Dep_Name wwlib
+#endif
+#ifdef ZH
+    Project_Dep_Name GameEngine
+#endif
+    End Project Dependency
+    Begin Project Dependency
+#ifdef OG
+    Project_Dep_Name wwmath
+#endif
+#ifdef ZH
+    Project_Dep_Name GameSpyPeer
+#endif
+    End Project Dependency
+    Begin Project Dependency
+#ifdef OG
+    Project_Dep_Name wwsaveload
+#endif
+#ifdef ZH
+    Project_Dep_Name GameSpyPresence
+#endif
+    End Project Dependency
+    Begin Project Dependency
+#ifdef OG
+    Project_Dep_Name wwutil
+#endif
+#ifdef ZH
+    Project_Dep_Name GameSpyHTTP
+#endif
+    End Project Dependency
+    Begin Project Dependency
+#ifdef OG
+    Project_Dep_Name GameSpyHTTP
+#endif
+#ifdef ZH
+    Project_Dep_Name GameSpyStats
+#endif
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name GameSpyPatching
+#ifdef ZH
     End Project Dependency
     Begin Project Dependency
     Project_Dep_Name WWDownload
     End Project Dependency
     Begin Project Dependency
-    Project_Dep_Name wwlib
+    Project_Dep_Name EABrowserDispatch
+#endif
     End Project Dependency
     Begin Project Dependency
-    Project_Dep_Name wwmath
-    End Project Dependency
-    Begin Project Dependency
-    Project_Dep_Name wwsaveload
-    End Project Dependency
-    Begin Project Dependency
-    Project_Dep_Name wwutil
-    End Project Dependency
-    Begin Project Dependency
-    Project_Dep_Name GameSpyHTTP
-    End Project Dependency
-    Begin Project Dependency
-    Project_Dep_Name GameSpyPatching
-    End Project Dependency
-    Begin Project Dependency
+#ifdef OG
     Project_Dep_Name GameSpyPeer
+#endif
+#ifdef ZH
+    Project_Dep_Name Benchmark
+#endif
     End Project Dependency
     Begin Project Dependency
+#ifdef OG
     Project_Dep_Name GameSpyPresence
+#endif
+#ifdef ZH
+    Project_Dep_Name wwshade
+#endif
     End Project Dependency
     Begin Project Dependency
+#ifdef OG
     Project_Dep_Name GameSpyStats
+#endif
+#ifdef ZH
+    Project_Dep_Name profile
+#endif
     End Project Dependency
 }}}
 
 ###############################################################################
+#ifdef ZH
 
+Project: "assetcull"=.\Tools\assetcull\assetcull.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+#endif
+
+#ifdef ZH
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+#endif
 Project: "buildVersionUpdate"=.\Tools\buildVersionUpdate\buildVersionUpdate.dsp - Package Owner=<4>
 
 Package=<5>
@@ -504,7 +809,12 @@ Package=<4>
 
 ###############################################################################
 
+#ifdef OG
 Project: "launcher"=.\Tools\Launcher\launcher.dsp - Package Owner=<4>
+#endif
+#ifdef ZH
+Project: "debug"=.\Libraries\Source\debug\debug.dsp - Package Owner=<4>
+#endif
 
 Package=<5>
 {{{
@@ -516,7 +826,12 @@ Package=<4>
 
 ###############################################################################
 
+#ifdef OG
 Project: "max2w3d"=.\Tools\WW3D\max2w3d\max2w3d.dsp - Package Owner=<4>
+#endif
+#ifdef ZH
+Project: "launcher"=.\Tools\Launcher\launcher.dsp - Package Owner=<4>
+#endif
 
 Package=<5>
 {{{
@@ -524,14 +839,21 @@ Package=<5>
 
 Package=<4>
 {{{
+#ifdef OG
     Begin Project Dependency
     Project_Dep_Name pluglib
     End Project Dependency
+#endif
 }}}
 
 ###############################################################################
 
+#ifdef OG
 Project: "pluglib"=.\Tools\WW3D\pluglib\pluglib.dsp - Package Owner=<4>
+#endif
+#ifdef ZH
+Project: "patchgrabber"=.\Tools\PATCHGET\patchgrabber.dsp - Package Owner=<4>
+#endif
 
 Package=<5>
 {{{
@@ -539,11 +861,24 @@ Package=<5>
 
 Package=<4>
 {{{
+#ifdef ZH
+    Begin Project Dependency
+    Project_Dep_Name GameSpyHTTP
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name WWDownload
+    End Project Dependency
+#endif
 }}}
 
 ###############################################################################
 
+#ifdef OG
 Project: "textureCompress"=.\Tools\textureCompress\textureCompress.dsp - Package Owner=<4>
+#endif
+#ifdef ZH
+Project: "profile"=.\Libraries\Source\profile\profile.dsp - Package Owner=<4>
+#endif
 
 Package=<5>
 {{{
@@ -616,6 +951,20 @@ Package=<4>
 ###############################################################################
 
 Project: "wwsaveload"=.\Libraries\Source\WWVegas\WWSaveLoad\wwsaveload.dsp - Package Owner=<4>
+#ifdef ZH
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "wwshade"=.\Libraries\Source\WWVegas\wwshade\wwshade.dsp - Package Owner=<4>
+#endif
 
 Package=<5>
 {{{

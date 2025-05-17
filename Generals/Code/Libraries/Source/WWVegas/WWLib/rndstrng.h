@@ -24,11 +24,26 @@
  *                                                                                             * 
  *                     $Archive:: /Commando/Code/wwlib/rndstrng.h                             $* 
  *                                                                                             * 
+#ifdef OG
  *                      $Author:: Byon_g                                                      $*
+#endif
+#ifdef ZH
+ *                      $Author:: Jani_p                                                      $*
+#endif
  *                                                                                             * 
+#ifdef OG
  *                     $Modtime:: 11/03/99 2:26p                                              $*
+#endif
+#ifdef ZH
+ *                     $Modtime:: 9/01/01 11:03a                                              $*
+#endif
  *                                                                                             * 
+#ifdef OG
  *                    $Revision:: 2                                                           $*
+#endif
+#ifdef ZH
+ *                    $Revision:: 3                                                           $*
+#endif
  *                                                                                             *
  *---------------------------------------------------------------------------------------------* 
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
@@ -51,9 +66,11 @@ class	StringClass;
 class	RandomStringClass {
 
 public:
+#ifdef OG
 	RandomStringClass( void );
 	~RandomStringClass( void );
 
+#endif
 	// Add a string to the class.  
 	// (future version may have a weight parameter)
 	void Add_String( const char * str );
@@ -62,7 +79,12 @@ public:
 	const char * Get_String( void );
 
 private:
+#ifdef OG
 	DynamicVectorClass<StringClass*>	Strings;
+#endif
+#ifdef ZH
+	DynamicVectorClass<StringClass>	Strings;
+#endif
 	Random2Class							Randomizer;
 };
 

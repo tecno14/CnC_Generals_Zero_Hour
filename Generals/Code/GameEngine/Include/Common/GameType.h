@@ -58,6 +58,10 @@ enum FormationID
 	FORCE_FORMATIONID_TO_LONG_SIZE = 0x7ffffff
 };
 
+#ifdef ZH
+#define INVALID_ANGLE -100.0f
+
+#endif
 class INI;
 
 //-------------------------------------------------------------------------------------------------

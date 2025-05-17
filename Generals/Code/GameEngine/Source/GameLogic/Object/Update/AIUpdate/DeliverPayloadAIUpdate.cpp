@@ -38,12 +38,28 @@
 #include "GameClient/FXList.h"
 #include "GameClient/InGameUI.h"
 #include "GameLogic/Locomotor.h"
+#ifdef OG
 #include "GameLogic/Module/BodyModule.h"
+
+#endif
+#ifdef ZH
+#include "GameLogic/Module/SmartBombTargetHomingUpdate.h"
+#include "GameLogic/Module/GenerateMinefieldBehavior.h"
+#include "GameLogic/Module/DeliverPayloadAIUpdate.h"
+#include "GameLogic/Module/ParachuteContain.h"
+#endif
 #include "GameLogic/Module/ContainModule.h"
+#ifdef OG
 #include "GameLogic/Module/DeliverPayloadAIUpdate.h"
 #include "GameLogic/Module/GenerateMinefieldBehavior.h"
+#endif
 #include "GameLogic/Module/PhysicsUpdate.h"
+#ifdef OG
 #include "GameLogic/Module/ParachuteContain.h"
+#endif
+#ifdef ZH
+#include "GameLogic/Module/BodyModule.h"
+#endif
 #include "GameLogic/Object.h"
 #include "GameLogic/PartitionManager.h"
 #include "GameLogic/Weapon.h"
@@ -416,12 +432,25 @@ void DeliverPayloadAIUpdate::crc( Xfer *xfer )
 // ------------------------------------------------------------------------------------------------
 /** Xfer method
 	* Version Info:
+#ifdef OG
 	* 1: Initial version */
+
+#endif
+#ifdef ZH
+	* 1: Initial version 
+	* 5: Whoops version.  preOpenDistance just wasn't saved.
+*/
+#endif
 // ------------------------------------------------------------------------------------------------
 void DeliverPayloadAIUpdate::xfer( Xfer *xfer )
 {
   // version
+#ifdef OG
   const XferVersion currentVersion = 3;
+#endif
+#ifdef ZH
+  const XferVersion currentVersion = 5;
+#endif
   XferVersion version = currentVersion;
   xfer->xferVersion( &version, currentVersion );
  
@@ -439,6 +468,10 @@ void DeliverPayloadAIUpdate::xfer( Xfer *xfer )
 	xfer->xferAsciiString(&data.m_visibleSubObjectName);	
 	xfer->xferAsciiString(&data.m_visiblePayloadTemplateName);
   xfer->xferReal(&data.m_distToTarget);
+#ifdef ZH
+	if( version >= 5 )
+		xfer->xferReal(&data.m_preOpenDistance);
+#endif
 	xfer->xferInt(&data.m_maxAttempts);
 	xfer->xferCoord3D(&data.m_dropOffset);
 	xfer->xferCoord3D(&data.m_dropVariance);
@@ -490,6 +523,12 @@ void DeliverPayloadAIUpdate::xfer( Xfer *xfer )
 	{
 		xfer->xferBool(&m_acceptingCommands);
 	}
+#ifdef ZH
+	if (version >= 4)
+	{
+		xfer->xferReal(&m_previousDistanceSqr);
+	}
+#endif
 
 
 }  // end xfer
@@ -614,10 +653,21 @@ StateReturnType ApproachState::update()
 
 	if (ai->getAIStateType() != AI_MOVE_TO)
 	{
+#ifdef ZH
+    if ( ai->getAIStateType() == AI_IDLE )
+    // Because something outside us has told us to IDLE, so geez, ignore it and try our approach again
+      return STATE_FAILURE;
+    else
+    {
+#endif
 		DEBUG_CRASH(("hmm, bailed from moveto state early... should this be possible?"));
 		ai->aiMoveToPosition( ai->getMoveToPos(), CMD_FROM_AI );
 	}
 
+#ifdef ZH
+	}
+
+#endif
 	return STATE_CONTINUE;
 }
 
@@ -757,6 +807,16 @@ StateReturnType DeliveringState::update() // Kick a dude out every so often
 				mfb->setMinefieldTarget(ai->getMoveToPos());
 			}
 
+#ifdef ZH
+
+			static NameKeyType key_SmartBombTargetHomingUpdate = NAMEKEY("SmartBombTargetHomingUpdate");
+			SmartBombTargetHomingUpdate* smthu = (SmartBombTargetHomingUpdate *)item->findUpdateModule(key_SmartBombTargetHomingUpdate);
+			if (smthu)
+			{
+				smthu->SetTargetPosition( *ai->getMoveToPos() );
+			}
+
+#endif
 			if( ai->getData()->m_inheritTransportVelocity )
 			{
 				Coord3D velocity = *owner->getPhysics()->getVelocity();
@@ -1155,6 +1215,11 @@ StateReturnType HeadOffMapState::onEnter() // Give move order out of town
 		// once they start heading off the map. (srj)
 	ai->friend_setAcceptingCommands(false);
 
+#ifdef ZH
+
+  owner->getUnitDirectionVector3D( facingDirectionUponDelivery );
+
+#endif
 	return STATE_CONTINUE;
 }
 
@@ -1170,6 +1235,27 @@ StateReturnType HeadOffMapState::update()
 
 	if (ai->isOffMap())
 		return STATE_SUCCESS;
+#ifdef ZH
+  
+  // greasy as this hack seems... if terrain or objects or whatever have turned me away from the map-edge that I had first headed for,...
+  //I blow up, rather than face eternally spinning on the point of a mineret or derrick or something awful.
+  if ( owner->getPhysics()->getTurning() != 0 )
+  {
+    Coord3D currentDirection;
+    owner->getUnitDirectionVector3D( currentDirection );
+  	Real dot = facingDirectionUponDelivery.x * currentDirection.x 
+             + facingDirectionUponDelivery.y * currentDirection.y 
+             + facingDirectionUponDelivery.z * currentDirection.z;
+
+    if ( dot < 0.3f )
+      owner->kill();
+  }
+
+//  Coord3D pos = *owner->getPosition();
+//
+//  if( TheTerrainLogic->getGroundHeight( pos->x, pos,y ) )
+
+#endif
 
 	return STATE_CONTINUE;
 }

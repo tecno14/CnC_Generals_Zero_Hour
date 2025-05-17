@@ -330,6 +330,18 @@ WindowMsgHandledType SaveLoadMenuInput( GameWindow *window, UnsignedInt msg, Win
 					if( BitTest( state, KEY_STATE_UP ) )
 					{
 						GameWindow *button = TheWindowManager->winGetWindowFromId( parent, buttonBackKey );
+#ifdef ZH
+						
+						//Kris: Patch 1.01 - November 12, 2003
+						//If you are in the game, then bring up the popup save menu, select a save game, click delete,
+						//hit ESC (brings you back to menu), then hit save/load again, the delete confirmation is still up
+						//and clicking on yes causes it to crash. So whenever we hit esc to leave this interface, kill
+						//the confirmation, and re-enable the listbox and buttonFrame.
+						deleteConfirm->winHide( TRUE );
+						listboxGames->winEnable( TRUE );
+						buttonFrame->winEnable( TRUE );
+
+#endif
 						TheWindowManager->winSendSystemMsg( window, GBM_SELECTED, 
 																								(WindowMsgData)button, buttonBackKey );
 
@@ -455,6 +467,17 @@ static void setEditDescription( GameWindow *editControl )
 			defaultDesc.format( L"%S", mapName + 1 );
 		else
 			defaultDesc.format( L"%S", TheGlobalData->m_mapName.str() );
+#ifdef ZH
+		
+		//Keep the extension out of the descriptive name.
+		if( (defaultDesc.getLength() >= 4)  &&  (defaultDesc.getCharAt(defaultDesc.getLength()-4) == '.') )
+		{
+			for( Int stripIndex = 0; stripIndex < 4; stripIndex++ )
+			{
+				defaultDesc.removeLastChar();
+			}
+		}
+#endif
 
 	}  // end else
 

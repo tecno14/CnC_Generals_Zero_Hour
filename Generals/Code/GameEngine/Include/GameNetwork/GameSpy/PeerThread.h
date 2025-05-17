@@ -119,6 +119,9 @@ public:
 			UnsignedInt iniCRC;
 			UnsignedInt gameVersion;
 			Bool allowObservers;
+#ifdef ZH
+      Bool useStats;
+#endif
 			UnsignedShort ladPort;
 			UnsignedInt ladPassCRC;
 			Bool restrictGameList;
@@ -332,6 +335,9 @@ public:
 			Bool isStaging;
 			Bool requiresPassword;
 			Bool allowObservers;
+#ifdef ZH
+      Bool useStats;
+#endif
 			UnsignedInt version;
 			UnsignedInt exeCRC;
 			UnsignedInt iniCRC;

@@ -34,6 +34,9 @@
 
 #include "Common/Snapshot.h"
 #include "GameNetwork/NetworkDefs.h"
+#ifdef ZH
+#include "Common/ObjectStatusTypes.h"
+#endif
 
 #define THIS_TEAM "<This Team>"
 #define ANY_TEAM "<Any Team>"
@@ -43,6 +46,11 @@
 
 #define THIS_PLAYER "<This Player>"
 #define LOCAL_PLAYER "<Local Player>"
+#ifdef ZH
+
+#define THE_PLAYER "ThePlayer"
+#define TEAM_THE_PLAYER "teamThePlayer"
+#endif
 
 #define THIS_PLAYER_ENEMY "<This Player's Enemy>"
 
@@ -54,6 +62,7 @@
 #define SKIRMISH_BACKDOOR "Backdoor"
 #define SKIRMISH_SPECIAL "Special"
 
+#ifdef OG
 #if 0
 // Skirmish Player names
 #define SKIRMISH_PLAYER_AI		"AI"
@@ -64,6 +73,7 @@
 #define SKIRMISH_PLAYER_HUMAN_ENEMIES	"Human Enemies"
 #endif
 
+#endif
 // Skirmish Player Areas
 #define SKIRMISH_AREA_HOME_BASE				"Home Base"
 #define SKIRMISH_AREA_ANY_SUPPLYDEPOT	"Any Supply Depot"
@@ -206,10 +216,17 @@ class ScriptAction : public MemoryPoolObject // This is the action class.
 // friend bad for MPOs. (srj)
 //friend class EditAction;
 public:
+#ifdef OG
 	/// @todo Use a "symbol table" so we can re-order this enum without breaking old maps (MSB)
+#endif
 	enum ScriptActionType 
 	{
+#ifdef OG
 		DEBUG_MESSAGE_BOX=0,							///< Show a message box.
+#endif
+#ifdef ZH
+		DEBUG_MESSAGE_BOX,							///< Show a message box.
+#endif
 		SET_FLAG,													///< Set a flag true of false.
 		SET_COUNTER,											///< Set a counter to an integer.
 		VICTORY,													///< Announce victory.
@@ -539,7 +556,22 @@ public:
 		RESIZE_VIEW_GUARDBAND,										///< Allow bigger objects to be perceived as onscreen near the edge
 		DELETE_ALL_UNMANNED,											///< Delete all unmanned (sniped) vehicles
 		CHOOSE_VICTIM_ALWAYS_USES_NORMAL,					///< choose victim always uses normal AI behavior, ignoring game difficulty
-
+#ifdef ZH
+		CAMERA_ENABLE_SLAVE_MODE,
+		CAMERA_DISABLE_SLAVE_MODE,
+		CAMERA_ADD_SHAKER_AT,			              	///< WST added 10.12.2002 (MBL)
+		SET_TRAIN_HELD,				                    ///< LORENZEN -- Forbids trains from departing stations while true
+    NAMED_SET_EVAC_LEFT_OR_RIGHT,	            ///< LORENZEN -- Which side of the garrisoned unit (LIKELY A TRAIN) do you want units to evacuate from?
+    ENABLE_OBJECT_SOUND,                      ///< Enables the ambient sound on an object or fire the one-shot "ambient" sound on an object
+    DISABLE_OBJECT_SOUND,                     ///< Disable the ambient sound on an object or kill the one-shot "ambient" sound on an object	
+		NAMED_USE_COMMANDBUTTON_ABILITY_USING_WAYPOINT_PATH, ///< Added for particle cannon to have beam follow waypoint path.
+		NAMED_SET_UNMANNED_STATUS,								///< Make unit unmanned or manned.
+		TEAM_SET_UNMANNED_STATUS,									///< Make all units on team unmanned or manned.
+		NAMED_SET_BOOBYTRAPPED,										///< Add boobytrap to unit.
+		TEAM_SET_BOOBYTRAPPED,										///< Add boobytrap to all units on team.
+		SHOW_WEATHER,															///< show map defined weather.    
+		AI_PLAYER_BUILD_TYPE_NEAREST_TEAM,				///< Tell the ai player to build an object nearest team.
+#endif
 		// add new items here, please
 		NUM_ITEMS
 	};
@@ -584,6 +616,11 @@ public:
 	static Bool ParseActionDataChunk(DataChunkInput &file, DataChunkInfo *info, void *userData);
 	static void WriteActionFalseDataChunk(DataChunkOutput &chunkWriter, ScriptAction *pAct);
 	static Bool ParseActionFalseDataChunk(DataChunkInput &file, DataChunkInfo *info, void *userData);
+#ifdef ZH
+
+protected:
+	static ScriptAction *ParseAction(DataChunkInput &file, DataChunkInfo *info, void *userData);
+#endif
 
 };
 
@@ -755,7 +792,12 @@ public:
 		SHAKE_INTENSITY,		// Int, specifies which Intensity to use (Intensity in 10 cities!)
 		COMMAND_BUTTON,  		// String
 		FONT_NAME,       		// String, the name of the desired font
+#ifdef OG
 		OBJECT_STATUS,			// String, specifies ObjectStatusBits name. However, translated to an int on read.
+#endif
+#ifdef ZH
+		OBJECT_STATUS,			// String, specifies ObjectStatusTypes name. However, translated to an ObjectStatusMaskType on read
+#endif
 		COMMANDBUTTON_ALL_ABILITIES, // String, refers to all command buttons
 		SKIRMISH_WAYPOINT_PATH, // String, name of a predefined skirmish waypoint path.
 		COLOR,							// color (as int) in ARGB format.
@@ -765,6 +807,10 @@ public:
 		OBJECT_TYPE_LIST,		// String, Special case of Object Type.
 		REVEALNAME,					// String, the name of the look taking place.
 		SCIENCE_AVAILABILITY, // String, the name of the different science availabilities.
+#ifdef ZH
+    LEFT_OR_RIGHT,        // 1=left, 2=right, okay?
+		PERCENT,						// Real.  A percentage.
+#endif
 		NUM_ITEMS	
 	};
 
@@ -799,18 +845,27 @@ private:
 	Real					m_real;
 	AsciiString		m_string;
 	Coord3D				m_coord;
+#ifdef ZH
+	ObjectStatusMaskType m_objectStatus;
+#endif
 
 protected:
 	void setInt(Int i) {m_int = i;}
 	void setReal(Real r) {m_real = r;}
 	void setCoord3D(const Coord3D *pLoc);
 	void setString(AsciiString s) {m_string = s;}
+#ifdef ZH
+	void setStatus( ObjectStatusMaskType objectStatus ) { m_objectStatus.set( objectStatus ); }
+#endif
 
 public:
 	Int getInt(void) const {return m_int;}
 	Real getReal(void) const {return m_real;}
 	void getCoord3D(Coord3D *pLoc) const;
 	ParameterType getParameterType(void) const {return m_paramType;}
+#ifdef ZH
+	ObjectStatusMaskType getStatus() const { return m_objectStatus; }
+#endif
 
 	void friend_setInt(Int i) {m_int = i;}
 	void friend_setReal(Real r) {m_real = r;}
@@ -848,7 +903,12 @@ class Condition : public MemoryPoolObject  // This is the conditional class.
 public:
 	enum ConditionType 
 	{
+#ifdef OG
 		CONDITION_FALSE=0,										// Always evaluates to false.
+#endif
+#ifdef ZH
+		CONDITION_FALSE,										// Always evaluates to false.
+#endif
 		COUNTER,															// COUNTER, COMPARISON, INT
 		FLAG,																	// FLAG BOOLEAN compares flag to value.
 		CONDITION_TRUE,												// Always evaluates to true.
@@ -958,6 +1018,10 @@ public:
 		SUPPLY_SOURCE_SAFE,											// True if the nearest available supply source is not under enemy influence.
 		SUPPLY_SOURCE_ATTACKED,									// True if our supply depot or dozer near depot was attacked.
 		START_POSITION_IS,											// True if our start position matches.
+#ifdef ZH
+		NAMED_HAS_FREE_CONTAINER_SLOTS,					///< Kris -- Checks if any given container has any free slots.
+
+#endif
 		NUM_ITEMS		 // Always the last condition.
 	};
 
@@ -971,14 +1035,26 @@ public:
 protected:
 	Condition();  ///< Protected constructor for read.
 
+#ifdef OG
 protected:
+#endif
+#ifdef ZH
+private:
+#endif
 	enum ConditionType	m_conditionType;
 	Int 		m_numParms;
 	Parameter *m_parms[MAX_PARMS];
 	Condition *m_nextAndCondition;
 
 	Int				m_hasWarnings; ///< Runtime flag used by the editor only.
+#ifdef OG
 	Int				m_customData; 
+
+#endif
+#ifdef ZH
+	Int				m_customData;  ///< Custom data for cacheing.
+	UnsignedInt m_customFrame; ///< Custom frame count for cacheing.
+#endif
 
 public:
 	void setConditionType(enum ConditionType type);
@@ -1002,12 +1078,21 @@ public:
 	Bool hasWarnings(void) const { return m_hasWarnings;}
 	Int getCustomData(void) const {return m_customData;}
 	void setCustomData(Int val) { m_customData = val;}
+#ifdef ZH
+
+	Int getCustomFrame(void) const {return m_customFrame;}
+	void setCustomFrame(Int val) { m_customFrame = val;}
+#endif
 
 	static void WriteConditionDataChunk(DataChunkOutput &chunkWriter, Condition *pCond);
 	static Bool ParseConditionDataChunk(DataChunkInput &file, DataChunkInfo *info, void *userData);
 
 };
 
+#ifdef ZH
+#define dontCOUNT_SCRIPT_USAGE
+
+#endif
 //-------------------------------------------------------------------------------------------------
 // ******************************** class Template ***********************************************
 //-------------------------------------------------------------------------------------------------
@@ -1019,16 +1104,40 @@ class Template : public MemoryPoolObject
 // friend bad for MPOs. (srj)
 //friend class ScriptEngine;
 public:
+#ifdef OG
 	AsciiString m_name;
+
+#endif
+#ifdef ZH
+	AsciiString m_uiName;
+	AsciiString m_uiName2;
+	AsciiString m_internalName;
+	NameKeyType m_internalNameKey; // matches internal name.jba [3/20/2003]
+#endif
 	Int					m_numUiStrings;
 	AsciiString m_uiStrings[MAX_PARMS];
 	Int					m_numParameters;
 	enum Parameter::ParameterType m_parameters[MAX_PARMS];
+#ifdef ZH
+	AsciiString m_helpText;
+#ifdef COUNT_SCRIPT_USAGE
+	mutable Int					m_numTimesUsed;
+	mutable AsciiString m_firstMapUsed;
+#endif
+
+#endif
 public:
 	Template();
 
 public:
+#ifdef OG
 	AsciiString getName(void) const {return m_name;}
+
+#endif
+#ifdef ZH
+	AsciiString getName(void) const {return m_uiName;}
+	AsciiString getName2(void) const {return m_uiName2;}
+#endif
 	Int getUiStrings(AsciiString strings[MAX_PARMS]) const;
 	Int getNumParameters(void) const {return m_numParameters;}
 	enum Parameter::ParameterType getParameterType(Int ndx) const;

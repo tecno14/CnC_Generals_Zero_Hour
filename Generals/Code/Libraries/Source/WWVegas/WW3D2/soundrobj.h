@@ -26,9 +26,19 @@
  *                                                                                             *
  *                       Author:: Patrick Smith                                                *
  *                                                                                             *
+#ifdef OG
  *                     $Modtime:: 5/14/01 10:07a                                              $*
+#endif
+#ifdef ZH
+ *                     $Modtime:: 1/15/02 5:57p                                               $*
+#endif
  *                                                                                             *
+#ifdef OG
  *                    $Revision:: 3                                                           $*
+#endif
+#ifdef ZH
+ *                    $Revision:: 4                                                           $*
+#endif
  *                                                                                             *
  *---------------------------------------------------------------------------------------------*
  * Functions:                                                                                  *
@@ -41,6 +51,10 @@
 #ifndef __SOUNDROBJ_H
 #define __SOUNDROBJ_H
 
+#ifdef ZH
+#if noWWAUDIO // (gth) removing dependency on WWAUDIO
+
+#endif
 #include "rendobj.h"
 #include "wwstring.h"
 #include "proto.h"
@@ -180,7 +194,12 @@ public:
 	WW3DErrorType					Save_W3D (ChunkSaveClass &csave);
 	const char *					Get_Name (void) const					{ return Name; }
 	void								Set_Name (const char *name)			{ Name = name; }	
+#ifdef OG
 	SoundRenderObjDefClass *	Clone (void) const						{ return W3DNEW SoundRenderObjDefClass (*this); }
+#endif
+#ifdef ZH
+	SoundRenderObjDefClass *	Clone (void) const						{ return NEW_REF( SoundRenderObjDefClass, (*this,"SoundRenderObjDefClass::Clone") ); }
+#endif
 
 	//
 	//	Initialization
@@ -274,6 +293,9 @@ public:
 ///////////////////////////////////////////////////////////////////////////////////
 extern SoundRenderObjLoaderClass		_SoundRenderObjLoader;
 
+#ifdef ZH
+#endif //noWWAUDIO (gth) removing dependency on wwaudio
+#endif
 
 #endif //__SOUNDROBJ_H
 

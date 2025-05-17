@@ -73,7 +73,12 @@ public:
 	CleanupAreaPower( Thing *thing, const ModuleData* moduleData );
 	// virtual destructor prototype defined by MemoryPoolObject
 
+#ifdef OG
 	virtual void doSpecialPowerAtLocation( const Coord3D *loc, UnsignedInt commandOptions );
+#endif
+#ifdef ZH
+	virtual void doSpecialPowerAtLocation( const Coord3D *loc, Real angle, UnsignedInt commandOptions );
+#endif
 };
 
 #endif 

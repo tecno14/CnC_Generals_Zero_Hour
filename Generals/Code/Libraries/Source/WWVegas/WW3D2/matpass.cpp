@@ -26,12 +26,30 @@
  *                                                                                             *
  *              Original Author:: Greg Hjelstrom                                               *
  *                                                                                             *
+#ifdef OG
  *                      $Author:: Greg_h                                                      $*
+#endif
+#ifdef ZH
+ *                       Author : Kenny Mitchell                                               * 
+#endif
  *                                                                                             *
+#ifdef OG
  *                     $Modtime:: 5/13/01 11:19a                                              $*
+#endif
+#ifdef ZH
+ *                     $Modtime:: 06/27/02 1:27p                                              $*
+#endif
  *                                                                                             *
+#ifdef OG
  *                    $Revision:: 7                                                           $*
+#endif
+#ifdef ZH
+ *                    $Revision:: 8                                                           $*
+#endif
  *                                                                                             *
+#ifdef ZH
+ * 06/27/02 KM Changes to max texture stage caps															*
+#endif
  *---------------------------------------------------------------------------------------------*
  * Functions:                                                                                  *
  *   MaterialPassClass::MaterialPassClass -- Constructor                                       *
@@ -90,6 +108,9 @@ MaterialPassClass::MaterialPassClass(void) :
  *                                                                                             *
  * HISTORY:                                                                                    *
  *   12/9/99    gth : Created.                                                                 *
+#ifdef ZH
+ *	  06/27/02   kjm : Changes to max texture stage caps															*
+#endif
  *=============================================================================================*/
 MaterialPassClass::~MaterialPassClass(void)
 {
@@ -117,7 +138,14 @@ void MaterialPassClass::Install_Materials(void) const
 {
 	DX8Wrapper::Set_Material(Peek_Material());
 	DX8Wrapper::Set_Shader(Peek_Shader());
+#ifdef OG
 	for (unsigned i=0;i<MAX_TEXTURE_STAGES;++i) {
+
+#endif
+#ifdef ZH
+	for (int i=0;i<DX8Wrapper::Get_Current_Caps()->Get_Max_Textures_Per_Pass();++i) 
+	{
+#endif
 		DX8Wrapper::Set_Texture(i,Peek_Texture(i));
 	}
 }

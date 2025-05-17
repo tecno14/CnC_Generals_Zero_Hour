@@ -29,6 +29,9 @@ Bool ExportScriptsOptions::m_units = true;
 Bool ExportScriptsOptions::m_waypoints = true;
 Bool ExportScriptsOptions::m_triggers = true;
 Bool ExportScriptsOptions::m_allScripts = false;
+#ifdef ZH
+Bool ExportScriptsOptions::m_sides = true;
+#endif
 
 ExportScriptsOptions::ExportScriptsOptions(CWnd* pParent /*=NULL*/)
 	: CDialog(ExportScriptsOptions::IDD, pParent)
@@ -68,6 +71,11 @@ void ExportScriptsOptions::OnOK()
 	m_triggers = pButton->GetCheck()==1;
 	pButton = (CButton*)GetDlgItem(IDC_ALL_SCRIPTS);
 	m_allScripts = pButton->GetCheck()==1;
+#ifdef ZH
+	pButton = (CButton*)GetDlgItem(IDC_SIDES);
+	m_sides = pButton->GetCheck()==1;
+
+#endif
 
 	CDialog::OnOK();
 }
@@ -86,6 +94,10 @@ BOOL ExportScriptsOptions::OnInitDialog()
 	pButton->SetCheck(m_allScripts?1:0);
 	pButton = (CButton*)GetDlgItem(IDC_SELECTED_SCRIPTS);
 	pButton->SetCheck(m_allScripts?0:1);
+#ifdef ZH
+	pButton = (CButton*)GetDlgItem(IDC_SIDES);
+	pButton->SetCheck(m_sides?1:0);
+#endif
 	
 	return TRUE;  // return TRUE unless you set the focus to a control
 	              // EXCEPTION: OCX Property Pages should return FALSE

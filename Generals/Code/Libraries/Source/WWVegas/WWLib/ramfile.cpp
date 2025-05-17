@@ -22,13 +22,33 @@
  *                                                                                             * 
  *                 Project Name : Command & Conquer                                            * 
  *                                                                                             * 
+#ifdef OG
  *                     $Archive:: /Commando/Library/RAMFILE.CPP                               $* 
+#endif
+#ifdef ZH
+ *                     $Archive:: /Commando/Code/wwlib/ramfile.cpp                            $* 
+#endif
  *                                                                                             * 
+#ifdef OG
  *                      $Author:: Greg_h                                                      $*
+#endif
+#ifdef ZH
+ *                      $Author:: Ian_l                                                       $*
+#endif
  *                                                                                             * 
+#ifdef OG
  *                     $Modtime:: 7/22/97 11:37a                                              $*
+#endif
+#ifdef ZH
+ *                     $Modtime:: 10/31/01 2:36p                                              $*
+#endif
  *                                                                                             * 
+#ifdef OG
  *                    $Revision:: 1                                                           $*
+#endif
+#ifdef ZH
+ *                    $Revision:: 2                                                           $*
+#endif
  *                                                                                             *
  *---------------------------------------------------------------------------------------------* 
  * Functions:                                                                                  * 
@@ -471,4 +491,30 @@ int RAMFileClass::Write(void const * buffer, int size)
 void RAMFileClass::Close(void)
 {
 	IsOpen = false;
+#ifdef ZH
+}
+
+/***********************************************************************************************
+ * RAMFileClass::Bias --																							  *	
+ *                                                                                             *
+ *                                                                                             *
+ * INPUT:   none                                                                               *
+ *                                                                                             *
+ * OUTPUT:  none                                                                               *
+ *                                                                                             *
+ * WARNINGS:   none                                                                            *
+ *                                                                                             *
+ * HISTORY:                                                                                    *
+ *   10/31/2001 IML : Created.                                                                 *
+ *=============================================================================================*/
+void RAMFileClass::Bias (int start, int length)
+{
+	Buffer	 = Buffer + start;
+	Length	 = MIN (Length, start + length) - start;
+	MaxLength =	MIN (MaxLength, start + length) - start;
+
+	if (Is_Open()) {
+		Seek (0, SEEK_SET);
+	}
+#endif
 }

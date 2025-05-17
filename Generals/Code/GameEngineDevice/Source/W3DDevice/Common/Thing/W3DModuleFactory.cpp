@@ -35,6 +35,10 @@
 #include "W3DDevice/GameClient/Module/W3DModelDraw.h"
 #include "W3DDevice/GameClient/Module/W3DLaserDraw.h"
 #include "W3DDevice/GameClient/Module/W3DOverlordTankDraw.h"
+#ifdef ZH
+#include "W3DDevice/GameClient/Module/W3DOverlordTruckDraw.h"
+#include "W3DDevice/GameClient/Module/W3DOverlordAircraftDraw.h"
+#endif
 #include "W3DDevice/GameClient/Module/W3DPoliceCarDraw.h"
 #include "W3DDevice/GameClient/Module/W3DProjectileStreamDraw.h"
 #include "W3DDevice/GameClient/Module/W3DRopeDraw.h"
@@ -44,6 +48,10 @@
 #include "W3DDevice/GameClient/Module/W3DTruckDraw.h"
 #include "W3DDevice/GameClient/Module/W3DTankTruckDraw.h"
 #include "W3DDevice/GameClient/Module/W3DTracerDraw.h"
+#ifdef ZH
+#include "W3DDevice/GameClient/Module/W3DTreeDraw.h"
+#include "W3DDevice/GameClient/Module/W3DPropDraw.h"
+#endif
 
 //-------------------------------------------------------------------------------------------------
 /** Initialize method */
@@ -60,6 +68,10 @@ void W3DModuleFactory::init( void )
 	addModule( W3DModelDraw );
 	addModule( W3DLaserDraw );
 	addModule( W3DOverlordTankDraw );
+#ifdef ZH
+	addModule( W3DOverlordTruckDraw );
+	addModule( W3DOverlordAircraftDraw );
+#endif
 	addModule( W3DProjectileStreamDraw );
 	addModule( W3DPoliceCarDraw );
 	addModule( W3DRopeDraw );
@@ -70,5 +82,9 @@ void W3DModuleFactory::init( void )
 	addModule( W3DTruckDraw );
 	addModule( W3DTracerDraw );
 	addModule( W3DTankTruckDraw );
+#ifdef ZH
+	addModule( W3DTreeDraw );
+	addModule( W3DPropDraw );
+#endif
 
 }  // end init

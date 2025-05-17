@@ -39,6 +39,10 @@
 #include "Common/SubsystemInterface.h"
 #include "GameClient/Color.h"
 #include "Common/STLTypedefs.h"
+#ifdef ZH
+#include "Common/GameCommon.h"
+#include "Common/Money.h"
+#endif
 
 // FORWARD DECLARATIONS ///////////////////////////////////////////////////////////////////////////
 struct FieldParse;
@@ -57,7 +61,14 @@ const Int MAX_GLOBAL_LIGHTS	= 3;
 /** Global data container class
   *	Defines all global game data used by the system
 	* @todo Change this entire system. Otherwise this will end up a huge class containing tons of variables,
+#ifdef OG
 	* and will cause re-compilation dependancies throughout the codebase. */
+
+#endif
+#ifdef ZH
+	* and will cause re-compilation dependancies throughout the codebase. 
+  * OOPS -- TOO LATE! :) */
+#endif
 //-------------------------------------------------------------------------------------------------
 class GlobalData : public SubsystemInterface
 {
@@ -92,6 +103,9 @@ public:
 	Bool m_useTrees;
 	Bool m_useTreeSway;
 	Bool m_useDrawModuleLOD;
+#ifdef ZH
+	Bool m_useHeatEffects;
+#endif
 	Bool m_useFpsLimit;
 	Bool m_dumpAssetUsage;
 	Int m_framesPerSecondLimit;
@@ -115,6 +129,10 @@ public:
 	Bool m_enableStaticLOD;
 	Int m_terrainLODTargetTimeMS;
 	Bool m_useAlternateMouse;
+#ifdef ZH
+	Bool m_clientRetaliationModeEnabled;
+	Bool m_doubleClickAttackMove;
+#endif
 	Bool m_rightMouseAlwaysScrolls;
 	Bool m_useWaterPlane;
 	Bool m_useCloudPlane;
@@ -130,6 +148,9 @@ public:
 	Int	m_waterType;
 	Bool m_showSoftWaterEdge;
 	Bool m_usingWaterTrackEditor;
+#ifdef ZH
+	Bool m_isWorldBuilder;
+#endif
 
 	Int m_featherWater;
 
@@ -243,6 +264,9 @@ public:
 
 	UnsignedInt m_noDraw;					///< Used to disable drawing, to profile game logic code.
 	AIDebugOptions m_debugAI;			///< Used to display AI debug information
+#ifdef ZH
+	Bool m_debugSupplyCenterPlacement; ///< Dumps to log everywhere it thinks about placing a supply center
+#endif
 	Bool m_debugAIObstacles;			///< Used to display AI obstacle debug information
 	Bool m_showObjectHealth;			///< debug display object health
 	Bool m_scriptDebug;						///< Should we attempt to load the script debugger window (.DLL)
@@ -254,6 +278,10 @@ public:
 	
 #ifdef DUMP_PERF_STATS
 	Bool m_dumpPerformanceStatistics;
+#ifdef ZH
+  Bool  m_dumpStatsAtInterval;///< should I automatically dum stats every in N frames
+  Int   m_statsInterval;       ///< if so, how many is N?
+#endif
 #endif
 	
 	Bool m_forceBenchmark;	///<forces running of CPU detection benchmark, even on known cpu's.
@@ -326,6 +354,9 @@ public:
 	AsciiString m_shellMapName;				///< Holds the shell map name
 	Bool m_shellMapOn;								///< User can set the shell map not to load
 	Bool m_playIntro;									///< Flag to say if we're to play the intro or not
+#ifdef ZH
+	Bool m_playSizzle;								///< Flag to say whether we play the sizzle movie after the logo movie.
+#endif
 	Bool m_afterIntro;								///< we need to tell the game our intro is done
 	Bool m_allowExitOutOfMovies;			///< flag to allow exit out of movies only after the Intro has played
 
@@ -391,6 +422,11 @@ public:
 
 	Color m_hotKeyTextColor;					///< standard color for all hotkeys.
 	
+#ifdef ZH
+  //THis is put on ice until later - M Lorenzen
+  //	Int m_cheaterHasBeenSpiedIfMyLowestBitIsTrue; ///< says it all.. this lives near other "colors" cause it is masquerading as one
+	
+#endif
 	AsciiString m_specialPowerViewObjectName;	///< Created when certain special powers are fired so players can watch.
 
 	std::vector<AsciiString> m_standardPublicBones;
@@ -400,7 +436,12 @@ public:
 
 	
 	Bool m_showMetrics;								///< whether or not to show the metrics.
+#ifdef OG
 	Int m_defaultStartingCash;				///< The amount of cash a player starts with by default.
+#endif
+#ifdef ZH
+	Money m_defaultStartingCash;				///< The amount of cash a player starts with by default.
+#endif
 	
 	Bool m_debugShowGraphicalFramerate;		///< Whether or not to show the graphical framerate bar.
 
@@ -424,22 +465,40 @@ public:
 	// network timing values.
 	UnsignedInt m_networkFPSHistoryLength;			///< The number of fps history entries
 	UnsignedInt m_networkLatencyHistoryLength;	///< The number of ping history entries.
+#ifdef OG
 	UnsignedInt m_networkRunAheadMetricsTime;		///< The number of miliseconds between run ahead metrics things
 	UnsignedInt m_networkCushionHistoryLength;	///< The number of cushion values to keep.
 	UnsignedInt m_networkRunAheadSlack;					///< The amount of slack in the run ahead value.  This is the percentage of the calculated run ahead that is added.
 	UnsignedInt m_networkKeepAliveDelay;				///< The number of seconds between when the connections to each player send a keep-alive packet.
+#endif
+#ifdef ZH
+	UnsignedInt m_networkCushionHistoryLength;      	///< The number of cushion values to keep.
+	UnsignedInt m_networkRunAheadMetricsTime;	      	///< The number of miliseconds between run ahead metrics things
+	UnsignedInt m_networkKeepAliveDelay;			      	///< The number of seconds between when the connections to each player send a keep-alive packet.
+	UnsignedInt m_networkRunAheadSlack;				      	///< The amount of slack in the run ahead value. This is the percentage of the calculated run ahead that is added.
+#endif
 	UnsignedInt m_networkDisconnectTime;				///< The number of milliseconds between when the game gets stuck on a frame for a network stall and when the disconnect dialog comes up.
 	UnsignedInt m_networkPlayerTimeoutTime;			///< The number of milliseconds between when a player's last keep alive command was recieved and when they are considered disconnected from the game.
 	UnsignedInt	m_networkDisconnectScreenNotifyTime; ///< The number of milliseconds between when the disconnect screen comes up and when the other players are notified that we are on the disconnect screen.
 	
 	Real				m_keyboardCameraRotateSpeed;    ///< How fast the camera rotates when rotated via keyboard controls.
   Int					m_playStats;									///< Int whether we want to log play stats or not, if <= 0 then we don't log
+#ifdef ZH
+
+#if defined(_DEBUG) || defined(_INTERNAL) || defined(_ALLOW_DEBUG_CHEATS_IN_RELEASE)
+	Bool m_specialPowerUsesDelay ;
+#endif
+  Bool m_TiVOFastMode;            ///< When true, the client speeds up the framerate... set by HOTKEY!
+  
+#endif
 
 #if defined(_DEBUG) || defined(_INTERNAL)
 	Bool m_wireframe;
 	Bool m_stateMachineDebug;
 	Bool m_useCameraConstraints;
+#ifdef OG
 	Bool m_specialPowerUsesDelay;
+#endif
 	Bool m_shroudOn;
 	Bool m_fogOfWarOn;
 	Bool m_jabberOn;
@@ -472,6 +531,9 @@ public:
 	Bool m_debugIgnoreAsserts;						///< Ignore all asserts.
 	Bool m_debugIgnoreStackTrace;					///< No stacktraces for asserts.
 	Bool m_showCollisionExtents;	///< Used to display collision extents
+#ifdef ZH
+  Bool m_showAudioLocations;    ///< Used to display audio markers and ambient sound radii
+#endif
 	Bool m_saveStats;
 	Bool m_saveAllStats;
 	Bool m_useLocalMOTD;
@@ -482,16 +544,29 @@ public:
 	Int m_latencyPeriod;					///< Period of sinusoidal modulation of latency
 	Int m_latencyNoise;						///< Max amplitude of jitter to throw in
 	Int m_packetLoss;							///< Percent of packets to drop
+#ifdef ZH
+	Bool m_extraLogging;					///< More expensive debug logging to catch crashes.
+#endif
 #endif
 
 	Bool				m_isBreakableMovie;							///< if we enter a breakable movie, set this flag
 	Bool				m_breakTheMovie;								///< The user has hit escape!
-	
 	AsciiString m_modDir;
 	AsciiString m_modBIG;
+#ifdef ZH
+
+	//-allAdvice feature
+	//Bool m_allAdvice;
+
+#endif
 
 	// the trailing '\' is included!
+#ifdef OG
 	AsciiString getPath_UserData() const;
+#endif
+#ifdef ZH
+  const AsciiString &getPath_UserData() const { return m_userDataDir; }
+#endif
 
 private:
 
@@ -500,10 +575,12 @@ private:
 	// this is private, since we read the info from Windows and cache it for
 	// future use. No one is allowed to change it, ever. (srj)
 	AsciiString m_userDataDir;
+#ifdef OG
 	
 	// just the "leaf name", read from INI. private because no one is ever allowed
 	// to look at it directly; they must go thru getPath_UserData(). (srj)
 	AsciiString m_userDataLeafName;
+#endif
 
 	static GlobalData *m_theOriginal;		///< the original global data instance (no overrides)
 	GlobalData *m_next;									///< next instance (for overrides)

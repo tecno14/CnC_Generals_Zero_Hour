@@ -41,6 +41,9 @@
 
 // FORWARD DECLARATIONS ///////////////////////////////////////////////////////////////////////////
 class AIGuardMachine;
+#ifdef ZH
+class AIGuardRetaliateMachine;
+#endif
 class AITNGuardMachine;
 class Weapon;
 class Team;
@@ -103,6 +106,11 @@ enum AIStateType
 	AI_MOVE_AWAY_FROM_REPULSORS,							///< Civilians are running away from repulsors. (enemies or dead civs, usually) jba
 	AI_WANDER_IN_PLACE,												///< Civilians just wander around a spot, rather than along a path.
 	AI_BUSY,																	///< This is a state that things will be in when they are busy doing random stuff that doesn't require AI interaction.
+#ifdef ZH
+	AI_EXIT_INSTANTLY,												///< exit this obj, without waiting -- do it in the onEnter! This frame!
+	AI_GUARD_RETALIATE,												///< attacks attacker but with restrictions (hybrid of attack and guard).
+
+#endif
 	NUM_AI_STATES
 };
 
@@ -457,6 +465,9 @@ public:
 		// we're setting m_isInitialApproach to true in the constructor because we want the first pass 
 		// through this state to allow a unit to attack incidental targets (if it is turreted)
 	}
+#ifdef ZH
+	virtual Bool isAttack() const { return TRUE; }
+#endif
 	virtual StateReturnType onEnter();
 	virtual void onExit( StateExitType status );
 	virtual StateReturnType update();
@@ -505,6 +516,9 @@ public:
 		// we're setting m_isInitialApproach to true in the constructor because we want the first pass 
 		// through this state to allow a unit to attack incidental targets (if it is turreted)
 	}
+#ifdef ZH
+	virtual Bool isAttack() const { return TRUE; }
+#endif
 	virtual StateReturnType onEnter();
 	virtual void onExit( StateExitType status );
 	virtual StateReturnType update();
@@ -574,6 +588,9 @@ public:
 	AIAttackMoveToState( StateMachine *machine );
 	//virtual ~AIAttackMoveToState();
 
+#ifdef ZH
+	virtual Bool isAttack() const { return m_attackMoveMachine ? m_attackMoveMachine->isInAttackState() : FALSE; }
+#endif
 	virtual StateReturnType onEnter();
 	virtual void onExit( StateExitType status );
 	virtual StateReturnType update();
@@ -682,6 +699,11 @@ class AIAttackFollowWaypointPathState : public AIFollowWaypointPathState
 public:
 	AIAttackFollowWaypointPathState( StateMachine *machine, Bool asGroup );
 	//virtual ~AIAttackFollowWaypointPathState();
+#ifdef ZH
+	
+	virtual Bool isAttack() const { return m_attackFollowMachine ? m_attackFollowMachine->isInAttackState() : FALSE; }
+
+#endif
 	virtual StateReturnType onEnter();
 	virtual void onExit( StateExitType status );
 	virtual StateReturnType update();
@@ -896,6 +918,9 @@ public:
 		m_setLocomotor(false)
 	{ 
 	}
+#ifdef ZH
+	virtual Bool isAttack() const { return TRUE; }
+#endif
 	virtual StateReturnType onEnter();
 	virtual void onExit( StateExitType status );
 	virtual StateReturnType update();
@@ -948,6 +973,9 @@ public:
 		m_att(att) 
 	{ 
 	}
+#ifdef ZH
+	virtual Bool isAttack() const { return TRUE; }
+#endif
 	virtual StateReturnType update();
 	virtual void onExit( StateExitType status );
 	virtual StateReturnType onEnter();
@@ -977,6 +1005,9 @@ public:
 	AIAttackState( StateMachine *machine, Bool follow, Bool attackingObject, Bool forceAttacking, AttackExitConditionsInterface* attackParameters);
 	//~AIAttackState();
 
+#ifdef ZH
+	virtual Bool isAttack() const { return TRUE; }
+#endif
 	virtual StateReturnType onEnter();
 	virtual void onExit( StateExitType status );
 	virtual StateReturnType update();
@@ -990,8 +1021,10 @@ public:
 #ifdef STATE_MACHINE_DEBUG
 	virtual AsciiString getName() const ;
 #endif
+#ifdef OG
 
 	virtual Bool isAttack() const { return TRUE; }
+#endif
 
 protected:
 	// snapshot interface
@@ -1001,7 +1034,12 @@ protected:
 
 private:
 
+#ifdef OG
 	void chooseWeapon();
+#endif
+#ifdef ZH
+	Bool chooseWeapon();
+#endif
 
 	AttackStateMachine*							m_attackMachine;						///< state sub-machine for attack behavior
 	AttackExitConditionsInterface*	m_attackParameters;					///< these are not owned by this, and will not be deleted on destruction
@@ -1022,6 +1060,9 @@ public:
 			State( machine , "AIAttackSquadState") {	}
 	//~AIAttackSquadState();
 
+#ifdef ZH
+	virtual Bool isAttack() const { return m_attackSquadMachine ? m_attackSquadMachine->isInAttackState() : FALSE; }
+#endif
 	virtual StateReturnType onEnter( void );
 	virtual void onExit( StateExitType status );
 	virtual StateReturnType update( void );
@@ -1065,6 +1106,9 @@ class AIDockState : public State
 public:
 	AIDockState( StateMachine *machine ) : State( machine, "AIDockState" ), m_dockMachine(NULL), m_usingPrecisionMovement(FALSE) { }
 	//~AIDockState();
+#ifdef ZH
+	virtual Bool isAttack() const { return m_dockMachine ? m_dockMachine->isInAttackState() : FALSE; }
+#endif
 	virtual StateReturnType onEnter();
 	virtual void onExit( StateExitType status );
 	virtual StateReturnType update();
@@ -1124,6 +1168,27 @@ public:
 EMPTY_DTOR(AIExitState)
 
 //-----------------------------------------------------------------------------------------------------------
+#ifdef ZH
+class AIExitInstantlyState : public State
+{
+	MEMORY_POOL_GLUE_WITH_USERLOOKUP_CREATE(AIExitInstantlyState, "AIExitInstantlyState")		
+protected:
+	ObjectID m_entryToClear;
+protected:
+	// snapshot interface
+	virtual void crc( Xfer *xfer );
+	virtual void xfer( Xfer *xfer );
+	virtual void loadPostProcess();
+public:
+	AIExitInstantlyState( StateMachine *machine ) : State( machine, "AIExitInstantlyState" ) { }
+	virtual StateReturnType onEnter();
+	virtual StateReturnType update();
+	virtual void onExit( StateExitType status );
+};
+EMPTY_DTOR(AIExitInstantlyState)
+
+//-----------------------------------------------------------------------------------------------------------
+#endif
 /**
  * Guard location
  */
@@ -1136,6 +1201,10 @@ public:
 		m_guardMachine = NULL;
 	}
 	//~AIGuardState();
+#ifdef ZH
+	virtual Bool isAttack() const;
+	virtual Bool isGuardIdle() const;
+#endif
 	virtual StateReturnType onEnter();
 	virtual void onExit( StateExitType status );
 	virtual StateReturnType update();
@@ -1154,6 +1223,35 @@ private:
 
 //-----------------------------------------------------------------------------------------------------------
 /**
+#ifdef ZH
+ * Guard retaliate against object (hybrid attack / guard)
+ */
+class AIGuardRetaliateState : public State
+{
+	MEMORY_POOL_GLUE_WITH_USERLOOKUP_CREATE(AIGuardRetaliateState, "AIGuardRetaliateState")		
+public:
+	AIGuardRetaliateState( StateMachine *machine ) : State( machine, "AIGuardRetaliateState" ), m_guardRetaliateMachine(NULL) {}
+	//~AIGuardRetaliateState();
+	virtual Bool isAttack() const;
+	virtual StateReturnType onEnter();
+	virtual void onExit( StateExitType status );
+	virtual StateReturnType update();
+#ifdef STATE_MACHINE_DEBUG
+	virtual AsciiString getName() const ;
+#endif
+protected:
+	// snapshot interface
+	virtual void crc( Xfer *xfer );
+	virtual void xfer( Xfer *xfer );
+	virtual void loadPostProcess();
+
+private:
+	AIGuardRetaliateMachine *m_guardRetaliateMachine;					///< state sub-machine for retaliate behavior
+};
+
+//-----------------------------------------------------------------------------------------------------------
+/**
+#endif
  * Guard from inside a tunnel network.
  */
 class AITunnelNetworkGuardState : public State
@@ -1165,6 +1263,9 @@ public:
 		m_guardMachine = NULL;
 	}
 	//~AIGuardState();
+#ifdef ZH
+	virtual Bool isAttack() const;
+#endif
 	virtual StateReturnType onEnter();
 	virtual void onExit( StateExitType status );
 	virtual StateReturnType update();
@@ -1194,6 +1295,9 @@ public:
 		m_nextEnemyScanTime = 0;
 	}
 	//~AIHuntState();
+#ifdef ZH
+	virtual Bool isAttack() const;
+#endif
 	virtual StateReturnType onEnter();
 	virtual void onExit( StateExitType status );
 	virtual StateReturnType update();
@@ -1224,6 +1328,9 @@ public:
 	AIAttackAreaState( StateMachine *machine ) : State( machine, "AIAttackAreaState" ), m_attackMachine(NULL), 
 		m_nextEnemyScanTime(0) { }
 	//~AIAttackAreaState();
+#ifdef ZH
+	virtual Bool isAttack() const { return m_attackMachine ? m_attackMachine->isInAttackState() : FALSE; }
+#endif
 	virtual StateReturnType onEnter();
 	virtual void onExit( StateExitType status );
 	virtual StateReturnType update();

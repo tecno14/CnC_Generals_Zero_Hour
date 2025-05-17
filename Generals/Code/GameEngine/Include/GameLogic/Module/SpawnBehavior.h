@@ -59,6 +59,9 @@ public:
 	Bool m_aggregateHealth;								///< should I calc an offset for the healthbox, averaging all my spawn
 	Bool m_exitByBudding;									///< do I create each new spawn atop an existing one?
 	Bool m_spawnedRequireSpawner;					///< Spawned objects can only exist while the spawner (us) is alive and present
+#ifdef ZH
+	Bool m_slavesHaveFreeWill;						///< Slaves with free will don't attack when parent attacks.
+#endif
 	DamageTypeFlags m_damageTypesToPropagateToSlaves;
 	std::vector<AsciiString> m_spawnTemplateNameData;
 	DieMuxData m_dieMuxData;
@@ -78,6 +81,9 @@ public:
 		m_exitByBudding = FALSE;
 		m_spawnTemplateNameData.clear();
 		m_spawnedRequireSpawner = FALSE;
+#ifdef ZH
+		m_slavesHaveFreeWill = FALSE;
+#endif
 	}
 
 	static void buildFieldParse(MultiIniFieldParse& p) 
@@ -94,7 +100,16 @@ public:
 			{ "SpawnTemplateName",				INI::parseAsciiStringVectorAppend,NULL, offsetof( SpawnBehaviorModuleData, m_spawnTemplateNameData ) },
 			{ "SpawnedRequireSpawner",		INI::parseBool,										NULL,	offsetof( SpawnBehaviorModuleData, m_spawnedRequireSpawner ) },
 			{ "PropagateDamageTypesToSlavesWhenExisting",   INI::parseDamageTypeFlags, NULL, offsetof( SpawnBehaviorModuleData, m_damageTypesToPropagateToSlaves ) },
+#ifdef OG
 			{ "InitialBurst",				      INI::parseInt,						        NULL, offsetof( SpawnBehaviorModuleData, m_initialBurst ) },			{ 0, 0, 0, 0 }
+
+#endif
+#ifdef ZH
+			{ "InitialBurst",				      INI::parseInt,						        NULL, offsetof( SpawnBehaviorModuleData, m_initialBurst ) },			
+			{ "SlavesHaveFreeWill",				INI::parseBool,										NULL, offsetof( SpawnBehaviorModuleData, m_slavesHaveFreeWill ) },
+			{ 0, 0, 0, 0 }
+			
+#endif
 		};
     p.add(dataFieldParse);
 		p.add(DieMuxData::getFieldParse(), offsetof( SpawnBehaviorModuleData, m_dieMuxData ));
@@ -117,6 +132,14 @@ public:
 	virtual CanAttackResult getCanAnySlavesUseWeaponAgainstTarget( AbleToAttackType attackType, const Object *victim, const Coord3D *pos, CommandSourceType cmdSource ) = 0;
 	virtual Bool canAnySlavesAttack() = 0;
 	virtual void orderSlavesToGoIdle( CommandSourceType cmdSource ) = 0;
+#ifdef ZH
+	virtual void orderSlavesDisabledUntil( DisabledType type, UnsignedInt frame ) = 0;
+	virtual void orderSlavesToClearDisabled( DisabledType type ) = 0;
+	virtual void giveSlavesStealthUpgrade( Bool grantStealth ) = 0;
+	virtual Bool areAllSlavesStealthed() const = 0;
+	virtual void revealSlaves() = 0;
+	virtual Bool doSlavesHaveFreedom() const = 0;
+#endif
 };
 
 // ------------------------------------------------------------------------------------------------
@@ -166,6 +189,14 @@ public:
 	virtual CanAttackResult getCanAnySlavesUseWeaponAgainstTarget( AbleToAttackType attackType, const Object *victim, const Coord3D *pos, CommandSourceType cmdSource );
 	virtual Bool canAnySlavesAttack();
 	virtual void orderSlavesToGoIdle( CommandSourceType cmdSource );
+#ifdef ZH
+	virtual void orderSlavesDisabledUntil( DisabledType type, UnsignedInt frame );
+	virtual void orderSlavesToClearDisabled( DisabledType type );
+	virtual void giveSlavesStealthUpgrade( Bool grantStealth );
+	virtual Bool areAllSlavesStealthed() const;
+	virtual void revealSlaves();
+	virtual Bool doSlavesHaveFreedom() const { return getSpawnBehaviorModuleData()->m_slavesHaveFreeWill; }
+#endif
 
 	// **********************************************************************************************
 	// our own methods

@@ -24,15 +24,44 @@
  *                                                                                             * 
  *                     $Archive:: /Commando/Code/wwlib/ini.cpp                                $* 
  *                                                                                             * 
+#ifdef OG
  *                      $Author:: Byon_g                                                      $*
+
+#endif
+#ifdef ZH
+ *                      $Author:: Steve_t                                                     $*
+ *                                                                                             *
+ *                     $Modtime:: 11/14/01 1:33a                                              $*
+ *                                                                                             *
+ *                    $Revision:: 22                                                          $*
+ *                                                                                             *
+ *                 Project Name : Command & Conquer                                            *
+ *                                                                                             *
+ *                     $Archive:: /Commando/Code/wwlib/ini.cpp                                $*
+ *                                                                                             *
+ *                      $Author:: Steve_t                                                     $*
+#endif
  *                                                                                             * 
+#ifdef OG
  *                     $Modtime:: 7/23/01 6:20p                                               $*
+#endif
+#ifdef ZH
+ *                     $Modtime:: 11/14/01 1:33a                                              $*
+#endif
  *                                                                                             * 
+#ifdef OG
  *                    $Revision:: 17                                                          $*
+#endif
+#ifdef ZH
+ *                    $Revision:: 22                                                          $*
+#endif
  *                                                                                             *
  *---------------------------------------------------------------------------------------------* 
  * Functions:                                                                                  * 
  *   INIClass::Clear -- Clears out a section (or all sections) of the INI data.                *
+#ifdef ZH
+ *   INIClass::Get_Filename -- Returns the name of the INI file (if available - "<unknown>" otherwise) *
+#endif
  *   INIClass::Entry_Count -- Fetches the number of entries in a specified section.            *
  *   INIClass::Find_Entry -- Find specified entry within section.                              *
  *   INIClass::Find_Section -- Find the specified section within the INI data.                 *
@@ -84,6 +113,9 @@
 #include	"xpipe.h"
 #include	"xstraw.h"
 #include	<stdio.h>
+#ifdef ZH
+#include <malloc.h>
+#endif
 #ifdef _UNIX
 #include <ctype.h>
 #endif
@@ -97,10 +129,21 @@
 #include	"pk.h"
 #include	"pipe.h"
 #include	"wwstring.h"
+#ifdef ZH
+#include "widestring.h"
+#include "nstrdup.h"
+#endif
 
 #if defined(__WATCOMC__)
 // Disable the "temporary object used to initialize a non-constant reference" warning.
 #pragma warning 665 9
+#endif
+#ifdef ZH
+
+
+// Instance of the static variables.
+bool INIClass::KeepBlankEntries = false;
+const int INIClass::MAX_LINE_LENGTH = 4096;
 #endif
 
 
@@ -128,12 +171,18 @@ void INIClass::Initialize(void)
 {
 	SectionList = W3DNEW List<INISection *> ();
 	SectionIndex = W3DNEW IndexClass<int, INISection *> ();
+#ifdef ZH
+	Filename = nstrdup("<unknown>");
+#endif
 }
 
 void INIClass::Shutdown(void)
 {
 	delete SectionList;
 	delete SectionIndex;
+#ifdef ZH
+	delete[] Filename;
+#endif
 }	
 
 /***********************************************************************************************
@@ -149,6 +198,9 @@ void INIClass::Shutdown(void)
  * HISTORY:                                                                                    *
  *=============================================================================================*/
 INIClass::INIClass(void)
+#ifdef ZH
+:	Filename(0)
+#endif
 {
 	Initialize();
 }
@@ -167,6 +219,9 @@ INIClass::INIClass(void)
  *=============================================================================================*/
 
 INIClass::INIClass(FileClass & file) 
+#ifdef ZH
+:	Filename(0)
+#endif
 {
 	Initialize();
 	Load(file);
@@ -188,6 +243,9 @@ INIClass::INIClass(FileClass & file)
  *=============================================================================================*/
 
 INIClass::INIClass(const char *filename) 
+#ifdef ZH
+:	Filename(0)
+#endif
 {
 	Initialize();
 	FileClass *file=_TheFileFactory->Get_File(filename);
@@ -248,6 +306,11 @@ bool INIClass::Clear(char const * section, char const * entry)
 	if (section == NULL) {
 		SectionList->Delete();
 		SectionIndex->Clear();
+#ifdef ZH
+
+		delete[] Filename;
+		Filename = nstrdup("<unknown>");
+#endif
 	} else {
 		INISection * secptr = Find_Section(section);
 		if (secptr != NULL) {
@@ -276,6 +339,26 @@ bool INIClass::Clear(char const * section, char const * entry)
 
 
 /***********************************************************************************************
+#ifdef ZH
+ * INIClass::Get_Filename -- Returns the name of the INI file (if available - "<unknown>"      *
+ *  otherwise)                                                                                 *
+ *                                                                                             *
+ * INPUT:                                                                                      *
+ *                                                                                             *
+ * OUTPUT:                                                                                     *
+ *                                                                                             *
+ * WARNINGS:                                                                                   *
+ *                                                                                             *
+ * HISTORY:                                                                                    *
+ *   9/7/2001   AJA:  Created.                                                                 *
+ *=============================================================================================*/
+const char * INIClass::Get_Filename (void) const
+{
+	return Filename;
+}
+
+/***********************************************************************************************
+#endif
  * INIClass::Load -- Load INI data from the file specified.                                    *
  *                                                                                             *
  *    Use this routine to load the INI class with the data from the specified file.            *
@@ -292,6 +375,10 @@ bool INIClass::Clear(char const * section, char const * entry)
 int INIClass::Load(FileClass & file)
 {
 	FileStraw fs(file);
+#ifdef ZH
+	delete[] Filename;
+	Filename = nstrdup(file.File_Name());
+#endif
 	return(Load(fs));
 }
 
@@ -315,6 +402,10 @@ int INIClass::Load(const char *filename)
 {
 	file_auto_ptr file(_TheFileFactory, filename);
 	int retval=Load(*file);
+#ifdef ZH
+	delete[] Filename;
+	Filename = nstrdup(filename);
+#endif
 
 	return(retval);
 }
@@ -337,6 +428,9 @@ int INIClass::Load(const char *filename)
  *   09/29/1997 JLB : Handles the merging case.                                                *
  *   12/09/1997 EHC : Detects duplicate entry CRCs and fails in that case                      *
  *   03/22/2001 AJA : Treat "foobar=" as a valid entry with value " ".                         *
+#ifdef ZH
+ *   08/23/2001 AJA : Make the loading of "foobar=" dependant on the KeepBlankEntries flag.    *
+#endif
  *=============================================================================================*/
 int INIClass::Load(Straw & ffile)
 {
@@ -411,15 +505,34 @@ int INIClass::Load(Straw & ffile)
 				/*
 				**	Split the line into entry and value sections. Be sure to catch the
 				**	"=foobar" and "foobar=" cases. "=foobar" lines are ignored, while
+#ifdef OG
 				** "foobar=" lines are stores has having " " as their value.
+
+#endif
+#ifdef ZH
+				** "foobar=" lines are might be stored as has having " " as their value,
+				** depending on the value of KeepBlankEntries.
+#endif
 				*/
 				*divider++ = '\0';
 				strtrim(buffer);
 				if (!strlen(buffer)) continue;
 
 				strtrim(divider);
+#ifdef OG
 				if (!strlen(divider))
+
+#endif
+#ifdef ZH
+				if (!strlen(divider)) {
+					if (KeepBlankEntries)
+#endif
 					divider = " ";
+#ifdef ZH
+					else
+						continue;
+				}
+#endif
 
 				if (Put_String(section, buffer, divider) == false) {
 					return(false);
@@ -472,15 +585,34 @@ int INIClass::Load(Straw & ffile)
 				/*
 				**	Split the line into entry and value sections. Be sure to catch the
 				**	"=foobar" and "foobar=" cases. "=foobar" lines are ignored, while
+#ifdef OG
 				** "foobar=" lines are stores has having " " as their value.
+
+#endif
+#ifdef ZH
+				** "foobar=" lines are might be stored as has having " " as their value,
+				** depending on the value of KeepBlankEntries.
+#endif
 				*/
 				*divider++ = '\0';
 				strtrim(buffer);
 				if (!strlen(buffer)) continue;
 
 				strtrim(divider);
+#ifdef OG
 				if (!strlen(divider))
+
+#endif
+#ifdef ZH
+				if (!strlen(divider)) {
+					if (KeepBlankEntries)
+#endif
 					divider = " ";
+#ifdef ZH
+					else
+						continue;
+				}
+#endif
 
 
 				INIEntry * entryptr = W3DNEW INIEntry(strdup(buffer), strdup(divider));
@@ -492,9 +624,16 @@ int INIClass::Load(Straw & ffile)
 
 				// 12/09/97 EHC - check to see if an entry with this ID already exists
 				if (secptr->EntryIndex.Is_Present(entryptr->Index_ID())) {
+#ifdef OG
 					WWDEBUG_SAY(( "Duplicate Entry CRC Section \"%s\" Entry \"%s\"\n", secptr->Section, buffer ));
 					DuplicateCRCError("INIClass::Load", buffer);
 					return false;
+#endif
+#ifdef ZH
+					DuplicateCRCError("INIClass::Load", secptr->Section, buffer);
+					delete entryptr;
+					continue;
+#endif
 				}
 
 				secptr->EntryIndex.Add_Index(entryptr->Index_ID(), entryptr);
@@ -535,6 +674,10 @@ int INIClass::Load(Straw & ffile)
 int INIClass::Save(FileClass & file) const
 {
 	FilePipe fp(file);
+#ifdef ZH
+	delete[] Filename;
+	Filename = nstrdup(file.File_Name());
+#endif
 	return(Save(fp));
 }
 
@@ -563,6 +706,11 @@ int INIClass::Save(const char *filename) const
 		_TheWritingFileFactory->Return_File(file);
 	}
 	file=NULL;
+#ifdef ZH
+
+	delete[] Filename;
+	Filename = nstrdup(filename);
+#endif
 
 	return(retval);
 }
@@ -907,6 +1055,130 @@ int INIClass::Get_UUBlock(char const * section, void * block, int len) const
 
 
 /***********************************************************************************************
+#ifdef ZH
+ * INIClass::Get_Wide_String -- Get a wide string from an .INI                                 *
+ *                                                                                             *
+ *                                                                                             *
+ *                                                                                             *
+ * INPUT:    Reference to new string to return                                                 *
+ *           Section to find string                                                            *
+ *           Entry name of string                                                              *
+ *           Default value to use when string is not present                                   *
+ *                                                                                             *
+ * OUTPUT:   Reference to input string                                                         *
+ *                                                                                             *
+ * WARNINGS: None                                                                              *
+ *                                                                                             *
+ * HISTORY:                                                                                    *
+ *    11/6/2001 4:27PM ST : Created                                                            *
+ *=============================================================================================*/
+const WideStringClass& INIClass::Get_Wide_String(WideStringClass& new_string, char const * section, char const * entry, wchar_t const * defvalue) const
+{
+	wchar_t out[1024];
+	char buffer[1024];
+
+	Base64Pipe b64pipe(Base64Pipe::DECODE);
+	BufferPipe bpipe(out, sizeof(out));
+	b64pipe.Put_To(&bpipe);
+
+	int length = Get_String(section, entry, "", buffer, sizeof(buffer));
+	if (length == 0) {
+		new_string = defvalue;
+	} else {
+		int outcount = b64pipe.Put(buffer, length);
+		outcount += b64pipe.End();
+		new_string = out;
+	}
+	return(new_string);
+}
+
+/***********************************************************************************************
+ * INIClass::Put_Wide_String -- Put a wide string into an INI database.                        *
+ *                                                                                             *
+ *                                                                                             *
+ *                                                                                             *
+ * INPUT:    Section name to store entry under                                                 *
+ *           Entry name                                                                        *
+ *           Ptr to wide string data                                                           *
+ *                                                                                             *
+ * OUTPUT:   True if put OK                                                                    *
+ *                                                                                             *
+ * WARNINGS: None                                                                              *
+ *                                                                                             *
+ * HISTORY:                                                                                    *
+ *   11/6/2001 4:29PM ST : Created                                                             *
+ *=============================================================================================*/
+bool INIClass::Put_Wide_String(char const * section, char const * entry, wchar_t const * string)
+{
+	if (section == NULL || entry == NULL || string == NULL) {
+		return(false);
+	}
+
+	WideStringClass temp_string(string, true);
+	int len = temp_string.Get_Length();
+
+	if (len == 0) {
+		Put_String(section, entry, "");
+	} else {
+
+		char *buffer = (char*) _alloca((len * 8) + 32);
+
+		BufferStraw straw(string, (len*2) + 2);		// Convert from shorts to bytes, plus 2 for terminator.
+		Base64Straw bstraw(Base64Straw::ENCODE);
+		bstraw.Get_From(straw);
+
+		int new_length = 0;
+		int added = 0;
+		do {
+			added = bstraw.Get(buffer + new_length, 16);
+			new_length += added;
+		} while (added);
+		buffer[new_length] = 0;
+		WWASSERT(new_length != 0);
+		Put_String(section, entry, buffer);
+	}
+	return(true);
+}
+
+bool INIClass::Put_UUBlock(char const * section, char const *entry, void const * block, int len)
+{
+	if (section == NULL || block == NULL || len < 1) return(false);
+
+	BufferStraw straw(block, len);
+	Base64Straw bstraw(Base64Straw::ENCODE);
+	bstraw.Get_From(straw);
+
+	char *buffer = (char*) _alloca(len * 3);
+	int length = bstraw.Get(buffer, (len * 3) - 1);
+
+	buffer[length] = '\0';
+	Put_String(section, entry, buffer);
+
+	return(true);
+}
+
+int INIClass::Get_UUBlock(char const * section, char const *entry, void * block, int len) const
+{
+	if (section == NULL) return(0);
+	if (entry == NULL) return(0);
+
+	Base64Pipe b64pipe(Base64Pipe::DECODE);
+	BufferPipe bpipe(block, len);
+
+	b64pipe.Put_To(&bpipe);
+
+	int total = 0;
+	char *buffer = (char*) _alloca(len * 3);
+
+	int length = Get_String(section, entry, "=", buffer, len*3);
+	int outcount = b64pipe.Put(buffer, length);
+	total += outcount;
+	total += b64pipe.End();
+	return(total);
+}
+
+/***********************************************************************************************
+#endif
  * INIClass::Put_TextBlock -- Stores a block of text into an INI section.                      *
  *                                                                                             *
  *    This routine will take an arbitrarily long block of text and store it into the INI       *
@@ -1060,7 +1332,12 @@ int INIClass::Get_TextBlock(char const * section, char * buffer, int len) const
  *=============================================================================================*/
 bool INIClass::Put_Int(char const * section, char const * entry, int number, int format)
 {
+#ifdef OG
 	char buffer[MAX_LINE_LENGTH];
+#endif
+#ifdef ZH
+	char buffer[64];
+#endif
 
 	switch (format) {
 		default:
@@ -1210,7 +1487,12 @@ Rect const INIClass::Get_Rect(char const * section, char const * entry, Rect con
  *=============================================================================================*/
 bool INIClass::Put_Hex(char const * section, char const * entry, int number)
 {
+#ifdef OG
 	char buffer[MAX_LINE_LENGTH];
+#endif
+#ifdef ZH
+	char buffer[64];
+#endif
 
 	sprintf(buffer, "%X", number);
 	return(Put_String(section, entry, buffer));
@@ -1281,7 +1563,12 @@ float INIClass::Get_Float(char const * section, char const * entry, float defval
 
 	INIEntry * entryptr = Find_Entry(section, entry);
 	if (entryptr != NULL && entryptr->Value != NULL) {
+#ifdef OG
 		float val;
+#endif
+#ifdef ZH
+		float val = defvalue;
+#endif
 		sscanf(entryptr->Value, "%f", &val);
 		defvalue = val;
 		if (strchr(entryptr->Value, '%') != NULL) {
@@ -1310,12 +1597,95 @@ float INIClass::Get_Float(char const * section, char const * entry, float defval
  *                                                                                             * 
  * HISTORY:                                                                                    * 
  *   05/31/1997 JLB : Created.                                                                 * 
+#ifdef ZH
  *=============================================================================================*/
-bool INIClass::Put_Float(char const * section, char const * entry, double number)
+bool INIClass::Put_Float(char const * section, char const * entry, float number)
 {
-	char buffer[MAX_LINE_LENGTH];
+	char buffer[64];
 
+	sprintf(buffer, "%f", number);
+	return(Put_String(section, entry, buffer));
+}
+
+/***********************************************************************************************
+ * INIClass::Get_Double -- Fetch a double-precision floating point number from the database.   *
+ *                                                                                             *
+ *    This routine will retrieve a floating point number from the database.                    *
+ *                                                                                             *
+ * INPUT:   section  -- The section name to find the entry under.                              *
+ *                                                                                             *
+ *          entry    -- The entry name to fetch the float value from.                          *
+ *                                                                                             *
+ *          defvalue -- Return value to use if the section and entry could not be found.       *
+ *                                                                                             *
+ * OUTPUT:  Returns with the float value from the section and entry specified. If not found,   *
+ *          then the default value is returned.                                                *
+ *                                                                                             *
+ * WARNINGS:   none                                                                            *
+ *                                                                                             *
+ * HISTORY:                                                                                    *
+ *   8/27/2001 AJA : Created.                                                                  *
+#endif
+ *=============================================================================================*/
+#ifdef OG
+bool INIClass::Put_Float(char const * section, char const * entry, double number)
+
+#endif
+#ifdef ZH
+double INIClass::Get_Double(char const * section, char const * entry, double defvalue) const
+{
+	/*
+	**	Verify that the parameters are nominally correct.
+	*/
+	if (section == NULL || entry == NULL) return(defvalue);
+
+	INIEntry * entryptr = Find_Entry(section, entry);
+	if (entryptr != NULL && entryptr->Value != NULL) {
+		float val = defvalue;
+		sscanf(entryptr->Value, "%lf", &val);
+		defvalue = val;
+		if (strchr(entryptr->Value, '%') != NULL) {
+			defvalue /= 100.0f;
+		}
+	}
+	return(defvalue);
+}
+
+/***********************************************************************************************
+ * INIClass::Put_Double -- Store a double-precision floating point number to the database.     *
+ *                                                                                             *
+ *    This routine will store a flaoting point number to the section and entry of the          *
+ *    database.                                                                                *
+ *                                                                                             *
+ * INPUT:   section  -- The section to store the entry under.                                  *
+ *                                                                                             *
+ *          entry    -- The entry to store the floating point number to.                       *
+ *                                                                                             *
+ *          number   -- The floating point number to store.                                    *
+ *                                                                                             *
+ * OUTPUT:  bool; Was the floating point number stored without error?                          *
+ *                                                                                             *
+ * WARNINGS:   none                                                                            *
+ *                                                                                             *
+ * HISTORY:                                                                                    *
+ *   8/27/2001 AJA : Created.                                                                  *
+ *=============================================================================================*/
+bool INIClass::Put_Double(char const * section, char const * entry, double number)
+#endif
+{
+#ifdef OG
+	char buffer[MAX_LINE_LENGTH];
+#endif
+#ifdef ZH
+	char buffer[64];
+#endif
+
+#ifdef OG
 	sprintf(buffer, "%f", (float)number);
+#endif
+#ifdef ZH
+	sprintf(buffer, "%lf", number);
+#endif
 	return(Put_String(section, entry, buffer));
 }
 
@@ -1361,11 +1731,22 @@ bool INIClass::Put_String(char const * section, char const * entry, char const *
 	INIEntry * entryptr = secptr->Find_Entry(entry);
 	if (entryptr != NULL) {
       if (strcmp(entryptr->Entry, entry)) {
+#ifdef OG
          DuplicateCRCError("INIClass::Put_String", entry);
+#endif
+#ifdef ZH
+         DuplicateCRCError("INIClass::Put_String", section, entry);
+#endif
       } else {
+#ifdef ZH
+#if 0
+#endif
    		OutputDebugString("INIClass::Put_String - Duplicate Entry \"");
 	   	OutputDebugString(entry);
 		   OutputDebugString("\"\n");
+#ifdef ZH
+#endif
+#endif
       }
    	secptr->EntryIndex.Remove_Index(entryptr->Index_ID());
 	   delete entryptr;
@@ -1377,6 +1758,12 @@ bool INIClass::Put_String(char const * section, char const * entry, char const *
 	if (string != NULL && strlen(string) > 0) {
 		entryptr = W3DNEW INIEntry(strdup(entry), strdup(string));
 
+#ifdef ZH
+		// If this assert fires, then the string will be truncated on load, because
+		// there will not be enough room in the loading buffer!
+		WWASSERT(strlen(string) < MAX_LINE_LENGTH);
+
+#endif
 		if (entryptr == NULL) {
 			return(false);
 		}
@@ -1450,9 +1837,23 @@ int INIClass::Get_String(char const * section, char const * entry, char const * 
 /*
 ** GetString
 */
+#ifdef OG
 StringClass INIClass::Get_String(char const * section, char const * entry, char const * defvalue) const
+#endif
+#ifdef ZH
+const StringClass& INIClass::Get_String(StringClass& new_string, char const * section, char const * entry, char const * defvalue) const
+#endif
 {
+#ifdef OG
 	if (section == NULL || entry == NULL) return StringClass();
+
+#endif
+#ifdef ZH
+	if (section == NULL || entry == NULL) {
+		new_string="";
+		return new_string;
+	}
+#endif
 
 	/*
 	**	Fetch the entry string if it is present. If not, then the normal default
@@ -1463,8 +1864,19 @@ StringClass INIClass::Get_String(char const * section, char const * entry, char 
 		defvalue = entryptr->Value;
 	}
 
+#ifdef OG
 	if (defvalue == NULL) return StringClass();
 	return StringClass( defvalue );
+
+#endif
+#ifdef ZH
+	if (defvalue == NULL) {
+		new_string="";
+		return new_string;
+	}
+	new_string=defvalue;
+	return new_string;
+#endif
 }
 
 
@@ -2058,13 +2470,47 @@ int INIClass::CRC(const char *string)
  *                                                                                             *
  * HISTORY:                                                                                    *
  *   12/9/97    EHC : Created.                                                                 *
+#ifdef ZH
+ *   8/27/2001  AJA : In Release mode under Windows, a message box will be displayed.          *
+#endif
  *=============================================================================================*/
+#ifdef OG
 void INIClass::DuplicateCRCError(const char *message, const char *entry) 
+#endif
+#ifdef ZH
+void INIClass::DuplicateCRCError(const char *message, const char *section, const char *entry)
+#endif
 {
+#ifdef OG
 	OutputDebugString(message);
 	OutputDebugString(" - Duplicate Entry CRC \"");
 	OutputDebugString(entry);
 	OutputDebugString("\"\n");
+
+#endif
+#ifdef ZH
+	char buffer[512];
+	_snprintf(buffer, sizeof(buffer), "%s - Duplicate Entry \"%s\" in section \"%s\" (%s)\n", message,
+		entry, section, Filename);
+
+	OutputDebugString(buffer);
+#endif
 	assert(0);
+#ifdef OG
 //	MessageBox(0, "Duplicate entry CRC in INI file.", message, MB_OK);
+
+#endif
+#ifdef ZH
+
+#ifdef NDEBUG
+#ifdef _WINDOWS
+	MessageBox(0, buffer, "Duplicate CRC in INI file.", MB_ICONSTOP | MB_OK);
+#endif
+#endif
+}
+
+void	INIClass::Keep_Blank_Entries (bool keep_blanks)
+{
+	KeepBlankEntries = keep_blanks;
+#endif
 }

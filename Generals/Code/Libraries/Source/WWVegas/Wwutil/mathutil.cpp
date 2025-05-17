@@ -32,7 +32,12 @@
 #include "miscutil.h"
 #include "wwdebug.h"
 
+#ifdef OG
 const double cMathUtil::PI   = 3.1415927;
+#endif
+#ifdef ZH
+const double cMathUtil::PI_1   = 3.1415927;
+#endif
 const double cMathUtil::PI_2 = 1.5707963;
 
 //-----------------------------------------------------------------------------
@@ -46,19 +51,39 @@ void cMathUtil::Angle_To_Vector(double angle, double & dx, double & dy)
 	double angleRadians;
 
 	if (angle >= 0 && angle < 90) {
+#ifdef OG
 		angleRadians = angle * PI / 180.0;
+#endif
+#ifdef ZH
+		angleRadians = angle * PI_1 / 180.0;
+#endif
 		dx = WWMath::Sin(angleRadians);
 		dy = WWMath::Cos(angleRadians);
 	} else if (angle >= 90 && angle < 180) {
+#ifdef OG
 		angleRadians = (angle - 90) * PI / 180.0;
+#endif
+#ifdef ZH
+		angleRadians = (angle - 90) * PI_1 / 180.0;
+#endif
 		dx = WWMath::Cos(angleRadians);
 		dy = -WWMath::Sin(angleRadians);
 	} else if (angle >= 180 && angle < 270) {
+#ifdef OG
 		angleRadians = (angle - 180) * PI / 180.0;
+#endif
+#ifdef ZH
+		angleRadians = (angle - 180) * PI_1 / 180.0;
+#endif
 		dx = -WWMath::Sin(angleRadians);
 		dy = -WWMath::Cos(angleRadians);
 	} else {
+#ifdef OG
 		angleRadians = (angle - 270) * PI / 180.0;
+#endif
+#ifdef ZH
+		angleRadians = (angle - 270) * PI_1 / 180.0;
+#endif
 		dx = -WWMath::Cos(angleRadians);
 		dy = WWMath::Sin(angleRadians);
 	}
@@ -86,24 +111,51 @@ void cMathUtil::Vector_To_Angle(double dx, double dy, double & angle)
 		if (dy <= 0) {
 			theta = 0;
 		} else {
+#ifdef OG
 			theta = PI;
+#endif
+#ifdef ZH
+			theta = PI_1;
+#endif
 		}
 	} else {
 		theta = WWMath::Atan(-dy / dx);
 		if (dx < 0) {
+#ifdef OG
 			theta += PI;
+#endif
+#ifdef ZH
+			theta += PI_1;
+#endif
 		}
 		theta += 3 * PI_2;
+#ifdef OG
 		if (theta >= 2 * PI) {
 			theta -= 2 * PI;
+#endif
+#ifdef ZH
+		if (theta >= 2 * PI_1) {
+			theta -= 2 * PI_1;
+#endif
 		}
+#ifdef OG
 		theta = 2 * PI - theta;
 		if (theta == 2 * PI) {
+#endif
+#ifdef ZH
+		theta = 2 * PI_1 - theta;
+		if (theta == 2 * PI_1) {
+#endif
 			theta = 0;
 		}
 	}
 
+#ifdef OG
 	angle = theta * 180.0 / PI;
+#endif
+#ifdef ZH
+	angle = theta * 180.0 / PI_1;
+#endif
 }
 
 //-----------------------------------------------------------------------------
@@ -131,7 +183,12 @@ int cMathUtil::Round(double arg)
 //-----------------------------------------------------------------------------
 void cMathUtil::Rotate_Vector(double & vx, double & vy, double angle)
 {
+#ifdef OG
    double angle_radians = angle * PI / 180.0;
+#endif
+#ifdef ZH
+   double angle_radians = angle * PI_1 / 180.0;
+#endif
 
    double vx1 = vx;
    double vy1 = vy;

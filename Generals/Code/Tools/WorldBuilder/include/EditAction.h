@@ -66,6 +66,9 @@ protected:
 	CRichEditCtrl m_myEditCtrl;
 	CHARRANGE m_curLinkChrg;
 	Int				m_curEditParameter;
+#ifdef ZH
+	CTreeCtrl	m_actionTreeView;
+#endif
 
 protected:
 

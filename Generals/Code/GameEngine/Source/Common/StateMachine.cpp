@@ -89,6 +89,26 @@ public:
 		--num;
 	}
 };
+#ifdef ZH
+#ifdef STATE_MACHINE_DEBUG
+//-----------------------------------------------------------------------------
+std::vector<StateID> * State::getTransitions( void ) 
+{ 
+	std::vector<StateID> *ids = new std::vector<StateID>;
+	ids->push_back(m_successStateID);
+	ids->push_back(m_failureStateID);
+	// check transition condition list
+	if (!m_transitions.empty())
+	{
+		for(std::vector<TransitionInfo>::const_iterator it = m_transitions.begin(); it != m_transitions.end(); ++it)
+		{
+			ids->push_back(it->toStateID);
+		}
+	}
+	return ids;
+}
+#endif
+#endif
 
 //-----------------------------------------------------------------------------
 /**
@@ -168,7 +188,12 @@ StateReturnType State::friend_checkForTransitions( StateReturnType status )
 						}
 						else if (it->toStateID == EXIT_MACHINE_WITH_FAILURE)
 						{
+#ifdef OG
 							return STATE_FAILURE;
+#endif
+#ifdef ZH
+							return STATE_FAILURE;//Lorenzen wants to know why...
+#endif
 						}
 
 						// move to new state
@@ -320,7 +345,12 @@ void StateMachine::internalClear()
 #ifdef STATE_MACHINE_DEBUG
 	if (getWantsDebugOutput())
 	{
+#ifdef OG
 		DEBUG_LOG(("%d '%s' -- '%s' %x internalClear()\n", TheGameLogic->getFrame(), m_owner->getTemplate()->getName().str(), m_name.str(), this));
+#endif
+#ifdef ZH
+		DEBUG_LOG(("%d '%s'%x -- '%s' %x internalClear()\n", TheGameLogic->getFrame(), m_owner->getTemplate()->getName().str(), m_owner, m_name.str(), this));
+#endif
 	}
 #endif
 }
@@ -499,8 +529,24 @@ State *StateMachine::internalGetState( StateID id )
 
 	if (i == m_stateMap.end())
 	{
+#ifdef OG
 		DEBUG_CRASH(( "StateMachine::internalGetState(): Invalid state" ));
+
+#endif
+#ifdef ZH
+		DEBUG_CRASH( ("StateMachine::internalGetState(): Invalid state for object %s using state %d", m_owner->getTemplate()->getName().str(), id) );
+		DEBUG_LOG(("Transisioning to state #d\n", (Int)id));
+		DEBUG_LOG(("Attempting to recover - locating default state...\n"));
+		i = m_stateMap.find(m_defaultStateID);
+		if (i == m_stateMap.end()) {
+			DEBUG_LOG(("Failed to located default state.  Aborting...\n"));
+#endif
 		throw ERROR_BAD_ARG;
+#ifdef ZH
+		} else {
+			DEBUG_LOG(("Located default state to recover.\n"));
+		}
+#endif
 	}
 
 	return (*i).second;
@@ -564,7 +610,12 @@ StateReturnType StateMachine::internalSetState( StateID newStateID )
 			if (m_currentState) {
 				curState = m_currentState->getID();
 			}
+#ifdef OG
 			DEBUG_LOG(("%d '%s' -- '%s' %x exit ", TheGameLogic->getFrame(), m_owner->getTemplate()->getName().str(), m_name.str(), this));
+#endif
+#ifdef ZH
+			DEBUG_LOG(("%d '%s'%x -- '%s' %x exit ", TheGameLogic->getFrame(), m_owner->getTemplate()->getName().str(), m_owner, m_name.str(), this));
+#endif
 			if (m_currentState) {
 				DEBUG_LOG((" '%s' ", m_currentState->getName().str()));
 			} else {
@@ -637,6 +688,63 @@ StateReturnType StateMachine::internalSetState( StateID newStateID )
  */
 StateReturnType StateMachine::initDefaultState()
 {
+#ifdef ZH
+#if defined(_DEBUG) || defined(_INTERNAL)
+#ifdef STATE_MACHINE_DEBUG
+#define REALLY_VERBOSE_LOG(x) /* */
+	// Run through all the transitions and make sure there aren't any transitions to undefined states. jba. [8/18/2003]
+	std::map<StateID, State *>::iterator i;
+	REALLY_VERBOSE_LOG(("SM_BEGIN\n"));
+	for( i = m_stateMap.begin(); i != m_stateMap.end(); ++i ) {
+		State *state = (*i).second;
+		StateID id = state->getID();
+		// Check transitions. [8/18/2003]
+		std::vector<StateID> *ids = state->getTransitions();
+		// check transitions
+		REALLY_VERBOSE_LOG(("State %s(%d) : ", state->getName().str(), id));
+		if (!ids->empty())
+		{
+			for(std::vector<StateID>::const_iterator it = ids->begin(); it != ids->end(); ++it)
+			{
+				StateID curID = *it;
+				REALLY_VERBOSE_LOG(("%d('", curID));
+				if (curID == INVALID_STATE_ID) {
+					REALLY_VERBOSE_LOG(("INVALID_STATE_ID', "));
+					continue;
+				}
+				if (curID == EXIT_MACHINE_WITH_SUCCESS) {
+					REALLY_VERBOSE_LOG(("EXIT_MACHINE_WITH_SUCCESS', "));
+					continue;
+				}
+				if (curID == EXIT_MACHINE_WITH_FAILURE) {
+					REALLY_VERBOSE_LOG(("EXIT_MACHINE_WITH_FAILURE', "));
+					continue;
+				}
+				// locate the actual state associated with the given ID
+				std::map<StateID, State *>::iterator i;
+				i = m_stateMap.find( curID );
+
+				if (i == m_stateMap.end()) {
+					DEBUG_LOG(("\nState %s(%d) : ", state->getName().str(), id));
+					DEBUG_LOG(("Transition %d not found\n", curID));
+					DEBUG_LOG(("This MUST BE FIXED!!!jba\n"));
+					DEBUG_CRASH(("Invalid transition."));
+				} else {
+					State *st = (*i).second;
+					if (st->getName().isNotEmpty()) {
+						REALLY_VERBOSE_LOG(("%s') ", st->getName().str()));
+					}
+				}
+			}
+		}
+		REALLY_VERBOSE_LOG(("\n"));
+		delete ids;
+		ids = NULL;
+	}
+	REALLY_VERBOSE_LOG(("SM_END\n\n"));
+#endif	
+#endif
+#endif
 	DEBUG_ASSERTCRASH(!m_locked, ("Machine is locked here, but probably should not be"));
 	if (m_defaultStateInited)
 	{
@@ -781,10 +889,27 @@ void StateMachine::xfer( Xfer *xfer )
 				DEBUG_CRASH(("State ID mismatch - %d expected, %d read", state->getID(), id));
 				throw SC_INVALID_DATA;
 			}
+#ifdef ZH
+			
+			if( state == NULL )
+			{
+				DEBUG_ASSERTCRASH(state != NULL, ("state was NULL on xfer, trying to heal..."));
+				// Hmm... too late to find out why we are getting NULL in our state, but if we let it go, we will Throw in xferSnapshot.
+				state = internalGetState(m_defaultStateID);
+			}
+#endif
 			xfer->xferSnapshot(state);
 		}
 
 	}	else {
+#ifdef ZH
+		if( m_currentState == NULL )
+		{
+			DEBUG_ASSERTCRASH(m_currentState != NULL, ("currentState was NULL on xfer, trying to heal..."));
+			// Hmm... too late to find out why we are getting NULL in our state, but if we let it go, we will Throw in xferSnapshot.
+			m_currentState = internalGetState(m_defaultStateID);
+		}
+#endif
 		xfer->xferSnapshot(m_currentState);
 	}
 

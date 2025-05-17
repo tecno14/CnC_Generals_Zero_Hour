@@ -24,12 +24,33 @@
  *                                                                                             *
  *                     $Archive:: /Commando/Code/WWMath/vp.cpp                                $*
  *                                                                                             *
+#ifdef OG
  *                        Author:: Hector Yee                                                  *
+#endif
+#ifdef ZH
+ *                    Org Author:: Hector Yee                                                  *
+#endif
  *                                                                                             *
+#ifdef OG
  *                     $Modtime:: 6/27/01 4:16p                                               $*
+#endif
+#ifdef ZH
+ *                       Author : Kenny Mitchell                                               * 
+#endif
  *                                                                                             *
+#ifdef OG
  *                    $Revision:: 11                                                          $*
+
+#endif
+#ifdef ZH
+ *                     $Modtime:: 06/26/02 4:04p                                             $*
  *                                                                                             *
+ *                    $Revision:: 12                                                          $*
+#endif
+ *                                                                                             *
+#ifdef ZH
+ * 06/26/02 KM Matrix name change to avoid MAX conflicts                                       *
+#endif
  *---------------------------------------------------------------------------------------------*/
 
 #include "vp.h"
@@ -309,7 +330,12 @@ void VectorProcessorClass::Transform (Vector3* dst,const Vector3 *src, const Mat
 	}
 }
 
+#ifdef OG
 void VectorProcessorClass::Transform(Vector4* dst,const Vector3 *src, const Matrix4& matrix, const int count)
+#endif
+#ifdef ZH
+void VectorProcessorClass::Transform(Vector4* dst,const Vector3 *src, const Matrix4x4& matrix, const int count)
+#endif
 {
 	if (count<=0) return;
 

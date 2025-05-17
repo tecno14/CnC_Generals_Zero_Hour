@@ -44,8 +44,18 @@
 #include "GameLogic/ScriptEngine.h"
 #include "GameLogic/TerrainLogic.h"
 #include "GameLogic/Weapon.h"
+#ifdef ZH
+#include "GameLogic/LogicRandomValue.h"
+#endif
 
 const Real DEFAULT_MASS = 1.0f;
+#ifdef ZH
+
+const Real DEFAULT_SHOCK_YAW = 0.05f;
+const Real DEFAULT_SHOCK_PITCH = 0.025f;
+const Real DEFAULT_SHOCK_ROLL = 0.025f;
+
+#endif
 const Real DEFAULT_FORWARD_FRICTION = 0.15f;
 const Real DEFAULT_LATERAL_FRICTION = 0.15f;
 const Real DEFAULT_Z_FRICTION = 0.8f;
@@ -57,6 +67,10 @@ const Real MIN_AERO_FRICTION = 0.00f;
 const Real MIN_NON_AERO_FRICTION = 0.01f;
 const Real MAX_FRICTION = 0.99f;
 
+#ifdef ZH
+const Real STUN_RELIEF_EPSILON = 0.5f;
+
+#endif
 #include "Common/CRCDebug.h"
 
 const Int MOTIVE_FRAMES = LOGICFRAMES_PER_SECOND / 3;
@@ -105,6 +119,13 @@ static Real heightToSpeed(Real height)
 PhysicsBehaviorModuleData::PhysicsBehaviorModuleData()
 {
 	m_mass = DEFAULT_MASS;
+#ifdef ZH
+	m_shockResistance = 0.0f;
+	m_shockMaxYaw = DEFAULT_SHOCK_YAW;
+	m_shockMaxPitch = DEFAULT_SHOCK_PITCH;
+	m_shockMaxRoll = DEFAULT_SHOCK_ROLL;
+	
+#endif
 	m_forwardFriction = DEFAULT_FORWARD_FRICTION;
 	m_lateralFriction = DEFAULT_LATERAL_FRICTION;
 	m_ZFriction = DEFAULT_Z_FRICTION;
@@ -155,6 +176,13 @@ static void parseFrictionPerSec( INI* ini, void * /*instance*/, void *store, con
 	static const FieldParse dataFieldParse[] = 
 	{
 		{ "Mass",								INI::parsePositiveNonZeroReal,		NULL, offsetof( PhysicsBehaviorModuleData, m_mass ) },
+#ifdef ZH
+
+		{ "ShockResistance",		INI::parsePositiveNonZeroReal,		NULL, offsetof( PhysicsBehaviorModuleData, m_shockResistance ) },
+		{ "ShockMaxYaw",				INI::parsePositiveNonZeroReal,		NULL, offsetof( PhysicsBehaviorModuleData, m_shockMaxYaw ) },
+		{ "ShockMaxPitch",			INI::parsePositiveNonZeroReal,		NULL, offsetof( PhysicsBehaviorModuleData, m_shockMaxPitch ) },
+		{ "ShockMaxRoll",				INI::parsePositiveNonZeroReal,		NULL, offsetof( PhysicsBehaviorModuleData, m_shockMaxRoll ) },
+#endif
 
 		{ "ForwardFriction",			parseFrictionPerSec,		NULL, offsetof( PhysicsBehaviorModuleData, m_forwardFriction ) },
 		{ "LateralFriction",			parseFrictionPerSec,		NULL, offsetof( PhysicsBehaviorModuleData, m_lateralFriction ) },
@@ -327,6 +355,58 @@ void PhysicsBehavior::applyForce( const Coord3D *force )
 	//DEBUG_ASSERTCRASH(!(_isnan(m_accel.x) || _isnan(m_accel.y) || _isnan(m_accel.z)), ("PhysicsBehavior::applyForce accel NAN!\n"));
 	//DEBUG_ASSERTCRASH(!(_isnan(m_vel.x) || _isnan(m_vel.y) || _isnan(m_vel.z)), ("PhysicsBehavior::applyForce vel NAN!\n"));
 	//DEBUG_ASSERTCRASH(fabs(force->z) < 3, ("unlikely z-force"));
+#ifdef ZH
+#ifdef SLEEPY_PHYSICS
+	if (getFlag(IS_IN_UPDATE))
+	{
+		// we're applying a force from inside our own update (probably for a bounce or friction).
+		// just do nothing, since update will calculate the correct sleep behavior at the end.
+	}
+	else
+	{
+		// when a force is applied by an external module, we must wake up, even if the force is zero.
+		setWakeFrame(getObject(), UPDATE_SLEEP_NONE);
+	}
+#endif
+}
+
+//-------------------------------------------------------------------------------------------------
+/**
+ * Apply a shocwave force at the object's CG
+ */
+void PhysicsBehavior::applyShock( const Coord3D *force )
+{
+	Coord3D resistedForce = *force;
+	resistedForce.scale( 1.0f - min( 1.0f, max( 0.0f, getPhysicsBehaviorModuleData()->m_shockResistance ) ) );
+
+	// Apply the processed shock force to the object
+	applyForce(&resistedForce);
+}
+
+//-------------------------------------------------------------------------------------------------
+/**
+ * Apply a random rotation at the object's CG
+ */
+void PhysicsBehavior::applyRandomRotation()
+{
+	// Ignore any pitch, roll & yaw rotation if behavior is stick to ground
+	if (getFlag(STICK_TO_GROUND))	return;
+
+	// Set bounce to true for a while until the unit is complete bouncing
+	setAllowBouncing(true);
+
+	Real randomModifier;
+
+	randomModifier = GameLogicRandomValue(-1.0f, 1.0f);
+	m_yawRate += getPhysicsBehaviorModuleData()->m_shockMaxYaw * randomModifier;
+
+	randomModifier = GameLogicRandomValue(-1.0f, 1.0f);
+	m_pitchRate += getPhysicsBehaviorModuleData()->m_shockMaxPitch * randomModifier;
+
+	randomModifier = GameLogicRandomValue(-1.0f, 1.0f);
+	m_rollRate += getPhysicsBehaviorModuleData()->m_shockMaxRoll * randomModifier;
+
+#endif
 #ifdef SLEEPY_PHYSICS
 	if (getFlag(IS_IN_UPDATE))
 	{
@@ -382,7 +462,18 @@ void PhysicsBehavior::applyGravitationalForces()
 //-------------------------------------------------------------------------------------------------
 void PhysicsBehavior::applyFrictionalForces()
 {
+#ifdef OG
 	if (getFlag(APPLY_FRICTION2D_WHEN_AIRBORNE) || !getObject()->isSignificantlyAboveTerrain()) 
+
+#endif
+#ifdef ZH
+	//Are we a plane that is taxiing on a deck with a height offset?
+	Bool deckTaxiing = getObject()->testStatus( OBJECT_STATUS_DECK_HEIGHT_OFFSET ) 
+										 && getObject()->getAI() 
+										 && getObject()->getAI()->getCurLocomotorSetType() == LOCOMOTORSET_TAXIING;
+
+	if (getFlag(APPLY_FRICTION2D_WHEN_AIRBORNE) || !getObject()->isSignificantlyAboveTerrain() || deckTaxiing ) 
+#endif
 	{
 		applyYPRDamping(1.0f - DEFAULT_LATERAL_FRICTION);
 
@@ -462,8 +553,24 @@ Bool PhysicsBehavior::handleBounce(Real oldZ, Real newZ, Real groundZ, Coord3D* 
 			Real yawAngle = getObject()->getTransformMatrix()->Get_Z_Rotation();
 			setAngles(yawAngle, pitchAngle, rollAngle);
 		}
+#ifdef ZH
+
+		if(bounceForce->z > 0.0f)
+		{
+			testStunnedUnitForDestruction();
+#endif
 		return true;
+#ifdef ZH
+		}
+		else
+		{
+			setAllowBouncing(m_originalAllowBounce);
+			return false;
+#endif
 	}
+#ifdef ZH
+	}
+#endif
 	else
 	{
 		bounceForce->zero();
@@ -608,6 +715,23 @@ UpdateSleepTime PhysicsBehavior::update()
 			TheGameLogic->destroyObject(obj);
 		}
 
+#ifdef ZH
+		// Check when to clear the stunned status
+		if (getIsStunned())
+		{
+			if ( (fabs(m_vel.x) < STUN_RELIEF_EPSILON && 
+				    fabs(m_vel.y) < STUN_RELIEF_EPSILON && 
+				    fabs(m_vel.z) < STUN_RELIEF_EPSILON)
+          ||
+           obj->isSignificantlyAboveTerrain() == FALSE )
+			{
+				setStunned(false);
+				getObject()->clearModelConditionState(MODELCONDITION_STUNNED);
+			}
+
+    }
+
+#endif
 		if (getFlag(HAS_PITCHROLLYAW))
 		{
 
@@ -662,6 +786,12 @@ UpdateSleepTime PhysicsBehavior::update()
 
 		// do not allow object to pass through the ground
 		Real groundZ = TheTerrainLogic->getLayerHeight(mtx.Get_X_Translation(), mtx.Get_Y_Translation(), obj->getLayer());
+#ifdef ZH
+		if( obj->getStatusBits().test( OBJECT_STATUS_DECK_HEIGHT_OFFSET ) )
+		{
+			groundZ += obj->getCarrierDeckHeight(); 
+		}
+#endif
 		gotBounceForce = handleBounce(oldPosZ, mtx.Get_Z_Translation(), groundZ, &bounceForce);
 
 		// remember our z-vel prior to doing ground-slam adjustment
@@ -682,6 +812,15 @@ UpdateSleepTime PhysicsBehavior::update()
 
 			// this flag is ALWAYS cleared once we hit the ground.
 			setFlag(ALLOW_TO_FALL, false);
+#ifdef ZH
+
+			// When a stunned object hits the ground the first time, chage it's model state from stunned flailing to just stunned.
+			if (getFlag(IS_STUNNED))
+			{
+				obj->clearModelConditionState(MODELCONDITION_STUNNED_FLAILING);
+				obj->setModelConditionState(MODELCONDITION_STUNNED);
+			}
+#endif
 		}
 		else if (mtx.Get_Z_Translation() > groundZ) 
 		{
@@ -696,8 +835,27 @@ UpdateSleepTime PhysicsBehavior::update()
 			}
 		}
 
-		obj->setTransformMatrix(&mtx);
+#ifdef ZH
+		if (gotBounceForce)
+		{
+			// Right the object after the bounce since the pitch and roll may have been affected
+			Real yawAngle = getObject()->getTransformMatrix()->Get_Z_Rotation();
+			setAngles(yawAngle, 0.0f, 0.0f);
 
+			// Set the translation of the after bounce matrix to the one calculated above
+			Matrix3D afterBounceMatrix = *getObject()->getTransformMatrix();
+			afterBounceMatrix.Set_Translation(mtx.Get_Translation());
+
+			// Set the result of the after bounce matrix as the object's final matrix
+			obj->setTransformMatrix(&afterBounceMatrix);
+		}
+		else 
+		{
+#endif
+		obj->setTransformMatrix(&mtx);
+#ifdef ZH
+		}
+#endif
 	} // if not held
 
 	// reset the acceleration for accumulation next frame
@@ -755,6 +913,9 @@ UpdateSleepTime PhysicsBehavior::update()
 				damageInfo.in.m_deathType = DEATH_SPLATTED;	
 				damageInfo.in.m_sourceID = obj->getID();
 				damageInfo.in.m_amount = damageAmt;	
+#ifdef ZH
+        damageInfo.in.m_shockWaveAmount = 0.0f;
+#endif
 				obj->attemptDamage( &damageInfo );
 				//DEBUG_LOG(("Dealing %f (%f %f) points of falling damage to %s!\n",damageAmt,damageInfo.out.m_actualDamageDealt, damageInfo.out.m_actualDamageClipped,obj->getTemplate()->getName().str()));
 
@@ -763,7 +924,6 @@ UpdateSleepTime PhysicsBehavior::update()
 				{
 					obj->setModelConditionState(MODELCONDITION_SPLATTED);
 				}
-
 			}
 		}
 	}
@@ -1644,6 +1804,54 @@ Bool PhysicsBehavior::checkForOverlapCollision(Object *other)
 	} // if crushable
 
 	return true;
+#ifdef ZH
+}
+
+// ------------------------------------------------------------------------------------------------
+/** Test whether unit needs to die because of being on illegal cell, upside down, outside legal bounds **/
+// ------------------------------------------------------------------------------------------------
+void PhysicsBehavior::testStunnedUnitForDestruction(void)
+{
+	// Only do test if unit is stunned
+	if (!getFlag(IS_STUNNED)) 
+		return;
+
+	// Grab the object
+	Object *obj = getObject();
+	const Coord3D *pos = obj->getPosition();
+
+	// If a stunned object is upside down when it hits the ground, kill it
+	if(obj->getTransformMatrix()->Get_Z_Vector().Z < 0.0f) 
+	{
+		obj->kill();
+		return;
+	}
+
+	// Check if unit has exited playable area. If so, kill it
+  if (obj->isOffMap()) 
+	{
+     obj->kill();
+		 return;
+  }
+
+	// Check for being in cells that the unit has no locomotor for
+	AIUpdateInterface *aiInt = obj->getAI();
+	if (!aiInt) return;
+
+	// Check for object being stuck on cliffs. If so kill it
+	if (TheTerrainLogic->isCliffCell(pos->x, pos->y) && !aiInt->hasLocomotorForSurface(LOCOMOTORSURFACE_CLIFF))
+	{
+		obj->kill();
+		return;
+	} 
+
+	// Check for object being stuck on water. If so kill it
+	if (TheTerrainLogic->isUnderwater(pos->x, pos->y) && !aiInt->hasLocomotorForSurface(LOCOMOTORSURFACE_WATER))
+	{	
+		obj->kill();
+		return;
+	}
+#endif
 }
 
 // ------------------------------------------------------------------------------------------------

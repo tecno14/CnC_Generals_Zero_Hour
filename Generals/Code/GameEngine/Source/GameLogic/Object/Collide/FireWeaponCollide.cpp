@@ -45,8 +45,14 @@ void FireWeaponCollideModuleData::buildFieldParse(MultiIniFieldParse& p)
 	{
 		{ "CollideWeapon",	INI::parseWeaponTemplate,	NULL, offsetof( FireWeaponCollideModuleData, m_collideWeaponTemplate ) },
 		{ "FireOnce",				INI::parseBool,	NULL, offsetof( FireWeaponCollideModuleData, m_fireOnce ) },
+#ifdef OG
 		{ "RequiredStatus",	INI::parseBitString32,	TheObjectStatusBitNames, offsetof( FireWeaponCollideModuleData, m_requiredStatus ) },
 		{ "ForbiddenStatus",	INI::parseBitString32,	TheObjectStatusBitNames, offsetof( FireWeaponCollideModuleData, m_forbiddenStatus ) },
+#endif
+#ifdef ZH
+		{ "RequiredStatus",		ObjectStatusMaskType::parseFromINI,	NULL, offsetof( FireWeaponCollideModuleData, m_requiredStatus ) },
+		{ "ForbiddenStatus",	ObjectStatusMaskType::parseFromINI,	NULL, offsetof( FireWeaponCollideModuleData, m_forbiddenStatus ) },
+#endif
 		{ 0, 0, 0, 0 }
 	};
   p.add(dataFieldParse);
@@ -96,12 +102,31 @@ Bool FireWeaponCollide::shouldFireWeapon()
 {
 	const FireWeaponCollideModuleData *d = getFireWeaponCollideModuleData();
 
+#ifdef OG
 	UnsignedInt status = getObject()->getStatusBits();
+#endif
+#ifdef ZH
+	ObjectStatusMaskType status = getObject()->getStatusBits();
+#endif
 	
+#ifdef OG
 	if( (status & d->m_requiredStatus) != d->m_requiredStatus )
+
+#endif
+#ifdef ZH
+	//We need all required status or else we fail
+	if( !status.testForAll( d->m_requiredStatus ) )
+#endif
 		return FALSE; 
 
+#ifdef OG
 	if( (status & d->m_forbiddenStatus) != 0 )
+
+#endif
+#ifdef ZH
+	//If we have any forbidden statii, then fail
+	if( status.testForAny( d->m_forbiddenStatus ) )
+#endif
 		return FALSE; 
 
 	if( m_everFired && d->m_fireOnce )

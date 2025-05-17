@@ -20,6 +20,9 @@ CFG=GameEngine - Win32 Debug
 !MESSAGE "GameEngine - Win32 Release" (based on "Win32 (x86) Static Library")
 !MESSAGE "GameEngine - Win32 Debug" (based on "Win32 (x86) Static Library")
 !MESSAGE "GameEngine - Win32 Internal" (based on "Win32 (x86) Static Library")
+#ifdef ZH
+!MESSAGE "GameEngine - Win32 Profile" (based on "Win32 (x86) Static Library")
+#endif
 !MESSAGE 
 
 # Begin Project
@@ -42,7 +45,14 @@ RSC=rc.exe
 # PROP Intermediate_Dir "Release"
 # PROP Target_Dir ""
 # ADD BASE CPP /nologo /W3 /GX /O2 /D "WIN32" /D "NDEBUG" /D "_MBCS" /D "_LIB" /YX /FD /c
+#ifdef OG
 # ADD CPP /nologo /G6 /MD /W3 /WX /GX /O2 /Ob2 /I "../Libraries/Source/Compression" /I "Include/Precompiled" /I "../Libraries/Source/WWVegas" /I "../Libraries/Source/WWVegas\WWLib" /I "Include" /I "../Libraries/Include" /I "../Libraries/Source/GameSpy" /D "IG_DEBUG_STACKTRACE" /D "NDEBUG" /D "_RELEASE" /D "_MBCS" /D "_LIB" /D "_WINDOWS" /D "WIN32" /D "Z_PREFIX" /Fr /Yu"PreRTS.h" /FD /c
+
+#endif
+#ifdef ZH
+# ADD CPP /nologo /G6 /MD /W3 /WX /GX /O2 /Ob2 /I "Include/Precompiled" /I "../Libraries/Source/WWVegas" /I "../Libraries/Source/WWVegas\WWLib" /I "Include" /I "../Libraries/Include" /I "../Libraries/Source/GameSpy" /I "../Libraries/Source/Compression" /D "IG_DEBUG_STACKTRACE" /D "NDEBUG" /D "_RELEASE" /D "_MBCS" /D "_LIB" /D "_WINDOWS" /D "WIN32" /D "Z_PREFIX" /Yu"PreRTS.h" /FD /c
+# SUBTRACT CPP /Fr
+#endif
 # ADD BASE RSC /l 0x409 /d "NDEBUG"
 # ADD RSC /l 0x409 /d "NDEBUG"
 BSC32=bscmake.exe
@@ -65,7 +75,14 @@ LIB32=link.exe -lib
 # PROP Intermediate_Dir "Debug"
 # PROP Target_Dir ""
 # ADD BASE CPP /nologo /W3 /Gm /GX /ZI /Od /D "WIN32" /D "_DEBUG" /D "_MBCS" /D "_LIB" /YX /FD /GZ /c
+#ifdef OG
 # ADD CPP /nologo /G6 /MDd /W3 /WX /Gm /GX /ZI /Od /I "..\Libraries\Source\WWVegas" /I "..\Libraries\Source\WWVegas\WWLib" /I "../Libraries/Source/Compression" /I "Include/Precompiled" /I "../Libraries/Source/WWVegas" /I "../Libraries/Source/WWVegas\WWLib" /I "Include" /I "../Libraries/Include" /I "../Libraries/Source/GameSpy" /D "_DEBUG" /D "BROWSER_DEBUG" /D "_MBCS" /D "_LIB" /D "_WINDOWS" /D "WIN32" /D "Z_PREFIX" /Fr /Yu"PreRTS.h" /FD /GZ /c
+
+#endif
+#ifdef ZH
+# ADD CPP /nologo /G6 /MDd /W3 /WX /Gm /GX /ZI /Od /I "..\Libraries\Source\WWVegas" /I "..\Libraries\Source\WWVegas\WWLib" /I "Include/Precompiled" /I "../Libraries/Source/WWVegas" /I "../Libraries/Source/WWVegas\WWLib" /I "Include" /I "../Libraries/Include" /I "../Libraries/Source/GameSpy" /I "../Libraries/Source/Compression" /D "_DEBUG" /D "BROWSER_DEBUG" /D "_MBCS" /D "_LIB" /D "_WINDOWS" /D "WIN32" /D "Z_PREFIX" /Yu"PreRTS.h" /FD /GZ /c
+# SUBTRACT CPP /Fr
+#endif
 # ADD BASE RSC /l 0x409 /d "_DEBUG"
 # ADD RSC /l 0x409 /d "_DEBUG"
 BSC32=bscmake.exe
@@ -88,7 +105,14 @@ LIB32=link.exe -lib
 # PROP Intermediate_Dir "Internal"
 # PROP Target_Dir ""
 # ADD BASE CPP /nologo /W3 /GR /GX /O2 /I "../Libraries/Source/WWVegas" /I "../Libraries/Source/WWVegas\WWLib" /I "Include" /I "../Libraries/Include" /D "NDEBUG" /D "WIN32" /D "_MBCS" /D "_LIB" /D "_WINDOWS" /YX /FD /c
+#ifdef OG
 # ADD CPP /nologo /G6 /MD /W3 /WX /GX /Zi /O2 /I "../Libraries/Source/Compression" /I "Include/Precompiled" /I "../Libraries/Source/WWVegas" /I "../Libraries/Source/WWVegas\WWLib" /I "Include" /I "../Libraries/Include" /I "../Libraries/Source/GameSpy" /D "NDEBUG" /D "_INTERNAL" /D "_MBCS" /D "_LIB" /D "_WINDOWS" /D "WIN32" /D "Z_PREFIX" /Fr /Yu"PreRTS.h" /FD /c
+
+#endif
+#ifdef ZH
+# ADD CPP /nologo /G6 /MD /W3 /WX /GX /Zi /Od /I "../Libraries/Source/Compression" /I "Include/Precompiled" /I "../Libraries/Source/WWVegas" /I "../Libraries/Source/WWVegas\WWLib" /I "Include" /I "../Libraries/Include" /I "../Libraries/Source/GameSpy" /D "NDEBUG" /D "_INTERNAL" /D "_MBCS" /D "_LIB" /D "_WINDOWS" /D "WIN32" /D "Z_PREFIX" /Yu"PreRTS.h" /FD /c
+# SUBTRACT CPP /Fr
+#endif
 # ADD BASE RSC /l 0x409 /d "NDEBUG"
 # ADD RSC /l 0x409 /d "NDEBUG"
 BSC32=bscmake.exe
@@ -98,6 +122,32 @@ LIB32=link.exe -lib
 # ADD BASE LIB32 /nologo
 # ADD LIB32 /nologo /out:"Lib/GameEngineInternal.lib"
 
+#ifdef ZH
+!ELSEIF  "$(CFG)" == "GameEngine - Win32 Profile"
+
+# PROP BASE Use_MFC 0
+# PROP BASE Use_Debug_Libraries 0
+# PROP BASE Output_Dir "Profile"
+# PROP BASE Intermediate_Dir "Profile"
+# PROP BASE Target_Dir ""
+# PROP Use_MFC 0
+# PROP Use_Debug_Libraries 0
+# PROP Output_Dir "Profile"
+# PROP Intermediate_Dir "Profile"
+# PROP Target_Dir ""
+# ADD BASE CPP /nologo /G6 /MD /W3 /WX /GX /O2 /Ob2 /I "Include/Precompiled" /I "../Libraries/Source/WWVegas" /I "../Libraries/Source/WWVegas\WWLib" /I "Include" /I "../Libraries/Include" /I "../Libraries/Source/GameSpy" /I "../Libraries/Source/Compression" /D "IG_DEBUG_STACKTRACE" /D "NDEBUG" /D "_RELEASE" /D "_MBCS" /D "_LIB" /D "_WINDOWS" /D "WIN32" /D "Z_PREFIX" /Yu"PreRTS.h" /FD /c
+# SUBTRACT BASE CPP /Fr
+# ADD CPP /nologo /G6 /MD /W3 /WX /GX /Zi /O2 /Ob2 /I "Include/Precompiled" /I "../Libraries/Source/WWVegas" /I "../Libraries/Source/WWVegas\WWLib" /I "Include" /I "../Libraries/Include" /I "../Libraries/Source/GameSpy" /I "../Libraries/Source/Compression" /D "IG_DEBUG_STACKTRACE" /D "NDEBUG" /D "_RELEASE" /D "_MBCS" /D "_LIB" /D "_WINDOWS" /D "WIN32" /D "Z_PREFIX" /D "_PROFILE" /Yu"PreRTS.h" /FD /Gh /c
+# ADD BASE RSC /l 0x409 /d "NDEBUG"
+# ADD RSC /l 0x409 /d "NDEBUG"
+BSC32=bscmake.exe
+# ADD BASE BSC32 /nologo
+# ADD BSC32 /nologo
+LIB32=link.exe -lib
+# ADD BASE LIB32 /nologo /out:"Lib/GameEngine.lib"
+# ADD LIB32 /nologo /out:"Lib/GameEngineProfile.lib"
+
+#endif
 !ENDIF 
 
 # Begin Target
@@ -105,6 +155,9 @@ LIB32=link.exe -lib
 # Name "GameEngine - Win32 Release"
 # Name "GameEngine - Win32 Debug"
 # Name "GameEngine - Win32 Internal"
+#ifdef ZH
+# Name "GameEngine - Win32 Profile"
+#endif
 # Begin Group "Source Files"
 
 # PROP Default_Filter "cpp;c;cxx;rc;def;r;odl;idl;hpj;bat"
@@ -256,6 +309,12 @@ SOURCE=.\Source\Common\System\MemoryInit.cpp
 # End Source File
 # Begin Source File
 
+#ifdef ZH
+SOURCE=.\Source\Common\System\ObjectStatusTypes.cpp
+# End Source File
+# Begin Source File
+
+#endif
 SOURCE=.\Source\Common\System\QuickTrig.cpp
 # End Source File
 # Begin Source File
@@ -452,6 +511,12 @@ SOURCE=.\Source\Common\Audio\AudioRequest.cpp
 # End Source File
 # Begin Source File
 
+#ifdef ZH
+SOURCE=.\Source\Common\Audio\DynamicAudioEventInfo.cpp
+# End Source File
+# Begin Source File
+
+#endif
 SOURCE=.\Source\Common\Audio\GameAudio.cpp
 # End Source File
 # Begin Source File
@@ -466,6 +531,12 @@ SOURCE=.\Source\Common\Audio\GameSounds.cpp
 # Begin Group "RTS"
 
 # PROP Default_Filter ""
+#ifdef ZH
+# Begin Source File
+
+SOURCE=.\Source\Common\RTS\AcademyStats.cpp
+# End Source File
+#endif
 # Begin Source File
 
 SOURCE=.\Source\Common\RTS\ActionManager.cpp
@@ -554,6 +625,21 @@ SOURCE=.\Source\Common\crc.cpp
 # Begin Source File
 
 SOURCE=.\Source\Common\CRCDebug.cpp
+#ifdef ZH
+
+!IF  "$(CFG)" == "GameEngine - Win32 Release"
+
+!ELSEIF  "$(CFG)" == "GameEngine - Win32 Debug"
+
+!ELSEIF  "$(CFG)" == "GameEngine - Win32 Internal"
+
+!ELSEIF  "$(CFG)" == "GameEngine - Win32 Profile"
+
+# ADD CPP /w /W0 /WX
+
+!ENDIF 
+
+#endif
 # End Source File
 # Begin Source File
 
@@ -668,6 +754,12 @@ SOURCE=.\Source\GameLogic\AI\AIGuard.cpp
 # End Source File
 # Begin Source File
 
+#ifdef ZH
+SOURCE=.\Source\GameLogic\AI\AIGuardRetaliate.cpp
+# End Source File
+# Begin Source File
+
+#endif
 SOURCE=.\Source\GameLogic\AI\AIPathfind.cpp
 # End Source File
 # Begin Source File
@@ -707,6 +799,12 @@ SOURCE=.\Source\GameLogic\Object\Behavior\AutoHealBehavior.cpp
 # End Source File
 # Begin Source File
 
+#ifdef ZH
+SOURCE=.\Source\GameLogic\Object\Behavior\BattleBusSlowDeathBehavior.cpp
+# End Source File
+# Begin Source File
+
+#endif
 SOURCE=.\Source\GameLogic\Object\Behavior\BehaviorModule.cpp
 # End Source File
 # Begin Source File
@@ -723,6 +821,16 @@ SOURCE=.\Source\GameLogic\Object\Behavior\BridgeTowerBehavior.cpp
 # End Source File
 # Begin Source File
 
+#ifdef ZH
+SOURCE=.\Source\GameLogic\Object\Behavior\BunkerBusterBehavior.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\Source\GameLogic\Object\Behavior\CountermeasuresBehavior.cpp
+# End Source File
+# Begin Source File
+
+#endif
 SOURCE=.\Source\GameLogic\Object\Behavior\DumbProjectileBehavior.cpp
 # End Source File
 # Begin Source File
@@ -732,6 +840,12 @@ SOURCE=.\Source\GameLogic\Object\Behavior\FireWeaponWhenDamagedBehavior.cpp
 # Begin Source File
 
 SOURCE=.\Source\GameLogic\Object\Behavior\FireWeaponWhenDeadBehavior.cpp
+#ifdef ZH
+# End Source File
+# Begin Source File
+
+SOURCE=.\Source\GameLogic\Object\Behavior\FlightDeckBehavior.cpp
+#endif
 # End Source File
 # Begin Source File
 
@@ -739,6 +853,12 @@ SOURCE=.\Source\GameLogic\Object\Behavior\GenerateMinefieldBehavior.cpp
 # End Source File
 # Begin Source File
 
+#ifdef ZH
+SOURCE=.\Source\GameLogic\Object\Behavior\GrantStealthBehavior.cpp
+# End Source File
+# Begin Source File
+
+#endif
 SOURCE=.\Source\GameLogic\Object\Update\HelicopterSlowDeathUpdate.cpp
 # End Source File
 # Begin Source File
@@ -752,6 +872,12 @@ SOURCE=.\Source\GameLogic\Object\Behavior\JetSlowDeathBehavior.cpp
 # Begin Source File
 
 SOURCE=.\Source\GameLogic\Object\Behavior\MinefieldBehavior.cpp
+#ifdef ZH
+# End Source File
+# Begin Source File
+
+SOURCE=.\Source\GameLogic\Object\Behavior\NeutonBlastBehavior.cpp
+#endif
 # End Source File
 # Begin Source File
 
@@ -840,6 +966,12 @@ SOURCE=.\Source\GameLogic\Object\Body\InactiveBody.cpp
 # Begin Source File
 
 SOURCE=.\Source\GameLogic\Object\Body\StructureBody.cpp
+#ifdef ZH
+# End Source File
+# Begin Source File
+
+SOURCE=.\Source\GameLogic\Object\Body\UndeadBody.cpp
+#endif
 # End Source File
 # End Group
 # Begin Group "Collide"
@@ -870,6 +1002,40 @@ SOURCE=.\Source\GameLogic\Object\Collide\CrateCollide\MoneyCrateCollide.cpp
 # End Source File
 # Begin Source File
 
+#ifdef ZH
+SOURCE=.\Source\GameLogic\Object\Collide\CrateCollide\SabotageCommandCenterCrateCollide.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\Source\GameLogic\Object\Collide\CrateCollide\SabotageFakeBuilding.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\Source\GameLogic\Object\Collide\CrateCollide\SabotageInternetCenterCrateCollide.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\Source\GameLogic\Object\Collide\CrateCollide\SabotageMilitaryFactoryCrateCollide.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\Source\GameLogic\Object\Collide\CrateCollide\SabotagePowerPlantCrateCollide.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\Source\GameLogic\Object\Collide\CrateCollide\SabotageSuperweaponCrateCollide.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\Source\GameLogic\Object\Collide\CrateCollide\SabotageSupplyCenterCrateCollide.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\Source\GameLogic\Object\Collide\CrateCollide\SabotageSupplyDropzoneCrateCollide.cpp
+# End Source File
+# Begin Source File
+
+#endif
 SOURCE=.\Source\GameLogic\Object\Collide\CrateCollide\SalvageCrateCollide.cpp
 # End Source File
 # Begin Source File
@@ -915,6 +1081,16 @@ SOURCE=.\Source\GameLogic\Object\Contain\HealContain.cpp
 # End Source File
 # Begin Source File
 
+#ifdef ZH
+SOURCE=.\Source\GameLogic\Object\Contain\HelixContain.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\Source\GameLogic\Object\Contain\InternetHackContain.cpp
+# End Source File
+# Begin Source File
+
+#endif
 SOURCE=.\Source\GameLogic\Object\Contain\MobNexusContain.cpp
 # End Source File
 # Begin Source File
@@ -935,6 +1111,12 @@ SOURCE=.\Source\GameLogic\Object\Contain\RailedTransportContain.cpp
 # End Source File
 # Begin Source File
 
+#ifdef ZH
+SOURCE=.\Source\GameLogic\Object\Contain\RiderChangeContain.cpp
+# End Source File
+# Begin Source File
+
+#endif
 SOURCE=.\Source\GameLogic\Object\Contain\TransportContain.cpp
 # End Source File
 # Begin Source File
@@ -952,6 +1134,12 @@ SOURCE=.\Source\GameLogic\Object\Create\CreateModule.cpp
 # Begin Source File
 
 SOURCE=.\Source\GameLogic\Object\Create\GrantUpgradeCreate.cpp
+#ifdef ZH
+# End Source File
+# Begin Source File
+
+SOURCE=.\Source\GameLogic\Object\Create\LockWeaponCreate.cpp
+#endif
 # End Source File
 # Begin Source File
 
@@ -1071,6 +1259,12 @@ SOURCE=.\Source\GameLogic\Object\SpecialPower\DemoralizeSpecialPower.cpp
 # End Source File
 # Begin Source File
 
+#ifdef ZH
+SOURCE=.\Source\GameLogic\Object\SpecialPower\FireWeaponPower.cpp
+# End Source File
+# Begin Source File
+
+#endif
 SOURCE=.\Source\GameLogic\Object\SpecialPower\OCLSpecialPower.cpp
 # End Source File
 # Begin Source File
@@ -1208,6 +1402,12 @@ SOURCE=.\Source\GameLogic\Object\Update\AIUpdate\WorkerAIUpdate.cpp
 # Begin Source File
 
 SOURCE=.\Source\GameLogic\Object\Update\AIUpdate.cpp
+#ifdef ZH
+# End Source File
+# Begin Source File
+
+SOURCE=.\Source\GameLogic\Object\Update\AnimationSteeringUpdate.cpp
+#endif
 # End Source File
 # Begin Source File
 
@@ -1247,10 +1447,12 @@ SOURCE=.\Source\GameLogic\Object\Update\CommandButtonHuntUpdate.cpp
 # End Source File
 # Begin Source File
 
+#ifdef OG
 SOURCE=.\Source\GameLogic\Object\Update\DelayedWeaponSetUpgradeUpdate.cpp
 # End Source File
 # Begin Source File
 
+#endif
 SOURCE=.\Source\GameLogic\Object\Update\DeletionUpdate.cpp
 # End Source File
 # Begin Source File
@@ -1367,10 +1569,30 @@ SOURCE=.\Source\GameLogic\Object\Update\SlavedUpdate.cpp
 # End Source File
 # Begin Source File
 
+#ifdef ZH
+SOURCE=.\Source\GameLogic\Object\Update\SmartBombTargetHomingUpdate.cpp
+# End Source File
+# Begin Source File
+
+#endif
 SOURCE=.\Source\GameLogic\Object\Update\SpecialAbilityUpdate.cpp
 # End Source File
 # Begin Source File
 
+#ifdef ZH
+SOURCE=.\Source\GameLogic\Object\Update\SpecialPowerUpdateModule.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\Source\GameLogic\Object\Update\SpectreGunshipDeploymentUpdate.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\Source\GameLogic\Object\Update\SpectreGunshipUpdate.cpp
+# End Source File
+# Begin Source File
+
+#endif
 SOURCE=.\Source\GameLogic\Object\Update\SpyVisionUpdate.cpp
 # End Source File
 # Begin Source File
@@ -1408,6 +1630,12 @@ SOURCE=.\Source\GameLogic\Object\Update\UpdateModule.cpp
 # Begin Source File
 
 SOURCE=.\Source\GameLogic\Object\Update\WaveGuideUpdate.cpp
+#ifdef ZH
+# End Source File
+# Begin Source File
+
+SOURCE=.\Source\GameLogic\Object\Update\WeaponBonusUpdate.cpp
+#endif
 # End Source File
 # End Group
 # Begin Group "Upgrade"
@@ -1431,11 +1659,21 @@ SOURCE=.\Source\GameLogic\Object\Upgrade\CostModifierUpgrade.cpp
 # End Source File
 # Begin Source File
 
+#ifdef OG
 SOURCE=.\Source\GameLogic\Object\Upgrade\DelayedUpgrade.cpp
+#endif
+#ifdef ZH
+SOURCE=.\Source\GameLogic\Object\Upgrade\ExperienceScalarUpgrade.cpp
+#endif
 # End Source File
 # Begin Source File
 
+#ifdef OG
 SOURCE=.\Source\GameLogic\Object\Upgrade\ExperienceScalarUpgrade.cpp
+#endif
+#ifdef ZH
+SOURCE=.\Source\GameLogic\Object\Upgrade\GrantScienceUpgrade.cpp
+#endif
 # End Source File
 # Begin Source File
 
@@ -1444,10 +1682,22 @@ SOURCE=.\Source\GameLogic\Object\Upgrade\LocomotorSetUpgrade.cpp
 # Begin Source File
 
 SOURCE=.\Source\GameLogic\Object\Upgrade\MaxHealthUpgrade.cpp
+#ifdef ZH
+# End Source File
+# Begin Source File
+
+SOURCE=.\Source\GameLogic\Object\Upgrade\ModelConditionUpgrade.cpp
+#endif
 # End Source File
 # Begin Source File
 
 SOURCE=.\Source\GameLogic\Object\Upgrade\ObjectCreationUpgrade.cpp
+#ifdef ZH
+# End Source File
+# Begin Source File
+
+SOURCE=.\Source\GameLogic\Object\Upgrade\PassengersFireUpgrade.cpp
+#endif
 # End Source File
 # Begin Source File
 
@@ -1459,6 +1709,12 @@ SOURCE=.\Source\GameLogic\Object\Upgrade\RadarUpgrade.cpp
 # End Source File
 # Begin Source File
 
+#ifdef ZH
+SOURCE=.\Source\GameLogic\Object\Upgrade\ReplaceObjectUpgrade.cpp
+# End Source File
+# Begin Source File
+
+#endif
 SOURCE=.\Source\GameLogic\Object\Upgrade\StatusBitsUpgrade.cpp
 # End Source File
 # Begin Source File
@@ -1509,6 +1765,20 @@ SOURCE=.\Source\GameLogic\Object\Helper\ObjectSMCHelper.cpp
 
 SOURCE=.\Source\GameLogic\Object\Helper\ObjectWeaponStatusHelper.cpp
 # End Source File
+#ifdef ZH
+# Begin Source File
+
+SOURCE=.\Source\GameLogic\Object\Helper\StatusDamageHelper.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\Source\GameLogic\Object\Helper\SubdualDamageHelper.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\Source\GameLogic\Object\Helper\TempWeaponBonusHelper.cpp
+# End Source File
+#endif
 # End Group
 # Begin Group "Destroy"
 
@@ -1741,6 +2011,12 @@ SOURCE=.\Source\GameClient\System\ParticleSys.cpp
 # Begin Source File
 
 SOURCE=.\Source\GameClient\System\RayEffect.cpp
+#ifdef ZH
+# End Source File
+# Begin Source File
+
+SOURCE=.\Source\GameClient\System\Smudge.cpp
+#endif
 # End Source File
 # End Group
 # Begin Group "GUI"
@@ -1802,6 +2078,12 @@ SOURCE=.\Source\GameClient\GUI\Gadget\GadgetVerticalSlider.cpp
 # PROP Default_Filter ""
 # Begin Source File
 
+#ifdef ZH
+SOURCE=.\Source\GameClient\GUI\GUICallbacks\Menus\ChallengeMenu.cpp
+# End Source File
+# Begin Source File
+
+#endif
 SOURCE=.\Source\GameClient\GUI\GUICallbacks\Menus\CreditsMenu.cpp
 # End Source File
 # Begin Source File
@@ -2085,6 +2367,12 @@ SOURCE=.\Source\GameClient\GUI\EstablishConnectionsMenu\EstablishConnectionsMenu
 # Begin Source File
 
 SOURCE=.\Source\GameClient\GUI\AnimateWindowManager.cpp
+#ifdef ZH
+# End Source File
+# Begin Source File
+
+SOURCE=.\Source\GameClient\GUI\ChallengeGenerals.cpp
+#endif
 # End Source File
 # Begin Source File
 
@@ -2238,6 +2526,12 @@ SOURCE=.\Source\GameClient\Line2D.cpp
 # Begin Source File
 
 SOURCE=.\Source\GameClient\MapUtil.cpp
+#ifdef ZH
+# End Source File
+# Begin Source File
+
+SOURCE=.\Source\GameClient\ParabolicEase.cpp
+#endif
 # End Source File
 # Begin Source File
 
@@ -2249,6 +2543,12 @@ SOURCE=.\Source\GameClient\SelectionInfo.cpp
 # End Source File
 # Begin Source File
 
+#ifdef ZH
+SOURCE=.\Source\GameClient\Snow.cpp
+# End Source File
+# Begin Source File
+
+#endif
 SOURCE=.\Source\GameClient\Statistics.cpp
 # End Source File
 # Begin Source File
@@ -2349,27 +2649,142 @@ SOURCE=.\Source\GameNetwork\GameSpy\StagingRoomGameInfo.cpp
 # Begin Source File
 
 SOURCE=.\Source\GameNetwork\GameSpy.cpp
+#ifdef ZH
+
+!IF  "$(CFG)" == "GameEngine - Win32 Release"
+
 # PROP Exclude_From_Build 1
+
+!ELSEIF  "$(CFG)" == "GameEngine - Win32 Debug"
+
+# PROP Exclude_From_Build 1
+
+!ELSEIF  "$(CFG)" == "GameEngine - Win32 Internal"
+
+# PROP Exclude_From_Build 1
+
+!ELSEIF  "$(CFG)" == "GameEngine - Win32 Profile"
+
+# PROP BASE Exclude_From_Build 1
+#endif
+# PROP Exclude_From_Build 1
+#ifdef ZH
+
+!ENDIF 
+
+#endif
 # End Source File
 # Begin Source File
 
 SOURCE=.\Source\GameNetwork\GameSpyChat.cpp
+#ifdef ZH
+
+!IF  "$(CFG)" == "GameEngine - Win32 Release"
+
 # PROP Exclude_From_Build 1
+
+!ELSEIF  "$(CFG)" == "GameEngine - Win32 Debug"
+
+#endif
+# PROP Exclude_From_Build 1
+#ifdef ZH
+
+!ELSEIF  "$(CFG)" == "GameEngine - Win32 Internal"
+
+# PROP Exclude_From_Build 1
+
+!ELSEIF  "$(CFG)" == "GameEngine - Win32 Profile"
+
+# PROP BASE Exclude_From_Build 1
+# PROP Exclude_From_Build 1
+
+!ENDIF 
+
+#endif
 # End Source File
 # Begin Source File
 
 SOURCE=.\Source\GameNetwork\GameSpyGameInfo.cpp
+#ifdef ZH
+
+!IF  "$(CFG)" == "GameEngine - Win32 Release"
+
 # PROP Exclude_From_Build 1
+
+!ELSEIF  "$(CFG)" == "GameEngine - Win32 Debug"
+
+# PROP Exclude_From_Build 1
+
+!ELSEIF  "$(CFG)" == "GameEngine - Win32 Internal"
+
+# PROP Exclude_From_Build 1
+
+!ELSEIF  "$(CFG)" == "GameEngine - Win32 Profile"
+
+# PROP BASE Exclude_From_Build 1
+#endif
+# PROP Exclude_From_Build 1
+#ifdef ZH
+
+!ENDIF 
+
+#endif
 # End Source File
 # Begin Source File
 
 SOURCE=.\Source\GameNetwork\GameSpyGP.cpp
+#ifdef ZH
+
+!IF  "$(CFG)" == "GameEngine - Win32 Release"
+
+#endif
 # PROP Exclude_From_Build 1
+#ifdef ZH
+
+!ELSEIF  "$(CFG)" == "GameEngine - Win32 Debug"
+
+# PROP Exclude_From_Build 1
+
+!ELSEIF  "$(CFG)" == "GameEngine - Win32 Internal"
+
+# PROP Exclude_From_Build 1
+
+!ELSEIF  "$(CFG)" == "GameEngine - Win32 Profile"
+
+# PROP BASE Exclude_From_Build 1
+# PROP Exclude_From_Build 1
+
+!ENDIF 
+
+#endif
 # End Source File
 # Begin Source File
 
 SOURCE=.\Source\GameNetwork\GameSpyPersistentStorage.cpp
+#ifdef ZH
+
+!IF  "$(CFG)" == "GameEngine - Win32 Release"
+
 # PROP Exclude_From_Build 1
+
+!ELSEIF  "$(CFG)" == "GameEngine - Win32 Debug"
+
+#endif
+# PROP Exclude_From_Build 1
+#ifdef ZH
+
+!ELSEIF  "$(CFG)" == "GameEngine - Win32 Internal"
+
+# PROP Exclude_From_Build 1
+
+!ELSEIF  "$(CFG)" == "GameEngine - Win32 Profile"
+
+# PROP BASE Exclude_From_Build 1
+# PROP Exclude_From_Build 1
+
+!ENDIF 
+
+#endif
 # End Source File
 # End Group
 # Begin Group "InGameNetwork"
@@ -2511,6 +2926,12 @@ SOURCE=.\Source\Precompiled\PreRTS.cpp
 # PROP Default_Filter ""
 # Begin Source File
 
+#ifdef ZH
+SOURCE=.\Include\Common\AcademyStats.h
+# End Source File
+# Begin Source File
+
+#endif
 SOURCE=.\Include\Common\ActionManager.h
 # End Source File
 # Begin Source File
@@ -2643,6 +3064,12 @@ SOURCE=.\Include\Common\DrawModule.h
 # End Source File
 # Begin Source File
 
+#ifdef ZH
+SOURCE=.\Include\Common\DynamicAudioEventInfo.h
+# End Source File
+# Begin Source File
+
+#endif
 SOURCE=.\Include\Common\encrypt.h
 # End Source File
 # Begin Source File
@@ -2812,9 +3239,21 @@ SOURCE=.\Include\Common\MultiplayerSettings.h
 # Begin Source File
 
 SOURCE=.\Include\Common\NameKeyGenerator.h
+#ifdef ZH
 # End Source File
 # Begin Source File
 
+SOURCE=.\Include\GameLogic\ObjectScriptStatusBits.h
+#endif
+# End Source File
+# Begin Source File
+
+#ifdef ZH
+SOURCE=.\Include\Common\ObjectStatusTypes.h
+# End Source File
+# Begin Source File
+
+#endif
 SOURCE=.\Include\Common\OSDisplay.h
 # End Source File
 # Begin Source File
@@ -3055,6 +3494,12 @@ SOURCE=.\Include\GameLogic\AITNGuard.h
 # Begin Source File
 
 SOURCE=.\Include\GameLogic\Module\AIUpdate.h
+#ifdef ZH
+# End Source File
+# Begin Source File
+
+SOURCE=.\Include\GameLogic\Module\AnimationSteeringUpdate.h
+#endif
 # End Source File
 # Begin Source File
 
@@ -3087,6 +3532,12 @@ SOURCE=.\Include\GameLogic\Module\BaikonurLaunchPower.h
 # Begin Source File
 
 SOURCE=.\Include\GameLogic\Module\BaseRegenerateUpdate.h
+#ifdef ZH
+# End Source File
+# Begin Source File
+
+SOURCE=.\Include\GameLogic\Module\BattleBusSlowDeathBehavior.h
+#endif
 # End Source File
 # Begin Source File
 
@@ -3122,6 +3573,12 @@ SOURCE=.\Include\GameLogic\Module\BridgeTowerBehavior.h
 # End Source File
 # Begin Source File
 
+#ifdef ZH
+SOURCE=.\Include\GameLogic\Module\BunkerBusterBehavior.h
+# End Source File
+# Begin Source File
+
+#endif
 SOURCE=.\Include\GameLogic\Module\CashBountyPower.h
 # End Source File
 # Begin Source File
@@ -3178,6 +3635,12 @@ SOURCE=.\Include\GameLogic\Module\CostModifierUpgrade.h
 # End Source File
 # Begin Source File
 
+#ifdef ZH
+SOURCE=.\Include\GameLogic\Module\CountermeasuresBehavior.h
+# End Source File
+# Begin Source File
+
+#endif
 SOURCE=.\Include\GameLogic\Module\CrateCollide.h
 # End Source File
 # Begin Source File
@@ -3214,6 +3677,7 @@ SOURCE=.\Include\GameLogic\Module\DefectorSpecialPower.h
 # End Source File
 # Begin Source File
 
+#ifdef OG
 SOURCE=.\Include\GameLogic\Module\DelayedUpgrade.h
 # End Source File
 # Begin Source File
@@ -3222,6 +3686,7 @@ SOURCE=.\Include\GameLogic\Module\DelayedWeaponSetUpgradeUpdate.h
 # End Source File
 # Begin Source File
 
+#endif
 SOURCE=.\Include\GameLogic\Module\DeletionUpdate.h
 # End Source File
 # Begin Source File
@@ -3319,6 +3784,12 @@ SOURCE=.\Include\GameLogic\Module\FireWeaponWhenDeadBehavior.h
 # Begin Source File
 
 SOURCE=.\Include\GameLogic\Module\FlammableUpdate.h
+#ifdef ZH
+# End Source File
+# Begin Source File
+
+SOURCE=.\Include\GameLogic\Module\FlightDeckBehavior.h
+#endif
 # End Source File
 # Begin Source File
 
@@ -3335,6 +3806,16 @@ SOURCE=.\Include\GameLogic\Module\GarrisonContain.h
 # Begin Source File
 
 SOURCE=.\Include\GameLogic\Module\GenerateMinefieldBehavior.h
+#ifdef ZH
+# End Source File
+# Begin Source File
+
+SOURCE=.\Include\GameLogic\Module\GrantScienceUpgrade.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\Include\GameLogic\Module\GrantStealthBehavior.h
+#endif
 # End Source File
 # Begin Source File
 
@@ -3359,6 +3840,12 @@ SOURCE=.\Include\GameLogic\Module\HeightDieUpdate.h
 # Begin Source File
 
 SOURCE=.\Include\GameLogic\Module\HelicopterSlowDeathUpdate.h
+#ifdef ZH
+# End Source File
+# Begin Source File
+
+SOURCE=.\Include\GameLogic\Module\HelixContain.h
+#endif
 # End Source File
 # Begin Source File
 
@@ -3390,6 +3877,12 @@ SOURCE=.\Include\GameLogic\Module\InstantDeathBehavior.h
 # End Source File
 # Begin Source File
 
+#ifdef ZH
+SOURCE=.\Include\GameLogic\Module\InternetHackContain.h
+# End Source File
+# Begin Source File
+
+#endif
 SOURCE=.\Include\GameLogic\Module\JetAIUpdate.h
 # End Source File
 # Begin Source File
@@ -3403,6 +3896,12 @@ SOURCE=.\Include\GameLogic\Module\KeepObjectDie.h
 # Begin Source File
 
 SOURCE=.\Include\GameLogic\Module\LifetimeUpdate.h
+#ifdef ZH
+# End Source File
+# Begin Source File
+
+SOURCE=.\Include\GameLogic\Module\LockWeaponCreate.h
+#endif
 # End Source File
 # Begin Source File
 
@@ -3434,7 +3933,19 @@ SOURCE=.\Include\GameLogic\Module\MobNexusContain.h
 # End Source File
 # Begin Source File
 
+#ifdef ZH
+SOURCE=.\Include\GameLogic\Module\ModelConditionUpgrade.h
+# End Source File
+# Begin Source File
+
+#endif
 SOURCE=.\Include\GameLogic\Module\MoneyCrateCollide.h
+#ifdef ZH
+# End Source File
+# Begin Source File
+
+SOURCE=.\Include\GameLogic\Module\NeutronBlastBehavior.h
+#endif
 # End Source File
 # Begin Source File
 
@@ -3499,6 +4010,12 @@ SOURCE=.\Include\GameLogic\Module\ParkingPlaceBehavior.h
 # Begin Source File
 
 SOURCE=.\Include\GameLogic\Module\ParticleUplinkCannonUpdate.h
+#ifdef ZH
+# End Source File
+# Begin Source File
+
+SOURCE=.\Include\GameLogic\Module\PassengersFireUpgrade.h
+#endif
 # End Source File
 # Begin Source File
 
@@ -3607,9 +4124,53 @@ SOURCE=.\Include\GameLogic\Module\RebuildHoleExposeDie.h
 # Begin Source File
 
 SOURCE=.\Include\GameLogic\Module\RepairDockUpdate.h
+#ifdef ZH
 # End Source File
 # Begin Source File
 
+SOURCE=.\Include\GameLogic\Module\ReplaceObjectUpgrade.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\Include\GameLogic\Module\RiderChangeContain.h
+#endif
+# End Source File
+# Begin Source File
+
+#ifdef ZH
+SOURCE=.\Include\GameLogic\Module\SabotageCommandCenterCrateCollide.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\Include\GameLogic\Module\SabotageFakeBuildingCrateCollide.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\Include\GameLogic\Module\SabotageInternetCenterCrateCollide.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\Include\GameLogic\Module\SabotageMilitaryFactoryCrateCollide.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\Include\GameLogic\Module\SabotagePowerPlantCrateCollide.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\Include\GameLogic\Module\SabotageSuperweaponCrateCollide.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\Include\GameLogic\Module\SabotageSupplyCenterCrateCollide.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\Include\GameLogic\Module\SabotageSupplyDropzoneCrateCollide.h
+# End Source File
+# Begin Source File
+
+#endif
 SOURCE=.\Include\GameLogic\Module\SalvageCrateCollide.h
 # End Source File
 # Begin Source File
@@ -3626,6 +4187,12 @@ SOURCE=.\Include\GameLogic\Module\SlowDeathBehavior.h
 # End Source File
 # Begin Source File
 
+#ifdef ZH
+SOURCE=.\Include\GameLogic\Module\SmartBombTargetHomingUpdate.h
+# End Source File
+# Begin Source File
+
+#endif
 SOURCE=.\Include\GameLogic\Module\SpawnBehavior.h
 # End Source File
 # Begin Source File
@@ -3654,6 +4221,20 @@ SOURCE=.\Include\GameLogic\Module\SpecialPowerModule.h
 # End Source File
 # Begin Source File
 
+#ifdef ZH
+SOURCE=.\Include\GameLogic\Module\SpecialPowerUpdateModule.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\Include\GameLogic\Module\SpectreGunshipDeploymentUpdate.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\Include\GameLogic\Module\SpectreGunshipUpdate.h
+# End Source File
+# Begin Source File
+
+#endif
 SOURCE=.\Include\GameLogic\Module\SpyVisionSpecialPower.h
 # End Source File
 # Begin Source File
@@ -3667,6 +4248,12 @@ SOURCE=.\Include\GameLogic\Module\SquishCollide.h
 # Begin Source File
 
 SOURCE=.\Include\GameLogic\Module\StatusBitsUpgrade.h
+#ifdef ZH
+# End Source File
+# Begin Source File
+
+SOURCE=.\Include\GameLogic\Module\StatusDamageHelper.h
+#endif
 # End Source File
 # Begin Source File
 
@@ -3698,6 +4285,12 @@ SOURCE=.\Include\GameLogic\Module\StructureToppleUpdate.h
 # End Source File
 # Begin Source File
 
+#ifdef ZH
+SOURCE=.\Include\GameLogic\Module\SubdualDamageHelper.h
+# End Source File
+# Begin Source File
+
+#endif
 SOURCE=.\Include\GameLogic\Module\SubObjectsUpgrade.h
 # End Source File
 # Begin Source File
@@ -3731,6 +4324,12 @@ SOURCE=.\Include\GameLogic\Module\SupplyWarehouseDockUpdate.h
 # Begin Source File
 
 SOURCE=.\Include\GameLogic\Module\TechBuildingBehavior.h
+#ifdef ZH
+# End Source File
+# Begin Source File
+
+SOURCE=.\Include\GameLogic\Module\TempWeaponBonusHelper.h
+#endif
 # End Source File
 # Begin Source File
 
@@ -3755,6 +4354,12 @@ SOURCE=.\Include\GameLogic\Module\TransportContain.h
 # Begin Source File
 
 SOURCE=.\Include\GameLogic\Module\TunnelContain.h
+#ifdef ZH
+# End Source File
+# Begin Source File
+
+SOURCE=.\Include\GameLogic\Module\UndeadBody.h
+#endif
 # End Source File
 # Begin Source File
 
@@ -3794,6 +4399,12 @@ SOURCE=.\Include\GameLogic\Module\WaveGuideUpdate.h
 # End Source File
 # Begin Source File
 
+#ifdef ZH
+SOURCE=.\Include\GameLogic\Module\WeaponBonusUpdate.h
+# End Source File
+# Begin Source File
+
+#endif
 SOURCE=.\Include\GameLogic\Module\WeaponBonusUpgrade.h
 # End Source File
 # Begin Source File
@@ -3819,6 +4430,12 @@ SOURCE=.\Include\GameLogic\AIGuard.h
 # End Source File
 # Begin Source File
 
+#ifdef ZH
+SOURCE=.\Include\GameLogic\AIGuardRetaliate.h
+# End Source File
+# Begin Source File
+
+#endif
 SOURCE=.\Include\GameLogic\AIPathfind.h
 # End Source File
 # Begin Source File
@@ -3899,6 +4516,7 @@ SOURCE=.\Include\GameLogic\ObjectIter.h
 # End Source File
 # Begin Source File
 
+#ifdef OG
 SOURCE=.\Include\GameLogic\ObjectScriptStatusBits.h
 # End Source File
 # Begin Source File
@@ -3907,6 +4525,7 @@ SOURCE=.\Include\GameLogic\ObjectStatusBits.h
 # End Source File
 # Begin Source File
 
+#endif
 SOURCE=.\Include\GameLogic\ObjectTypes.h
 # End Source File
 # Begin Source File
@@ -4024,6 +4643,12 @@ SOURCE=.\Include\GameClient\CampaignManager.h
 # Begin Source File
 
 SOURCE=.\Include\GameClient\CDCheck.h
+#ifdef ZH
+# End Source File
+# Begin Source File
+
+SOURCE=.\Include\GameClient\ChallengeGenerals.h
+#endif
 # End Source File
 # Begin Source File
 
@@ -4275,6 +4900,12 @@ SOURCE=.\Include\GameClient\Mouse.h
 # End Source File
 # Begin Source File
 
+#ifdef ZH
+SOURCE=.\Include\GameClient\ParabolicEase.h
+# End Source File
+# Begin Source File
+
+#endif
 SOURCE=.\Include\GameClient\ParticleSys.h
 # End Source File
 # Begin Source File
@@ -4316,6 +4947,16 @@ SOURCE=.\Include\GameClient\ShellHooks.h
 # Begin Source File
 
 SOURCE=.\Include\GameClient\ShellMenuScheme.h
+#ifdef ZH
+# End Source File
+# Begin Source File
+
+SOURCE=.\Include\GameClient\Smudge.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\Include\GameClient\Snow.h
+#endif
 # End Source File
 # Begin Source File
 

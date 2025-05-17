@@ -54,6 +54,12 @@ public:
 	Real m_maxHealth;
 	Real m_initialHealth;
 
+#ifdef ZH
+	Real m_subdualDamageCap;								///< Subdual damage will never accumulate past this
+	UnsignedInt m_subdualDamageHealRate;		///< Every this often, we drop subdual damage...
+	Real m_subdualDamageHealAmount;					///< by this much.
+
+#endif
 	ActiveBodyModuleData();
 
 	static void buildFieldParse(MultiIniFieldParse& p);
@@ -80,6 +86,12 @@ public:
 	virtual BodyDamageType getDamageState() const;
 	virtual void setDamageState( BodyDamageType newState );	///< control damage state directly.  Will adjust hitpoints.
 	virtual void setAflame( Bool setting );///< This is a major change like a damage state.  
+#ifdef ZH
+	virtual UnsignedInt getSubdualDamageHealRate() const;
+	virtual Real getSubdualDamageHealAmount() const;
+	virtual Bool hasAnySubdualDamage() const;
+	virtual Real getCurrentSubdualDamageAmount() const { return m_currentSubdualDamage; }
+#endif
 
 	virtual const DamageInfo *getLastDamageInfo() const { return &m_lastDamageInfo; }	///< return info on last damage dealt to this object
 	virtual UnsignedInt getLastDamageTimestamp() const { return m_lastDamageTimestamp; }	///< return frame of last damage dealt
@@ -87,10 +99,18 @@ public:
 	virtual ObjectID getClearableLastAttacker() const { return (m_lastDamageCleared ? INVALID_ID : m_lastDamageInfo.in.m_sourceID); }
 	virtual void clearLastAttacker() { m_lastDamageCleared = true; }
 
+#ifdef OG
 	void onVeterancyLevelChanged( VeterancyLevel oldLevel, VeterancyLevel newLevel );
+#endif
+#ifdef ZH
+	void onVeterancyLevelChanged( VeterancyLevel oldLevel, VeterancyLevel newLevel, Bool provideFeedback = TRUE );
+#endif
 
 	virtual void setArmorSetFlag(ArmorSetType ast) { m_curArmorSetFlags.set(ast, 1); }
 	virtual void clearArmorSetFlag(ArmorSetType ast) { m_curArmorSetFlags.set(ast, 0); }
+#ifdef ZH
+	virtual Bool testArmorSetFlag(ArmorSetType ast) { return m_curArmorSetFlags.test(ast); }
+#endif
 
 	virtual void setInitialHealth(Int initialPercent); ///< Sets the inital load health %.
 	virtual void setMaxHealth( Real maxHealth, MaxHealthChangeType healthChangeType = SAME_CURRENTHEALTH ); ///< Sets the inital max health
@@ -103,6 +123,10 @@ public:
 
 	virtual Real getMaxHealth() const;  ///< return max health
 	virtual Real getInitialHealth() const;  // return initial health
+#ifdef ZH
+
+	virtual Real getPreviousHealth() const { return m_prevHealth; }
+#endif
 
 	virtual void setIndestructible( Bool indestructible );
 	virtual Bool isIndestructible( void ) const { return m_indestructible; }
@@ -112,6 +136,13 @@ public:
 	virtual void evaluateVisualCondition();
 	virtual void updateBodyParticleSystems( void );// made public for topple anf building collapse updates -ML
 
+#ifdef ZH
+	// Subdual Damage
+	virtual Bool isSubdued() const; 
+	virtual Bool canBeSubdued() const; 
+	virtual void onSubdualChange( Bool isNowSubdued );///< Override this if you want a totally different effect than DISABLED_SUBDUED
+
+#endif
 protected:
 
 	void validateArmorAndDamageFX() const;
@@ -123,12 +154,22 @@ protected:
 	void deleteAllParticleSystems( void );
 	void setCorrectDamageState();
 
+#ifdef ZH
+	Bool shouldRetaliate(Object *obj);
+	Bool shouldRetaliateAgainstAggressor(Object *obj, Object *damager);
+
+	virtual void internalAddSubdualDamage( Real delta );								///< change health
+
+#endif
 private:
 
 	Real									m_currentHealth;				///< health of the object
 	Real									m_prevHealth;						///< previous health value before current health change op
   Real									m_maxHealth;						///< max health this object can have
   Real									m_initialHealth;				///< starting health for this object
+#ifdef ZH
+	Real									m_currentSubdualDamage;	///< Starts at zero and goes up.  Inherited modules will do something when "subdued".
+#endif
 
 	BodyDamageType				m_curDamageState;				///< last known damage state
 	UnsignedInt						m_nextDamageFXTime;

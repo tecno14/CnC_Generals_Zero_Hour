@@ -151,7 +151,12 @@ static Bool ParseObjectDataChunk(DataChunkInput &file, DataChunkInfo *info, void
 	
 	// create the map object
 	pThisOne = newInstance( MapObject )( loc, name, angle, flags, &d, 
+#ifdef OG
 														TheThingFactory->findTemplate( name ) );
+#endif
+#ifdef ZH
+														TheThingFactory->findTemplate( name, FALSE ) );
+#endif
 
 //DEBUG_LOG(("obj %s owner %s\n",name.str(),d.getAsciiString(TheKey_originalOwner).str()));
 
@@ -417,7 +422,15 @@ void MapCache::writeCacheINI( Bool userDir )
 			fprintf(fp, "  extentMin = X:%2.2f Y:%2.2f Z:%2.2f\n", md.m_extent.lo.x, md.m_extent.lo.y, md.m_extent.lo.z);
 			fprintf(fp, "  extentMax = X:%2.2f Y:%2.2f Z:%2.2f\n", md.m_extent.hi.x, md.m_extent.hi.y, md.m_extent.hi.z);
 
+#ifdef OG
 			fprintf(fp, "  displayName = %s\n", UnicodeStringToQuotedPrintable(md.m_displayName).str());
+
+#endif
+#ifdef ZH
+// BAD AND NOW UNUSED:  the mapcache.ini should not contain localized data... using the lookup tag instead
+//			fprintf(fp, "  displayName = %s\n", UnicodeStringToQuotedPrintable(md.m_displayName).str());
+			fprintf(fp, "  nameLookupTag = %s\n", md.m_nameLookupTag.str());
+#endif
 
 			Coord3D pos;
 			WaypointMap::iterator itw = md.m_waypoints.begin();
@@ -657,7 +670,36 @@ Bool MapCache::addMap( AsciiString dirName, AsciiString fname, FileInfo *fileInf
 
 		if ((md.m_filesize == filesize) &&
 				(md.m_CRC != 0))
+#ifdef ZH
 		{
+			// Force a lookup so that we don't display the English localization in all builds.
+			if (md.m_nameLookupTag.isEmpty())
+			{
+				// unofficial maps or maps without names
+				AsciiString tempdisplayname;
+				tempdisplayname = fname.reverseFind('\\') + 1;
+				(*this)[lowerFname].m_displayName.translate(tempdisplayname);
+				if (md.m_numPlayers >= 2)
+				{
+					UnicodeString extension;
+					extension.format(L" (%d)", md.m_numPlayers);
+					(*this)[lowerFname].m_displayName.concat(extension);
+				}
+			}
+			else
+#endif
+		{
+#ifdef ZH
+				// official maps with name tags
+				(*this)[lowerFname].m_displayName = TheGameText->fetch(md.m_nameLookupTag);
+				if (md.m_numPlayers >= 2)
+				{
+					UnicodeString extension;
+					extension.format(L" (%d)", md.m_numPlayers);
+					(*this)[lowerFname].m_displayName.concat(extension);
+				}
+			}
+#endif
 //			DEBUG_LOG(("MapCache::addMap - found match for map %s\n", lowerFname.str()));
 			return FALSE;	// OK, it checks out.
 		}
@@ -689,6 +731,9 @@ Bool MapCache::addMap( AsciiString dirName, AsciiString fname, FileInfo *fileInf
 
 	Bool exists = false;
 	AsciiString munkee = worldDict.getAsciiString(TheKey_mapName, &exists);
+#ifdef ZH
+	md.m_nameLookupTag = munkee;
+#endif
 	if (!exists || munkee.isEmpty())
 	{
 		DEBUG_LOG(("Missing TheKey_mapName!\n"));
@@ -780,6 +825,9 @@ Int populateMapListboxNoReset( GameWindow *listbox, Bool useSystemMaps, Bool isM
 	const Image *easyImage = NULL;
 	const Image *mediumImage = NULL;
 	const Image *brutalImage = NULL;
+#ifdef ZH
+	const Image *maxBrutalImage = NULL;
+#endif
 	SkirmishBattleHonors *battleHonors = NULL;
 	Int w = 10, h = 10;
 	if (numColumns > 1)
@@ -787,6 +835,9 @@ Int populateMapListboxNoReset( GameWindow *listbox, Bool useSystemMaps, Bool isM
 		easyImage = TheMappedImageCollection->findImageByName("Star-Bronze");
 		mediumImage = TheMappedImageCollection->findImageByName("Star-Silver");
 		brutalImage = TheMappedImageCollection->findImageByName("Star-Gold");
+#ifdef ZH
+		maxBrutalImage = TheMappedImageCollection->findImageByName("RedYell_Star");
+#endif
 		battleHonors = new SkirmishBattleHonors;
 
 		w = (brutalImage)?brutalImage->getImageWidth():10;
@@ -856,6 +907,16 @@ typedef MapDisplayToFileNameList::iterator MapDisplayToFileNameListIter;
 					mapDir.str(), it->first.startsWith(mapDir.str())));
 			}
 			*/
+#ifdef ZH
+			
+			//Patch 1.03 -- Purposely filter out these broken maps that exist in Generals.
+			if( !asciiMapName.compare( "maps\\armored fury\\armored fury.map" ) || 
+				!asciiMapName.compare( "maps\\scorched earth\\scorched earth.map" ) )
+			{
+				++tempit;
+				continue;
+			}
+#endif
 
 			DEBUG_ASSERTCRASH(it != TheMapCache->end(), ("Map %s not found in map cache.", *tempit));
 			if (it->first.startsWithNoCase(mapDir.str()) && isMultiplayer == it->second.m_isMultiplayer && !it->second.m_displayName.isEmpty())
@@ -870,9 +931,27 @@ typedef MapDisplayToFileNameList::iterator MapDisplayToFileNameListIter;
 					Int numMedium = battleHonors->getEnduranceMedal(it->first.str(), SLOT_MED_AI);
 					Int numBrutal = battleHonors->getEnduranceMedal(it->first.str(), SLOT_BRUTAL_AI);
 					if (numBrutal)
+#ifdef ZH
 					{
+						int maxBrutalSlots = it->second.m_numPlayers - 1;
+						if (numBrutal == maxBrutalSlots)
+#endif
+					{
+#ifdef ZH
+							index = GadgetListBoxAddEntryImage( listbox, maxBrutalImage, index, 0, w, h, TRUE);
+							imageItemData = 4;
+						}
+						else	
+						{
+							index = GadgetListBoxAddEntryImage( listbox, brutalImage, index, 0, w, h, TRUE);
+#endif
 						imageItemData = 3;
+#ifdef OG
 						index = GadgetListBoxAddEntryImage( listbox, brutalImage, index, 0, w, h, TRUE);
+#endif
+#ifdef ZH
+						}
+#endif
 					}
 					else if (numMedium)
 					{
@@ -997,9 +1076,51 @@ AsciiString getDefaultMap( Bool isMultiplayer )
 		}
 		++it;
 	}
+#ifdef ZH
 
 	return AsciiString::TheEmptyString;
+}
+
+#endif
+
+#ifdef ZH
+AsciiString getDefaultOfficialMap()
+{
+	if(!TheMapCache)
+#endif
+	return AsciiString::TheEmptyString;
+#ifdef OG
 }  // end isValidMap
+
+#endif
+#ifdef ZH
+	TheMapCache->updateCache();
+
+	MapCache::iterator it = TheMapCache->begin();
+	while (it != TheMapCache->end())
+	{
+		if (it->second.m_isMultiplayer && it->second.m_isOfficial)
+		{
+			return it->first;
+		}
+		++it;
+	}
+	return AsciiString::TheEmptyString;
+}
+
+Bool isOfficialMap( AsciiString mapName )
+{
+	if(!TheMapCache || mapName.isEmpty())
+		return FALSE;
+	TheMapCache->updateCache();
+	mapName.toLower();
+	MapCache::iterator it = TheMapCache->find(mapName);
+	if (it != TheMapCache->end())
+		return it->second.m_isOfficial;
+	return FALSE;
+}
+
+#endif
 
 const MapMetaData *MapCache::findMap(AsciiString mapName)
 {
@@ -1124,7 +1245,12 @@ Image *getMapPreviewImage( AsciiString mapName )
 		
 		if (success)
 		{
+#ifdef OG
 			image = TheMappedImageCollection->newImage();
+#endif
+#ifdef ZH
+    	image = newInstance(Image);
+#endif
 			image->setName(tempName);
 			//image->setFullPath("mission.tga");
 			image->setFilename(name);
@@ -1137,6 +1263,9 @@ Image *getMapPreviewImage( AsciiString mapName )
 			image->setUV(&uv);
 			image->setTextureHeight(128);
 			image->setTextureWidth(128);
+#ifdef ZH
+			TheMappedImageCollection->addImage(image);
+#endif
 		}
 		else
 		{

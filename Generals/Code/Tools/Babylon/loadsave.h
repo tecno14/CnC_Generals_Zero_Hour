@@ -23,7 +23,12 @@
 #ifndef __LOADSAVE_H
 #define __LOADSAVE_H
 
+#ifdef OG
 int WriteMainDB(TransDB *db, const char *filename, CNoxstringDlg *dlg );
+#endif
+#ifdef ZH
+int WriteMainDB(TransDB *db, const char *filename, CBabylonDlg *dlg );
+#endif
 int LoadMainDB(TransDB *db, const char *filename, void (*cb) (void ) = NULL );
 int	GetLabelCountDB ( char *filename );
 

@@ -211,3 +211,61 @@ Int SkirmishBattleHonors::getNumGamesLoyal(void) const
 	return getInt("LoyalGames", 0);
 }
 
+#ifdef ZH
+void SkirmishBattleHonors::setUSACampaignComplete(GameDifficulty difficulty)
+{
+	AsciiString key;
+	key.format("USACampaign_%d", (int)difficulty);
+	setInt(key, 1);
+}
+
+Bool SkirmishBattleHonors::getUSACampaignComplete(GameDifficulty difficulty) const
+{
+	AsciiString key;
+	key.format("USACampaign_%d", (int)difficulty);
+	return (getInt(key, 0) != 0);
+}
+
+void SkirmishBattleHonors::setCHINACampaignComplete(GameDifficulty difficulty)
+{
+	AsciiString key;
+	key.format("CHINACampaign_%d", (int)difficulty);
+	setInt(key, 1);
+}
+
+Bool SkirmishBattleHonors::getCHINACampaignComplete(GameDifficulty difficulty) const
+{
+	AsciiString key;
+	key.format("CHINACampaign_%d",(int)difficulty);
+	return (getInt(key, 0) != 0);
+}
+
+void SkirmishBattleHonors::setGLACampaignComplete(GameDifficulty difficulty)
+{
+	AsciiString key;
+	key.format("GLACampaign_%d", (int)difficulty);
+	setInt(key, 1);
+}
+
+Bool SkirmishBattleHonors::getGLACampaignComplete(GameDifficulty difficulty) const
+{
+	AsciiString key;
+	key.format("GLACampaign_%d", (int)difficulty);
+	return (getInt(key, 0) != 0);
+}
+
+void SkirmishBattleHonors::setChallengeCampaignComplete(Int challenge, GameDifficulty difficulty)
+{
+	AsciiString key;
+	key.format("ChallengeCampaign%d_%d", challenge, (int)difficulty);
+	setInt(key, 1);
+}
+
+Bool SkirmishBattleHonors::getChallengeCampaignComplete(Int challenge, GameDifficulty difficulty) const
+{
+	AsciiString key;
+	key.format("ChallengeCampaign%d_%d", challenge, (int)difficulty);
+	return (getInt(key, 0) != 0);
+}
+#endif
+

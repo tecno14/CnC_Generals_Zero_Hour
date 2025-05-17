@@ -135,7 +135,14 @@ struct PristineBoneInfo
 	Matrix3D mtx;
 	Int boneIndex;
 };
+#ifdef OG
 typedef std::hash_map< NameKeyType, PristineBoneInfo, rts::hash<NameKeyType>, rts::equal_to<NameKeyType> > PristineBoneInfoMap;
+
+#endif
+#ifdef ZH
+//typedef std::hash_map< NameKeyType, PristineBoneInfo, rts::hash<NameKeyType>, rts::equal_to<NameKeyType> > PristineBoneInfoMap;
+typedef std::map< NameKeyType, PristineBoneInfo, std::less<NameKeyType> > PristineBoneInfoMap;
+#endif
 
 //-------------------------------------------------------------------------------------------------
 
@@ -267,7 +274,14 @@ private:
 typedef std::vector<ModelConditionInfo> ModelConditionVector;
 
 //-------------------------------------------------------------------------------------------------
+#ifdef OG
 typedef std::hash_map< TransitionSig, ModelConditionInfo, std::hash<TransitionSig>, std::equal_to<TransitionSig> > TransitionMap;
+
+#endif
+#ifdef ZH
+//typedef std::hash_map< TransitionSig, ModelConditionInfo, std::hash<TransitionSig>, std::equal_to<TransitionSig> > TransitionMap;
+typedef std::map< TransitionSig, ModelConditionInfo, std::less<TransitionSig> > TransitionMap;
+#endif
 
 //-------------------------------------------------------------------------------------------------
 // this is more efficient and also helps solve a projectile-launch-offset problem for double-upgraded
@@ -304,6 +318,12 @@ public:
 	mutable Bool											m_attachToDrawableBoneOffsetValid;
 #endif
 	mutable Byte											m_validated;
+#ifdef ZH
+
+  Bool                              m_particlesAttachedToAnimatedBones;
+
+  Bool                              m_receivesDynamicLights; ///< just like it sounds... it sets a property of Drawable, actually
+#endif
 
 	W3DModelDrawModuleData();
 	~W3DModelDrawModuleData();
@@ -364,6 +384,10 @@ public:
 
 	// this method must ONLY be called from the client, NEVER From the logic, not even indirectly.
 	virtual Bool clientOnly_getRenderObjInfo(Coord3D* pos, Real* boundingSphereRadius, Matrix3D* transform) const;
+#ifdef ZH
+	virtual Bool clientOnly_getRenderObjBoundBox(OBBoxClass * boundbox) const;
+	virtual Bool clientOnly_getRenderObjBoneTransform(const AsciiString & boneName,Matrix3D * set_tm) const;
+#endif
 	virtual Int getPristineBonePositionsForConditionState(const ModelConditionFlags& condition, const char* boneNamePrefix, Int startIndex, Coord3D* positions, Matrix3D* transforms, Int maxBones) const;
 	virtual Int getCurrentBonePositions(const char* boneNamePrefix, Int startIndex, Coord3D* positions, Matrix3D* transforms, Int maxBones) const;
 	virtual Bool getCurrentWorldspaceClientBonePositions(const char* boneName, Matrix3D& transform) const;
@@ -398,6 +422,11 @@ public:
 	  This call is used to pause or resume an animation.
 	*/
 	virtual void setPauseAnimation(Bool pauseAnim);
+#ifdef ZH
+
+	//Kris: Manually set a drawable's current animation to specific frame.
+	virtual void setAnimationFrame( int frame );
+#endif
 
 	virtual void updateSubObjects();
 	virtual void showSubObject( const AsciiString& name, Bool show );

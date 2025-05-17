@@ -490,10 +490,27 @@ Coord3D DockUpdate::computeApproachPosition( Int positionIndex, Object *forWhom 
 // ------------------------------------------------------------------------------------------------
 void DockUpdate::loadDockPositions()
 {
+#ifdef OG
 	Drawable *myDrawable = getObject()->getDrawable();
+
+#endif
+#ifdef ZH
+	Object *obj = getObject();
+	Drawable *myDrawable = obj->getDrawable();
+#endif
 
 	if (myDrawable)
 	{
+#ifdef ZH
+		//Patch 1.03 - Kris - Jan 19, 2005
+		//Some of the GLASupplyStash assets still have docking bones in them. When found, the docking positions must be 
+		//observed. This occurs when upgrading to fortified structures which still have the bones. This has the negative
+		//side-effect of workers suddenly slowing down their gathering rate. The proper fix would be to remove the bones
+		//from the assets, but the artists could not find the original max files, hence the code solution. 
+		if( !obj->isKindOf( KINDOF_IGNORE_DOCKING_BONES ) )
+		{
+
+#endif
 		myDrawable->getPristineBonePositions( "DockStart", 0, &m_enterPosition, NULL, 1);
 		myDrawable->getPristineBonePositions( "DockAction", 0, &m_dockPosition, NULL, 1);
 		myDrawable->getPristineBonePositions( "DockEnd", 0, &m_exitPosition, NULL, 1);
@@ -513,7 +530,17 @@ void DockUpdate::loadDockPositions()
 		else
 			m_numberApproachPositionBones = 0;
 
+#ifdef ZH
+			m_positionsLoaded = TRUE;
+		}
+		else
+		{
+			m_numberApproachPositionBones = 0;
+#endif
 		m_positionsLoaded = TRUE;
+#ifdef ZH
+		}
+#endif
 	}
 }
 

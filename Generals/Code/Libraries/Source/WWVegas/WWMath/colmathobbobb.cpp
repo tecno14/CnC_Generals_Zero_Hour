@@ -26,9 +26,19 @@
  *                                                                                             *
  *                       Author:: Greg Hjelstrom                                               *
  *                                                                                             *
+#ifdef OG
  *                     $Modtime:: 5/04/01 8:37p                                               $*
+#endif
+#ifdef ZH
+ *                     $Modtime:: 1/04/02 6:29p                                               $*
+#endif
  *                                                                                             *
+#ifdef OG
  *                    $Revision:: 14                                                          $*
+#endif
+#ifdef ZH
+ *                    $Revision:: 15                                                          $*
+#endif
  *                                                                                             *
  *---------------------------------------------------------------------------------------------*
  * Functions:                                                                                  *
@@ -593,7 +603,12 @@ static inline bool obb_separation_test
 		if ( u1 > rsum ) { 
 			context.MaxFrac = 1.0f; 
 			return true;
+#ifdef OG
 		} else { 
+#endif
+#ifdef ZH
+		} else if (WWMath::Fabs(u1-u0) > 0.0f) {
+#endif
 			tmp = (rsum-u0)/(u1-u0);
 			if ( tmp > context.MaxFrac ) {
 				context.MaxFrac = tmp; 
@@ -606,7 +621,12 @@ static inline bool obb_separation_test
 		if ( u1 < -rsum ) {
 			context.MaxFrac = 1.0f; 
 			return true;
+#ifdef OG
 		} else {
+#endif
+#ifdef ZH
+		} else if (WWMath::Fabs(u1-u0) > 0.0f) {
+#endif
 			tmp = (-rsum-u0)/(u1-u0);
 			if ( tmp > context.MaxFrac ) {
 				context.MaxFrac = tmp;

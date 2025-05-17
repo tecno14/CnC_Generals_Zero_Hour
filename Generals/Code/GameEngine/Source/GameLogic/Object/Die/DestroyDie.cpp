@@ -35,6 +35,14 @@
 #include "GameLogic/GameLogic.h"
 #include "GameLogic/Module/DestroyDie.h"
 
+#ifdef ZH
+#ifdef _INTERNAL
+// for occasional debugging...
+//#pragma optimize("", off)
+//#pragma MESSAGE("************************************** WARNING, optimization disabled for debugging purposes")
+#endif
+
+#endif
 //-------------------------------------------------------------------------------------------------
 //-------------------------------------------------------------------------------------------------
 DestroyDie::DestroyDie( Thing *thing, const ModuleData* moduleData ) : DieModule( thing, moduleData )
@@ -52,9 +60,17 @@ DestroyDie::~DestroyDie( void )
 //-------------------------------------------------------------------------------------------------
 void DestroyDie::onDie( const DamageInfo *damageInfo )
 {
+#ifdef ZH
+	Object *obj = getObject();
+#endif
 	if (!isDieApplicable(damageInfo))
 		return;
+#ifdef OG
 	TheGameLogic->destroyObject(getObject());
+#endif
+#ifdef ZH
+	TheGameLogic->destroyObject( obj );
+#endif
 }
 
 // ------------------------------------------------------------------------------------------------

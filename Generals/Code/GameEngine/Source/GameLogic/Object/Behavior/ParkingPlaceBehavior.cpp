@@ -236,6 +236,27 @@ Bool ParkingPlaceBehavior::hasReservedSpace(ObjectID id) const
 }
 
 //-------------------------------------------------------------------------------------------------
+#ifdef ZH
+Int ParkingPlaceBehavior::getSpaceIndex( ObjectID id ) const
+{
+	if( id == INVALID_ID )
+	{
+		return -1;
+	}
+
+	Int index = 0;
+	for( std::vector<ParkingPlaceInfo>::const_iterator it = m_spaces.begin(); it != m_spaces.end(); it++, index++ )
+	{
+		if (it->m_objectInSpace == id)
+		{
+			return index;
+		}
+	}
+	return -1;
+}
+
+//-------------------------------------------------------------------------------------------------
+#endif
 ParkingPlaceBehavior::ParkingPlaceInfo* ParkingPlaceBehavior::findPPI(ObjectID id)
 {
 	DEBUG_ASSERTCRASH(id != INVALID_ID, ("call findEmptyPPI instead"));
@@ -332,15 +353,61 @@ Bool ParkingPlaceBehavior::reserveSpace(ObjectID id, Real parkingOffset, Parking
 	ppi->m_objectInSpace = id;
 	ppi->m_reservedForExit = false;
 
+#ifdef ZH
+	if( d->m_landingDeckHeightOffset )
+	{
+		Object *obj = TheGameLogic->findObjectByID( id );
+		if( obj )
+		{
+			obj->setStatus( MAKE_OBJECT_STATUS_MASK( OBJECT_STATUS_DECK_HEIGHT_OFFSET ) );
+		}
+	}
+
+#endif
 	if (info) 
 	{
+#ifdef OG
 		const RunwayInfo& rr = m_runways[ppi->m_runway];
 		info->parkingSpace = d->m_parkInHangars ? ppi->m_hangarStart : ppi->m_location;
+#endif
+#ifdef ZH
+		calcPPInfo( id, info );
+
+#endif
 		if (parkingOffset != 0.0f)
 		{
 			info->parkingSpace.x += parkingOffset * Cos(ppi->m_orientation);
 			info->parkingSpace.y += parkingOffset * Sin(ppi->m_orientation);
+#ifdef ZH
 		}
+	}
+
+	ProductionUpdateInterface* pu = getObject()->getProductionUpdateInterface();
+	if (pu)
+		pu->setHoldDoorOpen(ppi->m_door, true);
+
+	return true;
+}
+
+//-------------------------------------------------------------------------------------------------
+void ParkingPlaceBehavior::calcPPInfo( ObjectID id, PPInfo *info )
+{
+
+	ParkingPlaceInfo* ppi = findPPI( id );
+	if( !ppi )
+	{
+		//Utter failure.
+		return;
+#endif
+		}
+#ifdef ZH
+	const RunwayInfo& rr = m_runways[ ppi->m_runway ];
+
+	if( info )
+	{
+		const ParkingPlaceBehaviorModuleData* d = getParkingPlaceBehaviorModuleData();
+		info->parkingSpace = d->m_parkInHangars ? ppi->m_hangarStart : ppi->m_location;
+#endif
 		info->runwayPrep = ppi->m_prep;
 		info->parkingOrientation = d->m_parkInHangars ? ppi->m_hangarStartOrient : ppi->m_orientation;
 		info->runwayStart = rr.m_start;
@@ -350,10 +417,24 @@ Bool ParkingPlaceBehavior::reserveSpace(ObjectID id, Real parkingOffset, Parking
 		const Real APPROACH_DIST = 0.75f;
 		info->runwayApproach.x += (rr.m_end.x - rr.m_start.x) * APPROACH_DIST;
 		info->runwayApproach.y += (rr.m_end.y - rr.m_start.y) * APPROACH_DIST;
+#ifdef OG
 		info->runwayApproach.z = rr.m_end.z + d->m_approachHeight;
+
+#endif
+#ifdef ZH
+		info->runwayApproach.z = rr.m_end.z + d->m_approachHeight + d->m_landingDeckHeightOffset;
+		info->runwayExit = info->runwayApproach;
+#endif
 		info->hangarInternal = ppi->m_hangarStart;
 		info->hangarInternalOrient = ppi->m_hangarStartOrient;
 
+#ifdef ZH
+		//Cache the runway's takeoff distance used by JetAIUpdate for calculating lift.
+		Coord3D vector = info->runwayStart;
+		vector.sub( &info->runwayEnd );
+		info->runwayTakeoffDist = vector.length();
+
+#endif
 		for (std::vector<RunwayInfo>::iterator it = m_runways.begin(); it != m_runways.end(); ++it)
 		{
 			if (it->m_inUseBy == id && it->m_wasInLine)
@@ -361,14 +442,15 @@ Bool ParkingPlaceBehavior::reserveSpace(ObjectID id, Real parkingOffset, Parking
 				info->runwayStart = info->runwayPrep;
 			}
 		}
-
 	}
+#ifdef OG
 
 	ProductionUpdateInterface* pu = getObject()->getProductionUpdateInterface();
 	if (pu)
 		pu->setHoldDoorOpen(ppi->m_door, true);
 
 	return true;
+#endif
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -386,13 +468,31 @@ void ParkingPlaceBehavior::releaseSpace(ObjectID id)
 			it->m_reservedForExit = false;
 			if (pu)
 				pu->setHoldDoorOpen(it->m_door, false);
+#ifdef ZH
 		}
+#endif
+		}
+#ifdef ZH
+
+	Object *obj = TheGameLogic->findObjectByID( id );
+	if( obj )
+	{
+		obj->clearStatus( MAKE_OBJECT_STATUS_MASK( OBJECT_STATUS_DECK_HEIGHT_OFFSET ) );
+#endif
 	}
 }
 
 //-------------------------------------------------------------------------------------------------
+#ifdef OG
 ObjectID ParkingPlaceBehavior::getRunwayReservation(Int runway)
+#endif
+#ifdef ZH
+ObjectID ParkingPlaceBehavior::getRunwayReservation( Int runway, RunwayReservationType type )
+#endif
 {
+#ifdef ZH
+	//Note: We don't care about type because these runways share the runway for taking off and landing.
+#endif
 	buildInfo();
 	purgeDead();
 	return m_runways[runway].m_inUseBy;
@@ -641,6 +741,12 @@ UpdateSleepTime ParkingPlaceBehavior::update()
 					healInfo.in.m_deathType = DEATH_NONE;
 					healInfo.in.m_sourceID = getObject()->getID();
 					healInfo.in.m_amount = HEAL_RATE_FRAMES * d->m_healAmount * SECONDS_PER_LOGICFRAME_REAL;
+#ifdef ZH
+
+//          if ( objToHeal->isKindOf( KINDOF_PRODUCED_AT_HELIPAD ) )
+//            healInfo.in.m_amount += HEAL_RATE_FRAMES * d->m_extraHealAmount4Helicopters * SECONDS_PER_LOGICFRAME_REAL;
+
+#endif
 					BodyModuleInterface *body = objToHeal->getBodyModule();
 					body->attemptHealing( &healInfo );
 					++it;
@@ -760,9 +866,22 @@ void ParkingPlaceBehavior::exitObjectViaDoor( Object *newObj, ExitDoorType exitD
 		}
 		if( !movedToRallyPoint )
 		{
+#ifdef ZH
+			if( !newObj->isKindOf( KINDOF_PRODUCED_AT_HELIPAD ) )
+			{
+#endif
 			std::vector<Coord3D> exitPath;
 			exitPath.push_back(ppinfo.parkingSpace);
 			ai->aiFollowExitProductionPath( &exitPath, getObject(), CMD_FROM_AI );
+#ifdef ZH
+			}
+			else
+			{
+				// Lorenzen sez: aiMoveToPosition has an added benefit. 
+				// It invokes the pathfinder to find a vacant destination.
+	      ai->aiMoveToPosition( &ppinfo.parkingSpace, CMD_FROM_AI );
+			}
+#endif
 		}
 	}
 }

@@ -41,15 +41,29 @@ class AssistedTargetingUpdateModuleData : public UpdateModuleData
 public:
 	Int m_clipSize;
 	WeaponSlotType m_weaponSlot;
+#ifdef OG
 	ThingTemplate *m_laserFromAssisted;
 	ThingTemplate *m_laserToTarget;
+
+#endif
+#ifdef ZH
+
+  AsciiString m_laserFromAssistedName;
+  AsciiString m_laserToTargetName;
+#endif
 
 	AssistedTargetingUpdateModuleData()
 	{
 		m_clipSize = 1;
 		m_weaponSlot = PRIMARY_WEAPON;
+#ifdef OG
 		m_laserFromAssisted = NULL;
 		m_laserToTarget = NULL;
+#endif
+#ifdef ZH
+    m_laserFromAssistedName.clear();
+    m_laserToTargetName.clear();
+#endif
 	}
 
 	static void buildFieldParse(MultiIniFieldParse& p);
@@ -75,6 +89,12 @@ public:
 
 private:
 	void makeFeedbackLaser( const ThingTemplate *laserTemplate, const Object *from, const Object *to );
+#ifdef ZH
+
+	const ThingTemplate *m_laserFromAssisted;
+	const ThingTemplate *m_laserToTarget;
+
+#endif
 };
 
 #endif 

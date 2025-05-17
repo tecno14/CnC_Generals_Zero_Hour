@@ -42,6 +42,9 @@
 #include "mmsys.h"
 
 #define TIMEGETTIME SystemTime.Get
+#ifdef ZH
+#define MS_TIMER_SECOND 1000
+#endif
 
 /*
 ** Class that just wraps around timeGetTime()

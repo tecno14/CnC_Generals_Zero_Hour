@@ -192,7 +192,9 @@ void LANAPI::OnGameStart( void )
 	//DEBUG_LOG(("Map is '%s', preview is '%s'\n", m_currentGame->getMap().str(), GetPreviewFromMap(m_currentGame->getMap()).str()));
 	//DEBUG_LOG(("Map is '%s', INI is '%s'\n", m_currentGame->getMap().str(), GetINIFromMap(m_currentGame->getMap()).str()));
 
+#ifdef OG
 #if !defined(_PLAYTEST)
+#endif
 	if (m_currentGame)
 	{
 		LANPreferences pref;
@@ -202,7 +204,15 @@ void LANAPI::OnGameStart( void )
 		option.format("%d", m_currentGame->getLANSlot( m_currentGame->getLocalSlotNum() )->getColor());
 		pref["Color"] = option;
 		if (m_currentGame->amIHost())
+#ifdef ZH
+    {
+#endif
 			pref["Map"] = AsciiStringToQuotedPrintable(m_currentGame->getMap());
+#ifdef ZH
+      pref.setSuperweaponRestricted( m_currentGame->getSuperweaponRestriction() > 0 );
+      pref.setStartingCash( m_currentGame->getStartingCash() );
+    }
+#endif
 		pref.write();
 
 		m_isInLANMenu = FALSE;
@@ -264,6 +274,8 @@ void LANAPI::OnGameStart( void )
 		InitGameLogicRandom( m_currentGame->getSeed() );
 		DEBUG_LOG(("InitGameLogicRandom( %d )\n", m_currentGame->getSeed()));
 	}
+#ifdef OG
+#endif
 #endif
 }
 

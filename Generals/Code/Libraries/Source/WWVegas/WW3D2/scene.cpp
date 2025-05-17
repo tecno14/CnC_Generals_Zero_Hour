@@ -24,12 +24,34 @@
  *                                                                                             *
  *                     $Archive:: /VSS_Sync/ww3d2/scene.cpp                                   $*
  *                                                                                             *
+#ifdef OG
  *                       Author:: Greg_h                                                       *
+#endif
+#ifdef ZH
+ *                   Org Author:: Greg_h                                                       *
+#endif
  *                                                                                             *
+#ifdef OG
  *                     $Modtime:: 8/29/01 7:29p                                               $*
+
+#endif
+#ifdef ZH
+ *                       Author : Kenny Mitchell                                               * 
+ *                                                                                             * 
+ *                     $Modtime:: 07/01/02 12:55p                                              $*
+#endif
  *                                                                                             *
+#ifdef OG
  *                    $Revision:: 22                                                          $*
+#endif
+#ifdef ZH
+ *                    $Revision:: 24                                                          $*
+#endif
  *                                                                                             *
+#ifdef ZH
+ * 06/27/02 KM Shader system light environment updates                                       *
+ * 07/01/02 KM Coltype enum change to avoid MAX conflicts									   *
+#endif
  *---------------------------------------------------------------------------------------------*
  * Functions:                                                                                  *
  *   SceneClass::SceneClass -- constructor                                                     *
@@ -208,6 +230,11 @@ void SceneClass::Remove_Render_Object(RenderObjClass * obj)
  *=============================================================================================*/
 void SceneClass::Render(RenderInfoClass & rinfo)
 {
+#ifdef ZH
+	// Any stuff that needs to get done before anything else
+	Pre_Render_Processing(rinfo);
+
+#endif
 	DX8Wrapper::Set_Fog(FogEnabled, FogColor, FogStart, FogEnd);
 
 	if (Get_Extra_Pass_Polygon_Mode()==EXTRA_PASS_DISABLE) {
@@ -236,6 +263,11 @@ void SceneClass::Render(RenderInfoClass & rinfo)
 
 		WW3D::Enable_Texturing(old_enable);
 	}
+#ifdef ZH
+
+	// Any stuff that needs to get done after anything else
+	Post_Render_Processing(rinfo);
+#endif
 }
 
 /***********************************************************************************************
@@ -404,7 +436,12 @@ void SimpleSceneClass::Register(RenderObjClass * obj,RegType for_what)
 			UpdateList.Add(obj);			
 			break;
 		case LIGHT:	
+#ifdef OG
 			LightList.Add(obj);	
+#endif
+#ifdef ZH
+			LightList.Add_Tail(obj);	
+#endif
 			break;
 		case RELEASE:				
 			ReleaseList.Add(obj);		
@@ -459,7 +496,12 @@ void SimpleSceneClass::Visibility_Check(CameraClass * camera)
 		}
 
 		// Prepare visible objects for LOD:
+#ifdef OG
 		if (robj->Is_Really_Visible()) {
+#endif
+#ifdef ZH
+		if(robj->Is_Really_Visible() && !robj->Is_Ignoring_LOD_Cost()) {
+#endif
 			robj->Prepare_LOD(*camera);
 		}
 	}
@@ -491,7 +533,12 @@ float SimpleSceneClass::Compute_Point_Visibility
 {
 	CastResultStruct res;
 	LineSegClass ray(rinfo.Camera.Get_Position(),point);
+#ifdef OG
 	RayCollisionTestClass raytest(ray,&res,COLLISION_TYPE_PROJECTILE);
+#endif
+#ifdef ZH
+	RayCollisionTestClass raytest(ray,&res,COLL_TYPE_PROJECTILE);
+#endif
 
 	RefRenderObjListIterator it(&RenderList);
 	for (it.First(); !it.Is_Done(); it.Next()) {
@@ -520,6 +567,9 @@ float SimpleSceneClass::Compute_Point_Visibility
  *                                                                                             *
  * HISTORY:                                                                                    *
  *   12/10/98   GTH : Created.                                                                 *
+#ifdef ZH
+ *   06/27/02	KM Shader system light environment updates                                       *
+#endif
  *=============================================================================================*/
 void SimpleSceneClass::Customized_Render(RenderInfoClass & rinfo)
 {	
@@ -550,6 +600,13 @@ void SimpleSceneClass::Customized_Render(RenderInfoClass & rinfo)
 	DX8Wrapper::Set_Light(1,NULL);
 	DX8Wrapper::Set_Light(2,NULL);
 	DX8Wrapper::Set_Light(3,NULL);
+#ifdef ZH
+
+// (gth) WWShade only works with light environments.  We need to upgrade LightEnvironment to
+// support real point lights, etc.  It will likely just evolve into "the n most important" lights
+// rather than optimizing lights into directional lights...
+#if 0
+#endif
 	for (it.First(&LightList); !it.Is_Done(); it.Next())
 	{		
 		if (count<4)
@@ -562,7 +619,28 @@ void SimpleSceneClass::Customized_Render(RenderInfoClass & rinfo)
 		}
 		count++;
 	}
+#ifdef ZH
+#endif
+#endif
 
+#ifdef ZH
+	// adding light environment for new shader system
+	if (!rinfo.light_environment)
+	{
+		static LightEnvironmentClass lenv;
+
+		lenv.Reset(Vector3(0,0,0),AmbientLight);
+
+		for (it.First(&LightList); !it.Is_Done(); it.Next()) 
+		{
+			lenv.Add_Light(*(LightClass*)it.Peek_Obj());
+		}	
+		lenv.Pre_Render_Update(rinfo.Camera.Get_Transform());
+
+		rinfo.light_environment=&lenv;
+	}
+
+#endif
 	// loop through all render objects in the list:
 	for (it.First(&RenderList); !it.Is_Done(); it.Next()) {
 
@@ -570,8 +648,18 @@ void SimpleSceneClass::Customized_Render(RenderInfoClass & rinfo)
 		RenderObjClass * robj = it.Peek_Obj();
 
 		if (robj->Is_Really_Visible()) {
-
+#ifdef ZH
+			if (robj->Get_Render_Hook()) {
+				if (robj->Get_Render_Hook()->Pre_Render(robj, rinfo)) {
+					robj->Render(rinfo);
+				}
+				robj->Get_Render_Hook()->Post_Render(robj, rinfo);
+			} else {
+#endif
 			robj->Render(rinfo);
+#ifdef ZH
+			}
+#endif
 		}
 	}
 }

@@ -21,7 +21,12 @@
 //
 //
 #include "stdAfx.h"
+#ifdef OG
 #include "noxstring.h"
+#endif
+#ifdef ZH
+#include "Babylon.h"
+#endif
 #include "resource.h"				 
 #include <stdio.h>
 #include "xlstuff.h"

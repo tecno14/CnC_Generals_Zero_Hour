@@ -53,12 +53,23 @@ enum PlayingWhich
 
 struct PlayingAudio
 {
+#ifdef OG
 	union
 	{
+#endif
+#ifdef ZH
+//	union
+//	{
+#endif
 		HSAMPLE m_sample;
 		H3DSAMPLE m_3DSample;
 		HSTREAM m_stream;
+#ifdef OG
 	};
+#endif
+#ifdef ZH
+//	};
+#endif
 
 	PlayingAudioType m_type;
 	volatile PlayingStatus m_status;	// This member is adjusted by another running thread.
@@ -73,6 +84,11 @@ struct PlayingAudio
 		m_audioEventRTS(NULL), 
 		m_requestStop(false), 
 		m_cleanupAudioEventRTS(true),
+#ifdef ZH
+		m_sample(0), 
+		m_3DSample(0),
+		m_stream(0),
+#endif
 		m_framesFaded(0)
 	{ }
 };
@@ -167,9 +183,11 @@ class MilesAudioManager : public AudioManager
 
 		virtual void killAudioEventImmediately( AudioHandle audioEvent );
 
+#ifdef OG
 		virtual void stopAllAmbientsBy( Object *objID );
 		virtual void stopAllAmbientsBy( Drawable *drawID );
 
+#endif
 		///< Return whether the current audio is playing or not. 
 		///< NOTE NOTE NOTE !!DO NOT USE THIS IN FOR GAMELOGIC PURPOSES!! NOTE NOTE NOTE
 		virtual Bool isCurrentlyPlaying( AudioHandle handle );
@@ -225,6 +243,12 @@ class MilesAudioManager : public AudioManager
 		virtual Real getFileLengthMS( AsciiString strToLoad ) const;
 
 		virtual void closeAnySamplesUsingFile( const void *fileToClose );
+#ifdef ZH
+
+    
+    virtual Bool has3DSensitiveStreamsPlaying( void ) const; 
+
+#endif
 
 	protected:	
 		// 3-D functions

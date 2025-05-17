@@ -115,7 +115,14 @@ class ParticleEmitterClass : public RenderObjClass
 			ParticlePropertyStruct<float> &size, 
 			ParticlePropertyStruct<float> &rotation, float orient_rnd,
 			ParticlePropertyStruct<float> &frames,
+#ifdef OG
 			Vector3 accel, float max_age, TextureClass *tex,
+
+#endif
+#ifdef ZH
+			ParticlePropertyStruct<float> &blur_times,
+			Vector3 accel, float max_age, float future_start, TextureClass *tex,
+#endif
 			ShaderClass shader = ShaderClass::_PresetAdditiveSpriteShader, 
 			int max_particles = 0, int max_buffer_size = -1, bool pingpong = false,
 			int render_mode = W3D_EMITTER_RENDER_MODE_TRI_PARTICLES,
@@ -169,6 +176,14 @@ class ParticleEmitterClass : public RenderObjClass
 		void						Start(void);
 		void						Stop(void);
 		bool						Is_Stopped(void);
+#ifdef ZH
+
+		// Yet another way to make an emitter stop rendering (besides setting Hidden or Animation_Hidden).
+		// We added this because we needed a way independent from the other two. This would be appropriate
+		// to set, for example, when setting RINFO_OVERRIDE_ADDITIONAL_PASSES_ONLY on the container.
+		void						Set_Invisible(bool onoff)	{ IsInvisible = onoff; }
+		bool						Is_Invisible(void)			{ return IsInvisible; }
+#endif
 		
 		// Change starting position/velocity/acceleration parameters:
 		void Set_Position_Randomizer(Vector3Randomizer *rand);
@@ -184,6 +199,9 @@ class ParticleEmitterClass : public RenderObjClass
 		void Reset_Size(ParticlePropertyStruct<float> &new_props)								{ if (Buffer) Buffer->Reset_Size(new_props); }
 		void Reset_Rotations(ParticlePropertyStruct<float> &new_props, float orient_rnd)	{ if (Buffer) Buffer->Reset_Rotations(new_props, orient_rnd); }
 		void Reset_Frames(ParticlePropertyStruct<float> &new_props)								{ if (Buffer) Buffer->Reset_Frames(new_props); }
+#ifdef ZH
+		void Reset_Blur_Times(ParticlePropertyStruct<float> &new_props)								{ if (Buffer) Buffer->Reset_Blur_Times(new_props); }
+#endif
 
 		// Change emission/burst rate, or tell the emitter to emit a one-time burst.
 		// NOTE: default buffer size fits the emission/burst rate that the emitter was created with.
@@ -227,6 +245,9 @@ class ParticleEmitterClass : public RenderObjClass
 		float						Get_Particle_Size (void) const	{ return Buffer->Get_Particle_Size(); }
 		Vector3					Get_Acceleration (void) const		{ return Buffer->Get_Acceleration (); }
 		float						Get_Lifetime (void) const			{ return Buffer->Get_Lifetime (); }
+#ifdef ZH
+		float						Get_Future_Start_Time (void) const { return Buffer->Get_Future_Start_Time(); }
+#endif
 		Vector3					Get_End_Color (void) const			{ return Buffer->Get_End_Color (); }
 		float						Get_End_Opacity (void) const		{ return Buffer->Get_End_Opacity (); }
 		TextureClass *			Get_Texture (void) const			{ return Buffer->Get_Texture (); }
@@ -252,6 +273,9 @@ class ParticleEmitterClass : public RenderObjClass
 		void						Get_Size_Key_Frames (ParticlePropertyStruct<float>	&sizes) const				{ Buffer->Get_Size_Key_Frames (sizes); }
 		void						Get_Rotation_Key_Frames (ParticlePropertyStruct<float> &rotations) const	{ Buffer->Get_Rotation_Key_Frames (rotations); }
 		void						Get_Frame_Key_Frames (ParticlePropertyStruct<float> &frames) const			{ Buffer->Get_Frame_Key_Frames (frames); }
+#ifdef ZH
+		void						Get_Blur_Time_Key_Frames (ParticlePropertyStruct<float> &blurtimes) const	{ Buffer->Get_Blur_Time_Key_Frames (blurtimes); }
+#endif
 		float						Get_Initial_Orientation_Random (void) const											{ return Buffer->Get_Initial_Orientation_Random(); }
 
 		// Line rendering accessors
@@ -322,10 +346,18 @@ class ParticleEmitterClass : public RenderObjClass
 		char *						UserString;
 		bool							RemoveOnComplete;	// Should this emitter destroy itself when it completes?
 		bool							IsInScene;
+#ifdef ZH
+		unsigned char				GroupID;				// The group ID of a particle. A start causes the group ID to increment.		
+#endif
 
 		// This pointer is used only for sending new particles to the particle
 		// buffer and for informing the buffer when the emitter is destroyed.
 		ParticleBufferClass *	Buffer;
+#ifdef ZH
+
+		// See comments on Set/Is_Invisible
+		bool							IsInvisible;
+#endif
 
 		// This is used to set the global behavior of emitters...
 		// Should they be removed from the scene when they complete their

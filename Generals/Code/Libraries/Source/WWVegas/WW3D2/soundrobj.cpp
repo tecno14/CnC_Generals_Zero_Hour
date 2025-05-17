@@ -26,14 +26,27 @@
  *                                                                                             *
  *                       Author:: Patrick Smith                                                *
  *                                                                                             *
+#ifdef OG
  *                     $Modtime:: 5/14/01 10:57a                                              $*
+#endif
+#ifdef ZH
+ *                     $Modtime:: 1/16/02 10:21a                                              $*
+#endif
  *                                                                                             *
+#ifdef OG
  *                    $Revision:: 3                                                           $*
+#endif
+#ifdef ZH
+ *                    $Revision:: 4                                                           $*
+#endif
  *                                                                                             *
  *---------------------------------------------------------------------------------------------*
  * Functions:                                                                                  *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
+#ifdef ZH
+#if noWWAUDIO //(gth) removing dependency on wwaudio
+#endif
 
 #include "soundrobj.h"
 #include "audiblesound.h"
@@ -751,18 +764,32 @@ SoundRenderObjLoaderClass::Load_W3D (ChunkLoadClass &cload)
 		//
 		// Ask the definition object to load the sound data
 		//
+#ifdef OG
 		if (definition->Load_W3D (cload) != WW3D_ERROR_OK) {			
 			REF_PTR_RELEASE (definition);
 		} else {
+#endif
+#ifdef ZH
+		if (definition->Load_W3D (cload) == WW3D_ERROR_OK) {
+
+#endif
 
 			//
 			// Success!  Create a prototype from the definition
 			//
 			prototype = W3DNEW SoundRenderObjPrototypeClass (definition);
 		}
+#ifdef ZH
+
+		REF_PTR_RELEASE (definition);
+#endif
 	}
 
 	return prototype;
 }
+#ifdef ZH
+
+#endif // noWWAUDIO
+#endif
 
 

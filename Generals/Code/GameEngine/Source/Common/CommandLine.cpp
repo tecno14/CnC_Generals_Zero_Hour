@@ -33,6 +33,14 @@
 #include "GameClient/TerrainVisual.h" // for TERRAIN_LOD_MIN definition
 #include "GameClient/GameText.h"
 
+#ifdef ZH
+#ifdef _INTERNAL
+// for occasional debugging...
+//#pragma optimize("", off)
+//#pragma MESSAGE("************************************** WARNING, optimization disabled for debugging purposes")
+#endif
+
+#endif
 Bool TheDebugIgnoreSyncErrors = FALSE;
 extern Int DX8Wrapper_PreserveFPU;
 
@@ -620,6 +628,19 @@ Int parseBuildMapCache(char *args[], int)
 	}
 	return 1;
 }
+#ifdef ZH
+
+
+#if defined(_DEBUG) || defined(_INTERNAL) || defined(_ALLOW_DEBUG_CHEATS_IN_RELEASE)
+Int parsePreload( char *args[], int num )
+{
+	if( TheWritableGlobalData )
+		TheWritableGlobalData->m_preloadAssets = TRUE;
+	return 1;
+}
+#endif
+
+#endif
 
 #if defined(_DEBUG) || defined(_INTERNAL)
 Int parseDisplayDebug(char *args[], int)
@@ -641,12 +662,14 @@ Int parseFile(char *args[], int num)
 	return 2;
 }
 
+#ifdef OG
 Int parsePreload( char *args[], int num )
 {
 	if( TheWritableGlobalData )
 		TheWritableGlobalData->m_preloadAssets = TRUE;
 	return 1;
 }
+#endif
 
 Int parsePreloadEverything( char *args[], int num )
 {
@@ -754,18 +777,47 @@ Int parseNoShellMap(char *args[], int)
 	return 1;
 }
 
+#ifdef OG
 #if !defined(_PLAYTEST) || (defined(_DEBUG) || defined(_INTERNAL))
+
+#endif
+#ifdef ZH
+Int parseNoShaders(char *args[], int)
+{
+	if (TheWritableGlobalData)
+	{
+		TheWritableGlobalData->m_chipSetType = 1;	//force to a voodoo card which uses least amount of features.
+	}
+	return 1;
+}
+
+#if (defined(_DEBUG) || defined(_INTERNAL))
+#endif
 Int parseNoLogo(char *args[], int)
 {
 	if (TheWritableGlobalData)
 	{
 		TheWritableGlobalData->m_playIntro = FALSE;
 		TheWritableGlobalData->m_afterIntro = TRUE;
+#ifdef ZH
+		TheWritableGlobalData->m_playSizzle = FALSE;
+#endif
 	}
 	return 1;
 }
 #endif
 
+#ifdef ZH
+Int parseNoSizzle( char *args[], int )
+{
+	if (TheWritableGlobalData)
+	{
+		TheWritableGlobalData->m_playSizzle = FALSE;
+	}
+	return 1;
+}
+
+#endif
 Int parseShellMap(char *args[], int num)
 {
 	if (TheWritableGlobalData && num > 1)
@@ -795,7 +847,17 @@ Int parseWinCursors(char *args[], int num)
 
 Int parseQuickStart( char *args[], int num )
 {
+#ifdef ZH
+#if (defined(_DEBUG) || defined(_INTERNAL))
+#endif
   parseNoLogo( args, num );
+#ifdef ZH
+#else
+	//Kris: Patch 1.01 -- Allow release builds to skip the sizzle video, but still force the EA logo to show up.
+	//This is for legal reasons.
+	parseNoSizzle( args, num );
+#endif
+#endif
 	parseNoShellMap( args, num );
 	parseNoWindowAnimation( args, num );
 	return 1;
@@ -810,6 +872,31 @@ Int parseConstantDebug( char *args[], int num )
 	return 1;
 }
 
+#ifdef ZH
+#if (defined(_DEBUG) || defined(_INTERNAL))
+Int parseExtraLogging( char *args[], int num )
+{
+	if (TheWritableGlobalData)
+	{
+		TheWritableGlobalData->m_extraLogging = TRUE;
+	}
+	return 1;
+}
+#endif
+
+//-allAdvice feature
+/*
+Int parseAllAdvice( char *args[], int num )
+{
+	if( TheWritableGlobalData )
+	{
+		TheWritableGlobalData->m_allAdvice = TRUE;
+	}
+	return 1;
+}
+*/
+
+#endif
 Int parseShowTeamDot( char *args[], int num )
 {
 	if( TheWritableGlobalData )
@@ -949,6 +1036,22 @@ Int parseBenchmark(char *args[], int num)
 #endif
 
 #if defined(_DEBUG) || defined(_INTERNAL)
+#ifdef ZH
+#ifdef DUMP_PERF_STATS
+Int parseStats(char *args[], int num)
+{
+	if (TheWritableGlobalData && num > 1)
+	{
+		TheWritableGlobalData->m_dumpStatsAtInterval = TRUE;
+		TheWritableGlobalData->m_statsInterval  = atoi(args[1]);
+	}
+	return 2;
+}
+#endif
+#endif
+
+#if defined(_DEBUG) || defined(_INTERNAL)
+#endif
 Int parseIgnoreAsserts(char *args[], int num)
 {
 	if (TheWritableGlobalData && num > 0)
@@ -1031,14 +1134,25 @@ Int parseMod(char *args[], Int num)
 		}
 
 		// now check for dir-ness
+#ifdef OG
 		struct stat statBuf;
 		if (stat(modPath.str(), &statBuf) != 0)
+#endif
+#ifdef ZH
+		struct _stat statBuf;
+		if (_stat(modPath.str(), &statBuf) != 0)
+#endif
 		{
 			DEBUG_LOG(("Could not _stat() mod.\n"));
 			return 2; // could not stat the file/dir.
 		}
 
+#ifdef OG
 		if (statBuf.st_mode & S_IFDIR)
+#endif
+#ifdef ZH
+		if (statBuf.st_mode & _S_IFDIR)
+#endif
 		{
 			if (!modPath.endsWith("\\") && !modPath.endsWith("/"))
 				modPath.concat('\\');
@@ -1056,6 +1170,7 @@ Int parseMod(char *args[], Int num)
 	return 1;
 }
 
+#ifdef OG
 #if defined(_DEBUG) || defined(_INTERNAL)
 Int parseSetDebugLevel(char *args[], int num)
 {
@@ -1092,6 +1207,7 @@ Int parseClearDebugLevel(char *args[], int num)
 }
 #endif
 
+#endif
 static CommandLineParam params[] =
 {
 	{ "-noshellmap", parseNoShellMap },
@@ -1104,15 +1220,31 @@ static CommandLineParam params[] =
 	{ "-scriptDebug", parseScriptDebug },
 	{ "-playStats", parsePlayStats },
 	{ "-mod", parseMod },
+#ifdef OG
 #if !defined(_PLAYTEST) || (defined(_DEBUG) || defined(_INTERNAL))
+
+#endif
+#ifdef ZH
+	{ "-noshaders", parseNoShaders },
+	{ "-quickstart", parseQuickStart },
+
+#if (defined(_DEBUG) || defined(_INTERNAL))
+#endif
 	{ "-noaudio", parseNoAudio },
 	{ "-map", parseMapName },
 	{ "-nomusic", parseNoMusic },
 	{ "-novideo", parseNoVideo },
 	{ "-noLogOrCrash", parseNoLogOrCrash },
 	{ "-FPUPreserve", parseFPUPreserve },
+#ifdef OG
 #if defined(_DEBUG) || defined(_INTERNAL)
+#endif
 	{ "-benchmark", parseBenchmark },
+#ifdef ZH
+#ifdef DUMP_PERF_STATS
+	{ "-stats", parseStats }, 
+#endif
+#endif
 	{ "-saveStats", parseSaveStats },
 	{ "-localMOTD", parseLocalMOTD },
 	{ "-UseCSF", parseUseCSF },
@@ -1153,7 +1285,15 @@ static CommandLineParam params[] =
 	{ "-munkee", parseMunkee },
 	{ "-displayDebug", parseDisplayDebug },
 	{ "-file", parseFile },
+#ifdef OG
 	{ "-preload", parsePreload },
+
+#endif
+#ifdef ZH
+  
+//	{ "-preload", parsePreload },
+	
+#endif
 	{ "-preloadEverything", parsePreloadEverything },
 	{ "-logAssets", parseLogAssets },
 	{ "-netMinPlayers", parseNetMinPlayers },
@@ -1166,8 +1306,10 @@ static CommandLineParam params[] =
 	{ "-selectTheUnselectable", parseSelectAll },
 	{ "-RunAhead", parseRunAhead },
 	{ "-noshroud", parseNoShroud },
+#ifdef OG
 	{ "-setDebugLevel", parseSetDebugLevel },
 	{ "-clearDebugLevel", parseClearDebugLevel },
+#endif
 #endif
 	{ "-forceBenchmark", parseForceBenchmark },
 	{ "-buildmapcache", parseBuildMapCache },
@@ -1179,7 +1321,9 @@ static CommandLineParam params[] =
 	{ "-noShellAnim", parseNoWindowAnimation },
 	{ "-winCursors", parseWinCursors },
 	{ "-constantDebug", parseConstantDebug },
+#ifdef OG
 	{ "-quickstart", parseQuickStart },
+#endif
 	{ "-seed", parseSeed },
 	{ "-noagpfix", parseIncrAGPBuf },
 	{ "-noFPSLimit", parseNoFPSLimit },
@@ -1187,6 +1331,20 @@ static CommandLineParam params[] =
 	{ "-jumpToFrame", parseJumpToFrame },
 	{ "-updateImages", parseUpdateImages },
 	{ "-showTeamDot", parseShowTeamDot },
+#ifdef ZH
+	{ "-extraLogging", parseExtraLogging },
+
+#endif
+#endif
+#ifdef ZH
+
+	//-allAdvice feature
+	//{ "-allAdvice", parseAllAdvice },
+
+#if defined(_DEBUG) || defined(_INTERNAL) || defined(_ALLOW_DEBUG_CHEATS_IN_RELEASE)
+  { "-preload", parsePreload },
+#endif
+
 #endif
 };
 

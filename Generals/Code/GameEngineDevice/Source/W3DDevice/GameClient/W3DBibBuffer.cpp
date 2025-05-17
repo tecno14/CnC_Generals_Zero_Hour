@@ -96,11 +96,24 @@ void W3DBibBuffer::loadBibsInVertexAndIndexBuffers(void)
 	m_curNumBibIndices = 0;
 	m_curNumNormalBibIndices = 0;
 	m_curNumNormalBibVertex = 0;
+#ifdef ZH
+
+	if (m_numBibs==0) {
+		return;	
+	}
+
+#endif
 	VertexFormatXYZDUV1 *vb;
 	UnsignedShort *ib;
 	// Lock the buffers.
+#ifdef OG
 	DX8IndexBufferClass::WriteLockClass lockIdxBuffer(m_indexBib);
 	DX8VertexBufferClass::WriteLockClass lockVtxBuffer(m_vertexBib);
+#endif
+#ifdef ZH
+	DX8IndexBufferClass::WriteLockClass lockIdxBuffer(m_indexBib, D3DLOCK_DISCARD);
+	DX8VertexBufferClass::WriteLockClass lockVtxBuffer(m_vertexBib, D3DLOCK_DISCARD);
+#endif
 	vb=(VertexFormatXYZDUV1*)lockVtxBuffer.Get_Vertex_Array();
 	ib = lockIdxBuffer.Get_Index_Array();
 	// Add to the index buffer & vertex buffer.
@@ -127,6 +140,9 @@ void W3DBibBuffer::loadBibsInVertexAndIndexBuffers(void)
 
 	Int diffuse = (REAL_TO_INT(shadeB) | (REAL_TO_INT(shadeG) << 8) | (REAL_TO_INT(shadeR) << 16) | (255 << 24));
 	Int doHighlight;
+#ifdef ZH
+	try {
+#endif
 	for (doHighlight=0; doHighlight<=1; doHighlight++) 
 	{
 		if (doHighlight==1) 
@@ -189,7 +205,15 @@ void W3DBibBuffer::loadBibsInVertexAndIndexBuffers(void)
 			m_curNumBibIndices+=6;
 		}		
 	}
+#ifdef ZH
+	IndexBufferExceptionFunc();
+	} catch(...) {
+		IndexBufferExceptionFunc();
+#endif
 }
+#ifdef ZH
+}
+#endif
 
 //-----------------------------------------------------------------------------
 //         Public Functions                                                
@@ -228,10 +252,18 @@ W3DBibBuffer::W3DBibBuffer(void)
 
 	m_bibTexture = NEW_REF(TextureClass, ("TBBib.tga"));
 	m_highlightBibTexture = NEW_REF(TextureClass, ("TBRedBib.tga"));
+#ifdef OG
 	m_bibTexture->Set_U_Addr_Mode(TextureClass::TEXTURE_ADDRESS_CLAMP);
 	m_bibTexture->Set_V_Addr_Mode(TextureClass::TEXTURE_ADDRESS_CLAMP);
 	m_highlightBibTexture->Set_U_Addr_Mode(TextureClass::TEXTURE_ADDRESS_CLAMP);
 	m_highlightBibTexture->Set_V_Addr_Mode(TextureClass::TEXTURE_ADDRESS_CLAMP);
+#endif
+#ifdef ZH
+	m_bibTexture->Get_Filter().Set_U_Addr_Mode(TextureFilterClass::TEXTURE_ADDRESS_CLAMP);
+	m_bibTexture->Get_Filter().Set_V_Addr_Mode(TextureFilterClass::TEXTURE_ADDRESS_CLAMP);
+	m_highlightBibTexture->Get_Filter().Set_U_Addr_Mode(TextureFilterClass::TEXTURE_ADDRESS_CLAMP);
+	m_highlightBibTexture->Get_Filter().Set_V_Addr_Mode(TextureFilterClass::TEXTURE_ADDRESS_CLAMP);
+#endif
 	m_initialized = true;
 }
 

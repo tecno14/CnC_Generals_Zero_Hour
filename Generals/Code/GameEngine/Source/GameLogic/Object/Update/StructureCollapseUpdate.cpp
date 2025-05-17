@@ -335,7 +335,12 @@ void StructureCollapseUpdate::doPhaseStuff(StructureCollapsePhaseType scphase, c
 			const OCLVec& v = d->m_ocls[scphase];
 			DEBUG_ASSERTCRASH(idx>=0&&idx<v.size(),("bad idx"));
 			const ObjectCreationList* ocl = v[idx];
+#ifdef OG
 			ObjectCreationList::create(ocl, getObject(), target, NULL);
+#endif
+#ifdef ZH
+			ObjectCreationList::create(ocl, getObject(), target, NULL, getObject()->getOrientation() );
+#endif
 		}
 	}
 }

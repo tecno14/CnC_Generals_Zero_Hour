@@ -99,8 +99,13 @@ BEGIN
     BUTTON      ID_EDIT_CUT
     BUTTON      ID_EDIT_COPY
     BUTTON      ID_EDIT_PASTE
+#ifdef OG
     BUTTON      ID_FILE_PRINT
+#endif
     SEPARATOR
+#ifdef ZH
+    BUTTON      ID_RULER_TOOL
+#endif
     BUTTON      ID_POINTER_TOOL
     BUTTON      ID_LOCK_HORIZONTAL
     BUTTON      ID_BRUSH_TOOL
@@ -130,10 +135,17 @@ BEGIN
     BUTTON      ID_POLYGON_TOOL
     BUTTON      ID_BORDERTOOL
     SEPARATOR
+#ifdef OG
     BUTTON      ID_LOOK_NORTH
     BUTTON      ID_LOOK_SOUTH
     BUTTON      ID_LOOK_WEST
     BUTTON      ID_LOOK_EAST
+#endif
+#ifdef ZH
+    BUTTON      ID_SCRIPT_EDIT
+    BUTTON      ID_TEAM_EDIT
+
+#endif
     SEPARATOR
     BUTTON      ID_APP_ABOUT
 END
@@ -184,7 +196,12 @@ BEGIN
         MENUITEM "Save &As...",                 ID_FILE_SAVE_AS
         MENUITEM "&Jump to Game\tCtrl+J",       ID_FILE_JUMPTOGAME
         MENUITEM SEPARATOR
+#ifdef OG
         MENUITEM "Resize Map",                  ID_FILE_RESIZE
+#endif
+#ifdef ZH
+        MENUITEM "Resize...",                   ID_FILE_RESIZE
+#endif
         MENUITEM SEPARATOR
         MENUITEM "&Print...\tCtrl+P",           ID_FILE_PRINT
         MENUITEM "Print Pre&view",              ID_FILE_PRINT_PREVIEW
@@ -207,7 +224,12 @@ BEGIN
         MENUITEM "Delete\tDel",                 ID_EDIT_DELETE
         MENUITEM SEPARATOR
         MENUITEM "Select Duplicate Objects",    ID_EDIT_SELECTDUP
+#ifdef OG
         MENUITEM "Select Bad Team Objects",     ID_EDIT_SELECTINVALIDTEAM
+#endif
+#ifdef ZH
+        MENUITEM "Select Objects w/bad teams",  ID_EDIT_SELECTINVALIDTEAM
+#endif
         MENUITEM "Select Si&milar\tCtrl+M",     ID_EDIT_SELECTSIMILAR
         MENUITEM "Select Macrotexture...",      ID_EDIT_SELECTMACROTEXTURE
         MENUITEM "Replace Selected...",         ID_EDIT_REPLACE
@@ -233,8 +255,13 @@ BEGIN
         MENUITEM "Edit Shadows...",             ID_EDIT_SHADOWS
         MENUITEM "Edit Map Settings...",        ID_EDIT_MAPSETTINGS
         MENUITEM SEPARATOR
-        MENUITEM "Edit Player List...",         ID_EDIT_PLAYERLIST
+#ifdef ZH
         MENUITEM "Edit Teams...",               ID_EDIT_TEAMLIST
+#endif
+        MENUITEM "Edit Player List...",         ID_EDIT_PLAYERLIST
+#ifdef OG
+        MENUITEM "Edit Teams...",               ID_EDIT_TEAMLIST
+#endif
     END
     POPUP "&View"
     BEGIN
@@ -248,9 +275,22 @@ BEGIN
         MENUITEM "Show Shadows",                ID_VIEW_SHOWSHADOWS
         MENUITEM "Show Labels",                 ID_VIEW_LABELS
         MENUITEM "Show Objects",                ID_VIEW_SHOWMODELS
+#ifdef ZH
+        MENUITEM "Show Bounding Boxes",         ID_VIEW_BOUNDINGBOXES
+        MENUITEM "Show Sight Ranges",           ID_VIEW_SIGHTRANGES
+        MENUITEM "Show Weapon Ranges",          ID_VIEW_WEAPONRANGES
+#endif
         MENUITEM "Show Garrisoned",             ID_VIEW_GARRISONED
         MENUITEM "Show Map Boundaries",         ID_VIEW_SHOWMAPBOUNDARIES
+#ifdef ZH
+        MENUITEM "Show Letterbox",              ID_SHOW_LETTERBOX
+#endif
         MENUITEM "Show Sound Flags",            ID_VIEW_SHOWAMBIENTSOUNDS
+#ifdef ZH
+        MENUITEM "Show Sound Circles",          ID_VIEW_SHOW_SOUND_CIRCLES
+        MENUITEM SEPARATOR
+        MENUITEM "Highlight Test Art",          ID_HIGHLIGHT_TESTART
+#endif
         MENUITEM SEPARATOR
         MENUITEM "Show Impassable Areas\tCtrl+I", 
                                                 ID_VIEW_SHOWIMPASSABLEAREAS
@@ -302,10 +342,20 @@ BEGIN
     BEGIN
         MENUITEM "Map Cliff Textures",          ID_TEXTURESIZING_MAPCLIFFTEXTURES
 
+#ifdef OG
         MENUITEM "Remove Cliff Textures",       ID_TEXTURESIZING_REMOVECLIFFTEXMAPPING
+#endif
+#ifdef ZH
+        MENUITEM "Remove Cliff Tex Mapping",    ID_TEXTURESIZING_REMOVECLIFFTEXMAPPING
+#endif
 
         MENUITEM SEPARATOR
+#ifdef OG
         MENUITEM "Optimize Tile Usage",         ID_TS_CANONICAL
+#endif
+#ifdef ZH
+        MENUITEM "Optimize tiles and blend tiles.", ID_TS_CANONICAL
+#endif
         MENUITEM SEPARATOR
         MENUITEM "Remap Textures...",           ID_TS_REMAP
         MENUITEM SEPARATOR
@@ -331,6 +381,11 @@ IDR_LAYERSLISTPOPUP MENU DISCARDABLE
 BEGIN
     POPUP "Layers List"
     BEGIN
+#ifdef ZH
+        MENUITEM "Select Object",               ID_SELECTLAYEROBJECT
+        MENUITEM "Select Active Layer",         ID_SELECTACTIVELAYER
+        MENUITEM SEPARATOR
+#endif
         MENUITEM "Insert New Layer",            ID_INSERTNEWLAYER
         MENUITEM "Delete Current Layer",        ID_DELETECURRENTLAYER
         POPUP "Merge Layer into"
@@ -508,7 +563,12 @@ BEGIN
     LTEXT           "35 FT.",IDC_FEATHER_LABEL,71,68,41,8
 END
 
+#ifdef OG
 IDD_TERRAIN_MATERIAL DIALOG DISCARDABLE  0, 0, 200, 298
+#endif
+#ifdef ZH
+IDD_TERRAIN_MATERIAL DIALOG DISCARDABLE  0, 0, 200, 286
+#endif
 STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION
 CAPTION "Terrain Material Options"
 FONT 8, "MS Sans Serif"
@@ -532,7 +592,12 @@ BEGIN
                     27,270,98,10
 END
 
+#ifdef OG
 IDD_MOUND_OPTIONS DIALOG DISCARDABLE  0, 0, 200, 183
+#endif
+#ifdef ZH
+IDD_MOUND_OPTIONS DIALOG DISCARDABLE  0, 0, 200, 146
+#endif
 STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION
 CAPTION "Terrain Brush Options"
 FONT 8, "MS Sans Serif"
@@ -635,7 +700,12 @@ BEGIN
     LTEXT           "This tool has no options.",IDC_STATIC,15,34,89,43
 END
 
+#ifdef OG
 IDD_FEATHER_OPTIONS DIALOG DISCARDABLE  0, 0, 200, 218
+#endif
+#ifdef ZH
+IDD_FEATHER_OPTIONS DIALOG DISCARDABLE  0, 0, 200, 186
+#endif
 STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION
 CAPTION "Feather Brush Options"
 FONT 8, "MS Sans Serif"
@@ -756,7 +826,12 @@ BEGIN
     PUSHBUTTON      "Restore To Default",IDC_GlobalLightingReset,4,4,75,14
 END
 
+#ifdef OG
 IDD_LIGHT_OPTIONS DIALOG DISCARDABLE  0, 0, 122, 189
+#endif
+#ifdef ZH
+IDD_LIGHT_OPTIONS DIALOG DISCARDABLE  0, 0, 122, 156
+#endif
 STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION
 CAPTION "Light Options"
 FONT 8, "MS Sans Serif"
@@ -810,6 +885,7 @@ BEGIN
     LTEXT           "Existing maps:",IDC_STATIC,13,15,46,8
 END
 
+#ifdef OG
 IDD_MAPOBJECT_PROPS DIALOG DISCARDABLE  0, 0, 200, 311
 STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION
 CAPTION "Object Properties"
@@ -878,6 +954,7 @@ BEGIN
                     BS_AUTOCHECKBOX | WS_TABSTOP,139,81,58,10
 END
 
+#endif
 IDD_PROPEDIT DIALOG DISCARDABLE  0, 0, 200, 84
 STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION
 CAPTION "Property Edit"
@@ -1015,6 +1092,12 @@ BEGIN
     PUSHBUTTON      "Cancel",IDCANCEL,403,253,50,14
     EDITTEXT        IDC_SCRIPT_COMMENT,7,206,195,99,ES_MULTILINE | 
                     ES_READONLY | WS_VSCROLL
+#ifdef ZH
+    CONTROL         "Auto Verify",IDC_AUTO_VERIFY,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,261,311,52,8
+    PUSHBUTTON      "&Verify",IDC_VERIFY,403,22,50,14
+    PUSHBUTTON      "&Patch ""GC_""",IDC_PATCH_GC,403,169,50,14
+#endif
 END
 
 IDD_ScriptTabWindow DIALOG DISCARDABLE  0, 0, 391, 255
@@ -1114,20 +1197,44 @@ BEGIN
     LTEXT           "seconds.",IDC_STATIC,283,60,30,8
 END
 
+#ifdef OG
 IDD_ScriptCondition DIALOG DISCARDABLE  0, 0, 271, 149
+#endif
+#ifdef ZH
+IDD_ScriptCondition DIALOG DISCARDABLE  0, 0, 311, 450
+#endif
 STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "Edit Condition:"
 FONT 8, "MS Sans Serif"
 BEGIN
+#ifdef OG
     DEFPUSHBUTTON   "OK",IDOK,153,128,50,14
     PUSHBUTTON      "Cancel",IDCANCEL,214,128,50,14
+#endif
+#ifdef ZH
+    DEFPUSHBUTTON   "OK",IDOK,197,429,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,254,428,50,14
+#endif
     CONTROL         "",IDC_RICH_EDIT_HERE,"Static",SS_BLACKFRAME | SS_SUNKEN,
+#ifdef OG
                     7,29,257,57
     COMBOBOX        IDC_CONDITION_TYPE,7,7,257,271,CBS_DROPDOWNLIST | 
                     CBS_AUTOHSCROLL | CBS_SORT | WS_VSCROLL | WS_TABSTOP
     GROUPBOX        "Warnings:",IDC_WARNINGS_CAPTION,7,89,257,36
     LTEXT           "These are the freaking warnings.",IDC_WARNINGS,9,99,210,
                     26
+
+#endif
+#ifdef ZH
+                    7,319,297,59
+    GROUPBOX        "Warnings:",IDC_WARNINGS_CAPTION,7,378,297,45
+    LTEXT           "These are the freaking warnings.",IDC_WARNINGS,9,388,
+                    210,30
+    CONTROL         "Tree1",IDC_CONDITION_TREE,"SysTreeView32",
+                    TVS_HASBUTTONS | TVS_HASLINES | TVS_LINESATROOT | 
+                    TVS_DISABLEDRAGDROP | TVS_SHOWSELALWAYS | TVS_NOTOOLTIPS | 
+                    TVS_TRACKSELECT | WS_BORDER | WS_TABSTOP,7,7,297,308
+#endif
 END
 
 IDD_EDIT_PARAMETER DIALOG DISCARDABLE  0, 0, 281, 74
@@ -1143,23 +1250,52 @@ BEGIN
     EDITTEXT        IDC_EDIT,19,21,190,12,ES_AUTOHSCROLL
     COMBOBOX        IDC_LIST,19,21,190,84,CBS_DROPDOWNLIST | CBS_SORT | 
                     WS_VSCROLL | WS_TABSTOP
+#ifdef OG
     DEFPUSHBUTTON   "Preview Sound",IDC_PREVIEWSOUND,7,52,62,14
+#endif
+#ifdef ZH
+    PUSHBUTTON      "Preview Sound",IDC_PREVIEWSOUND,7,52,62,14
+#endif
 END
 
+#ifdef OG
 IDD_ScriptAction DIALOG DISCARDABLE  0, 0, 270, 149
+#endif
+#ifdef ZH
+IDD_ScriptAction DIALOG DISCARDABLE  0, 0, 311, 450
+#endif
 STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "Edit Action:"
 FONT 8, "MS Sans Serif"
 BEGIN
+#ifdef OG
     DEFPUSHBUTTON   "OK",IDOK,152,128,50,14
     PUSHBUTTON      "Cancel",IDCANCEL,213,128,50,14
+#endif
+#ifdef ZH
+    DEFPUSHBUTTON   "OK",IDOK,197,429,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,254,428,50,14
+#endif
     CONTROL         "",IDC_RICH_EDIT_HERE,"Static",SS_BLACKFRAME | SS_SUNKEN,
+#ifdef OG
                     7,29,256,59
     COMBOBOX        IDC_CONDITION_TYPE,7,7,256,276,CBS_DROPDOWNLIST | 
                     CBS_AUTOHSCROLL | CBS_SORT | WS_VSCROLL | WS_TABSTOP
     GROUPBOX        "Warnings:",IDC_WARNINGS_CAPTION,7,89,256,36
     LTEXT           "These are the freaking warnings.",IDC_WARNINGS,9,99,210,
                     26
+
+#endif
+#ifdef ZH
+                    7,319,297,59
+    GROUPBOX        "Warnings:",IDC_WARNINGS_CAPTION,7,378,297,45
+    LTEXT           "These are the freaking warnings.",IDC_WARNINGS,9,388,
+                    210,30
+    CONTROL         "Tree1",IDC_ACTION_TREE,"SysTreeView32",TVS_HASBUTTONS | 
+                    TVS_HASLINES | TVS_LINESATROOT | TVS_DISABLEDRAGDROP | 
+                    TVS_SHOWSELALWAYS | TVS_NOTOOLTIPS | TVS_TRACKSELECT | 
+                    WS_BORDER | WS_TABSTOP,7,7,297,308
+#endif
 END
 
 IDD_TEAMS_DIALOG DIALOG DISCARDABLE  0, 0, 515, 294
@@ -1379,8 +1515,14 @@ STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "Export Script Options"
 FONT 8, "MS Sans Serif"
 BEGIN
+#ifdef OG
     DEFPUSHBUTTON   "OK",IDOK,69,132,50,14
     PUSHBUTTON      "Cancel",IDCANCEL,129,132,50,14
+#endif
+#ifdef ZH
+    DEFPUSHBUTTON   "OK",IDOK,69,152,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,129,152,50,14
+#endif
     CONTROL         "Include waypoints and waypoint paths.",IDC_WAYPOINTS,
                     "Button",BS_AUTOCHECKBOX | WS_TABSTOP,12,20,150,8
     CONTROL         "Include trigger areas.",IDC_TRIGGERS,"Button",
@@ -1388,15 +1530,39 @@ BEGIN
     CONTROL         "Include units and buildings.",IDC_UNITS,"Button",
                     BS_AUTOCHECKBOX | WS_TABSTOP,12,61,154,9
     GROUPBOX        "Include items referenced in the scripts:",IDC_STATIC,7,
+#ifdef OG
                     7,172,73
+#endif
+#ifdef ZH
+                    7,172,88
+#endif
     CONTROL         "Export all scripts.",IDC_ALL_SCRIPTS,"Button",
+#ifdef OG
                     BS_AUTORADIOBUTTON,15,94,97,8
+#endif
+#ifdef ZH
+                    BS_AUTORADIOBUTTON,15,115,97,8
+#endif
     CONTROL         "Export selected scripts.",IDC_SELECTED_SCRIPTS,"Button",
+#ifdef OG
                     BS_AUTORADIOBUTTON,15,106,99,8
     GROUPBOX        "Export Mode:",IDC_STATIC,7,83,172,39
+
+#endif
+#ifdef ZH
+                    BS_AUTORADIOBUTTON,15,127,99,8
+    GROUPBOX        "Export Mode:",IDC_STATIC,7,104,172,39
+    CONTROL         "Include sides.",IDC_SIDES,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,12,79,154,9
+#endif
 END
 
+#ifdef OG
 IDD_GROVE_OPTIONS DIALOG DISCARDABLE  0, 0, 200, 173
+#endif
+#ifdef ZH
+IDD_GROVE_OPTIONS DIALOG DISCARDABLE  0, 0, 200, 166
+#endif
 STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION
 CAPTION "Grove Options"
 FONT 8, "MS Sans Serif"
@@ -1429,7 +1595,12 @@ BEGIN
                     "Button",BS_AUTOCHECKBOX | WS_TABSTOP,8,146,81,10
 END
 
+#ifdef OG
 IDD_FENCE_OPTIONS DIALOG DISCARDABLE  0, 0, 200, 245
+#endif
+#ifdef ZH
+IDD_FENCE_OPTIONS DIALOG DISCARDABLE  0, 0, 200, 206
+#endif
 STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION
 CAPTION "Fence options"
 FONT 8, "MS Sans Serif"
@@ -1442,7 +1613,12 @@ BEGIN
                     179,190,25
 END
 
+#ifdef OG
 IDD_BLEND_MATERIAL DIALOG DISCARDABLE  0, 0, 200, 245
+#endif
+#ifdef ZH
+IDD_BLEND_MATERIAL DIALOG DISCARDABLE  0, 0, 200, 217
+#endif
 STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION
 CAPTION "Blend Material Options"
 FONT 8, "MS Sans Serif"
@@ -1461,8 +1637,14 @@ FONT 8, "MS Sans Serif"
 BEGIN
     DEFPUSHBUTTON   "OK",IDOK,19,76,50,14
     PUSHBUTTON      "Cancel",IDCANCEL,79,76,50,14
+#ifdef OG
     LTEXT           "Which faction does the player use?",IDC_STATIC,7,7,143,
                     36
+#endif
+#ifdef ZH
+    LTEXT           "Which of the following PlayerTemplates shall I use to add the Player you need?",
+                    IDC_STATIC,7,7,143,36
+#endif
     COMBOBOX        IDC_COMBO1,7,46,143,260,CBS_DROPDOWNLIST | CBS_SORT | 
                     WS_VSCROLL | WS_TABSTOP
 END
@@ -1515,7 +1697,12 @@ BEGIN
     LTEXT           "Ramp Width:",IDC_STATIC,7,15,42,14,SS_CENTERIMAGE
 END
 
+#ifdef OG
 IDD_SCORCH_OPTIONS DIALOG DISCARDABLE  0, 0, 200, 181
+#endif
+#ifdef ZH
+IDD_SCORCH_OPTIONS DIALOG DISCARDABLE  0, 0, 200, 86
+#endif
 STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION
 CAPTION "Scorch Options"
 FONT 8, "MS Sans Serif"
@@ -1593,27 +1780,66 @@ BEGIN
     EDITTEXT        IDC_SPACING,49,153,63,12,ES_AUTOHSCROLL
 END
 
+#ifdef OG
 IDD_CAMERA_OPTIONS DIALOG DISCARDABLE  0, 0, 142, 94
+#endif
+#ifdef ZH
+IDD_CAMERA_OPTIONS DIALOG DISCARDABLE  0, 0, 144, 162
+#endif
 STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "Camera Options"
 FONT 8, "MS Sans Serif"
 BEGIN
     EDITTEXT        IDC_PITCH_EDIT,89,11,27,12,ES_AUTOHSCROLL
     PUSHBUTTON      "1",IDC_PITCH_POPUP,121,11,9,12,BS_BITMAP
+#ifdef OG
     GROUPBOX        "Pitch",-1,83,1,55,29
+#endif
+#ifdef ZH
+    GROUPBOX        "Pitch",-1,85,1,55,29
+#endif
     PUSHBUTTON      "Restore To Default",IDC_CameraReset,4,4,75,14
     LTEXT           "Height above ground:",-1,7,33,73,10
     LTEXT           "Zoom:",-1,7,44,25,10
+#ifdef OG
     LTEXT           "(1.0 = max, 0.0 = min)",-1,58,44,80,10
+#endif
+#ifdef ZH
+    LTEXT           "(1.0 == max, 0.0 == min)",-1,60,44,80,10
+#endif
     LTEXT           "",IDC_ZOOMTEXT,29,44,27,10
+#ifdef OG
     LTEXT           "",IDC_HEIGHTTEXT,84,33,54,10
+#endif
+#ifdef ZH
+    LTEXT           "",IDC_HEIGHTTEXT,86,33,54,10
+#endif
     LTEXT           "Position:",-1,7,66,28,10
+#ifdef OG
     LTEXT           "",IDC_POSTEXT,35,65,103,10
+#endif
+#ifdef ZH
+    LTEXT           "",IDC_POSTEXT,37,65,103,10
+#endif
     LTEXT           "Target:",-1,7,76,28,10
+#ifdef OG
     LTEXT           "",IDC_TARGETTEXT,35,75,103,10
+
+#endif
+#ifdef ZH
+    LTEXT           "",IDC_TARGETTEXT,37,75,103,10
+    PUSHBUTTON      "Drop Waypoint",IDC_DROP_WAYPOINT_BUTTON,33,97,82,14
+    PUSHBUTTON      "Center Camera On Selected Object",
+                    IDC_CENTER_ON_SELECTED,13,128,116,14
+#endif
 END
 
+#ifdef OG
 IDD_WAYPOINT_OPTIONS DIALOG DISCARDABLE  0, 0, 200, 212
+#endif
+#ifdef ZH
+IDD_WAYPOINT_OPTIONS DIALOG DISCARDABLE  0, 0, 200, 186
+#endif
 STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION
 CAPTION "Waypoint Options"
 FONT 8, "MS Sans Serif"
@@ -1727,6 +1953,19 @@ BEGIN
     EDITTEXT        IDC_ANGLE,96,21,49,14,ES_AUTOHSCROLL
     RTEXT           "Angle (deg): ",IDC_STATIC,7,21,84,14,SS_CENTERIMAGE
     DEFPUSHBUTTON   "Preview",IDC_PREVIEW,7,52,50,14
+#ifdef ZH
+END
+
+IDD_RULER_OPTIONS DIALOG DISCARDABLE  0, 0, 186, 95
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION
+CAPTION "Ruler Options"
+FONT 8, "MS Sans Serif"
+BEGIN
+    LTEXT           "Diameter:",IDC_STATIC,39,25,35,9
+    EDITTEXT        IDC_RULER_WIDTH,83,21,54,14,ES_AUTOHSCROLL
+    CONTROL         "Circular Measurements:",IDC_CHECK_RULER,"Button",
+                    BS_AUTOCHECKBOX | BS_LEFTTEXT | WS_TABSTOP,40,51,95,14
+#endif
 END
 
 IDD_EULA_AGREEMENT DIALOG DISCARDABLE  0, 0, 267, 289
@@ -1738,6 +1977,171 @@ BEGIN
     DEFPUSHBUTTON   "Accept Terms",IDOK,154,268,50,14
     EDITTEXT        IDC_EDIT1,17,18,230,246,ES_MULTILINE | ES_READONLY | 
                     WS_VSCROLL
+#ifdef ZH
+END
+
+IDD_TeamObjectProperties DIALOG DISCARDABLE  0, 0, 213, 327
+STYLE DS_MODALFRAME | WS_CHILD | WS_DISABLED | WS_CAPTION | WS_SYSMENU
+CAPTION "Common Object Properties"
+FONT 8, "MS Sans Serif"
+BEGIN
+    LTEXT           "Initial Health %",IDC_STATIC,11,57,58,8,WS_DISABLED
+    COMBOBOX        IDC_MAPOBJECT_StartingHealth,79,54,95,71,
+                    CBS_DROPDOWNLIST | WS_DISABLED | WS_VSCROLL | WS_TABSTOP
+    EDITTEXT        IDC_MAPOBJECT_StartingHealthEdit,180,54,25,14,
+                    ES_AUTOHSCROLL | WS_DISABLED
+    CONTROL         "Enabled",IDC_MAPOBJECT_Enabled,"Button",BS_AUTOCHECKBOX | 
+                    WS_DISABLED | WS_TABSTOP,11,86,58,10
+    CONTROL         "Indestructible",IDC_MAPOBJECT_Indestructible,"Button",
+                    BS_AUTOCHECKBOX | WS_DISABLED | WS_TABSTOP,11,110,58,10
+    CONTROL         "Unsellable",IDC_MAPOBJECT_Unsellable,"Button",
+                    BS_AUTOCHECKBOX | WS_DISABLED | WS_TABSTOP,79,86,58,10
+    CONTROL         "Powered",IDC_MAPOBJECT_Powered,"Button",BS_AUTOCHECKBOX | 
+                    WS_DISABLED | WS_TABSTOP,11,97,58,10
+    LTEXT           "Aggressiveness:",IDC_STATIC,11,126,66,8,WS_DISABLED
+    COMBOBOX        IDC_MAPOBJECT_Aggressiveness,79,124,126,73,
+                    CBS_DROPDOWNLIST | WS_DISABLED | WS_VSCROLL | WS_TABSTOP
+    EDITTEXT        IDC_MAPOBJECT_VisionDistance,177,209,27,14,
+                    ES_AUTOHSCROLL | WS_DISABLED
+    LTEXT           "Targetting Distance:",IDC_STATIC,90,211,83,8,
+                    WS_DISABLED
+    CONTROL         "AI Recruitable",IDC_MAPOBJECT_RecruitableAI,"Button",
+                    BS_AUTOCHECKBOX | WS_DISABLED | WS_TABSTOP,79,110,69,10
+    LTEXT           "Shroud Clearing Distance:",IDC_STATIC,90,230,83,8,
+                    WS_DISABLED
+    EDITTEXT        IDC_MAPOBJECT_ShroudClearingDistance,177,226,27,14,
+                    ES_AUTOHSCROLL | WS_DISABLED
+    LTEXT           "Veterancy:",IDC_STATIC,11,142,66,8,WS_DISABLED
+    COMBOBOX        IDC_MAPOBJECT_Veterancy,79,140,126,73,CBS_DROPDOWNLIST | 
+                    WS_DISABLED | WS_VSCROLL | WS_TABSTOP
+    COMBOBOX        IDC_MAPOBJECT_Weather,79,158,126,76,CBS_DROPDOWNLIST | 
+                    WS_DISABLED | WS_VSCROLL | WS_TABSTOP
+    COMBOBOX        IDC_MAPOBJECT_Time,79,174,126,65,CBS_DROPDOWNLIST | 
+                    WS_DISABLED | WS_VSCROLL | WS_TABSTOP
+    COMBOBOX        IDC_MAPOBJECT_HitPoints,79,70,126,52,CBS_DROPDOWN | 
+                    CBS_SORT | WS_DISABLED | WS_VSCROLL | WS_TABSTOP
+    LTEXT           "Max Hitpoints",IDC_STATIC,11,71,58,8,WS_DISABLED
+    EDITTEXT        IDC_MAPOBJECT_StoppingDistance,177,190,27,14,
+                    ES_AUTOHSCROLL | ES_NUMBER | WS_DISABLED
+    LTEXT           "Stopping Distance:",IDC_STATIC,90,193,83,8,WS_DISABLED
+    CONTROL         "Selectable",IDC_MAPOBJECT_Selectable,"Button",
+                    BS_AUTOCHECKBOX | WS_DISABLED | WS_TABSTOP,79,97,58,10
+    LTEXT           "Weather:",IDC_STATIC,11,159,66,8,WS_DISABLED
+    LTEXT           "Time:",IDC_STATIC,11,175,66,8,WS_DISABLED
+    DEFPUSHBUTTON   "Update Team Members",IDC_UPDATE_TEAM_MEMBERS,53,278,107,
+                    14,WS_DISABLED | WS_GROUP
+END
+
+IDD_MAPOBJECT_PROPS DIALOG DISCARDABLE  0, 0, 205, 382
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION
+CAPTION "Object Properties"
+FONT 8, "MS Sans Serif"
+BEGIN
+    EDITTEXT        IDC_MAPOBJECT_Name,33,11,160,12,ES_AUTOHSCROLL | 
+                    WS_GROUP
+    COMBOBOX        IDC_MAPOBJECT_Team,33,26,160,141,CBS_DROPDOWNLIST | 
+                    CBS_SORT | WS_VSCROLL | WS_TABSTOP
+    COMBOBOX        IDC_MAPOBJECT_Script,33,40,160,67,CBS_DROPDOWNLIST | 
+                    WS_DISABLED | WS_VSCROLL | WS_TABSTOP
+    COMBOBOX        IDC_MAPOBJECT_StartingHealth,64,64,34,71,
+                    CBS_DROPDOWNLIST | WS_VSCROLL | WS_GROUP | WS_TABSTOP
+    EDITTEXT        IDC_MAPOBJECT_StartingHealthEdit,101,64,25,14,
+                    ES_AUTOHSCROLL
+    COMBOBOX        IDC_MAPOBJECT_HitPoints,63,83,66,52,CBS_DROPDOWN | 
+                    CBS_SORT | WS_VSCROLL | WS_TABSTOP
+    COMBOBOX        IDC_MAPOBJECT_Aggressiveness,63,101,65,73,
+                    CBS_DROPDOWNLIST | WS_VSCROLL | WS_TABSTOP
+    COMBOBOX        IDC_MAPOBJECT_Veterancy,63,119,65,73,CBS_DROPDOWNLIST | 
+                    WS_VSCROLL | WS_TABSTOP
+    CONTROL         "Enabled",IDC_MAPOBJECT_Enabled,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,133,63,42,10
+    CONTROL         "Unsellable",IDC_MAPOBJECT_Unsellable,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,133,73,49,10
+    CONTROL         "Targetable",IDC_MAPOBJECT_Targetable,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,133,83,50,10
+    CONTROL         "Indestructible",IDC_MAPOBJECT_Indestructible,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,133,93,58,10
+    CONTROL         "AI Recruitable",IDC_MAPOBJECT_RecruitableAI,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,133,103,61,10
+    CONTROL         "Powered",IDC_MAPOBJECT_Powered,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,133,113,44,10
+    CONTROL         "Selectable",IDC_MAPOBJECT_Selectable2,"Button",
+                    BS_AUTO3STATE | WS_TABSTOP,133,123,49,10
+    EDITTEXT        IDC_MAPOBJECT_StoppingDistance,41,140,27,12,
+                    ES_AUTOHSCROLL | ES_NUMBER | WS_GROUP
+    EDITTEXT        IDC_MAPOBJECT_VisionDistance,105,140,27,12,
+                    ES_AUTOHSCROLL
+    EDITTEXT        IDC_MAPOBJECT_ShroudClearingDistance,163,140,27,12,
+                    ES_AUTOHSCROLL
+    EDITTEXT        IDC_MAPOBJECT_XYPosition,38,172,93,12,ES_AUTOHSCROLL
+    EDITTEXT        IDC_MAPOBJECT_ZOffset,158,172,24,12,ES_AUTOHSCROLL
+    PUSHBUTTON      "1",IDC_HEIGHT_POPUP,185,171,8,12,BS_BITMAP
+    EDITTEXT        IDC_MAPOBJECT_Angle,158,188,24,12,ES_AUTOHSCROLL
+    PUSHBUTTON      "1",IDC_ANGLE_POPUP,185,188,8,12,BS_BITMAP
+    COMBOBOX        IDC_MAPOBJECT_Weather,39,188,93,76,CBS_DROPDOWNLIST | 
+                    WS_VSCROLL | WS_GROUP | WS_TABSTOP
+    COMBOBOX        IDC_MAPOBJECT_Time,39,204,93,65,CBS_DROPDOWNLIST | 
+                    WS_VSCROLL | WS_TABSTOP
+    COMBOBOX        IDC_SOUND_COMBO,66,232,127,160,CBS_DROPDOWNLIST | 
+                    CBS_AUTOHSCROLL | CBS_SORT | WS_VSCROLL | WS_GROUP | 
+                    WS_TABSTOP
+    CONTROL         "Customize",IDC_CUSTOMIZE_CHECKBOX,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,14,247,55,10
+    CONTROL         "Enabled",IDC_ENABLED_CHECKBOX,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,78,247,50,10
+    CONTROL         "Looping",IDC_LOOPING_CHECKBOX,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,142,247,50,10
+    EDITTEXT        IDC_LOOPCOUNT_EDIT,53,258,40,12,ES_AUTOHSCROLL | 
+                    ES_NUMBER
+    COMBOBOX        IDC_PRIORITY_COMBO,127,258,65,70,CBS_DROPDOWNLIST | 
+                    WS_VSCROLL | WS_TABSTOP
+    EDITTEXT        IDC_VOLUME_EDIT,53,274,40,12,ES_AUTOHSCROLL | ES_NUMBER
+    EDITTEXT        IDC_MIN_VOLUME_EDIT,146,274,45,12,ES_AUTOHSCROLL | 
+                    ES_NUMBER
+    EDITTEXT        IDC_MIN_RANGE_EDIT,53,290,40,12,ES_AUTOHSCROLL | 
+                    ES_NUMBER
+    EDITTEXT        IDC_MAX_RANGE_EDIT,146,290,45,12,ES_AUTOHSCROLL | 
+                    ES_NUMBER
+    CONTROL         "No Scale",IDC_SCALE_OFF,"Button",BS_AUTORADIOBUTTON | 
+                    NOT WS_VISIBLE | WS_DISABLED | WS_TABSTOP,120,207,45,10
+    CONTROL         "z",IDC_SCALE_ON,"Button",BS_AUTORADIOBUTTON | NOT 
+                    WS_VISIBLE | WS_DISABLED | WS_TABSTOP,153,208,8,10
+    EDITTEXT        IDC_MAPOBJECT_Scale,163,204,24,14,ES_AUTOHSCROLL | NOT 
+                    WS_VISIBLE | WS_DISABLED
+    PUSHBUTTON      "1",IDC_SCALE_POPUP,189,206,8,12,BS_BITMAP | NOT 
+                    WS_VISIBLE | WS_DISABLED
+    LISTBOX         IDC_MAPOBJECT_BuildWithUpgrades,7,318,184,50,
+                    LBS_NOINTEGRALHEIGHT | LBS_EXTENDEDSEL | WS_VSCROLL | 
+                    WS_GROUP | WS_TABSTOP
+    GROUPBOX        "General",IDC_STATIC_MAPOBJECT_GENERAL,4,2,193,54
+    GROUPBOX        "Logical",IDC_STATIC_MAPOBJECT_LOGICAL,4,56,193,105
+    GROUPBOX        "Sound",IDC_STATIC_MAPOBJECT_SOUND,4,223,193,82
+    GROUPBOX        "Visual",IDC_STATIC_MAPOBJECT_VISUAL,4,163,193,58
+    LTEXT           "Attached Sound:",IDC_STATIC,10,234,54,8
+    LTEXT           "Loop Count:",IDC_STATIC,8,258,40,8
+    LTEXT           "Volume:",IDC_STATIC,22,276,26,8
+    LTEXT           "Min Volume:",IDC_STATIC,102,276,40,8
+    LTEXT           "Min Range:",IDC_STATIC,10,294,38,8
+    LTEXT           "Max Range:",IDC_STATIC,102,294,40,8
+    LTEXT           "Priority:",IDC_STATIC,102,258,24,8
+    LTEXT           "Initial Health %",IDC_STATIC,13,67,47,8
+    LTEXT           "Max HP",IDC_STATIC,34,84,26,8
+    RTEXT           "Aggressiveness:",IDC_STATIC,8,102,52,8
+    RTEXT           "Veterancy:",IDC_STATIC,25,120,35,8
+    LTEXT           "Stopping:",IDC_STATIC,10,143,31,8
+    LTEXT           "Targeting:",IDC_STATIC,72,143,33,8
+    LTEXT           "Shroud:",IDC_STATIC,136,143,26,8
+    GROUPBOX        "Distance",IDC_MAPOBJECT_DISTANCE,7,131,188,27
+    LTEXT           "Name:",IDC_STATIC,9,13,22,8
+    LTEXT           "Team:",IDC_STATICTEAMCAPTION,9,28,21,8
+    LTEXT           "Script:",IDC_STATIC,9,42,21,8,WS_DISABLED
+    RTEXT           "Weather:",IDC_STATIC,7,191,30,8
+    RTEXT           "Time:",IDC_STATIC,19,206,18,8
+    LTEXT           "Angle:",IDC_STATIC,136,191,21,8
+    LTEXT           "Z:",IDC_STATIC,146,174,8,8
+    GROUPBOX        "Pre-built upgrades",IDC_STATIC,4,307,193,67
+    RTEXT           "XY Pos:",IDC_STATIC,8,174,26,8
+#endif
 END
 
 
@@ -1829,7 +2233,12 @@ BEGIN
         LEFTMARGIN, 5
         RIGHTMARGIN, 195
         TOPMARGIN, 5
+#ifdef OG
         BOTTOMMARGIN, 294
+#endif
+#ifdef ZH
+        BOTTOMMARGIN, 282
+#endif
     END
 
     IDD_MOUND_OPTIONS, DIALOG
@@ -1837,7 +2246,12 @@ BEGIN
         LEFTMARGIN, 1
         RIGHTMARGIN, 196
         TOPMARGIN, 1
+#ifdef OG
         BOTTOMMARGIN, 180
+#endif
+#ifdef ZH
+        BOTTOMMARGIN, 143
+#endif
     END
 
     IDD_OBJECT_OPTIONS, DIALOG
@@ -1882,7 +2296,12 @@ BEGIN
         LEFTMARGIN, 1
         RIGHTMARGIN, 196
         TOPMARGIN, 1
+#ifdef OG
         BOTTOMMARGIN, 215
+#endif
+#ifdef ZH
+        BOTTOMMARGIN, 183
+#endif
     END
 
     IDD_MESHMOLD_OPTIONS, DIALOG
@@ -1914,7 +2333,12 @@ BEGIN
         LEFTMARGIN, 1
         RIGHTMARGIN, 118
         TOPMARGIN, 1
+#ifdef OG
         BOTTOMMARGIN, 186
+#endif
+#ifdef ZH
+        BOTTOMMARGIN, 153
+#endif
     END
 
     IDD_OPEN_MAP, DIALOG
@@ -1931,6 +2355,7 @@ BEGIN
         RIGHTMARGIN, 179
         TOPMARGIN, 6
         BOTTOMMARGIN, 227
+#ifdef OG
     END
 
     IDD_MAPOBJECT_PROPS, DIALOG
@@ -1939,6 +2364,7 @@ BEGIN
         RIGHTMARGIN, 197
         TOPMARGIN, 3
         BOTTOMMARGIN, 308
+#endif
     END
 
     IDD_PROPEDIT, DIALOG
@@ -2037,9 +2463,19 @@ BEGIN
     IDD_ScriptAction, DIALOG
     BEGIN
         LEFTMARGIN, 7
+#ifdef OG
         RIGHTMARGIN, 263
+#endif
+#ifdef ZH
+        RIGHTMARGIN, 304
+#endif
         TOPMARGIN, 7
+#ifdef OG
         BOTTOMMARGIN, 142
+#endif
+#ifdef ZH
+        BOTTOMMARGIN, 443
+#endif
     END
 
     IDD_TEAMS_DIALOG, DIALOG
@@ -2108,7 +2544,12 @@ BEGIN
         LEFTMARGIN, 2
         RIGHTMARGIN, 196
         TOPMARGIN, 7
+#ifdef OG
         BOTTOMMARGIN, 166
+#endif
+#ifdef ZH
+        BOTTOMMARGIN, 159
+#endif
     END
 
     IDD_FENCE_OPTIONS, DIALOG
@@ -2116,7 +2557,12 @@ BEGIN
         LEFTMARGIN, 5
         RIGHTMARGIN, 195
         TOPMARGIN, 5
+#ifdef OG
         BOTTOMMARGIN, 241
+#endif
+#ifdef ZH
+        BOTTOMMARGIN, 202
+#endif
     END
 
     IDD_BLEND_MATERIAL, DIALOG
@@ -2124,7 +2570,12 @@ BEGIN
         LEFTMARGIN, 5
         RIGHTMARGIN, 195
         TOPMARGIN, 5
+#ifdef OG
         BOTTOMMARGIN, 241
+#endif
+#ifdef ZH
+        BOTTOMMARGIN, 213
+#endif
     END
 
     IDD_ADDPLAYER, DIALOG
@@ -2164,7 +2615,12 @@ BEGIN
         LEFTMARGIN, 1
         RIGHTMARGIN, 196
         TOPMARGIN, 1
+#ifdef OG
         BOTTOMMARGIN, 177
+#endif
+#ifdef ZH
+        BOTTOMMARGIN, 82
+#endif
     END
 
     IDD_MAP_SETTINGS, DIALOG
@@ -2212,7 +2668,12 @@ BEGIN
         LEFTMARGIN, 1
         RIGHTMARGIN, 196
         TOPMARGIN, 1
+#ifdef OG
         BOTTOMMARGIN, 208
+#endif
+#ifdef ZH
+        BOTTOMMARGIN, 182
+#endif
     END
 
     IDD_CHANGE_TEAM_OWNER, DIALOG
@@ -2237,6 +2698,16 @@ BEGIN
         RIGHTMARGIN, 163
         TOPMARGIN, 7
         BOTTOMMARGIN, 66
+#ifdef ZH
+    END
+
+    IDD_RULER_OPTIONS, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 179
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 88
+#endif
     END
 
     IDD_EULA_AGREEMENT, DIALOG
@@ -2246,7 +2717,24 @@ BEGIN
         TOPMARGIN, 7
         BOTTOMMARGIN, 282
     END
+#ifdef ZH
+
+    IDD_TeamObjectProperties, DIALOG
+    BEGIN
+        BOTTOMMARGIN, 321
+#endif
 END
+#ifdef ZH
+
+    IDD_MAPOBJECT_PROPS, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 197
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 374
+    END
+END
+#endif
 #endif    // APSTUDIO_INVOKED
 
 
@@ -2324,6 +2812,7 @@ BEGIN
     0
 END
 
+#ifdef OG
 IDD_ScriptCondition DLGINIT
 BEGIN
     IDC_CONDITION_TYPE, 0x403, 6, 0
@@ -2359,6 +2848,7 @@ BEGIN
     0
 END
 
+#endif
 IDD_TeamReinforcement DLGINIT
 BEGIN
     IDC_TRANSPORT_COMBO, 0x403, 11, 0
@@ -2391,7 +2881,48 @@ BEGIN
     0
 END
 
+#ifdef OG
 IDD_MAPOBJECT_PROPS DLGINIT
+
+#endif
+#ifdef ZH
+IDD_SCORCH_OPTIONS DLGINIT
+BEGIN
+    IDC_SCORCHTYPE, 0x403, 9, 0
+0x6353, 0x726f, 0x6863, 0x3120, "\000" 
+    IDC_SCORCHTYPE, 0x403, 9, 0
+0x6353, 0x726f, 0x6863, 0x3220, "\000" 
+    IDC_SCORCHTYPE, 0x403, 9, 0
+0x6353, 0x726f, 0x6863, 0x3320, "\000" 
+    IDC_SCORCHTYPE, 0x403, 9, 0
+0x6353, 0x726f, 0x6863, 0x3420, "\000" 
+    IDC_SCORCHTYPE, 0x403, 13, 0
+0x6f52, 0x6e75, 0x2064, 0x6853, 0x6461, 0x776f, "\000" 
+    IDC_SCORCHTYPE, 0x403, 12, 0
+0x7243, 0x6361, 0x206b, 0x614d, 0x6b72, 0x0073, 
+    0
+END
+
+IDD_WATER_OPTIONS DLGINIT
+BEGIN
+    IDC_WATERNAME_EDIT, 0x403, 22, 0
+0x6e49, 0x7469, 0x6169, 0x436c, 0x6d61, 0x7265, 0x5061, 0x736f, 0x7469, 
+0x6f69, 0x006e, 
+    0
+END
+
+IDD_WAYPOINT_OPTIONS DLGINIT
+BEGIN
+    IDC_WAYPOINTNAME_EDIT, 0x403, 22, 0
+0x6e49, 0x7469, 0x6169, 0x436c, 0x6d61, 0x7265, 0x5061, 0x736f, 0x7469, 
+0x6f69, 0x006e, 
+    IDC_LIST_OF_WAYPOINT_NAMES, 0x403, 1, 0
+"\000" 
+    0
+END
+
+IDD_TeamObjectProperties DLGINIT
+#endif
 BEGIN
     IDC_MAPOBJECT_StartingHealth, 0x403, 5, 0
 0x6544, 0x6461, "\000" 
@@ -2441,8 +2972,14 @@ BEGIN
     0
 END
 
+#ifdef OG
 IDD_SCORCH_OPTIONS DLGINIT
+#endif
+#ifdef ZH
+IDD_MAPOBJECT_PROPS DLGINIT
+#endif
 BEGIN
+#ifdef OG
     IDC_SCORCHTYPE, 0x403, 9, 0
 0x6353, 0x726f, 0x6863, 0x3120, "\000" 
     IDC_SCORCHTYPE, 0x403, 9, 0
@@ -2472,7 +3009,57 @@ BEGIN
 0x6e49, 0x7469, 0x6169, 0x436c, 0x6d61, 0x7265, 0x5061, 0x736f, 0x7469, 
 0x6f69, 0x006e, 
     IDC_LIST_OF_WAYPOINT_NAMES, 0x403, 1, 0
+#endif
+#ifdef ZH
+    IDC_MAPOBJECT_StartingHealth, 0x403, 5, 0
+0x6544, 0x6461, "\000" 
+    IDC_MAPOBJECT_StartingHealth, 0x403, 4, 0
+0x3532, 0x0025, 
+    IDC_MAPOBJECT_StartingHealth, 0x403, 4, 0
+0x3035, 0x0025, 
+    IDC_MAPOBJECT_StartingHealth, 0x403, 4, 0
+0x3537, 0x0025, 
+    IDC_MAPOBJECT_StartingHealth, 0x403, 5, 0
+0x3031, 0x2530, "\000" 
+    IDC_MAPOBJECT_StartingHealth, 0x403, 6, 0
+0x744f, 0x6568, 0x0072, 
+    IDC_MAPOBJECT_HitPoints, 0x403, 19, 0
+0x6544, 0x6166, 0x6c75, 0x2074, 0x6948, 0x2074, 0x6f50, 0x6e69, 0x7374, 
+
+#endif
 "\000" 
+#ifdef ZH
+    IDC_MAPOBJECT_Aggressiveness, 0x403, 6, 0
+0x6c53, 0x6565, 0x0070, 
+    IDC_MAPOBJECT_Aggressiveness, 0x403, 8, 0
+0x6150, 0x7373, 0x7669, 0x0065, 
+    IDC_MAPOBJECT_Aggressiveness, 0x403, 7, 0
+0x6f4e, 0x6d72, 0x6c61, "\000" 
+    IDC_MAPOBJECT_Aggressiveness, 0x403, 6, 0
+0x6c41, 0x7265, 0x0074, 
+    IDC_MAPOBJECT_Aggressiveness, 0x403, 11, 0
+0x6741, 0x7267, 0x7365, 0x6973, 0x6576, "\000" 
+    IDC_MAPOBJECT_Veterancy, 0x403, 7, 0
+0x6f4e, 0x6d72, 0x6c61, "\000" 
+    IDC_MAPOBJECT_Veterancy, 0x403, 8, 0
+0x6556, 0x6574, 0x6172, 0x006e, 
+    IDC_MAPOBJECT_Veterancy, 0x403, 6, 0
+0x6c45, 0x7469, 0x0065, 
+    IDC_MAPOBJECT_Veterancy, 0x403, 7, 0
+0x6548, 0x6f72, 0x6369, "\000" 
+    IDC_MAPOBJECT_Weather, 0x403, 16, 0
+0x7355, 0x2065, 0x614d, 0x2070, 0x6557, 0x7461, 0x6568, 0x0072, 
+    IDC_MAPOBJECT_Weather, 0x403, 17, 0
+0x7355, 0x2065, 0x6f4e, 0x6d72, 0x6c61, 0x4d20, 0x646f, 0x6c65, "\000" 
+    IDC_MAPOBJECT_Weather, 0x403, 15, 0
+0x7355, 0x2065, 0x6e53, 0x776f, 0x4d20, 0x646f, 0x6c65, "\000" 
+    IDC_MAPOBJECT_Time, 0x403, 13, 0
+0x7355, 0x2065, 0x614d, 0x2070, 0x6954, 0x656d, "\000" 
+    IDC_MAPOBJECT_Time, 0x403, 14, 0
+0x7355, 0x2065, 0x6144, 0x2079, 0x6f4d, 0x6564, 0x006c, 
+    IDC_MAPOBJECT_Time, 0x403, 16, 0
+0x7355, 0x2065, 0x694e, 0x6867, 0x2074, 0x6f4d, 0x6564, 0x006c, 
+#endif
     0
 END
 
@@ -2615,6 +3202,48 @@ END
 
 STRINGTABLE DISCARDABLE 
 BEGIN
+#ifdef ZH
+    IDS_REPLACEFILE         "%s already exists.  Do you want to replace it?"
+    IDS_ONLY_ONE_FILE       "Sorry, only one map may be open at a time."
+    IDS_NO_AUTOSAVE         "Unable to autosave file."
+    IDS_TOO_MANY_TILES      "Warning - too many textures to fit in map."
+    IDS_TOO_MANY_BLENDS     "Warning - too many blends to fit in map."
+    IDS_TEXTURE_TOO_LARGE   "There is not room to add this texture to the map.  You can use the paintbucket tool to replace another texture with this one."
+    IDS_ALPHA_BLEND         "Alpha Blend"
+    IDS_SCRIPT_INFORMATION  "Information:"
+    IDS_SCRIPT_WARNINGS     "Warnings:"
+    IDS_SCRIPT_NOWARNINGS   "No Warnings"
+    IDS_CONFIRM_REPLACE_TEXTURE "Replace all occurences of texture %s?"
+    ID_RAMPTOOL             "Place Ramps on the map\nRamp"
+    IDS_CONFIRM_REMOVE_CLIFF_MAPPING 
+                            "Remove all cliff mapping in the entire map?"
+    IDS_NUM_SELECTED_ON_TEAM "For team %s, %d units selected."
+    IDS_MAX_OBJECTS         "The object count has exceeded %d. Please reduce the number of objects in this map or performance will suffer."
+    IDS_REPLACEOWNER        "Team %s has an invalid owner. Please select a valid owner from the list below:"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_SPLASH_LOADING      "Loading..."
+    IDS_SINGLE_SELECTION_ONLY "Single Selection Only"
+    IDS_NO_UPGRADES         "No Upgrades Available"
+    IDS_TEAMS_FIXED         "One or more teams have been fixed.  Please save and re-open the file."
+    IDS_EULA_AGREEMENT1     "Electronic Arts Inc, and its subsidiaries, affiliates and licensors (collectively, ""EA"") grants you a non- transferable license to download and use one copy of the software tool (""Tool""), other materials accompanying the tool, and the materials created with the tool (collectively the ""Tools & Materials"") solely for your personal noncommercial use in connection with EA products."
+    IDS_EULA_AGREEMENT2     "\r\n\r\nEA and its Licensors own all of the rights in the Tools & Materials.  You may not alter any of EA's trademarks or logos, or alter or remove any of EA's or its Licensor's trademark or copyright notices included in or with the Tools & Materials. Your right to use Tools & Materials is limited to the license grant above, and you may not otherwise copy, display, distribute, perform, publish, modify, or use any of the Tools & Materials.  Without limiting the preceding sentence, you may not modify, reverse engineer, disassemble, license, transfer, distribute, create derivative works from, or sell the Tool, or use the Tools & Materials to further any commercial or unlawful purpose.  Without limiting the foregoing, you may not use the Tools & Materials to sell advertising, to promote another product or business, or on any site that operates or promotes a server emulator."
+    IDS_EULA_AGREEMENT3     "\r\n\r\nEA does not represent or warrant that you will be able to use any of the Tools & Materials. You expressly agree that your use of the Tools & Materials is at your sole risk. The Tools & Materials are provided on an ""as is,"" ""as available"" basis. EA disclaims all implied warranties and conditions, including without limitation any implied warranties of merchantability, fitness for a particular purpose, or non-infringement of third party rights. EA assumes no responsibility for any damages suffered by you. At EA's request, you agree to defend, indemnify and hold harmless EA from all liabilities, claims and expenses, including attorneys' fees, arising from any breach of this License by you and/or your use or misuse of the Tools & Materials."
+    IDS_EULA_AGREEMENT4     "\r\n\r\nEA may make the Tools & Materials available at its site(s) located in the United States and/or Canada and/or the European Union.  You are solely responsible for knowing and complying with all federal, state, and local laws that may apply to your use of Tools & Materials in your own locale. By downloading any Tools & Materials, you warrant that you are not located in any country, or exporting the Tools & Materials to any person or place, to which the United States and/or Canada and/or European Union or its member countries has embargoed goods."
+    IDS_EULA_AGREEMENT5     "\r\n\r\nEA may terminate this License at any time.  Upon termination, you must destroy or return to EA all Tools & Materials.  This License is governed by United States Copyright and California law (without regard to conflicts of law), and is the entire agreement between EA and you regarding the Tools & Materials."
+    IDS_MAPOBJECT_PROPS_TITLE "Object Properties"
+    IDS_NO_PROBLEMS         "No problems were detected."
+    IDS_DUPLICATE_TEAM_REMOVED "Duplicate instance of team ""%s"" removed."
+    IDS_PLAYERLESS_TEAM_REMOVED 
+                            "Team ""%s"" was on non-existent player ""%s"".  Team removed."
+    IDS_NEED_TO_FIX_TEAMS   "One or more objects had invalid teams.  Please run Validation>Fix Teams to correct this."
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+#endif
     ID_BRUSH_TOOL           "Draw the height on the height map.\nHeight Brush"
 END
 
@@ -2644,8 +3273,14 @@ END
 
 STRINGTABLE DISCARDABLE 
 BEGIN
+#ifdef OG
     ID_LOOK_WEST            "Rotate the camera to look West.\nLook West"
     ID_LOOK_EAST            "Rotate the camera to look East.\nLook East"
+#endif
+#ifdef ZH
+    ID_TEAM_EDIT            "Edit teams.\nEdit Teams"
+
+#endif
     ID_LOCK_HORIZONTAL      "Lock tool movement to 45 degree increment.\nLock Angle"
     ID_LOCK_VERTICAL        "Lock tool movement to up and down.\nLock Vertical"
     ID_WAYPOINT_TOOL        "Add and connect waypoints.\nWaypoint Tool"
@@ -2662,12 +3297,19 @@ END
 STRINGTABLE DISCARDABLE 
 BEGIN
     ID_MOLD_TOOL            "Shapes the terrain using a 3D mesh.\nMesh Mold Tool"
+#ifdef OG
     ID_LOOK_NORTH           "Sets the camera angle to look North.\nLook North"
     ID_LOOK_SOUTH           "Rotate the camera to look South.\nLook South"
+#endif
+#ifdef ZH
+    ID_RULER_TOOL           "Measure distance between two points. \nRuler Tool"
+    ID_SCRIPT_EDIT          "Edit scripts.\nEdit Scripts"
+#endif
 END
 
 STRINGTABLE DISCARDABLE 
 BEGIN
+#ifdef OG
     IDS_REPLACEFILE         "%s already exists.  Do you want to replace it?"
     IDS_ONLY_ONE_FILE       "Sorry, only one map may be open at a time."
     IDS_NO_AUTOSAVE         "Unable to autosave file."
@@ -2689,6 +3331,7 @@ END
 
 STRINGTABLE DISCARDABLE 
 BEGIN
+#endif
     ID_FENCE_TOOL           "Places a row of objects.  Drag then use shift to stretch.\nFence"
     ID_WATER_TOOL           "Add and modify water areas.\nWater Tool"
 END
@@ -2719,6 +3362,7 @@ END
 
 STRINGTABLE DISCARDABLE 
 BEGIN
+#ifdef OG
     IDS_SPLASH_LOADING      "Loading..."
     IDS_SINGLE_SELECTION_ONLY "Single Selection Only"
     IDS_NO_UPGRADES         "No Upgrades Available"
@@ -2728,6 +3372,12 @@ BEGIN
     IDS_EULA_AGREEMENT3     "\r\n\r\nEA does not represent or warrant that you will be able to use any of the Tools & Materials. You expressly agree that your use of the Tools & Materials is at your sole risk. The Tools & Materials are provided on an ""as is,"" ""as available"" basis. EA disclaims all implied warranties and conditions, including without limitation any implied warranties of merchantability, fitness for a particular purpose, or non-infringement of third party rights. EA assumes no responsibility for any damages suffered by you. At EA's request, you agree to defend, indemnify and hold harmless EA from all liabilities, claims and expenses, including attorneys' fees, arising from any breach of this License by you and/or your use or misuse of the Tools & Materials."
     IDS_EULA_AGREEMENT4     "\r\n\r\nEA may make the Tools & Materials available at its site(s) located in the United States and/or Canada and/or the European Union.  You are solely responsible for knowing and complying with all federal, state, and local laws that may apply to your use of Tools & Materials in your own locale. By downloading any Tools & Materials, you warrant that you are not located in any country, or exporting the Tools & Materials to any person or place, to which the United States and/or Canada and/or European Union or its member countries has embargoed goods."
     IDS_EULA_AGREEMENT5     "\r\n\r\nEA may terminate this License at any time.  Upon termination, you must destroy or return to EA all Tools & Materials.  This License is governed by United States Copyright and California law (without regard to conflicts of law), and is the entire agreement between EA and you regarding the Tools & Materials."
+#endif
+#ifdef ZH
+    ID_VIEW_SHOW_SOUND_CIRCLES 
+                            "Show the minimum and maximum radii around objects with ambient sounds\nShow Sound Circles"
+
+#endif
 END
 
 #endif    // English (U.S.) resources

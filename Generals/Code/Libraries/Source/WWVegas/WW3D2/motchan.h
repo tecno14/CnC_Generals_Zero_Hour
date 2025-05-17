@@ -16,7 +16,12 @@
 **	along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#ifdef OG
 /* $Header: /Commando/Code/ww3d2/motchan.h 2     6/29/01 6:41p Jani_p $ */
+#endif
+#ifdef ZH
+/* $Header: /Commando/Code/ww3d2/motchan.h 5     11/29/01 1:07p Jani_p $ */
+#endif
 /*********************************************************************************************** 
  ***                            Confidential - Westwood Studios                              *** 
  *********************************************************************************************** 
@@ -27,9 +32,19 @@
  *                                                                                             * 
  *                      $Author:: Jani_p                                                      $* 
  *                                                                                             * 
+#ifdef OG
  *                     $Modtime:: 6/27/01 6:29p                                               $* 
+#endif
+#ifdef ZH
+ *                     $Modtime:: 11/28/01 5:43p                                              $* 
+#endif
  *                                                                                             * 
+#ifdef OG
  *                    $Revision:: 2                                                           $* 
+#endif
+#ifdef ZH
+ *                    $Revision:: 5                                                           $* 
+#endif
  *                                                                                             * 
  *---------------------------------------------------------------------------------------------* 
  * Functions:                                                                                  * 
@@ -51,7 +66,6 @@
 class ChunkLoadClass;
 class Quaternion;
 
-
 /******************************************************************************
 
 	MotionChannelClass is used to store motion.  Motion data
@@ -67,6 +81,10 @@ class MotionChannelClass : public W3DMPO
 	W3DMPO_GLUE(MotionChannelClass)
 
 public:
+#ifdef ZH
+	void Do_Data_Compression(int datasize);
+	void Get_Vector(int frame,float * setvec) const;
+#endif
 
 	MotionChannelClass(void);
 	~MotionChannelClass(void);
@@ -74,7 +92,12 @@ public:
 	bool	Load_W3D(ChunkLoadClass & cload);		
 	WWINLINE int Get_Type(void) const { return Type; }
 	WWINLINE int Get_Pivot(void) const { return PivotIdx; }
+#ifdef OG
 	WWINLINE void Get_Vector(int frame,float * setvec) const;
+#endif
+#ifdef ZH
+	WWINLINE void Set_Pivot(int idx) { PivotIdx=idx; }
+#endif
 
 #define SPECIAL_GETVEC_AS_QUAT
 #ifdef SPECIAL_GETVEC_AS_QUAT
@@ -87,14 +110,26 @@ private:
 	uint32	Type;					// what type of channel is this
 	int		VectorLen;			// size of each individual vector
 	
+#ifdef ZH
+	float		ValueOffset;
+	float		ValueScale;
+	unsigned short* CompressedData;
+
+#endif
 	float	*	Data;					// pointer to the raw floating point data
 	int		FirstFrame;			// first frame which was non-identity
 	int		LastFrame;			// last frame which was non-identity
-
 	void Free(void);
 	WWINLINE void set_identity(float * setvec) const;
 
+#ifdef OG
 	friend class HRawAnimClass;
+
+#endif
+#ifdef ZH
+//	friend class HRawAnimClass;
+
+#endif
 };
 
 WWINLINE void MotionChannelClass::set_identity(float * setvec) const

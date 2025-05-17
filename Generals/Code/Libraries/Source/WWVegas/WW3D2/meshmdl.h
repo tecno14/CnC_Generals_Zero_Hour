@@ -22,13 +22,28 @@
  *                                                                                             *
  *                 Project Name : WW3D                                                         *
  *                                                                                             *
+#ifdef OG
  *                     $Archive:: /VSS_Sync/ww3d2/meshmdl.h                                   $*
+#endif
+#ifdef ZH
+ *                     $Archive:: /Commando/Code/ww3d2/meshmdl.h                              $*
+#endif
  *                                                                                             *
  *                       Author:: Greg Hjelstrom                                               *
  *                                                                                             *
+#ifdef OG
  *                     $Modtime:: 8/29/01 7:29p                                               $*
+#endif
+#ifdef ZH
+ *                     $Modtime:: 11/24/01 6:17p                                              $*
+#endif
  *                                                                                             *
+#ifdef OG
  *                    $Revision:: 38                                                          $*
+#endif
+#ifdef ZH
+ *                    $Revision:: 40                                                          $*
+#endif
  *                                                                                             *
  *---------------------------------------------------------------------------------------------*
  * Functions:                                                                                  *
@@ -82,6 +97,9 @@ class LightEnvironmentClass;
 class DX8MeshRendererClass;
 class DX8PolygonRendererAttachClass;
 class DX8SkinFVFCategoryContainer;
+#ifdef ZH
+class GapFillerClass;
+#endif
 
 struct VertexFormatXYZNDUV2;
 
@@ -115,14 +133,28 @@ struct VertexFormatXYZNDUV2;
 ** UV, DIG, DCG, SCG
 ** Texture, Shader, Material,
 ** TextureArray, MaterialArray, ShaderArray
+#ifdef OG
 ** 
+#endif
 */
 
+#ifdef ZH
+
+/**
+** GapFillerClass
+** This class is used to generate gap-filling polygons for "N-Patched" meshes
+*/
+#endif
 class GapFillerClass : public W3DMPO
 {
 	W3DMPO_GLUE(GapFillerClass)
 
+#ifdef OG
 	Vector3i* PolygonArray;
+#endif
+#ifdef ZH
+	TriIndex* PolygonArray;
+#endif
 	unsigned PolygonCount;
 	unsigned ArraySize;
 	TextureClass** TextureArray[MeshMatDescClass::MAX_PASSES][MeshMatDescClass::MAX_TEX_STAGES];
@@ -136,7 +168,12 @@ public:
 	GapFillerClass(const GapFillerClass& that);
 	~GapFillerClass();
 
+#ifdef OG
 	WWINLINE const Vector3i* Get_Polygon_Array() const { return PolygonArray; }
+#endif
+#ifdef ZH
+	WWINLINE const TriIndex* Get_Polygon_Array() const { return PolygonArray; }
+#endif
 	WWINLINE unsigned Get_Polygon_Count() const { return PolygonCount; }
 	WWINLINE TextureClass** Get_Texture_Array(int pass, int stage) const { return TextureArray[pass][stage]; }
 	WWINLINE VertexMaterialClass** Get_Material_Array(int pass) const { return MaterialArray[pass]; }
@@ -149,10 +186,12 @@ public:
 class MeshModelClass : public MeshGeometryClass
 {
 	W3DMPO_GLUE(MeshModelClass)
+#ifdef OG
 	// Jani: Adding this here temporarily... must fine better place
 //	Vector3i*					GapFillerPolygonArray;
 //	unsigned						GapFillerPolygonCount;
 	GapFillerClass* GapFiller;
+#endif
 
 public:	
 
@@ -175,7 +214,9 @@ public:
 	const Vector2 *			Get_UV_Array(int pass = 0, int stage = 0)									{ return CurMatDesc->Get_UV_Array(pass,stage); }
 	int							Get_UV_Array_Count(void)														{ return CurMatDesc->Get_UV_Array_Count(); }
 	const Vector2 *			Get_UV_Array_By_Index(int index)												{ return CurMatDesc->Get_UV_Array_By_Index(index, false); }
+#ifdef OG
 //	Vector3i *					Get_UVIndex_Array (int pass = 0, bool create = true)					{ return CurMatDesc->Get_UVIndex_Array(pass,create); }
+#endif
 
 	unsigned *					Get_DCG_Array(int pass)															{ return CurMatDesc->Get_DCG_Array(pass); }
 	unsigned *					Get_DIG_Array(int pass)															{ return CurMatDesc->Get_DIG_Array(pass); }
@@ -255,6 +296,10 @@ public:
 
 	void							Init_For_NPatch_Rendering();
 	const GapFillerClass*	Get_Gap_Filler() const { return GapFiller; }
+#ifdef ZH
+
+	bool							Has_Polygon_Renderers(void) { return !PolygonRendererList.Is_Empty(); }
+#endif
 
 protected:
 
@@ -280,6 +325,7 @@ protected:
 
 	int Register_Type();
 
+#ifdef OG
 	// functions to compute the deformed vertices of skins.
 	// Destination pointers MUST point to arrays large enough to hold all vertices
 	void get_deformed_vertices(Vector3 *dst_vert, Vector3 *dst_norm, const HTreeClass * htree);
@@ -292,6 +338,7 @@ protected:
 		const unsigned* diffuse,
 		const HTreeClass * htree);
 
+#endif
 	// loading
 	WW3DErrorType read_chunks(ChunkLoadClass & cload,MeshLoadContextClass * context);
 	WW3DErrorType read_texcoords(ChunkLoadClass & cload,MeshLoadContextClass * context);
@@ -323,6 +370,9 @@ protected:
 	unsigned int get_sort_flags(int pass) const;
 	unsigned int get_sort_flags(void) const;
 	void compute_static_sort_levels(void);
+#ifdef ZH
+	void modify_for_overbright(void);
+#endif
 
 	// mat info support
 	void install_materials(MeshLoadContextClass * loadinfo);
@@ -342,6 +392,12 @@ protected:
 	
 	// DX8 Mesh rendering system data
 	DX8PolygonRendererList								PolygonRendererList;
+#ifdef ZH
+
+	// Jani: Adding this here temporarily... must fine better place
+	GapFillerClass *										GapFiller;
+	bool														HasBeenInUse;	// For debugging purposes!
+#endif
 
 	friend class MeshClass;
 	friend class MeshDeformSetClass;
@@ -352,8 +408,7 @@ protected:
 	friend class DX8PolygonRendererClass;
 };
 
-
-
+#ifdef OG
 
 /*********************************************************************************************************
 **
@@ -361,27 +416,33 @@ protected:
 **
 *********************************************************************************************************/
 
-
 #if 0
 inline void	MeshModelClass::Apply_Deformation (float percent, bool additive)
 {	
 	MeshDeformer.Apply (*this, percent, additive);
 }
+#endif
 
+#ifdef OG
 inline void	MeshModelClass::Apply_Deformation (int set_index, float percent, bool additive)
 {	
 	MeshDeformer.Apply (*this, set_index, percent, additive);
 }
+#endif
 
+#ifdef OG
 inline void	MeshModelClass::Apply_Deformation (const Vector3 &point, float percent, bool additive)
 {	
 	MeshDeformer.Apply (*this, point, percent, additive);
 }
+#endif
 
+#ifdef OG
 inline void	MeshModelClass::Apply_Deformation (const SphereClass &sphere, float percent, bool additive)
 {	
 	MeshDeformer.Apply (*this, sphere, percent, additive);
 }
+#endif
 #endif
 
 

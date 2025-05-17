@@ -736,15 +736,26 @@ void EditWindow::mouseEvent( UnsignedInt windowsMessage,
 						// unselect this window
 						//
 						if( controlDown == TRUE )
+#ifdef ZH
+						{
+#endif
 							TheEditor->unSelectWindow( window );
+#ifdef ZH
+						}
+#endif
 
+#ifdef OG
 					}  // end else
 
+#endif
 					// only proceed into drag mode if we have something selected
+#ifdef OG
 					if( TheEditor->isWindowSelected( window ) )
+#endif
+#ifdef ZH
+						else if( TheEditor->isWindowSelected( window ) )
+#endif
 					{
-
-
 						// set move locations
 						m_dragMoveOrigin = mouse;
 						m_dragMoveDest = mouse;
@@ -757,6 +768,10 @@ void EditWindow::mouseEvent( UnsignedInt windowsMessage,
 
 					}  // end if
 
+#ifdef ZH
+					}  // end else
+
+#endif
 				}  // end if
 				else
 				{
@@ -785,8 +800,13 @@ void EditWindow::mouseEvent( UnsignedInt windowsMessage,
 			{
 
 				// move the windows
+#ifdef ZH
+				if ((m_dragMoveOrigin.x != m_dragMoveDest.x) || (m_dragMoveOrigin.y != m_dragMoveDest.y)) {
+#endif
 				TheEditor->dragMoveSelectedWindows( &m_dragMoveOrigin, &m_dragMoveDest );
-
+#ifdef ZH
+				}
+#endif
 				// release capture
 				SetCapture( NULL );
 
@@ -1285,8 +1305,25 @@ void EditWindow::drawUIFeedback( void )
 			window->winGetSize( &size.x, &size.y );
 
 			// figure out the destination of the window from this move
+#ifdef OG
 			moveLoc.x = origin.x + (m_dragMoveDest.x - m_dragMoveOrigin.x);
 			moveLoc.y = origin.y + (m_dragMoveDest.y - m_dragMoveOrigin.y);
+
+#endif
+#ifdef ZH
+ 			ICoord2D change;
+ 			change.x = (m_dragMoveDest.x - m_dragMoveOrigin.x);
+ 			change.y = (m_dragMoveDest.y - m_dragMoveOrigin.y);
+ 
+ 		// [SKB: Jun 02 2003 @ 2:7pm] :
+ 		// Don't move the object unless we have moved the mouse,
+ 		// this is to avoid the irritating movement of a window when just
+ 		// clicking on a window.
+ 			if (change.x || change.y)
+ 			{
+ 				moveLoc.x = origin.x + change.x;
+ 				moveLoc.y = origin.y + change.y;
+#endif
 
 			// snap move location to grid if on
 			if( (TheEditor->getMode() == MODE_DRAG_MOVE) && TheEditor->isGridSnapOn() )
@@ -1311,6 +1348,9 @@ void EditWindow::drawUIFeedback( void )
 			// draw outline of window at what would be the drag move destination
 			drawOpenRect( safeLoc.x, safeLoc.y, size.x, size.y, 
 										outlineWidth, outlineColor );
+#ifdef ZH
+			}
+#endif
 
 			// go to next selection
 			select = select->next;

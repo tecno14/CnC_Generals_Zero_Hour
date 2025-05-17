@@ -45,7 +45,14 @@
 
 #include "W3DDevice/GameClient/heightmap.h"
 #include "W3DDevice/GameClient/W3DWaterTracks.h"
+#ifdef ZH
+#include "W3DDevice/GameClient/W3DShaderManager.h"
+#include "W3DDevice/GameClient/W3DShroud.h"
+#endif
 #include "GameClient/InGameUI.h"
+#ifdef ZH
+#include "GameClient/Water.h"
+#endif
 #include "GameLogic/TerrainLogic.h"
 #include "common/GlobalData.h"
 #include "common/UnicodeString.h"
@@ -866,6 +873,11 @@ Try improving the fit to vertical surfaces like cliffs.
 */
 	Int	diffuseLight;
 
+#ifdef ZH
+	if (!TheGlobalData->m_showSoftWaterEdge || TheWaterTransparency->m_transparentWaterDepth ==0 )
+		return;
+
+#endif
 	if (TheGlobalData->m_usingWaterTrackEditor)
 		TestWaterUpdate();
 
@@ -902,6 +914,26 @@ Try improving the fit to vertical surfaces like cliffs.
 
 	DX8Wrapper::Set_Vertex_Buffer(m_vertexBuffer);
 	DX8Wrapper::Set_DX8_Render_State(D3DRS_ZBIAS,8);
+#ifdef ZH
+	//Force apply of render states so we can override them.
+	DX8Wrapper::Apply_Render_State_Changes();
+
+	if (TheTerrainRenderObject->getShroud())
+	{	
+		W3DShaderManager::setTexture(0,TheTerrainRenderObject->getShroud()->getShroudTexture());
+		W3DShaderManager::setShader(W3DShaderManager::ST_SHROUD_TEXTURE, 1);
+
+		//modulate with shroud texture
+		DX8Wrapper::Set_DX8_Texture_Stage_State( 1, D3DTSS_COLORARG1, D3DTA_TEXTURE );	//stage 1 texture
+		DX8Wrapper::Set_DX8_Texture_Stage_State( 1, D3DTSS_COLORARG2, D3DTA_CURRENT );	//previous stage texture
+		DX8Wrapper::Set_DX8_Texture_Stage_State( 1, D3DTSS_COLOROP,   D3DTOP_MODULATE );
+		DX8Wrapper::Set_DX8_Texture_Stage_State( 1, D3DTSS_ALPHAOP,   D3DTOP_MODULATE );
+
+		//Shroud shader uses z-compare of EQUAL which wouldn't work on water because it doesn't
+		//write to the zbuffer.  Change to LESSEQUAL.
+		DX8Wrapper::Set_DX8_Render_State(D3DRS_ZFUNC, D3DCMP_LESSEQUAL);
+	}
+#endif
 
 	Int LastTextureType=-1;
 
@@ -920,6 +952,14 @@ Try improving the fit to vertical surfaces like cliffs.
 	}	//while (mod)
 
 	DX8Wrapper::Set_DX8_Render_State(D3DRS_ZBIAS,0);
+#ifdef ZH
+
+	if (TheTerrainRenderObject->getShroud())
+	{	//we used the shroud shader, so reset it.
+		DX8Wrapper::Set_DX8_Render_State(D3DRS_ZFUNC, D3DCMP_EQUAL);
+		W3DShaderManager::resetShader(W3DShaderManager::ST_SHROUD_TEXTURE);
+	}
+#endif
 }
 
 WaterTracksObj *WaterTracksRenderSystem::findTrack(Vector2 &start, Vector2 &end, waveType type)

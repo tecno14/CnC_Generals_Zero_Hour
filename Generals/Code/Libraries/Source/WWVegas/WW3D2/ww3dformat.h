@@ -26,12 +26,30 @@
  *                                                                                             *
  *              Original Author:: Nathaniel Hoffman                                            *
  *                                                                                             *
+#ifdef OG
  *                      $Author:: Jani_p                                                      $*
+#endif
+#ifdef ZH
+ *                       Author : Kenny Mitchell                                               * 
+#endif
  *                                                                                             *
+#ifdef OG
  *                     $Modtime:: 8/20/01 9:41a                                               $*
+#endif
+#ifdef ZH
+ *                     $Modtime:: 06/27/02 1:27p                                              $*
+#endif
  *                                                                                             *
+#ifdef OG
  *                    $Revision:: 9                                                           $*
+#endif
+#ifdef ZH
+ *                    $Revision:: 12                                                          $*
+#endif
  *                                                                                             *
+#ifdef ZH
+ * 06/27/02 KM Z Format support																						*
+#endif
  *---------------------------------------------------------------------------------------------*
  * Functions:                                                                                  *
  * Vector4_to_Color - converts a vector4 to the format in format                               *
@@ -45,6 +63,11 @@
 #ifndef WW3DFORMAT_H
 #define WW3DFORMAT_H
 
+#ifdef ZH
+#include "always.h"
+#include "wwstring.h"
+
+#endif
 class Vector4;
 class Targa;
 
@@ -97,6 +120,28 @@ enum WW3DFormat {
 	WW3D_FORMAT_COUNT	// Used only to determine number of surface formats
 };
 
+#ifdef ZH
+// depth stencil buffer formats
+enum WW3DZFormat
+{
+	WW3D_ZFORMAT_UNKNOWN=0,
+	WW3D_ZFORMAT_D16_LOCKABLE, // 16-bit z-buffer bit depth. This is an application-lockable surface format. 
+	WW3D_ZFORMAT_D32, // 32-bit z-buffer bit depth. 
+	WW3D_ZFORMAT_D15S1, // 16-bit z-buffer bit depth where 15 bits are reserved for the depth channel and 1 bit is reserved for the stencil channel. 
+	WW3D_ZFORMAT_D24S8, // 32-bit z-buffer bit depth using 24 bits for the depth channel and 8 bits for the stencil channel. 
+	WW3D_ZFORMAT_D16, // 16-bit z-buffer bit depth. 
+	WW3D_ZFORMAT_D24X8, // 32-bit z-buffer bit depth using 24 bits for the depth channel. 
+	WW3D_ZFORMAT_D24X4S4, // 32-bit z-buffer bit depth using 24 bits for the depth channel and 4 bits for the stencil channel. 
+#ifdef _XBOX
+	WW3D_ZFORMAT_LIN_D24S8,
+	WW3D_ZFORMAT_LIN_F24S8,
+	WW3D_ZFORMAT_LIN_D16,
+	WW3D_ZFORMAT_LIN_F16,
+#endif
+	WW3D_ZFORMAT_COUNT
+};
+
+#endif
 // Utility function - not much used otherwise it would use an array.
 // NOTE: when adding values to WW3DFormat add here also (if they have alpha).
 inline bool Has_Alpha(WW3DFormat format) {
@@ -165,6 +210,11 @@ void Color_to_Vector4(Vector4* outc,const unsigned int inc,const WW3DFormat form
 // targa - reference to the targa object...
 void Get_WW3D_Format(WW3DFormat& dest_format,WW3DFormat& src_format,unsigned& src_bpp,const Targa& targa);
 
+#ifdef ZH
+// The same as above, but doesn't validate the device - only checks the source format.
+void Get_WW3D_Format(WW3DFormat& src_format,unsigned& src_bpp,const Targa& targa);
+
+#endif
 // Get valid texture format (on current hardware) that is closest to the given format (for instance, 32 bit ARGB8888 would
 // return 16 bit ARGB4444 if the device doesn't support 32 bit textures).
 // Pass false to the second parameter if you don't wish to consider compressed textures on hardware that supports them.
@@ -172,5 +222,13 @@ void Get_WW3D_Format(WW3DFormat& dest_format,WW3DFormat& src_format,unsigned& sr
 WW3DFormat Get_Valid_Texture_Format(WW3DFormat format,bool is_compression_allowed);
 
 unsigned Get_Bytes_Per_Pixel(WW3DFormat format);
+#ifdef ZH
+
+void Get_WW3D_Format_Name(WW3DFormat format, StringClass& name);
+void Get_WW3D_ZFormat_Name(WW3DZFormat format, StringClass& name);
+
+unsigned Get_Num_Depth_Bits(WW3DZFormat zformat);
+unsigned Get_Num_Stencil_Bits(WW3DZFormat zformat);
+#endif
 
 #endif

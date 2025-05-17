@@ -63,9 +63,20 @@ BoneFXUpdateModuleData::BoneFXUpdateModuleData(void)
 		}
 	}
 
+#ifdef OG
 	m_damageFXTypes = DAMAGE_TYPE_FLAGS_ALL;
 	m_damageOCLTypes = DAMAGE_TYPE_FLAGS_ALL;
 	m_damageParticleTypes = DAMAGE_TYPE_FLAGS_ALL;
+
+#endif
+#ifdef ZH
+	m_damageFXTypes = DAMAGE_TYPE_FLAGS_NONE;
+	m_damageFXTypes.flip();
+	m_damageOCLTypes = DAMAGE_TYPE_FLAGS_NONE;
+	m_damageOCLTypes.flip();
+	m_damageParticleTypes = DAMAGE_TYPE_FLAGS_NONE;
+	m_damageParticleTypes.flip();
+#endif
 
 }
 
@@ -424,7 +435,12 @@ void BoneFXUpdate::doOCLAtBone(const ObjectCreationList *ocl, const Coord3D *bon
 	Coord3D newPos;
 	building->convertBonePosToWorldPos(bonePosition, NULL, &newPos, NULL);
 
+#ifdef OG
 	ObjectCreationList::create( ocl, building, &newPos, NULL );
+#endif
+#ifdef ZH
+	ObjectCreationList::create( ocl, building, &newPos, NULL, INVALID_ANGLE );
+#endif
 
 }
 

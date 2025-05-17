@@ -168,6 +168,12 @@ UpdateSleepTime CommandButtonHuntUpdate::update()
 		case GUI_COMMAND_SWITCH_WEAPON:
 		case GUI_COMMAND_FIRE_WEAPON:
 			return huntWeapon(ai);
+#ifdef ZH
+		case GUICOMMANDMODE_HIJACK_VEHICLE:
+		case GUICOMMANDMODE_CONVERT_TO_CARBOMB:
+		case GUICOMMANDMODE_SABOTAGE_BUILDING:
+			return huntEnter( ai );
+#endif
 		default:
 			return UPDATE_SLEEP_FOREVER;
 	}
@@ -220,6 +226,28 @@ UpdateSleepTime CommandButtonHuntUpdate::huntSpecialPower(AIUpdateInterface *ai)
 	return UPDATE_SLEEP(data->m_scanFrames);
 }
 
+#ifdef ZH
+//-------------------------------------------------------------------------------------------------
+/** Do an enter hunt (sabotage, convert to carbomb, hijack). */
+//-------------------------------------------------------------------------------------------------
+UpdateSleepTime CommandButtonHuntUpdate::huntEnter( AIUpdateInterface *ai )
+{
+	Object *obj = getObject();
+	const CommandButtonHuntUpdateModuleData *data = getCommandButtonHuntUpdateModuleData();
+	if( !ai->isIdle() )
+	{
+		return UPDATE_SLEEP( data->m_scanFrames );
+	}
+
+	//Periodic scanning (expensive)
+	Object *victim = scanClosestTarget();
+	if( victim )
+	{
+		obj->doCommandButtonAtObject( m_commandButton, victim, CMD_FROM_AI );
+	}
+	return UPDATE_SLEEP( data->m_scanFrames );
+}
+#endif
 
 //-------------------------------------------------------------------------------------------------
 Object* CommandButtonHuntUpdate::scanClosestTarget(void)
@@ -229,28 +257,92 @@ Object* CommandButtonHuntUpdate::scanClosestTarget(void)
 
 	PartitionFilterAlive aliveFilter;
 
+#ifdef OG
 	// only consider enemies.
 	PartitionFilterRelationship	filterTeam(me, PartitionFilterRelationship::ALLOW_ENEMIES);
-	PartitionFilterSameMapStatus filterMapStatus(getObject());
 
+#endif
+#ifdef ZH
+	// only consider enemies (unless it's convert to carbomb).
+	PartitionFilterRelationship::RelationshipAllowTypes relationship = PartitionFilterRelationship::ALLOW_ENEMIES;
+	
+	Bool isEnter = FALSE;
+	switch( m_commandButton->getCommandType() )
+	{
+		case GUICOMMANDMODE_CONVERT_TO_CARBOMB:
+			relationship = PartitionFilterRelationship::ALLOW_NEUTRAL; //Only neutrals.
+			isEnter = TRUE;
+			break;
+		case GUICOMMANDMODE_HIJACK_VEHICLE:
+		case GUICOMMANDMODE_SABOTAGE_BUILDING:
+			isEnter = TRUE;
+			break;
+	}
+
+#endif
+	PartitionFilterSameMapStatus filterMapStatus(getObject());
+#ifdef ZH
+	PartitionFilterRelationship	filterTeam(me, relationship );
+	PartitionFilterStealthedAndUndetected filterStealthed( me, FALSE );
+#endif
+
+#ifdef OG
 	PartitionFilter *filters[4];
+#endif
+#ifdef ZH
+	PartitionFilter *filters[5];
+#endif
 	filters[0] = &aliveFilter;
 	filters[1] = &filterMapStatus;
+#ifdef OG
 	filters[2] = &filterTeam;
 	filters[3] = NULL;
 
+#endif
+#ifdef ZH
+	filters[2] = &filterStealthed;
+	filters[3] = &filterTeam;
+	filters[4] = NULL;
+#endif
+
+#ifdef ZH
+	Bool isBlackLotusVehicleHack = FALSE;
+	Bool isCaptureBuilding = FALSE;
+	Bool isPlaceExplosive = FALSE;
+#endif
  	const SpecialPowerTemplate *spTemplate = m_commandButton->getSpecialPowerTemplate();
+#ifdef OG
 	if( !spTemplate ) return NULL;  // isn't going to happen.
 	Bool isBlackLotusVehicleHack = 	(spTemplate->getSpecialPowerType() == SPECIAL_BLACKLOTUS_DISABLE_VEHICLE_HACK);
 	Bool isCaptureBuilding = 	(spTemplate->getSpecialPowerType() == SPECIAL_INFANTRY_CAPTURE_BUILDING);
 	if (isCaptureBuilding) {
 		filters[2] = NULL;  // It's ok (in fact necessary for oil derricks) to capture special buildings.
+
+#endif
+#ifdef ZH
+	if( !isEnter )
+	{
+		if( !spTemplate ) 
+			return NULL;  // isn't going to happen.
+		isBlackLotusVehicleHack = 	(spTemplate->getSpecialPowerType() == SPECIAL_BLACKLOTUS_DISABLE_VEHICLE_HACK);
+		isCaptureBuilding = 	(spTemplate->getSpecialPowerType() == SPECIAL_INFANTRY_CAPTURE_BUILDING);
+		if (isCaptureBuilding) 
+		{
+			filters[3] = NULL;  // It's ok (in fact necessary for oil derricks) to capture special buildings.
+			if (spTemplate->getSpecialPowerType() == SPECIAL_TIMED_CHARGES) 
+				isPlaceExplosive = true;
+			if (spTemplate->getSpecialPowerType() == SPECIAL_TANKHUNTER_TNT_ATTACK) 
+				isPlaceExplosive = true;
+		}
+#endif
 	}
+#ifdef OG
 
 	Bool isPlaceExplosive = false;
 	if (spTemplate->getSpecialPowerType() == SPECIAL_TIMED_CHARGES) isPlaceExplosive = true;
 	if (spTemplate->getSpecialPowerType() == SPECIAL_TANKHUNTER_TNT_ATTACK) isPlaceExplosive = true;
 
+#endif
 
 	ObjectIterator *iter = ThePartitionManager->iterateObjectsInRange( me->getPosition(), data->m_scanRange, 
 		FROM_CENTER_2D, filters, ITER_SORTED_NEAR_TO_FAR );
@@ -320,6 +412,32 @@ Object* CommandButtonHuntUpdate::scanClosestTarget(void)
 			}
 		}
 	}
+#ifdef ZH
+	else if( isEnter )
+	{
+		Bool valid = FALSE;
+		for( Object *other = iter->first(); other; other = iter->next() )
+		{
+			switch( m_commandButton->getCommandType() )
+			{
+				case GUICOMMANDMODE_HIJACK_VEHICLE:
+					valid = TheActionManager->canHijackVehicle( me, other, CMD_FROM_AI );
+					break;
+				case GUICOMMANDMODE_SABOTAGE_BUILDING:
+					valid = TheActionManager->canSabotageBuilding( me, other, CMD_FROM_AI );
+					break;
+				case GUICOMMANDMODE_CONVERT_TO_CARBOMB:
+					valid = TheActionManager->canConvertObjectToCarBomb( me, other, CMD_FROM_AI );
+					break;
+			}
+			if( valid )
+			{
+				return other;
+			}
+		}
+	}
+
+#endif
 
 	return bestTarget;
 }

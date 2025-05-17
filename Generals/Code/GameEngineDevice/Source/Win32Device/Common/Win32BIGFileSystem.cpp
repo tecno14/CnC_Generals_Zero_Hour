@@ -36,6 +36,9 @@
 #include "Common/LocalFileSystem.h"
 #include "Win32Device/Common/Win32BIGFile.h"
 #include "Win32Device/Common/Win32BIGFileSystem.h"
+#ifdef ZH
+#include "Common/registry.h"
+#endif
 
 #ifdef _INTERNAL
 // for occasional debugging...
@@ -58,6 +61,20 @@ void Win32BIGFileSystem::init() {
 	}
 
 	loadBigFilesFromDirectory("", "*.big");
+#ifdef ZH
+
+    // load original Generals assets
+    AsciiString installPath;
+    GetStringFromGeneralsRegistry("", "InstallPath", installPath );
+    //@todo this will need to be ramped up to a crash for release
+#ifndef _INTERNAL
+    // had to make this non-internal only, otherwise we can't autobuild
+    // GeneralsZH...
+    DEBUG_ASSERTCRASH(installPath != "", ("Be 1337! Go install Generals!"));
+#endif
+    if (installPath!="")
+      loadBigFilesFromDirectory(installPath, "*.big");
+#endif
 }
 
 void Win32BIGFileSystem::reset() {

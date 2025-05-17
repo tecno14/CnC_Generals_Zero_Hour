@@ -77,9 +77,15 @@ OpenContainModuleData::OpenContainModuleData( void )
 	m_passengersInTurret = FALSE;
 	m_numberOfExitPaths = 1;
 	m_damagePercentageToUnits = 0;
+#ifdef ZH
+	m_isBurnedDeathToUnits = TRUE;
+#endif
 	m_doorOpenTime = 1;
 	m_allowInsideKindOf.clear(); m_allowInsideKindOf.flip();		// everything is allowed
 	m_forbidInsideKindOf.clear();	// nothing is forbidden
+#ifdef ZH
+	m_weaponBonusPassedToPassengers = FALSE;
+#endif
  	m_allowAlliesInside = TRUE;
  	m_allowEnemiesInside = TRUE;
  	m_allowNeutralInside = TRUE;
@@ -97,12 +103,18 @@ OpenContainModuleData::OpenContainModuleData( void )
 		{ "EnterSound",								INI::parseAudioEventRTS,		NULL, offsetof( OpenContainModuleData, m_enterSound ) },
 		{ "ExitSound",								INI::parseAudioEventRTS,		NULL, offsetof( OpenContainModuleData, m_exitSound ) },
 		{ "DamagePercentToUnits",			INI::parsePercentToReal,		NULL, offsetof( OpenContainModuleData, m_damagePercentageToUnits ) },
+#ifdef ZH
+		{ "BurnedDeathToUnits",				INI::parseBool,							NULL, offsetof( OpenContainModuleData, m_isBurnedDeathToUnits ) },
+#endif
 		{ "AllowInsideKindOf",				KindOfMaskType::parseFromINI, NULL, offsetof( OpenContainModuleData, m_allowInsideKindOf ) },
 		{ "ForbidInsideKindOf",				KindOfMaskType::parseFromINI, NULL, offsetof( OpenContainModuleData, m_forbidInsideKindOf ) },
 		{ "PassengersAllowedToFire",	INI::parseBool, NULL, offsetof( OpenContainModuleData, m_passengersAllowedToFire ) },
 		{ "PassengersInTurret",				INI::parseBool, NULL, offsetof( OpenContainModuleData, m_passengersInTurret ) },
 		{ "NumberOfExitPaths",				INI::parseInt, NULL, offsetof( OpenContainModuleData, m_numberOfExitPaths ) },
 		{ "DoorOpenTime",							INI::parseDurationUnsignedInt, NULL, offsetof( OpenContainModuleData, m_doorOpenTime ) },
+#ifdef ZH
+ 		{ "WeaponBonusPassedToPassengers", INI::parseBool,	NULL, offsetof( OpenContainModuleData, m_weaponBonusPassedToPassengers ) },
+#endif
  		{ "AllowAlliesInside",				INI::parseBool,	NULL, offsetof( OpenContainModuleData, m_allowAlliesInside ) },
  		{ "AllowEnemiesInside",				INI::parseBool,	NULL, offsetof( OpenContainModuleData, m_allowEnemiesInside ) },
  		{ "AllowNeutralInside",				INI::parseBool,	NULL, offsetof( OpenContainModuleData, m_allowNeutralInside ) },
@@ -144,6 +156,11 @@ OpenContain::OpenContain( Thing *thing, const ModuleData* moduleData ) : UpdateM
 	m_noFirePointsInArt = false;
 	m_whichExitPath = 1;
 	m_loadSoundsEnabled = TRUE;
+#ifdef ZH
+  
+  m_passengerAllowedToFire = getOpenContainModuleData()->m_passengersAllowedToFire; 
+  // overridable by setPass...()  in the parent interface (for use by upgrade module)
+#endif
 
 	for( Int i = 0; i < MAX_FIRE_POINTS; i++ )
 	{		
@@ -279,10 +296,29 @@ void OpenContain::addOrRemoveObjFromWorld(Object* obj, Bool add)
 //-------------------------------------------------------------------------------------------------
 void OpenContain::addToContain( Object *rider )
 {
+#ifdef ZH
+	if( getObject()->checkAndDetonateBoobyTrap(rider) )
+	{
+		// Whoops, I was mined.  Cancel if I (or they) am now dead.
+		if( getObject()->isEffectivelyDead() || rider->isEffectivelyDead() )
+		{
+			return;
+		}
+	}
+#endif
 
 	// sanity
 	if( rider == NULL )
 		return;
+#ifdef ZH
+
+	Drawable *riderDraw = rider->getDrawable();
+	Bool wasSelected = FALSE;
+	if( riderDraw && riderDraw->isSelected() )
+	{
+		wasSelected = TRUE;
+	}
+#endif
 
 #if defined(_DEBUG) || defined(_INTERNAL)
 	if( !isValidContainerFor( rider, false ) )
@@ -330,7 +366,12 @@ void OpenContain::addToContain( Object *rider )
 	// trigger an onContaining event for the object that just "ate" something
 	if( getObject()->getContain() )
 	{
+#ifdef OG
 		getObject()->getContain()->onContaining( rider );
+#endif
+#ifdef ZH
+		getObject()->getContain()->onContaining( rider, wasSelected );
+#endif
 	}
 
 	// trigger an onContainedBy event for the object that just got "eaten" by us
@@ -402,9 +443,73 @@ void OpenContain::removeAllContained( Bool exposeStealthUnits )
 
  		// note that this invalidates the iterator!
  		removeFromContainViaIterator( it, exposeStealthUnits );
+#ifdef ZH
 
 	}  // end while
 
+}  // end removeAllContained
+
+//-------------------------------------------------------------------------------------------------
+/** Kill all contained objects in the contained list */
+//-------------------------------------------------------------------------------------------------
+void OpenContain::killAllContained( void )
+{
+	ContainedItemsList::iterator it = m_containList.begin();
+
+ 	while ( it != m_containList.end() )
+	{
+    Object *rider = *it;
+
+    if ( rider )
+    {
+	    it = m_containList.erase(it);
+	    m_containListSize--;
+
+      onRemoving( rider );
+	    rider->onRemovedFrom( getObject() );
+      rider->kill();
+
+    }
+    else
+      ++it;
+
+	}  // end while
+
+  DEBUG_ASSERTCRASH( m_containListSize == 0, ("killallcontain just made a booboo, list size != zero.") );
+
+}  // end removeAllContained
+
+//--------------------------------------------------------------------------------------------------------
+/** Force all contained objects in the contained list to exit, and kick them in the pants on the way out*/
+//--------------------------------------------------------------------------------------------------------
+void OpenContain::harmAndForceExitAllContained( DamageInfo *info )
+{
+	ContainedItemsList::iterator it = m_containList.begin();
+
+ 	while ( it != m_containList.end() )
+	{
+		Object *rider = *it;
+
+		if ( rider )
+		{
+		  removeFromContain( rider, true );
+		  rider->attemptDamage( info );
+		}
+
+		//Kris: Patch 1.03 -- Crash fix when neutral bunker on Alpine Assault is occupied with 10 demo general 
+		//infantry units with the suicide upgrade and US stealth fighters with bunker busters kill the guys inside.
+		//Causes recursive damage where a bunker buster destroys an infantry, the infantry explodes and blows up 
+		//another missile which kills everyone inside while the first missile is killing everyone. And the game blows up.
+		//Fix is to reset the list.
+		it = m_containList.begin();
+#endif
+
+	}  // end while
+
+#ifdef ZH
+  DEBUG_ASSERTCRASH( m_containListSize == 0, ("harmAndForceExitAllContained just made a booboo, list size != zero.") );
+
+#endif
 }  // end removeAllContained
 
 //-------------------------------------------------------------------------------------------------
@@ -496,6 +601,34 @@ void OpenContain::iterateContained( ContainIterateFunc func, void *userData, Boo
 }
 
 //-------------------------------------------------------------------------------------------------
+#ifdef ZH
+// ------------------------------------------------------------------------------------------------
+Object* OpenContain::getClosestRider( const Coord3D *pos )
+{
+	Object *closest = NULL;
+	Real closestDistance;
+
+	for(ContainedItemsList::const_iterator it = m_containList.begin(); it != m_containList.end(); ++it)
+	{
+    Object *rider = *it;
+
+    if (rider)
+    {
+      Real distance = ThePartitionManager->getDistanceSquared( rider, pos, FROM_CENTER_2D );
+	    if( !closest || closestDistance > distance ) 
+	    {
+		    closest = rider;
+		    closestDistance = distance; 
+	    }
+    }
+
+  }
+
+   return closest; //Could be null!
+}
+
+//-------------------------------------------------------------------------------------------------
+#endif
 struct DropData
 {
 	Real minRadius;
@@ -533,8 +666,14 @@ void OpenContain::removeFromContainViaIterator( ContainedItemsList::iterator it,
 		m_stealthUnitsContained--;
 		if( exposeStealthUnits )
 		{
+#ifdef OG
 			static NameKeyType key_StealthUpdate = NAMEKEY( "StealthUpdate" );
 			StealthUpdate* stealth = (StealthUpdate*)rider->findUpdateModule( key_StealthUpdate );
+#endif
+#ifdef ZH
+			StealthUpdate* stealth = rider->getStealth();
+
+#endif
 			if( stealth )
 			{
 				stealth->markAsDetected();
@@ -546,10 +685,17 @@ void OpenContain::removeFromContainViaIterator( ContainedItemsList::iterator it,
 	if (isEnclosingContainerFor( rider ))
 	{
 		addOrRemoveObjFromWorld(rider, true);
+#ifdef ZH
+  	rider->setPosition( getObject()->getPosition() );
+        // if we are not enclosed, then just walk away from where we "are."
+
+#endif
 	}
 
 	/// place the object in the world at position of the container m_object
+#ifdef OG
 	rider->setPosition( getObject()->getPosition() );
+#endif
 	rider->setLayer( getObject()->getLayer() );
 
 	doUnloadSound();
@@ -619,7 +765,12 @@ void OpenContain::scatterToNearbyPosition(Object* rider)
 }
 
 //-------------------------------------------------------------------------------------------------
+#ifdef OG
 void OpenContain::onContaining( Object * /*rider*/ )
+#endif
+#ifdef ZH
+void OpenContain::onContaining( Object *rider, Bool wasSelected )
+#endif
 {
 	// Play audio
 	if( m_loadSoundsEnabled )
@@ -700,8 +851,14 @@ void OpenContain::onCollide( Object *other, const Coord3D *loc, const Coord3D *n
 				if( rider->isKindOf( KINDOF_STEALTH_GARRISON ) )
 				{
 					// aiExit is needed to walk away from the building well, but it doesn't take the Unstealth flag
+#ifdef OG
 					static const NameKeyType key_StealthUpdate = NAMEKEY( "StealthUpdate" );
 					StealthUpdate* stealth = (StealthUpdate*)rider->findUpdateModule( key_StealthUpdate );
+#endif
+#ifdef ZH
+          StealthUpdate* stealth = rider->getStealth();
+
+#endif
 					if( stealth )
 					{
 						stealth->markAsDetected();
@@ -744,17 +901,32 @@ void OpenContain::onDie( const DamageInfo * damageInfo )
 		return;
 
 	//Check to see if we are going to inflict damage on contained units.
+#ifdef OG
 	if( getOpenContainModuleData()->m_damagePercentageToUnits > 0 )
+#endif
+#ifdef ZH
+	if( getDamagePercentageToUnits() > 0 )
+#endif
 	{
 		//Cycle through the units and apply damage to them!
+#ifdef OG
 		processDamageToContained();
+#endif
+#ifdef ZH
+		processDamageToContained(getDamagePercentageToUnits());
+#endif
 	}
 
 	killRidersWhoAreNotFreeToExit();
 
 	// Leaving this commented out to show it can't work.  We are about to die, so they will have zero 
 	// chance to hit an exitState::Update.  At least we would clean them up in onDelete.
+#ifdef OG
 //	orderAllPassengersToExit( CMD_FROM_AI );
+#endif
+#ifdef ZH
+//	orderAllPassengersToExit( CMD_FROM_AI, FALSE );
+#endif
 	removeAllContained();
 }  
 
@@ -1032,10 +1204,24 @@ void OpenContain::exitObjectInAHurry( Object *exitObj )
 
 
 //-------------------------------------------------------------------------------------------------
+#ifdef OG
 Bool OpenContain::isPassengerAllowedToFire() const
+#endif
+#ifdef ZH
+Bool OpenContain::isPassengerAllowedToFire( ObjectID id ) const
+#endif
 {
+#ifdef OG
 	const OpenContainModuleData *modData = getOpenContainModuleData();
 	if( ! modData->m_passengersAllowedToFire )
+
+#endif
+#ifdef ZH
+//	const OpenContainModuleData *modData = getOpenContainModuleData();
+  //this flag is owned by opencontain, now, so that the upgrade can override the template data
+  //M Lorenzen, 5/6/03
+	if( ! m_passengerAllowedToFire )
+#endif
 		return FALSE;// Just no, no matter what.
 
 	// If we are ourselves contained, our passengers need to check with them if they get past us
@@ -1239,8 +1425,14 @@ void OpenContain::markAllPassengersDetected( )
 		// call it
 		if( rider->isKindOf( KINDOF_STEALTH_GARRISON ) )
 		{
+#ifdef OG
 			static const NameKeyType key_StealthUpdate = NAMEKEY( "StealthUpdate" );
 			StealthUpdate* stealth = (StealthUpdate*)rider->findUpdateModule( key_StealthUpdate );
+#endif
+#ifdef ZH
+			StealthUpdate* stealth = rider->getStealth();
+
+#endif
 			if( stealth )
 			{
 				stealth->markAsDetected();
@@ -1253,11 +1445,21 @@ void OpenContain::markAllPassengersDetected( )
 void OpenContain::onSelling()
 {
 	// An OpenContain tells everyone to leave.
+#ifdef OG
 	orderAllPassengersToExit(CMD_FROM_AI);
+#endif
+#ifdef ZH
+	orderAllPassengersToExit( CMD_FROM_AI, FALSE );
+#endif
 }
 
 //-------------------------------------------------------------------------------------------------
+#ifdef OG
 void OpenContain::orderAllPassengersToExit( CommandSourceType commandSource )
+#endif
+#ifdef ZH
+void OpenContain::orderAllPassengersToExit( CommandSourceType commandSource, Bool instantly )
+#endif
 {
 	for( ContainedItemsList::const_iterator it = getContainedItemsList()->begin(); it != getContainedItemsList()->end(); )
 	{
@@ -1270,13 +1472,71 @@ void OpenContain::orderAllPassengersToExit( CommandSourceType commandSource )
 		
 		// call it
 		if( rider->getAI() )
+#ifdef ZH
+		{
+			if( instantly )
+			{
+				rider->getAI()->aiExitInstantly( getObject(), commandSource );
+			}
+			else 
+			{
+#endif
 			rider->getAI()->aiExit( getObject(), commandSource );
+#ifdef ZH
+			}
+		}
+	}
+}
+
+ 
+//-------------------------------------------------------------------------------------------------
+void OpenContain::orderAllPassengersToIdle( CommandSourceType commandSource )
+{
+	for( ContainedItemsList::const_iterator it = getContainedItemsList()->begin(); it != getContainedItemsList()->end(); )
+	{
+		Object* rider = *it;
+		++it;
+		
+		if( rider->getAI() )
+		{
+			rider->getAI()->aiIdle( commandSource );
+		}
+#endif
 	}
 }
 
 //-------------------------------------------------------------------------------------------------
+#ifdef OG
 void OpenContain::processDamageToContained()
+
+#endif
+#ifdef ZH
+void OpenContain::orderAllPassengersToHackInternet( CommandSourceType commandSource )
 {
+	for( ContainedItemsList::const_iterator it = getContainedItemsList()->begin(); it != getContainedItemsList()->end(); )
+	{
+		Object* rider = *it;
+		++it;
+
+		if( rider->isKindOf( KINDOF_MONEY_HACKER ) )
+		{
+			AIUpdateInterface *ai = rider->getAI();
+			if( ai )
+			{
+				rider->getAI()->aiHackInternet( commandSource );
+			}
+		}
+	}
+}
+
+//-------------------------------------------------------------------------------------------------
+void OpenContain::processDamageToContained(Real percentDamage)
+#endif
+{
+#ifdef ZH
+	const OpenContainModuleData *data = getOpenContainModuleData();
+
+#endif
 	const ContainedItemsList* items = getContainedItemsList();
 	if( items )
 	{
@@ -1293,22 +1553,64 @@ void OpenContain::processDamageToContained()
 			++it;
 
 			//Calculate the damage to be inflicted on each unit.
+#ifdef OG
 			Real damage = object->getBodyModule()->getMaxHealth() * getOpenContainModuleData()->m_damagePercentageToUnits;
+#endif
+#ifdef ZH
+			Real damage = object->getBodyModule()->getMaxHealth() * percentDamage;
+#endif
 
 			DamageInfo damageInfo;
 			damageInfo.in.m_damageType = DAMAGE_UNRESISTABLE;
+#ifdef OG
 			damageInfo.in.m_deathType = DEATH_BURNED;
+#endif
+#ifdef ZH
+			damageInfo.in.m_deathType = data->m_isBurnedDeathToUnits ? DEATH_BURNED : DEATH_NORMAL;
+#endif
 			damageInfo.in.m_sourceID = getObject()->getID();
 			damageInfo.in.m_amount = damage;
 			object->attemptDamage( &damageInfo );
 
+#ifdef OG
 			if( !object->isEffectivelyDead() && getOpenContainModuleData()->m_damagePercentageToUnits == 1.0f )
+#endif
+#ifdef ZH
+			if( !object->isEffectivelyDead() && percentDamage == 1.0f )
+#endif
 				object->kill(); // in case we are carrying flame proof troops we have been asked to kill			
+#ifdef ZH
 		}
 	}
+#endif
+		}
+#ifdef ZH
+
+//-------------------------------------------------------------------------------------------------
+Bool OpenContain::isWeaponBonusPassedToPassengers() const
+{
+	return getOpenContainModuleData()->m_weaponBonusPassedToPassengers;
+#endif
+	}
+#ifdef ZH
+
+//-------------------------------------------------------------------------------------------------
+WeaponBonusConditionFlags OpenContain::getWeaponBonusPassedToPassengers() const
+{
+	// Our entire weapon bonus flag set is passed on.  Maybe that could be limited in the future.
+	return getObject()->getWeaponBonusCondition();
+#endif
 }
 
 //-------------------------------------------------------------------------------------------------
+#ifdef ZH
+Real OpenContain::getDamagePercentageToUnits( void ) 
+{ 
+	return getOpenContainModuleData()->m_damagePercentageToUnits; 
+}
+
+//-------------------------------------------------------------------------------------------------
+#endif
 Bool OpenContain::isEnclosingContainerFor( const Object * ) const
 {
 	return TRUE; 
@@ -1357,6 +1659,30 @@ Bool OpenContain::getNaturalRallyPoint( Coord3D& rallyPoint, Bool offset )  cons
 	return TRUE;
 }
 
+#ifdef ZH
+//-------------------------------------------------------------------------------------------------
+//-------------------------------------------------------------------------------------------------
+void testForAttackingProc( Object *obj, void *userData )
+{	
+	Bool *info = (Bool*)userData;
+  if ( *info == TRUE )
+    return;
+
+  *info = ( obj->testStatus( OBJECT_STATUS_IS_ATTACKING ) );
+
+}
+
+//-------------------------------------------------------------------------------------------------
+Bool OpenContain::isAnyRiderAttacking( void ) const
+{
+  Bool wellIsHe = FALSE;
+
+	((ContainModuleInterface*)this)->iterateContained(testForAttackingProc, &wellIsHe, FALSE );
+
+  return wellIsHe;
+}
+
+#endif
 // ------------------------------------------------------------------------------------------------
 /** CRC */
 // ------------------------------------------------------------------------------------------------
@@ -1377,7 +1703,12 @@ void OpenContain::xfer( Xfer *xfer )
 {
 
 	// version 
+#ifdef OG
 	const XferVersion currentVersion = 1;
+#endif
+#ifdef ZH
+	const XferVersion currentVersion = 2;
+#endif
 	XferVersion version = currentVersion;
 	xfer->xferVersion( &version, currentVersion );
 
@@ -1535,6 +1866,15 @@ void OpenContain::xfer( Xfer *xfer )
 	
 	// which exit path
 	xfer->xferInt( &m_whichExitPath );
+#ifdef ZH
+
+
+  if ( version >= 2 )
+  {
+    xfer->xferBool( &m_passengerAllowedToFire );
+  }
+
+#endif
 
 }  // end xfer
 

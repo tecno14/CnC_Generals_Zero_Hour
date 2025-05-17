@@ -48,6 +48,9 @@
 #include "GameClient/KeyDefs.h"
 #include "GameClient/GameWindowManager.h"
 #include "GameClient/GadgetListBox.h"
+#ifdef ZH
+#include "GameClient/GadgetCheckBox.h"
+#endif
 #include "GameClient/GadgetComboBox.h"
 #include "GameClient/GadgetTextEntry.h"
 #include "GameClient/GadgetPushButton.h"
@@ -56,6 +59,9 @@
 #include "GameClient/MapUtil.h"
 #include "GameClient/Mouse.h"
 #include "GameClient/GameWindowTransitions.h"
+#ifdef ZH
+#include "GameNetwork/GameSpy/LobbyUtils.h"
+#endif
 
 #include "Common/MultiplayerSettings.h"
 #include "GameClient/GameText.h"
@@ -116,6 +122,11 @@ static NameKeyType buttonResetID = NAMEKEY_INVALID;
 static NameKeyType windowMapID = NAMEKEY_INVALID;
 static NameKeyType sliderGameSpeedID = NAMEKEY_INVALID; 
 static NameKeyType staticTextGameSpeedID = NAMEKEY_INVALID;
+#ifdef ZH
+static NameKeyType checkBoxLimitSuperweaponsID = NAMEKEY_INVALID;
+static NameKeyType comboBoxStartingCashID = NAMEKEY_INVALID;
+
+#endif
 // Window Pointers ------------------------------------------------------------------------
 static GameWindow *staticTextGameSpeed = NULL;
 static GameWindow *parentSkirmishGameOptions = NULL;
@@ -126,6 +137,10 @@ static GameWindow *textEntryMapDisplay = NULL;
 static GameWindow *buttonReset = NULL;
 static GameWindow *windowMap = NULL;
 static GameWindow *textEntryPlayerName = NULL;
+#ifdef ZH
+static GameWindow *checkBoxLimitSuperweapons = NULL;
+static GameWindow *comboBoxStartingCash = NULL;
+#endif
 static GameWindow *comboBoxPlayer[MAX_SLOTS] = {NULL,NULL,NULL,NULL,
 																									 NULL,NULL,NULL,NULL };
 
@@ -150,6 +165,9 @@ WindowLayout *skirmishMapSelectLayout = NULL;
 static Int	initialGadgetDelay = 2;
 static Bool justEntered = FALSE;
 static Bool buttonPushed = FALSE;
+#ifdef ZH
+static Bool stillNeedsToSetOptions = FALSE;
+#endif
 void skirmishUpdateSlotList( void );
 static void populateSkirmishBattleHonors( void );
 enum{ GREATER_NO_FPS_LIMIT = 60};
@@ -285,6 +303,50 @@ AsciiString SkirmishPreferences::getPreferredMap(void)
 	}
 	
 	return ret;
+#ifdef ZH
+}
+
+static const char superweaponRestrictionKey[] = "SuperweaponRestrict";
+
+Bool SkirmishPreferences::getSuperweaponRestricted(void) const
+{
+  const_iterator it = find(superweaponRestrictionKey);
+  if (it == end())
+  {
+    return false;
+  }
+  
+  return ( it->second.compareNoCase( "yes" ) == 0 );
+}
+
+void SkirmishPreferences::setSuperweaponRestricted( Bool superweaponRestricted )
+{
+  (*this)[superweaponRestrictionKey] = superweaponRestricted ? "Yes" : "No";
+}
+
+static const char startingCashKey[] = "StartingCash";
+Money SkirmishPreferences::getStartingCash(void) const
+{
+  const_iterator it = find(startingCashKey);
+  if (it == end())
+  {
+    return TheMultiplayerSettings->getDefaultStartingMoney();
+  }
+  
+  Money money;
+  money.deposit( strtoul( it->second.str(), NULL, 10 ), FALSE  );
+  
+  return money;
+}
+
+void SkirmishPreferences::setStartingCash( const Money & startingCash )
+{
+  AsciiString option;
+  
+  option.format( "%d", startingCash.countMoney() );
+  
+  (*this)[startingCashKey] = option;
+#endif
 }
 
 Bool SkirmishPreferences::write(void)
@@ -304,6 +366,11 @@ Bool SkirmishPreferences::write(void)
 
 	(*this)["UserName"] = UnicodeStringToQuotedPrintable(TheSkirmishGameInfo->getConstSlot(0)->getName());
 
+#ifdef ZH
+  setStartingCash( TheSkirmishGameInfo->getStartingCash() );
+  setSuperweaponRestricted( TheSkirmishGameInfo->getSuperweaponRestriction() != 0 );
+
+#endif
 	setSlotList();
 
 //	NameKeyType sliderGameSpeedID = TheNameKeyGenerator->nameToKey( AsciiString( "SkirmishGameOptionsMenu.wnd:SliderGameSpeed" ) );
@@ -481,11 +548,15 @@ static void startPressed(void)
 		isReady = TRUE;
 	}
 	
+#ifdef OG
 #if !defined(_PLAYTEST)
+#endif
 	if(isReady)
 	{
 		CheckForCDAtGameStart( reallyDoStart );
 	}
+#ifdef OG
+#endif
 #endif
 
 }//void startPressed(void)
@@ -779,12 +850,25 @@ void updateMapStartSpots( GameInfo *myGame, GameWindow *buttonMapStartPositions[
 	if (it == TheMapCache->end())
 	{
 		for (Int i = 0; i < MAX_SLOTS; ++i)
+#ifdef ZH
+    {
+      if ( buttonMapStartPositions[i] != NULL )
+      {
+#endif
 			buttonMapStartPositions[i]->winHide(TRUE);
+#ifdef ZH
+      }
+    }
+#endif
 		return;
 	}
 	MapMetaData mmd = it->second;
 
 	for(Int i = 0; i < MAX_SLOTS; ++i)
+#ifdef ZH
+	{
+    if ( buttonMapStartPositions[i] != NULL )
+#endif
 	{
 		GadgetButtonSetText(buttonMapStartPositions[i], UnicodeString::TheEmptyString);
 		if (!onLoadScreen)
@@ -792,8 +876,16 @@ void updateMapStartSpots( GameInfo *myGame, GameWindow *buttonMapStartPositions[
 			buttonMapStartPositions[i]->winSetTooltip(TheGameText->fetch("TOOLTIP:StartPosition"));
 		}
 	}
+#ifdef ZH
+	}
+#endif
 	for( i = 0; i < MAX_SLOTS; ++i)
 	{
+#ifdef ZH
+    if ( buttonMapStartPositions[i] == NULL )
+      continue;
+
+#endif
 		GameSlot *gs =myGame->getSlot(i);
 		if(onLoadScreen)
 		{
@@ -958,7 +1050,46 @@ static void handleTeamSelection(int index)
 		slot->setTeamNumber(team);
 	}
   //skirmishUpdateSlotList();
+#ifdef ZH
 }
+
+static void handleStartingCashSelection()
+{
+  GameInfo *myGame = TheSkirmishGameInfo;
+  
+  if (myGame)
+  {
+    Int selIndex;
+    GadgetComboBoxGetSelectedPos(comboBoxStartingCash, &selIndex);
+
+    Money startingCash;
+    startingCash.deposit( (UnsignedInt)GadgetComboBoxGetItemData( comboBoxStartingCash, selIndex ), FALSE );
+    myGame->setStartingCash( startingCash );
+  }
+}
+
+static void handleLimitSuperweaponsClick()
+{
+  GameInfo *myGame = TheSkirmishGameInfo;
+  
+  if (myGame)
+  {
+    // At the moment, 1 and 0 are the only choices supported in the GUI, though the system could
+    // support more.
+    if ( GadgetCheckBoxIsChecked( checkBoxLimitSuperweapons ) )
+    {
+      myGame->setSuperweaponRestriction( 1 );
+#endif
+}
+#ifdef ZH
+    else
+    {
+      myGame->setSuperweaponRestriction( 0 );
+    }
+  }
+}
+
+#endif
 
 //-------------------------------------------------------------------------------------------------
 /** Initialize the Gadgets Options Menu */
@@ -974,6 +1105,11 @@ void InitSkirmishGameGadgets( void )
 	buttonResetID = TheNameKeyGenerator->nameToKey( AsciiString( "SkirmishGameOptionsMenu.wnd:ButtonReset" ) );
 	windowMapID = TheNameKeyGenerator->nameToKey( AsciiString( "SkirmishGameOptionsMenu.wnd:MapWindow" ) );
 	staticTextGameSpeedID = TheNameKeyGenerator->nameToKey( AsciiString( "SkirmishGameOptionsMenu.wnd:StaticTextGameSpeed" ) );
+#ifdef ZH
+  checkBoxLimitSuperweaponsID = TheNameKeyGenerator->nameToKey( AsciiString( "SkirmishGameOptionsMenu.wnd:CheckboxLimitSuperweapons" ) );
+  comboBoxStartingCashID = TheNameKeyGenerator->nameToKey( AsciiString( "SkirmishGameOptionsMenu.wnd:ComboBoxStartingCash" ) );
+
+#endif
 	// Initialize the pointers to our gadgets
 	parentSkirmishGameOptions = TheWindowManager->winGetWindowFromId( NULL, parentSkirmishGameOptionsID );
 	DEBUG_ASSERTCRASH(parentSkirmishGameOptions, ("Could not find the parentSkirmishGameOptions" ));
@@ -989,6 +1125,13 @@ void InitSkirmishGameGadgets( void )
 	DEBUG_ASSERTCRASH(buttonReset, ("Could not find the buttonReset"));
 	staticTextGameSpeed = TheWindowManager->winGetWindowFromId( parentSkirmishGameOptions, staticTextGameSpeedID );
 	DEBUG_ASSERTCRASH(staticTextGameSpeed, ("Could not find the staticTextGameSpeed"));
+#ifdef ZH
+  checkBoxLimitSuperweapons = TheWindowManager->winGetWindowFromId( parentSkirmishGameOptions, checkBoxLimitSuperweaponsID );
+  DEBUG_ASSERTCRASH(checkBoxLimitSuperweapons, ("Could not find the checkBoxLimitSuperweapons"));
+  comboBoxStartingCash = TheWindowManager->winGetWindowFromId( parentSkirmishGameOptions, comboBoxStartingCashID );
+  DEBUG_ASSERTCRASH(comboBoxStartingCash, ("Could not find the comboBoxStartingCash"));
+  PopulateStartingCashComboBox(comboBoxStartingCash, TheSkirmishGameInfo );
+#endif
 
 	textEntryPlayerNameID = TheNameKeyGenerator->nameToKey( AsciiString( "SkirmishGameOptionsMenu.wnd:TextEntryPlayerName" ) );
   textEntryPlayerName = TheWindowManager->winGetWindowFromId( NULL, textEntryPlayerNameID );
@@ -1044,6 +1187,11 @@ void InitSkirmishGameGadgets( void )
 		comboBoxPlayerTemplate[i] = TheWindowManager->winGetWindowFromId( parentSkirmishGameOptions, comboBoxPlayerTemplateID[i] );
 		DEBUG_ASSERTCRASH(comboBoxPlayerTemplate[i], ("Could not find the comboBoxPlayerTemplate[%d]",i ));
 		
+#ifdef ZH
+		// add tooltips to the player template combobox and listbox
+		comboBoxPlayerTemplate[i]->winSetTooltipFunc(playerTemplateComboBoxTooltip);
+		GadgetComboBoxGetListBox(comboBoxPlayerTemplate[i])->winSetTooltipFunc(playerTemplateListBoxTooltip);
+#endif
 
 		tmpString.format("SkirmishGameOptionsMenu.wnd:ComboBoxTeam%d", i);
 		comboBoxTeamID[i] = TheNameKeyGenerator->nameToKey( tmpString );
@@ -1162,6 +1310,22 @@ void updateSkirmishGameOptions( void )
 			GadgetComboBoxSetSelectedPos(comboBoxPlayer[i], 0);
 		}
 	}
+#ifdef ZH
+
+  GadgetCheckBoxSetChecked( checkBoxLimitSuperweapons, TheSkirmishGameInfo->getSuperweaponRestriction() != 0 );
+  Int itemCount = GadgetComboBoxGetLength(comboBoxStartingCash);
+  for ( Int index = 0; index < itemCount; index++ )
+  {
+    Int value  = (Int)GadgetComboBoxGetItemData(comboBoxStartingCash, index);
+    if ( value == TheSkirmishGameInfo->getStartingCash().countMoney() )
+    {
+      GadgetComboBoxSetSelectedPos(comboBoxStartingCash, index, TRUE);
+      break;
+    }
+  }
+  
+  DEBUG_ASSERTCRASH( index < itemCount, ("Could not find new starting cash amount %d in list", TheSkirmishGameInfo->getStartingCash().countMoney() ) );
+#endif
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -1172,6 +1336,10 @@ void SkirmishGameOptionsMenuInit( WindowLayout *layout, void *userData )
 	if (TheGameEngine->getQuitting())
 		return;
 	
+#ifdef ZH
+	stillNeedsToSetOptions = FALSE;
+
+#endif
 	sliderGameSpeedID = TheNameKeyGenerator->nameToKey( AsciiString( "SkirmishGameOptionsMenu.wnd:SliderGameSpeed" ) );
 	
 	sandboxOk = FALSE;
@@ -1228,6 +1396,11 @@ void SkirmishGameOptionsMenuInit( WindowLayout *layout, void *userData )
 	{
 		TheSkirmishGameInfo->markPlayerAsPreorder(0);
 	}
+#ifdef ZH
+
+  TheSkirmishGameInfo->setStartingCash( prefs.getStartingCash() );
+  TheSkirmishGameInfo->setSuperweaponRestriction( prefs.getSuperweaponRestricted() ? 1 : 0 );
+#endif
 
   TheSkirmishGameInfo->setMap(prefs.getPreferredMap());
 	const MapMetaData *md = TheMapCache->findMap(TheSkirmishGameInfo->getMap());
@@ -1359,7 +1532,12 @@ void SkirmishGameOptionsMenuUpdate( WindowLayout * layout, void *userData)
 	{
 		if(initialGadgetDelay == 1)
 		{
+#ifdef OG
 			TheTransitionHandler->setGroup("SkirmishGameOptionsMenuFade");
+#endif
+#ifdef ZH
+			stillNeedsToSetOptions = TRUE;
+#endif
 			TheWindowManager->winSetFocus( parentSkirmishGameOptions );
 			initialGadgetDelay = 2;
 			justEntered = FALSE;
@@ -1368,6 +1546,16 @@ void SkirmishGameOptionsMenuUpdate( WindowLayout * layout, void *userData)
 			initialGadgetDelay--;
 	}
 
+#ifdef ZH
+	// Coming back from a game, the shell map will be reloading,
+	// in which case this transition isn't wanted until the load is done.
+	if(stillNeedsToSetOptions && !TheGameLogic->isLoadingMap())
+	{
+		TheTransitionHandler->setGroup("SkirmishGameOptionsMenuFade");
+		stillNeedsToSetOptions = FALSE;
+	}
+
+#endif
 	if(TheShell->isAnimFinished() && TheTransitionHandler->isFinished())
 			TheShell->shutdownComplete( layout );
 }// void SkirmishGameOptionsMenuUpdate( WindowLayout * layout, void *userData)
@@ -1445,6 +1633,14 @@ WindowMsgHandledType SkirmishGameOptionsMenuSystem( GameWindow *window, Unsigned
 			{
 				GameWindow *control = (GameWindow *)mData1;
 				Int controlID = control->winGetWindowId();
+#ifdef ZH
+        if ( controlID == comboBoxStartingCashID )
+        {
+          handleStartingCashSelection();
+        }
+        else
+        {
+#endif
 				for (Int i = 0; i < MAX_SLOTS; i++)
 				{
 					if (controlID == comboBoxColorID[i])
@@ -1462,10 +1658,16 @@ WindowMsgHandledType SkirmishGameOptionsMenuSystem( GameWindow *window, Unsigned
           else if (controlID == comboBoxPlayerID[i])
           {
             handlePlayerSelection(i);
+#ifdef ZH
+            }
+#endif
           }
 				}
 				sandboxOk = FALSE;
         skirmishUpdateSlotList();
+#ifdef ZH
+        break;
+#endif
 			}// case GCM_SELECTED:
 		//-------------------------------------------------------------------------------------------------
 		case GSM_SLIDER_TRACK:
@@ -1526,13 +1728,18 @@ WindowMsgHandledType SkirmishGameOptionsMenuSystem( GameWindow *window, Unsigned
           prefs.write();
 					startPressed();
 				}
-
 				else if ( controlID == buttonResetID )
 				{
 					SkirmishBattleHonors stats;
 					stats.clear();
 					stats.write();
 					populateSkirmishBattleHonors();
+#ifdef ZH
+				}
+        else if ( controlID == checkBoxLimitSuperweaponsID )
+        {
+          handleLimitSuperweaponsClick();
+#endif
 				}
 				else
 				{
@@ -1647,7 +1854,9 @@ void populateSkirmishBattleHonors(void)
 	Int column = 0;
 	Int row = 0;
 	Int honors = stats.getHonors();
+#ifdef OG
 	//Int challenge = stats.getChallengeMedals();
+#endif
 
 	UnicodeString uStr;
 	GameWindow *streakWindow = TheWindowManager->winGetWindowFromId( NULL, NAMEKEY("SkirmishGameOptionsMenu.wnd:StaticTextStreakValue") );
@@ -1677,21 +1886,158 @@ void populateSkirmishBattleHonors(void)
 
 	ResetBattleHonorInsertion();
 	GadgetListBoxAddEntryImage(list, NULL, 0, 0, 10, 10, TRUE, GameMakeColor(255,255,255,255));
+#ifdef OG
 	row = 1;
 	InsertBattleHonor(list, TheMappedImageCollection->findImageByName("HonorCampaignChina"), (honors & BATTLE_HONOR_CAMPAIGN_CHINA),
-		BATTLE_HONOR_CAMPAIGN_CHINA, row, column);
-	InsertBattleHonor(list, TheMappedImageCollection->findImageByName("HonorCampaignGLA"), (honors & BATTLE_HONOR_CAMPAIGN_GLA),
-		BATTLE_HONOR_CAMPAIGN_GLA, row, column);
-	InsertBattleHonor(list, TheMappedImageCollection->findImageByName("HonorCampaignUSA"), (honors & BATTLE_HONOR_CAMPAIGN_USA),
-		BATTLE_HONOR_CAMPAIGN_USA, row, column);
 
+#endif
+#ifdef ZH
+	
+	// FIRST ROW OF HONORS
+	row = 1; column = 0;
+
+	// TEST FOR CHINA CAMPAIGN HONOR (GOLD, SILVER, BRONZE or GREYED OUT)
+	if (stats.getCHINACampaignComplete(DIFFICULTY_HARD))
+	{
+		InsertBattleHonor(list, TheMappedImageCollection->findImageByName("ChinaCampaign_G"), TRUE,
+			BATTLE_HONOR_CAMPAIGN_CHINA, row, column);
+	} 
+	else if (stats.getCHINACampaignComplete(DIFFICULTY_NORMAL))
+	{
+		InsertBattleHonor(list, TheMappedImageCollection->findImageByName("ChinaCampaign_S"), TRUE,
+			BATTLE_HONOR_CAMPAIGN_CHINA, row, column);
+	}
+	else if (stats.getCHINACampaignComplete(DIFFICULTY_EASY))
+	{
+		InsertBattleHonor(list, TheMappedImageCollection->findImageByName("ChinaCampaign_B"), TRUE,
+#endif
+		BATTLE_HONOR_CAMPAIGN_CHINA, row, column);
+#ifdef OG
+	InsertBattleHonor(list, TheMappedImageCollection->findImageByName("HonorCampaignGLA"), (honors & BATTLE_HONOR_CAMPAIGN_GLA),
+
+#endif
+#ifdef ZH
+	}
+	else
+	{
+		InsertBattleHonor(list, TheMappedImageCollection->findImageByName("ChinaCampaign_B"), (honors & BATTLE_HONOR_CAMPAIGN_CHINA),
+			BATTLE_HONOR_CAMPAIGN_CHINA, row, column);
+	}
+
+	// TEST FOR GLA CAMPAIGN HONOR (GOLD, SILVER, BRONZE or GREYED OUT)
+	if (stats.getGLACampaignComplete(DIFFICULTY_HARD))
+	{
+		InsertBattleHonor(list, TheMappedImageCollection->findImageByName("GLACampaign_G"), TRUE,
+			BATTLE_HONOR_CAMPAIGN_GLA, row, column);
+	} 
+	else if (stats.getGLACampaignComplete(DIFFICULTY_NORMAL))
+	{
+		InsertBattleHonor(list, TheMappedImageCollection->findImageByName("GLACampaign_S"), TRUE,
+			BATTLE_HONOR_CAMPAIGN_GLA, row, column);
+	}
+	else if (stats.getGLACampaignComplete(DIFFICULTY_EASY))
+	{
+		InsertBattleHonor(list, TheMappedImageCollection->findImageByName("GLACampaign_B"), TRUE,
+			BATTLE_HONOR_CAMPAIGN_GLA, row, column);
+	}
+	else
+	{
+		InsertBattleHonor(list, TheMappedImageCollection->findImageByName("GLACampaign_B"), (honors & BATTLE_HONOR_CAMPAIGN_GLA),
+#endif
+		BATTLE_HONOR_CAMPAIGN_GLA, row, column);
+#ifdef OG
+	InsertBattleHonor(list, TheMappedImageCollection->findImageByName("HonorCampaignUSA"), (honors & BATTLE_HONOR_CAMPAIGN_USA),
+
+#endif
+#ifdef ZH
+	}
+
+	// TEST FOR GLA CAMPAIGN HONOR (GOLD, SILVER, BRONZE or GREYED OUT)
+	if (stats.getUSACampaignComplete(DIFFICULTY_HARD))
+	{
+		InsertBattleHonor(list, TheMappedImageCollection->findImageByName("USACampaign_G"), TRUE,
+			BATTLE_HONOR_CAMPAIGN_USA, row, column);
+	} 
+	else if (stats.getUSACampaignComplete(DIFFICULTY_NORMAL))
+	{
+		InsertBattleHonor(list, TheMappedImageCollection->findImageByName("USACampaign_S"), TRUE,
+			BATTLE_HONOR_CAMPAIGN_USA, row, column);
+	}
+	else if (stats.getUSACampaignComplete(DIFFICULTY_EASY))
+	{
+		InsertBattleHonor(list, TheMappedImageCollection->findImageByName("USACampaign_B"), TRUE,
+			BATTLE_HONOR_CAMPAIGN_USA, row, column);
+	}
+	else
+	{
+		InsertBattleHonor(list, TheMappedImageCollection->findImageByName("USACampaign_B"), (honors & BATTLE_HONOR_CAMPAIGN_USA),
+#endif
+		BATTLE_HONOR_CAMPAIGN_USA, row, column);
+#ifdef ZH
+	}
+
+	// TEST FOR GENERALS CHALLENGE HONOR (GOLD, SILVER, BRONZE or GREYED OUT)
+	Bool completedOnHard		= FALSE;
+	Bool completedOnNormal	= FALSE;
+	Bool completedOnEasy		= FALSE;
+	for (int i = 0; i < MAX_GLOBAL_GENERAL_TYPES; ++i)
+	{
+		if (stats.getChallengeCampaignComplete(i, DIFFICULTY_HARD))
+			completedOnHard = TRUE;
+
+		if (stats.getChallengeCampaignComplete(i, DIFFICULTY_NORMAL))
+			completedOnNormal = TRUE;
+
+		if (stats.getChallengeCampaignComplete(i, DIFFICULTY_EASY))
+			completedOnEasy = TRUE;
+	}
+#endif
+
+#ifdef ZH
+	if (completedOnHard)
+	{
+		InsertBattleHonor(list, TheMappedImageCollection->findImageByName("Challenge_Gold"), TRUE,
+			BATTLE_HONOR_CHALLENGE_MODE, row, column);
+	} 
+	else if (completedOnNormal)
+	{
+		InsertBattleHonor(list, TheMappedImageCollection->findImageByName("Challenge_Silver"), TRUE,
+			BATTLE_HONOR_CHALLENGE_MODE, row, column);
+	}
+	else if (completedOnEasy)
+	{
+		InsertBattleHonor(list, TheMappedImageCollection->findImageByName("Challenge_Bronz"), TRUE,
+			BATTLE_HONOR_CHALLENGE_MODE, row, column);
+	}
+	else
+	{
+		InsertBattleHonor(list, TheMappedImageCollection->findImageByName("Challenge_Bronz"), FALSE,
+			BATTLE_HONOR_CHALLENGE_MODE, row, column);
+	}
+
+	// TEST FOR AIR WING HONOR
+#endif
 	InsertBattleHonor(list, TheMappedImageCollection->findImageByName("HonorAirWing"), (honors & BATTLE_HONOR_AIR_WING),
 		BATTLE_HONOR_AIR_WING, row, column);
+#ifdef ZH
+
+	// TEST FOR BATTLE TANK HONOR
+#endif
 	InsertBattleHonor(list, TheMappedImageCollection->findImageByName("HonorBattleTank"), (honors & BATTLE_HONOR_BATTLE_TANK),
 		BATTLE_HONOR_BATTLE_TANK, row, column);
 	GadgetListBoxAddEntryImage(list, NULL, 2, 0, 10, 10, TRUE, GameMakeColor(255,255,255,255));
+#ifdef OG
 	row = 3;
 	// endurance medals
+
+#endif
+#ifdef ZH
+
+	// NEXT ROW OF HONORS
+	row = 3; column = 0;
+
+	// TEST FOR ENDURANCE HONOR (GOLD, SILVER, BRONZE or GREYED OUT)
+#endif
 	MapCache::const_iterator it;
 	Bool missingEasy = FALSE;
 	Bool missingMedium = FALSE;
@@ -1722,28 +2068,54 @@ void populateSkirmishBattleHonors(void)
 	}
 	if (!missingBrutal)
 	{
+#ifdef OG
 		InsertBattleHonor(list, TheMappedImageCollection->findImageByName("Challenge_Gold"), TRUE,
+#endif
+#ifdef ZH
+		InsertBattleHonor(list, TheMappedImageCollection->findImageByName("Endurance_G"), TRUE,
+#endif
 			BATTLE_HONOR_ENDURANCE, row, column);
 	}
 	else if (!missingMedium)
 	{
+#ifdef OG
 		InsertBattleHonor(list, TheMappedImageCollection->findImageByName("Challenge_Silver"), TRUE,
+#endif
+#ifdef ZH
+		InsertBattleHonor(list, TheMappedImageCollection->findImageByName("Endurance_S"), TRUE,
+#endif
 			BATTLE_HONOR_ENDURANCE, row, column);
 	}
 	else if (!missingEasy)
 	{
+#ifdef OG
 		InsertBattleHonor(list, TheMappedImageCollection->findImageByName("Challenge_Bronz"), TRUE,
+#endif
+#ifdef ZH
+		InsertBattleHonor(list, TheMappedImageCollection->findImageByName("Endurance_B"), TRUE,
+#endif
 			BATTLE_HONOR_ENDURANCE, row, column);
 	}
 	else
 	{
+#ifdef OG
 		InsertBattleHonor(list, TheMappedImageCollection->findImageByName("Challenge_Bronz"), FALSE,
+#endif
+#ifdef ZH
+		InsertBattleHonor(list, TheMappedImageCollection->findImageByName("Endurance_B"), FALSE,
+#endif
 			BATTLE_HONOR_ENDURANCE, row, column);
 	}
 
+#ifdef ZH
+	// TEST FOR APOCALYPSE HONOR
+#endif
 	InsertBattleHonor(list, TheMappedImageCollection->findImageByName("Apocalypse"), (honors & BATTLE_HONOR_APOCALYPSE),
 		BATTLE_HONOR_APOCALYPSE, row, column);
 
+#ifdef ZH
+	// TEST FOR BLITZ HONOR
+#endif
 	if (honors & BATTLE_HONOR_BLITZ5)
 	{
 		InsertBattleHonor(list, TheMappedImageCollection->findImageByName("HonorBlitz5"), TRUE,
@@ -1760,27 +2132,133 @@ void populateSkirmishBattleHonors(void)
 			BATTLE_HONOR_BLITZ10, row, column);
 	}
 
+#ifdef OG
 	uStr.format(L"%10d", stats.getBestWinStreak());
 	if(honors & BATTLE_HONOR_STREAK_25)
+
+#endif
+#ifdef ZH
+	// TEST FOR STREAK HONOR
+	Int streak = stats.getBestWinStreak();
+	uStr.format(L"%10d", streak);
+	if (streak >= 1000)
+	{
+		InsertBattleHonor(list, TheMappedImageCollection->findImageByName("HonorStreak_1000"), TRUE,
+			BATTLE_HONOR_STREAK, row, column, uStr, streak);
+	}
+	else if (streak >= 500)
+	{
+		InsertBattleHonor(list, TheMappedImageCollection->findImageByName("HonorStreak_500"), TRUE,
+			BATTLE_HONOR_STREAK, row, column, uStr, streak);
+	}
+	else if (streak >= 100)
+	{
+		InsertBattleHonor(list, TheMappedImageCollection->findImageByName("HonorStreak_100"), TRUE,
+			BATTLE_HONOR_STREAK, row, column, uStr, streak);
+	}
+	else if (streak >= 25)
+#endif
 	{
 		InsertBattleHonor(list, TheMappedImageCollection->findImageByName("HonorStreak_G"), TRUE,
+#ifdef OG
 			BATTLE_HONOR_STREAK_25, row, column, uStr);
+#endif
+#ifdef ZH
+			BATTLE_HONOR_STREAK, row, column, uStr, streak);
+#endif
 	}
+#ifdef OG
 	else if(honors & BATTLE_HONOR_STREAK_10)
+#endif
+#ifdef ZH
+	else if (streak >= 10)
+#endif
 	{
 		InsertBattleHonor(list, TheMappedImageCollection->findImageByName("HonorStreak_S"), TRUE,
+#ifdef OG
 			BATTLE_HONOR_STREAK_10, row, column, uStr);
+#endif
+#ifdef ZH
+			BATTLE_HONOR_STREAK, row, column, uStr, streak);
+#endif
 	}
+#ifdef OG
 	else if(honors & BATTLE_HONOR_STREAK_3)
+#endif
+#ifdef ZH
+	else if (streak >= 3)
+#endif
 	{
 		InsertBattleHonor(list, TheMappedImageCollection->findImageByName("HonorStreak_B"), TRUE,
+#ifdef OG
 			BATTLE_HONOR_STREAK_3, row, column, uStr);
+#endif
+#ifdef ZH
+			BATTLE_HONOR_STREAK, row, column, uStr, streak);
+#endif
 	}
 	else
 	{
 		InsertBattleHonor(list, TheMappedImageCollection->findImageByName("HonorStreak_B"), FALSE,
+#ifdef OG
 			BATTLE_HONOR_STREAK_3, row, column);
+
+#endif
+#ifdef ZH
+			BATTLE_HONOR_STREAK, row, column, uStr, streak);
 	}
+
+	// TEST FOR DOMINATION HONOR
+	Int totalWins = stats.getWins();
+	uStr.format(L"%10d", totalWins);
+	if (totalWins >= 10000)
+	{
+		InsertBattleHonor(list, TheMappedImageCollection->findImageByName("Domination_10000"), TRUE,
+			BATTLE_HONOR_DOMINATION, row, column, uStr, totalWins);
+	}
+	else if (totalWins >= 1000)
+	{
+		InsertBattleHonor(list, TheMappedImageCollection->findImageByName("Domination_1000"), TRUE,
+			BATTLE_HONOR_DOMINATION, row, column, uStr, totalWins);
+	}
+	else if (totalWins >= 500)
+	{
+		InsertBattleHonor(list, TheMappedImageCollection->findImageByName("Domination_500"), TRUE,
+			BATTLE_HONOR_DOMINATION, row, column, uStr, totalWins);
+	}
+	else if (totalWins >= 100)
+	{
+		InsertBattleHonor(list, TheMappedImageCollection->findImageByName("Domination_100"), TRUE,
+			BATTLE_HONOR_DOMINATION, row, column, uStr, totalWins);
+	}
+	else
+	{
+		InsertBattleHonor(list, TheMappedImageCollection->findImageByName("Domination_100"), FALSE,
+			BATTLE_HONOR_DOMINATION, row, column, uStr, totalWins);
+	}
+
+	// TEST FOR ULTIMATE HONOR
+	Bool perfect = TRUE;
+	for (it = TheMapCache->begin(); it != TheMapCache->end(); ++it)
+	{
+		if (!it->second.m_isOfficial || !it->second.m_isMultiplayer)
+			continue;
+	
+		Int totalOpponentSlots = it->second.m_numPlayers - 1;
+		Int numBrutalOpponentsBeaten = stats.getEnduranceMedal(it->first, SLOT_BRUTAL_AI);
+		if (numBrutalOpponentsBeaten < totalOpponentSlots)
+		{
+			perfect = FALSE;
+			break;
+		}
+#endif
+	}
+#ifdef ZH
+	InsertBattleHonor(list, TheMappedImageCollection->findImageByName("Ultimate"), perfect,
+		BATTLE_HONOR_ULTIMATE, row, column);
+
+	// TEST FOR CHALLENGE HONOR
+#endif
 
 	/*
 	InsertBattleHonor(list, TheMappedImageCollection->findImageByName("Loyalty_USA"), (honors & BATTLE_HONOR_LOYALTY_USA),

@@ -78,6 +78,18 @@
 // GameGetColorComponents =====================================================
 /** Get the RGB color comonents of a color */
 //=============================================================================
+#ifdef ZH
+
+#ifdef _INTERNAL
+// for occasional debugging...
+//#pragma optimize("", off)
+//#pragma MESSAGE("************************************** WARNING, optimization disabled for debugging purposes")
+#endif
+
+//Put on ice until later M Lorenzen
+//static UnsignedByte s_cheaterHasBeenSpied = 0;
+
+#endif
 void GameGetColorComponents( Color color,
 														 UnsignedByte *red,
 														 UnsignedByte *green,
@@ -92,6 +104,27 @@ void GameGetColorComponents( Color color,
 	
 }  // end GameGetColorComponents
 
+#ifdef ZH
+//Put on ice until later M Lorenzen
+//void GameGetColorComponentsWithCheatSpy( Color color,
+//														 UnsignedByte *red,
+//														 UnsignedByte *green,
+//														 UnsignedByte *blue,
+//														 UnsignedByte *alpha )
+//{
+//
+//	*alpha	|= (color & 0xFE000000) >> 24;       // this waives the low order bit in alpha
+//  s_cheaterHasBeenSpied |= *alpha & (1<<0);    // this records it and gets angry
+//	*red		|= (color & 0x00FE0000) >> 16;       // decoy
+//  s_cheaterHasBeenSpied |= *red   & (1<<8);    // decoy
+//	*green	|= (color & 0x0000FE00) >> 8;        // decoy
+//  s_cheaterHasBeenSpied |= *green & (1<<17);   // decoy
+//	*blue		|= (color & 0x000000FE) >> 0;        // decoy
+//  s_cheaterHasBeenSpied |= *blue  & (1<<25);   // decoy
+//	
+//}  // end GameGetColorComponents
+
+#endif
 void GameGetColorComponentsReal( Color color, Real *red, Real *green, Real *blue, Real *alpha )
 {
 	*alpha	= ((color & 0xFF000000) >> 24) / 255.0f;
@@ -112,6 +145,14 @@ Color GameDarkenColor( Color color, Int percent )
 	r -= (r * percent / 100);
 	g -= (g * percent / 100);
 	b -= (b * percent / 100);
+#ifdef ZH
+
+// Put on ice until later M Lorenzen
+//  TheWritableGlobalData->m_cheaterHasBeenSpiedIfMyLowestBitIsTrue = (r<<24) | (g<<16) | (b<<8) | s_cheaterHasBeenSpied; 
+//  DEBUG_ASSERTCRASH( TheWritableGlobalData->m_cheaterHasBeenSpiedIfMyLowestBitIsTrue == FALSE, ("DIRTY ROTTEN CHEATER"));
+//  //my, but this looks like we just stored an alpha value along with rgb into the global data
+
+#endif
 
 	return GameMakeColor(r,g,b,a);
 }// end GameDarkenColor

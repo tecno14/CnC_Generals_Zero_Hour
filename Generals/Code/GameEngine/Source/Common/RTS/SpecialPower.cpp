@@ -87,6 +87,9 @@ const char* SpecialPowerMaskType::s_bitNameList[] =
 	"SPECIAL_MISSILE_DEFENDER_LASER_GUIDED_MISSILES", 
 	"SPECIAL_REMOTE_CHARGES", 
 	"SPECIAL_TIMED_CHARGES", 
+#ifdef ZH
+	"SPECIAL_HELIX_NAPALM_BOMB", 
+#endif
 	"SPECIAL_HACKER_DISABLE_BUILDING", 
 	"SPECIAL_TANKHUNTER_TNT_ATTACK", 
 	"SPECIAL_BLACKLOTUS_CAPTURE_BUILDING",
@@ -96,6 +99,9 @@ const char* SpecialPowerMaskType::s_bitNameList[] =
 	"SPECIAL_RADAR_VAN_SCAN",
 	"SPECIAL_SPY_DRONE",
 	"SPECIAL_DISGUISE_AS_VEHICLE",
+#ifdef ZH
+	"SPECIAL_BOOBY_TRAP",
+#endif
 	"SPECIAL_REPAIR_VEHICLES",
 	"SPECIAL_PARTICLE_UPLINK_CANNON",
 	"SPECIAL_CASH_BOUNTY",
@@ -103,7 +109,38 @@ const char* SpecialPowerMaskType::s_bitNameList[] =
 	"SPECIAL_CIA_INTELLIGENCE",
 	"SPECIAL_CLEANUP_AREA",
 	"SPECIAL_LAUNCH_BAIKONUR_ROCKET",
+#ifdef ZH
+  "SPECIAL_SPECTRE_GUNSHIP",
+  "SPECIAL_GPS_SCRAMBLER",
+	"SPECIAL_FRENZY",
+	"SPECIAL_SNEAK_ATTACK",
+
+	"SPECIAL_CHINA_CARPET_BOMB",
+	"EARLY_SPECIAL_CHINA_CARPET_BOMB",
+	"SPECIAL_LEAFLET_DROP",
+	"EARLY_SPECIAL_LEAFLET_DROP",
+	"EARLY_SPECIAL_FRENZY",
+	"SPECIAL_COMMUNICATIONS_DOWNLOAD",
+	"EARLY_SPECIAL_REPAIR_VEHICLES",
+	"SPECIAL_TANK_PARADROP",
+	"SUPW_SPECIAL_PARTICLE_UPLINK_CANNON",
+	"AIRF_SPECIAL_DAISY_CUTTER",
+	"NUKE_SPECIAL_CLUSTER_MINES",
+	"NUKE_SPECIAL_NEUTRON_MISSILE",
+	"AIRF_SPECIAL_A10_THUNDERBOLT_STRIKE",
+	"AIRF_SPECIAL_SPECTRE_GUNSHIP",
+	"INFA_SPECIAL_PARADROP_AMERICA",
+	"SLTH_SPECIAL_GPS_SCRAMBLER",
+	"AIRF_SPECIAL_CARPET_BOMB",
+	"SUPR_SPECIAL_CRUISE_MISSILE",
+	"LAZR_SPECIAL_PARTICLE_UPLINK_CANNON",
+	"SUPW_SPECIAL_NEUTRON_MISSILE",
+#endif
 	
+#ifdef ZH
+	"SPECIAL_BATTLESHIP_BOMBARDMENT",
+
+#endif
 	NULL
 };
 
@@ -176,6 +213,10 @@ void SpecialPowerStore::parseSpecialPowerDefinition( INI *ini )
 	{ "ViewObjectDuration",				INI::parseDurationUnsignedInt,		NULL,	offsetof( SpecialPowerTemplate, m_viewObjectDuration ) },
 	{ "ViewObjectRange",					INI::parseReal,										NULL,	offsetof( SpecialPowerTemplate, m_viewObjectRange ) },
 	{ "RadiusCursorRadius",				INI::parseReal,										NULL,	offsetof( SpecialPowerTemplate, m_radiusCursorRadius ) },
+#ifdef ZH
+	{ "ShortcutPower",						INI::parseBool,										NULL, offsetof( SpecialPowerTemplate, m_shortcutPower ) },
+	{ "AcademyClassify",					INI::parseIndexList,			TheAcademyClassificationTypeNames, offsetof( SpecialPowerTemplate, m_academyClassificationType ) },
+#endif
 	{ NULL,	NULL, NULL,	0 }  // keep this last
 
 };
@@ -194,6 +235,9 @@ SpecialPowerTemplate::SpecialPowerTemplate()
 	m_viewObjectDuration = 0;
 	m_viewObjectRange = 0;
 	m_radiusCursorRadius = 0;
+#ifdef ZH
+	m_shortcutPower = FALSE;
+#endif
 
 }  // end SpecialPowerTemplate
 

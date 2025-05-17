@@ -52,7 +52,9 @@ RailedTransportDockUpdateModuleData::RailedTransportDockUpdateModuleData( void )
 
 	m_pullInsideDurationInFrames = 0;
 	m_pushOutsideDurationInFrames = 0;
-
+#ifdef ZH
+	m_toleranceDistance = 50.0f;
+#endif
 }  // end RailedTransportDockUpdateModuleData
 
 // ------------------------------------------------------------------------------------------------
@@ -66,6 +68,9 @@ RailedTransportDockUpdateModuleData::RailedTransportDockUpdateModuleData( void )
 
 		{ "PullInsideDuration", INI::parseDurationUnsignedInt, NULL, offsetof( RailedTransportDockUpdateModuleData, m_pullInsideDurationInFrames ) },	
 		{ "PushOutsideDuration",INI::parseDurationUnsignedInt, NULL, offsetof( RailedTransportDockUpdateModuleData, m_pushOutsideDurationInFrames ) },
+#ifdef ZH
+		{ "ToleranceDistance",  INI::parseReal,								 NULL, offsetof( RailedTransportDockUpdateModuleData, m_toleranceDistance ) },
+#endif
 		{ 0, 0, 0, 0 }
 
 	};
@@ -132,6 +137,7 @@ Bool RailedTransportDockUpdate::action( Object *docker, Object *drone )
 	// set this object as docking with us if not already done so
 	if( m_dockingObjectID != docker->getID() )
 	{
+#ifdef OG
 
 		m_dockingObjectID = docker->getID();
 
@@ -142,6 +148,7 @@ Bool RailedTransportDockUpdate::action( Object *docker, Object *drone )
 		// hold the object so physics doesn't mess with it anymore
 		docker->setDisabled( DISABLED_HELD );
 
+#endif
 		//
 		// given the amount of time we want it to take to "pull" the object inside, figure out
 		// how much distance it should traverse towards our center every frame
@@ -155,9 +162,28 @@ Bool RailedTransportDockUpdate::action( Object *docker, Object *drone )
 
 		// how far do we have to go
 		Real mag = v.length();
-
-		// now that we know how far we must go, now much distance should we travel every frame
+#ifdef ZH
 		const RailedTransportDockUpdateModuleData *modData = getRailedTransportDockUpdateModuleData();
+#endif
+
+#ifdef ZH
+		//Are we close enough to even be able to get sucked in?
+		if( mag <= modData->m_toleranceDistance )
+		{
+			m_dockingObjectID = docker->getID();
+
+			// don't let the user interact with this object anymore
+			TheGameLogic->deselectObject(docker, PLAYERMASK_ALL, TRUE);
+			docker->setStatus( MAKE_OBJECT_STATUS_MASK( OBJECT_STATUS_UNSELECTABLE ) );
+
+			// hold the object so physics doesn't mess with it anymore
+			docker->setDisabled( DISABLED_HELD );
+
+#endif
+		// now that we know how far we must go, now much distance should we travel every frame
+#ifdef OG
+		const RailedTransportDockUpdateModuleData *modData = getRailedTransportDockUpdateModuleData();
+#endif
 		m_pullInsideDistancePerFrame = mag / modData->m_pullInsideDurationInFrames;
 
 		// orient docker so its facing toward the transport
@@ -165,6 +191,9 @@ Bool RailedTransportDockUpdate::action( Object *docker, Object *drone )
 		angleVector.x = dockPos->x - dockerPos->x;
 		angleVector.y = dockPos->y - dockerPos->y;
 		docker->setOrientation( angleVector.toAngle() );
+#ifdef ZH
+		}
+#endif
 		
 	}  // end if	
 
@@ -400,7 +429,12 @@ void RailedTransportDockUpdate::doPushOutDocking( void )
 				unloader->clearDisabled( DISABLED_HELD );
 
 				// we can now be selected by the player again
+#ifdef OG
 				unloader->clearStatus( OBJECT_STATUS_UNSELECTABLE );
+#endif
+#ifdef ZH
+				unloader->clearStatus( MAKE_OBJECT_STATUS_MASK( OBJECT_STATUS_UNSELECTABLE ) );
+#endif
 
 				// tell the unloader to move to one of the dock positions and out of the way
 				Drawable *draw = us->getDrawable();
