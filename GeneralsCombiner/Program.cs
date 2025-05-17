@@ -3,6 +3,7 @@ using DiffPlex.DiffBuilder;
 using DiffPlex.DiffBuilder.Model;
 using System.Text;
 using System.Text.RegularExpressions;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace GeneralsCombiner
 {
@@ -126,6 +127,11 @@ namespace GeneralsCombiner
                 //    CommentVersion, RegexOptions.Multiline);
                 zhContent = zhContent.Replace(IgnoreCommentVersion, CommentVersion);
 
+                // NEW: Get OG's trailing empty line count and line ending
+                //int trailingEmptyLines = GetTrailingEmptyLines(ogContent);
+                string trimmed = GetTrimmedEnd(ogContent);
+                string lineEnding = GetLineEnding(ogContent);
+
                 var differ = new Differ();
                 var builder = new SideBySideDiffBuilder(differ);
                 var diff = builder.BuildDiffModel(ogContent, zhContent);
@@ -150,15 +156,59 @@ namespace GeneralsCombiner
                     }
                 }
 
+                string mergedText = merged.ToString().TrimEnd() + trimmed;
+                //mergedText = TrimEndNewLines(mergedText);  // Remove all existing newlines at end
+                //mergedText += string.Join("", Enumerable.Repeat(lineEnding, trailingEmptyLines));
+
                 Directory.CreateDirectory(Path.GetDirectoryName(destFile)!);
-                File.WriteAllText(destFile, merged.ToString().TrimEnd() + GetLineEnding(ogContent));
+                //File.WriteAllText(destFile, merged.ToString().TrimEnd() + GetLineEnding(ogContent));
+                File.WriteAllText(destFile, mergedText);
                 Console.WriteLine($"[MERGED] {relPath}");
             }
             catch (Exception ex)
             {
                 Console.WriteLine($"Error merging {relPath}: {ex.Message}");
+                Console.WriteLine("Press Enter to continue");
+                Console.ReadLine();
             }
         }
+
+        // NEW: Calculate trailing empty lines from OG content
+        //static int GetTrailingEmptyLines(string content)
+        //{
+        //    var lines = content.Replace("\r\n", "\n").Split('\n');
+        //    int count = 0;
+        //    for (int i = lines.Length - 1; i >= 0; i--)
+        //    {
+        //        if (string.IsNullOrEmpty(lines[i])) count++;
+        //        else break;
+        //    }
+        //    return count;
+        //}
+
+        public static string GetTrimmedEnd(string input)
+        {
+            if (string.IsNullOrEmpty(input)) return string.Empty; // Handle null or empty strings
+
+            int originalLength = input.Length;
+            int trimmedLength = input.TrimEnd().Length;
+
+            return input.Substring(trimmedLength, originalLength - trimmedLength); // Extract removed portion
+        }
+
+
+        // NEW: Aggressively trim all newline characters from end
+        static string TrimEndNewLines(string input)
+        {
+            int trimLength = 0;
+            for (int i = input.Length - 1; i >= 0; i--)
+            {
+                if (input[i] is '\n' or '\r') trimLength++;
+                else break;
+            }
+            return trimLength > 0 ? input[..^trimLength] : input;
+        }
+
 
         static void ProcessDiffBlock(SideBySideDiffModel diff, ref int oldIndex, ref int newIndex, 
                                    StringBuilder merged)
