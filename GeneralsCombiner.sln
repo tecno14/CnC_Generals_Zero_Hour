@@ -1,9 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.12.35707.178 d17.12
+VisualStudioVersion = 17.12.35707.178
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GeneralsCombiner", "GeneralsCombiner\GeneralsCombiner.csproj", "{EE721B55-ECF9-461E-9E0C-C49149994083}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GelFolderFilesExts", "GelFolderFilesExts\GelFolderFilesExts.csproj", "{C01C1823-0D04-4CA6-AF7B-6EA8E42B8FB2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{EE721B55-ECF9-461E-9E0C-C49149994083}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EE721B55-ECF9-461E-9E0C-C49149994083}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EE721B55-ECF9-461E-9E0C-C49149994083}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C01C1823-0D04-4CA6-AF7B-6EA8E42B8FB2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C01C1823-0D04-4CA6-AF7B-6EA8E42B8FB2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C01C1823-0D04-4CA6-AF7B-6EA8E42B8FB2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C01C1823-0D04-4CA6-AF7B-6EA8E42B8FB2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

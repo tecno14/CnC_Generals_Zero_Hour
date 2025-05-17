@@ -2,222 +2,219 @@
 using DiffPlex.DiffBuilder;
 using DiffPlex.DiffBuilder.Model;
 using System.Text;
-using static System.Net.Mime.MediaTypeNames;
+using System.Text.RegularExpressions;
 
-namespace GeneralsCombiner;
-
-internal class Program
+namespace GeneralsCombiner
 {
-    const string IgnoreCommentVersion = @"#ifdef OG
-**	Command & Conquer Generals(tm)
-#endif
-#ifdef ZH
-**	Command & Conquer Generals Zero Hour(tm)
-#endif";
-
-    const string CommentVersion = @"**	Command & Conquer Generals(tm)";
-
-    static void Main(string[] args)
+    internal class Program
     {
-        //if (args.Length != 3)
-        //{
-        //    Console.WriteLine("Usage: CodeBaseMerger <OGPath> <ZHPath> <ResultPath>");
-        //    return;
-        //}
+        const string IgnoreCommentVersion = "**	Command & Conquer Generals Zero Hour(tm)";
+        const string CommentVersion = "**	Command & Conquer Generals(tm)";
+        static readonly HashSet<string> ValidFiles = new HashSet<string>(
+            new[] { ".gitignore", ".dsp", ".dsw", ".txt", ".h", ".rc", ".cpp", 
+                    ".odl", ".hm", ".pl", ".idl", ".rc2", ".c", ".vsh", ".psh", 
+                    ".nvp", ".nvv" },
+            StringComparer.OrdinalIgnoreCase
+        );
 
-        //string ogPath = args[0];
-        //string zhPath = args[1];
-        //string resultPath = args[2];
-
-        string ogPath = @"C:\Projects\3_generalsr\temp\CnC_Generals_Zero_Hour\Generals";
-        string zhPath = @"C:\Projects\3_generalsr\temp\CnC_Generals_Zero_Hour\GeneralsMD";
-        string resultPath = @"C:\Projects\3_generalsr\temp\CnC_Generals_Zero_Hour\Combined";
-
-        int og = 0, zh = 0, comm = 0;
-
-        if (Directory.GetDirectories(resultPath).Length != 0 || Directory.GetFiles(resultPath).Length != 0)
+        static void Main(string[] args)
         {
-            Console.WriteLine("Result folder is not empty, would you like to clear it or exit");
-            Console.WriteLine("Y clear, n exit");
-            var input = Console.ReadKey();
-            if (input.KeyChar != 'Y' && input.KeyChar != 'y')
-                return;
+            //if (args.Length != 3)
+            //{
+            //    Console.WriteLine("Usage: CodeBaseMerger <OGPath> <ZHPath> <ResultPath>");
+            //    return;
+            //}
 
-            Console.WriteLine();
-            Directory.Delete(resultPath, true);
-            Directory.CreateDirectory(resultPath);
-        }
+            //string ogPath = args[0];
+            //string zhPath = args[1];
+            //string resultPath = args[2];
 
-        // Recursively gather all .cpp/.h files (or adjust patterns as needed)
-        var ogFiles = Directory.GetFiles(ogPath, "*.*", SearchOption.AllDirectories);
-        var zhFiles = Directory.GetFiles(zhPath, "*.*", SearchOption.AllDirectories);
+            string ogPath = @"C:\Projects\3_generalsr\temp\CnC_Generals_Zero_Hour\Generals";
+            string zhPath = @"C:\Projects\3_generalsr\temp\CnC_Generals_Zero_Hour\GeneralsMD";
+            string resultPath = @"C:\Projects\3_generalsr\temp\CnC_Generals_Zero_Hour\Combined";
 
-        // Build lookup of relative paths for quick existence checks
-        var ogSet = new HashSet<string>(ogFiles, StringComparer.OrdinalIgnoreCase);
-        var zhSet = new HashSet<string>(zhFiles, StringComparer.OrdinalIgnoreCase);
 
-        foreach (var fullOg in ogFiles)
-        {
-            // Relative path under OG root
-            var rel = Path.GetRelativePath(ogPath, fullOg);
-            var fullZh = Path.Combine(zhPath, rel);
-
-            if (!File.Exists(fullZh))
+            try
             {
-                // Only in OG
-                og++;
-                ProcessAndCopy(fullOg, Path.Combine(resultPath, rel), "OG");
-            }
-            else
-            {
-                // Exists in both
-                comm++;
-                HandleCommonFile(fullOg, fullZh, Path.Combine(resultPath, rel), rel);
-            }
+                int og = 0, zh = 0, comm = 0;
+                CleanResultDirectory(resultPath);
+                
+                var ogFiles = Directory.GetFiles(ogPath, "*.*", SearchOption.AllDirectories);
+                var zhFiles = Directory.GetFiles(zhPath, "*.*", SearchOption.AllDirectories);
 
-            // Remove from zhSet so later we know what's left only in ZH
-            zhSet.Remove(fullZh);
-        }
+                var ogRelative = ogFiles.ToDictionary(f => Path.GetRelativePath(ogPath, f), f => f);
+                var zhRelative = zhFiles.ToDictionary(f => Path.GetRelativePath(zhPath, f), f => f);
 
-        // Files remaining in zhSet are only in ZH
-        foreach (var fullZh in zhSet)
-        {
-            zh++;
-            var rel = Path.GetRelativePath(zhPath, fullZh);
-            ProcessAndCopy(fullZh, Path.Combine(resultPath, rel), "ZH");
-        }
-
-        Console.WriteLine($"Done, OG {og}, ZH {zh}, Common files {comm}");
-    }
-
-    /// <summary>
-    /// Wraps the contents of <paramref name="sourceFile"/> in #ifdef/#endif
-    /// for the given symbol, then writes to <paramref name="destFile"/>,
-    /// creating directories as needed.
-    /// </summary>
-    static void ProcessAndCopy(string sourceFile, string destFile, string symbol)
-    {
-        // Read original content
-        var content = File.ReadAllText(sourceFile);
-
-        // Prepare wrapped content
-        var wrapped =
-$@"#ifdef {symbol}
-{content}
-#endif
-";
-
-        // Ensure target directory exists
-        Directory.CreateDirectory(Path.GetDirectoryName(destFile)!);
-
-        // Write out
-        File.WriteAllText(destFile, wrapped);
-        Console.WriteLine($"[{symbol}] {sourceFile} -> {destFile}");
-    }
-
-    /// <summary>
-    /// Stub for handling files present in both OG and ZH.
-    /// You can compare contents, merge diffs, etc.
-    /// Currently just copies OG version unchanged.
-    /// </summary>
-    //static void HandleCommonFile(string ogFile, string zhFile, string destFile)
-    //{
-    //    // TODO: implement merging logic here
-    //    // For now, simply copy the ZH version without wrapping
-
-    //    // Ensure the target directory exists
-    //    Directory.CreateDirectory(Path.GetDirectoryName(destFile)!);
-
-    //    // Always copy the ZH version
-    //    //File.Copy(zhFile, destFile, overwrite: true);
-    //    //Console.WriteLine($"[BOTH] Copied ZH version of {zhFile} → {destFile}");
-    //}
-
-    static void HandleCommonFile(string ogFile, string zhFile, string destFile, string reletivePath)
-    {
-        // 1) Read both versions
-        string ogText = File.ReadAllText(ogFile);
-        string zhText = File.ReadAllText(zhFile);
-
-        // 2) Count OG's trailing empty lines
-        //    Split keeps empty trailing entries when using StringSplitOptions.None
-        var ogLines = ogText
-            .Replace("\r\n", "\n")     // normalize
-            .Split('\n', StringSplitOptions.None);
-        int trailingEmpty = 0;
-        for (int i = ogLines.Length - 1; i >= 0; i--)
-        {
-            if (ogLines[i].Length == 0)
-                trailingEmpty++;
-            else
-                break;
-        }
-
-        // 3) Build the merged diff with side-by-side alignment
-        var model = new SideBySideDiffBuilder(new Differ())
-                        .BuildDiffModel(ogText, zhText);
-        var oldLines = model.OldText.Lines;
-        var newLines = model.NewText.Lines;
-        var sb = new StringBuilder();
-
-        // Walk through aligned lines (padding handles unequal counts)
-        for (int i = 0; i < oldLines.Count; i++)
-        {
-            var o = oldLines[i];
-            var n = newLines[i];
-
-            // Unchanged: emit once
-            if (o.Type == ChangeType.Unchanged && n.Type == ChangeType.Unchanged)
-            {
-                sb.AppendLine(o.Text);
-                continue;
-            }
-
-            // If any OG-only content at this line, group a run
-            if (o.Type != ChangeType.Unchanged)
-            {
-                sb.AppendLine("#ifdef OG");
-                // Collect contiguous OG removals/changes
-                int j = i;
-                while (j < oldLines.Count && oldLines[j].Type != ChangeType.Unchanged)
+                foreach (var (rel, fullOg) in ogRelative)
                 {
-                    sb.AppendLine(oldLines[j].Text);
-                    j++;
+                    if (zhRelative.TryGetValue(rel, out var fullZh))
+                    {
+                        comm++;
+                        HandleCommonFile(fullOg, fullZh, Path.Combine(resultPath, rel), rel);
+                        zhRelative.Remove(rel);
+                    }
+                    else
+                    {
+                        og++;
+                        ProcessAndCopy(fullOg, Path.Combine(resultPath, rel), "OG");
+                    }
                 }
-                sb.AppendLine("#endif");
-            }
 
-            // If any ZH-only content at this line, group a run
-            if (n.Type != ChangeType.Unchanged)
-            {
-                sb.AppendLine("#ifdef ZH");
-                // Collect contiguous ZH inserts/changes
-                int j = i;
-                while (j < newLines.Count && newLines[j].Type != ChangeType.Unchanged)
+                foreach (var (rel, fullZh) in zhRelative)
                 {
-                    sb.AppendLine(newLines[j].Text);
-                    j++;
+                    zh++;
+                    ProcessAndCopy(fullZh, Path.Combine(resultPath, rel), "ZH");
                 }
-                sb.AppendLine("#endif");
-            }
 
-            // Advance past the larger run
-            int oldRun = 0, newRun = 0;
-            while (i + oldRun < oldLines.Count && oldLines[i + oldRun].Type != ChangeType.Unchanged) oldRun++;
-            while (i + newRun < newLines.Count && newLines[i + newRun].Type != ChangeType.Unchanged) newRun++;
-            i += Math.Max(oldRun, newRun) - 1;
+                Console.WriteLine($"Done, OG: {og}, ZH: {zh}, Common: {comm}");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error: {ex.Message}");
+            }
         }
 
-        // 4) Trim all trailing CR/LF, then re-append exactly OG's count
-        var merged = sb.ToString()
-            .TrimEnd('\r', '\n');
-        for (int k = 0; k < trailingEmpty; k++)
-            merged += Environment.NewLine;
-        merged = merged.Replace(IgnoreCommentVersion, CommentVersion);
+        static void CleanResultDirectory(string resultPath)
+        {
+            if (Directory.Exists(resultPath))
+            {
+                Directory.Delete(resultPath, true);
+                Directory.CreateDirectory(resultPath);
+            }
+        }
 
-        // 5) Write out
-        Directory.CreateDirectory(Path.GetDirectoryName(destFile)!);
-        File.WriteAllText(destFile, merged);
-        Console.WriteLine($"[BOTH] Diff-merged {reletivePath}");
+        static void ProcessAndCopy(string source, string dest, string symbol)
+        {
+            try
+            {
+                var ext = Path.GetExtension(source);
+                if (!ValidFiles.Contains(ext))
+                {
+                    Directory.CreateDirectory(Path.GetDirectoryName(dest)!);
+                    File.Copy(source, dest, true);
+                    return;
+                }
+
+                var content = File.ReadAllText(source);
+                Directory.CreateDirectory(Path.GetDirectoryName(dest)!);
+                File.WriteAllText(dest, $"#ifdef {symbol}\n{content}\n#endif\n");
+                Console.WriteLine($"[{symbol}] {dest}");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error processing {source}: {ex.Message}");
+            }
+        }
+
+        static void HandleCommonFile(string ogFile, string zhFile, string destFile, string relPath)
+        {
+            try
+            {
+                var ext = Path.GetExtension(ogFile);
+                if (!ValidFiles.Contains(ext))
+                {
+                    Directory.CreateDirectory(Path.GetDirectoryName(destFile)!);
+                    File.Copy(ogFile, destFile, true);
+                    return;
+                }
+
+                var ogContent = File.ReadAllText(ogFile);
+                var zhContent = File.ReadAllText(zhFile);
+
+                // Targeted comment replacement using regex
+                //zhContent = zhContent.Replace(zhContent, $"^{Regex.Escape(IgnoreCommentVersion)}$",
+                //    CommentVersion, RegexOptions.Multiline);
+                zhContent = zhContent.Replace(IgnoreCommentVersion, CommentVersion);
+
+                var differ = new Differ();
+                var builder = new SideBySideDiffBuilder(differ);
+                var diff = builder.BuildDiffModel(ogContent, zhContent);
+
+                var merged = new StringBuilder();
+                int oldIndex = 0, newIndex = 0;
+
+                while (oldIndex < diff.OldText.Lines.Count || newIndex < diff.NewText.Lines.Count)
+                {
+                    var oldLine = oldIndex < diff.OldText.Lines.Count ? diff.OldText.Lines[oldIndex] : null;
+                    var newLine = newIndex < diff.NewText.Lines.Count ? diff.NewText.Lines[newIndex] : null;
+
+                    if (oldLine?.Type == ChangeType.Unchanged && newLine?.Type == ChangeType.Unchanged)
+                    {
+                        merged.AppendLine(oldLine.Text);
+                        oldIndex++;
+                        newIndex++;
+                    }
+                    else
+                    {
+                        ProcessDiffBlock(diff, ref oldIndex, ref newIndex, merged);
+                    }
+                }
+
+                Directory.CreateDirectory(Path.GetDirectoryName(destFile)!);
+                File.WriteAllText(destFile, merged.ToString().TrimEnd() + GetLineEnding(ogContent));
+                Console.WriteLine($"[MERGED] {relPath}");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error merging {relPath}: {ex.Message}");
+            }
+        }
+
+        static void ProcessDiffBlock(SideBySideDiffModel diff, ref int oldIndex, ref int newIndex, 
+                                   StringBuilder merged)
+        {
+            var ogBuffer = new StringBuilder();
+            var zhBuffer = new StringBuilder();
+
+            // Capture OG changes
+            while (oldIndex < diff.OldText.Lines.Count && 
+                   diff.OldText.Lines[oldIndex].Type != ChangeType.Unchanged)
+            {
+                ogBuffer.AppendLine(diff.OldText.Lines[oldIndex].Text);
+                oldIndex++;
+            }
+
+            // Capture ZH changes
+            while (newIndex < diff.NewText.Lines.Count && 
+                   diff.NewText.Lines[newIndex].Type != ChangeType.Unchanged)
+            {
+                zhBuffer.AppendLine(diff.NewText.Lines[newIndex].Text);
+                newIndex++;
+            }
+
+            // Add conditional blocks
+            AddConditionalBlock(ogBuffer, "OG", merged);
+            AddConditionalBlock(zhBuffer, "ZH", merged);
+        }
+
+        static void AddConditionalBlock(StringBuilder content, string symbol, StringBuilder merged)
+        {
+            if (content.Length == 0) return;
+            
+            var processed = CollapseBlankLines(content.ToString());
+            if (!IsAllBlank(processed))
+            {
+                merged.AppendLine($"#ifdef {symbol}");
+                merged.Append(processed);
+                merged.AppendLine("#endif");
+            }
+        }
+
+        static bool IsAllBlank(string text)
+        {
+            return text.Replace("\r\n", "\n")
+                      .Split('\n')
+                      .All(line => string.IsNullOrWhiteSpace(line));
+        }
+
+        static string CollapseBlankLines(string text)
+        {
+            return Regex.Replace(text, @"(\r?\n){3,}", "\n\n");
+        }
+
+        static string GetLineEnding(string content)
+        {
+            return content.EndsWith("\r\n") ? "\r\n" : "\n";
+        }
     }
 }
