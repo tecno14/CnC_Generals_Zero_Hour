@@ -1,3 +1,4 @@
+#ifdef OG
 //Microsoft Developer Studio generated resource script.
 //
 #include "resource.h"
@@ -564,3 +565,5 @@ LANGUAGE 9, 1
 /////////////////////////////////////////////////////////////////////////////
 #endif    // not APSTUDIO_INVOKED
 
+
+#endif

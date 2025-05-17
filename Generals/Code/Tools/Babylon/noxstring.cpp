@@ -1,3 +1,4 @@
+#ifdef OG
 /*
 **	Command & Conquer Generals(tm)
 **	Copyright 2025 Electronic Arts Inc.
@@ -231,3 +232,5 @@ BOOL CALLBACK EnumAllWindowsProcExact(HWND hWnd, LPARAM lParam)
 	return TRUE;
 }
 
+
+#endif

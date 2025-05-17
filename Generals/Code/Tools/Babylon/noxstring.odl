@@ -1,3 +1,4 @@
+#ifdef OG
 // noxstring.odl : type library source for noxstring.exe
 
 // This file will be processed by the MIDL compiler to produce the
@@ -40,3 +41,5 @@ library Noxstring
 	//{{AFX_APPEND_ODL}}
 	//}}AFX_APPEND_ODL}}
 };
+
+#endif

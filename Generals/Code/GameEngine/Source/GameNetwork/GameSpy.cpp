@@ -1,3 +1,4 @@
+#ifdef OG
 /*
 **	Command & Conquer Generals(tm)
 **	Copyright 2025 Electronic Arts Inc.
@@ -1415,3 +1416,5 @@ void GameSpyChat::login(AsciiString loginName, AsciiString password, AsciiString
 		loginQuick(loginName);
 	}
 }
+
+#endif

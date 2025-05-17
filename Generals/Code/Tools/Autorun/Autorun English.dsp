@@ -1,3 +1,4 @@
+#ifdef OG
 # Microsoft Developer Studio Project File - Name="Autorun English" - Package Owner=<4>
 # Microsoft Developer Studio Generated Build File, Format Version 6.00
 # ** DO NOT EDIT **
@@ -361,3 +362,5 @@ SOURCE=".\English\Rock-n-Roll.wav"
 # End Source File
 # End Target
 # End Project
+
+#endif
