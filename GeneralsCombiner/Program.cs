@@ -135,14 +135,27 @@ $@"#ifdef {symbol}
 
     static void HandleCommonFile(string ogFile, string zhFile, string destFile, string reletivePath)
     {
-        // Read both versions
+        // 1) Read both versions
         string ogText = File.ReadAllText(ogFile);
         string zhText = File.ReadAllText(zhFile);
 
-        // Build a side-by-side diff model
-        var diffBuilder = new SideBySideDiffBuilder(new Differ());
-        var model = diffBuilder.BuildDiffModel(ogText, zhText);
+        // 2) Count OG's trailing empty lines
+        //    Split keeps empty trailing entries when using StringSplitOptions.None
+        var ogLines = ogText
+            .Replace("\r\n", "\n")     // normalize
+            .Split('\n', StringSplitOptions.None);
+        int trailingEmpty = 0;
+        for (int i = ogLines.Length - 1; i >= 0; i--)
+        {
+            if (ogLines[i].Length == 0)
+                trailingEmpty++;
+            else
+                break;
+        }
 
+        // 3) Build the merged diff with side-by-side alignment
+        var model = new SideBySideDiffBuilder(new Differ())
+                        .BuildDiffModel(ogText, zhText);
         var oldLines = model.OldText.Lines;
         var newLines = model.NewText.Lines;
         var sb = new StringBuilder();
@@ -188,28 +201,23 @@ $@"#ifdef {symbol}
                 sb.AppendLine("#endif");
             }
 
-            // Advance i past the longest run we just consumed
-            // (to avoid re-emitting the same block)
-            int maxAdvance = 1;
-            if (o.Type != ChangeType.Unchanged || n.Type != ChangeType.Unchanged)
-            {
-                int oldRun = 0, newRun = 0;
-                // compute run lengths
-                while (i + oldRun < oldLines.Count && oldLines[i + oldRun].Type != ChangeType.Unchanged) oldRun++;
-                while (i + newRun < newLines.Count && newLines[i + newRun].Type != ChangeType.Unchanged) newRun++;
-                maxAdvance = Math.Max(oldRun, newRun);
-            }
-            i += (maxAdvance - 1);
+            // Advance past the larger run
+            int oldRun = 0, newRun = 0;
+            while (i + oldRun < oldLines.Count && oldLines[i + oldRun].Type != ChangeType.Unchanged) oldRun++;
+            while (i + newRun < newLines.Count && newLines[i + newRun].Type != ChangeType.Unchanged) newRun++;
+            i += Math.Max(oldRun, newRun) - 1;
         }
 
-        // after your loop, before writing:
-        var mergedText = sb.ToString()
-            .TrimEnd('\r', '\n')   // remove all trailing CR/LF
-            .Replace(IgnoreCommentVersion, CommentVersion);
+        // 4) Trim all trailing CR/LF, then re-append exactly OG's count
+        var merged = sb.ToString()
+            .TrimEnd('\r', '\n');
+        for (int k = 0; k < trailingEmpty; k++)
+            merged += Environment.NewLine;
+        merged = merged.Replace(IgnoreCommentVersion, CommentVersion);
 
-        // Ensure result directory exists and write out
+        // 5) Write out
         Directory.CreateDirectory(Path.GetDirectoryName(destFile)!);
-        File.WriteAllText(destFile, mergedText);
+        File.WriteAllText(destFile, merged);
         Console.WriteLine($"[BOTH] Diff-merged {reletivePath}");
     }
 }
