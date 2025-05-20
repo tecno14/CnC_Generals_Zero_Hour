@@ -30,7 +30,9 @@
 // USER INCLUDES //////////////////////////////////////////////////////////////////////////////////
 #include "PreRTS.h"	// This must go first in EVERY cpp file int the GameEngine
 
+#ifdef OG
 #define DEFINE_UPGRADE_TYPE_NAMES
+#endif
 #define DEFINE_VETERANCY_NAMES
 #include "Common/Upgrade.h"
 #include "Common/Player.h"
@@ -38,6 +40,15 @@
 #include "GameClient/InGameUI.h"
 #include "GameClient/Image.h"
 
+#ifdef ZH
+const char *TheUpgradeTypeNames[] = 
+{
+	"PLAYER",
+	"OBJECT",
+	NULL
+};
+
+#endif
 // PUBLIC /////////////////////////////////////////////////////////////////////////////////////////
 class UpgradeCenter *TheUpgradeCenter = NULL;
 
@@ -108,12 +119,20 @@ const FieldParse UpgradeTemplate::m_upgradeFieldParseTable[] =
 {
 
 	{ "DisplayName",				INI::parseAsciiString,		NULL, offsetof( UpgradeTemplate, m_displayNameLabel ) },
+#ifdef OG
 	{ "Type",								INI::parseIndexList,			UpgradeTypeNames, offsetof( UpgradeTemplate, m_type ) },
+#endif
+#ifdef ZH
+	{ "Type",								INI::parseIndexList,			TheUpgradeTypeNames, offsetof( UpgradeTemplate, m_type ) },
+#endif
 	{ "BuildTime",					INI::parseReal,						NULL, offsetof( UpgradeTemplate, m_buildTime ) },
 	{ "BuildCost",					INI::parseInt,						NULL, offsetof( UpgradeTemplate, m_cost ) },
 	{ "ButtonImage",				INI::parseAsciiString,		NULL, offsetof( UpgradeTemplate, m_buttonImageName ) },
 	{ "ResearchSound",			INI::parseAudioEventRTS,	NULL, offsetof( UpgradeTemplate, m_researchSound ) }, 
 	{ "UnitSpecificSound",	INI::parseAudioEventRTS,	NULL, offsetof( UpgradeTemplate, m_unitSpecificSound ) }, 
+#ifdef ZH
+	{ "AcademyClassify",		INI::parseIndexList,			TheAcademyClassificationTypeNames, offsetof( UpgradeTemplate, m_academyClassificationType ) },
+#endif
 	{ NULL,						NULL,												 NULL, 0 }  // keep this last
 
 };
@@ -129,10 +148,15 @@ UpgradeTemplate::UpgradeTemplate( void )
 	m_type = UPGRADE_TYPE_PLAYER;
 	m_nameKey = NAMEKEY_INVALID;
 	m_buildTime = 0.0f;
+#ifdef OG
 	m_upgradeMask = 0;
+#endif
 	m_next = NULL;
 	m_prev = NULL;
 	m_buttonImage = NULL;
+#ifdef ZH
+	m_academyClassificationType = ACT_NONE;
+#endif
 
 }  // end UpgradeTemplate
 
@@ -148,7 +172,12 @@ UpgradeTemplate::~UpgradeTemplate( void )
 //-------------------------------------------------------------------------------------------------
 Int UpgradeTemplate::calcTimeToBuild( Player *player ) const
 {
+#ifdef OG
 #if defined(_DEBUG) || defined(_INTERNAL)
+#endif
+#ifdef ZH
+#if defined(_DEBUG) || defined(_INTERNAL) || defined(_ALLOW_DEBUG_CHEATS_IN_RELEASE)
+#endif
 	if( player->buildsInstantly() )
 	{
 		return 1;
@@ -366,9 +395,22 @@ UpgradeTemplate *UpgradeCenter::newUpgrade( const AsciiString& name )
 
 	// Make a unique bitmask for this new template by keeping track of what bits have been assigned
 	// damn MSFT! proper ANSI syntax for a proper 64-bit constant is "1LL", but MSVC doesn't recognize it
+#ifdef OG
 	Int64 newMask = 1i64 << m_nextTemplateMaskBit;
+
+#endif
+#ifdef ZH
+	UpgradeMaskType newMask;
+	newMask.set( m_nextTemplateMaskBit );
+	//Int64 newMask = 1i64 << m_nextTemplateMaskBit;
+#endif
 	m_nextTemplateMaskBit++;
+#ifdef OG
 	DEBUG_ASSERTCRASH( m_nextTemplateMaskBit < 64, ("Can't have over 64 types of Upgrades and have a Bitfield function.") );
+#endif
+#ifdef ZH
+	DEBUG_ASSERTCRASH( m_nextTemplateMaskBit < UPGRADE_MAX_COUNT, ("Can't have over %d types of Upgrades and have a Bitfield function.", UPGRADE_MAX_COUNT) );
+#endif
 	newUpgrade->friend_setUpgradeMask( newMask );
 
 	// link upgrade

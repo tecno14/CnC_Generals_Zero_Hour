@@ -35,6 +35,9 @@
 // INCLUDES ///////////////////////////////////////////////////////////////////////////////////////
 #include "Lib/BaseType.h"
 #include "Common/BitFlags.h"
+#ifdef ZH
+#include "Common/BitFlagsIO.h"
+#endif
 
 //-------------------------------------------------------------------------------------------------
 /** Kind of flags for determining groups of things that belong together
@@ -51,11 +54,20 @@ enum DisabledType
 	DISABLED_UNDERPOWERED,//Seperate from ScriptUnderpowered, the owning player has insufficient power.  Energy status controls this
 	DISABLED_FREEFALL,    //This unit has been disabled via being in free fall
 
+#ifdef ZH
+  DISABLED_AWESTRUCK,
+  DISABLED_BRAINWASHED, 
+	DISABLED_SUBDUED,			///< Temporarily shut down by Subdual damage
+#endif
 	//These ones are specificially for scripts to enable/reenable!
 	DISABLED_SCRIPT_DISABLED,
 	DISABLED_SCRIPT_UNDERPOWERED,
 
 	DISABLED_COUNT,
+#ifdef ZH
+	
+	DISABLED_ANY = 65535		///< Do not use this value for setting disabled types (read-only)
+#endif
 };
 
 typedef BitFlags<DISABLED_COUNT>	DisabledMaskType;
@@ -105,7 +117,9 @@ inline void FLIP_DISABLEDMASK(DisabledMaskType& m)
 
 
 // defined in Common/System/DisabledTypes.cpp
+#ifdef OG
 extern const char *TheDisabledNames[];
+#endif
 extern DisabledMaskType DISABLEDMASK_NONE;	// inits to all zeroes
 extern DisabledMaskType DISABLEDMASK_ALL;		// inits to all bits set.
 void initDisabledMasks();

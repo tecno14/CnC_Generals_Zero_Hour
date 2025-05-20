@@ -23,6 +23,9 @@ CFG=wwsaveload - Win32 DebugW3D
 !MESSAGE "wwsaveload - Win32 ProfileE" (based on "Win32 (x86) Static Library")
 !MESSAGE "wwsaveload - Win32 DebugE" (based on "Win32 (x86) Static Library")
 !MESSAGE "wwsaveload - Win32 Internal" (based on "Win32 (x86) Static Library")
+#ifdef ZH
+!MESSAGE "wwsaveload - Win32 DebugW3D" (based on "Win32 (x86) Static Library")
+#endif
 !MESSAGE 
 
 # Begin Project
@@ -45,7 +48,12 @@ RSC=rc.exe
 # PROP Intermediate_Dir "Release"
 # PROP Target_Dir ""
 # ADD BASE CPP /nologo /W3 /GX /O2 /D "WIN32" /D "NDEBUG" /D "_MBCS" /D "_LIB" /YX /FD /c
+#ifdef OG
 # ADD CPP /nologo /G6 /MD /W3 /WX /GX /O2 /Ob2 /I "..\wwlib" /I "..\wwdebug" /I "..\wwmath" /D WINVER=0x400 /D "_WINDOWS" /D "NDEBUG" /D "WIN32" /D "IG_DEBUG_STACKTRACE" /Fr /YX /FD /c
+#endif
+#ifdef ZH
+# ADD CPP /nologo /G6 /MD /W3 /WX /GX /O2 /Ob2 /I "..\wwlib" /I "..\wwdebug" /I "..\wwmath" /D WINVER=0x400 /D "_WINDOWS" /D "NDEBUG" /D "WIN32" /D "IG_DEBUG_STACKTRACE" /YX /FD /c
+#endif
 # ADD BASE RSC /l 0x409 /d "NDEBUG"
 # ADD RSC /l 0x409 /d "NDEBUG"
 BSC32=bscmake.exe
@@ -68,7 +76,12 @@ LIB32=link.exe -lib
 # PROP Intermediate_Dir "Debug"
 # PROP Target_Dir ""
 # ADD BASE CPP /nologo /W3 /Gm /GX /ZI /Od /D "WIN32" /D "_DEBUG" /D "_MBCS" /D "_LIB" /YX /FD /GZ /c
+#ifdef OG
 # ADD CPP /nologo /G6 /MDd /W3 /WX /GX /Zi /O2 /Ob2 /I "..\wwlib" /I "..\wwdebug" /I "..\wwmath" /D "_DEBUG" /D WINVER=0x400 /D "_WINDOWS" /D "WIN32" /Fr /YX /FD /c
+#endif
+#ifdef ZH
+# ADD CPP /nologo /G6 /MDd /W3 /WX /Zi /Od /Ob2 /I "..\wwlib" /I "..\wwdebug" /I "..\wwmath" /D "_DEBUG" /D WINVER=0x400 /D "_WINDOWS" /D "WIN32" /D "WWDEBUG" /YX /FD /c
+#endif
 # ADD BASE RSC /l 0x409 /d "_DEBUG"
 # ADD RSC /l 0x409 /d "_DEBUG"
 BSC32=bscmake.exe
@@ -91,8 +104,14 @@ LIB32=link.exe -lib
 # PROP Intermediate_Dir "Profile"
 # PROP Target_Dir ""
 # ADD BASE CPP /nologo /W3 /Gm /GX /ZI /Od /D "WIN32" /D "_DEBUG" /D "_MBCS" /D "_LIB" /YX /FD /GZ /c
+#ifdef OG
 # ADD CPP /nologo /MD /W3 /WX /Gm /GX /Zi /O2 /Op /Ob2 /I "..\wwlib" /I "..\wwdebug" /I "..\wwmath" /D "NDEBUG" /D "WWDEBUG" /D WINVER=0x400 /D "_WINDOWS" /D "WIN32" /YX /FD /c
 # SUBTRACT CPP /Fr
+#endif
+#ifdef ZH
+# ADD CPP /nologo /MD /W3 /WX /Gm /GX /Zi /O2 /Op /Ob2 /I "..\wwlib" /I "..\wwdebug" /I "..\wwmath" /I "$(ProjDir)/DXSDK\INCLUDE" /I "../STLPORT" /I "../DXSDK/INCLUDE" /D "NDEBUG" /D "WWDEBUG" /D WINVER=0x400 /D "_WINDOWS" /D "WIN32" /D "_PROFILE" /YX /FD /Gh /c
+
+#endif
 # ADD BASE RSC /l 0x409 /d "_DEBUG"
 # ADD RSC /l 0x409 /d "_DEBUG"
 BSC32=bscmake.exe
@@ -115,7 +134,12 @@ LIB32=link.exe -lib
 # PROP Intermediate_Dir "ProfileE"
 # PROP Target_Dir ""
 # ADD BASE CPP /nologo /MD /W3 /Gm /GX /Zi /Od /I "..\wwlib" /I "..\wwdebug" /I "..\wwmath" /D "NDEBUG" /D "WWDEBUG" /D WINVER=0x400 /D "_WINDOWS" /D "WIN32" /YX /FD /GZ /c
+#ifdef OG
 # ADD CPP /nologo /MD /W3 /WX /Gm /GX /Zi /Od /I "..\wwlib" /I "..\wwdebug" /I "..\wwmath" /D "NDEBUG" /D "WWDEBUG" /D WINVER=0x400 /D "_WINDOWS" /D "WIN32" /D "PARAM_EDITING_ON" /YX /FD /GZ /c
+#endif
+#ifdef ZH
+# ADD CPP /nologo /MD /W3 /WX /Gm /GX /Zi /Od /I "..\wwlib" /I "..\wwdebug" /I "..\wwmath" /I "$(ProjDir)/DXSDK\INCLUDE" /I "../STLPORT" /I "../DXSDK/INCLUDE" /D "NDEBUG" /D "WWDEBUG" /D WINVER=0x400 /D "_WINDOWS" /D "WIN32" /D "PARAM_EDITING_ON" /YX /FD /GZ /c
+#endif
 # SUBTRACT CPP /Fr
 # ADD BASE RSC /l 0x409 /d "_DEBUG"
 # ADD RSC /l 0x409 /d "_DEBUG"
@@ -139,7 +163,12 @@ LIB32=link.exe -lib
 # PROP Intermediate_Dir "DebugE"
 # PROP Target_Dir ""
 # ADD BASE CPP /nologo /MDd /W3 /Gm /GX /ZI /Od /I "..\wwlib" /I "..\wwdebug" /I "..\wwmath" /D "_DEBUG" /D "WWDEBUG" /D WINVER=0x400 /D "_WINDOWS" /D "WIN32" /YX /FD /GZ /c
+#ifdef OG
 # ADD CPP /nologo /MDd /W3 /WX /Gm /GX /ZI /Od /I "..\wwlib" /I "..\wwdebug" /I "..\wwmath" /D "_DEBUG" /D "WWDEBUG" /D WINVER=0x400 /D "_WINDOWS" /D "WIN32" /D "PARAM_EDITING_ON" /YX /FD /GZ /c
+#endif
+#ifdef ZH
+# ADD CPP /nologo /MDd /W3 /WX /Gm /GX /ZI /Od /I "..\wwlib" /I "..\wwdebug" /I "..\wwmath" /I "$(ProjDir)/DXSDK\INCLUDE" /I "../STLPORT" /I "../DXSDK/INCLUDE" /D "_DEBUG" /D "WWDEBUG" /D WINVER=0x400 /D "_WINDOWS" /D "WIN32" /D "PARAM_EDITING_ON" /YX /FD /GZ /c
+#endif
 # SUBTRACT CPP /Fr
 # ADD BASE RSC /l 0x409 /d "_DEBUG"
 # ADD RSC /l 0x409 /d "_DEBUG"
@@ -163,7 +192,12 @@ LIB32=link.exe -lib
 # PROP Intermediate_Dir "Internal"
 # PROP Target_Dir ""
 # ADD BASE CPP /nologo /MD /W3 /GX /O2 /Ob2 /I "..\wwlib" /I "..\wwdebug" /I "..\wwmath" /D "NDEBUG" /D WINVER=0x400 /D "_WINDOWS" /D "WIN32" /YX /FD /c
+#ifdef OG
 # ADD CPP /nologo /G6 /MD /W3 /WX /GX /Zi /O2 /I "..\wwlib" /I "..\wwdebug" /I "..\wwmath" /D "NDEBUG" /D WINVER=0x400 /D "_WINDOWS" /D "WIN32" /D "_INTERNAL" /Fr /YX /FD /c
+#endif
+#ifdef ZH
+# ADD CPP /nologo /G6 /MD /W3 /WX /GX /Zi /O2 /I "..\wwlib" /I "..\wwdebug" /I "..\wwmath" /D "NDEBUG" /D WINVER=0x400 /D "_WINDOWS" /D "WIN32" /D "_INTERNAL" /D "WWDEBUG" /Fr /YX /FD /c
+#endif
 # ADD BASE RSC /l 0x409 /d "NDEBUG"
 # ADD RSC /l 0x409 /d "NDEBUG"
 BSC32=bscmake.exe
@@ -172,6 +206,31 @@ BSC32=bscmake.exe
 LIB32=link.exe -lib
 # ADD BASE LIB32 /nologo /out:"..\..\..\Lib\WWSaveLoad.lib"
 # ADD LIB32 /nologo /out:"..\..\..\Lib\WWSaveLoadInternal.lib"
+#ifdef ZH
+
+!ELSEIF  "$(CFG)" == "wwsaveload - Win32 DebugW3D"
+
+# PROP BASE Use_MFC 0
+# PROP BASE Use_Debug_Libraries 0
+# PROP BASE Output_Dir "Max4Release"
+# PROP BASE Intermediate_Dir "Max4Release"
+# PROP BASE Target_Dir ""
+# PROP Use_MFC 0
+# PROP Use_Debug_Libraries 0
+# PROP Output_Dir "DebugW3D"
+# PROP Intermediate_Dir "DebugW3D"
+# PROP Target_Dir ""
+# ADD BASE CPP /nologo /MDd /W3 /WX /Gm /GR /GX /ZI /Od /I "..\wwlib" /I "..\wwdebug" /I "..\wwmath" /D "_DEBUG" /D "WWDEBUG" /D WINVER=0x400 /D "_WINDOWS" /D "WIN32" /YX /FD /GZ /c
+# ADD CPP /nologo /G6 /MTd /W3 /WX /Gm /GX /ZI /Od /I "..\wwlib" /I "..\wwdebug" /I "..\wwmath" /D "_DEBUG" /D "WWDEBUG" /D WINVER=0x400 /D "_WINDOWS" /D "WIN32" /YX /FD /GZ /c
+# ADD BASE RSC /l 0x409 /d "_DEBUG" /Fr # SUBTRACT CPP
+# ADD RSC /l 0x409 /d "_DEBUG"
+BSC32=bscmake.exe
+# ADD BASE BSC32 /nologo
+# ADD BSC32 /nologo
+LIB32=link.exe -lib
+# ADD BASE LIB32 /nologo /out:"..\Libs\release\wwsaveload.lib"
+# ADD LIB32 /nologo /out:"..\..\..\Lib\WWSaveLoadDebugW3D.lib"
+#endif
 
 !ENDIF 
 
@@ -183,6 +242,9 @@ LIB32=link.exe -lib
 # Name "wwsaveload - Win32 ProfileE"
 # Name "wwsaveload - Win32 DebugE"
 # Name "wwsaveload - Win32 Internal"
+#ifdef ZH
+# Name "wwsaveload - Win32 DebugW3D"
+#endif
 # Begin Group "Source Files"
 
 # PROP Default_Filter "cpp;c;cxx;rc;def;r;odl;idl;hpj;bat"

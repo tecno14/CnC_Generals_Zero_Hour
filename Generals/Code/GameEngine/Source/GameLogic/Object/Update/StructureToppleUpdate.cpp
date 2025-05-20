@@ -561,7 +561,12 @@ void StructureToppleUpdate::doPhaseStuff(StructureTopplePhaseType stphase, const
 			const OCLVec& v = d->m_ocls[stphase];
 			DEBUG_ASSERTCRASH(idx>=0&&idx<v.size(),("bad idx"));
 			const ObjectCreationList* ocl = v[idx];
+#ifdef OG
 			ObjectCreationList::create(ocl, getObject(), target, NULL);
+#endif
+#ifdef ZH
+			ObjectCreationList::create(ocl, getObject(), target, NULL, INVALID_ANGLE );
+#endif
 		}
 	}
 }

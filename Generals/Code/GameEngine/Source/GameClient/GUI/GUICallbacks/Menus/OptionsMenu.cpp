@@ -100,6 +100,14 @@ static GameWindow *   comboBoxDetail        = NULL;
 static NameKeyType		checkAlternateMouseID	= NAMEKEY_INVALID;
 static GameWindow *		checkAlternateMouse		= NULL;
 
+#ifdef ZH
+static NameKeyType		checkRetaliationID	= NAMEKEY_INVALID;
+static GameWindow *		checkRetaliation		= NULL;
+
+static NameKeyType		checkDoubleClickAttackMoveID	= NAMEKEY_INVALID;
+static GameWindow *		checkDoubleClickAttackMove		= NULL;
+
+#endif
 static NameKeyType		sliderScrollSpeedID	= NAMEKEY_INVALID;
 static GameWindow *		sliderScrollSpeed		= NULL;
 
@@ -189,6 +197,11 @@ static GameWindow *   checkNoDynamicLod   = NULL;
 static NameKeyType    checkUnlockFpsID = NAMEKEY_INVALID;
 static GameWindow *   checkUnlockFps   = NULL;
 
+#ifdef ZH
+static NameKeyType    checkHeatEffectsID = NAMEKEY_INVALID;
+static GameWindow *   checkHeatEffects   = NULL;
+
+#endif
 /*
 
 static NameKeyType    radioHighID = NAMEKEY_INVALID;
@@ -321,8 +334,37 @@ Bool OptionPreferences::getAlternateMouseModeEnabled(void)
 	}
 	return FALSE;
 }
+#ifdef ZH
 
+Bool OptionPreferences::getRetaliationModeEnabled(void)
+{
+	OptionPreferences::const_iterator it = find("Retaliation");
+	if (it == end())
+		return TheGlobalData->m_clientRetaliationModeEnabled;
+#endif
 
+#ifdef ZH
+	if (stricmp(it->second.str(), "yes") == 0) {
+		return TRUE;
+	}
+	return FALSE;
+}
+#endif
+
+#ifdef ZH
+Bool OptionPreferences::getDoubleClickAttackMoveEnabled(void)
+{
+	OptionPreferences::const_iterator it = find("UseDoubleClickAttackMove");
+	if( it == end() )
+		return TheGlobalData->m_doubleClickAttackMove;
+
+	if( stricmp( it->second.str(), "yes" ) == 0 )
+		return TRUE;
+
+	return FALSE;
+}
+
+#endif
 Real OptionPreferences::getScrollFactor(void)
 {
 	OptionPreferences::const_iterator it = find("ScrollFactor");
@@ -588,8 +630,24 @@ Bool OptionPreferences::getExtraAnimationsDisabled(void)
 	if (stricmp(it->second.str(), "yes") == 0) {
 		return FALSE;	//we are enabling extra animations, so disabled LOD
 	}
+#ifdef ZH
 	return TRUE;
 }
+
+Bool OptionPreferences::getUseHeatEffects(void)
+{
+	OptionPreferences::const_iterator it = find("HeatEffects");
+	if (it == end())
+		return TheGlobalData->m_useHeatEffects;
+
+	if (stricmp(it->second.str(), "yes") == 0) {
+#endif
+	return TRUE;
+}
+#ifdef ZH
+	return FALSE;
+}
+#endif
 
 Bool OptionPreferences::getDynamicLODEnabled(void)
 {
@@ -740,8 +798,14 @@ static void setDefaults( void )
 	//-------------------------------------------------------------------------------------------------
 	// LOD
 	if ((TheGameLogic->isInGame() == FALSE) || (TheGameLogic->isInShellGame() == TRUE)) {
+#ifdef OG
 		TheGameLODManager->setStaticLODLevel(TheGameLODManager->findStaticLODLevel());
 		switch (TheGameLODManager->getStaticLODLevel())
+#endif
+#ifdef ZH
+		StaticGameLODLevel level=TheGameLODManager->findStaticLODLevel();
+		switch (level)
+#endif
 		{
 		case STATIC_GAME_LOD_LOW:
 			GadgetComboBoxSetSelectedPos(comboBoxDetail, LOWDETAIL);
@@ -780,6 +844,10 @@ static void setDefaults( void )
  	//-------------------------------------------------------------------------------------------------
 	// Mouse Mode
 	GadgetCheckBoxSetChecked(checkAlternateMouse, FALSE);
+#ifdef ZH
+	GadgetCheckBoxSetChecked(checkRetaliation, TRUE );
+	GadgetCheckBoxSetChecked( checkDoubleClickAttackMove, FALSE );
+#endif
 
 	//-------------------------------------------------------------------------------------------------
 //	// scroll speed val
@@ -860,6 +928,13 @@ static void setDefaults( void )
  		// Disable FPS Limit
 		//
 		GadgetCheckBoxSetChecked( checkUnlockFps, !TheGlobalData->m_useFpsLimit);
+#ifdef ZH
+
+		//-------------------------------------------------------------------------------------------------
+ 		// Heat Effects
+		//
+		GadgetCheckBoxSetChecked( checkHeatEffects, TheGlobalData->m_useHeatEffects);
+#endif
 
 		//-------------------------------------------------------------------------------------------------
  		// Building Occlusion checkbox
@@ -962,6 +1037,11 @@ static void saveOptions( void )
 		TheWritableGlobalData->m_enableDynamicLOD = !GadgetCheckBoxIsChecked( checkNoDynamicLod );
 		(*pref)["DynamicLOD"] = TheGlobalData->m_enableDynamicLOD ? AsciiString("yes") : AsciiString("no");
 
+#ifdef ZH
+		TheWritableGlobalData->m_useHeatEffects = GadgetCheckBoxIsChecked( checkHeatEffects );
+		(*pref)["HeatEffects"] = TheGlobalData->m_useHeatEffects ? AsciiString("yes") : AsciiString("no");
+
+#endif
 		// Never write this out
 		//TheWritableGlobalData->m_useFpsLimit = !GadgetCheckBoxIsChecked( checkUnlockFps );
 		//(*pref)["FPSLimit"] = TheGlobalData->m_useFpsLimit ? AsciiString("yes") : AsciiString("no");
@@ -1125,7 +1205,17 @@ static void saveOptions( void )
 	// mouse mode
 	TheWritableGlobalData->m_useAlternateMouse = GadgetCheckBoxIsChecked(checkAlternateMouse);
 	(*pref)["UseAlternateMouse"] = TheWritableGlobalData->m_useAlternateMouse ? AsciiString("yes") : AsciiString("no");
+#ifdef ZH
 
+	TheWritableGlobalData->m_clientRetaliationModeEnabled = GadgetCheckBoxIsChecked(checkRetaliation);
+	(*pref)["Retaliation"] = TheWritableGlobalData->m_clientRetaliationModeEnabled? AsciiString("yes") : AsciiString("no");
+#endif
+
+#ifdef ZH
+	TheWritableGlobalData->m_doubleClickAttackMove = GadgetCheckBoxIsChecked( checkDoubleClickAttackMove );
+	(*pref)["UseDoubleClickAttackMove"] = TheWritableGlobalData->m_doubleClickAttackMove ? AsciiString("yes") : AsciiString("no");
+
+#endif
 	//-------------------------------------------------------------------------------------------------
 	// scroll speed val
 	val = GadgetSliderGetPosition(sliderScrollSpeed);
@@ -1268,7 +1358,6 @@ static void cancelAdvancedOptions()
 
 	WinAdvancedDisplay->winHide(TRUE);
 }
-
 //-------------------------------------------------------------------------------------------------
 /** Initialize the options menu */
 //-------------------------------------------------------------------------------------------------
@@ -1291,16 +1380,24 @@ void OptionsMenuInit( WindowLayout *layout, void *userData )
 	comboBoxOnlineIP			 = TheWindowManager->winGetWindowFromId( NULL,  comboBoxOnlineIPID);
 	checkAlternateMouseID  = TheNameKeyGenerator->nameToKey( AsciiString( "OptionsMenu.wnd:CheckAlternateMouse" ) );
 	checkAlternateMouse	   = TheWindowManager->winGetWindowFromId( NULL, checkAlternateMouseID);
+#ifdef ZH
+	checkRetaliationID		 = TheNameKeyGenerator->nameToKey( AsciiString( "OptionsMenu.wnd:Retaliation" ) );
+	checkRetaliation	     = TheWindowManager->winGetWindowFromId( NULL, checkRetaliationID);
+	checkDoubleClickAttackMoveID = TheNameKeyGenerator->nameToKey( AsciiString( "OptionsMenu.wnd:CheckDoubleClickAttackMove" ) );
+	checkDoubleClickAttackMove   = TheWindowManager->winGetWindowFromId( NULL, checkDoubleClickAttackMoveID );
+#endif
 	sliderScrollSpeedID	   = TheNameKeyGenerator->nameToKey( AsciiString( "OptionsMenu.wnd:SliderScrollSpeed" ) );
 	sliderScrollSpeed		   = TheWindowManager->winGetWindowFromId( NULL,  sliderScrollSpeedID);
 	comboBoxAntiAliasingID = TheNameKeyGenerator->nameToKey( AsciiString( "OptionsMenu.wnd:ComboBoxAntiAliasing" ) );
 	comboBoxAntiAliasing   = TheWindowManager->winGetWindowFromId( NULL, comboBoxAntiAliasingID );
 	comboBoxResolutionID   = TheNameKeyGenerator->nameToKey( AsciiString( "OptionsMenu.wnd:ComboBoxResolution" ) );
 	comboBoxResolution     = TheWindowManager->winGetWindowFromId( NULL, comboBoxResolutionID );
+#ifdef OG
 #ifdef _PLAYTEST
 	if (comboBoxResolution)
 		comboBoxResolution->winEnable(FALSE);
 #endif _PLAYTEST
+#endif
 	comboBoxDetailID			 = TheNameKeyGenerator->nameToKey( AsciiString( "OptionsMenu.wnd:ComboBoxDetail" ) );
 	comboBoxDetail		   = TheWindowManager->winGetWindowFromId( NULL, comboBoxDetailID );
 
@@ -1373,6 +1470,11 @@ void OptionsMenuInit( WindowLayout *layout, void *userData )
 	checkNoDynamicLodID = TheNameKeyGenerator->nameToKey( AsciiString( "OptionsMenu.wnd:CheckNoDynamicLOD" ) );
 	checkNoDynamicLod   = TheWindowManager->winGetWindowFromId( NULL, checkNoDynamicLodID);
 
+#ifdef ZH
+	checkHeatEffectsID = TheNameKeyGenerator->nameToKey( AsciiString( "OptionsMenu.wnd:CheckHeatEffects" ) );
+	checkHeatEffects   = TheWindowManager->winGetWindowFromId( NULL, checkHeatEffectsID);
+
+#endif
 	checkUnlockFpsID = TheNameKeyGenerator->nameToKey( AsciiString( "OptionsMenu.wnd:CheckUnlockFPS" ) );
 	checkUnlockFps   = TheWindowManager->winGetWindowFromId( NULL, checkUnlockFpsID);
 
@@ -1619,6 +1721,10 @@ void OptionsMenuInit( WindowLayout *layout, void *userData )
 
 	GadgetCheckBoxSetChecked( checkNoDynamicLod, !TheGlobalData->m_enableDynamicLOD);
 
+#ifdef ZH
+	GadgetCheckBoxSetChecked( checkHeatEffects, TheGlobalData->m_useHeatEffects);
+
+#endif
 	GadgetCheckBoxSetChecked( checkUnlockFps, !TheGlobalData->m_useFpsLimit);
 
 	GadgetCheckBoxSetChecked( checkBuildingOcclusion, TheGlobalData->m_enableBehindBuildingMarkers);
@@ -1695,6 +1801,10 @@ void OptionsMenuInit( WindowLayout *layout, void *userData )
 
  	// set the mouse mode
  	GadgetCheckBoxSetChecked(checkAlternateMouse, TheGlobalData->m_useAlternateMouse);
+#ifdef ZH
+	GadgetCheckBoxSetChecked(checkRetaliation, TheGlobalData->m_clientRetaliationModeEnabled);
+	GadgetCheckBoxSetChecked( checkDoubleClickAttackMove, TheGlobalData->m_doubleClickAttackMove );
+#endif
 
 	// set scroll speed slider
 	Int scrollPos = (Int)(TheGlobalData->m_keyboardScrollFactor*100.0f);

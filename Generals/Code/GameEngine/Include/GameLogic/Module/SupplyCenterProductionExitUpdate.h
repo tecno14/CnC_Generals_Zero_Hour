@@ -43,6 +43,9 @@ class SupplyCenterProductionExitUpdateModuleData : public UpdateModuleData
 public:
 	Coord3D m_unitCreatePoint;
 	Coord3D m_naturalRallyPoint;
+#ifdef ZH
+	UnsignedInt m_grantTemporaryStealthFrames;
+#endif
 
 	SupplyCenterProductionExitUpdateModuleData()
 	{
@@ -57,6 +60,9 @@ public:
 		{
 			{ "UnitCreatePoint",		INI::parseCoord3D,		NULL, offsetof( SupplyCenterProductionExitUpdateModuleData, m_unitCreatePoint ) },
 			{ "NaturalRallyPoint",  INI::parseCoord3D,		NULL, offsetof( SupplyCenterProductionExitUpdateModuleData, m_naturalRallyPoint ) },
+#ifdef ZH
+			{ "GrantTemporaryStealth",INI::parseDurationUnsignedInt,  NULL, offsetof( SupplyCenterProductionExitUpdateModuleData, m_grantTemporaryStealthFrames ) },
+#endif
 			{ 0, 0, 0, 0 }
 		};
     p.add(dataFieldParse);

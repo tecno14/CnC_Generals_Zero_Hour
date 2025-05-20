@@ -76,6 +76,16 @@ extern void GameGetColorComponents( Color color,
 																	  UnsignedByte *green,
 																	  UnsignedByte *blue,
 																	  UnsignedByte *alpha );
+#ifdef ZH
+
+// Put on ice until later - M Lorenzen
+//extern void GameGetColorComponentsWithCheatSpy( Color color,
+//																	  UnsignedByte *red,
+//																	  UnsignedByte *green,
+//																	  UnsignedByte *blue,
+//																	  UnsignedByte *alpha );
+
+#endif
 extern void GameGetColorComponentsReal( Color color, Real *red, Real *green, Real *blue, Real *alpha );
 
 extern Color GameDarkenColor( Color color, Int percent = 10 );

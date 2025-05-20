@@ -59,7 +59,13 @@ public:
 	UnsignedInt						m_startHealingDelay;	///< how long since our last damage till autoheal starts.
 	Real									m_radius; //If non-zero, then it becomes a area effect.
 	Bool									m_affectsWholePlayer; ///< I have more than a range, I try to affect everything the player owns
+#ifdef ZH
+	Bool									m_skipSelfForHealing; ///< Don't heal myself.
+#endif
 	KindOfMaskType				m_kindOf;	//Only these types can heal -- defaults to everything.
+#ifdef ZH
+	KindOfMaskType				m_forbiddenKindOf;	//Only these types can heal -- defaults to everything.
+#endif
 	const ParticleSystemTemplate*				m_radiusParticleSystemTmpl;					//Optional particle system meant to apply to entire effect for entire duration.
 	const ParticleSystemTemplate*				m_unitHealPulseParticleSystemTmpl;	//Optional particle system applying to each object getting healed each heal pulse.
 
@@ -74,7 +80,13 @@ public:
 		m_radiusParticleSystemTmpl = NULL;
 		m_unitHealPulseParticleSystemTmpl = NULL;
 		m_affectsWholePlayer = FALSE;
+#ifdef ZH
+		m_skipSelfForHealing = FALSE;
+#endif
 		SET_ALL_KINDOFMASK_BITS( m_kindOf );
+#ifdef ZH
+		m_forbiddenKindOf.clear();
+#endif
 	}
 
 	static void buildFieldParse(MultiIniFieldParse& p) 
@@ -87,10 +99,16 @@ public:
 			{ "HealingDelay",			INI::parseDurationUnsignedInt,				NULL, offsetof( AutoHealBehaviorModuleData, m_healingDelay ) },
 			{ "Radius",						INI::parseReal,												NULL, offsetof( AutoHealBehaviorModuleData, m_radius ) },
 			{ "KindOf",						KindOfMaskType::parseFromINI,											NULL, offsetof( AutoHealBehaviorModuleData, m_kindOf ) },		
+#ifdef ZH
+			{ "ForbiddenKindOf",	KindOfMaskType::parseFromINI,											NULL, offsetof( AutoHealBehaviorModuleData, m_forbiddenKindOf ) },
+#endif
 			{ "RadiusParticleSystemName",					INI::parseParticleSystemTemplate,	NULL, offsetof( AutoHealBehaviorModuleData, m_radiusParticleSystemTmpl ) },
 			{ "UnitHealPulseParticleSystemName",	INI::parseParticleSystemTemplate,	NULL, offsetof( AutoHealBehaviorModuleData, m_unitHealPulseParticleSystemTmpl ) },
 			{ "StartHealingDelay",			INI::parseDurationUnsignedInt,				NULL, offsetof( AutoHealBehaviorModuleData, m_startHealingDelay ) },
 			{ "AffectsWholePlayer",			INI::parseBool,												NULL, offsetof( AutoHealBehaviorModuleData, m_affectsWholePlayer ) },
+#ifdef ZH
+			{ "SkipSelfForHealing",			INI::parseBool,												NULL, offsetof( AutoHealBehaviorModuleData, m_skipSelfForHealing ) },
+#endif
 			{ 0, 0, 0, 0 }
 		};
 
@@ -142,7 +160,12 @@ protected:
 		setWakeFrame(getObject(), UPDATE_SLEEP_NONE);
 	}
 
+#ifdef OG
 	virtual void getUpgradeActivationMasks(Int64& activation, Int64& conflicting) const
+#endif
+#ifdef ZH
+	virtual void getUpgradeActivationMasks(UpgradeMaskType& activation, UpgradeMaskType& conflicting) const
+#endif
 	{
 		getAutoHealBehaviorModuleData()->m_upgradeMuxData.getUpgradeActivationMasks(activation, conflicting);
 	}
@@ -150,6 +173,14 @@ protected:
 	virtual void performUpgradeFX()
 	{
 		getAutoHealBehaviorModuleData()->m_upgradeMuxData.performUpgradeFX(getObject());
+#ifdef ZH
+	}
+
+	virtual void processUpgradeRemoval()
+	{
+		// I can't take it any more.  Let the record show that I think the UpgradeMux multiple inheritence is CRAP.
+		getAutoHealBehaviorModuleData()->m_upgradeMuxData.muxDataProcessUpgradeRemoval(getObject());
+#endif
 	}
 
 	virtual Bool requiresAllActivationUpgrades() const

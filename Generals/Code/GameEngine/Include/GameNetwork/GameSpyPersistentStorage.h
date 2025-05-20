@@ -1,3 +1,4 @@
+#ifdef OG
 /*
 **	Command & Conquer Generals(tm)
 **	Copyright 2025 Electronic Arts Inc.
@@ -60,3 +61,5 @@ GameSpyPlayerInfoInterface *createGameSpyPlayerInfo( void );
 extern GameSpyPlayerInfoInterface *TheGameSpyPlayerInfo;
 
 #endif // __GAMESPYPersistentStorage_H__
+
+#endif

@@ -65,9 +65,19 @@
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
+#ifdef ZH
+// Lorenzen changed this to a member of SelectionTranslator, providing external access
+// name ly in rebuildholeexposedie, where we decide whether to create GLA Holes when hand-of-Godding
+//#if defined(_DEBUG) || defined(_INTERNAL) || defined(_ALLOW_DEBUG_CHEATS_IN_RELEASE)
+//static Bool TheHandOfGodSelectionMode = false;
+//#endif
+
+#endif
 #if defined(_DEBUG) || defined(_INTERNAL)
 static Bool TheHurtSelectionMode = false;
+#ifdef OG
 static Bool TheHandOfGodSelectionMode = false;
+#endif
 static Bool TheDebugSelectionMode = false;
 #endif
 
@@ -188,7 +198,12 @@ Bool CanSelectDrawable( const Drawable *draw, Bool dragSelecting )
 	}
 
 	// You cannot select something that has a logic override of unselectability or masked
+#ifdef OG
 	if( BitTest( obj->getStatusBits(), OBJECT_STATUS_UNSELECTABLE | OBJECT_STATUS_MASKED ) )
+#endif
+#ifdef ZH
+	if( obj->getStatusBits().testForAny( MAKE_OBJECT_STATUS_MASK2( OBJECT_STATUS_UNSELECTABLE, OBJECT_STATUS_MASKED ) ) )
+#endif
 	{
 		return FALSE;
 	}
@@ -278,6 +293,12 @@ SelectionTranslator::SelectionTranslator()
 	m_selectCountMap.clear();
 
 	TheSelectionTranslator = this;
+#ifdef ZH
+
+#if defined(_DEBUG) || defined(_INTERNAL) || defined(_ALLOW_DEBUG_CHEATS_IN_RELEASE)
+  m_HandOfGodSelectionMode = FALSE;
+#endif
+#endif
 }
 
 //-----------------------------------------------------------------------------
@@ -511,9 +532,19 @@ GameMessageDisposition SelectionTranslator::translateGameMessage(const GameMessa
 
 				// Yay. Either select across the screen or the world depending on selectAcrossMap
 				if (selectAcrossMap)
+#ifdef OG
 					TheInGameUI->selectAcrossMap();
+#endif
+#ifdef ZH
+					TheInGameUI->selectMatchingAcrossMap();
+#endif
 				else 
+#ifdef OG
 					TheInGameUI->selectAcrossScreen();
+#endif
+#ifdef ZH
+					TheInGameUI->selectMatchingAcrossScreen();
+#endif
 
 				// emit "picked" message
 				GameMessage *pickMsg = TheMessageStream->appendMessage( GameMessage::MSG_AREA_SELECTION );
@@ -644,11 +675,55 @@ GameMessageDisposition SelectionTranslator::translateGameMessage(const GameMessa
 			if (si.newCountMine > 0) 
 			{
 				si.selectMine = TRUE;
+#ifdef OG
 				if (si.newCountMine == 1 && si.newCountMineBuildings == 1) 
+
+#endif
+#ifdef ZH
+
+        // EXACTLY ONE CLICKED OR DRAGGED BUILDING
+				if ( si.newCountMineBuildings == 1 && si.newCountMine == 1 ) 
+				{
+					addToGroup = FALSE;
+					si.selectMineBuildings = TRUE;
+        }
+        else if ( si.newCountMineBuildings > 0 )////////////// SO SORRY, I KNOW THIS IS MICKEY MOUSE ///////////////////
+        { // What we are after here is to allow the drag select to get the building, 
+          // if the other things in the list are going to be ignored anyway
+          // so we find out whether the other things are not selectible
+          // this came up with the new AmericaBuildingFireBase, which shows its contained
+          // but does not let you select them. The selection is propagated to the container
+          // in new code in SelectionInfo.cpp, in the static addDrawableToList();
+          // -Mark Lorenzen, 6/12/03
+          Bool onlyTheOneBuildingIsSelectableAnyway = TRUE;
+          DrawableID buildingID = INVALID_DRAWABLE_ID;
+          for (DrawableListIt it = drawablesThatWillSelect.begin(); it != drawablesThatWillSelect.end(); ++it) 
+				  {
+            const Drawable *d = *it;
+            if ( d->isKindOf( KINDOF_STRUCTURE ) ) 
+            {// make sure there is really only the one building in the list, as it may be multiply listed
+              
+              if ( buildingID == INVALID_DRAWABLE_ID ) // this is the first building
+                buildingID = d->getID();  
+              else if ( buildingID != d->getID() )//oops, more than one building!
+                onlyTheOneBuildingIsSelectableAnyway = FALSE;
+            }
+					  else if ( d->isSelectable() )
+              onlyTheOneBuildingIsSelectableAnyway = FALSE;
+
+            if ( ! onlyTheOneBuildingIsSelectableAnyway )
+              break;
+          }
+          if ( onlyTheOneBuildingIsSelectableAnyway )
+#endif
 				{
 					addToGroup = FALSE;
 					si.selectMineBuildings = TRUE;
 				}
+#ifdef ZH
+				}
+
+#endif
 			}
 			else if (si.newCountEnemies > 0 && si.newCountCivilians > 0 && si.newCountFriends > 0) 
 			{
@@ -778,13 +853,30 @@ GameMessageDisposition SelectionTranslator::translateGameMessage(const GameMessa
 						newMsg->appendObjectIDArgument(objToAppend);
 						TheInGameUI->selectDrawable(drawToSelect);
 						++newDrawablesSelected;
+#ifdef ZH
 					}
+#endif
+					}
+#ifdef ZH
+
+				if( newDrawablesSelected > 1 )
+				{
+					localPlayer->getAcademyStats()->recordDragSelection();
+#endif
 				}
 
 				if (newDrawablesSelected == 1 && draw) 
 				{
 #if defined(_DEBUG) || defined(_INTERNAL)
+#ifdef OG
 					if (TheHandOfGodSelectionMode && draw)
+
+#endif
+#ifdef ZH
+
+
+          if (m_HandOfGodSelectionMode && draw)
+#endif
 					{
 						Object* obj = draw->getObject();
 						if (obj)
@@ -796,7 +888,15 @@ GameMessageDisposition SelectionTranslator::translateGameMessage(const GameMessa
 						disp = DESTROY_MESSAGE;
 						break;
 					}
+#ifdef OG
 					else if (TheHurtSelectionMode && draw)
+
+#endif
+#ifdef ZH
+					else
+
+          if (TheHurtSelectionMode && draw)
+#endif
 					{
 						Object* obj = draw->getObject();
 						if (obj)
@@ -823,6 +923,24 @@ GameMessageDisposition SelectionTranslator::translateGameMessage(const GameMessa
 							disp = DESTROY_MESSAGE;
 							break;
 						}
+					}
+#endif
+#ifdef ZH
+
+#endif
+
+#if defined(_ALLOW_DEBUG_CHEATS_IN_RELEASE)
+          if (m_HandOfGodSelectionMode && draw)
+					{
+						Object* obj = draw->getObject();
+						if (obj)
+						{
+							TheAudio->addAudioEvent(&TheAudio->getMiscAudio()->m_noCanDoSound);
+							GameMessage* msg = TheMessageStream->appendMessage( GameMessage::MSG_DEBUG_KILL_OBJECT );
+							msg->appendObjectIDArgument(obj->getID());
+						}
+						disp = DESTROY_MESSAGE;
+						break;
 					}
 #endif
 #endif
@@ -869,7 +987,35 @@ GameMessageDisposition SelectionTranslator::translateGameMessage(const GameMessa
 				IRegion2D selectionRegion;
 				buildRegion( &m_selectFeedbackAnchor, &msg->getArgument(0)->pixel, &selectionRegion );
 				dragMsg->appendPixelRegionArgument( selectionRegion );
+#ifdef ZH
 			}
+			else 
+			{
+				// left click behavior (not right drag)
+
+				//Added support to cancel the GUI command without deselecting the unit(s) involved
+				//when you right click.
+				if( !TheInGameUI->getGUICommand() && !TheKeyboard->isShift() && !TheKeyboard->isCtrl() && !TheKeyboard->isAlt() )
+				{
+					//No GUI command mode, so deselect everyone if we're in alternate mouse mode.
+					if( TheGlobalData->m_useAlternateMouse && TheInGameUI->getPendingPlaceSourceObjectID() == INVALID_ID )
+					{
+						if( !TheInGameUI->getPreventLeftClickDeselectionInAlternateMouseModeForOneClick() )
+						{
+							deselectAll();
+						}
+						else
+						{
+							//Prevent deselection of unit if it just issued some type of UI order such as attack move, guard, 
+							//initiating construction of a new structure.
+							TheInGameUI->setPreventLeftClickDeselectionInAlternateMouseModeForOneClick( FALSE );
+						}
+#endif
+			}
+#ifdef ZH
+				}
+			}
+#endif
 
 			break;
 		}
@@ -1105,6 +1251,17 @@ GameMessageDisposition SelectionTranslator::translateGameMessage(const GameMessa
 				else
 				{
 
+#ifdef ZH
+					Drawable *draw = TheInGameUI->getFirstSelectedDrawable();
+					if( draw && draw->isKindOf( KINDOF_STRUCTURE ) )
+					{
+						//Kris: Jan 12, 2005
+						//Can't select other units if you have a structure selected. So deselect the structure to prevent
+						//group force attack exploit.
+						TheInGameUI->deselectAllDrawables();
+					}
+
+#endif
 					// no need to send two messages for selecting the same group.
 					TheMessageStream->appendMessage((GameMessage::Type)(GameMessage::MSG_ADD_TEAM0 + group));
 					Player *player = ThePlayerList->getLocalPlayer();
@@ -1178,10 +1335,38 @@ GameMessageDisposition SelectionTranslator::translateGameMessage(const GameMessa
 #if defined(_DEBUG) || defined(_INTERNAL)
 		//-----------------------------------------------------------------------------------------
 		case GameMessage::MSG_META_DEMO_TOGGLE_HAND_OF_GOD_MODE:
+#ifdef ZH
 		{
+			if ( !TheGameLogic->isInMultiplayerGame() )
+#endif
+		{
+#ifdef OG
 			TheHandOfGodSelectionMode = !TheHandOfGodSelectionMode;
 			TheInGameUI->message( UnicodeString( L"Hand-Of-God Mode is %s" ), TheHandOfGodSelectionMode ? L"ON" : L"OFF" );
+
+#endif
+#ifdef ZH
+				m_HandOfGodSelectionMode = !m_HandOfGodSelectionMode;
+				TheInGameUI->message( UnicodeString( L"Meta Hand-Of-God Mode is %s" ), m_HandOfGodSelectionMode ? L"ON" : L"OFF" );
+				disp = DESTROY_MESSAGE;
+			}
+			break;
+		}
+#endif
+
+#if defined(_ALLOW_DEBUG_CHEATS_IN_RELEASE)
+		//-----------------------------------------------------------------------------------------
+		case GameMessage::MSG_CHEAT_TOGGLE_HAND_OF_GOD_MODE://NOTICE THE DIFFERENT NAME!!!!!!!!!!!!!!!!!!!!!!!!!!ML
+		{
+			if ( !TheGameLogic->isInMultiplayerGame() )
+			{
+				m_HandOfGodSelectionMode = !m_HandOfGodSelectionMode;
+				TheInGameUI->message( UnicodeString( L"Hand-Of-God Mode is %s" ), m_HandOfGodSelectionMode ? L"ON" : L"OFF" );
+#endif
 			disp = DESTROY_MESSAGE;
+#ifdef ZH
+			}
+#endif
 			break;
 		}
 #endif
@@ -1190,9 +1375,16 @@ GameMessageDisposition SelectionTranslator::translateGameMessage(const GameMessa
 		//-----------------------------------------------------------------------------------------
 		case GameMessage::MSG_META_DEMO_TOGGLE_HURT_ME_MODE:
 		{
+#ifdef ZH
+			if ( !TheGameLogic->isInMultiplayerGame() )
+			{
+#endif
 			TheHurtSelectionMode = !TheHurtSelectionMode;
 			TheInGameUI->message( UnicodeString( L"Hurt-Me Mode is %s" ), TheHurtSelectionMode ? L"ON" : L"OFF" );
 			disp = DESTROY_MESSAGE;
+#ifdef ZH
+			}
+#endif
 			break;
 		}
 #endif

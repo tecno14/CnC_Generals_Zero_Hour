@@ -54,8 +54,14 @@ BSC32=bscmake.exe
 # ADD BSC32 /nologo
 LINK32=link.exe
 # ADD BASE LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /nologo /subsystem:windows /machine:I386
+#ifdef OG
 # ADD LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /nologo /subsystem:windows /pdb:"../../../../Run/DatGen.pdb" /map:"../../../../Run/DatGen.map" /debug /machine:I386 /out:"../../../../Run/DatGen.exe"
 # SUBTRACT LINK32 
+#endif
+#ifdef ZH
+# ADD LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /nologo /subsystem:windows /pdb:"..\..\..\..\Run\DatGen.pdb" /map:"..\..\..\..\Run\DatGen.map" /debug /machine:I386 /out:"..\..\..\..\Run\DatGen.exe"
+
+#endif
 
 !ELSEIF  "$(CFG)" == "DatGen - Win32 Debug"
 
@@ -82,8 +88,14 @@ BSC32=bscmake.exe
 # ADD BSC32 /nologo
 LINK32=link.exe
 # ADD BASE LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /nologo /subsystem:windows /debug /machine:I386 
+#ifdef OG
 # ADD LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /nologo /subsystem:windows /pdb:"../../../../Run/DatGenD.pdb" /map:"../../../../Run/DatGenD.map" /debug /machine:I386 /out:"../../../../Run/DatGenD.exe"
 # SUBTRACT LINK32  
+#endif
+#ifdef ZH
+# ADD LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /nologo /subsystem:windows /pdb:"..\..\..\..\Run\DatGenD.pdb" /map:"..\..\..\..\Run\DatGenD.map" /debug /machine:I386 /out:"..\..\..\..\Run\DatGenD.exe"
+# SUBTRACT LINK32 /pdb:none
+#endif
 
 !ENDIF 
 

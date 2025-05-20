@@ -32,12 +32,27 @@
 #include "Common/BitFlagsIO.h"
 #include "Common/Player.h"
 #include "Common/Xfer.h"
+#ifdef ZH
+#include "Common/GameAudio.h"
+#include "Common/MiscAudio.h"
+#endif
 #include "GameClient/Anim2D.h"
 #include "GameClient/FXList.h"
 #include "GameClient/InGameUI.h"
+#ifdef ZH
+#include "GameClient/Drawable.h"
+#endif
 #include "GameLogic/GameLogic.h"
 #include "GameLogic/Object.h"
 #include "GameLogic/Module/CrateCollide.h"
+#ifdef ZH
+
+#ifdef _INTERNAL
+// for occasional debugging...
+//#pragma optimize("", off)
+//#pragma MESSAGE("************************************** WARNING, optimization disabled for debugging purposes")
+#endif
+#endif
 
 //-------------------------------------------------------------------------------------------------
 //-------------------------------------------------------------------------------------------------
@@ -176,8 +191,64 @@ Bool CrateCollide::isValidToExecute( const Object *other ) const
 	if( (md->m_pickupScience != SCIENCE_INVALID)  &&  other->getControllingPlayer()  &&  !other->getControllingPlayer()->hasScience(md->m_pickupScience) )
 		return FALSE; // Science required to pick this up
 
+#ifdef ZH
+	if( other->isKindOf( KINDOF_PARACHUTE ) )
+		return FALSE;
+
+#endif
 	return TRUE;
+#ifdef ZH
 }
+
+void CrateCollide::doSabotageFeedbackFX( const Object *other, SabotageVictimType type )
+{
+
+  if ( ! getObject() )
+    return;
+  if ( ! other )
+    return;
+
+	AudioEventRTS soundToPlay;
+  switch ( type )
+  {
+    case  CrateCollide::SAB_VICTIM_FAKE_BUILDING:
+    {
+      return; // THIS NEEDS NO ADD'L FEEDBACK
+    }
+    case 	CrateCollide::SAB_VICTIM_COMMAND_CENTER:
+    case 	CrateCollide::SAB_VICTIM_SUPERWEAPON:
+    {
+      soundToPlay = TheAudio->getMiscAudio()->m_sabotageResetTimerBuilding;
+      break;
+#endif
+}
+#ifdef ZH
+    case 	CrateCollide::SAB_VICTIM_DROP_ZONE:
+    case 	CrateCollide::SAB_VICTIM_SUPPLY_CENTER:
+    {
+      soundToPlay = TheAudio->getMiscAudio()->m_moneyWithdrawSound;
+      break;
+    }
+    case 	CrateCollide::SAB_VICTIM_INTERNET_CENTER:
+    case 	CrateCollide::SAB_VICTIM_MILITARY_FACTORY:
+    case 	CrateCollide::SAB_VICTIM_POWER_PLANT:
+    default:
+    {
+      soundToPlay = TheAudio->getMiscAudio()->m_sabotageShutDownBuilding;
+      break;
+    }
+  }
+
+	soundToPlay.setPosition( other->getPosition() );
+	TheAudio->addAudioEvent( &soundToPlay );
+
+  Drawable *draw = other->getDrawable();
+  if ( draw )
+    draw->flashAsSelected();
+
+}
+
+#endif
 
 // ------------------------------------------------------------------------------------------------
 /** CRC */

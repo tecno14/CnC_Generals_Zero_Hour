@@ -16,6 +16,9 @@
 **	along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#ifdef ZH
+// 08/05/02 KM Texture class redesign
+#endif
 #include "missingtexture.h"
 #include "texture.h"
 #include "dx8wrapper.h"
@@ -60,11 +63,25 @@ void MissingTexture::_Init()
 {
 	WWASSERT(!_MissingTexture);
 
+#ifdef OG
 	IDirect3DTexture8* tex=DX8Wrapper::_Create_DX8_Texture(
+
+#endif
+#ifdef ZH
+	IDirect3DTexture8* tex=DX8Wrapper::_Create_DX8_Texture
+	(
+#endif
 		missing_image_width,
 		missing_image_height,
 		WW3D_FORMAT_A8R8G8B8,
+#ifdef OG
 		TextureClass::MIP_LEVELS_ALL);
+
+#endif
+#ifdef ZH
+		MIP_LEVELS_ALL
+	);
+#endif
 
 	D3DLOCKED_RECT locked_rect;
 	RECT rect;

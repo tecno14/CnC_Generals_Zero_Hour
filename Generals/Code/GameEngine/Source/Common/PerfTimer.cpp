@@ -35,6 +35,22 @@
 #include "GameClient/Display.h"
 #include "GameClient/GraphDraw.h"
 
+#ifdef ZH
+__forceinline void ProfileGetTime(__int64 &t)
+{
+  _asm
+  {
+    mov ecx,[t]
+    push eax
+    push edx
+    rdtsc
+    mov [ecx],eax
+    mov [ecx+4],edx
+    pop edx
+    pop eax
+  };
+}
+#endif
 
 #ifdef _INTERNAL
 // for occasional debugging...
@@ -58,10 +74,90 @@ void GetPrecisionTimerTicksPerSec(Int64* t)
 {
 	*t = s_ticksPerSec;
 }
+#ifdef ZH
+
+//Kris: Plugged in Martin's code to optimize timer setup.
+#define HOFFESOMMER_REPLACEMENT_CODE
+#endif
 
 //-------------------------------------------------------------------------------------------------
 void InitPrecisionTimer()
+#ifdef ZH
 {
+#ifdef HOFFESOMMER_REPLACEMENT_CODE
+
+  // measure clock cycles 3 times for 20 msec each
+  // then take the 2 counts that are closest, average
+  _int64 n[ 3 ];
+  for( int k = 0; k < 3; k++ )
+  {
+    // wait for end of current tick
+    unsigned timeEnd = timeGetTime() + 2;
+    while( timeGetTime() < timeEnd ); //do nothing
+ 
+    // get cycles
+    _int64 start, startQPC, endQPC;
+    QueryPerformanceCounter( (LARGE_INTEGER *)&startQPC );
+    ProfileGetTime( start );
+    timeEnd += 20;
+    while( timeGetTime() < timeEnd ); //do nothing
+    ProfileGetTime( n[ k ] );
+    n[ k ] -= start;
+ 
+    // convert to 1 second
+    if( QueryPerformanceCounter( (LARGE_INTEGER*)&endQPC ) )
+    {
+      QueryPerformanceFrequency( (LARGE_INTEGER*)&s_ticksPerSec );
+      n[ k ] = ( n[ k ] * s_ticksPerSec ) / ( endQPC - startQPC );
+    }
+    else
+    {
+      n[ k ] = ( n[ k ] * 1000 ) / 20;
+    }
+  }
+ 
+  // find two closest values
+  _int64 d01 = n[ 1 ] - n[ 0 ];
+	_int64 d02 = n[ 2 ] - n[ 0 ];
+	_int64 d12 = n[ 2 ] - n[ 1 ];
+
+  if( d01 < 0 )
+	{
+		d01 = -d01;
+	}
+  if( d02 < 0 ) 
+	{
+		d02 = -d02;
+	}
+  if( d12 < 0 )
+	{
+		d12 = -d12;
+	}
+
+  _int64 avg;
+  if( d01 < d02 )
+  {
+    avg = d01 < d12 ? n[ 0 ] + n[ 1 ] : n[ 1 ] + n[ 2 ];
+  }
+  else
+#endif
+{
+#ifdef ZH
+    avg = d02 < d12 ? n[ 0 ] + n[ 2 ] : n[ 1 ] + n[ 2 ];
+  }
+
+	//s_ticksPerMSec = 1.0 * TotalTicks / totalTime;
+	s_ticksPerMSec = avg / 2000.0f;
+	s_ticksPerSec = s_ticksPerMSec * 1000.0f;
+	s_ticksPerUSec = s_ticksPerSec / 1000000.0f;
+
+	
+#else
+
+	//Kris: With total disrespect, this code costs 5 real seconds of init time
+	//whenever we fire up the game.
+
+#endif
 #ifdef USE_QPF
 	QueryPerformanceFrequency((LARGE_INTEGER*)&s_ticksPerSec);
 #else
@@ -116,6 +212,10 @@ void InitPrecisionTimer()
 	}
 	TheTicksToGetTicks = (bogus[7] - start) / (ITERS*8);
 	DEBUG_LOG(("TheTicksToGetTicks is %d (%f usec)\n",(int)TheTicksToGetTicks,TheTicksToGetTicks/s_ticksPerUSec));
+#ifdef ZH
+	#endif
+		
+#endif
 #endif
 
 }

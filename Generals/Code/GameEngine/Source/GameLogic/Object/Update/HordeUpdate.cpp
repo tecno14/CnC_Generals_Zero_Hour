@@ -125,6 +125,9 @@ HordeUpdateModuleData::HordeUpdateModuleData() :
 	m_rubOffRadius(20.0f),
 	m_alliesOnly(true),
 	m_exactMatch(false),
+#ifdef ZH
+	m_allowedNationalism(TRUE),
+#endif
 	m_action(HORDEACTION_HORDE)
 {
 }
@@ -145,6 +148,9 @@ HordeUpdateModuleData::HordeUpdateModuleData() :
 		{ "ExactMatch", INI::parseBool, NULL, offsetof(HordeUpdateModuleData, m_exactMatch) },
 		{ "Action", INI::parseIndexList, TheHordeActionTypeNames, offsetof(HordeUpdateModuleData, m_action) },
 		{ "FlagSubObjectNames", INI::parseAsciiStringVector, NULL, offsetof(HordeUpdateModuleData, m_flagSubObjNames) },
+#ifdef ZH
+		{ "AllowedNationalism", INI::parseBool, NULL, offsetof(HordeUpdateModuleData, m_allowedNationalism) },
+#endif
 		{ 0, 0, 0, 0 }
 	};
 	p.add(dataFieldParse);
@@ -176,6 +182,15 @@ HordeUpdate::~HordeUpdate()
 }
 
 //-------------------------------------------------------------------------------------------------
+#ifdef ZH
+Bool HordeUpdate::isAllowedNationalism() const
+{
+	const HordeUpdateModuleData *data = getHordeUpdateModuleData();
+	return data->m_allowedNationalism;
+}
+
+//-------------------------------------------------------------------------------------------------
+#endif
 /** @todo I think we should model the horde list ... so we can do all this without doing
   * all this scanning, plus we can give exactly 1 flag to the right person in the
 	* center of the horde which I think would look better (CBD) 
@@ -334,7 +349,18 @@ UpdateSleepTime HordeUpdate::update( void )
 				if ( isInfantry )
 				{
 					if( obj->testWeaponBonusCondition( WEAPONBONUSCONDITION_NATIONALISM ) == TRUE )
+#ifdef OG
 						nuType = (TERRAIN_DECAL_HORDE_WITH_NATIONALISM_UPGRADE);
+
+#endif
+#ifdef ZH
+          {
+            if ( obj->testWeaponBonusCondition( WEAPONBONUSCONDITION_FANATICISM ) == TRUE )
+  						nuType = ( TERRAIN_DECAL_HORDE_WITH_FANATICISM_UPGRADE );
+            else
+  						nuType = ( TERRAIN_DECAL_HORDE_WITH_NATIONALISM_UPGRADE );
+          }
+#endif
 					else
 						nuType =(TERRAIN_DECAL_HORDE);
 
@@ -347,7 +373,18 @@ UpdateSleepTime HordeUpdate::update( void )
 					draw->setTerrainDecalSize( size, size );
 
 					if( obj->testWeaponBonusCondition( WEAPONBONUSCONDITION_NATIONALISM ) == TRUE )
+#ifdef OG
 						nuType = (TERRAIN_DECAL_HORDE_WITH_NATIONALISM_UPGRADE_VEHICLE);
+
+#endif
+#ifdef ZH
+          {
+            if ( obj->testWeaponBonusCondition( WEAPONBONUSCONDITION_FANATICISM ) == TRUE )
+  						nuType = ( TERRAIN_DECAL_HORDE_WITH_FANATICISM_UPGRADE );
+            else
+  						nuType = ( TERRAIN_DECAL_HORDE_WITH_NATIONALISM_UPGRADE );
+          }
+#endif
 					else
 						nuType = (TERRAIN_DECAL_HORDE_VEHICLE);
 

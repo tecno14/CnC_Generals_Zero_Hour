@@ -118,7 +118,8 @@ Bool setUnsignedIntInRegistry( HKEY root, AsciiString path, AsciiString key, Uns
 	return (returnValue == ERROR_SUCCESS);
 }
 
-Bool GetStringFromRegistry(AsciiString path, AsciiString key, AsciiString& val)
+#ifdef ZH
+Bool GetStringFromGeneralsRegistry(AsciiString path, AsciiString key, AsciiString& val)
 {
 	AsciiString fullPath = "SOFTWARE\\Electronic Arts\\EA Games\\Generals";
 
@@ -132,9 +133,34 @@ Bool GetStringFromRegistry(AsciiString path, AsciiString key, AsciiString& val)
 	return getStringFromRegistry(HKEY_CURRENT_USER, fullPath.str(), key.str(), val);
 }
 
+#endif
+Bool GetStringFromRegistry(AsciiString path, AsciiString key, AsciiString& val)
+{
+#ifdef OG
+	AsciiString fullPath = "SOFTWARE\\Electronic Arts\\EA Games\\Generals";
+#endif
+#ifdef ZH
+	AsciiString fullPath = "SOFTWARE\\Electronic Arts\\EA Games\\Command and Conquer Generals Zero Hour";
+#endif
+
+	fullPath.concat(path);
+	DEBUG_LOG(("GetStringFromRegistry - looking in %s for key %s\n", fullPath.str(), key.str()));
+	if (getStringFromRegistry(HKEY_LOCAL_MACHINE, fullPath.str(), key.str(), val))
+	{
+		return TRUE;
+	}
+
+	return getStringFromRegistry(HKEY_CURRENT_USER, fullPath.str(), key.str(), val);
+}
+
 Bool GetUnsignedIntFromRegistry(AsciiString path, AsciiString key, UnsignedInt& val)
 {
+#ifdef OG
 	AsciiString fullPath = "SOFTWARE\\Electronic Arts\\EA Games\\Generals";
+#endif
+#ifdef ZH
+	AsciiString fullPath = "SOFTWARE\\Electronic Arts\\EA Games\\Command and Conquer Generals Zero Hour";
+#endif
 
 	fullPath.concat(path);
 	DEBUG_LOG(("GetUnsignedIntFromRegistry - looking in %s for key %s\n", fullPath.str(), key.str()));
@@ -149,6 +175,9 @@ Bool GetUnsignedIntFromRegistry(AsciiString path, AsciiString key, UnsignedInt& 
 AsciiString GetRegistryLanguage(void)
 {
 	static Bool cached = FALSE;
+#ifdef ZH
+	// NOTE: static causes a memory leak, but we have to keep it because the value is cached.
+#endif
 	static AsciiString val = "english";
 	if (cached) {
 		return val;

@@ -636,6 +636,9 @@ void Mouse::reset( void )
 	///@ todo Write Mouse::reset() if there needs to be anything here
 
 	// reset the text of the cursor text
+#ifdef ZH
+  if ( m_cursorTextDisplayString )
+#endif
 	m_cursorTextDisplayString->reset();
 
 }  // end reset
@@ -678,6 +681,13 @@ void Mouse::createStreamMessages( void )
   Int delay = m_tooltipDelayTime;
   if(m_tooltipDelay >= 0 )
      delay = m_tooltipDelay;
+#ifdef ZH
+	if( TheGlobalData->m_scriptDebug )
+	{
+		//No delay while scriptdebugging!
+		delay = 0;
+	}
+#endif
   
 	if( now - m_stillTime >= delay )
 	{

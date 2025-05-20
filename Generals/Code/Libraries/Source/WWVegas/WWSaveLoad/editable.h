@@ -24,14 +24,40 @@
  *                                                                                             *
  *                     $Archive:: /Commando/Code/wwsaveload/editable.h                        $*
  *                                                                                             *
+#ifdef OG
  *                       Author:: Patrick Smith                                                *
+
+#endif
+#ifdef ZH
  *                                                                                             *
+ *                   Org Author:: Patrick Smith                                                *
+#endif
+ *                                                                                             *
+#ifdef OG
  *                     $Modtime:: 11/02/00 3:34p                                              $*
+
+#endif
+#ifdef ZH
+ *                       Author:: Kenny Mitchell                                                *
  *                                                                                             *
+ *                     $Modtime:: 5/29/02 11:00a                                              $*
+#endif
+ *                                                                                             *
+#ifdef OG
  *                    $Revision:: 27                                                          $*
+#endif
+#ifdef ZH
+ *                    $Revision:: 29                                                          $*
+#endif
  *                                                                                             *
  *---------------------------------------------------------------------------------------------*
  * Functions:                                                                                  *
+#ifdef ZH
+ * 5/27/02 KM Added named filename parameter declaration
+ * 5/29/02 KM Added specific texture filename parameter support
+ *---------------------------------------------------------------------------------------------*
+ * Functions:                                                                                  *
+#endif
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
 
@@ -56,7 +82,12 @@
 //	EditableClass
 //
 //////////////////////////////////////////////////////////////////////////////////
+#ifdef OG
 class EditableClass : public PersistClass
+#endif
+#ifdef ZH
+class EditableClass
+#endif
 {
 public:
 
@@ -243,6 +274,29 @@ EditableClass::Unlock_Parameter (int i)
 		param->Set_Extension (extension);												\
 		plist_##_class.Add (param); }														\
 
+#ifdef ZH
+	#define NAMED_FILENAME_PARAM(_class, data, name, desc, extension) {						\
+		FilenameParameterClass *param = new FilenameParameterClass (&data);	\
+		param->Set_Name (name);																\
+		param->Set_Description (desc);													\
+		param->Set_Extension (extension);												\
+		plist_##_class.Add (param); }														\
+
+	#define TEXTURE_FILENAME_PARAM(_class, data, desc, extension) {						\
+		TextureFilenameParameterClass *param = new TextureFilenameParameterClass (&data);	\
+		param->Set_Name (#data);															\
+		param->Set_Description (desc);													\
+		param->Set_Extension (extension);												\
+		plist_##_class.Add (param); }														\
+
+	#define NAMED_TEXTURE_FILENAME_PARAM(_class, data, name, desc, extension) {						\
+		TextureFilenameParameterClass *param = new TextureFilenameParameterClass (&data);	\
+		param->Set_Name (name);																\
+		param->Set_Description (desc);													\
+		param->Set_Extension (extension);												\
+		plist_##_class.Add (param); }														\
+
+#endif
 	#define DEFIDLIST_PARAM(_class, data, root_class_id) {							\
 		DefIDListParameterClass *param = W3DNEW DefIDListParameterClass (&data);	\
 		param->Set_Name (#data);																\
@@ -293,6 +347,11 @@ EditableClass::Unlock_Parameter (int i)
 	#define SCRIPTLIST_PARAM(_class, name, name_list, param_list)
 	#define ENUM_PARAM(_class, data, params) 							
 	#define FILENAME_PARAM(_class, data, desc, extension) 						
+#ifdef ZH
+	#define NAMED_FILENAME_PARAM(_class, data, name, desc, extension)
+	#define TEXTURE_FILENAME_PARAM(_class, data, desc, extension)
+	#define NAMED_TEXTURE_FILENAME_PARAM(_class, data, name, desc, extension)
+#endif
 	#define DEFIDLIST_PARAM(_class, data, root_class_id) 							
 	#define CLASSID_DEFIDLIST_PARAM(_class, data, root_class_id, class_id, name) 	
 	#define ZONE_PARAM(_class, data, name) 											

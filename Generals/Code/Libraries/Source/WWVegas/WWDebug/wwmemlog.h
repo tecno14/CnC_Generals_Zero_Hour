@@ -28,9 +28,19 @@
  *                                                                                             *
  *                      $Author:: Jani_p                                                      $*
  *                                                                                             *
+#ifdef OG
  *                     $Modtime:: 8/23/01 11:46a                                              $*
+#endif
+#ifdef ZH
+ *                     $Modtime:: 11/09/01 6:51p                                              $*
+#endif
  *                                                                                             *
+#ifdef OG
  *                    $Revision:: 6                                                           $*
+#endif
+#ifdef ZH
+ *                    $Revision:: 8                                                           $*
+#endif
  *                                                                                             *
  *---------------------------------------------------------------------------------------------*
  * Functions:                                                                                  *
@@ -44,6 +54,10 @@
 #ifndef WWMEMLOG_H
 #define WWMEMLOG_H
 
+#ifdef ZH
+#define LOG_MEMORY	// Comment this out to disable memlog compiling in
+
+#endif
 class MemLogClass;
 
 /**
@@ -65,6 +79,13 @@ enum
 	MEM_GAMEDATA,			// game engine datastructures
 	MEM_PHYSICSDATA,		// physics engine datastructures
 	MEM_W3DDATA,			// w3d datastructures (not including ones more applicable to above categories)
+#ifdef ZH
+	MEM_STATICALLOCATION,// all the allocations that happen before the memlog Init() function call are from statically allocated objects
+	MEM_GAMEINIT,			// game init time allocations
+	MEM_RENDERER,			// dx8 renderer
+	MEM_NETWORK,
+	MEM_BINK,
+#endif
 
 	MEM_COUNT
 };
@@ -91,6 +112,10 @@ enum
 class WWMemoryLogClass
 {
 public:
+#ifdef ZH
+	static void				Enable_Memory_Log(bool enable) { IsMemoryLogEnabled=enable; }
+	static bool				Is_Memory_Log_Enabled() { return IsMemoryLogEnabled; }
+#endif
 
 	/*
 	** Accessors to the current memory map
@@ -118,6 +143,9 @@ public:
 	static int				Get_Allocate_Count();	// Return allocate count since last reset
 	static int				Get_Free_Count();			// Return allocate count since last reset
 
+#ifdef ZH
+	static void				Init();
+#endif
 protected:
 
 	/*
@@ -127,7 +155,15 @@ protected:
 	static void				Pop_Active_Category(void);
 
 	static MemLogClass * Get_Log(void);
+#ifdef OG
 	static void __cdecl Release_Log(void);
+
+#endif
+#ifdef ZH
+	static void  Release_Log(void);
+
+	static bool IsMemoryLogEnabled;
+#endif
 
 	friend class WWMemorySampleClass;
 };
@@ -142,9 +178,30 @@ protected:
 */
 class WWMemorySampleClass
 {
+#ifdef ZH
+	bool category_push;
+#endif
 public:
+#ifdef OG
 	WWMemorySampleClass(int category)		{ WWMemoryLogClass::Push_Active_Category(category); }
 	~WWMemorySampleClass(void)					{ WWMemoryLogClass::Pop_Active_Category(); }
+
+#endif
+#ifdef ZH
+	WWMemorySampleClass(int category) : category_push(WWMemoryLogClass::Is_Memory_Log_Enabled())
+	{
+		if (category_push) {
+			WWMemoryLogClass::Push_Active_Category(category);
+		}
+	}
+
+	~WWMemorySampleClass(void)
+	{
+		if (category_push) {
+			WWMemoryLogClass::Pop_Active_Category();
+		}
+	}
+#endif
 };
 
 
@@ -153,7 +210,12 @@ public:
 ** Use the WWMEMLOG macro to track all memory allocations within the current scope.
 ** If WWDEBUG is not enabled, memory usage logging will be disabled.
 */
+#ifdef OG
 #ifdef WWDEBUG
+#endif
+#ifdef ZH
+#ifdef USE_MEMLOG
+#endif
 #define	WWMEMLOG( category )					WWMemorySampleClass _memsample( category )
 #else
 #define	WWMEMLOG( category )

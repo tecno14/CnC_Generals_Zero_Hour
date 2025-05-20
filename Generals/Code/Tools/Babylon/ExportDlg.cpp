@@ -20,7 +20,12 @@
 //
 
 #include "stdafx.h"
+#ifdef OG
 #include "noxstring.h"
+#endif
+#ifdef ZH
+#include "Babylon.h"
+#endif
 #include "ExportDlg.h"
 #include "direct.h"
 

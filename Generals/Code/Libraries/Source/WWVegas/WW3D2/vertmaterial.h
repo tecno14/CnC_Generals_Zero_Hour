@@ -22,13 +22,28 @@
  *                                                                                             *
  *                 Project Name : WW3D                                                         *
  *                                                                                             *
+#ifdef OG
  *                     $Archive:: /VSS_Sync/ww3d2/vertmaterial.h                              $*
+#endif
+#ifdef ZH
+ *                     $Archive:: /Commando/Code/ww3d2/vertmaterial.h                         $*
+#endif
  *                                                                                             *
  *                       Author:: Greg Hjelstrom                                               *
  *                                                                                             *
+#ifdef OG
  *                     $Modtime:: 8/29/01 7:29p                                               $*
+#endif
+#ifdef ZH
+ *                     $Modtime:: 4/27/01 2:22p                                               $*
+#endif
  *                                                                                             *
+#ifdef OG
  *                    $Revision:: 26                                                          $*
+#endif
+#ifdef ZH
+ *                    $Revision:: 25                                                          $*
+#endif
  *                                                                                             *
  *---------------------------------------------------------------------------------------------*
  * Functions:                                                                                  *
@@ -207,6 +222,10 @@ public:
 	WW3DErrorType		Load_W3D(ChunkLoadClass & cload);
 	WW3DErrorType		Save_W3D(ChunkSaveClass & csave);
 
+#ifdef ZH
+	void					Parse_W3dVertexMaterialStruct(const W3dVertexMaterialStruct & vmat);
+	void					Parse_Mapping_Args(const W3dVertexMaterialStruct & vmat,char * mapping0_arg_buffer,char * mapping1_arg_buffer);
+#endif
 	void					Init_From_Material3(const W3dMaterial3Struct & mat3);
 
 	/*

@@ -337,6 +337,7 @@ m_qmChannel(0)
 			mapName = TheGameState->portableMapPathToRealMapPath(TheGameState->realMapPathToPortableMapPath(mapName));
 			mapName.toLower();
 
+#ifdef OG
 			// [SKB: Jul 01 2003 @ 6:43pm] :
 			// German2 is missing some maps because of content.  But, we need the m_qmMaps
 			// to contain same number of strings as the Retail version so that the
@@ -344,12 +345,15 @@ m_qmChannel(0)
 			#if 1
 			m_qmMaps.push_back(mapName);
 			#else
+#endif
 			const MapMetaData *md = TheMapCache->findMap(mapName);
 			if (md)
 			{
 				m_qmMaps.push_back(mapName);
 			} 
+#ifdef OG
 			#endif
+#endif
 		}
 		else if (inQMBot)
 		{

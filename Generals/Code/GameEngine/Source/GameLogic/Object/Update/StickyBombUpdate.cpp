@@ -30,12 +30,30 @@
 // USER INCLUDES //////////////////////////////////////////////////////////////////////////////////
 #include "PreRTS.h"	// This must go first in EVERY cpp file int the GameEngine
 
+#ifdef ZH
+#include "GameLogic/Module/StickyBombUpdate.h"
+
+#endif
 #include "Common/ThingTemplate.h"
+#ifdef ZH
+#include "Common/Player.h"
+#endif
 #include "Common/Xfer.h"
 #include "GameClient/Drawable.h"
+#ifdef ZH
+#include "GameClient/FXList.h"
+#endif
 #include "GameClient/InGameUI.h"
 #include "GameLogic/Object.h"
+#ifdef OG
 #include "GameLogic/Module/StickyBombUpdate.h"
+
+#endif
+#ifdef ZH
+#include "GameLogic/ObjectIter.h"
+#include "GameLogic/PartitionManager.h"
+#include "GameLogic/Weapon.h"
+#endif
 #include "GameLogic/Module/LifetimeUpdate.h"
 #include "GameLogic/Module/AIUpdate.h"
 #include "GameLogic/Module/BodyModule.h"
@@ -81,14 +99,24 @@ void StickyBombUpdate::onObjectCreated()
 			Object *target = ai->getGoalObject();
 			if( target )
 			{
+#ifdef OG
 				init( target, NULL);
+#endif
+#ifdef ZH
+				initStickyBomb( target, NULL);
+#endif
 			}
 		}
 	}
 }
 
 //-------------------------------------------------------------------------------------------------
+#ifdef OG
 void StickyBombUpdate::init( const Object *target, const Object *bomber)
+#endif
+#ifdef ZH
+void StickyBombUpdate::initStickyBomb( Object *target, const Object *bomber, const Coord3D *specificPos )
+#endif
 {
 	//Store the target.
 	m_targetID = target ? target->getID() : INVALID_ID;
@@ -125,10 +153,21 @@ void StickyBombUpdate::init( const Object *target, const Object *bomber)
 		const StickyBombUpdateModuleData* d = getStickyBombUpdateModuleData();
 		Coord3D pos = *target->getPosition();
 
+#ifdef ZH
+		if( specificPos )
+		{
+			pos = *specificPos;
+			pos.z = TheTerrainLogic->getGroundHeight(pos.x, pos.y);
+		}
+		else if(target->isKindOf( KINDOF_IMMOBILE ) && bomber )
+		{
+#endif
 		// make this exception, if bomber has placed bomb on a structure
 		// let the bomb just stay where it was first put, so a mine clearing unit can get to it later
+#ifdef OG
 		if(target->isKindOf( KINDOF_IMMOBILE ) && bomber )
 		{
+#endif
 			pos = *bomber->getPosition();
 			pos.z = TheTerrainLogic->getGroundHeight(pos.x, pos.y);
 			//keep it at ground height for mine clearing units to reach
@@ -137,6 +176,19 @@ void StickyBombUpdate::init( const Object *target, const Object *bomber)
 			pos.z += d->m_offsetZ; // ride on the roof of the truck/tank
 
 		getObject()->setPosition( &pos );
+#ifdef ZH
+
+		if( getObject()->isKindOf(KINDOF_BOOBY_TRAP) )
+		{
+			// This kind of sticky bomb needs to set a status, so the poor victim can trigger us from assorted places
+			target->setStatus( MAKE_OBJECT_STATUS_MASK(OBJECT_STATUS_BOOBY_TRAPPED) );
+		}
+
+		AudioEventRTS soundCreateBomb = *(getObject()->getTemplate()->getPerUnitSound("StickyBombCreated"));
+		soundCreateBomb.setPosition( getObject()->getPosition() );
+		TheAudio->addAudioEvent(&soundCreateBomb);
+		
+#endif
 	}
 }
 
@@ -207,8 +259,68 @@ void StickyBombUpdate::setTargetObject( Object *obj )
 
 //-------------------------------------------------------------------------------------------------
 void StickyBombUpdate::detonate()
+#ifdef ZH
 {
+	const StickyBombUpdateModuleData *data = getStickyBombUpdateModuleData();
+
+	Object* boobyTrappedObject = getTargetObject();
+	if( data->m_geometryBasedDamageWeaponTemplate )
+	{
+		// We need to hurt people based on the size of the thing we are on.  The radius in our weapon
+		// is the radius beyond our borders
+		if( boobyTrappedObject )
+		{
+			WeaponBonus nullBonus;
+			Real boundingCircle = boobyTrappedObject->getGeometryInfo().getBoundingCircleRadius();
+			Real primaryDamage = data->m_geometryBasedDamageWeaponTemplate->getPrimaryDamage(nullBonus);
+			Real secondaryDamage = data->m_geometryBasedDamageWeaponTemplate->getSecondaryDamage(nullBonus);
+			Real primaryDamageRange = data->m_geometryBasedDamageWeaponTemplate->getPrimaryDamageRadius(nullBonus);
+			Real secondaryDamageRange = data->m_geometryBasedDamageWeaponTemplate->getSecondaryDamageRadius(nullBonus);
+			primaryDamageRange += boundingCircle;
+			secondaryDamageRange += boundingCircle;
+			Real primaryDamageRangeSqr = sqr(primaryDamageRange);
+			Real radius = max(primaryDamageRange, secondaryDamageRange);
+
+			SimpleObjectIterator *iter;
+			iter = ThePartitionManager->iterateObjectsInRange(boobyTrappedObject->getPosition(), radius, FROM_BOUNDINGSPHERE_3D);
+			MemoryPoolObjectHolder hold(iter);
+			Real curVictimDistSqr;
+			Object *curVictim = iter->firstWithNumeric(&curVictimDistSqr);
+			DamageInfo damageInfo;
+			damageInfo.in.m_damageType = data->m_geometryBasedDamageWeaponTemplate->getDamageType();
+			damageInfo.in.m_deathType = data->m_geometryBasedDamageWeaponTemplate->getDeathType();
+			damageInfo.in.m_sourceID = getObject()->getID();
+			damageInfo.in.m_sourcePlayerMask = getObject()->getControllingPlayer()->getPlayerMask();
+			damageInfo.in.m_damageStatusType = data->m_geometryBasedDamageWeaponTemplate->getDamageStatusType();
+			
+			for (; curVictim != NULL; curVictim = iter ? iter->nextWithNumeric(&curVictimDistSqr) : NULL)
+#endif
+{
+#ifdef OG
 	getObject()->kill();
+
+#endif
+#ifdef ZH
+				damageInfo.in.m_amount = (curVictimDistSqr <= primaryDamageRangeSqr) ? primaryDamage : secondaryDamage;
+				curVictim->attemptDamage(&damageInfo);
+			}
+
+			if( data->m_geometryBasedDamageFX )
+			{
+				// And we make FX based on that size too.
+				FXList::doFXPos(data->m_geometryBasedDamageFX, boobyTrappedObject->getPosition(), NULL, 0, NULL, secondaryDamageRange);
+			}
+		}
+	}
+	
+	if( getObject()->isKindOf(KINDOF_BOOBY_TRAP) && boobyTrappedObject )
+	{
+		// This kind of sticky bomb needs to set a status, so the poor victim can trigger us from assorted places
+		boobyTrappedObject->clearStatus( MAKE_OBJECT_STATUS_MASK(OBJECT_STATUS_BOOBY_TRAPPED) );
+	}
+
+	getObject()->kill();// Most things just fire weapons in their death modules
+#endif
 }
 
 // ------------------------------------------------------------------------------------------------

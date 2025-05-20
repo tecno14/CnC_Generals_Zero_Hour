@@ -37,8 +37,15 @@
 #include "Common/ThingFactory.h"
 #include "Common/ThingTemplate.h"
 #include "Common/Xfer.h"
+#ifdef ZH
+#include "Common/Player.h"
+#include "Common/PlayerList.h"
+#endif
 #include "GameClient/Drawable.h"
 #include "GameClient/GameClient.h"
+#ifdef ZH
+#include "GameClient/ParticleSys.h"
+#endif
 #include "GameLogic/AIPathfind.h"
 #include "GameLogic/Locomotor.h"
 #include "GameLogic/Module/ContainModule.h"
@@ -76,7 +83,14 @@ enum ChinookAIStateType
 	HEAD_OFF_MAP,
 	
 	MOVE_TO_COMBAT_DROP,
+#ifdef OG
 	DO_COMBAT_DROP
+
+#endif
+#ifdef ZH
+	DO_COMBAT_DROP,
+	MOVE_TO_AND_EVAC_AND_EXIT_INIT
+#endif
 };
 
 
@@ -154,8 +168,14 @@ public:
 	StateReturnType onEnter() // Give move order out of town
 	{
 		Object *owner = getMachineOwner();
+#ifdef OG
 		AIUpdateInterface *ai = owner->getAIUpdateInterface();
+#endif
+#ifdef ZH
+		ChinookAIUpdate* ai = (ChinookAIUpdate*)owner->getAIUpdateInterface();
+#endif
 
+#ifdef OG
 		// just keep moving straight ahead till we exit the map.
 		Coord3D exitCoord = *owner->getPosition();
 		const Coord3D* dir = owner->getUnitDirectionVector2D();
@@ -169,6 +189,12 @@ public:
 		exitCoord.y += dir->y * HUGE_DIST;
 
 		ai->aiMoveToPosition( &exitCoord, CMD_FROM_AI );
+#endif
+#ifdef ZH
+		owner->setStatus( MAKE_OBJECT_STATUS_MASK( OBJECT_STATUS_RIDER8 ) );
+		ai->aiMoveToPosition( ai->getOriginalPosition(), CMD_FROM_AI );
+
+#endif
 		ai->getCurLocomotor()->setAllowInvalidPosition(true);
 
 		return STATE_CONTINUE;
@@ -180,13 +206,26 @@ public:
 
 		Region3D mapRegion;
 		TheTerrainLogic->getExtentIncludingBorder( &mapRegion );
+#ifdef OG
 		if (!mapRegion.isInRegionNoZ( owner->getPosition() ))
+#endif
+#ifdef ZH
+		if( !mapRegion.isInRegionNoZ( owner->getPosition() ) )
+#endif
 		{
 			TheGameLogic->destroyObject(owner);
 			return STATE_SUCCESS;
 		}
 
 		return STATE_CONTINUE;
+#ifdef ZH
+	}
+
+	void onExit()
+	{
+		Object *owner = getMachineOwner();
+		owner->clearStatus( MAKE_OBJECT_STATUS_MASK( OBJECT_STATUS_RIDER8 ) );
+#endif
 	}
 };
 EMPTY_DTOR(ChinookHeadOffMapState)
@@ -769,8 +808,62 @@ public:
 
 };
 EMPTY_DTOR(ChinookMoveToBldgState)
+#ifdef ZH
 
+//-----------------------------------------------------------------------------------------------------------
+/**
+ * Store the original position we are assigned to for exit.
+ */
+class ChinookRecordCreationState : public State
+{
+	MEMORY_POOL_GLUE_WITH_USERLOOKUP_CREATE(ChinookRecordCreationState, "ChinookRecordCreationState")		
+protected:
+	// snapshot interface
+	virtual void crc( Xfer *xfer )
+	{
+		// empty
+	}
+#endif
 
+#ifdef ZH
+	virtual void xfer( Xfer *xfer )
+	{
+		// version
+		XferVersion currentVersion = 1;
+		XferVersion version = currentVersion;
+		xfer->xferVersion( &version, currentVersion );
+	}
+#endif
+
+#ifdef ZH
+	virtual void loadPostProcess()
+	{
+		// empty
+	}
+
+public:
+	ChinookRecordCreationState( StateMachine *machine ): State( machine, "ChinookRecordCreationState" ) { }
+
+	virtual StateReturnType onEnter()
+	{
+		Object* obj = getMachineOwner();
+		ChinookAIUpdate* ai = (ChinookAIUpdate*)obj->getAIUpdateInterface();
+		if( ai )
+		{
+			ai->recordOriginalPosition( *obj->getPosition() );
+		}
+		return STATE_SUCCESS;
+	}
+
+	virtual StateReturnType update()
+	{
+		return STATE_SUCCESS;
+	}
+
+};
+EMPTY_DTOR(ChinookRecordCreationState)
+
+#endif
 //-------------------------------------------------------------------------------------------------
 //-------------------------------------------------------------------------------------------------
 //-------------------------------------------------------------------------------------------------
@@ -799,6 +892,9 @@ ChinookAIStateMachine::ChinookAIStateMachine(Object *owner, AsciiString name) : 
 	defineState( LAND_AND_EVAC, newInstance(ChinookTakeoffOrLandingState)( this, true ), EVAC_AND_TAKEOFF, AI_IDLE );
 	defineState( EVAC_AND_TAKEOFF, newInstance(ChinookEvacuateState)( this ), TAKING_OFF, AI_IDLE );
 
+#ifdef ZH
+	defineState( MOVE_TO_AND_EVAC_AND_EXIT_INIT, newInstance(ChinookRecordCreationState)( this ), MOVE_TO_AND_EVAC_AND_EXIT, AI_IDLE );
+#endif
 	defineState( MOVE_TO_AND_EVAC_AND_EXIT, newInstance(AIMoveToState)( this ), LAND_AND_EVAC_AND_EXIT, AI_IDLE );
 	defineState( LAND_AND_EVAC_AND_EXIT, newInstance(ChinookTakeoffOrLandingState)( this, true ), EVAC_AND_EXIT, AI_IDLE );
 	defineState( EVAC_AND_EXIT, newInstance(ChinookEvacuateState)( this ), TAKEOFF_AND_EXIT, AI_IDLE );
@@ -834,6 +930,10 @@ ChinookAIUpdateModuleData::ChinookAIUpdateModuleData()
 	m_ropeWobbleLen = 10.0f;
 	m_ropeWobbleAmp = 1.0f;
 	m_ropeWobbleRate = 0.1f;
+#ifdef ZH
+  m_rotorWashParticleSystem.clear();
+	m_upgradedSupplyBoost = 0;
+#endif
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -857,6 +957,11 @@ ChinookAIUpdateModuleData::ChinookAIUpdateModuleData()
 		{ "PerRopeDelayMax", INI::parseDurationUnsignedInt, 0, offsetof(ChinookAIUpdateModuleData, m_perRopeDelayMax) },
 		{ "MinDropHeight", INI::parseReal, 0, offsetof(ChinookAIUpdateModuleData, m_minDropHeight) },
 		{ "WaitForRopesToDrop", INI::parseBool, 0, offsetof(ChinookAIUpdateModuleData, m_waitForRopesToDrop) },
+#ifdef ZH
+		{ "RotorWashParticleSystem", INI::parseAsciiString,	NULL, offsetof( ChinookAIUpdateModuleData, m_rotorWashParticleSystem ) },
+		{ "UpgradedSupplyBoost", INI::parseInt, NULL, offsetof( ChinookAIUpdateModuleData, m_upgradedSupplyBoost) },
+
+#endif
 		{ 0, 0, 0, 0 }
 	};
   p.add(dataFieldParse);
@@ -878,6 +983,9 @@ ChinookAIUpdate::ChinookAIUpdate( Thing *thing, const ModuleData* moduleData ) :
 	m_hasPendingCommand = false;	
 	m_flightStatus = CHINOOK_FLYING;	// yep, that's right, even if we start "on ground"
 	m_airfieldForHealing = INVALID_ID;
+#ifdef ZH
+	m_originalPos.zero();
+#endif
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -890,7 +998,12 @@ ChinookAIUpdate::~ChinookAIUpdate()
 static ParkingPlaceBehaviorInterface* getPP(ObjectID id)
 {
 	Object* airfield = TheGameLogic->findObjectByID( id );
+#ifdef OG
 	if (airfield == NULL || airfield->isEffectivelyDead() || !airfield->isKindOf(KINDOF_AIRFIELD))
+#endif
+#ifdef ZH
+	if (airfield == NULL || airfield->isEffectivelyDead() || !airfield->isKindOf(KINDOF_FS_AIRFIELD))
+#endif
 		return NULL;
 
 	ParkingPlaceBehaviorInterface* pp = NULL;
@@ -952,7 +1065,12 @@ Bool ChinookAIUpdate::isAvailableForSupplying() const
 		return false;
 
 	ContainModuleInterface* contain = getObject()->getContain();
+#ifdef OG
 	if( !contain || contain->hasObjectsWantingToEnterOrExit() || contain->getContainCount())
+#endif
+#ifdef ZH
+	if( !contain || contain->hasObjectsWantingToEnterOrExit() || contain->getContainCount() || contain->isSpecialOverlordStyleContainer())
+#endif
 		return false;
 
 	return true;
@@ -963,6 +1081,13 @@ Bool ChinookAIUpdate::isAllowedToAdjustDestination() const
 {
 	 if (m_flightStatus == CHINOOK_LANDED)
 		return false;
+#ifdef ZH
+
+	if( getCurLocomotor()->isInvalidPositionAllowed() )
+	{
+		return FALSE;
+	}
+#endif
 	
 	return SupplyTruckAIUpdate::isAllowedToAdjustDestination(); 
 }
@@ -1024,10 +1149,16 @@ UpdateSleepTime ChinookAIUpdate::update()
 
 	// have to call our parent's isIdle, because we override it to never return true
 	// when we have a pending command...
+#ifdef OG
 	if (SupplyTruckAIUpdate::isIdle())
 	{
+#endif
 		ContainModuleInterface* contain = getObject()->getContain();
 		if( contain )
+#ifdef ZH
+	{
+	  if (SupplyTruckAIUpdate::isIdle())
+#endif
 		{
 			Bool waitingToEnterOrExit = contain->hasObjectsWantingToEnterOrExit();
 			if (m_hasPendingCommand)
@@ -1044,10 +1175,73 @@ UpdateSleepTime ChinookAIUpdate::update()
 			else if (!waitingToEnterOrExit && m_flightStatus == CHINOOK_LANDED && m_airfieldForHealing == INVALID_ID)
 			{
 				setMyState(TAKING_OFF, NULL, NULL, CMD_FROM_AI);
+#ifdef ZH
+			}
+		}
+
+    if ( TheGameLogic->getFrame()%10 == 1 )
+    {
+	    Object *victim = getCurrentVictim();
+      if ( victim )
+      {
+       // privateAttackObject( victim, 9999, CMD_FROM_AI );
+
+        //If we are attacking something, lets make sure our passengers follow suit
+        if ( contain->isPassengerAllowedToFire() )
+        {
+			    const ContainedItemsList *passengerList = contain->getContainedItemsList();
+			    ContainedItemsList::const_iterator passengerIterator;
+			    passengerIterator = passengerList->begin();
+
+			    while( passengerIterator != passengerList->end() )
+			    {
+				    Object *passenger = *passengerIterator;
+				    //Advance to the next iterator
+				    passengerIterator++;
+
+				    AIUpdateInterface *passengerAI = passenger->getAIUpdateInterface();
+				    if( passengerAI && (passengerAI->getCurrentVictim() == NULL) )
+				    {
+					    passengerAI->aiAttackObject( victim, 999, CMD_FROM_AI );
+				    }
+			    }
+        }
+
+      }
+    }
+
+	}
+
+  // Just a handy spot to handle that groovy client effect of the rotor wash
+  if ( getObject()->getShroudedStatus( ThePlayerList->getLocalPlayer()->getPlayerIndex()) == OBJECTSHROUD_CLEAR )
+  {
+    if ( m_flightStatus == CHINOOK_LANDING || m_flightStatus == CHINOOK_TAKING_OFF || m_flightStatus == CHINOOK_LANDED )
+    {
+      Coord3D pos = *getObject()->getPosition();
+      Real chopperElevation = pos.z;
+      pos.z = TheTerrainLogic->getGroundHeight( pos.x, pos.y ) + 3.0f;
+      chopperElevation -= pos.z;
+
+      if ( GameClientRandomValueReal( 0.0f, chopperElevation ) < 5.0f )
+      {
+	      const ParticleSystemTemplate *tmp = TheParticleSystemManager->findTemplate( getChinookAIUpdateModuleData()->m_rotorWashParticleSystem );
+	      ParticleSystem *system;
+	      if( tmp )
+	      {
+		      system = TheParticleSystemManager->createParticleSystem( tmp );
+		      if( system )
+		      {
+			      system->setPosition( &pos );
+#endif
 			}
 		}
 	}
 
+#ifdef ZH
+    }
+  }
+
+#endif
 	return SupplyTruckAIUpdate::update();
 }
 
@@ -1170,7 +1364,12 @@ void ChinookAIUpdate::aiDoCommand(const AICommandParms* parms)
 			{
 				// do this INSTEAD of the standard stuff
 				setMyState(
+#ifdef OG
 					(parms->m_cmd == AICMD_MOVE_TO_POSITION_AND_EVACUATE) ? MOVE_TO_AND_EVAC : MOVE_TO_AND_EVAC_AND_EXIT, 
+#endif
+#ifdef ZH
+					(parms->m_cmd == AICMD_MOVE_TO_POSITION_AND_EVACUATE) ? MOVE_TO_AND_EVAC : MOVE_TO_AND_EVAC_AND_EXIT_INIT, 
+#endif
 					NULL, &parms->m_pos, CMD_FROM_AI);
 				passItThru = false;
 			}
@@ -1231,9 +1430,17 @@ void ChinookAIUpdate::xfer( Xfer *xfer )
 {
 
   // version
+#ifdef OG
   XferVersion currentVersion = 1;
+#endif
+#ifdef ZH
+  XferVersion currentVersion = 2;
+#endif
   XferVersion version = currentVersion;
   xfer->xferVersion( &version, currentVersion );
+#ifdef ZH
+	// extend base class
+#endif
 	SupplyTruckAIUpdate::xfer(xfer);
 
 	xfer->xferBool(&m_hasPendingCommand);
@@ -1242,7 +1449,18 @@ void ChinookAIUpdate::xfer( Xfer *xfer )
 	}
 	xfer->xferUser(&m_flightStatus, sizeof(m_flightStatus));
 	xfer->xferObjectID(&m_airfieldForHealing);
+#ifdef OG
  // extend base class
+
+#endif
+#ifdef ZH
+
+	if( version >= 2 )
+	{
+		xfer->xferCoord3D( &m_originalPos );
+	}
+
+#endif
 }  // end xfer
 
 // ------------------------------------------------------------------------------------------------
@@ -1252,3 +1470,280 @@ void ChinookAIUpdate::loadPostProcess( void )
 {
 	SupplyTruckAIUpdate::loadPostProcess();
 }  // end loadPostProcess
+#ifdef ZH
+
+
+//----------------------------------------------------------------------------------------
+/**
+ * Enter idle state.
+ */
+void ChinookAIUpdate::privateIdle(CommandSourceType cmdSource)
+{
+
+  // Just an extra step, here, before extending idle to parent classes.
+  // Living in you own privateIdle-ho.
+  ContainModuleInterface* contain = getObject()->getContain();
+	if( contain != NULL )
+	{
+    Object *rider = (Object*)contain->friend_getRider();
+    if ( rider )
+    {
+			AIUpdateInterface *riderAI = rider->getAIUpdateInterface();
+			if( riderAI )
+				riderAI->aiIdle( cmdSource );
+		}
+  }
+
+  SupplyTruckAIUpdate::privateIdle( cmdSource );
+
+}
+
+//-------------------------------------------------------------------------------------------------
+/**
+ * Attack given object
+ */
+void ChinookAIUpdate::privateAttackObject( Object *victim, Int maxShotsToFire, CommandSourceType cmdSource )
+{
+
+  if ( ! getObject()->isKindOf( KINDOF_CAN_ATTACK ) )
+    return;
+
+  ContainModuleInterface* contain = getObject()->getContain();
+	if( contain != NULL )
+	{
+		// As an extension of the normal attack, I may want to tell my passengers to attack 
+		// too, but only if this is a direct command.  (As opposed to a passive aquire)
+		if( (cmdSource == CMD_FROM_PLAYER  ||  cmdSource == CMD_FROM_SCRIPT) )
+		{
+      //if ( contain->isPassengerAllowedToFire() )//moved to below
+      {
+			  const ContainedItemsList *passengerList = contain->getContainedItemsList();
+			  ContainedItemsList::const_iterator passengerIterator;
+			  passengerIterator = passengerList->begin();
+
+			  while( passengerIterator != passengerList->end() )
+			  {
+				  Object *passenger = *passengerIterator;
+				  //Advance to the next iterator
+				  passengerIterator++;
+
+          if ( ! contain->isPassengerAllowedToFire( passenger->getID() ) )
+            continue;
+
+          if ( ! passenger->isKindOf( KINDOF_INFANTRY ))
+            continue;
+
+				  // If I am an overlord with a gattling upgrade, I do not tell it to fire if it is disabled
+				  if ( passenger->isKindOf( KINDOF_PORTABLE_STRUCTURE ) )
+				  {
+					  if( passenger->isDisabledByType( DISABLED_HACKED ) 
+						  || passenger->isDisabledByType( DISABLED_EMP ) 
+						  || passenger->isDisabledByType( DISABLED_SUBDUED ) 
+						  || passenger->isDisabledByType( DISABLED_PARALYZED) )
+						  continue;
+				  }
+				  
+				  AIUpdateInterface *passengerAI = passenger->getAIUpdateInterface();
+				  if( passengerAI )
+				  {
+					  passengerAI->aiAttackObject( victim, maxShotsToFire, cmdSource );
+				  }
+			  }
+
+      }
+
+      private___TellPortableStructureToAttackWithMe( victim, maxShotsToFire, cmdSource );
+
+		}
+	}
+
+	AIUpdateInterface::privateAttackObject( victim, maxShotsToFire, cmdSource );
+}
+
+void ChinookAIUpdate::private___TellPortableStructureToAttackWithMe( Object *victim, Int maxShotsToFire, CommandSourceType cmdSource )
+{
+  ContainModuleInterface* contain = getObject()->getContain();
+	if( contain != NULL )
+	{
+    //--------- THE GATTLING UPGRADE OR THE GUYS IN THE BUNKER_NOT_A_BUNKER-------------
+    Object *rider = (Object*)contain->friend_getRider();
+		if ( rider 
+      && rider->isKindOf( KINDOF_PORTABLE_STRUCTURE ) 
+      && !rider->isDisabledByType( DISABLED_HACKED ) 
+			&& !rider->isDisabledByType( DISABLED_EMP ) 
+			&& !rider->isDisabledByType( DISABLED_SUBDUED ) 
+			&& !rider->isDisabledByType( DISABLED_PARALYZED) )
+    {
+			AIUpdateInterface *riderAI = rider->getAIUpdateInterface();
+			if( riderAI )
+			{
+				riderAI->aiAttackObject( victim, maxShotsToFire, cmdSource );
+			}
+		}
+  }
+}
+
+//-------------------------------------------------------------------------------------------------
+/**
+ * Attack given object
+ */
+void ChinookAIUpdate::privateForceAttackObject( Object *victim, Int maxShotsToFire, CommandSourceType cmdSource )
+{
+
+  if ( ! getObject()->isKindOf( KINDOF_CAN_ATTACK ) )
+    return;
+
+  ContainModuleInterface* contain = getObject()->getContain();
+	if( contain != NULL )
+	{
+		// As an extension of the normal attack, I may want to tell my passengers to attack 
+		// too, but only if this is a direct command.  (As opposed to a passive aquire)
+		if( (cmdSource == CMD_FROM_PLAYER  ||  cmdSource == CMD_FROM_SCRIPT) )
+		{
+//      if ( contain->isPassengerAllowedToFire() )
+      {
+			  const ContainedItemsList *passengerList = contain->getContainedItemsList();
+			  ContainedItemsList::const_iterator passengerIterator;
+			  passengerIterator = passengerList->begin();
+
+			  while( passengerIterator != passengerList->end() )
+			  {
+				  Object *passenger = *passengerIterator;
+				  //Advance to the next iterator
+				  passengerIterator++;
+
+          if ( ! contain->isPassengerAllowedToFire( passenger->getID() ) )
+            continue;
+
+          if ( ! passenger->isKindOf( KINDOF_INFANTRY ))
+            continue;
+
+				  // If I am an overlord with a gattling upgrade, I do not tell it to fire if it is disabled
+				  if ( passenger->isKindOf( KINDOF_PORTABLE_STRUCTURE ) )
+				  {
+					  if( passenger->isDisabledByType( DISABLED_HACKED ) 
+						  || passenger->isDisabledByType( DISABLED_EMP ) 
+						  || passenger->isDisabledByType( DISABLED_SUBDUED ) 
+						  || passenger->isDisabledByType( DISABLED_PARALYZED) )
+						  continue;
+				  }
+				  
+				  AIUpdateInterface *passengerAI = passenger->getAIUpdateInterface();
+				  if( passengerAI )
+				  {
+					  passengerAI->aiForceAttackObject( victim, maxShotsToFire, cmdSource );
+				  }
+
+			  }
+      }
+
+      //--------- THE GATTLING UPGRADE OR THE GUYS IN THE BUNKER_NOT_A_BUNKER-------------
+      Object *rider = (Object*)contain->friend_getRider();
+			if ( rider 
+        && rider->isKindOf( KINDOF_PORTABLE_STRUCTURE ) 
+        && !rider->isDisabledByType( DISABLED_HACKED ) 
+				&& !rider->isDisabledByType( DISABLED_EMP ) 
+				&& !rider->isDisabledByType( DISABLED_SUBDUED ) 
+				&& !rider->isDisabledByType( DISABLED_PARALYZED) )
+      {
+				AIUpdateInterface *riderAI = rider->getAIUpdateInterface();
+				if( riderAI )
+				{
+					riderAI->aiForceAttackObject( victim, maxShotsToFire, cmdSource );
+				}
+			}
+
+		}
+	}
+
+	AIUpdateInterface::privateForceAttackObject( victim, maxShotsToFire, cmdSource );
+}
+
+//-------------------------------------------------------------------------------------------------
+/**
+ * Attack given position
+ */
+void ChinookAIUpdate::privateAttackPosition( const Coord3D *pos, Int maxShotsToFire, CommandSourceType cmdSource )
+{
+
+  if ( ! getObject()->isKindOf( KINDOF_CAN_ATTACK ) )
+    return;
+
+	ContainModuleInterface* contain = getObject()->getContain();
+	if( contain != NULL )
+	{
+		// As an extension of the normal attack, I may want to tell my passengers to attack 
+		// too, but only if this is a direct command.  (As opposed to a passive aquire)
+		if( (cmdSource == CMD_FROM_PLAYER  ||  cmdSource == CMD_FROM_SCRIPT) )
+		{
+
+      //if ( contain->isPassengerAllowedToFire() )
+      {
+			  const ContainedItemsList *passengerList = contain->getContainedItemsList();
+			  ContainedItemsList::const_iterator passengerIterator;
+			  passengerIterator = passengerList->begin();
+
+			  while( passengerIterator != passengerList->end() )
+			  {
+				  Object *passenger = *passengerIterator;
+				  //Advance to the next iterator
+				  passengerIterator++;
+
+          if ( ! contain->isPassengerAllowedToFire( passenger->getID() ) )
+            continue;
+
+          if ( ! passenger->isKindOf( KINDOF_INFANTRY ))
+            continue;
+
+          // If I am an overlord with a gattling upgrade, I do not tell it ti fire if it is disabled
+				  if ( passenger->isKindOf( KINDOF_PORTABLE_STRUCTURE ) )
+				  {
+					  if( passenger->isDisabledByType( DISABLED_HACKED ) 
+						  || passenger->isDisabledByType( DISABLED_EMP) 
+						  || passenger->isDisabledByType( DISABLED_SUBDUED) 
+						  || passenger->isDisabledByType( DISABLED_PARALYZED) )
+						  continue;
+				  }
+
+				  AIUpdateInterface *passengerAI = passenger->getAIUpdateInterface();
+				  if( passengerAI )
+				  {
+					  passengerAI->aiAttackPosition( pos, maxShotsToFire, cmdSource );
+				  }
+
+			  }
+      }
+
+      //--------- THE GATTLING UPGRADE OR THE GUYS IN THE BUNKER_NOT_A_BUNKER-------------
+      Object *rider = (Object*)contain->friend_getRider();
+			if ( rider 
+        && rider->isKindOf( KINDOF_PORTABLE_STRUCTURE ) 
+        && !rider->isDisabledByType( DISABLED_HACKED ) 
+				&& !rider->isDisabledByType( DISABLED_EMP ) 
+				&& !rider->isDisabledByType( DISABLED_SUBDUED ) 
+				&& !rider->isDisabledByType( DISABLED_PARALYZED) )
+      {
+				AIUpdateInterface *riderAI = rider->getAIUpdateInterface();
+				if( riderAI )
+				{
+					riderAI->aiAttackPosition( pos, maxShotsToFire, cmdSource );
+				}
+			}
+		}
+	}
+
+	AIUpdateInterface::privateAttackPosition( pos, maxShotsToFire, cmdSource );
+}
+
+//------------------------------------------------------------------------------------------------
+Int ChinookAIUpdate::getUpgradedSupplyBoost() const
+{
+	Player *player = getObject()->getControllingPlayer();
+	static const UpgradeTemplate *supplyLinesTemplate = TheUpgradeCenter->findUpgrade( "Upgrade_AmericaSupplyLines" );
+		
+	if (player && supplyLinesTemplate && player->hasUpgradeComplete(supplyLinesTemplate))
+		return getChinookAIUpdateModuleData()->m_upgradedSupplyBoost;
+	else
+		return 0;
+}
+#endif

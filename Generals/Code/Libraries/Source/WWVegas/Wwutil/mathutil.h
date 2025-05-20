@@ -51,7 +51,12 @@ class cMathUtil
       static double  Get_Normalized_Hat_Pdf_Double();
       static int     Get_Hat_Pdf_Int(int lower, int upper);
 
+#ifdef OG
 		static const double PI;
+#endif
+#ifdef ZH
+		static const double PI_1;
+#endif
 		static const double PI_2;
 };
 

@@ -91,17 +91,38 @@ public:
 
 	virtual OpenContain *asOpenContain() { return this; }  ///< treat as open container
 	virtual Bool isGarrisonable() const { return false; }	///< can this unit be Garrisoned? (ick)
+#ifdef ZH
+	virtual Bool isBustable() const { return TRUE; }	///< can this container get busted by a bunkerbuster
+#endif
 	virtual Bool isHealContain() const { return false; } ///< true when container only contains units while healing (not a transport!)
+#ifdef ZH
+	virtual Bool isTunnelContain() const { return TRUE; }
+#endif
 	virtual Bool isImmuneToClearBuildingAttacks() const { return true; }
+#ifdef ZH
+  virtual Bool isSpecialOverlordStyleContainer() const {return FALSE;}
+#endif
 
+#ifdef OG
 	virtual void onContaining( Object *obj );		///< object now contains 'obj'
+#endif
+#ifdef ZH
+	virtual void onContaining( Object *obj, Bool wasSelected );		///< object now contains 'obj'
+#endif
 	virtual void onRemoving( Object *obj );			///< object no longer contains 'obj'
 	virtual void onSelling();///< Container is being sold.  Tunnel responds by kicking people out if this is the last tunnel.
+#ifdef ZH
+	virtual void onCapture( Player *oldOwner, Player *newOwner ); // Need to change who we are registered with.
+#endif
 
 	virtual Bool isValidContainerFor(const Object* obj, Bool checkCapacity) const;
 	virtual void addToContainList( Object *obj );		///< The part of AddToContain that inheritors can override (Can't do whole thing because of all the private stuff involved)
 	virtual void removeFromContain( Object *obj, Bool exposeStealthUnits = FALSE );	///< remove 'obj' from contain list
 	virtual void removeAllContained( Bool exposeStealthUnits = FALSE );				///< remove all objects on contain list
+#ifdef ZH
+  virtual void harmAndForceExitAllContained( DamageInfo *info );
+  virtual void killAllContained( void );				///< kill all objects on contain list
+#endif
 
 	// contain list access
 	virtual void iterateContained( ContainIterateFunc func, void *userData, Bool reverse );
@@ -116,7 +137,14 @@ public:
 
 	virtual void onDelete( void );
 	virtual void onCreate( void );
+#ifdef OG
 	virtual void onBuildComplete();	///< This is called when you are a finished game object
+
+#endif
+#ifdef ZH
+	virtual void onObjectCreated();
+	virtual void onBuildComplete();
+#endif
 	virtual Bool shouldDoOnBuildComplete() const { return m_needToRunOnBuildComplete; }
 
 	// so that the ppl within the tunnel network can get healed	

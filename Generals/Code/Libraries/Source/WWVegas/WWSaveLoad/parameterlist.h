@@ -82,7 +82,12 @@ private:
 	/////////////////////////////////////////////////////////////////////
 	// Private member data
 	/////////////////////////////////////////////////////////////////////
+#ifdef OG
 	DynamicVectorClass<ParameterClass *>		m_Parameters;
+#endif
+#ifdef ZH
+	//DynamicVectorClass<ParameterClass *>		m_Parameters;
+#endif
 };
 
 
@@ -151,7 +156,14 @@ ParameterListClass::Free_Parameters (void)
 		}
 	}
 
+#ifdef OG
 	m_Parameters.Delete_All ();
+
+#endif
+#ifdef ZH
+	Delete_All();
+//	m_Parameters.Delete_All ();
+#endif
 	return ;
 }
 

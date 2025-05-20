@@ -44,6 +44,15 @@
 #include "GameLogic/Module/RebuildHoleExposeDie.h"
 #include "GameLogic/Object.h"
 #include "GameLogic/ScriptEngine.h"
+#ifdef ZH
+#include "GameClient/SelectionXlat.h"
+
+#ifdef _INTERNAL
+// for occasional debugging...
+//#pragma optimize("", off)
+//#pragma MESSAGE("************************************** WARNING, optimization disabled for debugging purposes")
+#endif
+#endif
 
 // ------------------------------------------------------------------------------------------------
 // ------------------------------------------------------------------------------------------------
@@ -98,6 +107,21 @@ void RebuildHoleExposeDie::onDie( const DamageInfo *damageInfo )
 {
 	if (!isDieApplicable(damageInfo))
 		return;
+#ifdef ZH
+  
+
+#if defined(_DEBUG) || defined(_INTERNAL) || defined(_ALLOW_DEBUG_CHEATS_IN_RELEASE)
+  if(TheSelectionTranslator->isHandOfGodSelectionMode())
+  {
+    if ( getObject()->isKindOf( KINDOF_STRUCTURE ) )
+    {
+      if ( damageInfo->in.m_damageType == DAMAGE_UNRESISTABLE )
+        return;
+    }
+  }
+#endif
+
+#endif
 	const RebuildHoleExposeDieModuleData *modData = getRebuildHoleExposeDieModuleData();
 	Object *us = getObject();
 
@@ -105,8 +129,16 @@ void RebuildHoleExposeDie::onDie( const DamageInfo *damageInfo )
 	// if we are being constructed from either the first time or from a hole reconstruction
 	// we do not "spawn" a hole object
 	//
+#ifdef OG
 	if( us->getControllingPlayer() != ThePlayerList->getNeutralPlayer() && (us->getControllingPlayer()->isPlayerActive()) && 
 		(BitTest( us->getStatusBits(), OBJECT_STATUS_UNDER_CONSTRUCTION ) == FALSE ))
+
+#endif
+#ifdef ZH
+	if( us->getControllingPlayer() != ThePlayerList->getNeutralPlayer() 
+		  && us->getControllingPlayer()->isPlayerActive() 
+			&& !us->getStatusBits().test( OBJECT_STATUS_UNDER_CONSTRUCTION ) )
+#endif
 	{
 		Object *hole;
 

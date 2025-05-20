@@ -1,3 +1,4 @@
+#ifdef OG
 /*
 **	Command & Conquer Generals(tm)
 **	Copyright 2025 Electronic Arts Inc.
@@ -390,3 +391,5 @@ static Bool gameSpyInitPersistentStorageConnection( void )
 	return isProfileAuthorized;
 }
 
+
+#endif

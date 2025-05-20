@@ -98,7 +98,12 @@ DemoralizeSpecialPower::~DemoralizeSpecialPower( void )
 
 // ------------------------------------------------------------------------------------------------
 // ------------------------------------------------------------------------------------------------
+#ifdef OG
 void DemoralizeSpecialPower::doSpecialPowerAtLocation( const Coord3D *loc, UnsignedInt commandOptions )
+#endif
+#ifdef ZH
+void DemoralizeSpecialPower::doSpecialPowerAtLocation( const Coord3D *loc, Real angle, UnsignedInt commandOptions )
+#endif
 {
 	if (getObject()->isDisabled())
 		return;
@@ -108,7 +113,12 @@ void DemoralizeSpecialPower::doSpecialPowerAtLocation( const Coord3D *loc, Unsig
 		return;
 
 	// call the base class action cause we are *EXTENDING* functionality
+#ifdef OG
 	SpecialPowerModule::doSpecialPowerAtLocation( loc, commandOptions );
+#endif
+#ifdef ZH
+	SpecialPowerModule::doSpecialPowerAtLocation( loc, angle, commandOptions );
+#endif
 
 	// the source of my fiendish power
 	Object *source = getObject();
@@ -179,13 +189,23 @@ void DemoralizeSpecialPower::doSpecialPowerAtLocation( const Coord3D *loc, Unsig
 
 // ------------------------------------------------------------------------------------------------
 // ------------------------------------------------------------------------------------------------
+#ifdef OG
 void DemoralizeSpecialPower::doSpecialPowerAtObject( const Object *obj, UnsignedInt commandOptions )
+#endif
+#ifdef ZH
+void DemoralizeSpecialPower::doSpecialPowerAtObject( const Object *obj, Real angle, UnsignedInt commandOptions )
+#endif
 {
 	if (getObject()->isDisabled())
 		return;
 
 	if( obj )
+#ifdef OG
 		doSpecialPowerAtLocation( obj->getPosition(), commandOptions );
+#endif
+#ifdef ZH
+		doSpecialPowerAtLocation( obj->getPosition(), angle, commandOptions );
+#endif
 
 }  // end doSpecialPowerAtObject
 

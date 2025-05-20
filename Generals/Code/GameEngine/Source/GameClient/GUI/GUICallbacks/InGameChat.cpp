@@ -56,9 +56,13 @@ static InGameChatType inGameChatType;
 // ------------------------------------------------------------------------------------------------
 void ShowInGameChat( Bool immediate )
 {
+#ifdef OG
 #if !defined(_PLAYTEST)
+#endif
 	if (TheGameLogic->isInReplayGame())
 		return;
+#ifdef OG
+#endif
 #endif
 
 	if (TheInGameUI->isQuitMenuVisible())
@@ -198,9 +202,13 @@ void ToggleInGameChat( Bool immediate )
 		return;
 	}
 
+#ifdef OG
 #if !defined(_PLAYTEST)
+#endif
 	if (TheGameLogic->isInReplayGame())
 		return;
+#ifdef OG
+#endif
 #endif
 
 	if (!TheGameInfo->isMultiPlayer() && TheGlobalData->m_netMinPlayers)

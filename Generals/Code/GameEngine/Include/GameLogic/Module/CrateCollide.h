@@ -72,6 +72,21 @@ class CrateCollide : public CollideModule
 
 public:
 
+#ifdef ZH
+enum SabotageVictimType
+{
+	SAB_VICTIM_GENERIC = 0,
+	SAB_VICTIM_COMMAND_CENTER,
+	SAB_VICTIM_FAKE_BUILDING,
+	SAB_VICTIM_INTERNET_CENTER,
+	SAB_VICTIM_MILITARY_FACTORY,
+	SAB_VICTIM_POWER_PLANT,
+	SAB_VICTIM_SUPERWEAPON,
+	SAB_VICTIM_SUPPLY_CENTER,
+	SAB_VICTIM_DROP_ZONE,
+};
+
+#endif
 	CrateCollide( Thing *thing, const ModuleData* moduleData );
 	// virtual destructor prototype provided by memory pool declaration
 
@@ -83,6 +98,11 @@ public:
 	virtual Bool isRailroad() const { return FALSE;};
  	virtual Bool isCarBombCrateCollide() const { return FALSE; }
 	virtual Bool isHijackedVehicleCrateCollide() const { return FALSE; }
+#ifdef ZH
+	virtual Bool isSabotageBuildingCrateCollide() const { return FALSE; }
+
+  void doSabotageFeedbackFX( const Object *other, SabotageVictimType type = SAB_VICTIM_GENERIC );
+#endif
 
 protected:
 

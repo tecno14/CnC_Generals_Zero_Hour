@@ -64,6 +64,9 @@
 #include "WW3D2/DX8Caps.h"
 #include "WW3D2/colorspace.h"
 
+#ifdef ZH
+#include "WW3D2/shdlib.h"
+#endif
 #ifdef _INTERNAL
 // for occasional debugging...
 //#pragma optimize("", off)
@@ -132,6 +135,23 @@ RTS3DScene::RTS3DScene()
 	heatVisionShader.Set_Depth_Mask(ShaderClass::DEPTH_WRITE_DISABLE);
 	m_heatVisionOnlyPass->Set_Material(heatVisionMtl);
 	m_heatVisionOnlyPass->Set_Shader(heatVisionShader);
+#ifdef ZH
+
+
+//	VertexMaterialClass *frenzyMtl = NEW_REF(VertexMaterialClass,());
+//	frenzyMtl->Set_Lighting(TRUE);
+//	frenzyMtl->Set_Ambient(  0, 0, 0 );
+//	frenzyMtl->Set_Diffuse(  1.0f, 0.0f, 0.0f );
+//	frenzyMtl->Set_Emissive( 1.0f, 0.0f, 0.0f );
+//	m_frenzyMaterialPass = NEW_REF(MaterialPassClass,());
+//	m_frenzyMaterialPass->Set_Material(frenzyMtl);
+//	frenzyMtl->Release_Ref();
+//	ShaderClass frenzyShader=ShaderClass::_PresetMultiplicativeShader;
+//	frenzyShader.Set_Depth_Compare(ShaderClass::PASS_EQUAL);
+//	frenzyShader.Set_Depth_Mask(ShaderClass::DEPTH_WRITE_DISABLE);
+//	m_frenzyMaterialPass->Set_Shader(frenzyShader);
+
+#endif
 
 	//Allocate memory to hold queue of visible renderobjects that need to be drawn last
 	//because they are forced translucent.
@@ -241,8 +261,14 @@ void RTS3DScene::flagOccludedObjects(CameraClass * camera)
 	Bool hit=FALSE;
 	Vector3 newEndPoint;
 	result.ComputeContactPoint=false;
+#ifdef OG
 	RayCollisionTestClass raytest(lineseg,&result,COLLISION_TYPE_ALL,false,false);
 	raytest.CollisionType=COLLISION_TYPE_ALL;
+#endif
+#ifdef ZH
+	RayCollisionTestClass raytest(lineseg,&result,COLL_TYPE_ALL,false,false);
+	raytest.CollisionType=COLL_TYPE_ALL;
+#endif
 
 	m_occludedObjectsCount=0;
 
@@ -315,7 +341,12 @@ Bool RTS3DScene::castRay(RayCollisionTestClass & raytest, Bool testAll, Int coll
 	Vector3 newEndPoint;
 	Bool hit=FALSE;
 
+#ifdef OG
 	tempRayTest.CollisionType = COLLISION_TYPE_ALL;
+#endif
+#ifdef ZH
+	tempRayTest.CollisionType = COLL_TYPE_ALL;
+#endif
 	//check if a mesh is translucent before colliding with it. Skips headlights, etc.
 	tempRayTest.CheckTranslucent = true;
 
@@ -452,22 +483,46 @@ void RTS3DScene::Visibility_Check(CameraClass * camera)
 					if (drawInfo && (draw=drawInfo->m_drawable) != NULL)
 					{
 						if (draw->isDrawableEffectivelyHidden() || draw->getFullyObscuredByShroud())
+#ifdef OG
 						{	robj->Set_Visible(false);
 							continue;
+
+#endif
+#ifdef ZH
+						{	
+							isVisible = FALSE;
+						  robj->Set_Visible(isVisible);
+#endif
 						}
 						//assume normal rendering.
 						drawInfo->m_flags = DrawableInfo::ERF_IS_NORMAL;	//clear any rendering flags that may be in effect.
 
+#ifdef ZH
+            if ( ! isVisible )
+              continue;
+
+#endif
 						if (draw->getEffectiveOpacity() != 1.0f && m_translucentObjectsCount < TheGlobalData->m_maxVisibleTranslucentObjects)
+#ifdef OG
 						{	drawInfo->m_flags = DrawableInfo::ERF_IS_TRANSLUCENT;	//object is translucent
+#endif
+#ifdef ZH
+						{	drawInfo->m_flags |= DrawableInfo::ERF_IS_TRANSLUCENT;	//object is translucent
+#endif
 							m_translucentObjectsBuffer[m_translucentObjectsCount++] = robj;
 						}
+#ifdef OG
 						else
+#endif
 						if (TheGlobalData->m_enableBehindBuildingMarkers && TheGameLogic->getShowBehindBuildingMarkers())
 						{
 							//visible drawable. Check if it's either an occluder or occludee
 							if (draw->isKindOf(KINDOF_STRUCTURE) && m_numPotentialOccluders < TheGlobalData->m_maxVisibleOccluderObjects)
 							{	//object which could occlude other objects that need to be visible.
+#ifdef ZH
+								//Make sure this object is not translucent so it's not rendered twice (from m_potentialOccluders and m_translucentObjectsBuffer)
+								if (drawInfo->m_flags ^ DrawableInfo::ERF_IS_TRANSLUCENT)
+#endif
 								m_potentialOccluders[m_numPotentialOccluders++]=robj;
 								drawInfo->m_flags |= DrawableInfo::ERF_POTENTIAL_OCCLUDER;
 							}
@@ -476,12 +531,19 @@ void RTS3DScene::Visibility_Check(CameraClass * camera)
 									(draw->isKindOf(KINDOF_SCORE) || draw->isKindOf(KINDOF_SCORE_CREATE) || draw->isKindOf(KINDOF_SCORE_DESTROY) || draw->isKindOf(KINDOF_MP_COUNT_FOR_VICTORY)) &&
 									(draw->getObject()->getSafeOcclusionFrame()) <= currentFrame && m_numPotentialOccludees < TheGlobalData->m_maxVisibleOccludeeObjects)
 							{	//object which could be occluded but still needs to be visible.
+#ifdef ZH
+								//We process transucent units twice (also in m_translucentObjectsBuffer) because we need to see them when occluded.
+#endif
 								m_potentialOccludees[m_numPotentialOccludees++]=robj;
 								drawInfo->m_flags |= DrawableInfo::ERF_POTENTIAL_OCCLUDEE;
 							}
 							else
 							if (drawInfo->m_flags == DrawableInfo::ERF_IS_NORMAL && m_numNonOccluderOrOccludee < TheGlobalData->m_maxVisibleNonOccluderOrOccludeeObjects)
 							{	//regular object with no custom effects but still needs to be delayed to get the occlusion feature to work correctly.
+#ifdef ZH
+								//Make sure this object is not translucent so it's not rendered twice (from m_potentialOccluders and m_translucentObjectsBuffer)
+								if (drawInfo->m_flags ^ DrawableInfo::ERF_IS_TRANSLUCENT)	//make sure not translucent
+#endif
 								m_nonOccludersOrOccludees[m_numNonOccluderOrOccludee++]=robj;
 								drawInfo->m_flags |= DrawableInfo::ERF_IS_NON_OCCLUDER_OR_OCCLUDEE;
 							}
@@ -623,7 +685,12 @@ void RTS3DScene::renderOneObject(RenderInfoClass &rinfo, RenderObjClass *robj, I
 		}
 
 		if (draw->isKindOf(KINDOF_INFANTRY))
+#ifdef OG
 		{	ambient = m_infantryAmbient;
+#endif
+#ifdef ZH
+		{	//ambient = m_infantryAmbient;  //has no effect - see comment on m_infantryAmbient
+#endif
 			sceneLights = m_infantryLight;
 		}
 
@@ -677,22 +744,57 @@ void RTS3DScene::renderOneObject(RenderInfoClass &rinfo, RenderObjClass *robj, I
 		}
 
 		//Apply custom render pass for any drawables with heatvision enabled
+#ifdef OG
 		if (draw->getHeatVisionOpacity() != 0 ) 
+#endif
+#ifdef ZH
+		if (draw->getSecondMaterialPassOpacity() != 0 ) 
+#endif
 		{
+#ifdef OG
 			rinfo.materialPassEmissiveOverride = draw->getHeatVisionOpacity();
+
+#endif
+#ifdef ZH
+			rinfo.materialPassEmissiveOverride = draw->getSecondMaterialPassOpacity();
+
+      //if ( draw->testTintStatus( TINT_STATUS_FRENZY ) )
+      //{
+			//	rinfo.Push_Material_Pass(m_heatVisionMaterialPass);
+      //}
+			//else 
+#endif
 			if (draw->getStealthLook() == STEALTHLOOK_VISIBLE_DETECTED )
 			{
+#ifdef ZH
+			  rinfo.materialPassEmissiveOverride = draw->getSecondMaterialPassOpacity();
+#endif
 				// THIS WILL EXPLICITLY SKIP THE FIRST PASS SO THAT HEATVISION ONLY WILL RENDER
 				rinfo.Push_Override_Flags(RenderInfoClass::RINFO_OVERRIDE_ADDITIONAL_PASSES_ONLY);
 				rinfo.Push_Material_Pass(m_heatVisionOnlyPass);
+#ifdef OG
 				doExtraFlagsPop=TRUE;
+#endif
+#ifdef ZH
+        doExtraFlagsPop = TRUE;
+#endif
 			}
 			else
 			{
 				//THIS CALLS FOR THE HEATVISION TO RENDER
+#ifdef ZH
+			  rinfo.materialPassEmissiveOverride = draw->getSecondMaterialPassOpacity();
+#endif
 				rinfo.Push_Material_Pass(m_heatVisionMaterialPass);
 			}
+#ifdef OG
 			doExtraMaterialPop=TRUE;
+
+#endif
+#ifdef ZH
+
+			doExtraMaterialPop = TRUE;
+#endif
 		}
 	}
 	else
@@ -730,6 +832,10 @@ void RTS3DScene::renderOneObject(RenderInfoClass &rinfo, RenderObjClass *robj, I
 			}
 		}
 
+#ifdef ZH
+    if( draw && draw->getReceivesDynamicLights() )
+    {
+#endif
 		// dynamic lights
 		RefRenderObjListIterator dynaLightIt(&m_dynamicLightList);	
 		for (dynaLightIt.First(); !dynaLightIt.Is_Done(); dynaLightIt.Next())
@@ -744,6 +850,9 @@ void RTS3DScene::renderOneObject(RenderInfoClass &rinfo, RenderObjClass *robj, I
 			}
 			lightEnv.Add_Light(*(LightClass*)dynaLightIt.Peek_Obj());
 		}
+#ifdef ZH
+    }
+#endif
 		
 		lightEnv.Pre_Render_Update(rinfo.Camera.Get_Transform());
 		rinfo.light_environment = &lightEnv;
@@ -782,7 +891,12 @@ void RTS3DScene::renderOneObject(RenderInfoClass &rinfo, RenderObjClass *robj, I
 	}//drawable or robj is not hidden
 
 	rinfo.light_environment = NULL;
+#ifdef OG
 	if (doExtraMaterialPop)	//check if there is an extra material on the stack from the heatvision effect.
+#endif
+#ifdef ZH
+	if (doExtraMaterialPop)	//check if there is an extra material on the stack from the add'l material effect.
+#endif
 		rinfo.Pop_Material_Pass();
 	if (doExtraFlagsPop)
 		rinfo.Pop_Override_Flags();	//flags used to disable base pass and only render custom heat vision pass.
@@ -804,6 +918,12 @@ void RTS3DScene::Flush(RenderInfoClass & rinfo)
 #else
 	if (DX8Wrapper::Has_Stencil())
 		flushOccludedObjectsIntoStencil(rinfo);
+#endif
+#ifdef ZH
+
+	// (gth) CNC3 Flush the shader meshes	
+	SHD_FLUSH;
+
 #endif
 	// Draw the trees last so they alpha blend onto everything correctly.
 	DoTrees(rinfo);
@@ -834,7 +954,9 @@ void RTS3DScene::updateFixedLightEnvironments(RenderInfoClass & rinfo)
 {
 	//Figure out how dimly lit fogged objects should be compared to fully lit.
 	Real foggedLightFrac = (Real)TheGlobalData->m_fogAlpha/(Real)TheGlobalData->m_clearAlpha;
+#ifdef OG
 	Vector3 oldDiffuse;
+#endif
 	Real infantryLightScale;
 	if( TheGlobalData->m_scriptOverrideInfantryLightScale != -1.0f )
 		infantryLightScale = TheGlobalData->m_scriptOverrideInfantryLightScale;
@@ -845,23 +967,49 @@ void RTS3DScene::updateFixedLightEnvironments(RenderInfoClass & rinfo)
 	m_defaultLightEnv.Reset(Vector3(0,0,0), Get_Ambient_Light());
 	m_foggedLightEnv.Reset(Vector3(0,0,0), Get_Ambient_Light()*foggedLightFrac);
 
+#ifdef ZH
+	Vector3 oldDiffuse, oldAmbient;
+#endif
 	for (Int globalLightIndex = 0; globalLightIndex < m_numGlobalLights; globalLightIndex++)
 	{	m_defaultLightEnv.Add_Light(*m_globalLight[globalLightIndex]);
 		//copy default lighting for infantry so we can tweak it.
 		*m_infantryLight[globalLightIndex]=*m_globalLight[globalLightIndex];
+#ifdef ZH
+		m_infantryLight[globalLightIndex]->Set_Transform(m_globalLight[globalLightIndex]->Get_Transform());
+
+#endif
 		m_globalLight[globalLightIndex]->Get_Diffuse(&oldDiffuse);
+#ifdef OG
 		m_infantryLight[globalLightIndex]->Set_Diffuse(oldDiffuse*infantryLightScale);
 		m_globalLight[globalLightIndex]->Get_Ambient(&oldDiffuse);
 		m_infantryLight[globalLightIndex]->Set_Ambient(oldDiffuse*infantryLightScale);
 		m_infantryLight[globalLightIndex]->Set_Transform(m_globalLight[globalLightIndex]->Get_Transform());
+
+#endif
+#ifdef ZH
+		m_globalLight[globalLightIndex]->Get_Ambient(&oldAmbient);
+    oldDiffuse *= infantryLightScale; 
+    oldAmbient *= infantryLightScale; 
+    static Vector3 id (1.0f, 1.0f, 1.0f);
+    oldDiffuse.Cap_Absolute_To(id);
+    oldAmbient.Cap_Absolute_To(id);
+		m_infantryLight[globalLightIndex]->Set_Ambient(oldAmbient);//CLAMPED
+		m_infantryLight[globalLightIndex]->Set_Diffuse(oldDiffuse);//CLAMPED
+#endif
 
 		//copy the normal light for fog so we can modify it
 		m_scratchLight->Set_Transform(m_globalLight[globalLightIndex]->Get_Transform());
 		//modify light with attenuated value to adjust for fog.
 		m_globalLight[globalLightIndex]->Get_Diffuse(&oldDiffuse);
 		m_scratchLight->Set_Diffuse(oldDiffuse*foggedLightFrac);
+#ifdef OG
 		m_globalLight[globalLightIndex]->Get_Ambient(&oldDiffuse);
 		m_scratchLight->Set_Ambient(oldDiffuse*foggedLightFrac);
+#endif
+#ifdef ZH
+		m_globalLight[globalLightIndex]->Get_Ambient(&oldAmbient);
+		m_scratchLight->Set_Ambient(oldAmbient*foggedLightFrac);
+#endif
 		m_foggedLightEnv.Add_Light(*m_scratchLight);
 	}
 
@@ -1232,7 +1380,12 @@ void renderStenciledPlayerColor( UnsignedInt color, UnsignedInt stencilRef, Bool
 		DX8Wrapper::Set_DX8_Render_State(D3DRS_ZFUNC, D3DCMP_NEVER  );	//fail all access to the frame buffer to improve memory bandwidth
 
 		//disable writes to color buffer
+#ifdef OG
 		if (DX8Caps::Get_Default_Caps().PrimitiveMiscCaps & D3DPMISCCAPS_COLORWRITEENABLE)
+#endif
+#ifdef ZH
+		if (DX8Wrapper::Get_Current_Caps()->Get_DX8_Caps().PrimitiveMiscCaps & D3DPMISCCAPS_COLORWRITEENABLE)
+#endif
 		{	DX8Wrapper::_Get_D3D_Device8()->GetRenderState(D3DRS_COLORWRITEENABLE, &oldColorWriteEnable);
 			DX8Wrapper::Set_DX8_Render_State(D3DRS_COLORWRITEENABLE,0);
 		}
@@ -1367,7 +1520,26 @@ void RTS3DScene::flushOccludedObjectsIntoStencil(RenderInfoClass & rinfo)
 				RenderObjClass **renderList=&playerObjects[i][0];
 				for (Int j=0; j<numObjects; j++)
 				{
+#ifdef ZH
+					DrawableInfo *drawInfo=((DrawableInfo *)(*renderList)->Get_User_Data());
+					if (drawInfo->m_flags & DrawableInfo::ERF_IS_TRANSLUCENT)
+					{	
+						TheDX8MeshRenderer.Flush();	//render all the submitted meshes using current stencil function
+						SHD_FLUSH;
+						//Disable writing to color buffer since translucent objects are rendered at end of frame.
+						DX8Wrapper::Set_DX8_Render_State(D3DRS_STENCILFUNC,  D3DCMP_NEVER );	//never allow frame buffer writes.
+						DX8Wrapper::Set_DX8_Render_State(D3DRS_STENCILFAIL,  D3DSTENCILOP_REPLACE );	//always replace existing stencil value
+#endif
 					renderOneObject(rinfo, (*renderList), localPlayerIndex);
+#ifdef ZH
+						TheDX8MeshRenderer.Flush();	//render all the submitted meshes using current stencil function
+						SHD_FLUSH;
+						DX8Wrapper::Set_DX8_Render_State(D3DRS_STENCILFAIL,  D3DSTENCILOP_KEEP );
+						DX8Wrapper::Set_DX8_Render_State(D3DRS_STENCILFUNC,  D3DCMP_ALWAYS );
+					}
+					else
+						renderOneObject(rinfo, (*renderList), localPlayerIndex);
+#endif
 					renderList++;	//advance to next object
 				}
 
@@ -1776,4 +1948,158 @@ void RTS3DInterfaceScene::Customized_Render( RenderInfoClass &rinfo )
 	SimpleSceneClass::Customized_Render( rinfo );
 
 }  // end Customized_Render
+#ifdef ZH
+
+
+/// The following is an :archive" of a partial attempt at detecting the mapshroud hack
+/*
+ *
+	
+void RTS3DScene::Visibility_Check(CameraClass * camera)
+{
+#ifdef DIRTY_CONDITION_FLAGS
+	StDrawableDirtyStuffLocker lockDirtyStuff;
+#endif
+
+	RefRenderObjListIterator it(&RenderList);
+	DrawableInfo *drawInfo = NULL;
+	Drawable	*draw = NULL;
+	RenderObjClass * robj;
+
+	m_numPotentialOccluders=0;
+	m_numPotentialOccludees=0;
+	m_translucentObjectsCount=0;
+	m_numNonOccluderOrOccludee=0;
+
+	Int currentFrame=0;
+	if (TheGameLogic) currentFrame = TheGameLogic->getFrame();
+	if (currentFrame <= TheGlobalData->m_defaultOcclusionDelay)
+		currentFrame = TheGlobalData->m_defaultOcclusionDelay+1;	//make sure occlusion is enabled when game starts (frame 0).
+
+	if (ShaderClass::Is_Backface_Culling_Inverted()) 
+	{	//we are rendering reflections
+		///@todo: Have better flag to detect reflection pass
+
+		// Loop over all top-level RenderObjects in this scene. If the bounding sphere is not in front
+		// of all the frustum planes, it is invisible.
+		for (it.First(); !it.Is_Done(); it.Next()) {
+
+			robj = it.Peek_Obj();
+
+			draw=NULL;
+			drawInfo = (DrawableInfo *)robj->Get_User_Data();
+			if (drawInfo)
+				draw=drawInfo->m_drawable;
+
+			if( draw )
+			{
+				if (robj->Is_Force_Visible()) {
+					robj->Set_Visible(true);
+				} else {
+					robj->Set_Visible(draw->getDrawsInMirror() && !camera->Cull_Sphere(robj->Get_Bounding_Sphere()));
+				}
+			}
+			else
+			{	//perform normal culling on non-drawables
+				if (robj->Is_Force_Visible()) {
+					robj->Set_Visible(true);
+				} else {
+					robj->Set_Visible(!camera->Cull_Sphere(robj->Get_Bounding_Sphere()));
+				}
+			}
+		}
+	}
+	else
+	{
+
+		// Loop over all top-level RenderObjects in this scene. If the bounding sphere is not in front
+		// of all the frustum planes, it is invisible.
+		for (it.First(); !it.Is_Done(); it.Next()) {
+
+			robj = it.Peek_Obj();
+
+			if (robj->Is_Force_Visible()) {
+				robj->Set_Visible(true);
+			} else if (robj->Is_Hidden()) {
+				robj->Set_Visible(false);
+			} else {
+
+				UnsignedByte isVisible = 0;
+        
+
+        //Cheater Foil
+        isVisible |= (UnsignedByte)(camera->Cull_Sphere(robj->Get_Bounding_Sphere()) == FALSE);
+        isVisible |= (UnsignedByte)(draw->isDrawableEffectivelyHidden());
+        isVisible |= (draw->getFullyObscuredByShroudWithCheatSpy());
+				robj->Set_VisibleWithCheatSpy(isVisible);
+				if (robj->Is_VisibleWithCheatSpy())//this will clear for the bit set above
+          
+				{	//need to keep track of occluders and ocludees for subsequent code.
+					drawInfo = (DrawableInfo *)robj->Get_User_Data();
+					if (drawInfo && (draw=drawInfo->m_drawable) != NULL)
+					{
+
+//            now handled above in the cheater foil <<<<<<<<<<<<
+//						if (draw->isDrawableEffectivelyHidden() || draw->getFullyObscuredByShroud())
+//						{	robj->Set_Visible(false);
+//							continue;
+//						}
+						//assume normal rendering.
+						drawInfo->m_flags = DrawableInfo::ERF_IS_NORMAL;	//clear any rendering flags that may be in effect.
+
+						if (draw->getEffectiveOpacity() != 1.0f && m_translucentObjectsCount < TheGlobalData->m_maxVisibleTranslucentObjects)
+						{	drawInfo->m_flags |= DrawableInfo::ERF_IS_TRANSLUCENT;	//object is translucent
+							m_translucentObjectsBuffer[m_translucentObjectsCount++] = robj;
+						}
+						if (TheGlobalData->m_enableBehindBuildingMarkers && TheGameLogic->getShowBehindBuildingMarkers())
+						{
+							//visible drawable. Check if it's either an occluder or occludee
+							if (draw->isKindOf(KINDOF_STRUCTURE) && m_numPotentialOccluders < TheGlobalData->m_maxVisibleOccluderObjects)
+							{	//object which could occlude other objects that need to be visible.
+								//Make sure this object is not translucent so it's not rendered twice (from m_potentialOccluders and m_translucentObjectsBuffer)
+								if (drawInfo->m_flags ^ DrawableInfo::ERF_IS_TRANSLUCENT)
+									m_potentialOccluders[m_numPotentialOccluders++]=robj;
+								drawInfo->m_flags |= DrawableInfo::ERF_POTENTIAL_OCCLUDER;
+							}
+							else
+							if (draw->getObject() &&
+									(draw->isKindOf(KINDOF_SCORE) || draw->isKindOf(KINDOF_SCORE_CREATE) || draw->isKindOf(KINDOF_SCORE_DESTROY) || draw->isKindOf(KINDOF_MP_COUNT_FOR_VICTORY)) &&
+									(draw->getObject()->getSafeOcclusionFrame()) <= currentFrame && m_numPotentialOccludees < TheGlobalData->m_maxVisibleOccludeeObjects)
+							{	//object which could be occluded but still needs to be visible.
+								//We process transucent units twice (also in m_translucentObjectsBuffer) because we need to see them when occluded.
+								m_potentialOccludees[m_numPotentialOccludees++]=robj;
+								drawInfo->m_flags |= DrawableInfo::ERF_POTENTIAL_OCCLUDEE;
+							}
+							else
+							if (drawInfo->m_flags == DrawableInfo::ERF_IS_NORMAL && m_numNonOccluderOrOccludee < TheGlobalData->m_maxVisibleNonOccluderOrOccludeeObjects)
+							{	//regular object with no custom effects but still needs to be delayed to get the occlusion feature to work correctly.
+								//Make sure this object is not translucent so it's not rendered twice (from m_potentialOccluders and m_translucentObjectsBuffer)
+								if (drawInfo->m_flags ^ DrawableInfo::ERF_IS_TRANSLUCENT)	//make sure not translucent
+									m_nonOccludersOrOccludees[m_numNonOccluderOrOccludee++]=robj;
+								drawInfo->m_flags |= DrawableInfo::ERF_IS_NON_OCCLUDER_OR_OCCLUDEE;
+							}
+						}
+
+					}
+				}
+
+//				robj->Set_Visible(isVisible); //now handled above in the cheater foil
+			}
+
+			///@todo: We're not using LOD yet so I disabled this code. MW
+			// Also, should check how multiple passes (reflections) get along
+			// with the LOD manager - we're rendering double the load it thinks we are.
+			// Prepare visible objects for LOD:
+			//	if (robj->Is_Really_Visible()) {
+			//			robj->Prepare_LOD(*camera);
+			//		}
+		}
+	}
+
+   Visibility_Checked = true;
+}
+
+ *
+ */
+#endif
 

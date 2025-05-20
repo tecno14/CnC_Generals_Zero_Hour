@@ -569,6 +569,20 @@ StateReturnType AITNGuardReturnState::onEnter( void )
 	UnsignedInt now = TheGameLogic->getFrame();
 	m_nextReturnScanTime = now + GameLogicRandomValue(0, TheAI->getAiData()->m_guardEnemyReturnScanRate);
 
+#ifdef ZH
+	if (getMachineOwner()->getContainedBy()) {
+		// we are already inside our tunnel.  Return success. jba [8/24/2003]
+		return STATE_SUCCESS;
+	}
+	if (getMachineOwner()->getTeam()) {
+		Object *teamVictim = getMachineOwner()->getTeam()->getTeamTargetObject();
+		if (teamVictim)	{	
+			// We have a team target.  Go attack it rather than returning to the tunel. jba [8/24/2003]
+			getGuardMachine()->setNemesisID(teamVictim->getID());
+			return STATE_FAILURE; // Fail to return goes to inner attack state.	
+		}
+	}
+#endif
 // no, no, no, don't do this in onEnter, unless you like really slow maps. (srj)
 //	if (getGuardMachine()->lookForInnerTarget()) 
 //		return STATE_FAILURE; // early termination because we found a target.

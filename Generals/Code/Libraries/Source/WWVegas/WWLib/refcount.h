@@ -26,9 +26,19 @@
  *                                                                                             *
  *                      $Author:: Greg_h                                                      $*
  *                                                                                             *
+#ifdef OG
  *                     $Modtime:: 8/28/01 9:23a                                               $*
+#endif
+#ifdef ZH
+ *                     $Modtime:: 9/13/01 8:38p                                               $*
+#endif
  *                                                                                             *
+#ifdef OG
  *                    $Revision:: 22                                                          $*
+#endif
+#ifdef ZH
+ *                    $Revision:: 24                                                          $*
+#endif
  *                                                                                             *
  *---------------------------------------------------------------------------------------------*
  * Functions:                                                                                  *
@@ -134,29 +144,54 @@ public:
 	** to this object.
 	*/
 #ifdef NDEBUG
+#ifdef OG
 	virtual void Add_Ref(void)										{ NumRefs++; }
+#endif
+#ifdef ZH
+	WWINLINE void Add_Ref(void) const							{ NumRefs++; }
+#endif
 #else
+#ifdef OG
 	virtual void Add_Ref(void);
+#endif
+#ifdef ZH
+	void Add_Ref(void) const;
+#endif
 #endif
 
 	/*
 	** Release_Ref, call this function when you no longer need the pointer
 	** to this object.
 	*/
+#ifdef OG
 	virtual void		Release_Ref(void)							{ 
+#endif
+#ifdef ZH
+	WWINLINE void		Release_Ref(void) const					{ 
+#endif
 																				#ifndef NDEBUG
 																				Dec_Total_Refs(this);
 																				#endif
 																				NumRefs--; 
 																				assert(NumRefs >= 0); 
+#ifdef OG
 																				if (NumRefs == 0) Delete_This(); 
+#endif
+#ifdef ZH
+																				if (NumRefs == 0) const_cast<RefCountClass*>(this)->Delete_This(); 
+#endif
 																			}
 
 
 	/*
 	** Check the number of references to this object.  
 	*/
+#ifdef OG
 	int					Num_Refs(void)								{ return NumRefs; }
+#endif
+#ifdef ZH
+	int					Num_Refs(void) const						{ return NumRefs; }
+#endif
 
 	/*
 	** Delete_This - this function will be called when the object is being
@@ -190,7 +225,12 @@ private:
 	/*
 	** Current reference count of this object
 	*/
+#ifdef OG
 	int					NumRefs;
+#endif
+#ifdef ZH
+	mutable int			NumRefs;
+#endif
 
 	/*
 	** Sum of all references to RefCountClass's.  Should equal zero after
@@ -201,12 +241,22 @@ private:
 	/*
 	** increments the total reference count
 	*/
+#ifdef OG
 	static void			Inc_Total_Refs(RefCountClass *);
+#endif
+#ifdef ZH
+	static void			Inc_Total_Refs(const RefCountClass *);
+#endif
 	
 	/*
 	** decrements the total reference count
 	*/
+#ifdef OG
 	static void			Dec_Total_Refs(RefCountClass *);
+#endif
+#ifdef ZH
+	static void			Dec_Total_Refs(const RefCountClass *);
+#endif
 
 public:
 	

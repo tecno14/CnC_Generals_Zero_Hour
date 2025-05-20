@@ -20,9 +20,19 @@
 //
 
 #include "stdafx.h"
+#ifdef OG
 #include "noxstring.h"
+#endif
+#ifdef ZH
+#include "Babylon.h"
+#endif
 #include "DlgProxy.h"
+#ifdef OG
 #include "noxstringDlg.h"
+#endif
+#ifdef ZH
+#include "BabylonDlg.h"
+#endif
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -31,11 +41,26 @@ static char THIS_FILE[] = __FILE__;
 #endif
 
 /////////////////////////////////////////////////////////////////////////////
+#ifdef OG
 // CNoxstringDlgAutoProxy
+#endif
+#ifdef ZH
+// CBabylonDlgAutoProxy
+#endif
 
+#ifdef OG
 IMPLEMENT_DYNCREATE(CNoxstringDlgAutoProxy, CCmdTarget)
+#endif
+#ifdef ZH
+IMPLEMENT_DYNCREATE(CBabylonDlgAutoProxy, CCmdTarget)
+#endif
 
+#ifdef OG
 CNoxstringDlgAutoProxy::CNoxstringDlgAutoProxy()
+#endif
+#ifdef ZH
+CBabylonDlgAutoProxy::CBabylonDlgAutoProxy()
+#endif
 {
 	EnableAutomation();
 	
@@ -49,12 +74,23 @@ CNoxstringDlgAutoProxy::CNoxstringDlgAutoProxy()
 	//  this proxy.
 	ASSERT (AfxGetApp()->m_pMainWnd != NULL);
 	ASSERT_VALID (AfxGetApp()->m_pMainWnd);
+#ifdef OG
 	ASSERT_KINDOF(CNoxstringDlg, AfxGetApp()->m_pMainWnd);
 	m_pDialog = (CNoxstringDlg*) AfxGetApp()->m_pMainWnd;
+#endif
+#ifdef ZH
+	ASSERT_KINDOF(CBabylonDlg, AfxGetApp()->m_pMainWnd);
+	m_pDialog = (CBabylonDlg*) AfxGetApp()->m_pMainWnd;
+#endif
 	m_pDialog->m_pAutoProxy = this;
 }
 
+#ifdef OG
 CNoxstringDlgAutoProxy::~CNoxstringDlgAutoProxy()
+#endif
+#ifdef ZH
+CBabylonDlgAutoProxy::~CBabylonDlgAutoProxy()
+#endif
 {
 	// To terminate the application when all objects created with
 	// 	with automation, the destructor calls AfxOleUnlockApp.
@@ -64,7 +100,12 @@ CNoxstringDlgAutoProxy::~CNoxstringDlgAutoProxy()
 	AfxOleUnlockApp();
 }
 
+#ifdef OG
 void CNoxstringDlgAutoProxy::OnFinalRelease()
+#endif
+#ifdef ZH
+void CBabylonDlgAutoProxy::OnFinalRelease()
+#endif
 {
 	// When the last reference for an automation object is released
 	// OnFinalRelease is called.  The base class will automatically
@@ -74,33 +115,71 @@ void CNoxstringDlgAutoProxy::OnFinalRelease()
 	CCmdTarget::OnFinalRelease();
 }
 
+#ifdef OG
 BEGIN_MESSAGE_MAP(CNoxstringDlgAutoProxy, CCmdTarget)
 	//{{AFX_MSG_MAP(CNoxstringDlgAutoProxy)
+#endif
+#ifdef ZH
+BEGIN_MESSAGE_MAP(CBabylonDlgAutoProxy, CCmdTarget)
+	//{{AFX_MSG_MAP(CBabylonDlgAutoProxy)
+#endif
 		// NOTE - the ClassWizard will add and remove mapping macros here.
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
+#ifdef OG
 BEGIN_DISPATCH_MAP(CNoxstringDlgAutoProxy, CCmdTarget)
 	//{{AFX_DISPATCH_MAP(CNoxstringDlgAutoProxy)
+#endif
+#ifdef ZH
+BEGIN_DISPATCH_MAP(CBabylonDlgAutoProxy, CCmdTarget)
+	//{{AFX_DISPATCH_MAP(CBabylonDlgAutoProxy)
+#endif
 		// NOTE - the ClassWizard will add and remove mapping macros here.
 	//}}AFX_DISPATCH_MAP
 END_DISPATCH_MAP()
 
+#ifdef OG
 // Note: we add support for IID_INoxstring to support typesafe binding
+#endif
+#ifdef ZH
+// Note: we add support for IID_IBabylon to support typesafe binding
+#endif
 //  from VBA.  This IID must match the GUID that is attached to the 
 //  dispinterface in the .ODL file.
 
 // {2BF31248-3BA1-11D3-B9DA-006097B90D93}
+#ifdef OG
 static const IID IID_INoxstring =
+#endif
+#ifdef ZH
+static const IID IID_IBabylon =
+#endif
 { 0x2bf31248, 0x3ba1, 0x11d3, { 0xb9, 0xda, 0x0, 0x60, 0x97, 0xb9, 0xd, 0x93 } };
 
+#ifdef OG
 BEGIN_INTERFACE_MAP(CNoxstringDlgAutoProxy, CCmdTarget)
 	INTERFACE_PART(CNoxstringDlgAutoProxy, IID_INoxstring, Dispatch)
+#endif
+#ifdef ZH
+BEGIN_INTERFACE_MAP(CBabylonDlgAutoProxy, CCmdTarget)
+	INTERFACE_PART(CBabylonDlgAutoProxy, IID_IBabylon, Dispatch)
+#endif
 END_INTERFACE_MAP()
 
 // The IMPLEMENT_OLECREATE2 macro is defined in StdAfx.h of this project
 // {2BF31246-3BA1-11D3-B9DA-006097B90D93}
+#ifdef OG
 IMPLEMENT_OLECREATE2(CNoxstringDlgAutoProxy, "Noxstring.Application", 0x2bf31246, 0x3ba1, 0x11d3, 0xb9, 0xda, 0x0, 0x60, 0x97, 0xb9, 0xd, 0x93)
+#endif
+#ifdef ZH
+IMPLEMENT_OLECREATE2(CBabylonDlgAutoProxy, "Babylon.Application", 0x2bf31246, 0x3ba1, 0x11d3, 0xb9, 0xda, 0x0, 0x60, 0x97, 0xb9, 0xd, 0x93)
+#endif
 
 /////////////////////////////////////////////////////////////////////////////
+#ifdef OG
 // CNoxstringDlgAutoProxy message handlers
+#endif
+#ifdef ZH
+// CBabylonDlgAutoProxy message handlers
+#endif

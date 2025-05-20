@@ -53,7 +53,12 @@
 #endif
 
 GameSpyInfoInterface *TheGameSpyInfo = NULL;
+#ifdef OG
 GameSpyStagingRoom *TheGameSpyGame = NULL;
+#endif
+#ifdef ZH
+extern GameSpyStagingRoom *TheGameSpyGame = NULL;
+#endif
 void deleteNotificationBox( void );
 
 bool AsciiComparator::operator()(AsciiString s1, AsciiString s2) const
@@ -196,10 +201,12 @@ void GameSpyInfo::setGameOptions( void )
 	}
 	req.gameOptsMapName = newMapName.str();
 
+#ifdef OG
 	//const MapMetaData *md = TheMapCache->findMap(mapName);
 	//if (!md)
 		//return; // there really isn't any need to send info like this...
 
+#endif
 	req.gameOptions.numPlayers = 0;
 	req.gameOptions.numObservers = 0;
 	Int numOpenSlots = 0;
@@ -533,10 +540,25 @@ void GameSpyInfo::markAsStagingRoomHost( void )
 {
 	m_localStagingRoomID = 0;
 	m_joinedStagingRoom = FALSE; m_isHosting = TRUE;
+#ifdef ZH
+  
+  // There are a few options we don't want to reset when we are hosting (they carry over
+  // from the the create game dialog).
+  // Interesting fact: oldFactionsOnly will be carried over correctly if I remove these
+  // lines. UseStats won't be. I have no idea why.
+  Int useStats = m_localStagingRoom.getUseStats();
+  Bool oldFactionsOnly = m_localStagingRoom.oldFactionsOnly();
+
+#endif
 	m_localStagingRoom.reset();
 	m_localStagingRoom.enterGame();
 	m_localStagingRoom.setSeed(GetTickCount());
 	
+#ifdef ZH
+  m_localStagingRoom.setUseStats( useStats );
+  m_localStagingRoom.setOldFactionsOnly( oldFactionsOnly );
+
+#endif
 	GameSlot newSlot;
 	UnicodeString uName;
 	uName.translate(m_localName);
@@ -866,7 +888,12 @@ seems like the only secure way to handle this issue since users can abort the pr
 before we can detect/log disconnections.*/
 void GameSpyInfo::updateAdditionalGameSpyDisconnections(Int count)
 {
+#ifdef OG
 	if (TheRecorder->isMultiplayer() && TheGameLogic->isInInternetGame())
+#endif
+#ifdef ZH
+	if (TheRecorder->isMultiplayer() && TheGameLogic->isInInternetGame() && TheGameSpyGame && TheGameSpyGame->getUseStats())
+#endif
 	{	
 		Int localID = TheGameSpyInfo->getLocalProfileID();
 		PSPlayerStats stats = TheGameSpyPSMessageQueue->findPlayerStatsByID(localID);

@@ -1,3 +1,4 @@
+#ifdef OG
 # Microsoft Developer Studio Project File - Name="noxstring" - Package Owner=<4>
 # Microsoft Developer Studio Generated Build File, Format Version 6.00
 # ** DO NOT EDIT **
@@ -368,3 +369,5 @@ SOURCE=.\ReadMe.txt
 # End Source File
 # End Target
 # End Project
+
+#endif

@@ -22,7 +22,12 @@
 //																																						//
 ////////////////////////////////////////////////////////////////////////////////
 
+#ifdef OG
 // FILE: VeterancyCrateCollide.h /////////////////////////////////////////////////////////////////////////
+#endif
+#ifdef ZH
+// FILE: ConvertToCarBombCrateCollide.h /////////////////////////////////////////////////////////////////////////
+#endif
 // Author: Kris Morness, April 2002
 // Desc:   A crate (actually a terrorist - mobile crate) that converts a car into a carbomb, activating
 //         it's weapon and then activating it's AI.

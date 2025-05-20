@@ -349,16 +349,36 @@ void Radar::newMap( TerrainLogic *terrain )
 	m_ySample = m_mapExtent.height() / RADAR_CELL_HEIGHT;
 
 	// find the "middle" height for the terrain (most used value) and water table
+#ifdef OG
 	Int x, y, z;
+#endif
+#ifdef ZH
+	Int x, y;
+#endif
 	Int terrainSamples = 0, waterSamples = 0;
 
 	m_terrainAverageZ = 0.0f;
 	m_waterAverageZ = 0.0f;
+#ifdef OG
 	ICoord2D radarPoint;
+#endif
 	Coord3D worldPoint;
+#ifdef OG
 	for( y = 0; y < RADAR_CELL_HEIGHT; y++ )
 		for( x = 0; x < RADAR_CELL_WIDTH; x++ )
+
+#endif
+#ifdef ZH
+  
+  // since we're averaging let's skip every second sample...
+  worldPoint.y=0;
+	for( y = 0; y < RADAR_CELL_HEIGHT; y+=2, worldPoint.y+=2.0*m_ySample )
+  {
+    worldPoint.x=0;
+    for( x = 0; x < RADAR_CELL_WIDTH; x+=2, worldPoint.x+=2.0*m_xSample )
+#endif
 		{
+#ifdef OG
 
 			radarPoint.x = x;
 			radarPoint.y = y;
@@ -366,6 +386,15 @@ void Radar::newMap( TerrainLogic *terrain )
 			z = terrain->getGroundHeight( worldPoint.x, worldPoint.y );
 			Real waterZ;
 			if( terrain->isUnderwater( worldPoint.x, worldPoint.y, &waterZ ) )
+#endif
+#ifdef ZH
+			// don't use this, we don't really need the 
+      // Z position by this function... radarToWorld( &radarPoint, &worldPoint );
+			// and this is done by isUnderwater anyway: z = terrain->getGroundHeight( worldPoint.x, worldPoint.y );
+			Real z,waterZ;
+			if( terrain->isUnderwater( worldPoint.x, worldPoint.y, &waterZ, &z ) )
+
+#endif
 			{
 				m_waterAverageZ += z;
 				waterSamples++;
@@ -377,6 +406,9 @@ void Radar::newMap( TerrainLogic *terrain )
 			}
 
 		}  // end for x
+#ifdef ZH
+  }
+#endif
 
 	// avoid divide by zeros
 	if( terrainSamples == 0 )
@@ -426,8 +458,14 @@ void Radar::addObject( Object *obj )
 		//Because we have support for disguised units pretending to be units from another
 		//team, we need to intercept it here and make sure it's rendered appropriately
 		//based on which client is rendering it.
+#ifdef OG
 		static NameKeyType key_StealthUpdate = NAMEKEY( "StealthUpdate" );
 		StealthUpdate *update = (StealthUpdate*)obj->findUpdateModule( key_StealthUpdate );
+#endif
+#ifdef ZH
+    StealthUpdate *update = obj->getStealth();
+
+#endif
 		if( update )
 		{
 			if( update->isDisguised() )
@@ -615,11 +653,21 @@ void Radar::removeObject( Object *obj )
 
 //-------------------------------------------------------------------------------------------------
 /** Translate a 2D spot on the radar (from (0,0) to (RADAR_CELL_WIDTH,RADAR_CELL_HEIGHT)
+#ifdef OG
 	* to a 3D spot in the world on the terrain
+#endif
+#ifdef ZH
+	* to a 3D spot in the world. Does not determine Z value!
+#endif
 	* Return TRUE if the radar points translates to a valid world position
 	* Return FALSE if the radar point is not a valid world position */
 //-------------------------------------------------------------------------------------------------		
+#ifdef OG
 Bool Radar::radarToWorld( const ICoord2D *radar, Coord3D *world )
+#endif
+#ifdef ZH
+Bool Radar::radarToWorld2D( const ICoord2D *radar, Coord3D *world )
+#endif
 {
 	Int x, y;
 
@@ -644,6 +692,21 @@ Bool Radar::radarToWorld( const ICoord2D *radar, Coord3D *world )
 	// translate to world
 	world->x = x * m_xSample;
 	world->y = y * m_ySample;
+#ifdef ZH
+  return TRUE;
+}
+
+//-------------------------------------------------------------------------------------------------
+/** Translate a 2D spot on the radar (from (0,0) to (RADAR_CELL_WIDTH,RADAR_CELL_HEIGHT)
+	* to a 3D spot in the world on the terrain
+	* Return TRUE if the radar points translates to a valid world position
+	* Return FALSE if the radar point is not a valid world position */
+//-------------------------------------------------------------------------------------------------		
+Bool Radar::radarToWorld( const ICoord2D *radar, Coord3D *world )
+{
+  if (!radarToWorld2D(radar,world))
+    return FALSE;
+#endif
 
 	// find the terrain height here
 	world->z = TheTerrainLogic->getGroundHeight( world->x, world->y );
@@ -1240,9 +1303,25 @@ void Radar::tryUnderAttackEvent( const Object *obj )
 		otherwise snuck into */ 
 // ------------------------------------------------------------------------------------------------
 void Radar::tryInfiltrationEvent( const Object *obj )
+#ifdef ZH
 {
+
+	//Sanity!
+	if( !obj )
+#endif
+{
+#ifdef ZH
+		return;
+	}
+
+#endif
 	// We should only be warned against infiltrations that are taking place against us.
+#ifdef OG
 	if (obj->getControllingPlayer() != ThePlayerList->getLocalPlayer())
+#endif
+#ifdef ZH
+	if( obj->getControllingPlayer() != ThePlayerList->getLocalPlayer() )
+#endif
 		return;
 
 	// create the radar event

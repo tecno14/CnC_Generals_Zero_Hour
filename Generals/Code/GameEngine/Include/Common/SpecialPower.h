@@ -47,6 +47,9 @@ class ObjectCreationList;
 class Object;
 enum ScienceType;
 struct FieldParse;
+#ifdef ZH
+enum AcademyClassificationType;
+#endif
 
 // For SpecialPowerType and SpecialPowerMaskType::s_bitNameList. Part of detangling.
 #include "Common/SpecialPowerType.h"
@@ -123,6 +126,10 @@ public:
 	UnsignedInt getViewObjectDuration( void ) const { return getFO()->m_viewObjectDuration; }
 	Real getViewObjectRange( void ) const { return getFO()->m_viewObjectRange; }
 	Real getRadiusCursorRadius() const { return getFO()->m_radiusCursorRadius; }
+#ifdef ZH
+	Bool isShortcutPower() const { return getFO()->m_shortcutPower; }
+	AcademyClassificationType getAcademyClassificationType() const { return m_academyClassificationType; }
+#endif
 
 private: 
 
@@ -135,6 +142,9 @@ private:
 	ScienceType				m_requiredScience;		///< science required (if any) to actually execute this power
 	AudioEventRTS			m_initiateSound;			///< sound to play when initiated
 	AudioEventRTS			m_initiateAtLocationSound;		///< sound to play at target location (if any)
+#ifdef ZH
+	AcademyClassificationType m_academyClassificationType; ///< A value used by the academy to evaluate advice based on what players do.
+#endif
 	UnsignedInt				m_detectionTime;			///< (frames) after using infiltration power (defection, etc.), 
 																					///< how long it takes for ex comrades to realize it on their own
 	UnsignedInt				m_viewObjectDuration;	///< Lifetime of a looking object we slap down so you can watch the effect
@@ -142,6 +152,9 @@ private:
 	Real							m_radiusCursorRadius;	///< size of radius cursor, if any
 	Bool							m_publicTimer;				///< display a countdown timer for this special power for all to see
 	Bool							m_sharedNSync;				///< If true, this is a special that is shared between all of a player's command centers
+#ifdef ZH
+	Bool							m_shortcutPower;		///< Is this shortcut power capable of being fired by the side panel?
+#endif
 
 	static const FieldParse m_specialPowerFieldParse[];		///< the parse table
 

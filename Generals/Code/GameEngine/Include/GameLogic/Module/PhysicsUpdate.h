@@ -51,6 +51,12 @@ class PhysicsBehaviorModuleData : public UpdateModuleData
 {
 public:
 	Real	m_mass;
+#ifdef ZH
+	Real	m_shockResistance;
+	Real	m_shockMaxYaw;
+	Real	m_shockMaxPitch;
+	Real	m_shockMaxRoll;
+#endif
 	Real	m_forwardFriction;
 	Real	m_lateralFriction;
 	Real	m_ZFriction;
@@ -98,6 +104,9 @@ public:
 	virtual Bool isHijackedVehicleCrateCollide() const { return false; }
 	virtual Bool isRailroad() const { return false;}
 	virtual Bool isSalvageCrateCollide() const { return false; }
+#ifdef ZH
+	virtual Bool isSabotageBuildingCrateCollide() const { return FALSE; }
+#endif
 
 	// UpdateModuleInterface
 	virtual UpdateSleepTime update();
@@ -105,6 +114,10 @@ public:
 	virtual DisabledMaskType getDisabledTypesToProcess() const { return DISABLEDMASK_ALL; }
 
 	void applyForce( const Coord3D *force );		///< apply a force at the object's CG
+#ifdef ZH
+	void applyShock( const Coord3D *force );					///< apply a shockwave force against the object's CG
+	void applyRandomRotation();											  ///< apply a random rotation at the object's CG
+#endif
 	void addVelocityTo(const Coord3D* vel) ;
 
 	/**
@@ -173,11 +186,18 @@ public:
 	void setAllowCollideForce(Bool allow) { setFlag(ALLOW_COLLIDE_FORCE, allow); }
 	void setAllowAirborneFriction(Bool allow) { setFlag(APPLY_FRICTION2D_WHEN_AIRBORNE, allow); }
 	void setImmuneToFallingDamage(Bool allow) { setFlag(IMMUNE_TO_FALLING_DAMAGE, allow); }
+#ifdef ZH
+	void setStunned(Bool allow) { setFlag(IS_STUNNED, allow); }
+#endif
 
 	Bool getAllowToFall() const { return getFlag(ALLOW_TO_FALL); }
 
 	void setIsInFreeFall(Bool allow) { setFlag(IS_IN_FREEFALL, allow); }
 	Bool getIsInFreeFall() const { return getFlag(IS_IN_FREEFALL); }
+#ifdef ZH
+
+	Bool getIsStunned() const { return getFlag(IS_STUNNED); }
+#endif
 
 	void setExtraBounciness(Real b) { m_extraBounciness = b; }
 	void setExtraFriction(Real b) { m_extraFriction = b; }
@@ -225,6 +245,10 @@ protected:
 	void doBounceSound(const Coord3D& prevPos);
 
 	Bool checkForOverlapCollision(Object *other);
+#ifdef ZH
+
+	void testStunnedUnitForDestruction(void);
+#endif
 
 private:
 
@@ -241,7 +265,14 @@ private:
 		HAS_PITCHROLLYAW								= 0x0080,
 		IMMUNE_TO_FALLING_DAMAGE				= 0x0100,
 		IS_IN_FREEFALL									= 0x0200,
+#ifdef OG
 		IS_IN_UPDATE										= 0x0400
+
+#endif
+#ifdef ZH
+		IS_IN_UPDATE										= 0x0400,
+		IS_STUNNED											= 0x0800,
+#endif
 	};
 
 	/*
@@ -268,6 +299,10 @@ private:
 	Real												m_extraFriction;					///< modifier to friction(s)
 	ProjectileUpdateInterface*	m_pui;
 	mutable Real								m_velMag;									///< magnitude of cur vel (recalced when m_vel changes)
+#ifdef ZH
+
+	Bool												m_originalAllowBounce;		///< orignal state of allow bounce
+#endif
 
 	inline void setFlag(PhysicsFlagsType f, Bool set) { if (set) m_flags |= f; else m_flags &= ~f; }
 	inline Bool getFlag(PhysicsFlagsType f) const { return (m_flags & f) != 0; }

@@ -43,6 +43,9 @@
 #include "GameClient/Drawable.h" //selection logic
 #include "GameClient/InGameUI.h" // selection logic
 #include "GameLogic/ExperienceTracker.h" //veterancy logic
+#ifdef ZH
+#include "GameLogic/Module/StealthUpdate.h"
+#endif
 
 
 #define NONE_SPAWNED_YET (0xffffffff)
@@ -369,12 +372,49 @@ void SpawnBehavior::orderSlavesToGoIdle( CommandSourceType cmdSource )
 			if( ai )
 			{
 				ai->aiIdle( cmdSource );
+#ifdef ZH
 			}
 		}
 	}
 }
 
 // ------------------------------------------------------------------------------------------------
+void SpawnBehavior::orderSlavesDisabledUntil( DisabledType type, UnsignedInt frame )
+{
+	for( objectIDListIterator it = m_spawnIDs.begin(); it != m_spawnIDs.end(); ++it )
+	{
+		Object *obj = TheGameLogic->findObjectByID( *it );
+		if( obj )
+		{
+			AIUpdateInterface *ai = obj->getAI();
+			if( ai )
+			{
+				ai->aiIdle( CMD_FROM_AI );
+#endif
+			}
+#ifdef ZH
+			obj->setDisabledUntil( type, frame );
+#endif
+		}
+	}
+}
+
+// ------------------------------------------------------------------------------------------------
+#ifdef ZH
+void SpawnBehavior::orderSlavesToClearDisabled( DisabledType type )
+{
+	for( objectIDListIterator it = m_spawnIDs.begin(); it != m_spawnIDs.end(); ++it )
+	{
+		Object *obj = TheGameLogic->findObjectByID( *it );
+		if( obj )
+		{
+			obj->clearDisabled( type );
+		}
+	}
+}
+
+// ------------------------------------------------------------------------------------------------
+#endif
 CanAttackResult SpawnBehavior::getCanAnySlavesAttackSpecificTarget( AbleToAttackType attackType, const Object *target, CommandSourceType cmdSource )
 {
 	Bool invalidShot = FALSE;
@@ -450,6 +490,20 @@ CanAttackResult SpawnBehavior::getCanAnySlavesUseWeaponAgainstTarget( AbleToAtta
 	return ATTACKRESULT_NOT_POSSIBLE;
 }
 
+#ifdef ZH
+// ------------------------------------------------------------------------------------------------
+void SpawnBehavior::giveSlavesStealthUpgrade( Bool grantStealth )
+{
+	for( objectIDListIterator it = m_spawnIDs.begin(); it != m_spawnIDs.end(); ++it )
+	{
+		Object *obj = TheGameLogic->findObjectByID( *it );
+		if( obj )
+		{
+			obj->setStatus( MAKE_OBJECT_STATUS_MASK( OBJECT_STATUS_CAN_STEALTH ), grantStealth );
+		}
+	}
+}
+#endif
 
 // ------------------------------------------------------------------------------------------------
 Bool SpawnBehavior::canAnySlavesAttack()
@@ -786,8 +840,14 @@ Bool SpawnBehavior::shouldTryToSpawn()
 	// Not if we are turned off
 	if( !m_active )
 		return FALSE;
+#ifdef OG
 	if( BitTest( getObject()-> getStatusBits(), OBJECT_STATUS_RECONSTRUCTING ) &&
 			modData->m_isOneShotData == TRUE )
+#endif
+#ifdef ZH
+	if( getObject()->getStatusBits().test( OBJECT_STATUS_RECONSTRUCTING ) && modData->m_isOneShotData )
+
+#endif
 	{
 		// If we are a Hole rebuild, not only should we not, but we should never ask again.
 		stopSpawning();
@@ -973,9 +1033,60 @@ void SpawnBehavior::computeAggregateStates(void)
 
 	// HOUSEKEEPING *************************************
 	//make sure no enemies are shooting at the nexus, since it doesn't 'exist'
+#ifdef OG
 	obj->setStatus(OBJECT_STATUS_MASKED);
 
+#endif
+#ifdef ZH
+	obj->setStatus( MAKE_OBJECT_STATUS_MASK( OBJECT_STATUS_MASKED ) );
+
 }
+
+//-------------------------------------------------------------------------------------------------
+Bool SpawnBehavior::areAllSlavesStealthed() const
+{
+	Object *currentSpawn;
+
+	for( std::list<ObjectID>::const_iterator iter = m_spawnIDs.begin(); iter != m_spawnIDs.end(); iter++)
+	{
+		currentSpawn = TheGameLogic->findObjectByID( (*iter) );
+		if( currentSpawn )
+		{
+      const StealthUpdate *stealthUpdate = currentSpawn->getStealth();
+			if( !stealthUpdate || !stealthUpdate->allowedToStealth( currentSpawn ) )
+			{
+				return FALSE;
+			}
+		}
+	}
+
+	return TRUE; //0 or more spawns are ALL stealthed... I suppose if you have NO spawns, then they are considered stealthed ;)
+}
+
+//-------------------------------------------------------------------------------------------------
+void SpawnBehavior::revealSlaves()
+{
+	Object *currentSpawn;
+#endif
+
+#ifdef ZH
+	for( objectIDListIterator iter = m_spawnIDs.begin(); iter != m_spawnIDs.end(); iter++)
+	{
+		currentSpawn = TheGameLogic->findObjectByID( (*iter) );
+		if( currentSpawn )
+		{
+			StealthUpdate *stealthUpdate = currentSpawn->getStealth();
+			if( stealthUpdate )
+			{
+				stealthUpdate->markAsDetected();
+#endif
+}
+#ifdef ZH
+		}
+	}
+}
+
+#endif
 
 // ------------------------------------------------------------------------------------------------
 /** CRC */

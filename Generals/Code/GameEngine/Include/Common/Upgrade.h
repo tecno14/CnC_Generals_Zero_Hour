@@ -42,6 +42,9 @@ class Player;
 class UpgradeTemplate;
 enum NameKeyType;
 class Image;
+#ifdef ZH
+enum AcademyClassificationType;
+#endif
 
 //-------------------------------------------------------------------------------------------------
 //-------------------------------------------------------------------------------------------------
@@ -51,7 +54,58 @@ enum UpgradeStatusType
 	UPGRADE_STATUS_IN_PRODUCTION,
 	UPGRADE_STATUS_COMPLETE
 };
+#ifdef ZH
 
+//The maximum number of upgrades. 
+#define UPGRADE_MAX_COUNT 128
+
+typedef BitFlags<UPGRADE_MAX_COUNT>	UpgradeMaskType;
+
+#define MAKE_UPGRADE_MASK(k) UpgradeMaskType(UpgradeMaskType::kInit, (k))
+#define MAKE_UPGRADE_MASK2(k,a) UpgradeMaskType(UpgradeMaskType::kInit, (k), (a))
+#define MAKE_UPGRADE_MASK3(k,a,b) UpgradeMaskType(UpgradeMaskType::kInit, (k), (a), (b))
+#define MAKE_UPGRADE_MASK4(k,a,b,c) UpgradeMaskType(UpgradeMaskType::kInit, (k), (a), (b), (c))
+#define MAKE_UPGRADE_MASK5(k,a,b,c,d) UpgradeMaskType(UpgradeMaskType::kInit, (k), (a), (b), (c), (d))
+
+inline Bool TEST_UPGRADE_MASK( const UpgradeMaskType& m, Int index ) 
+{ 
+	return m.test( index ); 
+}
+
+inline Bool TEST_UPGRADE_MASK_ANY( const UpgradeMaskType& m, const UpgradeMaskType& mask ) 
+{ 
+	return m.anyIntersectionWith( mask );
+}
+
+inline Bool TEST_UPGRADE_MASK_MULTI( const UpgradeMaskType& m, const UpgradeMaskType& mustBeSet, const UpgradeMaskType& mustBeClear )
+{
+	return m.testSetAndClear( mustBeSet, mustBeClear );
+}
+
+inline Bool UPGRADE_MASK_ANY_SET( const UpgradeMaskType& m) 
+{ 
+	return m.any(); 
+}
+
+inline void CLEAR_UPGRADE_MASK( UpgradeMaskType& m ) 
+{ 
+	m.clear(); 
+}
+
+inline void SET_ALL_UPGRADE_MASK_BITS( UpgradeMaskType& m )
+{
+	m.clear( );
+	m.flip( );
+}
+#endif
+
+#ifdef ZH
+inline void FLIP_UPGRADE_MASK( UpgradeMaskType& m )
+{
+	m.flip();
+}
+
+#endif
 //-------------------------------------------------------------------------------------------------
 /** A single upgrade *INSTANCE* */
 //-------------------------------------------------------------------------------------------------
@@ -102,6 +156,7 @@ enum UpgradeType
 
 	NUM_UPGRADE_TYPES,		// keep this last
 };
+#ifdef OG
 #ifdef DEFINE_UPGRADE_TYPE_NAMES
 static Char *UpgradeTypeNames[] = 
 {
@@ -110,6 +165,11 @@ static Char *UpgradeTypeNames[] =
 	NULL
 };
 #endif  // end DEFINE_UPGRADE_TYPE_NAMES
+#endif
+#ifdef ZH
+extern const char *TheUpgradeTypeNames[]; //Change above, change this!
+
+#endif
 
 //-------------------------------------------------------------------------------------------------
 /** A single upgrade template definition */
@@ -133,10 +193,18 @@ public:
 	void setUpgradeNameKey( NameKeyType key ) { m_nameKey = key; }
 	NameKeyType getUpgradeNameKey( void ) const { return m_nameKey; }
 	const AsciiString& getDisplayNameLabel( void ) const { return m_displayNameLabel; }
+#ifdef OG
 	Int64 getUpgradeMask() const { return m_upgradeMask; }
+#endif
+#ifdef ZH
+	UpgradeMaskType getUpgradeMask() const { return m_upgradeMask; }
+#endif
 	UpgradeType getUpgradeType( void ) const { return m_type; }
 	const AudioEventRTS* getResearchCompleteSound() const { return &m_researchSound; }
 	const AudioEventRTS* getUnitSpecificSound() const { return &m_unitSpecificSound; }
+#ifdef ZH
+	AcademyClassificationType getAcademyClassificationType() const { return m_academyClassificationType; }
+#endif
 
 	/// inventory pictures
 	void cacheButtonImage();
@@ -152,7 +220,12 @@ public:
 	UpgradeTemplate *friend_getPrev( void ) { return m_prev; }
 	const UpgradeTemplate *friend_getNext( void ) const { return m_next; }
 	const UpgradeTemplate *friend_getPrev( void ) const { return m_prev; }
+#ifdef OG
 	void friend_setUpgradeMask( Int64 mask ) { m_upgradeMask = mask; }
+#endif
+#ifdef ZH
+	void friend_setUpgradeMask( UpgradeMaskType mask ) { m_upgradeMask = mask; }
+#endif
 	void friend_makeVeterancyUpgrade(VeterancyLevel v);
 
 protected:
@@ -163,9 +236,17 @@ protected:
 	AsciiString m_displayNameLabel;			///< String manager label for UI display name
 	Real m_buildTime;										///< database # for how long it takes to "build" this
 	Int m_cost;													///< cost for production 
+#ifdef OG
 	Int64 m_upgradeMask;								///< Unique bitmask for this upgrade template
+#endif
+#ifdef ZH
+	UpgradeMaskType m_upgradeMask;			///< Unique bitmask for this upgrade template
+#endif
 	AudioEventRTS	m_researchSound;			///< Sound played when upgrade researched.
 	AudioEventRTS	m_unitSpecificSound;	///< Secondary sound played when upgrade researched.
+#ifdef ZH
+	AcademyClassificationType m_academyClassificationType; ///< A value used by the academy to evaluate advice based on what players do.
+#endif
 
 	UpgradeTemplate *m_next;						///< next
 	UpgradeTemplate *m_prev;						///< prev

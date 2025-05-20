@@ -309,7 +309,16 @@ typedef struct _TextData
 {
 
 	DisplayString *text;  ///< the text data
+#ifdef OG
 	Bool centered;
+
+#endif
+#ifdef ZH
+	Bool centered;				///< horizontal
+	Bool centeredVertically;	///< vertical
+	Int leftMargin;					///< left justification margin width
+	Int topMargin;					///< top justification margin width
+#endif
 
 } TextData;
 

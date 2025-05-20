@@ -42,6 +42,14 @@
 #include "GameLogic/Object.h"
 //#include "GameLogic/PartitionManager.h"
 
+#ifdef ZH
+#ifdef _INTERNAL
+// for occasional debugging...
+//#pragma optimize("", off)
+//#pragma MESSAGE("************************************** WARNING, optimization disabled for debugging purposes")
+#endif
+
+#endif
 //-------------------------------------------------------------------------------------------------
 SupplyCenterProductionExitUpdate::SupplyCenterProductionExitUpdate( Thing *thing, const ModuleData* moduleData ) : UpdateModule( thing, moduleData )
 {
@@ -129,6 +137,22 @@ void SupplyCenterProductionExitUpdate::exitObjectViaDoor( Object *newObj, ExitDo
 				supplyTruckAI->setForceWantingState(true);
 		}
 
+#ifdef ZH
+		if( md->m_grantTemporaryStealthFrames )
+		{
+			StealthUpdate *stealth = newObj->getStealth();
+			//Only grant temporary stealth to the default stealth update. It's
+			//possible that another type of stealth was granted... like the 
+			//GPS scrambler. We want that to take precendence.
+			if( getObject()->testStatus( OBJECT_STATUS_STEALTHED ) )
+			{
+				if( stealth->isTemporaryGrant() || !newObj->testStatus( OBJECT_STATUS_CAN_STEALTH ) )
+				{
+					stealth->receiveGrant( TRUE, md->m_grantTemporaryStealthFrames );
+				}
+			}
+		}
+#endif
 	}
 
 }

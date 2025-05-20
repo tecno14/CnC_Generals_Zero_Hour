@@ -617,7 +617,12 @@ void WaveGuideUpdate::doDamage( void )
 			{
 
 				// if object was not wet before we kill it and play effects
+#ifdef OG
 				if( BitTest( obj->getStatusBits(), OBJECT_STATUS_WET ) == FALSE )
+#endif
+#ifdef ZH
+				if( !obj->getStatusBits().test( OBJECT_STATUS_WET ) )
+#endif
 				{
 					static const ParticleSystemTemplate *splash = TheParticleSystemManager->findTemplate( "WaveHit01" );
 					ParticleSystem *particleSystem;
@@ -641,7 +646,12 @@ void WaveGuideUpdate::doDamage( void )
 					}  // end if
 
 					// this object is now wet
+#ifdef OG
 					obj->setStatus( OBJECT_STATUS_WET );
+#endif
+#ifdef ZH
+					obj->setStatus( MAKE_OBJECT_STATUS_MASK( OBJECT_STATUS_WET ) );
+#endif
 
 					// some things can be toppled ... ooo, xtra special of us!
 					Coord3D toppleVector;

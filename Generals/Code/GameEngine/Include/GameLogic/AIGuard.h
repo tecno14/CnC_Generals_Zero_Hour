@@ -140,7 +140,18 @@ class AIGuardInnerState : public State
 {
 	MEMORY_POOL_GLUE_WITH_USERLOOKUP_CREATE(AIGuardInnerState, "AIGuardInnerState")		
 public:
+#ifdef OG
 	AIGuardInnerState( StateMachine *machine ) : State( machine, "AIGuardInner" ) { }
+
+#endif
+#ifdef ZH
+	AIGuardInnerState( StateMachine *machine ) : State( machine, "AIGuardInner" ) 
+	{ 
+		m_attackState = 0;
+		m_enterState = 0;
+	}
+	virtual Bool isAttack() const { return m_attackState ? m_attackState->isAttack() : FALSE; }
+#endif
 	virtual StateReturnType onEnter( void );
 	virtual StateReturnType update( void );
 	virtual void onExit( StateExitType status );
@@ -154,6 +165,9 @@ private:
 
 	ExitConditions m_exitConditions; 
 	AIAttackState *m_attackState;
+#ifdef ZH
+	AIEnterState *m_enterState;
+#endif
 };
 EMPTY_DTOR(AIGuardInnerState)
 
@@ -163,6 +177,10 @@ class AIGuardIdleState : public State
 	MEMORY_POOL_GLUE_WITH_USERLOOKUP_CREATE(AIGuardIdleState, "AIGuardIdleState")		
 public:
 	AIGuardIdleState( StateMachine *machine ) : State( machine, "AIGuardIdleState" ) { }
+#ifdef ZH
+	virtual Bool isAttack() const { return FALSE; }
+	virtual Bool isGuardIdle() const { return TRUE; }
+#endif
 	virtual StateReturnType onEnter( void );
 	virtual StateReturnType update( void );
 	virtual void onExit( StateExitType status );
@@ -188,6 +206,9 @@ public:
 	{
 		m_attackState = NULL;
 	}
+#ifdef ZH
+	virtual Bool isAttack() const { return m_attackState ? m_attackState->isAttack() : FALSE; }
+#endif
 	virtual StateReturnType onEnter( void );
 	virtual StateReturnType update( void );
 	virtual void onExit( StateExitType status );
@@ -215,6 +236,9 @@ public:
 	{
 		m_nextReturnScanTime = 0;
 	}
+#ifdef ZH
+	virtual Bool isAttack() const { return FALSE; }
+#endif
 	virtual StateReturnType onEnter( void );
 	virtual StateReturnType update( void );
 	virtual void onExit( StateExitType status );
@@ -235,6 +259,9 @@ class AIGuardPickUpCrateState : public AIPickUpCrateState
 	MEMORY_POOL_GLUE_WITH_USERLOOKUP_CREATE(AIGuardPickUpCrateState, "AIGuardPickUpCrateState")		
 public:
 	AIGuardPickUpCrateState( StateMachine *machine );
+#ifdef ZH
+	virtual Bool isAttack() const { return FALSE; }
+#endif
 	virtual StateReturnType onEnter( void );
 	virtual StateReturnType update( void );
 	virtual void onExit( StateExitType status );
@@ -247,6 +274,9 @@ class AIGuardAttackAggressorState : public State
 	MEMORY_POOL_GLUE_WITH_USERLOOKUP_CREATE(AIGuardAttackAggressorState, "AIGuardAttackAggressorState")		
 public:
 	AIGuardAttackAggressorState( StateMachine *machine );
+#ifdef ZH
+	virtual Bool isAttack() const { return m_attackState ? m_attackState->isAttack() : FALSE; }
+#endif
 	virtual StateReturnType onEnter( void );
 	virtual StateReturnType update( void );
 	virtual void onExit( StateExitType status );

@@ -306,6 +306,9 @@ LocomotorTemplate::LocomotorTemplate()
 	m_extra2DFriction = 0.0f;
 
 	m_accelPitchLimit = 0;
+#ifdef ZH
+	m_decelPitchLimit = 0;
+#endif
 	m_bounceKick = 0;
 
 //	m_pitchStiffness = 0;
@@ -348,6 +351,14 @@ LocomotorTemplate::LocomotorTemplate()
 	m_wanderWidthFactor = 0.0f;
 	m_wanderLengthFactor = 1.0f;
 	m_wanderAboutPointRadius = 0.0f;
+#ifdef ZH
+  
+	m_rudderCorrectionDegree    = 0.0f;
+	m_rudderCorrectionRate      = 0.0f;	
+	m_elevatorCorrectionDegree  = 0.0f;
+	m_elevatorCorrectionRate    = 0.0f;
+
+#endif
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -458,6 +469,9 @@ const FieldParse* LocomotorTemplate::getFieldParse() const
 		{ "GroupMovementPriority", INI::parseIndexList, TheLocomotorPriorityNames, offsetof(LocomotorTemplate, m_movePriority) },		\
 
 		{ "AccelerationPitchLimit", INI::parseAngleReal, NULL, offsetof(LocomotorTemplate, m_accelPitchLimit) },		
+#ifdef ZH
+		{ "DecelerationPitchLimit", INI::parseAngleReal, NULL, offsetof(LocomotorTemplate, m_decelPitchLimit) },
+#endif
 		{ "BounceAmount", INI::parseAngularVelocityReal, NULL, offsetof(LocomotorTemplate, m_bounceKick) },		
 		{ "PitchStiffness", INI::parseReal, NULL, offsetof(LocomotorTemplate, m_pitchStiffness) },		
 		{ "RollStiffness", INI::parseReal, NULL, offsetof(LocomotorTemplate, m_rollStiffness) },		
@@ -493,6 +507,12 @@ const FieldParse* LocomotorTemplate::getFieldParse() const
 		{ "WanderLengthFactor",				 INI::parseReal, NULL, offsetof(LocomotorTemplate, m_wanderLengthFactor) },
 		{ "WanderAboutPointRadius",				 INI::parseReal, NULL, offsetof(LocomotorTemplate, m_wanderAboutPointRadius) },
 
+#ifdef ZH
+		{ "RudderCorrectionDegree",		 INI::parseReal, NULL, offsetof(LocomotorTemplate, m_rudderCorrectionDegree) },
+		{ "RudderCorrectionRate",			 INI::parseReal, NULL, offsetof(LocomotorTemplate, m_rudderCorrectionRate) },
+		{ "ElevatorCorrectionDegree",	 INI::parseReal, NULL, offsetof(LocomotorTemplate, m_elevatorCorrectionDegree) },
+		{ "ElevatorCorrectionRate",		 INI::parseReal, NULL, offsetof(LocomotorTemplate, m_elevatorCorrectionRate) },
+#endif
 		{ NULL, NULL, NULL, 0 }  // keep this last	
 	
 	};
@@ -867,6 +887,14 @@ void Locomotor::locoUpdate_moveTowardsAngle(Object* obj, Real goalAngle)
 	if (physics == NULL)
 	{
 		DEBUG_CRASH(("you can only apply Locomotors to objects with Physics"));
+#ifdef ZH
+		return;
+	}
+
+	// Skip moveTowardsAngle if physics say you're stunned
+	if(physics->getIsStunned())
+	{
+#endif
 		return;
 	}
 
@@ -957,6 +985,14 @@ void Locomotor::locoUpdate_moveTowardsPosition(Object* obj, const Coord3D& goalP
 		return;
 	}
 
+#ifdef ZH
+	// Skip moveTowardsPosition if physics say you're stunned
+	if(physics->getIsStunned())
+	{
+		return;
+	}
+
+#endif
 #ifdef DEBUG_OBJECT_ID_EXISTS
 //	DEBUG_ASSERTLOG(obj->getID() != TheObjectIDToDebug, ("locoUpdate_moveTowardsPosition %f %f %f (dtg %f, spd %f), speed %f (%f)\n",goalPos.x,goalPos.y,goalPos.z,onPathDistToGoal,desiredSpeed,physics->getSpeed(),physics->getForwardSpeed2D()));
 #endif
@@ -996,6 +1032,13 @@ void Locomotor::locoUpdate_moveTowardsPosition(Object* obj, const Coord3D& goalP
 	Bool treatAsAirborne = false;
 	Coord3D pos = *obj->getPosition();
 	Real heightAboveSurface = pos.z - TheTerrainLogic->getLayerHeight(pos.x, pos.y, obj->getLayer());
+#ifdef ZH
+	
+	if( obj->getStatusBits().test( OBJECT_STATUS_DECK_HEIGHT_OFFSET ) )
+	{
+		heightAboveSurface -= obj->getCarrierDeckHeight();
+	}
+#endif
 
 	if (heightAboveSurface > -(3*3)*TheGlobalData->m_gravity) 
 	{
@@ -1044,7 +1087,12 @@ void Locomotor::locoUpdate_moveTowardsPosition(Object* obj, const Coord3D& goalP
 		setFlag(IS_BRAKING, false);
 	}
 
+#ifdef OG
 	Bool wasBraking = BitTest( obj->getStatusBits(), OBJECT_STATUS_BRAKING );
+#endif
+#ifdef ZH
+	Bool wasBraking = obj->getStatusBits().test( OBJECT_STATUS_BRAKING );
+#endif
 
 	physics->setTurning(TURN_NONE);
 	if (getAllowMotiveForceWhileAirborne() || !treatAsAirborne)
@@ -1058,7 +1106,14 @@ void Locomotor::locoUpdate_moveTowardsPosition(Object* obj, const Coord3D& goalP
 					moveTowardsPositionClimb(obj, physics, goalPos, onPathDistToGoal, desiredSpeed);
 					break;
 			case LOCO_WHEELS_FOUR:
+#ifdef OG
 					moveTowardsPositionWheels(obj, physics, goalPos, onPathDistToGoal, desiredSpeed);
+
+#endif
+#ifdef ZH
+			case LOCO_MOTORCYCLE:
+					moveTowardsPositionWheels( obj, physics, goalPos, onPathDistToGoal, desiredSpeed );
+#endif
 					break;
 			case LOCO_TREADS:
 					moveTowardsPositionTreads(obj, physics, goalPos, onPathDistToGoal, desiredSpeed);
@@ -1081,7 +1136,12 @@ void Locomotor::locoUpdate_moveTowardsPosition(Object* obj, const Coord3D& goalP
 
 	handleBehaviorZ(obj, physics, goalPos);
 	// Objects that are braking don't follow the normal physics, so they end up at their destination exactly.
+#ifdef OG
 	obj->setStatus(OBJECT_STATUS_BRAKING, getFlag(IS_BRAKING));
+#endif
+#ifdef ZH
+	obj->setStatus( MAKE_OBJECT_STATUS_MASK( OBJECT_STATUS_BRAKING ), getFlag(IS_BRAKING) );
+#endif
 
 	if (wasBraking) 
 	{
@@ -1091,7 +1151,12 @@ void Locomotor::locoUpdate_moveTowardsPosition(Object* obj, const Coord3D& goalP
 		if (obj->isKindOf(KINDOF_PROJECTILE)) 
 		{
 			// Projectiles never stop braking once they start.  jba.
+#ifdef OG
 			obj->setStatus(OBJECT_STATUS_BRAKING, TRUE);
+#endif
+#ifdef ZH
+			obj->setStatus( MAKE_OBJECT_STATUS_MASK( OBJECT_STATUS_BRAKING ) );
+#endif
 			// Projectiles cheat in 3 dimensions.
 			dist = sqrt(dx*dx+dy*dy+dz*dz);
 			Real vel = physics->getVelocityMagnitude();
@@ -1949,7 +2014,14 @@ void Locomotor::moveTowardsPositionThrust(Object* obj, PhysicsBehavior *physics,
 		const Coord3D* veltmp = physics->getVelocity();
 		Vector3 vel(veltmp->x, veltmp->y, veltmp->z);
 		Bool adjust = true;
+#ifdef OG
 		if (BitTest( obj->getStatusBits(), OBJECT_STATUS_BRAKING )) {
+
+#endif
+#ifdef ZH
+		if( obj->getStatusBits().test( OBJECT_STATUS_BRAKING ) ) 
+		{
+#endif
 			// align to target, cause that's where we're going anyway.
 
 			vel.Set(goalPos.x - pos.x, goalPos.y-pos.y, goalPos.z-pos.z);
@@ -2001,11 +2073,22 @@ Real Locomotor::getSurfaceHtAtPt(Real x, Real y)
 {
 	Real ht = 0;
 
+#ifdef OG
 	Real waterZ;
 	if (TheTerrainLogic->isUnderwater(x, y, &waterZ)) {
+#endif
+#ifdef ZH
+	Real z,waterZ;
+	if (TheTerrainLogic->isUnderwater(x, y, &waterZ, &z)) {
+#endif
 		ht += waterZ;
 	} else {
+#ifdef OG
 		ht += TheTerrainLogic->getGroundHeight(x, y);
+#endif
+#ifdef ZH
+		ht += z;
+#endif
 	}
 	
 	return ht;
@@ -2439,6 +2522,9 @@ Bool Locomotor::locoUpdate_maintainCurrentPosition(Object* obj)
 			requiresConstantCalling = FALSE;
 			break;
 		case LOCO_WHEELS_FOUR:
+#ifdef ZH
+		case LOCO_MOTORCYCLE:
+#endif
 			maintainCurrentPositionWheels(obj, physics);
 			requiresConstantCalling = FALSE;
 			break;
@@ -2551,6 +2637,15 @@ void Locomotor::maintainCurrentPositionHover(Object* obj, PhysicsBehavior *physi
 			force.x = accelForce * dir->x;
 			force.y = accelForce * dir->y;
 			force.z = 0.0f;
+#ifdef ZH
+
+
+      // Apply a random kick (if applicable) to dirty-up visually.
+      // The idea is that chopper pilots have to do course corrections all the time
+      // Because of changes in wind, pressure, etc.
+      // Those changes are added here, then the 
+
+#endif
 
 			// apply forces to object
 			physics->applyMotiveForce( &force );

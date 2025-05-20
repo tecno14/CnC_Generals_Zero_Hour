@@ -44,15 +44,27 @@
 #include "GameClient/Drawable.h"
 #include "GameClient/InGameUI.h"
 #include "GameClient/ParticleSys.h"
+#ifdef ZH
+#include "GameLogic/AI.h"
+#endif
 #include "GameLogic/AIPathfind.h"
 #include "GameLogic/Armor.h"
 #include "GameLogic/GameLogic.h"
 #include "GameLogic/Object.h"
 #include "GameLogic/Damage.h"
+#ifdef ZH
+#include "GameLogic/PartitionManager.h"
+#endif
 #include "GameLogic/TerrainLogic.h"
+#ifdef ZH
+#include "GameLogic/Weapon.h"
+#endif
 #include "GameLogic/Module/AIUpdate.h"
 #include "GameLogic/Module/ActiveBody.h"
 #include "GameLogic/Module/BridgeBehavior.h"
+#ifdef ZH
+#include "GameLogic/Module/ContainModule.h"
+#endif
 #include "GameLogic/Module/DamageModule.h"
 #include "GameLogic/Module/DieModule.h"
 
@@ -129,6 +141,11 @@ ActiveBodyModuleData::ActiveBodyModuleData()
 {
 	m_maxHealth = 0;
 	m_initialHealth = 0;
+#ifdef ZH
+	m_subdualDamageCap = 0;
+	m_subdualDamageHealRate = 0;
+	m_subdualDamageHealAmount = 0;
+#endif
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -141,6 +158,12 @@ void ActiveBodyModuleData::buildFieldParse(MultiIniFieldParse& p)
 	{
 		{ "MaxHealth",						INI::parseReal,						NULL,		offsetof( ActiveBodyModuleData, m_maxHealth ) },
 		{ "InitialHealth",				INI::parseReal,						NULL,		offsetof( ActiveBodyModuleData, m_initialHealth ) },
+#ifdef ZH
+
+		{ "SubdualDamageCap",					INI::parseReal,									NULL,		offsetof( ActiveBodyModuleData, m_subdualDamageCap ) },
+		{ "SubdualDamageHealRate",		INI::parseDurationUnsignedInt,	NULL,		offsetof( ActiveBodyModuleData, m_subdualDamageHealRate ) },
+		{ "SubdualDamageHealAmount",	INI::parseReal,									NULL,		offsetof( ActiveBodyModuleData, m_subdualDamageHealAmount ) },
+#endif
 		{ 0, 0, 0, 0 }
 	};
   p.add(dataFieldParse);
@@ -161,6 +184,9 @@ ActiveBody::ActiveBody( Thing *thing, const ModuleData* moduleData ) :
 	m_lastDamageFXDone((DamageType)-1),
 	m_lastDamageCleared(false),
 	m_particleSystems(NULL),
+#ifdef ZH
+	m_currentSubdualDamage(0),
+#endif
 	m_indestructible(false)
 {
 	m_currentHealth = getActiveBodyModuleData()->m_initialHealth;
@@ -216,7 +242,12 @@ void ActiveBody::setCorrectDamageState()
 
 		// here we make sure nobody collides with us, ever again...			//Lorenzen
 		//THis allows projectiles shot from infantry that are inside rubble to get out of said rubble safely
+#ifdef OG
 		getObject()->setStatus( OBJECT_STATUS_NO_COLLISIONS );
+#endif
+#ifdef ZH
+		getObject()->setStatus( MAKE_OBJECT_STATUS_MASK( OBJECT_STATUS_NO_COLLISIONS ) );
+#endif
 
 
 	}
@@ -275,6 +306,30 @@ void ActiveBody::validateArmorAndDamageFX() const
 Real ActiveBody::estimateDamage( DamageInfoInput& damageInfo ) const
 {
 	validateArmorAndDamageFX();
+#ifdef ZH
+
+	//Subdual damage can't affect you if you can't be subdued
+	if( IsSubdualDamage(damageInfo.m_damageType)  &&  !canBeSubdued() )
+		return 0.0f;
+
+	if( damageInfo.m_damageType == DAMAGE_KILL_GARRISONED )
+	{
+		ContainModuleInterface* contain = getObject()->getContain();
+		if( contain && contain->getContainCount() > 0 && contain->isGarrisonable() && !contain->isImmuneToClearBuildingAttacks() )
+			return 1.0f;
+		else
+			return 0.0f;
+	}
+	
+	if( damageInfo.m_damageType == DAMAGE_SNIPER )
+	{
+		if( getObject()->isKindOf( KINDOF_STRUCTURE ) && getObject()->testStatus( OBJECT_STATUS_UNDER_CONSTRUCTION ) )
+		{
+			//If we're a pathfinder shooting a stinger site under construction... don't. Special case code.
+			return 0.0f;
+		}
+	}
+#endif
 
 	Real amount = m_curArmor.adjustDamage(damageInfo.m_damageType, damageInfo.m_amount);
 
@@ -286,9 +341,16 @@ Real ActiveBody::estimateDamage( DamageInfoInput& damageInfo ) const
 void ActiveBody::doDamageFX( const DamageInfo *damageInfo )
 {
 	DamageType damageTypeToUse = damageInfo->in.m_damageType;
+#ifdef OG
 	if (damageInfo->in.m_damageType == DAMAGE_UNRESISTABLE && 
 				(damageInfo->in.m_deathType == DEATH_POISONED || damageInfo->in.m_deathType == DEATH_POISONED_BETA))
+#endif
+#ifdef ZH
+	if (damageInfo->in.m_damageFXOverride != DAMAGE_UNRESISTABLE )
+
+#endif
 	{
+#ifdef OG
 		// PoisonedBehavior sends DAMAGE_UNRESISTABLE (rather that DAMAGE_POISON) to avoid reinfection,
 		// but it prevents us from using the appropriate DamageFX. This is pretty greasy; I should really
 		// augment DamageInfo to have some "visible damage type" field, but that's too risky at this point.
@@ -306,9 +368,18 @@ void ActiveBody::doDamageFX( const DamageInfo *damageInfo )
 			{
 				draw->setTintStatus( TINT_STATUS_IRRADIATED );
 				// We allow the Tinting Class in Drawable to turn this effect off, which it does every update
+#endif
+#ifdef ZH
+		// Just the visual aspect of damage can be overridden in some cases.
+		// Unresistable is the default to mean no override, as we are out of bits.
+		damageTypeToUse = damageInfo->in.m_damageFXOverride;
+
+#endif
 			}
+#ifdef OG
 		}
 	}
+#endif
 
 	if (m_curDamageFX)
 	{
@@ -344,6 +415,16 @@ void ActiveBody::attemptDamage( DamageInfo *damageInfo )
 	if( obj->isEffectivelyDead() )
 		return;
 
+#ifdef ZH
+	Object *damager = TheGameLogic->findObjectByID( damageInfo->in.m_sourceID );
+	if( damager )
+	{
+		//Store the template so later if the attacking object dies, we use script conditions to look at the 
+		//damager's template inside evaluateTeamAttackedByType or evaluateNameAttackedByType.
+		damageInfo->in.m_sourceTemplate = damager->getTemplate();
+	}
+
+#endif
 	Bool alreadyHandled = FALSE;
 	Bool allowModifier = TRUE;
 	Real amount = m_curArmor.adjustDamage(damageInfo->in.m_damageType, damageInfo->in.m_amount);
@@ -351,9 +432,16 @@ void ActiveBody::attemptDamage( DamageInfo *damageInfo )
 	switch( damageInfo->in.m_damageType )
 	{
 		case DAMAGE_HEALING:
+#ifdef ZH
+		{
+			if( !damageInfo->in.m_kill )
+#endif
 		{
 			// Healing and Damage are separate, so this shouldn't happen
 			attemptHealing( damageInfo );
+#ifdef ZH
+			}
+#endif
 			return;
 		}
 
@@ -363,21 +451,145 @@ void ActiveBody::attemptDamage( DamageInfo *damageInfo )
 			// pilot, in the case of a vehicle.
 			if( obj->isKindOf( KINDOF_VEHICLE ) )
 			{
+#ifdef ZH
+				//Handle special case for combat bike. We actually will kill the bike by 
+				//forcing the rider to leave the bike. That way the bike will automatically
+				//scuttle and be unusable.
+				ContainModuleInterface *contain = obj->getContain();
+				if( contain && contain->isRiderChangeContain() )
+				{
+
+					AIUpdateInterface *ai = obj->getAI();
+
+					if( ai->isMoving() )
+					{
+						//Bike is moving, so just blow it up instead.
+						if (damager)
+							damager->scoreTheKill( obj );
+						obj->kill();
+					}
+					else
+					{
+						//Removing the rider will scuttle the bike.
+						Object *rider = *(contain->getContainedItemsList()->begin());
+						ai->aiEvacuateInstantly( TRUE, CMD_FROM_AI );
+
+						//Kill the rider.
+						if (damager)
+							damager->scoreTheKill( rider );
+						rider->kill();
+					}
+				}
+				else
+				{
+#endif
 				// Make it unmanned, so units can easily check the ability to "take control of it"
 				obj->setDisabled( DISABLED_UNMANNED );
+#ifdef ZH
+					TheGameLogic->deselectObject(obj, PLAYERMASK_ALL, TRUE);
+#endif
 
+#ifdef OG
 				TheGameLogic->deselectObject(obj, PLAYERMASK_ALL, TRUE);
+
+#endif
+#ifdef ZH
+          if ( obj->getAI() )
+            obj->getAI()->aiIdle( CMD_FROM_AI );
+#endif
 
 				// Convert it to the neutral team so it renders gray giving visual representation that it is unmanned.
 				obj->setTeam( ThePlayerList->getNeutralPlayer()->getDefaultTeam() );
+#ifdef ZH
+				}
+#endif
 				
+#ifdef ZH
+				//We don't care which team sniped the vehicle... we use this information to flag whether or not
+				//we captured a vehicle.
+	      ThePlayerList->getNeutralPlayer()->getAcademyStats()->recordVehicleSniped();
+#endif
 			}
+			alreadyHandled = TRUE;
+			allowModifier = FALSE;
+			break;
+		}
+#ifdef ZH
+
+		case DAMAGE_KILL_GARRISONED:
+		{
+			// KRIS: READ THIS!!!
+			// This code is very misleading (but in a good way). One would think this is
+			// an excellent place to add the hook to kill garrisoned troops. And that is
+			// a correct assumption. Unfortunately, the vast majority of garrison slayings
+			// are performed in DumbProjectileBehavior::projectileHandleCollision(), so my
+			// hope is that this message will save you some research time!
+
+			Int killsToMake = REAL_TO_INT_FLOOR(damageInfo->in.m_amount);
+			ContainModuleInterface* contain = obj->getContain();
+			if( contain && contain->getContainCount() > 0 && contain->isGarrisonable() && !contain->isImmuneToClearBuildingAttacks() )
+			{
+				Int numKilled = 0;
+
+				// garrisonable buildings subvert the normal process here.
+				const ContainedItemsList* items = contain->getContainedItemsList();
+				if (items)
+				{
+					for( ContainedItemsList::const_iterator it = items->begin(); (it != items->end()) && (numKilled < killsToMake); it++ )
+					{
+						Object* thingToKill = *it;
+						if (!thingToKill->isEffectivelyDead() )
+						{
+							if (damager)
+								damager->scoreTheKill( thingToKill );
+							thingToKill->kill();
+							++numKilled;
+							thingToKill->getControllingPlayer()->getAcademyStats()->recordClearedGarrisonedBuilding();
+#endif
+	}
+#ifdef ZH
+					} // next contained item
+#endif
+
+#ifdef ZH
+				} // if items
+			}	// if a garrisonable thing
+			alreadyHandled = TRUE;
+			allowModifier = FALSE;
+			break;
+		}
+		
+		case DAMAGE_STATUS:
+		{
+			// Damage amount is msec time we set the status given in damageStatusType
+			Real realFramesToStatusFor = ConvertDurationFromMsecsToFrames(amount);
+			obj->doStatusDamage( damageInfo->in.m_damageStatusType , REAL_TO_INT_CEIL(realFramesToStatusFor) );
 			alreadyHandled = TRUE;
 			allowModifier = FALSE;
 			break;
 		}
 	}
 
+	if( IsSubdualDamage(damageInfo->in.m_damageType) )
+	{
+		if( !canBeSubdued() )
+			return;
+		
+		Bool wasSubdued = isSubdued();
+		internalAddSubdualDamage(amount);
+		Bool nowSubdued = isSubdued();
+		alreadyHandled = TRUE;
+		allowModifier = FALSE;
+
+		if( wasSubdued != nowSubdued )
+		{
+			onSubdualChange(nowSubdued);
+		}
+
+		getObject()->notifySubdualDamage(amount);
+	}
+
+#endif
 	if (allowModifier)
 	{
 		if( damageInfo->in.m_damageType != DAMAGE_UNRESISTABLE )
@@ -389,16 +601,28 @@ void ActiveBody::attemptDamage( DamageInfo *damageInfo )
 	}
 
 	// sanity check the damage value -- can't apply negative damage
+#ifdef OG
 	if( amount > 0.0f )
+#endif
+#ifdef ZH
+	if( amount > 0.0f || damageInfo->in.m_kill )
+#endif
 	{
 		BodyDamageType oldState = m_curDamageState;
 
+#ifdef ZH
+		//If the object is going to die, make sure we damage all remaining health.
+		if( damageInfo->in.m_kill )
+		{
+			amount = m_currentHealth;
+		}
+
+#endif
 		if (!alreadyHandled) 
 		{
 			// do the damage simplistic damage subtraction
 			internalChangeHealth( -amount );
 		}
-
 
 #ifdef ALLOW_SURRENDER
 //*****************************************************************************************
@@ -527,10 +751,21 @@ void ActiveBody::attemptDamage( DamageInfo *damageInfo )
 		if( m_currentHealth <= 0 && m_prevHealth > 0 )
 		{
 			// Give our killer credit for killing us, if there is one.
+#ifdef OG
 			Object *killer = TheGameLogic->findObjectByID( damageInfo->in.m_sourceID );
 			if( killer )
+#endif
+#ifdef ZH
+			if( damager )
+
+#endif
 			{
+#ifdef OG
 				killer->scoreTheKill( obj );
+#endif
+#ifdef ZH
+				damager->scoreTheKill( obj );
+#endif
 			}
 	
 			obj->onDie( damageInfo );
@@ -540,11 +775,130 @@ void ActiveBody::attemptDamage( DamageInfo *damageInfo )
 	doDamageFX(damageInfo);
 
 	// Damaged repulsable civilians scare (repulse) other civs.	jba.
+#ifdef OG
 	if (TheAI->getAiData()->m_enableRepulsors) {
 		if (obj->isKindOf(KINDOF_CAN_BE_REPULSED)) {
 			obj->setStatus(OBJECT_STATUS_REPULSOR, true);
+
+#endif
+#ifdef ZH
+	if( TheAI->getAiData()->m_enableRepulsors ) 
+	{
+		if( obj->isKindOf( KINDOF_CAN_BE_REPULSED ) ) 
+		{
+			obj->setStatus( MAKE_OBJECT_STATUS_MASK( OBJECT_STATUS_REPULSOR ) );
 		}
 	}
+
+	//Retaliate, even if I'm dead -- we'll still get my nearby friends to get revenge!!!
+	//Also only retaliate if we're controlled by a human player and the thing that attacked me
+	//is an enemy.
+	Player *controllingPlayer = obj->getControllingPlayer();
+	if( controllingPlayer && controllingPlayer->isLogicalRetaliationModeEnabled() && controllingPlayer->getPlayerType() == PLAYER_HUMAN ) 
+	{
+		if( shouldRetaliateAgainstAggressor(obj, damager))
+		{
+			PartitionFilterPlayerAffiliation f1( controllingPlayer, ALLOW_ALLIES, true );
+			PartitionFilterOnMap filterMapStatus;
+			PartitionFilter *filters[] = { &f1, &filterMapStatus, 0 };
+
+			
+			Real distance = TheAI->getAiData()->m_retaliateFriendsRadius + obj->getGeometryInfo().getBoundingCircleRadius();
+			SimpleObjectIterator *iter = ThePartitionManager->iterateObjectsInRange( obj->getPosition(), distance, FROM_CENTER_2D, filters, ITER_FASTEST );
+			MemoryPoolObjectHolder hold( iter );
+			for( Object *them = iter->first(); them; them = iter->next() ) 
+			{
+				if (!shouldRetaliate(them)) {
+					continue;
+				}
+				AIUpdateInterface *ai = them->getAI();
+				if (ai==NULL) {
+					continue;
+				}
+				//If we have AI and we're mobile, then assist!
+				if( !them->isKindOf( KINDOF_IMMOBILE ))
+				{
+					//But only if we can attack it!
+					CanAttackResult result = them->getAbleToAttackSpecificObject( ATTACK_NEW_TARGET, damager, CMD_FROM_AI );
+					if( result == ATTACKRESULT_POSSIBLE_AFTER_MOVING || result == ATTACKRESULT_POSSIBLE )
+					{
+						ai->aiGuardRetaliate( damager, them->getPosition(), NO_MAX_SHOTS_LIMIT, CMD_FROM_AI );
+					}
+				}
+			}
+		}
+	}
+}
+
+//-------------------------------------------------------------------------------------------------
+//-------------------------------------------------------------------------------------------------
+Bool ActiveBody::shouldRetaliateAgainstAggressor(Object *obj, Object *damager)
+{
+	/* This considers whether obj should invoke his friends to retaliate against damager.
+		 Note that obj could be a structure, so we don't actually check whether obj will 
+		 retaliate, as in many cases he wouldn't. */
+	if (damager==NULL) {
+		return false;
+	}
+	if (damager->isAirborneTarget()) {
+		return false; // Don't retaliate against aircraft. [8/25/2003]
+	}
+	if (damager->getRelationship( obj ) != ENEMIES) {
+		return false; // only retaliate against enemies.
+	}
+	Real distSqr = ThePartitionManager->getDistanceSquared(obj, damager, FROM_BOUNDINGSPHERE_2D);
+	if (distSqr > sqr(TheAI->getAiData()->m_maxRetaliateDistance)) {
+		return false;
+	}
+	// Only human players retaliate. [8/25/2003]
+	if (obj->getControllingPlayer()->getPlayerType() != PLAYER_HUMAN) {
+		return false;
+	}
+	// Drones never retaliate. [8/25/2003]
+	if (obj->isKindOf(KINDOF_DRONE)) {
+		return false;
+	}
+	return true;
+}
+
+//-------------------------------------------------------------------------------------------------
+//-------------------------------------------------------------------------------------------------
+Bool ActiveBody::shouldRetaliate(Object *obj)
+{
+	// Cannot retaliate objects dont. [8/25/2003]
+	if (obj->isKindOf(KINDOF_CANNOT_RETALIATE)) {
+		return false;
+	}	
+	if (obj->isKindOf( KINDOF_IMMOBILE )) {
+		return false;
+	}
+	// Drones never retaliate. [8/25/2003]
+	if (obj->isKindOf(KINDOF_DRONE)) {
+		return false;
+	}
+	// Any unit that isn't idle won't retaliate. [8/25/2003]
+	if (obj->getAI()) {
+		if (!obj->getAI()->isIdle()) {
+			return false;
+		}
+	} else {
+		return false; // Non-ai can't retaliate. [8/26/2003]
+	}
+	// Stealthed units don't retaliate unless they're detected. [8/25/2003]
+	if ( obj->getStatusBits().test( OBJECT_STATUS_STEALTHED ) && 
+		!obj->getStatusBits().test( OBJECT_STATUS_DETECTED ) ) {
+		return false; 
+#endif
+		}
+#ifdef ZH
+	// If we're using an ability, don't stop. [8/25/2003]
+	if (obj->testStatus(OBJECT_STATUS_IS_USING_ABILITY)) {
+		return false;
+#endif
+	}
+#ifdef ZH
+	return true;
+#endif
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -679,7 +1033,20 @@ void ActiveBody::setMaxHealth( Real maxHealth, MaxHealthChangeType healthChangeT
 		case SAME_CURRENTHEALTH:
 			//do nothing
 			break;
+#ifdef ZH
+			
+		case FULLY_HEAL:
+		{
+			// Set current to the new Max.
+			//400/500 (80%) + 100 becomes 600/600 (100%)
+			//200/500 (40%) - 100 becomes 400/400 (100%)
+			internalChangeHealth(m_maxHealth - m_currentHealth);
+			break;
+#endif
 	}
+#ifdef ZH
+	}
+#endif
 
 	//
 	// when max health is getting clipped to a lower value, if our current health
@@ -764,13 +1131,13 @@ void ActiveBody::createParticleSystems( const AsciiString &boneBaseName,
 	{
 
 		// pick a bone index to place this particle system at
-		
 		// MDC: moving to GameLogicRandomValue.  This does not need to be synced, but having it so makes searches *so* much nicer.
+#ifdef OG
 		//Int boneIndex = GameLogicRandomValue( 0, maxSystems - i - 1 );
 
+#endif
     // DTEH: Moved back to GameClientRandomValue because of desync problems. July 27th 2003.
     Int boneIndex = GameClientRandomValue( 0, maxSystems - i - 1 );
-
 
 		// find the actual bone location to use and mark that bone index as used
 		Int count = 0;
@@ -991,7 +1358,12 @@ void ActiveBody::internalChangeHealth( Real delta )
 		// for damage states when things are under construction because we just don't have
 		// all the art states for that during buildup animation
 		//
+#ifdef OG
 		if( BitTest( getObject()->getStatusBits(), OBJECT_STATUS_UNDER_CONSTRUCTION ) == FALSE)
+#endif
+#ifdef ZH
+		if( !getObject()->getStatusBits().test( OBJECT_STATUS_UNDER_CONSTRUCTION ) )
+#endif
 			evaluateVisualCondition();
 
 	}  // end if
@@ -1002,8 +1374,81 @@ void ActiveBody::internalChangeHealth( Real delta )
 
 } 
 
+#ifdef ZH
+//-------------------------------------------------------------------------------------------------
+#endif
+//-------------------------------------------------------------------------------------------------
+#ifdef ZH
+void ActiveBody::internalAddSubdualDamage( Real delta )
+{
+	const ActiveBodyModuleData *data = getActiveBodyModuleData();
+
+	m_currentSubdualDamage += delta;
+	m_currentSubdualDamage = min(m_currentSubdualDamage, data->m_subdualDamageCap);
+}
+
 //-------------------------------------------------------------------------------------------------
 //-------------------------------------------------------------------------------------------------
+Bool ActiveBody::canBeSubdued() const
+{
+	// Any body with subdue listings can be subdued.
+	return getActiveBodyModuleData()->m_subdualDamageCap > 0;
+}
+
+#endif
+//-------------------------------------------------------------------------------------------------
+#ifdef ZH
+//-------------------------------------------------------------------------------------------------
+void ActiveBody::onSubdualChange( Bool isNowSubdued )
+{
+	if( !getObject()->isKindOf(KINDOF_PROJECTILE) )
+	{
+		Object *me = getObject();
+		
+		if( isNowSubdued )
+		{
+			me->setDisabled(DISABLED_SUBDUED);
+
+      ContainModuleInterface *contain = me->getContain();
+      if ( contain )
+        contain->orderAllPassengersToIdle( CMD_FROM_AI );
+
+		}
+		else
+		{
+			me->clearDisabled(DISABLED_SUBDUED);
+
+			if( me->isKindOf( KINDOF_FS_INTERNET_CENTER ) )
+			{
+				//Kris: October 20, 2003 - Patch 1.01
+				//Any unit inside an internet center is a hacker! Order
+				//them to start hacking again.
+				ContainModuleInterface *contain = me->getContain();
+				if ( contain )
+					contain->orderAllPassengersToHackInternet( CMD_FROM_AI );
+			}
+		}
+	}
+	else if( isNowSubdued )// There is no coming back from being jammed, and projectiles can't even heal, but this makes it clear.
+	{
+		ProjectileUpdateInterface *pui = getObject()->getProjectileUpdateInterface();
+		if( pui )
+		{
+			pui->projectileNowJammed();
+		}
+	}
+}
+
+//-------------------------------------------------------------------------------------------------
+//-------------------------------------------------------------------------------------------------
+Bool ActiveBody::isSubdued() const
+{
+	return m_maxHealth <= m_currentSubdualDamage;
+}
+
+//-------------------------------------------------------------------------------------------------
+//-------------------------------------------------------------------------------------------------
+#endif
 Real ActiveBody::getHealth() const
 {
 	return m_currentHealth;
@@ -1025,6 +1470,29 @@ Real ActiveBody::getMaxHealth() const
 
 //-------------------------------------------------------------------------------------------------
 //-------------------------------------------------------------------------------------------------
+#ifdef ZH
+UnsignedInt ActiveBody::getSubdualDamageHealRate() const
+{
+	return getActiveBodyModuleData()->m_subdualDamageHealRate;
+}
+
+//-------------------------------------------------------------------------------------------------
+//-------------------------------------------------------------------------------------------------
+Real ActiveBody::getSubdualDamageHealAmount() const
+{
+	return getActiveBodyModuleData()->m_subdualDamageHealAmount;
+}
+
+//-------------------------------------------------------------------------------------------------
+//-------------------------------------------------------------------------------------------------
+Bool ActiveBody::hasAnySubdualDamage() const
+{
+	return m_currentSubdualDamage > 0;
+}
+
+//-------------------------------------------------------------------------------------------------
+//-------------------------------------------------------------------------------------------------
+#endif
 Real ActiveBody::getInitialHealth() const 
 { 
 	return m_initialHealth;
@@ -1072,13 +1540,22 @@ void ActiveBody::setIndestructible( Bool indestructible )
 
 //-------------------------------------------------------------------------------------------------
 //-------------------------------------------------------------------------------------------------
+#ifdef OG
 void ActiveBody::onVeterancyLevelChanged( VeterancyLevel oldLevel, VeterancyLevel newLevel )
+#endif
+#ifdef ZH
+void ActiveBody::onVeterancyLevelChanged( VeterancyLevel oldLevel, VeterancyLevel newLevel, Bool provideFeedback )
+#endif
 {
 	if (oldLevel == newLevel)
 		return;
 	
 	if (oldLevel < newLevel)
 	{
+#ifdef ZH
+		if( provideFeedback )
+		{
+#endif
 		AudioEventRTS veterancyChanged;
 		switch (newLevel)
 		{
@@ -1095,6 +1572,9 @@ void ActiveBody::onVeterancyLevelChanged( VeterancyLevel oldLevel, VeterancyLeve
 
 		veterancyChanged.setObjectID(getObject()->getID());
 		TheAudio->addAudioEvent(&veterancyChanged);
+#ifdef ZH
+		}
+#endif
 
 		//Also mark the UI dirty -- incase the object is selected or contained.
 		Object *obj = getObject();
@@ -1203,6 +1683,10 @@ void ActiveBody::xfer( Xfer *xfer )
 
 	// current health
 	xfer->xferReal( &m_currentHealth );
+#ifdef ZH
+
+	xfer->xferReal( &m_currentSubdualDamage );
+#endif
 
 	// previous health
 	xfer->xferReal( &m_prevHealth );

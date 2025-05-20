@@ -78,7 +78,12 @@ public:
 	// virtual destructor provided by memory pool object
 
 	virtual void doSpecialPowerAtObject( Object *obj, UnsignedInt commandOptions );
+#ifdef OG
 	virtual void doSpecialPowerAtLocation( const Coord3D *loc, UnsignedInt commandOptions );
+#endif
+#ifdef ZH
+	virtual void doSpecialPowerAtLocation( const Coord3D *loc, Real angle, UnsignedInt commandOptions );
+#endif
 
 protected:
 

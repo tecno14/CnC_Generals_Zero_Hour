@@ -56,7 +56,12 @@ BSC32=bscmake.exe
 # ADD BSC32 /nologo
 LINK32=link.exe
 # ADD BASE LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /nologo /subsystem:windows /machine:I386
+#ifdef OG
 # ADD LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib winmm.lib comctl32.lib gamespyhttp.lib wsock32.lib /nologo /subsystem:windows /machine:I386 /libpath:"..\..\libraries\lib"
+#endif
+#ifdef ZH
+# ADD LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib winmm.lib comctl32.lib gamespyhttp.lib wsock32.lib /nologo /subsystem:windows /pdb:"..\..\..\Run\patchgrabber.pdb" /map:"..\..\..\Run\patchgrabber.map" /debug /machine:I386 /out:"..\..\..\Run\patchgrabber.exe" /libpath:"..\..\libraries\lib"
+#endif
 # Begin Special Build Tool
 SOURCE="$(InputPath)"
 PostBuild_Desc=Making patchget.dat
@@ -87,7 +92,12 @@ BSC32=bscmake.exe
 # ADD BSC32 /nologo
 LINK32=link.exe
 # ADD BASE LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /nologo /subsystem:windows /debug /machine:I386 
+#ifdef OG
 # ADD LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib winmm.lib comctl32.lib gamespyhttpdebug.lib wsock32.lib /nologo /subsystem:windows /debug /machine:I386  /libpath:"..\..\libraries\lib"
+#endif
+#ifdef ZH
+# ADD LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib winmm.lib comctl32.lib gamespyhttpdebug.lib wsock32.lib /nologo /subsystem:windows /pdb:"..\..\..\Run\patchgrabberD.pdb" /map:"..\..\..\Run\patchgrabberD.map" /debug /machine:I386 /out:"..\..\..\Run\patchgrabberD.exe" /libpath:"..\..\libraries\lib"
+#endif
 
 !ELSEIF  "$(CFG)" == "patchgrabber - Win32 German"
 

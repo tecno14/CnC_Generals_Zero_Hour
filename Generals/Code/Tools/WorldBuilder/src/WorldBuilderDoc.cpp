@@ -59,6 +59,14 @@
 #include "WorldBuilderView.h"
 #include "MapPreview.h"
 
+#ifdef ZH
+#ifdef _INTERNAL
+// for occasional debugging...
+//#pragma optimize("", off)
+//#pragma MESSAGE("************************************** WARNING, optimization disabled for debugging purposes")
+#endif
+
+#endif
 // Can't currently have multiple open... jba.
 #define notONLY_ONE_AT_A_TIME
 
@@ -107,6 +115,9 @@ BEGIN_MESSAGE_MAP(CWorldBuilderDoc, CDocument)
 	ON_UPDATE_COMMAND_UI(ID_WINDOW_2DWINDOW, OnUpdateWindow2dwindow)
 	ON_COMMAND(ID_VIEW_RELOADTEXTURES, OnViewReloadtextures)
 	ON_COMMAND(ID_EDIT_SCRIPTS, OnEditScripts)
+#ifdef ZH
+	ON_COMMAND(ID_SCRIPT_EDIT, OnEditScripts)
+#endif
 	ON_COMMAND(ID_VIEWHOME, OnViewHome)
 	ON_COMMAND(ID_TEXTURESIZING_TILE4X4, OnTexturesizingTile4x4)
 	ON_UPDATE_COMMAND_UI(ID_TEXTURESIZING_TILE4X4, OnUpdateTexturesizingTile4x4)
@@ -393,6 +404,18 @@ void CWorldBuilderDoc::Serialize(CArchive& ar)
 				}
 				pMapObj = pMapObj->getNext();
 			}
+#ifdef ZH
+
+			PolygonTrigger* polyTrigger = PolygonTrigger::getFirstPolygonTrigger();
+			// Add the triggers to the layers list.
+			while (polyTrigger) {
+				layerName = polyTrigger->getLayerName();
+				TheLayersList->addPolygonTriggerToLayersList(polyTrigger, layerName);
+
+				polyTrigger = polyTrigger->getNext();
+			}
+			
+#endif
 			TheLayersList->enableUpdates();
 
 			TerrainMaterial::updateTextures(m_heightMap);
@@ -417,7 +440,30 @@ void CWorldBuilderDoc::Serialize(CArchive& ar)
 		}
 
 		// note - mHeight map has ref count of 1.
+#ifdef ZH
 	}
+}
+
+AsciiString ConvertToNonGCName(AsciiString name, Bool checkTemplate=true)
+{
+	char oldName[256];
+	char newName[256];
+	strcpy(oldName, name.str());
+	strcpy(newName, oldName+strlen("GC_"));
+	AsciiString swapName;
+	swapName.set(newName);
+	if (checkTemplate)
+	{
+		const ThingTemplate *tt = TheThingFactory->findTemplate(swapName);
+		if (tt) {
+			return swapName;
+#endif
+	}
+#ifdef ZH
+		return AsciiString::TheEmptyString;
+	}
+	return swapName;
+#endif
 }
 
 AsciiString ConvertName(AsciiString name)
@@ -460,14 +506,29 @@ void CWorldBuilderDoc::validate(void)
 	Bool changed = false;
 	AsciiString swapName;
 
+#ifdef ZH
+	Bool needToFixTeams = false;
+
+#endif
 	// verify/fix the build lists
 	for (int side=0; side<TheSidesList->getNumSides(); side++) {
 		SidesInfo *pSide = TheSidesList->getSideInfo(side); 
 
 		AsciiString tmplname = pSide->getDict()->getAsciiString(TheKey_playerFaction);
+#ifdef ZH
+		AsciiString playername = pSide->getDict()->getAsciiString(TheKey_playerName);
+		if (tmplname.isEmpty()) {
+			continue; // Neutral player has empty template. jba. [8/8/2003]
+		}
+#endif
 		const PlayerTemplate* pt = ThePlayerTemplateStore->findPlayerTemplate(NAMEKEY(tmplname));
 		if (!pt) {
+#ifdef OG
 			DEBUG_LOG(("Faction %s could not be found in sides list!\n", tmplname.str()));
+#endif
+#ifdef ZH
+			DEBUG_LOG(("Player '%s' Faction '%s' could not be found in sides list!\n", playername.str(), tmplname.str()));
+#endif
 			if (tmplname.startsWith("FactionFundamentalist")) {
 				swapName = ConvertFaction(tmplname);
 				if (swapName != AsciiString::TheEmptyString) {
@@ -544,6 +605,17 @@ void CWorldBuilderDoc::validate(void)
 			// quick hack to make loading models with "Fundamentalist" switch to "GLA"
 			if (name.startsWith("Fundamentalist")) {
 				swapName = ConvertName(name);
+#ifdef ZH
+				if (swapName != AsciiString::TheEmptyString) {
+					swapDict.setAsciiString(NAMEKEY(name), swapName);
+					exists = true;
+				}
+			}
+
+			// quick hack to remove "GC_" objects from Generals mission disk maps.
+			if (name.startsWith("GC_")) {
+				swapName = ConvertToNonGCName(name);
+#endif
 				if (swapName != AsciiString::TheEmptyString) {
 					swapDict.setAsciiString(NAMEKEY(name), swapName);
 					exists = true;
@@ -590,9 +662,20 @@ void CWorldBuilderDoc::validate(void)
 				if (pSide) {
 //					Bool hasColor = false;
 					AsciiString tmplname = pSide->getDict()->getAsciiString(TheKey_playerFaction);
+#ifdef ZH
+					AsciiString playername = pSide->getDict()->getAsciiString(TheKey_playerName);
+					if (tmplname.isEmpty()) {
+						continue; // Neutral player has empty template. jba. [8/8/2003]
+					}
+#endif
 					const PlayerTemplate* pt = ThePlayerTemplateStore->findPlayerTemplate(NAMEKEY(tmplname));
 					if (!pt) {
+#ifdef OG
 						DEBUG_LOG(("Faction %s could not be found in sides list!\n", tmplname.str()));
+#endif
+#ifdef ZH
+						DEBUG_LOG(("Player '%s' Faction '%s' could not be found in sides list!\n", playername.str(), tmplname.str()));
+#endif
 						if (tmplname.startsWith("FactionFundamentalist")) {
 							swapName = ConvertFaction(tmplname);
 							if (swapName != AsciiString::TheEmptyString) {
@@ -602,14 +685,40 @@ void CWorldBuilderDoc::validate(void)
 						}
 					}
 				} else {
+#ifdef OG
 					DEBUG_LOG(("Side %s could not be found in sides list!\n", teamOwner.str()));
+
+#endif
+#ifdef ZH
+					needToFixTeams = true;
+					DEBUG_LOG(("Side '%s' could not be found in sides list!\n", teamOwner.str()));
+#endif
 				}
 			} else {
+#ifdef OG
 				DEBUG_LOG(("Team %s could not be found in sides list!\n", teamName.str()));
+
+#endif
+#ifdef ZH
+				needToFixTeams = true;
+				DEBUG_LOG(("Team '%s' could not be found in sides list!\n", teamName.str()));
+#endif
 			}
 		} else {
+#ifdef OG
 			DEBUG_LOG(("Object %s does not have a team at all!\n", name.str()));
+
+#endif
+#ifdef ZH
+			needToFixTeams = true;
+			DEBUG_LOG(("Object '%s' does not have a team at all!\n", name.str()));
 		}
+#endif
+		}
+#ifdef ZH
+	if (needToFixTeams) {
+		AfxMessageBox(IDS_NEED_TO_FIX_TEAMS, MB_OK|MB_ICONERROR);
+#endif
 	}
 }
 
@@ -1211,6 +1320,15 @@ BOOL CWorldBuilderDoc::OnNewDocument()
 	m_curWaypointID = 0;
 	WbApp()->selectPointerTool();
 	PolygonTrigger::deleteTriggers();
+#ifdef ZH
+
+	// Make sure that all the old units are removed from the list.
+	// Bug fix by MLL 1/14/03
+	TheLayersList->enableUpdates();
+	TheLayersList->resetLayers();
+	TheLayersList->disableUpdates();
+
+#endif
 	TheSidesList->clear();
 	TheSidesList->validateSides();
 
@@ -1226,6 +1344,9 @@ BOOL CWorldBuilderDoc::OnNewDocument()
 	PolygonTrigger *pTrig = newInstance(PolygonTrigger)(4); 
 	ICoord3D loc;
 	pTrig->setWaterArea(true);
+#ifdef ZH
+	pTrig->setTriggerName(AsciiString("Default Water"));
+#endif
 	loc.x = -hi.borderWidth*MAP_XY_FACTOR;
 	loc.y = -hi.borderWidth*MAP_XY_FACTOR;
 	loc.z = TheGlobalData->m_waterPositionZ;
@@ -1237,7 +1358,9 @@ BOOL CWorldBuilderDoc::OnNewDocument()
 	loc.x = -hi.borderWidth*MAP_XY_FACTOR;
 	pTrig->addPoint(loc);
 	PolygonTrigger::addPolygonTrigger(pTrig);
-
+#ifdef ZH
+	TheLayersList->addPolygonTriggerToLayersList(pTrig, pTrig->getLayerName()); 
+#endif
 	SetHeightMap(m_heightMap, true);
 	TerrainMaterial::updateTextures(m_heightMap);
 
@@ -1879,8 +2002,14 @@ void CWorldBuilderDoc::OnViewReloadtextures()
 
 void CWorldBuilderDoc::OnEditScripts() 
 {
+#ifdef OG
 	ScriptDialog script;
 	script.DoModal();
+#endif
+#ifdef ZH
+	ASSERT(CMainFrame::GetMainFrame());
+	CMainFrame::GetMainFrame()->onEditScripts();
+#endif
 }
 
 /* when "home" key is pressed, goes to the initial camera waypoint or if

@@ -84,6 +84,12 @@
 #include "Common/PlayerList.h"
 #endif
 
+#ifdef ZH
+#ifdef PM_CACHE_TERRAIN_HEIGHT
+#include "common/mapobject.h"
+#endif
+
+#endif
 #ifdef DUMP_PERF_STATS
 	long s_countInClosestObjects = 0;
 	long s_countInClosestObjectsThisFrame = 0;
@@ -1742,7 +1748,12 @@ void PartitionData::addSubPixToCoverage(PartitionCell *cell)
 		// see if we already have a coi for this cell.
 		CellAndObjectIntersection *coi = m_coiArray;
 		CellAndObjectIntersection *coiToUse = NULL;
+#ifdef OG
 		for (Int i = m_coiInUseCount; i; --i, ++coi)
+#endif
+#ifdef ZH
+		for (Int i = __min(m_coiInUseCount,m_coiArrayCount); i; --i, ++coi)
+#endif
 		{
 			if (coi->getCell() == cell)
 			{
@@ -2134,8 +2145,27 @@ static AsciiString theObjName;
 Int PartitionData::calcMaxCoiForShape(GeometryType geom, Real majorRadius, Real minorRadius, Bool isSmall)
 {
 	Int result;
+#ifdef OG
 	if (isSmall)
+
+#endif
+#ifdef ZH
+
+
+  // THis is commented out, since some cases od big extets labeled small seem to be escaping.
+  //M Lorenzen 8/26/03
+//	if (isSmall)
+//	{
+//		#if defined(_DEBUG) || defined(_INTERNAL)
+//		Int chk = calcMaxCoiForShape(geom, majorRadius, minorRadius, false);
+//		DEBUG_ASSERTCRASH(chk <= 4, ("Small objects should be <= 4 cells, but I calced %s as %d\n",theObjName.str(),chk));
+//		#endif
+//		result = 4;
+//	}
+//	else
+#endif
 	{
+#ifdef OG
 		#if defined(_DEBUG) || defined(_INTERNAL)
 		Int chk = calcMaxCoiForShape(geom, majorRadius, minorRadius, false);
 		DEBUG_ASSERTCRASH(chk <= 4, ("Small objects should be <= 4 cells, but I calced %s as %d\n",theObjName.str(),chk));
@@ -2144,6 +2174,7 @@ Int PartitionData::calcMaxCoiForShape(GeometryType geom, Real majorRadius, Real 
 	}
 	else
 	{
+#endif
 		switch(geom)
 		{
 			case GEOMETRY_SPHERE:
@@ -2487,8 +2518,14 @@ void PartitionContactList::processContactList()
 		Object* obj = cd->m_obj->getObject();
 		Object* other = cd->m_other->getObject();
 		
+#ifdef OG
 		if ((obj->getStatusBits() & OBJECT_STATUS_NO_COLLISIONS) != 0 ||
 				(other->getStatusBits() & OBJECT_STATUS_NO_COLLISIONS) != 0)
+#endif
+#ifdef ZH
+		if( obj->getStatusBits().test( OBJECT_STATUS_NO_COLLISIONS ) ||
+				other->getStatusBits().test( OBJECT_STATUS_NO_COLLISIONS ) )
+#endif
 			continue;
 
 		DEBUG_ASSERTCRASH(!(obj->isKindOf(KINDOF_IMMOBILE) && other->isKindOf(KINDOF_IMMOBILE)), 
@@ -2568,7 +2605,12 @@ static void calcHeights(const Region3D& world, Real cellSize, Int x, Int y, Real
 	DEBUG_ASSERTCRASH(TheTerrainLogic, ("no TheTerrainLogic"));
 	Real xbase = world.lo.x + (x * cellSize);
 	Real ybase = world.lo.y + (y * cellSize);
+#ifdef OG
 	const Real ROUGH_STEP_SIZE = 2;	// roughly every 2 ft, please
+#endif
+#ifdef ZH
+	const Real ROUGH_STEP_SIZE = MAP_XY_FACTOR;	// no point in stepping smaller than grid scale
+#endif
 	Real numSteps = ceilf(cellSize / ROUGH_STEP_SIZE);
 	Real step = cellSize / numSteps;
 	loZ = HUGE_DIST;		// huge positive
@@ -3056,7 +3098,37 @@ CellShroudStatus PartitionManager::getShroudStatusForPlayer(Int playerIndex, con
 
 	return getShroudStatusForPlayer( playerIndex, x, y );
 }
+#ifdef ZH
 
+
+//-----------------------------------------------------------------------------
+ObjectShroudStatus PartitionManager::getPropShroudStatusForPlayer(Int playerIndex, const Coord3D *loc ) const
+{
+	Int x, y;
+
+	ThePartitionManager->worldToCell( loc->x - m_cellSize*0.5f, loc->y - m_cellSize*0.5f, &x, &y );
+#endif
+
+#ifdef ZH
+	CellShroudStatus cellStat = getShroudStatusForPlayer( playerIndex, x, y );
+	if (cellStat != getShroudStatusForPlayer( playerIndex, x+1, y )) {
+		return OBJECTSHROUD_PARTIAL_CLEAR;
+	}
+	if (cellStat != getShroudStatusForPlayer( playerIndex, x+1, y+1 )) {
+		return OBJECTSHROUD_PARTIAL_CLEAR;
+	}
+	if (cellStat != getShroudStatusForPlayer( playerIndex, x, y+1 )) {
+		return OBJECTSHROUD_PARTIAL_CLEAR;
+	}
+	if (cellStat == CELLSHROUD_SHROUDED) {
+		return OBJECTSHROUD_SHROUDED;
+	}
+	if (cellStat == CELLSHROUD_CLEAR) {
+		return OBJECTSHROUD_CLEAR;
+	}
+	return OBJECTSHROUD_FOGGED;
+}
+#endif
 
 
 
@@ -3722,6 +3794,11 @@ Bool PartitionManager::tryPosition( const Coord3D *center,
 		{
 			return FALSE;
 		}
+#ifdef ZH
+		if( BitTest(options->flags, FPF_CLEAR_CELLS_ONLY) && cell->getType() != PathfindCell::CELL_CLEAR )
+			return FALSE;
+
+#endif
 	}
 
 	//
@@ -3820,7 +3897,12 @@ Bool PartitionManager::tryPosition( const Coord3D *center,
 		const AIUpdateInterface *ai = options->sourceToPathToDest->getAIUpdateInterface();
 
 		// check for path existence
+#ifdef OG
 		if( ai && TheAI->pathfinder()->quickDoesPathExist( ai->getLocomotorSet(),
+#endif
+#ifdef ZH
+		if( ai && TheAI->pathfinder()->clientSafeQuickDoesPathExist( ai->getLocomotorSet(),
+#endif
 																									options->sourceToPathToDest->getPosition(),
 																									&pos ) == FALSE )
 				return FALSE;
@@ -5329,6 +5411,7 @@ PartitionFilterPossibleToAttack::PartitionFilterPossibleToAttack(AbleToAttackTyp
 Bool PartitionFilterPossibleToAttack::allow(Object *objOther)
 {
 	// objOther is guaranteed to be non-null, so we don't need to check (srj)
+#ifdef OG
 	
 // don't do this here... done in getAbleToAttackSpecificObject (srj)
 //	// cannot attack dead things
@@ -5340,6 +5423,7 @@ Bool PartitionFilterPossibleToAttack::allow(Object *objOther)
 //	UnsignedInt status = objOther->getStatusBits();
 //	if ((status & OBJECT_STATUS_STEALTHED) && !(status & OBJECT_STATUS_DETECTED))
 //		return false;
+#endif
 
 	// we should have already filtered out isAbleToAttack!
 #ifdef _DEBUG
@@ -5351,14 +5435,60 @@ Bool PartitionFilterPossibleToAttack::allow(Object *objOther)
 	{
 		return TRUE;
 	}
+#ifdef ZH
+	return FALSE;
+}
+
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
+PartitionFilterPossibleToEnter::PartitionFilterPossibleToEnter(const Object *obj, CommandSourceType commandSource) :
+	m_obj(obj),
+	m_commandSource(commandSource)
+{
+}
+
+//-----------------------------------------------------------------------------
+Bool PartitionFilterPossibleToEnter::allow(Object *objOther)
+{
+	if (!objOther || !m_obj) 
+		return FALSE;
+
+	if( TheActionManager->canEnterObject( m_obj, objOther, m_commandSource, DONT_CHECK_CAPACITY ) )
+		return TRUE;
+	else
+#endif
 	return FALSE;
 }
 
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
+#ifdef ZH
+PartitionFilterPossibleToHijack::PartitionFilterPossibleToHijack(const Object *obj, CommandSourceType commandSource) :
+	m_obj(obj),
+	m_commandSource(commandSource)
+{
+}
+#endif
 
 //-----------------------------------------------------------------------------
+#ifdef ZH
+Bool PartitionFilterPossibleToHijack::allow(Object *objOther)
+{
+	if (!objOther || !m_obj) 
+		return FALSE;
+
+	if( TheActionManager->canHijackVehicle(m_obj, objOther, m_commandSource) )
+		return TRUE;
+	else
+		return FALSE;
+}
+
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
+
+//-----------------------------------------------------------------------------
+#endif
 PartitionFilterLastAttackedBy::PartitionFilterLastAttackedBy(Object *obj) 
 {
 	if (obj && obj->getBodyModule()) {
@@ -5387,8 +5517,14 @@ Bool PartitionFilterLastAttackedBy::allow(Object *other)
 //-----------------------------------------------------------------------------
 Bool PartitionFilterAcceptByObjectStatus::allow(Object *objOther)
 { 
+#ifdef OG
 	UnsignedInt status = objOther->getStatusBits();
 	return ((status & m_mustBeSet) == m_mustBeSet) && ((status & m_mustBeClear) == 0);
+#endif
+#ifdef ZH
+	ObjectStatusMaskType status = objOther->getStatusBits();
+	return status.testForAll( m_mustBeSet ) && status.testForNone( m_mustBeClear );
+#endif
 }
 
 
@@ -5399,8 +5535,16 @@ Bool PartitionFilterAcceptByObjectStatus::allow(Object *objOther)
 //-----------------------------------------------------------------------------
 Bool PartitionFilterRejectByObjectStatus::allow(Object *objOther)
 { 
+#ifdef OG
 	UnsignedInt status = objOther->getStatusBits();
 	return !(((status & m_mustBeSet) == m_mustBeSet) && ((status & m_mustBeClear) == 0));
+
+#endif
+#ifdef ZH
+	ObjectStatusMaskType status = objOther->getStatusBits();
+
+	return !( status.testForAll( m_mustBeSet ) && status.testForNone( m_mustBeClear ) );
+#endif
 }
 
 
@@ -5434,19 +5578,43 @@ Bool PartitionFilterRejectByKindOf::allow(Object *objOther)
 Bool PartitionFilterStealthedAndUndetected::allow( Object *objOther )
 {
 	// objOther is guaranteed to be non-null, so we don't need to check (srj)
+#ifdef ZH
 
+	Bool stealthed = objOther->testStatus( OBJECT_STATUS_STEALTHED );
+	Bool detected = objOther->testStatus( OBJECT_STATUS_DETECTED );
+	Bool disguised = objOther->testStatus( OBJECT_STATUS_DISGUISED );
+#endif
+
+#ifdef OG
 	if( BitTest( objOther->getStatusBits(), OBJECT_STATUS_STEALTHED ) && !BitTest( objOther->getStatusBits(), OBJECT_STATUS_DETECTED ) )
+#endif
+#ifdef ZH
+	if( stealthed && !detected )
+#endif
 	{
 		if( !objOther->isKindOf( KINDOF_DISGUISER ) )
 		{
 			//We have a stealthed & undetected object.
 			return m_allow;
 		}
+#ifdef OG
 		else
+#endif
+#ifdef ZH
+		else if( disguised )
+#endif
 		{
 			//Exception case -- bomb trucks can't be considered stealthed units when they are disguised as the enemy.
+#ifdef OG
 			static NameKeyType key_StealthUpdate = NAMEKEY( "StealthUpdate" );
 			StealthUpdate *update = (StealthUpdate*)objOther->findUpdateModule( key_StealthUpdate );
+
+#endif
+#ifdef ZH
+      
+      StealthUpdate *update = objOther->getStealth();
+
+#endif
 			if( update && update->isDisguised() )
 			{
 				Player *ourPlayer = m_obj->getControllingPlayer();
@@ -5481,7 +5649,12 @@ Bool PartitionFilterStealthedAndUndetected::allow( Object *objOther )
 				//Check if the first object inside is detected (if one is detected, all are detected).
 				ContainedItemsList::const_iterator it = contain->getContainedItemsList()->begin();
 				Object *member = (*it);
+#ifdef OG
 				if( member && !BitTest( (*it)->getStatusBits(), OBJECT_STATUS_DETECTED ) )
+#endif
+#ifdef ZH
+				if( member && !(*it)->getStatusBits().test( OBJECT_STATUS_DETECTED ) )
+#endif
 				{
 					//Finally check the relationship!
 					if( victimApparentController && m_obj->getTeam()->getRelationship( victimApparentController->getDefaultTeam() ) == ENEMIES )

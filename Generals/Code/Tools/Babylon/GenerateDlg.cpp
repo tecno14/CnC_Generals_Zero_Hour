@@ -20,7 +20,12 @@
 //
 
 #include "stdafx.h"
+#ifdef OG
 #include "noxstring.h"
+#endif
+#ifdef ZH
+#include "Babylon.h"
+#endif
 #include "GenerateDlg.h"
 #include "direct.h"
 
@@ -61,7 +66,12 @@ BEGIN_MESSAGE_MAP(CGenerateDlg, CDialog)
 	ON_BN_CLICKED(IDC_SELECTALL, OnSelectall)
 	ON_BN_CLICKED(IDC_INVERT, OnInvert)
 	ON_EN_CHANGE(IDC_PREFIX, OnChangePrefix)
+#ifdef OG
 	ON_BN_CLICKED(IDC_NOXSTR, OnNoxstr)
+#endif
+#ifdef ZH
+	ON_BN_CLICKED(IDC_BABYLONSTR, OnBabylonstr)
+#endif
 	ON_BN_CLICKED(IDC_UNICODE, OnUnicode)
 	ON_BN_CLICKED(IDC_IDS, OnIds)
 	ON_BN_CLICKED(IDC_ORIGINAL, OnOriginal)
@@ -78,7 +88,12 @@ BOOL CGenerateDlg::OnInitDialog()
 
 	edit = (CEdit *) GetDlgItem ( IDC_PREFIX );
 	unicode = (CButton *) GetDlgItem ( IDC_UNICODE );
+#ifdef OG
 	strfile = (CButton *) GetDlgItem ( IDC_NOXSTR );
+#endif
+#ifdef ZH
+	strfile = (CButton *) GetDlgItem ( IDC_BABYLONSTR );
+#endif
 	useids = (CButton *) GetDlgItem ( IDC_IDS );
 	usetext = (CButton *) GetDlgItem ( IDC_ORIGINAL );
 	list = (CListBox *) GetDlgItem ( IDC_LANGUAGE );
@@ -141,7 +156,12 @@ void CGenerateDlg::OnChangePrefix()
 
 	edit->GetWindowText ( buffer, 6 );
 
+#ifdef OG
 	if ( options.format == GN_NOXSTR )
+#endif
+#ifdef ZH
+	if ( options.format == GN_BABYLONSTR )
+#endif
 	{
 		strcat ( buffer, "_{xx}.str" );
 	}
@@ -154,10 +174,20 @@ void CGenerateDlg::OnChangePrefix()
 	
 }
 
+#ifdef OG
 void CGenerateDlg::OnNoxstr() 
+#endif
+#ifdef ZH
+void CGenerateDlg::OnBabylonstr() 
+#endif
 {
 	// TODO: Add your control notification handler code here
+#ifdef OG
 	options.format = GN_NOXSTR;
+#endif
+#ifdef ZH
+	options.format = GN_BABYLONSTR;
+#endif
 	OnChangePrefix ();
 	unicode->SetCheck ( 0 );
 

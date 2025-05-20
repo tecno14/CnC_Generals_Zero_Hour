@@ -54,12 +54,18 @@ protected:
 	static Bool m_waypoints;
 	static Bool m_triggers;
 	static Bool m_allScripts;
+#ifdef ZH
+	static Bool m_sides;
+#endif
 
 public:
 	Bool getDoUnits(void) {return m_units;}
 	Bool getDoWaypoints(void) {return m_waypoints;}
 	Bool getDoTriggers(void) {return m_triggers;}
 	Bool getDoAllScripts(void) {return m_allScripts;}
+#ifdef ZH
+	Bool getDoSides(void) {return m_sides;}
+#endif
 	
 protected:
 

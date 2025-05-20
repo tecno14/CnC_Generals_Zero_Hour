@@ -64,9 +64,15 @@ public:
 	Bool m_passengersInTurret;			///< The Firepoint bones are in our turret, not our chassis
 	Int m_numberOfExitPaths;				///< Will alternate through ExitStart/End paths as we exit people.
 	Real m_damagePercentageToUnits;
+#ifdef ZH
+	Bool m_isBurnedDeathToUnits;		///< Turn off the hardcoded burn death when killing guys in transport
+#endif
 	UnsignedInt m_doorOpenTime;
 	KindOfMaskType m_allowInsideKindOf;			///< objects must have at least one of these kind of bits set to be contained by us
 	KindOfMaskType m_forbidInsideKindOf;		///< objects must have NONE of these kind of bits set to be contained by us
+#ifdef ZH
+	Bool m_weaponBonusPassedToPassengers;		///< Do our passengers get to use our weapon bonuses?
+#endif
  	Bool m_allowAlliesInside;				///< allow allies inside us
  	Bool m_allowEnemiesInside;			///< allow enemies inside us
  	Bool m_allowNeutralInside;			///< allow neutral inside us
@@ -111,6 +117,9 @@ public:
 	virtual Bool isHijackedVehicleCrateCollide() const { return false; }
 	virtual Bool isRailroad() const { return false;}
 	virtual Bool isSalvageCrateCollide() const { return false; }
+#ifdef ZH
+	virtual Bool isSabotageBuildingCrateCollide() const { return FALSE; }
+#endif
 
 	// UpdateModule
 	virtual UpdateSleepTime update();				///< called once per frame
@@ -140,11 +149,24 @@ public:
 	virtual const Player* getApparentControllingPlayer(const Player* observingPlayer) const { return NULL; }
 	virtual void recalcApparentControllingPlayer() { }
 		
+#ifdef OG
 	virtual void onContaining( Object *obj );		///< object now contains 'obj'
+#endif
+#ifdef ZH
+	virtual void onContaining( Object *obj, Bool wasSelected );		///< object now contains 'obj'
+#endif
 	virtual void onRemoving( Object *obj );			///< object no longer contains 'obj'
 	virtual void onSelling();///< Container is being sold.  Open responds by kicking people out
 
+#ifdef OG
 	virtual void orderAllPassengersToExit( CommandSourceType commandSource ); ///< All of the smarts of exiting are in the passenger's AIExit. removeAllFrommContain is a last ditch system call, this is the game Evacuate
+
+#endif
+#ifdef ZH
+	virtual void orderAllPassengersToExit( CommandSourceType commandSource, Bool instantly ); ///< All of the smarts of exiting are in the passenger's AIExit. removeAllFrommContain is a last ditch system call, this is the game Evacuate
+	virtual void orderAllPassengersToIdle( CommandSourceType commandSource ); ///< Just like it sounds
+	virtual void orderAllPassengersToHackInternet( CommandSourceType ); ///< Just like it sounds
+#endif
 	virtual void markAllPassengersDetected();										///< Cool game stuff got added to the system calls since this layer didn't exist, so this regains that functionality
 
 	// default OpenContain has unlimited capacity...!
@@ -153,8 +175,21 @@ public:
 	virtual void addToContainList( Object *obj );		///< The part of AddToContain that inheritors can override (Can't do whole thing because of all the private stuff involved)
 	virtual void removeFromContain( Object *obj, Bool exposeStealthUnits = FALSE );	///< remove 'obj' from contain list
 	virtual void removeAllContained( Bool exposeStealthUnits = FALSE );				///< remove all objects on contain list
+#ifdef ZH
+	virtual void killAllContained( void );				///< kill all objects on contain list
+  virtual void harmAndForceExitAllContained( DamageInfo *info ); // apply canned damage against those containes 
+#endif
 	virtual Bool isEnclosingContainerFor( const Object *obj ) const;	///< Does this type of Contain Visibly enclose its contents?
+#ifdef OG
 	virtual Bool isPassengerAllowedToFire() const;	///< Hey, can I shoot out of this container?
+
+#endif
+#ifdef ZH
+	virtual Bool isPassengerAllowedToFire( ObjectID id = INVALID_ID ) const;	///< Hey, can I shoot out of this container?
+
+  virtual void setPassengerAllowedToFire( Bool permission = TRUE ) { m_passengerAllowedToFire = permission; }	///< Hey, can I shoot out of this container?
+
+#endif
 	virtual void setOverrideDestination( const Coord3D * ){} ///< Instead of falling peacefully towards a clear spot, I will now aim here
 	virtual Bool isDisplayedOnControlBar() const {return FALSE;}///< Does this container display its contents on the ControlBar?
 	virtual Int getExtraSlotsInUse( void ) { return 0; }
@@ -190,9 +225,20 @@ public:
 	virtual ExitInterface* getContainExitInterface() { return this; }
 
 	virtual Bool isGarrisonable() const { return false; }		///< can this unit be Garrisoned? (ick)
+#ifdef ZH
+	virtual Bool isBustable() const { return false; }		///< can this container get busted by a bunkerbuster
+#endif
 	virtual Bool isHealContain() const { return false; } ///< true when container only contains units while healing (not a transport!)
+#ifdef ZH
+	virtual Bool isTunnelContain() const { return FALSE; }
+	virtual Bool isRiderChangeContain() const { return FALSE; }
+#endif
 	virtual Bool isSpecialZeroSlotContainer() const { return false; }
 	virtual Bool isImmuneToClearBuildingAttacks() const { return true; }
+#ifdef ZH
+  virtual Bool isSpecialOverlordStyleContainer() const { return false; }
+  virtual Bool isAnyRiderAttacking( void ) const;
+#endif
 
 	/**
 		this is used for containers that must do something to allow people to enter or exit...
@@ -205,10 +251,25 @@ public:
 	// returns true iff there are objects currently waiting to enter.
 	virtual Bool hasObjectsWantingToEnterOrExit() const;
 
+#ifdef OG
 	virtual void processDamageToContained(); ///< Do our % damage to units now.
+
+#endif
+#ifdef ZH
+	virtual void processDamageToContained(Real percentDamage); ///< Do our % damage to units now.
+
+	virtual Bool isWeaponBonusPassedToPassengers() const;
+	virtual WeaponBonusConditionFlags getWeaponBonusPassedToPassengers() const;
+#endif
 
 	virtual void enableLoadSounds( Bool enable ) { m_loadSoundsEnabled = enable; }
 
+#ifdef ZH
+  Real getDamagePercentageToUnits( void );
+  virtual Object* getClosestRider ( const Coord3D *pos );
+
+  virtual void setEvacDisposition( EvacDisposition disp ) {};
+#endif
 protected:
 
 	virtual void monitorConditionChanges( void );				///< check to see if we need to update our occupant postions from a model change or anything else
@@ -260,7 +321,9 @@ private:
 	Coord3D							m_rallyPoint;												///< Where units should move to after they have reached the "natural" rally point
 	Bool								m_rallyPointExists;										///< Only move to the rally point if this is true
 	Bool								m_loadSoundsEnabled;								///< Don't serialize -- used for disabling sounds during payload creation.
-
+#ifdef ZH
+  Bool                m_passengerAllowedToFire;      ///< Newly promoted from the template data to the module for upgrade overriding access
+#endif
 };
 
 #endif  // end __OPENCONTAIN_H_

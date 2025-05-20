@@ -21,11 +21,17 @@
 #ifndef __DOWNLOADDEBUG_H_
 #define __DOWNLOADDEBUG_H_
 
+#ifdef OG
 // BGC 3/27/03 - added this for disabling debug logging for "release" worldbuilder.
 // uncomment this line to remove logging from game spy code.
 //#define DISABLE_DEBUG_LOGGING
 
 #if defined(NDEBUG) || defined(DISABLE_DEBUG_LOGGING)
+#endif
+#ifdef ZH
+#ifdef  NDEBUG
+
+#endif
 #define DEBUG_LOG(exp) ((void)0)
 #else
 

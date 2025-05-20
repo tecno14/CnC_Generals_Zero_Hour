@@ -59,7 +59,12 @@ public:
 	SpecialAbility( Thing *thing, const ModuleData *moduleData );
 
 	virtual void doSpecialPowerAtObject( Object *obj, UnsignedInt commandOptions );
+#ifdef OG
 	virtual void doSpecialPowerAtLocation( const Coord3D *loc, UnsignedInt commandOptions );
+#endif
+#ifdef ZH
+	virtual void doSpecialPowerAtLocation( const Coord3D *loc, Real angle, UnsignedInt commandOptions );
+#endif
 	virtual void doSpecialPower( UnsignedInt commandOptions );
 
 protected:

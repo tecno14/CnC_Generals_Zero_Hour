@@ -104,6 +104,10 @@ public:
 	virtual ObjectID projectileGetLauncherID() const { return m_launcherID; }				///< Return firer of missile. Returns 0 if not yet fired.
 	virtual Bool projectileHandleCollision( Object *other );
 	virtual const Coord3D *getVelocity() const { return &m_vel; }		///< get current velocity
+#ifdef ZH
+	virtual void setFramesTillCountermeasureDiversionOccurs( UnsignedInt frames ) {}
+	virtual void projectileNowJammed() {}
+#endif
 
 	virtual UpdateSleepTime update();
 	virtual void onDelete( void );

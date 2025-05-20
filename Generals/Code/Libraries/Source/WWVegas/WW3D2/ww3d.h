@@ -22,13 +22,33 @@
  *                                                                                             *
  *                 Project Name : WW3D                                                         *
  *                                                                                             *
+#ifdef OG
  *                     $Archive:: /VSS_Sync/ww3d2/ww3d.h                                      $*
+#endif
+#ifdef ZH
+ *                     $Archive:: /Commando/Code/ww3d2/ww3d.h                                 $*
+#endif
  *                                                                                             *
+#ifdef OG
  *                      $Author:: Vss_sync                                                    $*
+#endif
+#ifdef ZH
+ *                      $Author:: Steve_t                                                     $*
+#endif
  *                                                                                             *
+#ifdef OG
  *                     $Modtime:: 8/29/01 9:39p                                               $*
+#endif
+#ifdef ZH
+ *                     $Modtime:: 1/02/02 4:17p                                               $*
+#endif
  *                                                                                             *
+#ifdef OG
  *                    $Revision:: 32                                                          $*
+#endif
+#ifdef ZH
+ *                    $Revision:: 42                                                          $*
+#endif
  *                                                                                             *
  *---------------------------------------------------------------------------------------------*
  * Functions:                                                                                  *
@@ -62,7 +82,13 @@ class		RenderDeviceDescClass;
 class		StringClass;
 class		LightEnvironmentClass;
 class		MaterialPassClass;
+#ifdef ZH
+class 	StaticSortListClass;
+#endif
 
+#ifdef ZH
+#define MESH_RENDER_SNAPSHOT_ENABLED
+#endif
 #define SNAPSHOT_SAY(x) if (WW3D::Is_Snapshot_Activated()) { WWDEBUG_SAY(x); }
 //#define SNAPSHOT_SAY(x)
 
@@ -90,6 +116,7 @@ public:
 		MESH_DRAW_MODE_DEBUG_BOX,
 		MESH_DRAW_MODE_NONE,
 		MESH_DRAW_MODE_DX8_ONLY
+#ifdef OG
 	};
 
 	enum TextureThumbnailModeEnum {
@@ -100,6 +127,7 @@ public:
 	enum TextureCompressionModeEnum {
 		TEXTURE_COMPRESSION_DISABLE,
 		TEXTURE_COMPRESSION_ENABLE
+#endif
 	};
 
 	enum NPatchesGapFillingModeEnum {
@@ -108,8 +136,20 @@ public:
 		NPATCHES_GAP_FILLING_FORCE
 	};
 
+#ifdef ZH
+	enum ScreenShotFormatEnum {
+		TGA,
+		BMP
+	};
 
+#endif
+
+#ifdef OG
 	static WW3DErrorType		Init(void * hwnd, char *defaultpal = NULL);
+#endif
+#ifdef ZH
+	static WW3DErrorType		Init(void * hwnd, char *defaultpal = NULL, bool lite = false);
+#endif
 	static WW3DErrorType		Shutdown(void);
 	static bool					Is_Initted(void)								{ return IsInitted; }	
 
@@ -141,6 +181,12 @@ public:
 	static WW3DErrorType		Registry_Load_Render_Device( const char * sub_key, bool resize_window = false );
 	static bool					Registry_Load_Render_Device( const char * sub_key, char *device, int device_len, int &width, int &height, int &depth, int &windowed, int& texture_depth);		
 
+#ifdef ZH
+	// 0 = bilinear, 1 = trilinear, 2 = anisotropic
+	static void					Set_Texture_Filter(int filter);
+	static int					Get_Texture_Filter() { return TextureFilter; }
+
+#endif
 	/*
 	** Rendering functions
 	** Each frame should be bracketed by a Begin_Render and End_Render call.  Between these two calls you will
@@ -148,8 +194,14 @@ public:
 	** special cases like generating a shadow texture for an object.  Basically this function will have the
 	** entire scene rendering overhead.
 	*/
+#ifdef OG
 	static WW3DErrorType		Begin_Render(bool clear = false,bool clearz = true,const Vector3 & color = Vector3(0,0,0), float dest_alpha=0.0f);
 
+#endif
+#ifdef ZH
+	static WW3DErrorType		Begin_Render(bool clear = false,bool clearz = true,const Vector3 & color = Vector3(0,0,0), float dest_alpha=0.0f, void(*network_callback)(void) = NULL);
+
+#endif
 	static WW3DErrorType		Render(const LayerListClass & layerlist);
 	static WW3DErrorType		Render(const LayerClass & layer);
 	static WW3DErrorType		Render(SceneClass * scene,CameraClass * cam,bool clear = false,bool clearz = false,const Vector3 & color = Vector3(0,0,0));
@@ -157,6 +209,10 @@ public:
 	static void					Flush(RenderInfoClass & rinfo);	// NOTE: "normal" usage should *NEVER* require the user to call this function
 
 	static WW3DErrorType		End_Render(bool flip_frame = true);
+#ifdef ZH
+
+	static bool					Is_Rendering( void ) { return( IsRendering ); }
+#endif
 
 	static void Flip_To_Primary(void);
 
@@ -177,7 +233,12 @@ public:
 	** Screen/Movie capturing
 	** These functions allow you to create screenshots and movies.
 	*/
+#ifdef OG
 	static void					Make_Screen_Shot( const char * filename = "ScreenShot");
+#endif
+#ifdef ZH
+	static void					Make_Screen_Shot( const char * filename = "ScreenShot", const float gamma = 1.3f, const ScreenShotFormatEnum format = TGA);
+#endif
 	static void					Start_Movie_Capture( const char * filename_base = "Movie", float frame_rate = 15);
 	static void					Stop_Movie_Capture( void);
 	static void					Toggle_Movie_Capture( const char * filename_base = "Movie", float frame_rate = 15);
@@ -203,11 +264,29 @@ public:
 	** all textures to be half their normal resolution.  Passing in 3 causes them to 
 	** be cut in half twice, etc
 	*/
+#ifdef OG
 	static void					Set_Texture_Reduction( int value, int min_mip_levels=1 );
+#endif
+#ifdef ZH
+	static void					Set_Texture_Reduction( int value, int min_dim=1 );
+#endif
 	static int					Get_Texture_Reduction( void );
+#ifdef OG
 	static int					Get_Texture_Min_Mip_Levels( void );
+
+#endif
+#ifdef ZH
+	static int					Get_Texture_Min_Dimension(void);
+	static void					Enable_Large_Texture_Extra_Reduction(bool onoff);
+	static bool					Is_Large_Texture_Extra_Reduction_Enabled(void);
+#endif
 	static void					_Invalidate_Mesh_Cache();
 	static void					_Invalidate_Textures();
+#ifdef ZH
+
+	static void					Set_Thumbnail_Enabled(bool b) { ThumbnailEnabled=b; }
+	static bool					Get_Thumbnail_Enabled() { return ThumbnailEnabled; }
+#endif
 
 	static void					Enable_Sorting(bool onoff);
 	static bool					Is_Sorting_Enabled(void)					{ return IsSortingEnabled; }
@@ -240,12 +319,14 @@ public:
 	static void					Set_Mesh_Draw_Mode (MeshDrawModeEnum mode)	{ MeshDrawMode = mode; }
 	static MeshDrawModeEnum Get_Mesh_Draw_Mode ()								{ return (MeshDrawMode); }
 
+#ifdef OG
 	static void					Set_Texture_Thumbnail_Mode (TextureThumbnailModeEnum mode);
 	static TextureThumbnailModeEnum 	Get_Texture_Thumbnail_Mode () { return (TextureThumbnailMode); }
 
 	static void					Set_Texture_Compression_Mode (TextureCompressionModeEnum mode);
 	static TextureCompressionModeEnum 	Get_Texture_Compression_Mode () { return (TextureCompressionMode); }
 
+#endif
 	static void					Set_NPatches_Gap_Filling_Mode (NPatchesGapFillingModeEnum mode);
 	static NPatchesGapFillingModeEnum 	Get_NPatches_Gap_Filling_Mode () { return (NPatchesGapFillingMode); }
 
@@ -254,7 +335,12 @@ public:
 
 	static void					Enable_Texturing(bool b);
 	static bool					Is_Texturing_Enabled() { return IsTexturingEnabled; }
+#ifdef OG
 	static bool					Is_Coloring_Enabled() { return IsColoringEnabled; }
+#endif
+#ifdef ZH
+	static bool					Is_Coloring_Enabled() { return (IsColoringEnabled == 0) ? false : true; }
+#endif
 	static void					Enable_Coloring(unsigned int color);	///<when non-zero color is passed, it will override vertex colors
 
 	static int					Get_Last_Frame_Memory_Allocation_Count() { return LastFrameMemoryAllocations; }
@@ -283,8 +369,23 @@ public:
 	static bool					Is_Munge_Sort_On_Load_Enabled(void)		{ return MungeSortOnLoad; }
 	static void					Add_To_Static_Sort_List(RenderObjClass *robj, unsigned int sort_level);
 	static void					Render_And_Clear_Static_Sort_Lists(RenderInfoClass & rinfo);
+#ifdef OG
 	static void					Override_Current_Static_Sort_Lists(RefRenderObjListClass *sort_list, unsigned int min_sort, unsigned int max_sort);
+#endif
+#ifdef ZH
+	static void					Override_Current_Static_Sort_Lists(StaticSortListClass * sort_list);
+#endif
 	static void					Reset_Current_Static_Sort_Lists_To_Default(void);
+#ifdef ZH
+
+	/*
+	** Overbright modify on load - when this mode is set meshes will be
+	** modified at load time. All shaders which originally had the primary
+	** gradient set to MODULATE will be changed to MODULATE2X instead.
+	*/
+	static void					Enable_Overbright_Modify_On_Load(bool onoff)	{ OverbrightModifyOnLoad = onoff; }
+	static bool					Is_Overbright_Modify_On_Load_Enabled(void)	{ return OverbrightModifyOnLoad; }
+#endif
 
 	static bool					Is_Snapshot_Activated()						{ return SnapshotActivated; }
 	static void					Activate_Snapshot(bool b)					{ SnapshotActivated=b; }
@@ -294,6 +395,11 @@ public:
    static long             UserStat0;
    static long             UserStat1;
    static long             UserStat2;
+#ifdef ZH
+
+	// Gamma control
+	static void					Set_Gamma(float gamma,float bright,float contrast,bool calibrate=true);
+#endif
 
 private:
 	
@@ -306,7 +412,9 @@ private:
 
 	static void					Read_Gerd_Render_Device_Description(RenderDeviceDescClass &desc);
 	static void					Update_Pixel_Center(void);
+#ifdef OG
 	static void					Set_Polygon_Mode(int mode);
+#endif
 	static void					Allocate_Debug_Resources(void);
 	static void					Release_Debug_Resources(void);
 
@@ -338,6 +446,10 @@ private:
 	static bool							AreStaticSortListsEnabled;
 	static bool							MungeSortOnLoad;
 
+#ifdef ZH
+	static bool							OverbrightModifyOnLoad;
+
+#endif
 	static FrameGrabClass *			Movie;
 	static bool							PauseRecord;
 	static bool							RecordNextFrame;
@@ -351,16 +463,34 @@ private:
 	static PrelitModeEnum			PrelitMode;
 	static bool							ExposePrelit;
 
+#ifdef ZH
+	static int							TextureFilter;
+
+#endif
 	static bool							SnapshotActivated;
+#ifdef ZH
+	static bool							ThumbnailEnabled;
+#endif
 
 	static MeshDrawModeEnum			MeshDrawMode;
+#ifdef OG
 	static TextureThumbnailModeEnum TextureThumbnailMode;
 	static TextureCompressionModeEnum TextureCompressionMode;
+#endif
 	static NPatchesGapFillingModeEnum NPatchesGapFillingMode;
 	static unsigned NPatchesLevel;
 	static bool							IsTexturingEnabled;
+#ifdef OG
 	static unsigned int			IsColoringEnabled;
+#endif
+#ifdef ZH
+	static bool							IsColoringEnabled;
+#endif
 
+#ifdef ZH
+	static bool							Lite;
+
+#endif
 	// This is the default native screen size which will be set for each
 	// RenderObject on construction. The native screen size is the screen size
 	// at which the object was designed to be viewed, and it is used in the
@@ -372,12 +502,20 @@ private:
 	// For meshes which have a static sorting order. These will get drawn
 	// after opaque meshes and before normally sorted meshes. The 'current'
 	// pointer is so the application can temporarily set a different set of
+#ifdef OG
 	// static sort lists to be used temporarily. This and the min/max sort
 	// levels are for specialised uses.
 	static RefRenderObjListClass *DefaultStaticSortLists;
 	static RefRenderObjListClass *CurrentStaticSortLists;
 	static unsigned int MinStaticSortLevel;
 	static unsigned int MaxStaticSortLevel;
+#endif
+#ifdef ZH
+	// static sort lists to be used temporarily. This is for specialised uses.
+	static StaticSortListClass * DefaultStaticSortLists;
+	static StaticSortListClass * CurrentStaticSortLists;
+
+#endif
 
 	// Memory allocation statistics
 	static int							LastFrameMemoryAllocations;

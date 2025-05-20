@@ -176,7 +176,12 @@ void	DX8WebBrowser::Render(int backbufferindex)
 // ******************************************************************************************
 void	DX8WebBrowser::CreateBrowser(const char* browsername, const char* url, int x, int y, int w, int h, int updateticks, LONG options, LPDISPATCH gamedispatch)
 {
+#ifdef OG
 	DEBUG_LOG(("DX8WebBrowser::CreateBrowser - Creating browser with the name %s, url = %s, (x, y, w, h) = (%d, %d, %d, %d), update ticks = %d\n", browsername, url, x, y, h, w, updateticks));
+#endif
+#ifdef ZH
+	WWDEBUG_SAY(("DX8WebBrowser::CreateBrowser - Creating browser with the name %s, url = %s, (x, y, w, h) = (%d, %d, %d, %d), update ticks = %d\n", browsername, url, x, y, h, w, updateticks));
+#endif
 	if(pBrowser)
 	{
 		_bstr_t brsname(browsername);
@@ -199,7 +204,12 @@ void	DX8WebBrowser::CreateBrowser(const char* browsername, const char* url, int 
 // ******************************************************************************************
 void	DX8WebBrowser::DestroyBrowser(const char* browsername)
 {
+#ifdef OG
 	DEBUG_LOG(("DX8WebBrowser::DestroyBrowser - destroying browser %s\n", browsername));
+#endif
+#ifdef ZH
+	WWDEBUG_SAY(("DX8WebBrowser::DestroyBrowser - destroying browser %s\n", browsername));
+#endif
 	if(pBrowser)
 		pBrowser->DestroyBrowser(_bstr_t(browsername));
 }

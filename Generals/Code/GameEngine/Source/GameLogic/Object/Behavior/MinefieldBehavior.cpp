@@ -68,6 +68,9 @@ MinefieldBehaviorModuleData::MinefieldBehaviorModuleData()
 	m_repeatDetonateMoveThresh = 1.0f;
 	m_numVirtualMines = 1;
 	m_healthPercentToDrainPerSecond = 0.0f;
+#ifdef ZH
+	m_ocl = 0;
+#endif
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -89,6 +92,9 @@ MinefieldBehaviorModuleData::MinefieldBehaviorModuleData()
 		{ "NumVirtualMines", INI::parseUnsignedInt, NULL, offsetof( MinefieldBehaviorModuleData, m_numVirtualMines ) },
 		{ "RepeatDetonateMoveThresh", INI::parseReal, NULL, offsetof( MinefieldBehaviorModuleData, m_repeatDetonateMoveThresh ) },
 		{ "DegenPercentPerSecondAfterCreatorDies", INI::parsePercentToReal,	NULL, offsetof( MinefieldBehaviorModuleData, m_healthPercentToDrainPerSecond ) },
+#ifdef ZH
+		{ "CreationList",	INI::parseObjectCreationList,	NULL,	offsetof( MinefieldBehaviorModuleData, m_ocl ) },
+#endif
 		{ 0, 0, 0, 0 }
 	};
 
@@ -125,7 +131,12 @@ MinefieldBehavior::MinefieldBehavior( Thing *thing, const ModuleData* moduleData
 	setWakeFrame( getObject(), UPDATE_SLEEP_NONE );
 
 	// mines aren't auto-acquirable
+#ifdef OG
 	getObject()->setStatus(OBJECT_STATUS_NO_ATTACK_FROM_AI);
+#endif
+#ifdef ZH
+	getObject()->setStatus( MAKE_OBJECT_STATUS_MASK( OBJECT_STATUS_NO_ATTACK_FROM_AI ) );
+#endif
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -317,12 +328,28 @@ void MinefieldBehavior::detonateOnce(const Coord3D& position)
 	if (m_virtualMinesRemaining == 0)
 	{
 		getObject()->setModelConditionState(MODELCONDITION_RUBBLE);
+#ifdef OG
 		getObject()->setStatus(OBJECT_STATUS_MASKED);
+#endif
+#ifdef ZH
+		getObject()->setStatus( MAKE_OBJECT_STATUS_MASK( OBJECT_STATUS_MASKED ) );
+#endif
 	}
 	else
 	{
 		getObject()->clearModelConditionState(MODELCONDITION_RUBBLE);
+#ifdef OG
 		getObject()->clearStatus(OBJECT_STATUS_MASKED);
+
+#endif
+#ifdef ZH
+		getObject()->clearStatus( MAKE_OBJECT_STATUS_MASK( OBJECT_STATUS_MASKED ) );
+	}
+
+	if (d->m_ocl)
+	{
+		ObjectCreationList::create(d->m_ocl, getObject(), getObject());
+#endif
 	}
 }
 
@@ -495,12 +522,22 @@ void MinefieldBehavior::onDamage( DamageInfo *damageInfo )
 		}
 
 		getObject()->setModelConditionState(MODELCONDITION_RUBBLE);
+#ifdef OG
 		getObject()->setStatus(OBJECT_STATUS_MASKED);
+#endif
+#ifdef ZH
+		getObject()->setStatus( MAKE_OBJECT_STATUS_MASK( OBJECT_STATUS_MASKED ) );
+#endif
 	}
 	else
 	{
 		getObject()->clearModelConditionState(MODELCONDITION_RUBBLE);
+#ifdef OG
 		getObject()->clearStatus(OBJECT_STATUS_MASKED);
+#endif
+#ifdef ZH
+		getObject()->clearStatus( MAKE_OBJECT_STATUS_MASK( OBJECT_STATUS_MASKED ) );
+#endif
 	}
 }
 
@@ -551,7 +588,12 @@ void MinefieldBehavior::disarm()
 
 	m_virtualMinesRemaining = 0;
 	getObject()->setModelConditionState(MODELCONDITION_RUBBLE);
+#ifdef OG
 	getObject()->setStatus(OBJECT_STATUS_MASKED);
+#endif
+#ifdef ZH
+	getObject()->setStatus( MAKE_OBJECT_STATUS_MASK( OBJECT_STATUS_MASKED ) );
+#endif
 }
 
 // ------------------------------------------------------------------------------------------------

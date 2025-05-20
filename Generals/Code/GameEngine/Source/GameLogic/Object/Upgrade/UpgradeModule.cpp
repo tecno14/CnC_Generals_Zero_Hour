@@ -32,6 +32,14 @@
 #include "Common/Xfer.h"
 #include "GameLogic/Module/UpgradeModule.h"
 
+#ifdef ZH
+#ifdef _INTERNAL
+// for occasional debugging...
+//#pragma optimize("", off)
+//#pragma MESSAGE("************************************** WARNING, optimization disabled for debugging purposes")
+#endif
+
+#endif
 // ------------------------------------------------------------------------------------------------
 /** CRC */
 // ------------------------------------------------------------------------------------------------
@@ -107,7 +115,12 @@ void UpgradeMux::forceRefreshUpgrade()
 
 // ------------------------------------------------------------------------------------------------
 // ------------------------------------------------------------------------------------------------
+#ifdef OG
 Bool UpgradeMux::attemptUpgrade( Int64 keyMask )
+#endif
+#ifdef ZH
+Bool UpgradeMux::attemptUpgrade( UpgradeMaskType keyMask )
+#endif
 {
 	if (wouldUpgrade(keyMask))
 	{
@@ -120,56 +133,150 @@ Bool UpgradeMux::attemptUpgrade( Int64 keyMask )
 
 // ------------------------------------------------------------------------------------------------
 // ------------------------------------------------------------------------------------------------
+#ifdef OG
 Bool UpgradeMux::wouldUpgrade( Int64 keyMask ) const
+#endif
+#ifdef ZH
+Bool UpgradeMux::wouldUpgrade( UpgradeMaskType keyMask ) const
+#endif
 {
+#ifdef OG
 	Int64 activation, conflicting;
+#endif
+#ifdef ZH
+	UpgradeMaskType activation, conflicting;
+#endif
 	getUpgradeActivationMasks(activation, conflicting);
 
 	//Make sure we have activation conditions and we haven't performed the upgrade already.
+#ifdef OG
 	if( activation && !m_upgradeExecuted )
+#endif
+#ifdef ZH
+	if( activation.any() && keyMask.any() && !m_upgradeExecuted )
+#endif
 	{
 		//Okay, make sure we don't have any conflicting upgrades
+#ifdef OG
 		if( !(conflicting & keyMask) )
+#endif
+#ifdef ZH
+		if( !keyMask.testForAny( conflicting) )
+#endif
 		{
 			//Finally check to see if our upgrade conditions match.
 			if( requiresAllActivationUpgrades() )
 			{
 				//Make sure ALL triggers requirements are upgraded
+#ifdef OG
 				return (activation & keyMask) == activation;
+
+#endif
+#ifdef ZH
+				if( keyMask.testForAll( activation ) )
+				{
+					return TRUE;
+				}
+#endif
 			}
 			else
 			{
 				//Check if ANY trigger requirements are met.
+#ifdef OG
 				return (activation & keyMask) != 0;
+
+#endif
+#ifdef ZH
+				if( keyMask.testForAny( activation ) )
+				{
+					return TRUE;
+#endif
 			}
 		}
 	}
+#ifdef ZH
+	}
+#endif
 	//We can't upgrade!
+#ifdef OG
 	return false;
+
+#endif
+#ifdef ZH
+	return FALSE;
 }
 
 //-------------------------------------------------------------------------------------------------
-Bool UpgradeMux::testUpgradeConditions( Int64 keyMask ) const
+void UpgradeMux::giveSelfUpgrade()
 {
+	// If I have an activation condition, and I haven't activated, and this key matches my condition.
+	performUpgradeFX();
+	processUpgradeRemoval();// Need to execute removals first, to prevent both being on for a moment.
+	upgradeImplementation();
+	setUpgradeExecuted(true);
+#endif
+}
+
+//-------------------------------------------------------------------------------------------------
+#ifdef OG
+Bool UpgradeMux::testUpgradeConditions( Int64 keyMask ) const
+#endif
+#ifdef ZH
+Bool UpgradeMux::testUpgradeConditions( UpgradeMaskType keyMask ) const
+#endif
+{
+#ifdef OG
 	Int64 activation, conflicting;
+#endif
+#ifdef ZH
+	UpgradeMaskType activation, conflicting;
+#endif
 	getUpgradeActivationMasks(activation, conflicting);
 
 	//Okay, make sure we don't have any conflicting upgrades
+#ifdef OG
 	if( !(conflicting & keyMask) )
+#endif
+#ifdef ZH
+	if( !keyMask.any() || !keyMask.testForAny( conflicting ) )
+#endif
 	{
 		//Make sure we have activation conditions
+#ifdef OG
 		if( activation )
+#endif
+#ifdef ZH
+		if( activation.any() )
+#endif
 		{
 			//Finally check to see if our upgrade conditions match.
 			if( requiresAllActivationUpgrades() )
 			{
 				//Make sure ALL triggers requirements are upgraded
+#ifdef OG
 				return (activation & keyMask) == activation;
+
+#endif
+#ifdef ZH
+				if( keyMask.testForAll( activation ) )
+				{
+					return TRUE;
+				}
+#endif
 			}
 			else
 			{
 				//Check if ANY trigger requirements are met.
+#ifdef OG
 				return (activation & keyMask) != 0;
+
+#endif
+#ifdef ZH
+				if( keyMask.testForAny( activation ) )
+				{
+					return TRUE;
+				}
+#endif
 			}
 		}
 		else
@@ -184,11 +291,26 @@ Bool UpgradeMux::testUpgradeConditions( Int64 keyMask ) const
 
 // ------------------------------------------------------------------------------------------------
 // ------------------------------------------------------------------------------------------------
+#ifdef OG
 Bool UpgradeMux::resetUpgrade( Int64 keyMask )
+#endif
+#ifdef ZH
+Bool UpgradeMux::resetUpgrade( UpgradeMaskType keyMask )
+#endif
 {
+#ifdef OG
 	Int64 activation, conflicting;
+#endif
+#ifdef ZH
+	UpgradeMaskType activation, conflicting;
+#endif
 	getUpgradeActivationMasks(activation, conflicting);
+#ifdef OG
 	if( activation & keyMask && m_upgradeExecuted )
+#endif
+#ifdef ZH
+	if( keyMask.testForAny( activation ) && m_upgradeExecuted )
+#endif
 	{
 		m_upgradeExecuted = false;
 		return true;

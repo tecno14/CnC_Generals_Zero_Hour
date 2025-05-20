@@ -29,6 +29,9 @@
 #include "PreRTS.h"	// This must go first in EVERY cpp file int the GameEngine
 
 #include "Common/Xfer.h"
+#ifdef ZH
+#include "Common/Player.h"
+#endif
 #include "GameClient/ControlBar.h"
 #include "GameLogic/Module/CommandSetUpgrade.h"
 #include "GameLogic/Object.h"
@@ -42,6 +45,10 @@ void CommandSetUpgradeModuleData::buildFieldParse(MultiIniFieldParse& p)
 	static const FieldParse dataFieldParse[] = 
 	{
 		{ "CommandSet",	INI::parseAsciiString,	NULL, offsetof( CommandSetUpgradeModuleData, m_newCommandSet ) },
+#ifdef ZH
+		{ "CommandSetAlt",	INI::parseAsciiString,	NULL, offsetof( CommandSetUpgradeModuleData, m_newCommandSetAlt ) },
+		{ "TriggerAlt",			INI::parseAsciiString,	NULL, offsetof( CommandSetUpgradeModuleData, m_triggerAlt ) },
+#endif
 		{ 0, 0, 0, 0 }
 	};
   p.add(dataFieldParse);
@@ -64,8 +71,40 @@ CommandSetUpgrade::~CommandSetUpgrade( void )
 void CommandSetUpgrade::upgradeImplementation( )
 {
 	Object *obj = getObject();	
-	obj->setCommandSetStringOverride( getCommandSetUpgradeModuleData()->m_newCommandSet );
+#ifdef ZH
 
+	const char * upgradeAlt = getCommandSetUpgradeModuleData()->m_triggerAlt.str();
+	const UpgradeTemplate *upgradeTemplate = TheUpgradeCenter->findUpgrade( upgradeAlt );
+	
+	if (upgradeTemplate)
+	{
+		UpgradeMaskType upgradeMask = upgradeTemplate->getUpgradeMask();
+
+		// See if upgrade is found in the player completed upgrades
+		Player *player = obj->getControllingPlayer();
+		if (player)
+		{
+			UpgradeMaskType playerMask = player->getCompletedUpgradeMask();
+			if (playerMask.testForAny(upgradeMask))
+			{
+				obj->setCommandSetStringOverride( getCommandSetUpgradeModuleData()->m_newCommandSetAlt );
+				TheControlBar->markUIDirty();// Refresh the UI in case we are selected
+				return;
+			}
+		}
+
+		// See if upgrade is found in the object completed upgrades
+		UpgradeMaskType objMask = obj->getObjectCompletedUpgradeMask();
+		if (objMask.testForAny(upgradeMask))
+		{
+			obj->setCommandSetStringOverride( getCommandSetUpgradeModuleData()->m_newCommandSetAlt );
+			TheControlBar->markUIDirty();// Refresh the UI in case we are selected
+			return;
+		}
+	}
+
+#endif
+	obj->setCommandSetStringOverride( getCommandSetUpgradeModuleData()->m_newCommandSet );
 	TheControlBar->markUIDirty();// Refresh the UI in case we are selected
 }
 

@@ -101,14 +101,29 @@ protected:
 	void doChooseVictimAlwaysUsesNormal(Bool enable);
 	void doDebugMessage(const AsciiString& msg, Bool pause);
 	void doPlaySoundEffect(const AsciiString& sound);
+#ifdef OG
 	void doMoveCameraTo(const AsciiString& waypoint, Real sec, Real cameraStutterSec);
+#endif
+#ifdef ZH
+	void doMoveCameraTo(const AsciiString& waypoint, Real sec, Real cameraStutterSec, Real easeIn, Real easeOut);
+#endif
 	void doSetupCamera(const AsciiString& waypoint, Real zoom, Real pitch, const AsciiString& lookAtWaypoint);
+#ifdef OG
 	void doRotateCamera(Real rotations, Real sec);
 	void doRotateCameraTowardObject(const AsciiString& unitName, Real sec, Real holdSec);
 	void doRotateCameraTowardWaypoint(const AsciiString& unitName, Real sec);
 	void doPitchCamera(Real pitch, Real sec);
 	void doZoomCamera(Real zoom, Real sec);
 	void doResetCamera(const AsciiString& waypoint, Real sec);
+#endif
+#ifdef ZH
+	void doRotateCamera(Real rotations, Real sec, Real easeIn, Real easeOut);
+	void doRotateCameraTowardObject(const AsciiString& unitName, Real sec, Real holdSec, Real easeIn, Real easeOut);
+	void doRotateCameraTowardWaypoint(const AsciiString& unitName, Real sec, Real easeIn, Real easeOut, Bool reverseRotation);
+	void doPitchCamera(Real pitch, Real sec, Real easeIn, Real easeOut);
+	void doZoomCamera(Real zoom, Real sec, Real easeIn, Real easeOut);
+	void doResetCamera(const AsciiString& waypoint, Real sec, Real easeIn, Real easeOut);
+#endif
 	void doCameraFollowNamed(const AsciiString& unit, Bool snapToUnit);
 	void doStopCameraFollowUnit(void);
 
@@ -117,7 +132,12 @@ protected:
 	void doCameraSetDefault(Real pitch, Real angle, Real maxHeight);
 
 	void doOversizeTheTerrain(Int amount);
+#ifdef OG
 	void doMoveCameraAlongWaypointPath(const AsciiString& waypoint, Real sec, Real cameraStutterSec);
+#endif
+#ifdef ZH
+	void doMoveCameraAlongWaypointPath(const AsciiString& waypoint, Real sec, Real cameraStutterSec, Real easeIn, Real easeOut);
+#endif
 	void doPlaySoundEffectAt(const AsciiString& sound, const AsciiString& waypoint);
 	void doVictory(void);
 	void doQuickVictory(void);
@@ -137,6 +157,9 @@ protected:
 	void doNamedAttack(const AsciiString& attackerName, const AsciiString& victimName);
 	void doBuildBuilding(const AsciiString& buildingType);
 	void doBuildSupplyCenter(const AsciiString& playerName, const AsciiString& buildingType, Int cash);
+#ifdef ZH
+	void doBuildObjectNearestTeam( const AsciiString& playerName, const AsciiString& buildingType, const AsciiString& teamName );
+#endif
 	void doBuildUpgrade(const AsciiString& playerName, const AsciiString& upgrade);
 	void doBuildBaseDefense(Bool flank);
 	void doBuildBaseStructure(const AsciiString& buildingType, Bool flank);
@@ -149,6 +172,9 @@ protected:
 	void doTeamEnterNamed(const AsciiString& teamName, const AsciiString& unitDestName);
 	void doNamedExitAll(const AsciiString& unitName);
 	void doTeamExitAll(const AsciiString& teamName);
+#ifdef ZH
+  void doNamedSetGarrisonEvacDisposition(const AsciiString& unitName, UnsignedInt disp );
+#endif
 	void doNamedFollowWaypoints(const AsciiString& unitName, const AsciiString& waypointName);
 	void doTeamFollowWaypoints(const AsciiString& teamName, const AsciiString& waypointName, Bool asTeam);
 	void doTeamFollowWaypointsExact(const AsciiString& teamName, const AsciiString& waypointName, Bool asTeam);
@@ -175,6 +201,9 @@ protected:
 	void doLetterBoxMode(Bool startLetterbox);	// if true, start it. If false, end it.
 	void doBlackWhiteMode(Bool startBWMode, Int frames);	// if true, start it. If false, end it.
 	void doSkyBox(Bool showSkyBox);	// if true, start it. If false, end it.
+#ifdef ZH
+	void doWeather(Bool showWeather);	// if true, show weather effects defined in INI file.
+#endif
 	
 	void doFreezeTime( void );
 	void doUnfreezeTime( void );
@@ -202,6 +231,9 @@ protected:
 	void doNamedUseCommandButtonAbility( const AsciiString& unit, const AsciiString& ability );
 	void doNamedUseCommandButtonAbilityOnNamed( const AsciiString& unit, const AsciiString& ability, const AsciiString& target );
 	void doNamedUseCommandButtonAbilityAtWaypoint( const AsciiString& unit, const AsciiString& ability, const AsciiString& waypoint );
+#ifdef ZH
+	void doNamedUseCommandButtonAbilityUsingWaypointPath( const AsciiString& unit, const AsciiString& ability, const AsciiString& waypointPath );
+#endif
 	void doTeamUseCommandButtonAbility( const AsciiString& team, const AsciiString& ability );
 	void doTeamUseCommandButtonAbilityOnNamed( const AsciiString& team, const AsciiString& ability, const AsciiString& target );
 	void doTeamUseCommandButtonAbilityAtWaypoint( const AsciiString& team, const AsciiString& ability, const AsciiString& waypoint );
@@ -274,7 +306,17 @@ protected:
 	void doRadarDisable(void);
 	void doRadarEnable(void);
 	void doNamedEnableStealth(const AsciiString& unitName, Bool enabled);
+#ifdef OG
 	void doTeamEnableStealth(const AsciiString& unitName, Bool enabled);
+
+#endif
+#ifdef ZH
+	void doTeamEnableStealth(const AsciiString& teamName, Bool enabled);
+	void doNamedSetUnmanned( const AsciiString& unitName );
+	void doTeamSetUnmanned( const AsciiString& teamName );
+	void doNamedSetBoobytrapped( const AsciiString& thingTemplateName, const AsciiString& unitName );
+	void doTeamSetBoobytrapped( const AsciiString& thingTemplateName, const AsciiString& teamName );
+#endif
 	void doRevealMapAtWaypoint(const AsciiString& waypointName, Real radiusToReveal, const AsciiString& playerName);
 	void doShroudMapAtWaypoint(const AsciiString& waypointName, Real radiusToShroud, const AsciiString& playerName);
 	void doTeamAvailableForRecruitment(const AsciiString& teamName, Bool availability);
@@ -359,13 +401,22 @@ protected:
 	void doUndoRevealMapAtWaypointPermanent(const AsciiString& lookName);
 	void doEvaEnabledDisabled(Bool setEnabled);
 	void doSetOcclusionMode(Bool setEnabled);
+#ifdef ZH
+	void doC3CameraEnableSlaveMode( const AsciiString &thingTemplateName, const AsciiString &boneName );
+#endif
 	void doSetDrawIconUIMode(Bool setEnabled);
+#ifdef ZH
+	void doC3CameraDisableSlaveMode( void );
+#endif
 	void doSetDynamicLODMode(Bool setEnabled);
 	void doAffectObjectPanelFlagsUnit(const AsciiString& unitName, const AsciiString& flagName, Bool enable);
 	void doAffectObjectPanelFlagsTeam(const AsciiString& teamName, const AsciiString& flagName, Bool enable);
 	void doGuardSupplyCenter(const AsciiString& teamName, Int supplies);
 	void doTeamGuardInTunnelNetwork(const AsciiString& teamName);
 	void doAffectPlayerSkillset(const AsciiString& playerName, Int skillset);
+#ifdef ZH
+	void doC3CameraShake( const AsciiString &waypointName, Real amplitude, Real duration_seconds, Real radius ); 
+#endif
 	void doOverrideHulkLifetime( Real seconds );	
 	void doNamedFaceNamed( const AsciiString &unitName, const AsciiString &faceUnitName );
 	void doNamedFaceWaypoint( const AsciiString &unitName, const AsciiString &faceWaypointName );
@@ -376,6 +427,10 @@ protected:
 	void doAffectSkillPointsModifier(const AsciiString& playerName, Real newModifier);
 	void doResizeViewGuardband(const Real gbx, const Real gby );
 	void deleteAllUnmanned();
+#ifdef ZH
+	void doNamedSetTrainHeld( const AsciiString &locoName, const Bool set );
+  void doEnableObjectSound(const AsciiString& objectName, Bool enable);
+#endif
 	
 };  // end class ScriptActions
 

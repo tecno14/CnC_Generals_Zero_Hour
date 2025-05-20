@@ -54,15 +54,29 @@ class AsciiString;
 	#error "Only one at a time of these should ever be defined"
 #endif
 
+#ifdef ZH
+#define NO_RELEASE_DEBUG_LOGGING
+
+#ifdef RELEASE_DEBUG_LOGGING  ///< Creates a DebugLogFile.txt (No I or D) with all the debug log goodness.  Good for startup problems.
+	#define ALLOW_DEBUG_UTILS 1
+	#define DEBUG_LOGGING 1
+	#define DISABLE_DEBUG_CRASHING 1
+	#define DISABLE_DEBUG_STACKTRACE 1
+	#define DISABLE_DEBUG_PROFILE 1
+#endif
+
+#endif
 // These are stolen from the WW3D Debug file. REALLY useful. :-)
 #define STRING_IT(a) #a																				  
 #define TOKEN_IT(a) STRING_IT(,##a)
 #define MESSAGE(a) message (__FILE__ "(" TOKEN_IT(__LINE__) ") : " a)
 
+#ifdef OG
 // BGC, 3/26/03 - put this in so we can build internal worldbuilder for a patch that doesn't
 // have any debugging of any kind.
 //#define DISABLE_DEBUG_LOGGING
 
+#endif
 // by default, turn on ALLOW_DEBUG_UTILS if _DEBUG is turned on.
 #if (defined(_DEBUG) || defined(_INTERNAL)) && !defined(ALLOW_DEBUG_UTILS) && !defined(DISABLE_ALLOW_DEBUG_UTILS)
 	#define ALLOW_DEBUG_UTILS 1
@@ -76,9 +90,15 @@ class AsciiString;
 #if defined(ALLOW_DEBUG_UTILS) && !defined(DEBUG_CRASHING) && !defined(DISABLE_DEBUG_CRASHING)
 	#define DEBUG_CRASHING 1
 #endif
+#ifdef OG
 
 // BGC - added the DEBUG_LOGGING term...doesn't make sense to do stack debugging without a debug log to print to.
 #if defined(ALLOW_DEBUG_UTILS) && !defined(DEBUG_STACKTRACE) && !defined(DISABLE_DEBUG_STACKTRACE) && defined(DEBUG_LOGGING)
+#endif
+#ifdef ZH
+#if defined(ALLOW_DEBUG_UTILS) && !defined(DEBUG_STACKTRACE) && !defined(DISABLE_DEBUG_STACKTRACE)
+
+#endif
 	#define DEBUG_STACKTRACE 1
 #endif
 #if defined(ALLOW_DEBUG_UTILS) && !defined(DEBUG_PROFILE) && !defined(DISABLE_DEBUG_PROFILE)
@@ -145,6 +165,7 @@ class AsciiString;
 
 	DEBUG_EXTERN_C void DebugLog(const char *format, ...);
 
+#ifdef OG
 	// This defines a bitmask of log types that we care about, to allow some flexability
 	// in what gets logged.  This should be extended to asserts, too, but the assert box
 	// is waiting to be rewritten. -MDC 3/19/2003
@@ -156,14 +177,19 @@ class AsciiString;
 	};
 	extern const char *TheDebugLevels[DEBUG_LEVEL_MAX];
 
+#endif
 	#define DEBUG_LOG(m)						do { { DebugLog m ; } } while (0)
+#ifdef OG
 	#define DEBUG_LOG_LEVEL(l, m)		do { if (l & DebugLevelMask) { DebugLog m ; } } while (0)
+#endif
 	#define DEBUG_ASSERTLOG(c, m)		do { { if (!(c)) DebugLog m ; } } while (0)
 
 #else
 
 	#define DEBUG_LOG(m)						((void)0)
+#ifdef OG
 	#define DEBUG_LOG_LEVEL(l, m)		((void)0)
+#endif
 	#define DEBUG_ASSERTLOG(c, m)		((void)0)
 
 #endif

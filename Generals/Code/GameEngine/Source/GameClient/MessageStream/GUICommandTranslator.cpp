@@ -456,7 +456,12 @@ GameMessageDisposition GUICommandTranslator::translateGameMessage(const GameMess
 					//Special weapons are now always context commands...
 					//---------------------------------------------------------------------------------------
 					case GUI_COMMAND_SPECIAL_POWER:
+#ifdef OG
 					case GUI_COMMAND_SPECIAL_POWER_FROM_COMMAND_CENTER:
+#endif
+#ifdef ZH
+					case GUI_COMMAND_SPECIAL_POWER_FROM_SHORTCUT:
+#endif
 					{
 						return KEEP_MESSAGE;
 						break;
@@ -492,7 +497,14 @@ GameMessageDisposition GUICommandTranslator::translateGameMessage(const GameMess
 
 				// get out of GUI command mode if we completed the command one way or another
 				if( commandStatus == COMMAND_COMPLETE )
+#ifdef ZH
+				{
+					TheInGameUI->setPreventLeftClickDeselectionInAlternateMouseModeForOneClick( TRUE );
+#endif
 					TheInGameUI->setGUICommand( NULL );
+#ifdef ZH
+				}
+#endif
 			}  // end if
 
 			break;

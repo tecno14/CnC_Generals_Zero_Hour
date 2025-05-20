@@ -26,12 +26,32 @@
  *                                                                                             *
  *              Original Author:: Jani Penttinen                                               *
  *                                                                                             *
+#ifdef OG
  *                      $Author:: Jani_p                                                      $*
+#endif
+#ifdef ZH
+ *                      $Author:: Kenny Mitchell                                               * 
+#endif
  *                                                                                             *
+#ifdef OG
  *                     $Modtime:: 3/29/01 12:44a                                              $*
+#endif
+#ifdef ZH
+ *                     $Modtime:: 06/26/02 5:06p                                             $*
+#endif
  *                                                                                             *
+#ifdef OG
  *                    $Revision:: 5                                                           $*
+#endif
+#ifdef ZH
+ *                    $Revision:: 7                                                          $*
+#endif
  *                                                                                             *
+#ifdef ZH
+ * 06/26/02 KM VB Vertex format update for shaders                                       *
+ * 07/17/02 KM VB Vertex format update for displacement mapping                               *
+ * 08/01/02 KM VB Vertex format update for cube mapping                               *
+#endif
  *---------------------------------------------------------------------------------------------*
  * Functions:                                                                                  *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
@@ -62,7 +82,16 @@ enum {
 	DX8_FVF_XYZDUV1		= D3DFVF_XYZ|D3DFVF_TEX1|D3DFVF_DIFFUSE,
 	DX8_FVF_XYZDUV2		= D3DFVF_XYZ|D3DFVF_TEX2|D3DFVF_DIFFUSE,
 	DX8_FVF_XYZUV1			= D3DFVF_XYZ|D3DFVF_TEX1,
+#ifdef OG
 	DX8_FVF_XYZUV2			= D3DFVF_XYZ|D3DFVF_TEX2
+
+#endif
+#ifdef ZH
+	DX8_FVF_XYZUV2			= D3DFVF_XYZ|D3DFVF_TEX2,
+ 	DX8_FVF_XYZNDUV1TG3	= (D3DFVF_XYZ|D3DFVF_NORMAL|D3DFVF_DIFFUSE|D3DFVF_TEX4|D3DFVF_TEXCOORDSIZE2(0)|D3DFVF_TEXCOORDSIZE3(1)|D3DFVF_TEXCOORDSIZE3(2)|D3DFVF_TEXCOORDSIZE3(3)),
+ 	DX8_FVF_XYZNUV2DMAP	= (D3DFVF_XYZ|D3DFVF_NORMAL|D3DFVF_TEX3 | D3DFVF_TEXCOORDSIZE1(0) | D3DFVF_TEXCOORDSIZE4(1) | D3DFVF_TEXCOORDSIZE2(2) ),
+	DX8_FVF_XYZNDCUBEMAP	= D3DFVF_XYZ|D3DFVF_NORMAL|D3DFVF_DIFFUSE //|D3DFVF_TEX1|D3DFVF_TEXCOORDSIZE3(0)
+#endif
 };
 
 // ----------------------------------------------------------------------------
@@ -183,8 +212,67 @@ struct VertexFormatXYZUV2
 	float v1;
 	float u2;
 	float v2;
+#ifdef ZH
 };
 
+// todo KJM compress
+struct VertexFormatXYZNDUV1TG3
+{
+	float x;
+	float y;
+	float z;
+	float nx;
+	float ny;
+	float nz;
+	unsigned diffuse;
+	float u1;
+	float v1;
+	float Sx;
+	float Sy;
+	float Sz;
+	float Tx;
+	float Ty;
+	float Tz;
+	float SxTx;
+	float SxTy;
+	float SxTz;
+};
+
+// displacement mapping format
+struct VertexFormatXYZNUV2DMAP
+{
+	float x;
+	float y;
+	float z;
+	float nx;
+	float ny;
+	float nz;
+	float T1x;
+	float T1y;
+	float T1z;
+	float T1w;
+	float T2x;
+	float T2y;
+#endif
+};
+
+#ifdef ZH
+// cube map format (texcoords are normally generated)
+struct VertexFormatXYZNDCUBEMAP
+{
+	float x;
+	float y;
+	float z;
+	float nx;
+	float ny;
+	float nz;
+	unsigned diffuse;
+//	float u1;
+//	float v1;
+//	float w1;
+};
+
+#endif
 // FVF info class can be created for any legal FVF. It constructs information
 // of offsets to various elements in the vertex buffer.
 
@@ -192,8 +280,14 @@ class FVFInfoClass : public W3DMPO
 {
 	W3DMPO_GLUE(FVFInfoClass)
 
+#ifdef OG
 	unsigned							FVF;
 	unsigned							fvf_size;
+#endif
+#ifdef ZH
+	mutable unsigned						FVF;
+	mutable unsigned						fvf_size;
+#endif
 
 	unsigned							location_offset;
 	unsigned							normal_offset;
@@ -202,7 +296,12 @@ class FVFInfoClass : public W3DMPO
 	unsigned							diffuse_offset;
 	unsigned							specular_offset;
 public:
+#ifdef OG
 	FVFInfoClass(unsigned FVF);
+#endif
+#ifdef ZH
+	FVFInfoClass(unsigned FVF, unsigned vertex_size=0);
+#endif
 
 	inline unsigned Get_Location_Offset() const { return location_offset; }
 	inline unsigned Get_Normal_Offset() const { return normal_offset; }
@@ -218,6 +317,12 @@ public:
 	inline unsigned Get_FVF_Size() const { return fvf_size; }
 
 	void Get_FVF_Name(StringClass& fvfname) const;	// For debug purposes
+#ifdef ZH
+
+	// for enabling vertex shaders
+	inline void Set_FVF(unsigned fvf) const { FVF=fvf; }
+	inline void Set_FVF_Size(unsigned size) const { fvf_size=size; }
+#endif
 };
 
 

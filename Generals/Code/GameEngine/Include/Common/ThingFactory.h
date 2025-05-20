@@ -76,7 +76,12 @@ public:
 		get a template given template database name. return null if not found.
 		note, this is now substantially faster (does a hash-table lookup)
 	*/
+#ifdef OG
 	const ThingTemplate *findTemplate( const AsciiString& name ) { return findTemplateInternal(name); }
+#endif
+#ifdef ZH
+	const ThingTemplate *findTemplate( const AsciiString& name, Bool check = TRUE ) { return findTemplateInternal( name, check ); }
+#endif
 
 	/** 
 		get a template given ID. return null if not found.
@@ -87,7 +92,12 @@ public:
 	/** request a new object using the given template. 
 		this will throw an exception on failure; it will never return null.
 	*/
+#ifdef OG
 	Object *newObject( const ThingTemplate *tmplate, Team *team, ObjectStatusBits statusBits = OBJECT_STATUS_NONE );
+#endif
+#ifdef ZH
+	Object *newObject( const ThingTemplate *tmplate, Team *team, ObjectStatusMaskType statusMask = OBJECT_STATUS_MASK_NONE );
+#endif
 
 	/** request a new drawable using the given template. 
 		this will throw an exception on failure; it will never return null.
@@ -123,7 +133,12 @@ private:
 		NOTE: this is protected since it returns a NON-CONST template, and
 		folks outside of the template system itself shouldn't get access...
 	*/
+#ifdef OG
 	ThingTemplate *findTemplateInternal( const AsciiString& name );
+#endif
+#ifdef ZH
+	ThingTemplate *findTemplateInternal( const AsciiString& name, Bool check = TRUE );
+#endif
 
 	ThingTemplate					*m_firstTemplate;			///< head of linked list
 	UnsignedShort					m_nextTemplateID;			///< next available ID for templates 

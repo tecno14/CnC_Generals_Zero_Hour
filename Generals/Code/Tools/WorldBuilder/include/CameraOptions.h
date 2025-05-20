@@ -57,6 +57,10 @@ protected:
 	// Generated message map functions
 	//{{AFX_MSG(CameraOptions)
 	afx_msg void OnCameraReset();
+#ifdef ZH
+	afx_msg void OnDropWaypointButton();
+	afx_msg void OnCenterOnSelectedButton();
+#endif
 	afx_msg void OnMove(int x, int y);
 	virtual BOOL OnInitDialog();
 	afx_msg void OnChangePitchEdit();

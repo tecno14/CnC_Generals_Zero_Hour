@@ -64,12 +64,20 @@
 GenerateMinefieldBehaviorModuleData::GenerateMinefieldBehaviorModuleData()
 {
 	m_mineName.clear();
+#ifdef ZH
+	m_mineNameUpgraded.clear();
+	m_mineUpgradeTrigger.clear();
+
+#endif
 	m_genFX = NULL;
 	m_distanceAroundObject = TheGlobalData->m_standardMinefieldDistance;
 	m_minesPerSquareFoot = TheGlobalData->m_standardMinefieldDensity;
 	m_onDeath = false;
 	m_borderOnly = true;
 	m_alwaysCircular = false;
+#ifdef ZH
+	m_upgradable = false;
+#endif
 	m_smartBorder = false;
 	m_smartBorderSkipInterior = true;
 	m_randomJitter = 0.0f;
@@ -83,6 +91,10 @@ GenerateMinefieldBehaviorModuleData::GenerateMinefieldBehaviorModuleData()
 	static const FieldParse dataFieldParse[] = 
 	{
 		{ "MineName", INI::parseAsciiString,	NULL, offsetof( GenerateMinefieldBehaviorModuleData, m_mineName ) },
+#ifdef ZH
+		{ "UpgradedMineName", INI::parseAsciiString,	NULL, offsetof( GenerateMinefieldBehaviorModuleData, m_mineNameUpgraded ) },
+		{ "UpgradedTriggeredBy", INI::parseAsciiString,	NULL, offsetof( GenerateMinefieldBehaviorModuleData, m_mineUpgradeTrigger ) },
+#endif
 		{ "GenerationFX", INI::parseFXList,	NULL, offsetof( GenerateMinefieldBehaviorModuleData, m_genFX ) },
 		{ "DistanceAroundObject", INI::parseReal, NULL, offsetof( GenerateMinefieldBehaviorModuleData, m_distanceAroundObject ) },
 		{ "MinesPerSquareFoot", INI::parseReal, NULL, offsetof( GenerateMinefieldBehaviorModuleData, m_minesPerSquareFoot ) },
@@ -91,6 +103,9 @@ GenerateMinefieldBehaviorModuleData::GenerateMinefieldBehaviorModuleData()
 		{ "SmartBorder", INI::parseBool, NULL, offsetof(GenerateMinefieldBehaviorModuleData, m_smartBorder) },
 		{ "SmartBorderSkipInterior", INI::parseBool, NULL, offsetof(GenerateMinefieldBehaviorModuleData, m_smartBorderSkipInterior) },
 		{ "AlwaysCircular", INI::parseBool, NULL, offsetof(GenerateMinefieldBehaviorModuleData, m_alwaysCircular) },
+#ifdef ZH
+		{ "Upgradable", INI::parseBool, NULL, offsetof(GenerateMinefieldBehaviorModuleData, m_upgradable) },
+#endif
 		{ "RandomJitter", INI::parsePercentToReal, NULL, offsetof(GenerateMinefieldBehaviorModuleData, m_randomJitter) },
 		{ "SkipIfThisMuchUnderStructure", INI::parsePercentToReal, NULL, offsetof(GenerateMinefieldBehaviorModuleData, m_skipIfThisMuchUnderStructure) },
 		{ 0, 0, 0, 0 }
@@ -103,17 +118,29 @@ GenerateMinefieldBehaviorModuleData::GenerateMinefieldBehaviorModuleData()
 
 //-------------------------------------------------------------------------------------------------
 //-------------------------------------------------------------------------------------------------
+#ifdef OG
 GenerateMinefieldBehavior::GenerateMinefieldBehavior( Thing *thing, const ModuleData* moduleData ) : BehaviorModule( thing, moduleData )
+#endif
+#ifdef ZH
+GenerateMinefieldBehavior::GenerateMinefieldBehavior( Thing *thing, const ModuleData* moduleData ) : UpdateModule( thing, moduleData )
+#endif
 {
 	m_target.zero();
 	m_generated = false;
 	m_hasTarget = false;
+#ifdef ZH
+	m_upgraded = false;
+	m_mineList.clear();
+#endif
 }
 
 //-------------------------------------------------------------------------------------------------
 //-------------------------------------------------------------------------------------------------
 GenerateMinefieldBehavior::~GenerateMinefieldBehavior( void )
 {
+#ifdef ZH
+	m_mineList.clear();
+#endif
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -222,7 +249,17 @@ Object* GenerateMinefieldBehavior::placeMineAt(const Coord3D& pt, const ThingTem
 		{
 			lmi->setScootParms(*producer->getPosition(), pt);
 			break;
+#ifdef ZH
 		}
+#endif
+		}
+#ifdef ZH
+
+	// Keep track of the mines
+	if (mine && d->m_upgradable)
+	{
+		m_mineList.push_back(mine->getID());
+#endif
 	}
 
 	return mine;
@@ -368,7 +405,19 @@ void GenerateMinefieldBehavior::placeMines()
 
 	const Object* obj = getObject();
 	const GenerateMinefieldBehaviorModuleData* d = getGenerateMinefieldBehaviorModuleData();
+#ifdef OG
 	const ThingTemplate* mineTemplate = TheThingFactory->findTemplate(d->m_mineName);
+
+#endif
+#ifdef ZH
+	const ThingTemplate* mineTemplate = 0;
+
+	if (m_upgraded)
+		mineTemplate = TheThingFactory->findTemplate(d->m_mineNameUpgraded);
+	else
+		mineTemplate = TheThingFactory->findTemplate(d->m_mineName);
+
+#endif
 	if (!mineTemplate)
 	{
 		DEBUG_CRASH(("mine %s not found\n",d->m_mineName.str()));
@@ -431,9 +480,60 @@ void GenerateMinefieldBehavior::placeMines()
 	}
 
 	FXList::doFXObj(d->m_genFX, obj);
+#ifdef ZH
 
 }
 
+// ------------------------------------------------------------------------------------------------
+
+UpdateSleepTime GenerateMinefieldBehavior::update()
+{
+	// Test to see if we need to replace the current mines with upgraded ones
+	if (!m_upgraded && getGenerateMinefieldBehaviorModuleData()->m_upgradable) 
+	{
+		if (m_generated)
+		{
+			// Upgraded minefield to next level for China Player
+			const UpgradeTemplate *upgradeTemplate = TheUpgradeCenter->findUpgrade( "Upgrade_ChinaEMPMines" );
+
+			if (upgradeTemplate)
+			{
+				UpgradeMaskType upgradeMask = upgradeTemplate->getUpgradeMask();
+				UpgradeMaskType objMask = getObject()->getObjectCompletedUpgradeMask();
+				if (objMask.testForAny(upgradeMask))
+				{
+					m_upgraded = TRUE;
+					
+					// Remove all old mine objects if present
+					for (std::list<ObjectID>::iterator it = m_mineList.begin(); it != m_mineList.end(); ++it)
+					{
+						ObjectID objID = *it;
+						Object *obj = TheGameLogic->findObjectByID(objID);
+						if (obj)
+						{
+							TheGameLogic->destroyObject(obj);
+						}
+					}
+					m_mineList.clear();
+#endif
+
+#ifdef ZH
+					// Place new mines down (Replace old ones that we removed
+					m_generated = false;
+					placeMines();
+				}
+			}
+#endif
+}
+
+#ifdef ZH
+		return UPDATE_SLEEP_NONE;
+	}
+
+	return UPDATE_SLEEP_FOREVER;
+}
+
+#endif
 // ------------------------------------------------------------------------------------------------
 /** CRC */
 // ------------------------------------------------------------------------------------------------
@@ -470,7 +570,44 @@ void GenerateMinefieldBehavior::xfer( Xfer *xfer )
 	// generated
 	xfer->xferBool( &m_generated );
 	xfer->xferBool( &m_hasTarget );
+#ifdef ZH
+	xfer->xferBool( &m_upgraded );
+	
+#endif
 	xfer->xferCoord3D( &m_target );
+#ifdef ZH
+
+		// spaces info count and objectID data
+	UnsignedByte spacesCount = m_mineList.size();
+	xfer->xferUnsignedByte( &spacesCount );
+	if( xfer->getXferMode() == XFER_SAVE )
+	{
+		// save all elements
+		std::list<ObjectID>::iterator it;
+		for( it = m_mineList.begin(); it != m_mineList.end(); ++it )
+		{
+			// object in this space
+			xfer->xferObjectID( &(*it) );
+		}  // end for, it
+
+	}  // end if, save
+	else if( xfer->getXferMode() == XFER_LOAD )
+	{
+		ObjectID objectID;
+		m_mineList.clear();
+
+		// read all elements
+		std::list<ObjectID>::iterator it;
+		it = m_mineList.begin();
+		for(int i = 0; i < spacesCount; ++i )
+		{
+			// read object id
+			xfer->xferObjectID( &objectID );
+
+			m_mineList.push_back(objectID);
+		}  // end for, i
+	}  // end else, load
+#endif
 
 }  // end xfer
 

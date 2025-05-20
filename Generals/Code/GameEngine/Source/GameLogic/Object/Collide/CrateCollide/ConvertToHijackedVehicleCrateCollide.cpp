@@ -88,13 +88,33 @@ Bool ConvertToHijackedVehicleCrateCollide::isValidToExecute( const Object *other
 		return FALSE;// can't hijack a dead vehicle
 	}
 
+#ifdef ZH
+	if( other->isKindOf( KINDOF_IMMUNE_TO_CAPTURE ) )
+	{
+		return FALSE; //Kris: Patch 1.03 -- Prevent hijackers from being able to hijack battle buses.
+	}
+
+#endif
 	if( other->isKindOf( KINDOF_AIRCRAFT ) || other->isKindOf( KINDOF_BOAT ) )
 	{
 		//Can't hijack planes and boats!
+#ifdef ZH
 		return FALSE;
 	}
 
+	if( other->isKindOf( KINDOF_DRONE ) )
+	{
+		//Can't hijack drones!
+#endif
+		return FALSE;
+	}
+
+#ifdef OG
 	if ( other->getStatusBits() & OBJECT_STATUS_HIJACKED )
+#endif
+#ifdef ZH
+	if( other->getStatusBits().test( OBJECT_STATUS_HIJACKED ) )
+#endif
 	{
 		return FALSE;// oops, sorry, I'll jack the next one.
 	}
@@ -155,7 +175,12 @@ Bool ConvertToHijackedVehicleCrateCollide::executeCrateBehavior( Object *other )
 	}
 	
 	other->setTeam( obj->getControllingPlayer()->getDefaultTeam() );
+#ifdef OG
 	other->setStatus( OBJECT_STATUS_HIJACKED );// I claim this car in the name of the GLA
+#endif
+#ifdef ZH
+	other->setStatus( MAKE_OBJECT_STATUS_MASK( OBJECT_STATUS_HIJACKED ) );// I claim this car in the name of the GLA
+#endif
 
 	AIUpdateInterface* targetAI = other->getAIUpdateInterface();
 	targetAI->aiMoveToPosition( other->getPosition(), CMD_FROM_AI );
@@ -185,8 +210,14 @@ Bool ConvertToHijackedVehicleCrateCollide::executeCrateBehavior( Object *other )
 	if ( targetExp && jackerExp )
 	{
 		VeterancyLevel highestLevel = MAX(targetExp->getVeterancyLevel(),jackerExp->getVeterancyLevel());
+#ifdef OG
 		jackerExp->setVeterancyLevel( highestLevel );
 		targetExp->setVeterancyLevel( highestLevel );
+#endif
+#ifdef ZH
+		jackerExp->setVeterancyLevel( highestLevel, FALSE );
+		targetExp->setVeterancyLevel( highestLevel, FALSE );
+#endif
 	}
 
 
@@ -219,9 +250,15 @@ Bool ConvertToHijackedVehicleCrateCollide::executeCrateBehavior( Object *other )
 
 		// flag bits so hijacker won't be selectible or collideable
 		//while within the vehicle
+#ifdef OG
 		obj->setStatus( OBJECT_STATUS_NO_COLLISIONS );
 		obj->setStatus( OBJECT_STATUS_MASKED );
 		obj->setStatus( OBJECT_STATUS_UNSELECTABLE );
+#endif
+#ifdef ZH
+		obj->setStatus( MAKE_OBJECT_STATUS_MASK3( OBJECT_STATUS_NO_COLLISIONS, OBJECT_STATUS_MASKED, OBJECT_STATUS_UNSELECTABLE ) );
+
+#endif
 	}
 
 	// THIS BLOCK HIDES THE HIJACKER AND REMOVES HIM FROM PARTITION MANAGER

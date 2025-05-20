@@ -310,6 +310,9 @@ public:
 	virtual const Script *findScriptByName(const AsciiString& scriptName) {return findScript(scriptName);} ///<  Finds a script.
 		
 	const BreezeInfo& getBreezeInfo() const {return m_breezeInfo;}
+#ifdef ZH
+	void turnBreezeOff(void) {m_breezeInfo.m_intensity = 0.0f;}
+#endif
 	
 	Bool isTimeFrozenScript( void );		///< Ask whether a script has frozen time or not
 	void doFreezeTime( void );
@@ -358,12 +361,24 @@ public:
 //#if defined(_DEBUG) || defined(_INTERNAL)
 	void debugVictory( void );
 //#endif
+#ifdef ZH
+
+
+	static void parseScriptAction( INI* ini );
+	static void parseScriptCondition( INI* ini );
+
+#endif
 protected:
 
 	// snapshot methods
 	virtual void crc( Xfer *xfer );
 	virtual void xfer( Xfer *xfer );
 	virtual void loadPostProcess( void );
+#ifdef ZH
+
+	void addActionTemplateInfo(Template *actionTemplate);
+	void addConditionTemplateInfo(Template *conditionTemplate);
+#endif
 
 	Int allocateCounter( const AsciiString& name);
 	Int allocateFlag( const AsciiString& name);

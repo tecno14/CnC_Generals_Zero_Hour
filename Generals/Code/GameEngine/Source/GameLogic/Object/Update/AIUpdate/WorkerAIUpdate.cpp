@@ -43,6 +43,9 @@
 #include "Common/RandomValue.h"
 #include "Common/GlobalData.h"
 #include "Common/ResourceGatheringManager.h"
+#ifdef ZH
+#include "Common/Upgrade.h"
+#endif
 
 #include "GameClient/Drawable.h"
 #include "GameClient/GameText.h"
@@ -391,13 +394,29 @@ Object *WorkerAIUpdate::construct( const ThingTemplate *what,
 	}  // end if
 
 	// what will our initial status bits
+#ifdef OG
 	UnsignedInt statusBits = OBJECT_STATUS_UNDER_CONSTRUCTION;
+#endif
+#ifdef ZH
+	ObjectStatusMaskType statusBits = MAKE_OBJECT_STATUS_MASK( OBJECT_STATUS_UNDER_CONSTRUCTION );
+#endif
 	if( isRebuild )
+#ifdef OG
 		BitSet( statusBits, OBJECT_STATUS_RECONSTRUCTING );
+#endif
+#ifdef ZH
+		statusBits.set( OBJECT_STATUS_RECONSTRUCTING );
+#endif
 
 	// create an object at the destination location
+#ifdef OG
 	Object *obj = TheThingFactory->newObject( what, owningPlayer->getDefaultTeam(), 
 																						(ObjectStatusBits)statusBits );
+#endif
+#ifdef ZH
+	Object *obj = TheThingFactory->newObject( what, owningPlayer->getDefaultTeam(), statusBits );
+
+#endif
 
 	// even though we haven't actually built anything yet, this keeps things tidy
 	obj->setProducer( getObject() );
@@ -419,7 +438,12 @@ Object *WorkerAIUpdate::construct( const ThingTemplate *what,
 	// set a bit that this object is under construction, it is important to do this early
 	// before the hooks add/subtract power from a player are executed
 	//
+#ifdef OG
 	obj->setStatus( OBJECT_STATUS_UNDER_CONSTRUCTION );
+#endif
+#ifdef ZH
+	obj->setStatus( MAKE_OBJECT_STATUS_MASK( OBJECT_STATUS_UNDER_CONSTRUCTION ) );
+#endif
 
 	// initialize object
 	obj->setPosition( pos );
@@ -777,6 +801,11 @@ void WorkerAIUpdate::internalCancelTask( DozerTask task )
 	// sanity
 	DEBUG_ASSERTCRASH( task >= 0 && task < DOZER_NUM_TASKS, ("Illegal dozer task '%d'\n", task) );
 
+#ifdef ZH
+	if(task < 0 || task >= DOZER_NUM_TASKS)
+		return;  //DAMNIT!  You CANNOT assert and then not handle the damn error!  The.  Code.  Must.  Not.  Crash.
+
+#endif
 	// call the single method that gets called for completing and canceling tasks
 	internalTaskCompleteOrCancelled( task );
 
@@ -1393,7 +1422,21 @@ void WorkerAIUpdate::finishBuildingSound()
 	TheAudio->removeAudioEvent( m_buildingSound.getPlayingHandle() );
 }
 
+#ifdef ZH
+//------------------------------------------------------------------------------------------------
+Int WorkerAIUpdate::getUpgradedSupplyBoost() const
+{
+	Player *player = getObject()->getControllingPlayer();
+	static const UpgradeTemplate *workerShoeTemplate = TheUpgradeCenter->findUpgrade( "Upgrade_GLAWorkerShoes" );
+#endif
 
+#ifdef ZH
+	if (player && workerShoeTemplate && player->hasUpgradeComplete(workerShoeTemplate))
+		return getWorkerAIUpdateModuleData()->m_upgradedSupplyBoost;
+	else
+		return 0;
+}
+#endif
 
 
 // ------------------------------------------------------------------------------------------------

@@ -41,6 +41,10 @@
 #include "GameLogic/Module/HiveStructureBody.h"
 #include "GameLogic/Module/SpawnBehavior.h"
 
+#ifdef ZH
+#include "GameLogic/Module/ContainModule.h"
+
+#endif
 // PUBLIC FUNCTIONS ///////////////////////////////////////////////////////////////////////////////
 
 //-------------------------------------------------------------------------------------------------
@@ -83,6 +87,32 @@ void HiveStructureBody::attemptDamage( DamageInfo *damageInfo )
 				{
 					//Propagate damage and return!
 					slave->attemptDamage( damageInfo );
+#ifdef ZH
+					return;
+				}
+				else if( getDamageTypeFlag( data->m_damageTypesToSwallow, damageInfo->in.m_damageType ) )
+				{
+					//no slave to give to, so eat it
+					damageInfo->out.m_actualDamageDealt = 0.0f;
+					damageInfo->out.m_actualDamageClipped = 0.0f;
+					damageInfo->out.m_noEffect = true;
+					return;
+				}
+			}
+		}
+		else if ( hive->getContain() )
+		{
+      ContainModuleInterface *contain = hive->getContain();
+			//We found the spawn interface, now get some slaves!
+			Object *shooter = TheGameLogic->findObjectByID( damageInfo->in.m_sourceID );
+			if( shooter )
+			{
+				Object *rider = contain->getClosestRider( shooter->getPosition() );
+				if( rider )
+				{
+					//Propagate damage and return!
+					rider->attemptDamage( damageInfo );
+#endif
 					return;
 				}
 				else if( getDamageTypeFlag( data->m_damageTypesToSwallow, damageInfo->in.m_damageType ) )

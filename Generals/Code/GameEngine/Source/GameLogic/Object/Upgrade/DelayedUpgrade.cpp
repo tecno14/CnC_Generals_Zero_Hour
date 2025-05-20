@@ -1,3 +1,4 @@
+#ifdef OG
 /*
 **	Command & Conquer Generals(tm)
 **	Copyright 2025 Electronic Arts Inc.
@@ -112,3 +113,5 @@ void DelayedUpgrade::loadPostProcess( void )
 	UpgradeModule::loadPostProcess();
 
 }  // end loadPostProcess
+
+#endif

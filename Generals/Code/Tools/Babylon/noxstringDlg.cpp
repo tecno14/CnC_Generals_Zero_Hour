@@ -1,3 +1,4 @@
+#ifdef OG
 /*
 **	Command & Conquer Generals(tm)
 **	Copyright 2025 Electronic Arts Inc.
@@ -2576,3 +2577,5 @@ void CAboutDlg::OnButton1()
 	CreateTranslationTable ( );
 }
 
+
+#endif

@@ -402,7 +402,12 @@ void MobMemberSlavedUpdate::stopSlavedEffects()
 	m_slaver = INVALID_ID;
 
 	/// @todo Just a thought.  Our Status bits on objects really need to be reference counts so you don't clear someone else's flag
+#ifdef OG
 	getObject()->clearStatus( OBJECT_STATUS_UNSELECTABLE );
+#endif
+#ifdef ZH
+	getObject()->clearStatus( MAKE_OBJECT_STATUS_MASK( OBJECT_STATUS_UNSELECTABLE ) );
+#endif
 	getObject()->clearDisabled( DISABLED_HELD );
 }
 

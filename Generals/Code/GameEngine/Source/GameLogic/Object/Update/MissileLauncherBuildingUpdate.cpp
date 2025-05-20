@@ -31,6 +31,9 @@
 
 #include "Common/GameAudio.h"
 #include "Common/GlobalData.h"
+#ifdef ZH
+#include "Common/Player.h"
+#endif
 #include "Common/SpecialPower.h"
 #include "Common/Xfer.h"
 #include "GameLogic/GameLogic.h"
@@ -48,7 +51,12 @@
 #endif
 
 //-------------------------------------------------------------------------------------------------
+#ifdef OG
 MissileLauncherBuildingUpdate::MissileLauncherBuildingUpdate( Thing *thing, const ModuleData* moduleData ) : UpdateModule( thing, moduleData )
+#endif
+#ifdef ZH
+MissileLauncherBuildingUpdate::MissileLauncherBuildingUpdate( Thing *thing, const ModuleData* moduleData ) : SpecialPowerUpdateModule( thing, moduleData )
+#endif
 {
 	m_doorState = DOOR_CLOSED;
 	m_timeoutState = DOOR_CLOSED;
@@ -203,10 +211,26 @@ void MissileLauncherBuildingUpdate::switchToState(DoorStateType dst)
 }
 
 //-------------------------------------------------------------------------------------------------
+#ifdef OG
 void MissileLauncherBuildingUpdate::initiateIntentToDoSpecialPower( const SpecialPowerTemplate *specialPowerTemplate, const Object *targetObj, const Coord3D *targetPos, UnsignedInt commandOptions, Int locationCount )
+
+#endif
+#ifdef ZH
+Bool MissileLauncherBuildingUpdate::initiateIntentToDoSpecialPower( const SpecialPowerTemplate *specialPowerTemplate, const Object *targetObj, const Coord3D *targetPos, const Waypoint *way, UnsignedInt commandOptions )
 {
+	if( m_specialPowerModule->getSpecialPowerTemplate() != specialPowerTemplate )
+#endif
+{
+#ifdef ZH
+		return FALSE;
+	}
+#endif
 	DEBUG_ASSERTCRASH(!TheGlobalData->m_specialPowerUsesDelay || m_doorState == DOOR_OPEN, ("door is not fully open when specialpower is fired!"));
 	switchToState(DOOR_WAITING_TO_CLOSE);
+#ifdef ZH
+//	getObject()->getControllingPlayer()->getAcademyStats()->recordSpecialPowerUsed( specialPowerTemplate );
+	return TRUE;
+#endif
 }
 
 //-------------------------------------------------------------------------------------------------

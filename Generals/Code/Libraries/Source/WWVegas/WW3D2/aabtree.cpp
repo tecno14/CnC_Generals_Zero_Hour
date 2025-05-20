@@ -26,9 +26,19 @@
  *                                                                                             *
  *                       Author:: Greg Hjelstrom                                               *
  *                                                                                             *
+#ifdef OG
  *                     $Modtime:: 6/14/01 9:42a                                               $*
+#endif
+#ifdef ZH
+ *                     $Modtime:: 11/24/01 5:34p                                              $*
+#endif
  *                                                                                             *
+#ifdef OG
  *                    $Revision:: 3                                                           $*
+#endif
+#ifdef ZH
+ *                    $Revision:: 4                                                           $*
+#endif
  *                                                                                             *
  *---------------------------------------------------------------------------------------------*
  * Functions:                                                                                  *
@@ -67,7 +77,9 @@
 #include "wwdebug.h"
 #include "tri.h"
 #include "meshgeometry.h"
+#ifdef OG
 #include "camera.h"
+#endif
 #include "coltest.h"
 #include "inttest.h"
 #include "colmathinlines.h"
@@ -226,6 +238,27 @@ void AABTreeClass::Reset(void)
 	}
 }
 
+#ifdef ZH
+/***********************************************************************************************
+ * AABTreeClass::Scale - uniform scale																			  *
+ *                                                                                             *
+ * INPUT:                                                                                      *
+ *                                                                                             *
+ * OUTPUT:                                                                                     *
+ *                                                                                             *
+ * WARNINGS:                                                                                   *
+ *                                                                                             *
+ * HISTORY:                                                                                    *
+ *   6/17/02    Jani : Created.                                                                *
+ *=============================================================================================*/
+void AABTreeClass::Scale(float f)
+{
+	for (int i=0;i<NodeCount;++i) {
+		Nodes[i].Min*=f;
+		Nodes[i].Max*=f;
+	}
+}
+#endif
 
 /***********************************************************************************************
  * AABTreeClass::Build_Tree_Recursive -- Initializes this tree from the given builder          *
@@ -361,7 +394,12 @@ void AABTreeClass::Generate_OBBox_APT_Recursive(CullNodeStruct * node,OBBoxAPTCo
 		if (polycount > 0) {
 			TriClass tri;
 			const Vector3 * loc = Mesh->Get_Vertex_Array();
+#ifdef OG
 			const Vector3i * polys = Mesh->Get_Polygon_Array();
+#endif
+#ifdef ZH
+			const TriIndex * polys = Mesh->Get_Polygon_Array();
+#endif
 #if (!OPTIMIZE_PLANEEQ_RAM)
 			const Vector4 * norms = Mesh->Get_Plane_Array();
 #endif
@@ -456,7 +494,12 @@ void AABTreeClass::Generate_OBBox_APT_Recursive(CullNodeStruct * node, OBBoxRayA
 		if (polycount > 0) {
 			TriClass tri;
 			const Vector3 * loc = Mesh->Get_Vertex_Array();
+#ifdef OG
 			const Vector3i * polys = Mesh->Get_Polygon_Array();
+#endif
+#ifdef ZH
+			const TriIndex * polys = Mesh->Get_Polygon_Array();
+#endif
 #if (!OPTIMIZE_PLANEEQ_RAM)
 			const Vector4 * norms = Mesh->Get_Plane_Array();
 #endif
@@ -734,7 +777,12 @@ bool AABTreeClass::Cast_Ray_To_Polys(CullNodeStruct * node,RayCollisionTestClass
 		TriClass tri;
 
 		const Vector3 * loc = Mesh->Get_Vertex_Array();
+#ifdef OG
 		const Vector3i * polyverts = Mesh->Get_Polygon_Array();
+#endif
+#ifdef ZH
+		const TriIndex * polyverts = Mesh->Get_Polygon_Array();
+#endif
 #if (!OPTIMIZE_PLANEEQ_RAM)
 		const Vector4 * norms = Mesh->Get_Plane_Array();
 #endif
@@ -808,7 +856,12 @@ int AABTreeClass::Cast_Semi_Infinite_Axis_Aligned_Ray_To_Polys(CullNodeStruct * 
 		*/
 
 		const Vector3 * loc = Mesh->Get_Vertex_Array();
+#ifdef OG
 		const Vector3i * polyverts = Mesh->Get_Polygon_Array();
+#endif
+#ifdef ZH
+		const TriIndex * polyverts = Mesh->Get_Polygon_Array();
+#endif
 		const Vector4 * plane = Mesh->Get_Plane_Array();
 		int poly0 = node->Get_Poly0();
 		int polycount = node->Get_Poly_Count();
@@ -853,7 +906,12 @@ bool AABTreeClass::Cast_AABox_To_Polys(CullNodeStruct * node,AABoxCollisionTestC
 		TriClass tri;
 
 		const Vector3 * loc = Mesh->Get_Vertex_Array();
+#ifdef OG
 		const Vector3i * polyverts = Mesh->Get_Polygon_Array();
+#endif
+#ifdef ZH
+		const TriIndex * polyverts = Mesh->Get_Polygon_Array();
+#endif
 #if (!OPTIMIZE_PLANEEQ_RAM)
 		const Vector4 * norms = Mesh->Get_Plane_Array();
 #endif
@@ -917,7 +975,12 @@ bool AABTreeClass::Cast_OBBox_To_Polys(CullNodeStruct * node,OBBoxCollisionTestC
 		TriClass tri;
 
 		const Vector3 * loc = Mesh->Get_Vertex_Array();
+#ifdef OG
 		const Vector3i * polyverts = Mesh->Get_Polygon_Array();
+#endif
+#ifdef ZH
+		const TriIndex * polyverts = Mesh->Get_Polygon_Array();
+#endif
 #if (!OPTIMIZE_PLANEEQ_RAM)
 		const Vector4 * norms = Mesh->Get_Plane_Array();
 #endif
@@ -985,7 +1048,12 @@ bool AABTreeClass::Intersect_OBBox_With_Polys
 		TriClass tri;
 
 		const Vector3 * loc = Mesh->Get_Vertex_Array();
+#ifdef OG
 		const Vector3i * polyverts = Mesh->Get_Polygon_Array();
+#endif
+#ifdef ZH
+		const TriIndex * polyverts = Mesh->Get_Polygon_Array();
+#endif
 #if (!OPTIMIZE_PLANEEQ_RAM)
 		const Vector4 * norms = Mesh->Get_Plane_Array();
 #endif
@@ -1106,7 +1174,12 @@ void AABTreeClass::Update_Min_Max(int poly_index,Vector3 & min,Vector3 & max)
 {
 	for (int vert_index = 0; vert_index < 3; vert_index++) {
 
+#ifdef OG
 		const Vector3i * polyverts = Mesh->Get_Polygon_Array() + poly_index;
+#endif
+#ifdef ZH
+		const TriIndex * polyverts = Mesh->Get_Polygon_Array() + poly_index;
+#endif
 		const Vector3 * point = Mesh->Get_Vertex_Array() + (*polyverts)[vert_index];
 
 		if (point->X  < min.X) min.X = point->X;

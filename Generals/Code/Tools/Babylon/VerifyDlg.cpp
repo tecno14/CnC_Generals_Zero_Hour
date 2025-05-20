@@ -20,7 +20,12 @@
 //
 
 #include "stdafx.h"
+#ifdef OG
 #include "noxstring.h"
+#endif
+#ifdef ZH
+#include "Babylon.h"
+#endif
 #include "VerifyDlg.h"
 
 #ifdef _DEBUG
@@ -35,14 +40,24 @@ static char THIS_FILE[] = __FILE__;
 // VerifyDlg dialog
 
 
+#ifdef OG
 VerifyDlg::VerifyDlg( NoxText *ntext, LangID langid,  const char *path, CWnd* pParent /*=NULL*/)
+#endif
+#ifdef ZH
+VerifyDlg::VerifyDlg( BabylonText *ntext, LangID langid,  const char *path, CWnd* pParent /*=NULL*/)
+#endif
 	: CDialog(VerifyDlg::IDD, pParent)
 {
 	//{{AFX_DATA_INIT(VerifyDlg)
 		// NOTE: the ClassWizard will add member initialization here
 	//}}AFX_DATA_INIT
 
+#ifdef OG
 	nox_text = ntext;
+#endif
+#ifdef ZH
+	babylon_text = ntext;
+#endif
 	linfo = GetLangInfo ( langid );
 	sprintf ( wavefile, "%s%s\\%s%s.wav", path, linfo->character, ntext->WaveSB(), linfo->character  );
 }
@@ -92,14 +107,29 @@ BOOL VerifyDlg::OnInitDialog()
 	slider = (CSliderCtrl *) GetDlgItem ( IDC_SLIDER );
 
 	wave->SetWindowText ( wavefile );
+#ifdef OG
 	SetDlgItemText ( IDC_TEXT_TITLE, (nox_text->Label()->NameSB()));
+#endif
+#ifdef ZH
+	SetDlgItemText ( IDC_TEXT_TITLE, (babylon_text->Label()->NameSB()));
+#endif
 	if ( linfo->langid == LANGID_US )
 	{
+#ifdef OG
 		text->SetWindowText ( nox_text->GetSB ());
+#endif
+#ifdef ZH
+		text->SetWindowText ( babylon_text->GetSB ());
+#endif
 	}
 	else
 	{
+#ifdef OG
 		Translation *trans = nox_text->GetTranslation ( linfo->langid );
+#endif
+#ifdef ZH
+		Translation *trans = babylon_text->GetTranslation ( linfo->langid );
+#endif
 
 		if ( trans )
 		{

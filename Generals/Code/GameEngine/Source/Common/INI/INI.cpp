@@ -29,7 +29,9 @@
 
 // INCLUDES ///////////////////////////////////////////////////////////////////////////////////////
 #include "PreRTS.h"	// This must go first in EVERY cpp file int the GameEngine
+#ifdef OG
 #define DEFINE_DAMAGE_NAMES
+#endif
 #define DEFINE_DEATH_NAMES
 
 #include "Common/INI.h"
@@ -57,6 +59,9 @@
 #include "GameLogic/ExperienceTracker.h"
 #include "GameLogic/FPUControl.h"
 #include "GameLogic/ObjectCreationList.h"
+#ifdef ZH
+#include "GameLogic/ScriptEngine.h"
+#endif
 #include "GameLogic/Weapon.h"
 
 #ifdef _INTERNAL
@@ -90,6 +95,9 @@ static const BlockParse theTypeTable[] =
 	{ "AudioSettings",			INI::parseAudioSettingsDefinition },
 	{ "Bridge",							INI::parseTerrainBridgeDefinition },
 	{ "Campaign",						INI::parseCampaignDefinition },
+#ifdef ZH
+ 	{ "ChallengeGenerals",				INI::parseChallengeModeDefinition },
+#endif
 	{ "CommandButton",			INI::parseCommandButtonDefinition },
 	{ "CommandMap",					INI::parseMetaMapDefinition },
 	{ "CommandSet",					INI::parseCommandSetDefinition },
@@ -114,6 +122,9 @@ static const BlockParse theTypeTable[] =
 	{ "Mouse",							INI::parseMouseDefinition },
 	{ "MouseCursor",				INI::parseMouseCursorDefinition },
 	{ "MultiplayerColor",		INI::parseMultiplayerColorDefinition },
+#ifdef ZH
+  { "MultiplayerStartingMoneyChoice",		INI::parseMultiplayerStartingMoneyChoiceDefinition },
+#endif
 	{ "OnlineChatColors",		INI::parseOnlineChatColorDefinition },
 	{ "MultiplayerSettings",INI::parseMultiplayerSettingsDefinition },
 	{ "MusicTrack",					INI::parseMusicTrackDefinition },
@@ -132,6 +143,9 @@ static const BlockParse theTypeTable[] =
 	{ "Video",							INI::parseVideoDefinition },
 	{ "WaterSet",						INI::parseWaterSettingDefinition },
 	{ "WaterTransparency",	INI::parseWaterTransparencyDefinition},
+#ifdef ZH
+	{ "Weather",	INI::parseWeatherDefinition},
+#endif
 	{ "Weapon",							INI::parseWeaponTemplateDefinition },
 	{ "WebpageURL",					INI::parseWebpageURLDefinition },
 	{ "HeaderTemplate",			INI::parseHeaderTemplateDefinition },
@@ -140,6 +154,10 @@ static const BlockParse theTypeTable[] =
 	{ "LODPreset",					INI::parseLODPreset },
 	{	"BenchProfile",				INI::parseBenchProfile },
 	{	"ReallyLowMHz",				parseReallyLowMHz },
+#ifdef ZH
+	{	"ScriptAction",				ScriptEngine::parseScriptAction },
+	{	"ScriptCondition",		ScriptEngine::parseScriptCondition },
+#endif
 	
 	{ NULL,									NULL },		// keep this last!
 };
@@ -180,6 +198,9 @@ INI::INI( void )
 {
 
 	m_file							= NULL;
+#ifdef ZH
+  m_readBufferNext=m_readBufferUsed=0;
+#endif
 	m_filename					= "None";
 	m_loadType					= INI_LOAD_INVALID;
 	m_lineNum						= 0;
@@ -293,6 +314,9 @@ void INI::unPrepFile()
 	// close the file
 	m_file->close();
 	m_file = NULL;
+#ifdef ZH
+  m_readBufferUsed=m_readBufferNext=0;
+#endif
 	m_filename = "None";
 	m_loadType = INI_LOAD_INVALID;
 	m_lineNum = 0;
@@ -413,36 +437,111 @@ void INI::load( AsciiString filename, INILoadType loadType, Xfer *pXfer )
 //-------------------------------------------------------------------------------------------------
 void INI::readLine( void )
 {
+#ifdef OG
 	Bool isComment = FALSE;
 
+#endif
 	// sanity
 	DEBUG_ASSERTCRASH( m_file, ("readLine(), file pointer is NULL\n") );
 
+#ifdef OG
 	// if we've reached end of file we'll just keep returning empty string in our buffer
 	if( m_endOfFile )
+
+#endif
+#ifdef ZH
+  if (m_endOfFile)
+    *m_buffer=0;
+  else
+#endif
 	{
+#ifdef OG
 		m_buffer[ 0 ] = '\0';	
 	}
 	else
+#endif
+#ifdef ZH
+    char *p=m_buffer;
+    while (p!=m_buffer+INI_MAX_CHARS_PER_LINE)
+
+#endif
 	{
+#ifdef OG
 		// read up till the newline character or until out of space
 		Int i = 0;
 		Bool done = FALSE;
 		while( !done )
-		{
+#endif
+#ifdef ZH
+      // get next character
+      if (m_readBufferNext==m_readBufferUsed)
 
+#endif
+		{
+#ifdef ZH
+        // refill buffer
+        m_readBufferNext=0;
+        m_readBufferUsed=m_file->read(m_readBuffer,INI_READ_BUFFER);
+#endif
+
+#ifdef OG
 			// read character
 			m_endOfFile = (m_file->read(m_buffer + i, 1) == 0);
 
+#endif
+#ifdef ZH
+        // EOF?
+        if (!m_readBufferUsed)
+        {
+          m_endOfFile=true;
+          *p=0;
+          break;
+        }
+      }
+      *p=m_readBuffer[m_readBufferNext++];
+#endif
+
+#ifdef OG
 			// check for end of file
 			if( m_endOfFile )
+#endif
+#ifdef ZH
+      // CR?
+      if (*p=='\n')
+#endif
 			{
+#ifdef ZH
+        *p=0;
+        break;
+      }
+#endif
 		
+#ifdef OG
 				done = TRUE;
 				m_buffer[ i ] = '\0';
+#endif
+#ifdef ZH
+      DEBUG_ASSERTCRASH(*p != '\t', ("tab characters are not allowed in INI files (%s). please check your editor settings. Line Number %d\n",m_filename.str(), getLineNum()));
 
+#endif
+
+#ifdef OG
 			}  // end if
 
+#endif
+#ifdef ZH
+      // comment?
+      if (*p==';')
+        *p=0;
+      // whitespace?
+      else if (*p>0&&*p<32)
+        *p=' ';
+      p++;
+    }
+    *p=0;
+#endif
+
+#ifdef OG
 			// check for new line
 			if( m_buffer[ i ] == '\n' )
 				done = TRUE;
@@ -474,11 +573,17 @@ void INI::readLine( void )
 
 		}  // end while
 
+#endif
 		// increase our line count
 		m_lineNum++;
 
 		// check for at the max
+#ifdef OG
 		if( i == INI_MAX_CHARS_PER_LINE )
+#endif
+#ifdef ZH
+		if ( p == m_buffer+INI_MAX_CHARS_PER_LINE )
+#endif
 		{
 
 			DEBUG_ASSERTCRASH( 0, ("Buffer too small (%d) and was truncated, increase INI_MAX_CHARS_PER_LINE\n", 
@@ -784,22 +889,43 @@ AsciiString INI::getNextAsciiString()
 		else
 		{
 			static char buff[INI_MAX_CHARS_PER_LINE];
-
+#ifdef ZH
+			buff[0] = 0;
+#endif
 			if (strlen(token) > 1)
 			{
 				strcpy(buff, &token[1]);
 			} 
 
+#ifdef OG
 			token = getNextToken(getSepsQuote());
 			
+#endif
+#ifdef ZH
+			token = getNextTokenOrNull(getSepsQuote());
+			if (token) {
+#endif
 			if (strlen(token) > 1 && token[1] != '\t')
 			{
 				strcat(buff, " ");
 			}
 			strcat(buff, token);
 			result.set(buff);
+#ifdef ZH
+			} else {
+				Int len = strlen(buff);
+				if (len && buff[len-1] == '"') { // strip off trailing quote jba. [2/12/2003]
+					buff[len-1] = 0;
+#endif
+		}
+#ifdef ZH
+				result.set(buff);
+#endif
+	}
+#ifdef ZH
 		}
 	}
+#endif
 	return result;
 }
 
@@ -1363,7 +1489,16 @@ void INI::parseSpecialPowerTemplate( INI* ini, void * /*instance*/, void *store,
 	}
 
 	const SpecialPowerTemplate *sPowerT = TheSpecialPowerStore->findSpecialPowerTemplate( AsciiString( token ) );
+#ifdef OG
 	DEBUG_ASSERTCRASH( sPowerT || stricmp( token, "None" ) == 0, ("Specialpower %s not found!\n",token) );
+
+#endif
+#ifdef ZH
+	if( !sPowerT && stricmp( token, "None" ) != 0 )
+	{
+		DEBUG_CRASH( ("[LINE: %d in '%s'] Specialpower %s not found!\n", ini->getLineNum(), ini->getFilename().str(), token) );
+	}
+#endif
 
 	typedef const SpecialPowerTemplate* ConstSpecialPowerTemplatePtr;
 	ConstSpecialPowerTemplatePtr* theSpecialPowerTemplate = (ConstSpecialPowerTemplatePtr *)store;		
@@ -1801,12 +1936,27 @@ void INI::parseSoundsList( INI* ini, void *instance, void *store, const void* /*
 //-------------------------------------------------------------------------------------------------
 void INI::parseDamageTypeFlags(INI* ini, void* /*instance*/, void* store, const void* /*userData*/)
 {
+#ifdef OG
 	DamageTypeFlags flags = DAMAGE_TYPE_FLAGS_ALL;
+
+#endif
+#ifdef ZH
+	DamageTypeFlags flags = DAMAGE_TYPE_FLAGS_NONE;
+	flags.flip();
+
+#endif
 	for (const char* token = ini->getNextToken(); token; token = ini->getNextTokenOrNull())
 	{
 		if (stricmp(token, "ALL") == 0)
 		{
+#ifdef OG
 			flags = DAMAGE_TYPE_FLAGS_ALL;
+
+#endif
+#ifdef ZH
+			flags = DAMAGE_TYPE_FLAGS_NONE;
+			flags.flip();
+#endif
 			continue;
 		}
 		if (stricmp(token, "NONE") == 0)
@@ -1816,13 +1966,23 @@ void INI::parseDamageTypeFlags(INI* ini, void* /*instance*/, void* store, const 
 		}
 		if (token[0] == '+')
 		{
+#ifdef OG
 			DamageType dt = (DamageType)INI::scanIndexList(token+1, TheDamageNames);
+#endif
+#ifdef ZH
+			DamageType dt = (DamageType)DamageTypeFlags::getSingleBitFromName(token+1);
+#endif
 			flags = setDamageTypeFlag(flags, dt);
 			continue;
 		}
 		if (token[0] == '-')
 		{
+#ifdef OG
 			DamageType dt = (DamageType)INI::scanIndexList(token+1, TheDamageNames);
+#endif
+#ifdef ZH
+			DamageType dt = (DamageType)DamageTypeFlags::getSingleBitFromName(token+1);
+#endif
 			flags = clearDamageTypeFlag(flags, dt);
 			continue;
 		}

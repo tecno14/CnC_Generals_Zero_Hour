@@ -35,13 +35,18 @@
 // USER INCLUDES //////////////////////////////////////////////////////////////////////////////////
 #include "Common/AudioEventRTS.h"
 #include "Common/Module.h"
+#ifdef ZH
+#include "Common/Science.h"
+#endif
 #include "GameLogic/Module/BehaviorModule.h"
 
 // FORWARD REFERENCES /////////////////////////////////////////////////////////////////////////////
 class Object;
 class SpecialPowerTemplate;
 struct FieldParse;
+#ifdef OG
 enum ScienceType;
+#endif
 
 
 //-------------------------------------------------------------------------------------------------
@@ -64,11 +69,23 @@ public:
 	virtual void pauseCountdown( Bool pause ) = 0;
 	virtual void doSpecialPower( UnsignedInt commandOptions ) = 0;
 	virtual void doSpecialPowerAtObject( Object *obj, UnsignedInt commandOptions ) = 0;
+#ifdef OG
 	virtual void doSpecialPowerAtLocation( const Coord3D *loc, UnsignedInt commandOptions ) = 0;
 	virtual void doSpecialPowerAtMultipleLocations( const Coord3D *locations, Int locCount, UnsignedInt commandOptions ) = 0;
+#endif
+#ifdef ZH
+	virtual void doSpecialPowerAtLocation( const Coord3D *loc, Real angle, UnsignedInt commandOptions ) = 0;
+	virtual void doSpecialPowerUsingWaypoints( const Waypoint *way, UnsignedInt commandOptions ) = 0;
+#endif
 	virtual void markSpecialPowerTriggered( const Coord3D *location ) = 0;
 	virtual void startPowerRecharge() = 0;	
 	virtual const AudioEventRTS& getInitiateSound() const = 0;
+#ifdef ZH
+	virtual Bool isScriptOnly() const = 0;
+
+	//If the special power launches a construction site, we need to know the final product for placement purposes.
+	virtual const ThingTemplate* getReferenceThingTemplate() const = 0;
+#endif
 };
 
 //-------------------------------------------------------------------------------------------------
@@ -82,9 +99,18 @@ public:
 	static void buildFieldParse(MultiIniFieldParse& p);
 
 	const SpecialPowerTemplate *m_specialPowerTemplate;		///< pointer to the special power template
+#ifdef OG
 	Bool	m_updateModuleStartsAttack;	///< update module determines when the special power actually starts! If true, update module is required.
 	Bool m_startsPaused; ///< Paused on creation, someone else will have to unpause (like upgrade module, or script)
 	AudioEventRTS					m_initiateSound;
+
+#endif
+#ifdef ZH
+	AudioEventRTS			m_initiateSound;
+	Bool							m_updateModuleStartsAttack;	///< update module determines when the special power actually starts! If true, update module is required.
+	Bool							m_startsPaused; ///< Paused on creation, someone else will have to unpause (like upgrade module, or script)
+	Bool							m_scriptedSpecialPowerOnly;
+#endif
 };
 
 //-------------------------------------------------------------------------------------------------
@@ -124,7 +150,12 @@ public:
 	// The following methods are for use by the scripting engine ONLY
 	//
 
+#ifdef OG
 	void setReadyFrame( UnsignedInt frame ) { m_availableOnFrame = frame; }
+#endif
+#ifdef ZH
+	void setReadyFrame( UnsignedInt frame );
+#endif
 	UnsignedInt getReadyFrame( void ) { return m_availableOnFrame; }// USED BY PLAYER TO KEEP RECHARGE TIMERS IN SYNC
 	void pauseCountdown( Bool pause );
 
@@ -134,8 +165,14 @@ public:
 	//
 	virtual void doSpecialPower( UnsignedInt commandOptions );
 	virtual void doSpecialPowerAtObject( Object *obj, UnsignedInt commandOptions );
+#ifdef OG
 	virtual void doSpecialPowerAtLocation( const Coord3D *loc, UnsignedInt commandOptions );
 	virtual void doSpecialPowerAtMultipleLocations( const Coord3D *locations, Int locCount, UnsignedInt commandOptions );
+#endif
+#ifdef ZH
+	virtual void doSpecialPowerAtLocation( const Coord3D *loc, Real angle, UnsignedInt commandOptions );
+	virtual void doSpecialPowerUsingWaypoints( const Waypoint *way, UnsignedInt commandOptions );
+#endif
 
 	/**
 	 Now, there are special powers that require some preliminary processing before the actual
@@ -154,13 +191,26 @@ public:
 	*/
 	virtual void startPowerRecharge();
 	virtual const AudioEventRTS& getInitiateSound() const;
+#ifdef ZH
+
+	virtual Bool isScriptOnly() const;
+
+	//If the special power launches a construction site, we need to know the final product for placement purposes.
+	virtual const ThingTemplate* getReferenceThingTemplate() const { return NULL; }
+#endif
 
 protected:
 
+#ifdef OG
 	void initiateIntentToDoSpecialPower( const Object *targetObj, 
 																			 const Coord3D *targetPos, 
 																			 UnsignedInt commandOptions, 
 																			 Int locationCount = 0 );
+#endif
+#ifdef ZH
+	Bool initiateIntentToDoSpecialPower( const Object *targetObj, const Coord3D *targetPos, const Waypoint *way, UnsignedInt commandOptions );
+
+#endif
 	void triggerSpecialPower( const Coord3D *location );
 	void createViewObject( const Coord3D *location );
 	void resolveSpecialPower( void );

@@ -47,6 +47,10 @@ enum EVENT_TYPES
   NUM_EVENTS       // keep last
 };
 
+#ifdef ZH
+#define GAME_NAME	"Command & Conquer"
+
+#endif
 HANDLE       Events[NUM_EVENTS];
 
 char         g_UpdateString[256];   // for the filename
@@ -168,12 +172,22 @@ static void startOnline( void )
 
 	if (cantConnect)
 	{
+#ifdef OG
 		MessageBox(NULL, "Can't Connect", "Command and Conquer Generals", MB_OK);
+#endif
+#ifdef ZH
+		MessageBox(NULL, "Can't Connect", GAME_NAME, MB_OK);
+#endif
 		exit(0);
 	}
 	else if (queuedDownloads.size())
 	{
+#ifdef OG
 		if (MessageBox(NULL, "Patches Available.  Download?", "Command and Conquer Generals", MB_YESNO) == IDYES)
+#endif
+#ifdef ZH
+		if (MessageBox(NULL, "Patches Available.  Download?", GAME_NAME, MB_YESNO) == IDYES)
+#endif
 		{
 			DEBUG_LOG(("Downloading patches\n"));
 			while (queuedDownloads.size())
@@ -217,7 +231,12 @@ static void startOnline( void )
 	}
 	else
 	{
+#ifdef OG
 		MessageBox(NULL, "No Patches Available", "Command and Conquer Generals", MB_OK);
+#endif
+#ifdef ZH
+		MessageBox(NULL, "No Patches Available", GAME_NAME, MB_OK);
+#endif
 		exit(0);
 	}
 }

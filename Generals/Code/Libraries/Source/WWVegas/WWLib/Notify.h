@@ -1,3 +1,4 @@
+#ifdef OG
 /*
 **	Command & Conquer Generals(tm)
 **	Copyright 2025 Electronic Arts Inc.
@@ -248,3 +249,5 @@ class TypedEventPair
 	};
 
 #endif // __NOTIFY_H__
+
+#endif

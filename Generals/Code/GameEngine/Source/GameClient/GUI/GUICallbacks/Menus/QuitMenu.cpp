@@ -286,7 +286,12 @@ void ToggleQuitMenu()
 	
 	//Added By Sadullah Nader
 	//Added a check to see if we're not in game yet
+#ifdef OG
 	if (TheGameLogic->isIntroMoviePlaying() || TheGameLogic->isLoadingGame() ||TheScriptEngine->isGameEnding())
+#endif
+#ifdef ZH
+	if (TheGameLogic->isIntroMoviePlaying() || TheGameLogic->isLoadingMap() ||TheScriptEngine->isGameEnding())
+#endif
 		return;
 
 	//End Add

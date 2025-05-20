@@ -26,12 +26,30 @@
  *                                                                                             *
  *              Original Author:: Greg Hjelstrom                                               *
  *                                                                                             *
+#ifdef OG
  *                      $Author:: Greg_h                                                      $*
+#endif
+#ifdef ZH
+ *                      $Author:: Kenny Mitchell                                               * 
+#endif
  *                                                                                             *
+#ifdef OG
  *                     $Modtime:: 6/21/01 10:22a                                              $*
+#endif
+#ifdef ZH
+ *                     $Modtime:: 06/26/02 4:04p                                             $*
+#endif
  *                                                                                             *
+#ifdef OG
  *                    $Revision:: 7                                                           $*
+#endif
+#ifdef ZH
+ *                    $Revision:: 8                                                           $*
+#endif
  *                                                                                             *
+#ifdef ZH
+ * 06/26/02 KM Matrix name change to avoid MAX conflicts                                       *
+#endif
  *---------------------------------------------------------------------------------------------*
  * Functions:                                                                                  *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
@@ -87,8 +105,14 @@ public:
 	MappingType				Get_Type(void);
 
 	void						Set_Texture_Transform(const Matrix3D & view_to_texture,float texsize);
+#ifdef OG
 	void						Set_Texture_Transform(const Matrix4 & view_to_texture,float texsize);
 	const Matrix4 &		Get_Texture_Transform(void) const;
+#endif
+#ifdef ZH
+	void						Set_Texture_Transform(const Matrix4x4 & view_to_texture,float texsize);
+	const Matrix4x4 &		Get_Texture_Transform(void) const;
+#endif
 
 	void						Set_Gradient_U_Coord(float coord) { GradientUCoord = coord; }
 	float						Get_Gradient_U_Coord(void) { return GradientUCoord; }
@@ -98,6 +122,9 @@ public:
 	TextureMapperClass*	Clone(void) const { 	WWASSERT(0);	return NULL; }
 
 	virtual void			Apply(int uv_array_index);
+#ifdef ZH
+	virtual void			Calculate_Texture_Matrix(Matrix4x4 &tex_matrix);
+#endif
 
 protected:
 	
@@ -105,12 +132,47 @@ protected:
 
 	uint32					Flags;
 	MappingType				Type;
+#ifdef OG
 	Matrix4					ViewToTexture;
 	Matrix4					ViewToPixel;
+#endif
+#ifdef ZH
+	Matrix4x4				ViewToTexture;
+	Matrix4x4					ViewToPixel;
+#endif
 	Vector3					ViewSpaceProjectionNormal;
 	float						GradientUCoord;
 };
 
+#ifdef ZH
+/*
+** CompositeMatrixMapperClass - this is a matrix mapper which contains a pointer to another mapper
+** inside it. When applied, it gets the texture matrix from the internal mapper and composites
+** it with it's own matrix, then applies that. It sets the texture source to camera space
+** position. The idea is to use some transformation of the camera space position (like a planar
+** projection) as the 'input coordinates' to some other mapper like a linear offset mapper
+** which usually uses actual texture coordinates as input. If the internal mapper is NULL, it
+** simply applies it's own matrix.
+*/
+class CompositeMatrixMapperClass : public MatrixMapperClass
+{
+public:
+
+	CompositeMatrixMapperClass(TextureMapperClass *internal_mapper, unsigned int stage);
+	CompositeMatrixMapperClass(const CompositeMatrixMapperClass & src);
+	virtual ~CompositeMatrixMapperClass(void);
+
+	virtual TextureMapperClass *Clone(void) const { return NEW_REF( CompositeMatrixMapperClass, (*this)); }
+
+	virtual void Apply(int uv_array_index);
+	virtual void Calculate_Texture_Matrix(Matrix4x4 &tex_matrix);
+
+protected:
+
+	TextureMapperClass *InternalMapper;
+};
+
+#endif
 inline void MatrixMapperClass::Set_Flag(uint32 flag,bool onoff)	
 { 
 	if (onoff) { 
@@ -135,7 +197,12 @@ inline MatrixMapperClass::MappingType MatrixMapperClass::Get_Type(void)
 	return Type;
 }
 
+#ifdef OG
 inline const Matrix4 & MatrixMapperClass::Get_Texture_Transform(void) const	
+#endif
+#ifdef ZH
+inline const Matrix4x4 & MatrixMapperClass::Get_Texture_Transform(void) const	
+#endif
 { 
 	return ViewToTexture; 
 }

@@ -22,13 +22,33 @@
  *                                                                                             * 
  *                 Project Name : Command & Conquer                                            * 
  *                                                                                             * 
+#ifdef OG
  *                     $Archive:: /Commando/Library/RAMFILE.H                                 $* 
+#endif
+#ifdef ZH
+ *                     $Archive:: /Commando/Code/wwlib/ramfile.h                              $* 
+#endif
  *                                                                                             * 
+#ifdef OG
  *                      $Author:: Greg_h                                                      $*
+#endif
+#ifdef ZH
+ *                      $Author:: Ian_l                                                       $*
+#endif
  *                                                                                             * 
+#ifdef OG
  *                     $Modtime:: 7/22/97 11:37a                                              $*
+#endif
+#ifdef ZH
+ *                     $Modtime:: 10/31/01 2:02p                                              $*
+#endif
  *                                                                                             * 
+#ifdef OG
  *                    $Revision:: 1                                                           $*
+#endif
+#ifdef ZH
+ *                    $Revision:: 2                                                           $*
+#endif
  *                                                                                             *
  *---------------------------------------------------------------------------------------------* 
  * Functions:                                                                                  * 
@@ -62,6 +82,9 @@ class RAMFileClass : public FileClass
 		virtual unsigned long Get_Date_Time(void) {return(0);}
 		virtual bool Set_Date_Time(unsigned long ) {return(true);}
 		virtual void Error(int , int = false, char const * =NULL) {}
+#ifdef ZH
+		virtual void Bias(int start, int length=-1);
+#endif
 
 		operator char const * () {return File_Name();}
 

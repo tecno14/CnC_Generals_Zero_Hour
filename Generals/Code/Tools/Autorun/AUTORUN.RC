@@ -8,7 +8,6 @@
 // Generated from the TEXTINCLUDE 2 resource.
 //
 #include "afxres.h"
-
 /////////////////////////////////////////////////////////////////////////////
 #undef APSTUDIO_READONLY_SYMBOLS
 
@@ -28,8 +27,8 @@ LANGUAGE LANG_JAPANESE, SUBLANG_DEFAULT
 
 STRINGTABLE DISCARDABLE 
 BEGIN
-    IDS_VERSION_STRING      "ÉoÅ[ÉWÉáÉì %s"
-    IDS_CANT_FIND_FILE      "%s Ç™å©Ç¬Ç©ÇËÇ‹ÇπÇÒÇ≈ÇµÇΩ"
+    IDS_VERSION_STRING      "ÔøΩoÔøΩ[ÔøΩWÔøΩÔøΩÔøΩÔøΩ %s"
+    IDS_CANT_FIND_FILE      "%s ÔøΩÔøΩÔøΩÔøΩÔøΩ¬ÇÔøΩÔøΩÔøΩ‹ÇÔøΩÔøΩÔøΩ≈ÇÔøΩÔøΩÔøΩ"
 END
 
 #endif    // Japanese resources
@@ -52,8 +51,8 @@ LANGUAGE LANG_KOREAN, SUBLANG_DEFAULT
 
 STRINGTABLE DISCARDABLE 
 BEGIN
-    IDS_VERSION_STRING      "Korean ©ˆoAu %s."
-    IDS_CANT_FIND_FILE      "%s (A°Ì)¢¨| A°ÃA°Ì ®˘o ®˙©™A®ˆ."
+    IDS_VERSION_STRING      "Korean ÔøΩÔøΩoAu %s."
+    IDS_CANT_FIND_FILE      "%s (AÔøΩÔøΩ)ÔøΩÔøΩ| AÔøΩÔøΩAÔøΩÔøΩ ÔøΩÔøΩo ÔøΩÔøΩÔøΩÔøΩAÔøΩÔøΩ."
 END
 
 #endif    // Korean resources
@@ -76,8 +75,8 @@ LANGUAGE LANG_CHINESE, SUBLANG_CHINESE_TRADITIONAL
 
 STRINGTABLE DISCARDABLE 
 BEGIN
-    IDS_VERSION_STRING      "Chinese ac¢D? %s!C"
-    IDS_CANT_FIND_FILE      "°±a?¢G°Li %s!C"
+    IDS_VERSION_STRING      "Chinese acÔøΩD? %s!C"
+    IDS_CANT_FIND_FILE      "ÔøΩÔøΩa?ÔøΩGÔøΩLi %s!C"
 END
 
 #endif    // Chinese (Taiwan) resources
@@ -138,9 +137,35 @@ LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
 // Bitmap
 //
 
+#ifdef ZH
+#if defined(APSTUDIO_INVOKED) || defined(_ENGLISH)
+#if defined(APSTUDIO_INVOKED)
+BACKGROUND$(_ENGLISH)   BITMAP  DISCARDABLE     "Autorun_BG.bmp"
+#else
+#endif
 BACKGROUND              BITMAP  DISCARDABLE     "Autorun_BG.bmp"
+#ifdef ZH
+#endif
+#endif
+#endif
 BUTTON_SEL              BITMAP  DISCARDABLE     "ARButton_Sel.bmp"
 BUTTON_REG              BITMAP  DISCARDABLE     "ARButton_Reg.bmp"
+#ifdef ZH
+#if defined(APSTUDIO_INVOKED) || defined(_FRENCH)
+#if defined(APSTUDIO_INVOKED)
+BACKGROUND$(_FRENCH)    BITMAP  DISCARDABLE     "AutoRun_Frn.bmp"
+#else
+BACKGROUND              BITMAP  DISCARDABLE     "AutoRun_Frn.bmp"
+#endif
+#endif
+#if defined(APSTUDIO_INVOKED) || defined(_GERMAN)
+#if defined(APSTUDIO_INVOKED)
+BACKGROUND$(_GERMAN)    BITMAP  DISCARDABLE     "AutoRun_Ger.bmp"
+#else
+BACKGROUND              BITMAP  DISCARDABLE     "AutoRun_Ger.bmp"
+#endif
+#endif
+#endif
 
 #ifdef APSTUDIO_INVOKED
 /////////////////////////////////////////////////////////////////////////////
@@ -150,13 +175,24 @@ BUTTON_REG              BITMAP  DISCARDABLE     "ARButton_Reg.bmp"
 
 1 TEXTINCLUDE DISCARDABLE 
 BEGIN
+#ifdef OG
     "..\\resource.h\0"
+#endif
+#ifdef ZH
+    "resource.h\0"
+#endif
 END
 
 2 TEXTINCLUDE DISCARDABLE 
 BEGIN
+#ifdef OG
     "#include ""afxres.h""\r\n"
     "\0"
+#endif
+#ifdef ZH
+    "#include ""afxres.h""\0"
+
+#endif
 END
 
 3 TEXTINCLUDE DISCARDABLE 
@@ -215,7 +251,7 @@ BEGIN
             VALUE "FileDescription", "Westwood Autorun\0"
             VALUE "FileVersion", "1.00\0"
             VALUE "InternalName", "Autorun\0"
-            VALUE "LegalCopyright", "Copyright © Westwood Studios 2001\0"
+            VALUE "LegalCopyright", "Copyright ÔøΩ Westwood Studios 2001\0"
             VALUE "OriginalFilename", "Autorun.exe\0"
             VALUE "ProductName", "Command & Conquer Renegade\0"
             VALUE "ProductVersion", "1, 0, 0, 0\0"

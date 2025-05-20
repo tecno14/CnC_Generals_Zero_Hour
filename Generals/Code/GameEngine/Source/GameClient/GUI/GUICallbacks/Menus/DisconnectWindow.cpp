@@ -39,7 +39,9 @@
 #include "GameClient/DisconnectMenu.h"
 #include "GameClient/GameWindowManager.h"
 #include "Common/NameKeyGenerator.h"
+#ifdef OG
 #include "GameNetwork/GameInfo.h"
+#endif
 
 // Private Data -----------------------------
 static WindowLayout *disconnectMenuLayout;
@@ -128,6 +130,7 @@ void ShowDisconnectWindow( void )
 
 	}  // end else
 
+#ifdef OG
 	// Disallow voting for 2-player games.  Cheating punk.
 	if ( TheGameInfo && TheGameInfo->getNumPlayers() < 3 )
 	{
@@ -141,6 +144,7 @@ void ShowDisconnectWindow( void )
 	}
 	else
 	{
+#endif
 		buttonVotePlayer1Window->winEnable(TRUE);
 		buttonVotePlayer2Window->winEnable(TRUE);
 		buttonVotePlayer3Window->winEnable(TRUE);
@@ -148,7 +152,9 @@ void ShowDisconnectWindow( void )
 		buttonVotePlayer5Window->winEnable(TRUE);
 		buttonVotePlayer6Window->winEnable(TRUE);
 		buttonVotePlayer7Window->winEnable(TRUE);
+#ifdef OG
 	}
+#endif
 	buttonQuitWindow->winEnable(TRUE);
 	disconnectMenuLayout->bringForward();
 

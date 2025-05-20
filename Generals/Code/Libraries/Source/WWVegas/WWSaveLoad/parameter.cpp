@@ -24,11 +24,29 @@
  *                                                                                             *
  *                     $Archive:: /Commando/Code/wwsaveload/parameter.cpp                     $*
  *                                                                                             *
+#ifdef OG
  *                       Author:: Patrick Smith                                                *
+
+#endif
+#ifdef ZH
+ *                   Org Author:: Patrick Smith                                                *
  *                                                                                             *
+ *                       Author:: Kenny Mitchell                                                *
+#endif
+ *                                                                                             *
+#ifdef OG
  *                     $Modtime:: 7/16/01 11:18a                                              $*
+#endif
+#ifdef ZH
+ *                     $Modtime:: 5/29/02 11:00a                                              $*
+#endif
  *                                                                                             *
+#ifdef OG
  *                    $Revision:: 32                                                          $*
+#endif
+#ifdef ZH
+ *                    $Revision:: 33                                                          $*
+#endif
  *                                                                                             *
  *---------------------------------------------------------------------------------------------*
  * Functions:                                                                                  *
@@ -103,6 +121,13 @@ ParameterClass::Construct (Type type, void *data, const char *name)
 
 		case TYPE_FILENAME:
 			new_param = W3DNEW FilenameParameterClass ((StringClass *)data);
+#ifdef ZH
+			new_param->Set_Name (name);
+			break;
+
+		case TYPE_TEXTURE_FILENAME:
+			new_param = new TextureFilenameParameterClass ((StringClass *)data);
+#endif
 			new_param->Set_Name (name);
 			break;
 
@@ -395,9 +420,60 @@ FilenameParameterClass::Copy_Value (const ParameterClass &src)
 
 	StringParameterClass::Copy_Value (src);
 	return ;
+#ifdef ZH
 }
 
+//*******************************************************************************************//
+//
+//	Start of TextureFilenameParameterClass
+//
+//*******************************************************************************************//
 
+/////////////////////////////////////////////////////////////////////
+//
+//	TextureFilenameParameterClass
+//
+/////////////////////////////////////////////////////////////////////
+TextureFilenameParameterClass::TextureFilenameParameterClass (StringClass *string)
+:	FilenameParameterClass (string),
+	Show_Alpha(false),
+	Show_Texture(false)
+{	
+}
+
+/////////////////////////////////////////////////////////////////////
+//
+//	TextureFilenameParameterClass
+//
+/////////////////////////////////////////////////////////////////////
+TextureFilenameParameterClass::TextureFilenameParameterClass (const TextureFilenameParameterClass &src)
+:	FilenameParameterClass (src),
+	Show_Alpha(false),
+	Show_Texture(false)
+{
+#endif
+}
+
+#ifdef ZH
+/////////////////////////////////////////////////////////////////////
+//
+//	Copy_Value
+//
+/////////////////////////////////////////////////////////////////////
+void TextureFilenameParameterClass::Copy_Value (const ParameterClass &src)
+{
+	if (src.Is_Type (ParameterClass::TYPE_TEXTURE_FILENAME)) 
+	{
+		Set_String (((FilenameParameterClass &)src).Get_String ());
+	}
+#endif
+
+#ifdef ZH
+	StringParameterClass::Copy_Value (src);
+	return ;
+}
+
+#endif
 
 //*******************************************************************************************//
 //
@@ -852,9 +928,15 @@ const DefParameterClass &
 DefParameterClass::operator= (const DefParameterClass &src)
 {
 	m_Value = src.m_Value;
+#ifdef OG
 //MW: Had to comment out next line to remove infinite loop warning on
 //latest VC++.
 //	DefParameterClass::operator= (src);
+#endif
+#ifdef ZH
+	ParameterClass::operator= (src);
+
+#endif
 	return *this;
 }
 

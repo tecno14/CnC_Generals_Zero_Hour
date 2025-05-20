@@ -26,11 +26,26 @@
  *                                                                                             *
  *              Original Author:: Greg Hjelstrom                                               *
  *                                                                                             *
+#ifdef OG
  *                      $Author:: Greg_h                                                      $*
+#endif
+#ifdef ZH
+ *                      $Author:: Jani_p                                                      $*
+#endif
  *                                                                                             *
+#ifdef OG
  *                     $Modtime:: 1/08/01 10:04a                                              $*
+#endif
+#ifdef ZH
+ *                     $Modtime:: 11/24/01 5:49p                                              $*
+#endif
  *                                                                                             *
+#ifdef OG
  *                    $Revision:: 1                                                           $*
+#endif
+#ifdef ZH
+ *                    $Revision:: 2                                                           $*
+#endif
  *                                                                                             *
  *---------------------------------------------------------------------------------------------*
  * Functions:                                                                                  *
@@ -49,6 +64,9 @@
 #include "vector3i.h"
 #include "aaplane.h"
 #include "bittype.h"
+#ifdef ZH
+#include "meshgeometry.h"
+#endif
 #include <float.h>
 
 class AABTreeClass;
@@ -68,7 +86,14 @@ public:
 	AABTreeBuilderClass(void);
 	~AABTreeBuilderClass(void);
 
+#ifdef OG
 	void					Build_AABTree(int polycount,Vector3i * polys,int vertcount,Vector3 * verts);
+
+#endif
+#ifdef ZH
+	void					Build_AABTree(int polycount,TriIndex * polys,int vertcount,Vector3 * verts);
+	void					Build_AABTree(int polycount,Vector3i* polys,int vertcount,Vector3 * verts);
+#endif
 	void					Export(ChunkSaveClass & csave);
 	
 	int					Node_Count(void);
@@ -195,7 +220,12 @@ private:
 	** Mesh data
 	*/
 	int								PolyCount;
+#ifdef OG
 	Vector3i *						Polys;
+#endif
+#ifdef ZH
+	TriIndex *						Polys;
+#endif
 	int								VertCount;
 	Vector3 *						Verts;
 

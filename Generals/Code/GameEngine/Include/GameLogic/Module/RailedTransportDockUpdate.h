@@ -49,6 +49,9 @@ public:
 	UnsignedInt m_pushOutsideDurationInFrames;	/**< how long it takes to push object outside
 																									 when we're unloading */
 
+#ifdef ZH
+	Real m_toleranceDistance;	///< The maximum distance the docking unit must be within in order to cheat and dock.
+#endif
 };
 
 // ------------------------------------------------------------------------------------------------

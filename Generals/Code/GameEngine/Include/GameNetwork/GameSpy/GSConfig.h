@@ -45,7 +45,12 @@ public:
 	virtual Int getNumPingRepetitions(void) = 0;
 	virtual Int getPingTimeoutInMs(void) = 0;
 	virtual Int getPingCutoffGood( void ) = 0;
+#ifdef OG
 	virtual Int getPingCutoffBad( void ) = 0;
+#endif
+#ifdef ZH
+	virtual Int getPingCutoffBad( void ) = 0; //Bryan sez, Maybe
+#endif
 
 	// QM
 	virtual std::list<AsciiString> getQMMaps(void) = 0;
@@ -63,6 +68,7 @@ public:
 	// Ladder / Any other external parsing
 	virtual AsciiString getLeftoverConfig(void) = 0;
 
+#ifdef OG
 	// NAT Timeouts
 	virtual Int getTimeBetweenRetries() = 0;
 	virtual Int getMaxManglerRetries() = 0;
@@ -71,9 +77,9 @@ public:
 	virtual time_t getPortTimeout() = 0;
 	virtual time_t getRoundTimeout() = 0;
 
+#endif
 	// Custom match
 	virtual Bool restrictGamesToLobby() = 0;
-
 	static GameSpyConfigInterface* create(AsciiString config);
 };
 

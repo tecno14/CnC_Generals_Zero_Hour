@@ -44,7 +44,14 @@ RSC=rc.exe
 # PROP Ignore_Export_Lib 0
 # PROP Target_Dir ""
 # ADD BASE CPP /nologo /MT /W3 /GX /O2 /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /Yu"stdafx.h" /FD /c
+#ifdef OG
 # ADD CPP /nologo /G6 /MD /W3 /WX /GX /O2 /Ob2 /I "./include" /I "./res" /I "../../libraries/include" /I "../../gameengine/include" /I "../../gameenginedevice/include/" /I "../../libraries/source/wwvegas" /I "../../libraries/source/wwvegas/ww3d2" /I "../../libraries/source/wwvegas/wwdebug" /I "../../libraries/source/wwvegas/wwlib" /I "../../libraries/source/wwvegas/wwmath" /I "../../libraries/source/wwvegas/wwsaveload" /I "../../Libraries/Source/Compression" /D "IG_DEBUG_STACKTRACE" /D "NDEBUG" /D "_RELEASE" /D "EDITOR" /D "WIN32" /D "_WINDOWS" /D "_MBCS" /D "REGEX_MALLOC" /D "STDC_HEADERS" /D "WIN32_LEAN_AND_MEAN" /D "_AFXDLL" /Fr /YX"stdafx.h" /FD /c
+
+#endif
+#ifdef ZH
+# ADD CPP /nologo /G6 /MD /W3 /WX /GX /O2 /Ob2 /I "./include" /I "./res" /I "../../libraries/include" /I "../../gameengine/include" /I "../../gameenginedevice/include/" /I "../../libraries/source/wwvegas" /I "../../libraries/source/wwvegas/ww3d2" /I "../../libraries/source/wwvegas/wwdebug" /I "../../libraries/source/wwvegas/wwlib" /I "../../libraries/source/wwvegas/wwmath" /I "../../libraries/source/wwvegas/wwsaveload" /I "../../Libraries/Source/Compression" /D "IG_DEBUG_STACKTRACE" /D "NDEBUG" /D "_RELEASE" /D "EDITOR" /D "WIN32" /D "_WINDOWS" /D "_MBCS" /D "REGEX_MALLOC" /D "STDC_HEADERS" /D "WIN32_LEAN_AND_MEAN" /D "_AFXDLL" /YX"stdafx.h" /FD /c
+# SUBTRACT CPP /Fr
+#endif
 # ADD BASE MTL /nologo /D "NDEBUG" /mktyplib203 /win32
 # ADD MTL /nologo /D "NDEBUG" /mktyplib203 /win32
 # ADD BASE RSC /l 0x409 /d "NDEBUG"
@@ -54,7 +61,12 @@ BSC32=bscmake.exe
 # ADD BSC32 /nologo
 LINK32=link.exe
 # ADD BASE LINK32 /nologo /subsystem:windows /machine:I386
+#ifdef OG
 # ADD LINK32 Benchmark.lib dinput.lib ddraw.lib d3dx8.lib mss32.lib d3d8.lib winmm.lib vfw32.lib dsound.lib wsock32.lib imm32.lib wininet.lib /nologo /subsystem:windows /pdb:"../../../Run/WorldBuilder.pdb" /map:"../../../Run/WorldBuilder.map" /debug /machine:I386 /nodefaultlib:"libc" /out:"../../../Run/WorldBuilder.exe" /libpath:"..\..\Libraries\Lib" /libpath:"..\..\GameEngine\Lib" /libpath:"..\..\GameEngineDevice\Lib" /libpath:"..\..\GameEngine"
+#endif
+#ifdef ZH
+# ADD LINK32 Benchmark.lib ddraw.lib dinput.lib d3dx8.lib mss32.lib d3d8.lib winmm.lib vfw32.lib dsound.lib wsock32.lib imm32.lib wininet.lib /nologo /subsystem:windows /pdb:"..\..\..\Run\WorldBuilder.pdb" /map:"..\..\..\Run\WorldBuilder.map" /debug /machine:I386 /nodefaultlib:"LIBC" /out:"..\..\..\Run\WorldBuilder.exe" /libpath:"..\..\Libraries\Lib" /libpath:"..\..\GameEngine\Lib" /libpath:"..\..\GameEngineDevice\Lib" /libpath:"..\..\GameEngine" /OPT:REF /OPT:ICF
+#endif
 # SUBTRACT LINK32 /pdb:none
 
 !ELSEIF  "$(CFG)" == "WorldBuilder - Win32 Debug"
@@ -71,7 +83,14 @@ LINK32=link.exe
 # PROP Ignore_Export_Lib 0
 # PROP Target_Dir ""
 # ADD BASE CPP /nologo /MTd /W3 /Gm /GX /ZI /Od /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /Yu"stdafx.h" /FD /GZ /c
+#ifdef OG
 # ADD CPP /nologo /G6 /MDd /W3 /WX /Gm /GX /ZI /Od /I "./include" /I "./res" /I "../../libraries/include" /I "../../gameengine/include" /I "../../gameenginedevice/include/" /I "../../libraries/source/wwvegas" /I "../../libraries/source/wwvegas/ww3d2" /I "../../libraries/source/wwvegas/wwdebug" /I "../../libraries/source/wwvegas/wwlib" /I "../../libraries/source/wwvegas/wwmath" /I "../../libraries/source/wwvegas/wwsaveload" /I "../../Libraries/Source/Compression" /D "WWDEBUG" /D "_DEBUG" /D "EDITOR" /D "WIN32" /D "_WINDOWS" /D "_MBCS" /D "REGEX_MALLOC" /D "STDC_HEADERS" /D "WIN32_LEAN_AND_MEAN" /D "_AFXDLL" /Fr /YX"stdafx.h" /FD /GZ /c
+
+#endif
+#ifdef ZH
+# ADD CPP /nologo /G6 /MDd /W3 /WX /Gm /GX /ZI /Od /I "./include" /I "./res" /I "../../libraries/include" /I "../../gameengine/include" /I "../../gameenginedevice/include/" /I "../../libraries/source/wwvegas" /I "../../libraries/source/wwvegas/ww3d2" /I "../../libraries/source/wwvegas/wwdebug" /I "../../libraries/source/wwvegas/wwlib" /I "../../libraries/source/wwvegas/wwmath" /I "../../libraries/source/wwvegas/wwsaveload" /I "../../Libraries/Source/Compression" /D "WWDEBUG" /D "_DEBUG" /D "EDITOR" /D "WIN32" /D "_WINDOWS" /D "_MBCS" /D "REGEX_MALLOC" /D "STDC_HEADERS" /D "WIN32_LEAN_AND_MEAN" /D "_AFXDLL" /YX"stdafx.h" /FD /GZ /c
+# SUBTRACT CPP /Fr
+#endif
 # ADD BASE MTL /nologo /D "_DEBUG" /mktyplib203 /win32
 # ADD MTL /nologo /D "_DEBUG" /mktyplib203 /win32
 # ADD BASE RSC /l 0x409 /d "_DEBUG"
@@ -81,7 +100,12 @@ BSC32=bscmake.exe
 # ADD BSC32 /nologo
 LINK32=link.exe
 # ADD BASE LINK32 /nologo /subsystem:windows /debug /machine:I386
+#ifdef OG
 # ADD LINK32 BenchmarkD.lib dinput.lib ddraw.lib d3dx8.lib mss32.lib d3d8.lib winmm.lib vfw32.lib dsound.lib wsock32.lib imm32.lib wininet.lib /nologo /subsystem:windows /pdb:"../../../Run/WorldBuilderD.pdb" /map:"../../../Run/WorldBuilderD.map" /debug /machine:I386 /nodefaultlib:"libcd" /out:"../../../Run/WorldBuilderD.exe" /libpath:"..\..\Libraries\Lib" /libpath:"..\..\GameEngine\Lib" /libpath:"..\..\GameEngineDevice\Lib" /libpath:"..\..\GameEngine"
+#endif
+#ifdef ZH
+# ADD LINK32 BenchmarkD.lib ddraw.lib dinput.lib d3dx8.lib mss32.lib d3d8.lib winmm.lib vfw32.lib dsound.lib wsock32.lib imm32.lib wininet.lib /nologo /subsystem:windows /pdb:"..\..\..\Run\WorldBuilderD.pdb" /map:"..\..\..\Run\WorldBuilderD.map" /debug /machine:I386 /out:"..\..\..\Run\WorldBuilderD.exe" /libpath:"..\..\Libraries\Lib" /libpath:"..\..\GameEngine\Lib" /libpath:"..\..\GameEngineDevice\Lib" /libpath:"..\..\GameEngine"
+#endif
 # SUBTRACT LINK32 /pdb:none
 
 !ELSEIF  "$(CFG)" == "WorldBuilder - Win32 Internal"
@@ -100,7 +124,14 @@ LINK32=link.exe
 # PROP Target_Dir ""
 # ADD BASE CPP /nologo /MD /W3 /GX /O2 /I "./include" /I "./res" /I "../../libraries/include" /I "../../gameengine/include" /I "../../gameenginedevice/include/" /I "../../libraries/source/wwvegas" /I "../../libraries/source/wwvegas/ww3d2" /I "../../libraries/source/wwvegas/wwdebug" /I "../../libraries/source/wwvegas/wwlib" /I "../../libraries/source/wwvegas/wwmath" /I "../../libraries/source/wwvegas/wwsaveload" /D "EDITOR" /D "NDEBUG" /D "WIN32" /D "_WINDOWS" /D "_MBCS" /D "REGEX_MALLOC" /D "STDC_HEADERS" /D "WIN32_LEAN_AND_MEAN" /D "_AFXDLL" /YX"stdafx.h" /FD /c
 # SUBTRACT BASE CPP /Fr
+#ifdef OG
 # ADD CPP /nologo /G6 /MD /W3 /GX /Zi /O2 /I "./include" /I "./res" /I "../../libraries/include" /I "../../gameengine/include" /I "../../gameenginedevice/include/" /I "../../libraries/source/wwvegas" /I "../../libraries/source/wwvegas/ww3d2" /I "../../libraries/source/wwvegas/wwdebug" /I "../../libraries/source/wwvegas/wwlib" /I "../../libraries/source/wwvegas/wwmath" /I "../../libraries/source/wwvegas/wwsaveload" /I "../../Libraries/Source/Compression" /D "NDEBUG" /D "_INTERNAL" /D "EDITOR" /D "WIN32" /D "_WINDOWS" /D "_MBCS" /D "REGEX_MALLOC" /D "STDC_HEADERS" /D "WIN32_LEAN_AND_MEAN" /D "_AFXDLL" /Fr /YX"stdafx.h" /FD /c
+
+#endif
+#ifdef ZH
+# ADD CPP /nologo /G6 /MD /W3 /GX /Zi /Od /I "./include" /I "./res" /I "../../libraries/include" /I "../../gameengine/include" /I "../../gameenginedevice/include/" /I "../../libraries/source/wwvegas" /I "../../libraries/source/wwvegas/ww3d2" /I "../../libraries/source/wwvegas/wwdebug" /I "../../libraries/source/wwvegas/wwlib" /I "../../libraries/source/wwvegas/wwmath" /I "../../libraries/source/wwvegas/wwsaveload" /I "../../Libraries/Source/Compression" /D "NDEBUG" /D "_INTERNAL" /D "EDITOR" /D "WIN32" /D "_WINDOWS" /D "_MBCS" /D "REGEX_MALLOC" /D "STDC_HEADERS" /D "WIN32_LEAN_AND_MEAN" /D "_AFXDLL" /YX"stdafx.h" /FD /c
+# SUBTRACT CPP /Fr
+#endif
 # ADD BASE MTL /nologo /D "NDEBUG" /mktyplib203 /win32
 # ADD MTL /nologo /D "NDEBUG" /mktyplib203 /win32
 # ADD BASE RSC /l 0x409 /d "NDEBUG" /d "_AFXDLL"
@@ -111,7 +142,12 @@ BSC32=bscmake.exe
 LINK32=link.exe
 # ADD BASE LINK32 d3dx8.lib d3d8.lib winmm.lib vfw32.lib ddraw.lib dinput.lib /nologo /subsystem:windows /machine:I386 /nodefaultlib:"LIBC" /out:"../../../run/WorldBuilder.exe" /libpath:"..\..\Libraries\Lib" /libpath:"..\..\GameEngine\Lib" /libpath:"..\..\GameEngineDevice\Lib" /libpath:"..\..\GameEngine"
 # SUBTRACT BASE LINK32 /debug
+#ifdef OG
 # ADD LINK32 Benchmark.lib dxguid.lib dinput8.lib ddraw.lib d3dx8.lib mss32.lib d3d8.lib winmm.lib vfw32.lib dsound.lib wsock32.lib imm32.lib wininet.lib /nologo /subsystem:windows /pdb:"../../../Run/WorldBuilderI.pdb" /map:"../../../Run/WorldBuilderI.map" /debug /machine:I386 /nodefaultlib:"libc" /out:"../../../Run/WorldBuilderI.exe" /libpath:"..\..\Libraries\Lib" /libpath:"..\..\GameEngine\Lib" /libpath:"..\..\GameEngineDevice\Lib" /libpath:"..\..\GameEngine"
+#endif
+#ifdef ZH
+# ADD LINK32 Benchmark.lib dxguid.lib ddraw.lib dinput8.lib d3dx8.lib mss32.lib d3d8.lib winmm.lib vfw32.lib dsound.lib wsock32.lib imm32.lib wininet.lib /nologo /subsystem:windows /pdb:"..\..\..\Run\WorldBuilderI.pdb" /map:"..\..\..\Run\WorldBuilderI.map" /debug /machine:I386 /nodefaultlib:"LIBC" /out:"..\..\..\Run\WorldBuilderI.exe" /libpath:"..\..\Libraries\Lib" /libpath:"..\..\GameEngine\Lib" /libpath:"..\..\GameEngineDevice\Lib" /libpath:"..\..\GameEngine" /OPT:REF /OPT:ICF
+#endif
 # SUBTRACT LINK32 /pdb:none
 
 !ENDIF 
@@ -383,6 +419,16 @@ SOURCE=.\src\RoadTool.cpp
 # End Source File
 # Begin Source File
 
+#ifdef ZH
+SOURCE=.\src\RulerOptions.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\src\RulerTool.cpp
+# End Source File
+# Begin Source File
+
+#endif
 SOURCE=.\src\SaveMap.cpp
 # ADD CPP /I "..\res"
 # End Source File
@@ -448,6 +494,12 @@ SOURCE=.\src\TeamGeneric.cpp
 
 SOURCE=.\src\TeamIdentity.cpp
 # ADD CPP /I "..\res"
+#ifdef ZH
+# End Source File
+# Begin Source File
+
+SOURCE=.\src\TeamObjectProperties.cpp
+#endif
 # End Source File
 # Begin Source File
 
@@ -781,18 +833,39 @@ SOURCE=.\include\RampOptions.h
 # Begin Source File
 
 SOURCE=.\include\RampTool.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\include\RichEditDlg.h
+#ifdef ZH
 # End Source File
 # Begin Source File
 
 SOURCE=.\include\RoadOptions.h
+#endif
 # End Source File
 # Begin Source File
 
+#ifdef OG
+SOURCE=.\include\RichEditDlg.h
+#endif
+#ifdef ZH
 SOURCE=.\include\RoadTool.h
+#endif
+# End Source File
+# Begin Source File
+
+#ifdef OG
+SOURCE=.\include\RoadOptions.h
+#endif
+#ifdef ZH
+SOURCE=.\include\RulerOptions.h
+#endif
+# End Source File
+# Begin Source File
+
+#ifdef OG
+SOURCE=.\include\RoadTool.h
+#endif
+#ifdef ZH
+SOURCE=.\include\RulerTool.h
+#endif
 # End Source File
 # Begin Source File
 
@@ -905,10 +978,12 @@ SOURCE=.\include\WBFrameWnd.h
 # Begin Source File
 
 SOURCE=.\include\WBHeightMap.h
+#ifdef OG
 # End Source File
 # Begin Source File
 
 SOURCE=.\src\WBPopupSlider.h
+#endif
 # End Source File
 # Begin Source File
 

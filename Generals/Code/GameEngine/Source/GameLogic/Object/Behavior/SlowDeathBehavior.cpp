@@ -479,10 +479,19 @@ UpdateSleepTime SlowDeathBehavior::update()
 //-------------------------------------------------------------------------------------------------
 void SlowDeathBehavior::onDie( const DamageInfo *damageInfo )
 {
+#ifdef ZH
+	Object *obj = getObject();
+
+#endif
 	if (!isDieApplicable(damageInfo))
 		return;
 
+#ifdef OG
 	AIUpdateInterface *ai = getObject()->getAIUpdateInterface();
+#endif
+#ifdef ZH
+	AIUpdateInterface *ai = obj->getAIUpdateInterface();
+#endif
 	if (ai)
 	{
 		// has another AI already handled us. (hopefully another SlowDeathBehavior)
@@ -492,10 +501,20 @@ void SlowDeathBehavior::onDie( const DamageInfo *damageInfo )
 	}
 
 	// deselect this unit for all players.
+#ifdef OG
 	TheGameLogic->deselectObject(getObject(), PLAYERMASK_ALL, TRUE);
+#endif
+#ifdef ZH
+	TheGameLogic->deselectObject(obj, PLAYERMASK_ALL, TRUE);
+#endif
 
 	Int total = 0;
+#ifdef OG
 	for (BehaviorModule** update = getObject()->getBehaviorModules(); *update; ++update)
+#endif
+#ifdef ZH
+	for (BehaviorModule** update = obj->getBehaviorModules(); *update; ++update)
+#endif
 	{
 		SlowDeathBehaviorInterface* sdu = (*update)->getSlowDeathBehaviorInterface();
 		if (sdu != NULL && sdu->isDieApplicable(damageInfo))
@@ -509,7 +528,12 @@ void SlowDeathBehavior::onDie( const DamageInfo *damageInfo )
 	// this returns a value from 1...total, inclusive
 	Int roll = GameLogicRandomValue(1, total);
 
+#ifdef OG
 	for (/* UpdateModuleInterface** */ update = getObject()->getBehaviorModules(); *update; ++update)
+#endif
+#ifdef ZH
+	for (/* UpdateModuleInterface** */ update = obj->getBehaviorModules(); *update; ++update)
+#endif
 	{
 		SlowDeathBehaviorInterface* sdu = (*update)->getSlowDeathBehaviorInterface();
 		if (sdu != NULL && sdu->isDieApplicable(damageInfo))

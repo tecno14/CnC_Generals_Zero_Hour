@@ -71,6 +71,14 @@ public:
 	//changes the mode of drag selecting to it's opposite
 	void setDragSelecting(Bool dragSelect);
 	void setLeftMouseButton(Bool state);
+#ifdef ZH
+  
+#if defined(_DEBUG) || defined(_INTERNAL) || defined(_ALLOW_DEBUG_CHEATS_IN_RELEASE)
+  Bool m_HandOfGodSelectionMode;
+  Bool isHandOfGodSelectionMode( void) { return m_HandOfGodSelectionMode; };
+#endif
+
+#endif
 };	
 
 Bool CanSelectDrawable( const Drawable *draw, Bool dragSelecting );

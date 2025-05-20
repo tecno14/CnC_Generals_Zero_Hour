@@ -48,6 +48,9 @@ class Object;
 class Player;
 class Thing;
 class W3DModelDrawModuleData;	// ugh, hack (srj)
+#ifdef ZH
+class W3DTreeDrawModuleData; // ugh, hack (srj)
+#endif
 struct FieldParse;
 
 // TYPES //////////////////////////////////////////////////////////////////////////////////////////
@@ -112,6 +115,10 @@ public:
 	
 	// ugh, hack
 	virtual const W3DModelDrawModuleData* getAsW3DModelDrawModuleData() const { return NULL; }
+#ifdef ZH
+	// ugh, hack
+	virtual const W3DTreeDrawModuleData* getAsW3DTreeDrawModuleData() const { return NULL; }
+#endif
 	virtual StaticGameLODLevel getMinimumRequiredGameLOD() const { return (StaticGameLODLevel)0;}
 
 	static void buildFieldParse(MultiIniFieldParse& p) 
@@ -248,6 +255,9 @@ public:
 	// virtual destructor prototype defined by MemoryPoolObject
 
 	virtual void onCapture( Player *oldOwner, Player *newOwner ) { }
+#ifdef ZH
+	virtual void onDisabledEdge( Bool nowDisabled ) { }
+#endif
 
 protected:
 

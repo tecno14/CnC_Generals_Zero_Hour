@@ -159,6 +159,10 @@ UpdateSleepTime SlavedUpdate::update( void )
 		//Let's disable the drone so it crashes instead!
 		//Added special case code in physics falling to ensure death.
 		me->setDisabled( DISABLED_UNMANNED );
+#ifdef ZH
+    if ( me->getAI() )
+      me->getAI()->aiIdle( CMD_FROM_AI);
+#endif
 
 		return UPDATE_SLEEP_NONE;
 	}
@@ -717,7 +721,25 @@ void SlavedUpdate::startSlavedEffects( const Object *slaver )
 	m_guardPointOffset.y += data->m_guardMaxRange * Sin( randomDirection );
 	
 	// mark selves as not selectable
+#ifdef OG
 	getObject()->setStatus( OBJECT_STATUS_UNSELECTABLE );
+
+#endif
+#ifdef ZH
+	getObject()->setStatus( MAKE_OBJECT_STATUS_MASK( OBJECT_STATUS_UNSELECTABLE ) );
+
+  if ( slaver->testStatus( OBJECT_STATUS_STEALTHED ) )
+  {
+    StealthUpdate *myStealth = getObject()->getStealth();
+    if ( myStealth )
+    {
+      myStealth->receiveGrant( true );
+      // note to anyone... once stealth is granted to this drone(or such) 
+      // let its own stealthupdate govern the allowedtostealth cases
+    }
+  }
+
+#endif
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -727,7 +749,12 @@ void SlavedUpdate::stopSlavedEffects()
 	m_guardPointOffset.zero();
 
 	/// @todo Just a thought.  Our Status bits on objects really need to be reference counts so you don't clear someone else's flag
+#ifdef OG
 	getObject()->clearStatus( OBJECT_STATUS_UNSELECTABLE );
+#endif
+#ifdef ZH
+	getObject()->clearStatus( MAKE_OBJECT_STATUS_MASK( OBJECT_STATUS_UNSELECTABLE ) );
+#endif
 	getObject()->clearDisabled( DISABLED_HELD );
 }
 

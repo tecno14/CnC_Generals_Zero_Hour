@@ -26,12 +26,30 @@
  *                                                                                             *
  *              Original Author:: Greg Hjelstrom                                               *
  *                                                                                             *
+#ifdef OG
  *                      $Author:: Greg_h                                                      $*
+#endif
+#ifdef ZH
+ *                      $Author:: Kenny Mitchell                                               * 
+#endif
  *                                                                                             *
+#ifdef OG
  *                     $Modtime:: 6/21/01 10:33a                                              $*
+#endif
+#ifdef ZH
+ *                     $Modtime:: 06/26/02 4:04p                                             $*
+#endif
  *                                                                                             *
+#ifdef OG
  *                    $Revision:: 5                                                           $*
+#endif
+#ifdef ZH
+ *                    $Revision:: 6                                                           $*
+#endif
  *                                                                                             *
+#ifdef ZH
+ * 06/26/02 KM Matrix name change to avoid MAX conflicts                                       *
+#endif
  *---------------------------------------------------------------------------------------------*
  * Functions:                                                                                  *
  *   ProjectorClass::ProjectorClass -- Constructor                                             *
@@ -64,7 +82,12 @@ ProjectorClass::ProjectorClass(void) :
 	Transform(1),
 	Projection(1),
 	LocalBoundingVolume(Vector3(0,0,0),Vector3(1,1,1)),
+#ifdef OG
 	WorldBoundingVolume(Vector3(0,0,0),Vector3(1,1,1),Matrix3(1))
+#endif
+#ifdef ZH
+	WorldBoundingVolume(Vector3(0,0,0),Vector3(1,1,1),Matrix3x3(1))
+#endif
 {
 	Mapper=NEW_REF(MatrixMapperClass,(0));
 }
@@ -229,7 +252,12 @@ void ProjectorClass::Update_WS_Bounding_Volume(void)
 	/*
 	** Recompute our world-space bounding volume
 	*/
+#ifdef OG
 	OBBoxClass localbox(LocalBoundingVolume.Center,LocalBoundingVolume.Extent,Matrix3(1));
+#endif
+#ifdef ZH
+	OBBoxClass localbox(LocalBoundingVolume.Center,LocalBoundingVolume.Extent,Matrix3x3(1));
+#endif
 	OBBoxClass::Transform(Transform,localbox,&WorldBoundingVolume);	
 }
 

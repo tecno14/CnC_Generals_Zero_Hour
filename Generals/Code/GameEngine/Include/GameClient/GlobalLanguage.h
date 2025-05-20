@@ -81,6 +81,9 @@ public:
 	AsciiString m_unicodeFontFileName;
 	Bool m_useHardWrap;
 	Int m_militaryCaptionSpeed;
+#ifdef ZH
+	Int m_militaryCaptionDelayMS;
+#endif
 	FontDesc	m_copyrightFont;
 	FontDesc	m_messageFont;
 	FontDesc	m_militaryCaptionTitleFont;

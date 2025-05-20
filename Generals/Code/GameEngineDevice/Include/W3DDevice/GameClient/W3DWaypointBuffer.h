@@ -80,6 +80,9 @@ public:
 	void freeWaypointBuffers();
 
 private:
+#ifdef ZH
+  void setDefaultLineStyle();
+#endif
 
 	RenderObjClass *m_waypointNodeRobj;
 	SegmentedLineClass *m_line;

@@ -35,6 +35,9 @@
 #include "Common/ModelState.h"
 #include "Common/SparseMatchFinder.h"
 #include "Common/Snapshot.h"
+#ifdef ZH
+#include "GameLogic/Damage.h"
+#endif
 
 //-------------------------------------------------------------------------------------------------
 class INI;
@@ -75,14 +78,46 @@ static const LookupListRec TheWeaponSlotTypeNamesLookupList[] =
 
 //-------------------------------------------------------------------------------------------------
 #ifdef DEFINE_WEAPONCONDITIONMAP
+#ifdef ZH
+
+//Kris: I did not write this code, but I am adding comments to clarify it.
+//When I ran into this, I discovered that it was grossly out of date. It wasn't
+//clearly identified as a "lookup table", but hopefully now it makes sense. I've 
+//updated it as of May 2003 when I added RIDER1-8 conditions.
+
+//Purpose: Whenever you change a weaponset, the model condition state associated with it
+//will be properly set exclusively.
+#endif
 static const ModelConditionFlagType TheWeaponSetTypeToModelConditionTypeMap[WEAPONSET_COUNT] =
 {
+#ifdef OG
 	MODELCONDITION_WEAPONSET_VETERAN,
 	MODELCONDITION_WEAPONSET_ELITE,
 	MODELCONDITION_WEAPONSET_HERO,
 	MODELCONDITION_WEAPONSET_PLAYER_UPGRADE,
 	MODELCONDITION_WEAPONSET_CRATEUPGRADE_ONE,
 	MODELCONDITION_WEAPONSET_CRATEUPGRADE_TWO
+
+#endif
+#ifdef ZH
+	/*WEAPONSET_VETERAN*/								MODELCONDITION_WEAPONSET_VETERAN,		
+	/*WEAPONSET_ELITE*/									MODELCONDITION_WEAPONSET_ELITE,
+	/*WEAPONSET_HERO*/									MODELCONDITION_WEAPONSET_HERO,
+	/*WEAPONSET_PLAYER_UPGRADE*/				MODELCONDITION_WEAPONSET_PLAYER_UPGRADE,
+	/*WEAPONSET_CRATEUPGRADE_ONE*/			MODELCONDITION_WEAPONSET_CRATEUPGRADE_ONE,
+	/*WEAPONSET_CRATEUPGRADE_TWO*/			MODELCONDITION_WEAPONSET_CRATEUPGRADE_TWO,
+	/*WEAPONSET_VEHICLE_HIJACK*/				MODELCONDITION_INVALID,
+	/*WEAPONSET_CARBOMB*/								MODELCONDITION_INVALID,
+	/*WEAPONSET_MINE_CLEARING_DETAIL*/	MODELCONDITION_INVALID,
+	/*WEAPONSET_RIDER1*/								MODELCONDITION_RIDER1,	//Added these for different riders, but feel free to use these for anything.
+	/*WEAPONSET_RIDER2*/								MODELCONDITION_RIDER2,
+	/*WEAPONSET_RIDER3*/								MODELCONDITION_RIDER3,
+	/*WEAPONSET_RIDER4*/								MODELCONDITION_RIDER4,
+	/*WEAPONSET_RIDER5*/								MODELCONDITION_RIDER5,
+	/*WEAPONSET_RIDER6*/								MODELCONDITION_RIDER6,
+	/*WEAPONSET_RIDER7*/								MODELCONDITION_RIDER7,
+	/*WEAPONSET_RIDER8*/								MODELCONDITION_RIDER8,
+#endif
 };
 #endif
 
@@ -184,7 +219,12 @@ private:
 	WeaponLockType						m_curWeaponLockedStatus;
 	UnsignedInt								m_filledWeaponSlotMask;
 	Int												m_totalAntiMask;						///< anti mask of all current weapons
+#ifdef OG
 	UnsignedInt								m_totalDamageTypeMask;			///< damagetype mask of all current weapons
+#endif
+#ifdef ZH
+	DamageTypeFlags						m_totalDamageTypeMask;			///< damagetype mask of all current weapons
+#endif
 	Bool											m_hasPitchLimit;
 	Bool											m_hasDamageWeapon;
 
@@ -206,14 +246,25 @@ public:
 	Bool isOutOfAmmo() const;
 	Bool hasAnyWeapon() const { return m_filledWeaponSlotMask != 0; }
 	Bool hasAnyDamageWeapon() const { return m_hasDamageWeapon; }
+#ifdef OG
 	Bool hasWeaponToDealDamageType(DamageType typeToDeal) const { return (m_totalDamageTypeMask & (1 << typeToDeal)) != 0; }
 	Bool hasSingleDamageType(DamageType typeToDeal) const { return m_totalDamageTypeMask == (1 << typeToDeal); }
+#endif
+#ifdef ZH
+	Bool hasWeaponToDealDamageType(DamageType typeToDeal) const { return m_totalDamageTypeMask.test(typeToDeal); }
+	Bool hasSingleDamageType(DamageType typeToDeal) const { return (m_totalDamageTypeMask.test(typeToDeal) && (m_totalDamageTypeMask.count() == 1) ); }
+#endif
 	Bool isCurWeaponLocked() const { return m_curWeaponLockedStatus != NOT_LOCKED; }
 	Weapon* getCurWeapon() { return m_weapons[m_curWeapon]; }
 	const Weapon* getCurWeapon() const { return m_weapons[m_curWeapon]; }
 	WeaponSlotType getCurWeaponSlot() const { return m_curWeapon; }
 	Weapon* findWaypointFollowingCapableWeapon();
 	const Weapon* findAmmoPipShowingWeapon() const;
+#ifdef ZH
+	void weaponSetOnWeaponBonusChange(const Object *source);
+	UnsignedInt getMostPercentReadyToFireAnyWeapon() const;
+	inline UnsignedInt getNthCommandSourceMask( WeaponSlotType n ) const { return m_curWeaponTemplateSet ? m_curWeaponTemplateSet->getNthCommandSourceMask( n ) : NULL; } 
+#endif
 
 	Bool setWeaponLock( WeaponSlotType weaponSlot, WeaponLockType lockType );
 	void releaseWeaponLock(WeaponLockType lockType);
@@ -229,11 +280,21 @@ public:
 		account, but immutable weapon properties, such as "can you
 		target airborne victims".
 	*/
+#ifdef OG
 	CanAttackResult getAbleToAttackSpecificObject( AbleToAttackType t, const Object* obj, const Object* victim, CommandSourceType commandSource ) const;
+#endif
+#ifdef ZH
+	CanAttackResult getAbleToAttackSpecificObject( AbleToAttackType t, const Object* obj, const Object* victim, CommandSourceType commandSource, WeaponSlotType specificSlot = (WeaponSlotType)-1 ) const;
+#endif
 
 	//When calling this function, all conditions must be validated to the point where we have decided that we wish to attack the object (faction checks, etc).
 	//Now, we are determining if the attack itself is able to be performed!
+#ifdef OG
 	CanAttackResult getAbleToUseWeaponAgainstTarget( AbleToAttackType attackType, const Object *source, const Object *victim, const Coord3D *pos, CommandSourceType commandSource ) const;
+#endif
+#ifdef ZH
+	CanAttackResult getAbleToUseWeaponAgainstTarget( AbleToAttackType attackType, const Object *source, const Object *victim, const Coord3D *pos, CommandSourceType commandSource, WeaponSlotType specificSlot = (WeaponSlotType)-1 ) const;
+#endif
 
 	/**
 		Selects the best weapon for the given target, and sets it as the current weapon.

@@ -82,7 +82,9 @@ public:
 	virtual void serviceWindowsOS(void) {};		///< service the native OS
 	virtual Bool isActive(void) {return m_isActive;}	///< returns whether app has OS focus.
 	virtual void setIsActive(Bool isActive) { m_isActive = isActive; };
+#ifdef OG
 	virtual void checkAbnormalQuitting(void);	///< check if user is quitting at an unusual time - as in cheating!
+#endif
 
 protected:
 

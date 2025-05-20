@@ -20,6 +20,9 @@ CFG=GameEngineDevice - Win32 Debug
 !MESSAGE "GameEngineDevice - Win32 Release" (based on "Win32 (x86) Static Library")
 !MESSAGE "GameEngineDevice - Win32 Debug" (based on "Win32 (x86) Static Library")
 !MESSAGE "GameEngineDevice - Win32 Internal" (based on "Win32 (x86) Static Library")
+#ifdef ZH
+!MESSAGE "GameEngineDevice - Win32 Profile" (based on "Win32 (x86) Static Library")
+#endif
 !MESSAGE 
 
 # Begin Project
@@ -42,7 +45,14 @@ RSC=rc.exe
 # PROP Intermediate_Dir "Release"
 # PROP Target_Dir ""
 # ADD BASE CPP /nologo /W3 /GX /O2 /D "WIN32" /D "NDEBUG" /D "_MBCS" /D "_LIB" /YX /FD /c
+#ifdef OG
 # ADD CPP /nologo /G6 /MD /W3 /WX /GX /O2 /Ob2 /I "../Libraries/Source/Benchmark" /I "..\Main" /I "Include" /I "..\GameEngine\Include" /I "..\Libraries\Include" /I "..\Libraries\Source\WWVegas" /I "..\Libraries\Source\WWVegas\WW3D2" /I "..\Libraries\Source\WWVegas\WWLib" /I "..\Libraries\Source\WWVegas\WWDebug" /I "..\Libraries\Source\WWVegas\WWMath" /I "..\Libraries\Source\WWVegas\WWSaveLoad" /I "..\Libraries\Include\Granny" /D "_LIB" /D "_WINDOWS" /D "IG_DEBUG_STACKTRACE" /D "WIN32" /D "NDEBUG" /D "_MBCS" /D "_RELEASE" /Fr /YX /FD /c
+
+#endif
+#ifdef ZH
+# ADD CPP /nologo /G6 /MD /W3 /WX /GX /O2 /Ob2 /I "../Libraries/Source/Benchmark" /I "..\Main" /I "Include" /I "..\GameEngine\Include" /I "..\Libraries\Include" /I "..\Libraries\Source\WWVegas" /I "..\Libraries\Source\WWVegas\WW3D2" /I "..\Libraries\Source\WWVegas\WWLib" /I "..\Libraries\Source\WWVegas\WWDebug" /I "..\Libraries\Source\WWVegas\WWMath" /I "..\Libraries\Source\WWVegas\WWSaveLoad" /I "..\Libraries\Include\Granny" /D "_LIB" /D "_WINDOWS" /D "IG_DEBUG_STACKTRACE" /D "WIN32" /D "NDEBUG" /D "_MBCS" /D "_RELEASE" /YX /FD /c
+# SUBTRACT CPP /Fr
+#endif
 # ADD BASE RSC /l 0x409 /d "NDEBUG"
 # ADD RSC /l 0x409 /d "NDEBUG"
 BSC32=bscmake.exe
@@ -65,7 +75,14 @@ LIB32=link.exe -lib
 # PROP Intermediate_Dir "Debug"
 # PROP Target_Dir ""
 # ADD BASE CPP /nologo /W3 /Gm /GX /ZI /Od /D "WIN32" /D "_DEBUG" /D "_MBCS" /D "_LIB" /YX /FD /GZ /c
+#ifdef OG
 # ADD CPP /nologo /G6 /MDd /W3 /WX /Gm /GX /ZI /Od /I "..\Libraries\Include\MSS" /I "../Libraries/Source/Benchmark" /I "..\Main" /I "Include" /I "..\GameEngine\Include" /I "..\Libraries\Include" /I "..\Libraries\Source\WWVegas" /I "..\Libraries\Source\WWVegas\WW3D2" /I "..\Libraries\Source\WWVegas\WWLib" /I "..\Libraries\Source\WWVegas\WWDebug" /I "..\Libraries\Source\WWVegas\WWMath" /I "..\Libraries\Source\WWVegas\WWSaveLoad" /I "..\Libraries\Include\Granny" /D "_DEBUG" /D "WIN32" /D "_MBCS" /D "_LIB" /D "_WINDOWS" /Fr /YX /FD /GZ /c
+
+#endif
+#ifdef ZH
+# ADD CPP /nologo /G6 /MDd /W3 /WX /Gm /GX /ZI /Od /I "..\Libraries\Include\MSS" /I "../Libraries/Source/Benchmark" /I "..\Main" /I "Include" /I "..\GameEngine\Include" /I "..\Libraries\Include" /I "..\Libraries\Source\WWVegas" /I "..\Libraries\Source\WWVegas\WW3D2" /I "..\Libraries\Source\WWVegas\WWLib" /I "..\Libraries\Source\WWVegas\WWDebug" /I "..\Libraries\Source\WWVegas\WWMath" /I "..\Libraries\Source\WWVegas\WWSaveLoad" /I "..\Libraries\Include\Granny" /D "_DEBUG" /D "WIN32" /D "_MBCS" /D "_LIB" /D "_WINDOWS" /YX /FD /GZ /c
+# SUBTRACT CPP /Fr
+#endif
 # ADD BASE RSC /l 0x409 /d "_DEBUG"
 # ADD RSC /l 0x409 /d "_DEBUG"
 BSC32=bscmake.exe
@@ -88,7 +105,14 @@ LIB32=link.exe -lib
 # PROP Intermediate_Dir "Internal"
 # PROP Target_Dir ""
 # ADD BASE CPP /nologo /W3 /GX /Zi /O2 /I "..\Main" /I "Include" /I "..\GameEngine\Include" /I "..\Libraries\Include" /I "..\Libraries\Source\WWVegas" /I "..\Libraries\Source\WWVegas\WW3D2" /I "..\Libraries\Source\WWVegas\WWLib" /I "..\Libraries\Source\WWVegas\WWDebug" /I "..\Libraries\Source\WWVegas\WWMath" /I "..\Libraries\Source\WWVegas\WWSaveLoad" /I "..\Libraries\Include\Granny" /D "NDEBUG" /D "WIN32" /D "_MBCS" /D "_LIB" /D "_WINDOWS" /YX /FD /c
+#ifdef OG
 # ADD CPP /nologo /G6 /MD /W3 /WX /GX /Zi /O2 /I "../Libraries/Source/Benchmark" /I "..\Main" /I "Include" /I "..\GameEngine\Include" /I "..\Libraries\Include" /I "..\Libraries\Source\WWVegas" /I "..\Libraries\Source\WWVegas\WW3D2" /I "..\Libraries\Source\WWVegas\WWLib" /I "..\Libraries\Source\WWVegas\WWDebug" /I "..\Libraries\Source\WWVegas\WWMath" /I "..\Libraries\Source\WWVegas\WWSaveLoad" /I "..\Libraries\Include\Granny" /D "NDEBUG" /D "WIN32" /D "_MBCS" /D "_LIB" /D "_WINDOWS" /D "_INTERNAL" /Fr /YX /FD /c
+
+#endif
+#ifdef ZH
+# ADD CPP /nologo /G6 /MD /W3 /WX /GX /Zi /Od /I "../Libraries/Source/Benchmark" /I "..\Main" /I "Include" /I "..\GameEngine\Include" /I "..\Libraries\Include" /I "..\Libraries\Source\WWVegas" /I "..\Libraries\Source\WWVegas\WW3D2" /I "..\Libraries\Source\WWVegas\WWLib" /I "..\Libraries\Source\WWVegas\WWDebug" /I "..\Libraries\Source\WWVegas\WWMath" /I "..\Libraries\Source\WWVegas\WWSaveLoad" /I "..\Libraries\Include\Granny" /D "NDEBUG" /D "WIN32" /D "_MBCS" /D "_LIB" /D "_WINDOWS" /D "_INTERNAL" /YX /FD /c
+# SUBTRACT CPP /Fr
+#endif
 # ADD BASE RSC /l 0x409 /d "NDEBUG"
 # ADD RSC /l 0x409 /d "NDEBUG"
 BSC32=bscmake.exe
@@ -97,7 +121,35 @@ BSC32=bscmake.exe
 LIB32=link.exe -lib
 # ADD BASE LIB32 /nologo /out:"Lib\GameEngineDevice.lib"
 # ADD LIB32 /nologo /out:"Lib\GameEngineDeviceInternal.lib"
+#ifdef ZH
 
+!ELSEIF  "$(CFG)" == "GameEngineDevice - Win32 Profile"
+#endif
+
+#ifdef ZH
+# PROP BASE Use_MFC 0
+# PROP BASE Use_Debug_Libraries 0
+# PROP BASE Output_Dir "Profile"
+# PROP BASE Intermediate_Dir "Profile"
+# PROP BASE Target_Dir ""
+# PROP Use_MFC 0
+# PROP Use_Debug_Libraries 0
+# PROP Output_Dir "Profile"
+# PROP Intermediate_Dir "Profile"
+# PROP Target_Dir ""
+# ADD BASE CPP /nologo /G6 /MD /W3 /WX /GX /O2 /Ob2 /I "../Libraries/Source/Benchmark" /I "..\Main" /I "Include" /I "..\GameEngine\Include" /I "..\Libraries\Include" /I "..\Libraries\Source\WWVegas" /I "..\Libraries\Source\WWVegas\WW3D2" /I "..\Libraries\Source\WWVegas\WWLib" /I "..\Libraries\Source\WWVegas\WWDebug" /I "..\Libraries\Source\WWVegas\WWMath" /I "..\Libraries\Source\WWVegas\WWSaveLoad" /I "..\Libraries\Include\Granny" /D "_LIB" /D "_WINDOWS" /D "IG_DEBUG_STACKTRACE" /D "WIN32" /D "NDEBUG" /D "_MBCS" /D "_RELEASE" /YX /FD /c
+# SUBTRACT BASE CPP /Fr
+# ADD CPP /nologo /G6 /MD /W3 /WX /GX /Zi /O2 /Ob2 /I "../Libraries/Source/Benchmark" /I "..\Main" /I "Include" /I "..\GameEngine\Include" /I "..\Libraries\Include" /I "..\Libraries\Source\WWVegas" /I "..\Libraries\Source\WWVegas\WW3D2" /I "..\Libraries\Source\WWVegas\WWLib" /I "..\Libraries\Source\WWVegas\WWDebug" /I "..\Libraries\Source\WWVegas\WWMath" /I "..\Libraries\Source\WWVegas\WWSaveLoad" /I "..\Libraries\Include\Granny" /D "_LIB" /D "_WINDOWS" /D "IG_DEBUG_STACKTRACE" /D "WIN32" /D "NDEBUG" /D "_MBCS" /D "_RELEASE" /D "_PROFILE" /YX /FD /Gh /c
+# ADD BASE RSC /l 0x409 /d "NDEBUG"
+# ADD RSC /l 0x409 /d "NDEBUG"
+BSC32=bscmake.exe
+# ADD BASE BSC32 /nologo
+# ADD BSC32 /nologo
+LIB32=link.exe -lib
+# ADD BASE LIB32 /nologo /out:"Lib\GameEngineDevice.lib"
+# ADD LIB32 /nologo /out:"Lib\GameEngineDeviceProfile.lib"
+
+#endif
 !ENDIF 
 
 # Begin Target
@@ -105,6 +157,9 @@ LIB32=link.exe -lib
 # Name "GameEngineDevice - Win32 Release"
 # Name "GameEngineDevice - Win32 Debug"
 # Name "GameEngineDevice - Win32 Internal"
+#ifdef ZH
+# Name "GameEngineDevice - Win32 Profile"
+#endif
 # Begin Group "Source"
 
 # PROP Default_Filter ""
@@ -190,15 +245,33 @@ SOURCE=.\Source\W3DDevice\GameClient\Drawable\Draw\W3DModelDraw.cpp
 # End Source File
 # Begin Source File
 
+#ifdef ZH
+SOURCE=.\Source\W3DDevice\GameClient\Drawable\Draw\W3DOverlordAircraftDraw.cpp
+# End Source File
+# Begin Source File
+
+#endif
 SOURCE=.\Source\W3DDevice\GameClient\Drawable\Draw\W3DOverlordTankDraw.cpp
 # End Source File
 # Begin Source File
 
+#ifdef ZH
+SOURCE=.\Source\W3DDevice\GameClient\Drawable\Draw\W3DOverlordTruckDraw.cpp
+# End Source File
+# Begin Source File
+
+#endif
 SOURCE=.\Source\W3DDevice\GameClient\Drawable\Draw\W3DPoliceCarDraw.cpp
 # End Source File
 # Begin Source File
 
 SOURCE=.\Source\W3DDevice\GameClient\Drawable\Draw\W3DProjectileStreamDraw.cpp
+#ifdef ZH
+# End Source File
+# Begin Source File
+
+SOURCE=.\Source\W3DDevice\GameClient\Drawable\Draw\W3DPropDraw.cpp
+#endif
 # End Source File
 # Begin Source File
 
@@ -226,6 +299,12 @@ SOURCE=.\Source\W3DDevice\GameClient\Drawable\Draw\W3DTracerDraw.cpp
 # End Source File
 # Begin Source File
 
+#ifdef ZH
+SOURCE=.\Source\W3DDevice\GameClient\Drawable\Draw\W3DTreeDraw.cpp
+# End Source File
+# Begin Source File
+
+#endif
 SOURCE=.\Source\W3DDevice\GameClient\Drawable\Draw\W3DTruckDraw.cpp
 # End Source File
 # End Group
@@ -361,6 +440,19 @@ InputPath=.\Source\W3DDevice\GameClient\Water\wave.nvp
 "$(WkspDir)\..\Run\Shaders\wave.pso" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
 	..\tools\nvasm\nvasm -d $(InputPath) $(WkspDir)\..\Run\Shaders\wave.pso 
 	if ERRORLEVEL 7 ECHO Warning: Output File Read Only! 
+#ifdef ZH
+	
+# End Custom Build
+
+!ELSEIF  "$(CFG)" == "GameEngineDevice - Win32 Profile"
+
+# Begin Custom Build
+WkspDir=.
+InputPath=.\Source\W3DDevice\GameClient\Water\wave.nvp
+
+"$(WkspDir)\..\Run\wave.pso" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
+	..\tools\nvasm\nvasm -d $(InputPath) $(WkspDir)\..\Run\wave.pso
+#endif
 	
 # End Custom Build
 
@@ -406,6 +498,19 @@ InputPath=.\Source\W3DDevice\GameClient\Water\wave.nvv
 	
 # End Custom Build
 
+#ifdef ZH
+!ELSEIF  "$(CFG)" == "GameEngineDevice - Win32 Profile"
+
+# Begin Custom Build
+WkspDir=.
+InputPath=.\Source\W3DDevice\GameClient\Water\wave.nvv
+
+"$(WkspDir)\..\Run\wave.vso" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
+	..\tools\nvasm\nvasm -d $(InputPath) $(WkspDir)\..\Run\wave.vso
+
+# End Custom Build
+
+#endif
 !ENDIF 
 
 # End Source File
@@ -413,8 +518,114 @@ InputPath=.\Source\W3DDevice\GameClient\Water\wave.nvv
 # Begin Group "Shaders"
 
 # PROP Default_Filter ""
+#ifdef ZH
 # Begin Source File
 
+SOURCE=.\Source\W3DDevice\GameClient\Shaders\fterrain.nvp
+
+!IF  "$(CFG)" == "GameEngineDevice - Win32 Release"
+
+!ELSEIF  "$(CFG)" == "GameEngineDevice - Win32 Debug"
+
+!ELSEIF  "$(CFG)" == "GameEngineDevice - Win32 Internal"
+
+# Begin Custom Build
+WkspDir=.
+InputPath=.\Source\W3DDevice\GameClient\Shaders\fterrain.nvp
+
+"$(WkspDir)\..\Run\Shaders\fterrain.pso" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
+	..\tools\nvasm\nvasm -d $(InputPath) $(WkspDir)\..\Run\Shaders\fterrain.pso 
+	if ERRORLEVEL 7 ECHO Warning: Output File Read Only! 
+	
+# End Custom Build
+
+!ELSEIF  "$(CFG)" == "GameEngineDevice - Win32 Profile"
+
+!ENDIF 
+
+# End Source File
+# Begin Source File
+
+SOURCE=.\Source\W3DDevice\GameClient\Shaders\fterrain0.nvp
+
+!IF  "$(CFG)" == "GameEngineDevice - Win32 Release"
+
+!ELSEIF  "$(CFG)" == "GameEngineDevice - Win32 Debug"
+
+!ELSEIF  "$(CFG)" == "GameEngineDevice - Win32 Internal"
+
+# Begin Custom Build
+WkspDir=.
+InputPath=.\Source\W3DDevice\GameClient\Shaders\fterrain0.nvp
+
+"$(WkspDir)\..\Run\Shaders\fterrain0.pso" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
+	..\tools\nvasm\nvasm -d $(InputPath) $(WkspDir)\..\Run\Shaders\fterrain0.pso 
+	if ERRORLEVEL 7 ECHO Warning: Output File Read Only! 
+	
+# End Custom Build
+
+!ELSEIF  "$(CFG)" == "GameEngineDevice - Win32 Profile"
+
+!ENDIF 
+
+# End Source File
+# Begin Source File
+
+SOURCE=.\Source\W3DDevice\GameClient\Shaders\fterrainnoise.nvp
+
+!IF  "$(CFG)" == "GameEngineDevice - Win32 Release"
+
+!ELSEIF  "$(CFG)" == "GameEngineDevice - Win32 Debug"
+
+!ELSEIF  "$(CFG)" == "GameEngineDevice - Win32 Internal"
+
+# Begin Custom Build
+WkspDir=.
+InputPath=.\Source\W3DDevice\GameClient\Shaders\fterrainnoise.nvp
+
+"$(WkspDir)\..\Run\Shaders\fterrainnoise.pso" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
+	..\tools\nvasm\nvasm -d $(InputPath) $(WkspDir)\..\Run\Shaders\fterrainnoise.pso 
+	if ERRORLEVEL 7 ECHO Warning: Output File Read Only! 
+	
+# End Custom Build
+
+!ELSEIF  "$(CFG)" == "GameEngineDevice - Win32 Profile"
+
+!ENDIF 
+
+# End Source File
+#endif
+# Begin Source File
+#ifdef ZH
+
+SOURCE=.\Source\W3DDevice\GameClient\Shaders\fterrainnoise2.nvp
+
+!IF  "$(CFG)" == "GameEngineDevice - Win32 Release"
+
+!ELSEIF  "$(CFG)" == "GameEngineDevice - Win32 Debug"
+
+!ELSEIF  "$(CFG)" == "GameEngineDevice - Win32 Internal"
+
+# Begin Custom Build
+WkspDir=.
+InputPath=.\Source\W3DDevice\GameClient\Shaders\fterrainnoise2.nvp
+#endif
+
+#ifdef ZH
+"$(WkspDir)\..\Run\Shaders\fterrainnoise2.pso" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
+	..\tools\nvasm\nvasm -d $(InputPath) $(WkspDir)\..\Run\Shaders\fterrainnoise2.pso 
+	if ERRORLEVEL 7 ECHO Warning: Output File Read Only! 
+	
+# End Custom Build
+
+!ELSEIF  "$(CFG)" == "GameEngineDevice - Win32 Profile"
+
+!ENDIF 
+
+# End Source File
+# Begin Source File
+
+#endif
 SOURCE=.\Source\W3DDevice\GameClient\Shaders\invmonochrome.nvp
 
 !IF  "$(CFG)" == "GameEngineDevice - Win32 Release"
@@ -452,7 +663,23 @@ InputPath=.\Source\W3DDevice\GameClient\Shaders\invmonochrome.nvp
 	if ERRORLEVEL 7 ECHO Warning: Output File Read Only! 
 	
 # End Custom Build
+#ifdef ZH
 
+!ELSEIF  "$(CFG)" == "GameEngineDevice - Win32 Profile"
+
+# Begin Custom Build
+WkspDir=.
+InputPath=.\Source\W3DDevice\GameClient\Shaders\invmonochrome.nvp
+#endif
+
+#ifdef ZH
+"$(WkspDir)\..\Run\Shaders\invmonochrome.pso" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
+	..\tools\nvasm\nvasm -d $(InputPath) $(WkspDir)\..\Run\Shaders\invmonochrome.pso 
+	if ERRORLEVEL 7 ECHO Warning: Output File Read Only! 
+	
+# End Custom Build
+
+#endif
 !ENDIF 
 
 # End Source File
@@ -485,6 +712,20 @@ InputPath=.\Source\W3DDevice\GameClient\Shaders\monochrome.nvp
 # End Custom Build
 
 !ELSEIF  "$(CFG)" == "GameEngineDevice - Win32 Internal"
+#ifdef ZH
+
+# Begin Custom Build
+WkspDir=.
+InputPath=.\Source\W3DDevice\GameClient\Shaders\monochrome.nvp
+
+"$(WkspDir)\..\Run\Shaders\monochrome.pso" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
+	..\tools\nvasm\nvasm -d $(InputPath) $(WkspDir)\..\Run\Shaders\monochrome.pso 
+	if ERRORLEVEL 7 ECHO Warning: Output File Read Only! 
+	
+# End Custom Build
+
+!ELSEIF  "$(CFG)" == "GameEngineDevice - Win32 Profile"
+#endif
 
 # Begin Custom Build
 WkspDir=.
@@ -528,6 +769,20 @@ InputPath=.\Source\W3DDevice\GameClient\Shaders\motionblur.nvp
 # End Custom Build
 
 !ELSEIF  "$(CFG)" == "GameEngineDevice - Win32 Internal"
+#ifdef ZH
+
+# Begin Custom Build
+WkspDir=.
+InputPath=.\Source\W3DDevice\GameClient\Shaders\motionblur.nvp
+
+"$(WkspDir)\..\Run\Shaders\motionblur.pso" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
+	..\tools\nvasm\nvasm -d $(InputPath) $(WkspDir)\..\Run\Shaders\motionblur.pso 
+	if ERRORLEVEL 7 ECHO Warning: Output File Read Only! 
+	
+# End Custom Build
+
+!ELSEIF  "$(CFG)" == "GameEngineDevice - Win32 Profile"
+#endif
 
 # Begin Custom Build
 WkspDir=.
@@ -570,6 +825,19 @@ InputPath=.\Source\W3DDevice\GameClient\Shaders\MotionBlur.nvv
 # End Custom Build
 
 !ELSEIF  "$(CFG)" == "GameEngineDevice - Win32 Internal"
+#ifdef ZH
+
+# Begin Custom Build
+WkspDir=.
+InputPath=.\Source\W3DDevice\GameClient\Shaders\MotionBlur.nvv
+
+"$(WkspDir)\..\Run\Shaders\MotionBlur.vso" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
+	..\tools\nvasm\nvasm -d $(InputPath) $(WkspDir)\..\Run\Shaders\MotionBlur.vso
+
+# End Custom Build
+
+!ELSEIF  "$(CFG)" == "GameEngineDevice - Win32 Profile"
+#endif
 
 # Begin Custom Build
 WkspDir=.
@@ -623,6 +891,20 @@ InputPath=.\Source\W3DDevice\GameClient\Shaders\roadnoise2.nvp
 	
 # End Custom Build
 
+#ifdef ZH
+!ELSEIF  "$(CFG)" == "GameEngineDevice - Win32 Profile"
+
+# Begin Custom Build
+WkspDir=.
+InputPath=.\Source\W3DDevice\GameClient\Shaders\roadnoise2.nvp
+
+"$(WkspDir)\..\Run\Shaders\roadnoise2.pso" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
+	..\tools\nvasm\nvasm -d $(InputPath) $(WkspDir)\..\Run\Shaders\roadnoise2.pso 
+	if ERRORLEVEL 7 ECHO Warning: Output File Read Only! 
+	
+# End Custom Build
+
+#endif
 !ENDIF 
 
 # End Source File
@@ -665,7 +947,23 @@ InputPath=.\Source\W3DDevice\GameClient\Shaders\terrain.nvp
 	if ERRORLEVEL 7 ECHO Warning: Output File Read Only! 
 	
 # End Custom Build
+#ifdef ZH
 
+!ELSEIF  "$(CFG)" == "GameEngineDevice - Win32 Profile"
+#endif
+
+#ifdef ZH
+# Begin Custom Build
+WkspDir=.
+InputPath=.\Source\W3DDevice\GameClient\Shaders\terrain.nvp
+
+"$(WkspDir)\..\Run\Shaders\terrain.pso" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
+	..\tools\nvasm\nvasm -d $(InputPath) $(WkspDir)\..\Run\Shaders\terrain.pso 
+	if ERRORLEVEL 7 ECHO Warning: Output File Read Only! 
+	
+# End Custom Build
+
+#endif
 !ENDIF 
 
 # End Source File
@@ -708,7 +1006,23 @@ InputPath=.\Source\W3DDevice\GameClient\Shaders\terrainnoise.nvp
 	if ERRORLEVEL 7 ECHO Warning: Output File Read Only! 
 	
 # End Custom Build
+#ifdef ZH
 
+!ELSEIF  "$(CFG)" == "GameEngineDevice - Win32 Profile"
+#endif
+
+#ifdef ZH
+# Begin Custom Build
+WkspDir=.
+InputPath=.\Source\W3DDevice\GameClient\Shaders\terrainnoise.nvp
+
+"$(WkspDir)\..\Run\Shaders\terrainnoise.pso" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
+	..\tools\nvasm\nvasm -d $(InputPath) $(WkspDir)\..\Run\Shaders\terrainnoise.pso 
+	if ERRORLEVEL 7 ECHO Warning: Output File Read Only! 
+	
+# End Custom Build
+
+#endif
 !ENDIF 
 
 # End Source File
@@ -748,10 +1062,116 @@ InputPath=.\Source\W3DDevice\GameClient\Shaders\terrainnoise2.nvp
 
 "$(WkspDir)\..\Run\Shaders\terrainnoise2.pso" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
 	..\tools\nvasm\nvasm -d $(InputPath) $(WkspDir)\..\Run\Shaders\terrainnoise2.pso 
+#ifdef ZH
 	if ERRORLEVEL 7 ECHO Warning: Output File Read Only! 
 	
 # End Custom Build
 
+!ELSEIF  "$(CFG)" == "GameEngineDevice - Win32 Profile"
+
+# Begin Custom Build
+WkspDir=.
+InputPath=.\Source\W3DDevice\GameClient\Shaders\terrainnoise2.nvp
+
+"$(WkspDir)\..\Run\Shaders\terrainnoise2.pso" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
+	..\tools\nvasm\nvasm -d $(InputPath) $(WkspDir)\..\Run\Shaders\terrainnoise2.pso 
+	if ERRORLEVEL 7 ECHO Warning: Output File Read Only! 
+	
+# End Custom Build
+
+!ENDIF 
+
+# End Source File
+# Begin Source File
+
+SOURCE=.\Source\W3DDevice\GameClient\Shaders\Trees.nvp
+
+!IF  "$(CFG)" == "GameEngineDevice - Win32 Release"
+
+# Begin Custom Build
+WkspDir=.
+InputPath=.\Source\W3DDevice\GameClient\Shaders\Trees.nvp
+
+"$(WkspDir)\..\Run\Shaders\Trees.pso" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
+	..\tools\nvasm\nvasm -d $(InputPath) $(WkspDir)\..\Run\Shaders\Trees.pso 
+	if ERRORLEVEL 7 ECHO Warning: Output File Read Only! 
+	
+# End Custom Build
+
+!ELSEIF  "$(CFG)" == "GameEngineDevice - Win32 Debug"
+
+# Begin Custom Build
+WkspDir=.
+InputPath=.\Source\W3DDevice\GameClient\Shaders\Trees.nvp
+
+"$(WkspDir)\..\Run\Shaders\Trees.pso" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
+	..\tools\nvasm\nvasm -d $(InputPath) $(WkspDir)\..\Run\Shaders\Trees.pso 
+	if ERRORLEVEL 7 ECHO Warning: Output File Read Only! 
+	
+# End Custom Build
+
+!ELSEIF  "$(CFG)" == "GameEngineDevice - Win32 Internal"
+
+# Begin Custom Build
+WkspDir=.
+InputPath=.\Source\W3DDevice\GameClient\Shaders\Trees.nvp
+
+"$(WkspDir)\..\Run\Shaders\Trees.pso" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
+	..\tools\nvasm\nvasm -d $(InputPath) $(WkspDir)\..\Run\Shaders\Trees.pso 
+	if ERRORLEVEL 7 ECHO Warning: Output File Read Only! 
+	
+# End Custom Build
+
+!ELSEIF  "$(CFG)" == "GameEngineDevice - Win32 Profile"
+
+!ENDIF 
+
+# End Source File
+# Begin Source File
+
+SOURCE=.\Source\W3DDevice\GameClient\Shaders\Trees.nvv
+
+!IF  "$(CFG)" == "GameEngineDevice - Win32 Release"
+
+# Begin Custom Build
+WkspDir=.
+InputPath=.\Source\W3DDevice\GameClient\Shaders\Trees.nvv
+
+"$(WkspDir)\..\Run\Shaders\Trees.vso" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
+	..\tools\nvasm\nvasm -d $(InputPath) $(WkspDir)\..\Run\Shaders\Trees.vso
+
+# End Custom Build
+
+!ELSEIF  "$(CFG)" == "GameEngineDevice - Win32 Debug"
+
+# Begin Custom Build
+WkspDir=.
+InputPath=.\Source\W3DDevice\GameClient\Shaders\Trees.nvv
+
+"$(WkspDir)\..\Run\Shaders\Trees.vso" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
+	..\tools\nvasm\nvasm -d $(InputPath) $(WkspDir)\..\Run\Shaders\Trees.vso 
+#endif
+	if ERRORLEVEL 7 ECHO Warning: Output File Read Only! 
+	
+# End Custom Build
+#ifdef ZH
+
+!ELSEIF  "$(CFG)" == "GameEngineDevice - Win32 Internal"
+#endif
+
+#ifdef ZH
+# Begin Custom Build
+WkspDir=.
+InputPath=.\Source\W3DDevice\GameClient\Shaders\Trees.nvv
+
+"$(WkspDir)\..\Run\Shaders\Trees.vso" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
+	..\tools\nvasm\nvasm -d $(InputPath) $(WkspDir)\..\Run\Shaders\Trees.vso
+
+# End Custom Build
+
+!ELSEIF  "$(CFG)" == "GameEngineDevice - Win32 Profile"
+
+#endif
 !ENDIF 
 
 # End Source File
@@ -776,6 +1196,33 @@ SOURCE=.\Source\W3DDevice\GameClient\Shadow\W3DShadow.cpp
 SOURCE=.\Source\W3DDevice\GameClient\Shadow\W3DVolumetricShadow.cpp
 # End Source File
 # End Group
+#ifdef ZH
+# Begin Source File
+
+SOURCE=.\Source\W3DDevice\GameClient\BaseHeightMap.cpp
+
+!IF  "$(CFG)" == "GameEngineDevice - Win32 Release"
+
+!ELSEIF  "$(CFG)" == "GameEngineDevice - Win32 Debug"
+
+!ELSEIF  "$(CFG)" == "GameEngineDevice - Win32 Internal"
+
+!ELSEIF  "$(CFG)" == "GameEngineDevice - Win32 Profile"
+
+# ADD CPP /FAcs
+
+!ENDIF 
+
+# End Source File
+# Begin Source File
+
+SOURCE=.\Source\W3DDevice\GameClient\camerashakesystem.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\Source\W3DDevice\GameClient\FlatHeightMap.cpp
+# End Source File
+#endif
 # Begin Source File
 
 SOURCE=.\Source\W3DDevice\GameClient\HeightMap.cpp
@@ -862,6 +1309,12 @@ SOURCE=.\Source\W3DDevice\GameClient\W3DPoly.cpp
 # End Source File
 # Begin Source File
 
+#ifdef ZH
+SOURCE=.\Source\W3DDevice\GameClient\W3DPropBuffer.cpp
+# End Source File
+# Begin Source File
+
+#endif
 SOURCE=.\Source\W3DDevice\GameClient\W3DRoadBuffer.cpp
 # End Source File
 # Begin Source File
@@ -878,10 +1331,26 @@ SOURCE=.\Source\W3DDevice\GameClient\W3DShroud.cpp
 # End Source File
 # Begin Source File
 
+#ifdef ZH
+SOURCE=.\Source\W3DDevice\GameClient\W3DSmudge.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\Source\W3DDevice\GameClient\W3DSnow.cpp
+# End Source File
+# Begin Source File
+
+#endif
 SOURCE=.\Source\W3DDevice\GameClient\W3DStatusCircle.cpp
 # End Source File
 # Begin Source File
 
+#ifdef ZH
+SOURCE=.\Source\W3DDevice\GameClient\W3DTerrainBackground.cpp
+# End Source File
+# Begin Source File
+
+#endif
 SOURCE=.\Source\W3DDevice\GameClient\W3DTerrainTracks.cpp
 # End Source File
 # Begin Source File
@@ -1061,10 +1530,22 @@ SOURCE=.\Include\W3DDevice\GameClient\Module\W3DModelDraw.h
 # End Source File
 # Begin Source File
 
+#ifdef ZH
+SOURCE=.\Include\W3DDevice\GameClient\Module\W3DOverlordAircraftDraw.h
+# End Source File
+# Begin Source File
+
+#endif
 SOURCE=.\Include\W3DDevice\GameClient\Module\W3DOverlordTankDraw.h
 # End Source File
 # Begin Source File
 
+#ifdef ZH
+SOURCE=.\Include\W3DDevice\GameClient\Module\W3DOverlordTruckDraw.h
+# End Source File
+# Begin Source File
+
+#endif
 SOURCE=.\Include\W3DDevice\GameClient\Module\W3DPoliceCarDraw.h
 # End Source File
 # Begin Source File
@@ -1073,6 +1554,12 @@ SOURCE=.\Include\W3DDevice\GameClient\Module\W3DProjectileStreamDraw.h
 # End Source File
 # Begin Source File
 
+#ifdef ZH
+SOURCE=.\Include\W3DDevice\GameClient\Module\W3DPropDraw.h
+# End Source File
+# Begin Source File
+
+#endif
 SOURCE=.\Include\W3DDevice\GameClient\Module\W3DRopeDraw.h
 # End Source File
 # Begin Source File
@@ -1094,14 +1581,36 @@ SOURCE=.\Include\W3DDevice\GameClient\Module\W3DTankTruckDraw.h
 # Begin Source File
 
 SOURCE=.\Include\W3DDevice\GameClient\Module\W3DTracerDraw.h
+#ifdef ZH
+# End Source File
+# Begin Source File
+
+SOURCE=.\Include\W3DDevice\GameClient\Module\W3DTreeDraw.h
+#endif
 # End Source File
 # Begin Source File
 
 SOURCE=.\Include\W3DDevice\GameClient\Module\W3DTruckDraw.h
 # End Source File
 # End Group
+#ifdef ZH
 # Begin Source File
 
+SOURCE=.\Include\W3DDevice\GameClient\BaseHeightMap.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\Include\W3DDevice\GameClient\camerashakesystem.h
+# End Source File
+#endif
+# Begin Source File
+
+#ifdef ZH
+SOURCE=.\Include\W3DDevice\GameClient\FlatHeightMap.h
+# End Source File
+# Begin Source File
+
+#endif
 SOURCE=.\Include\W3DDevice\GameClient\HeightMap.h
 # End Source File
 # Begin Source File
@@ -1235,10 +1744,28 @@ SOURCE=.\Include\W3DDevice\GameClient\W3DShadow.h
 # Begin Source File
 
 SOURCE=.\Include\W3DDevice\GameClient\W3DShroud.h
+#ifdef ZH
 # End Source File
 # Begin Source File
 
+SOURCE=.\Include\W3DDevice\GameClient\W3DSmudge.h
+#endif
+# End Source File
+# Begin Source File
+
+#ifdef ZH
+SOURCE=.\Include\W3DDevice\GameClient\W3DSnow.h
+# End Source File
+# Begin Source File
+
+#endif
 SOURCE=.\Include\W3DDevice\GameClient\W3DStatusCircle.h
+#ifdef ZH
+# End Source File
+# Begin Source File
+
+SOURCE=.\Include\W3DDevice\GameClient\W3DTerrainBackground.h
+#endif
 # End Source File
 # Begin Source File
 
@@ -1285,6 +1812,12 @@ SOURCE=.\Include\W3DDevice\GameClient\W3DWebBrowser.h
 SOURCE=.\Include\W3DDevice\GameClient\WorldHeightMap.h
 # End Source File
 # End Group
+#ifdef ZH
+# Begin Source File
+
+SOURCE=.\Include\W3DDevice\GameClient\W3DPropBuffer.h
+# End Source File
+#endif
 # End Group
 # Begin Group "Win32Device H"
 

@@ -136,7 +136,12 @@ void SwayClientUpdate::clientUpdate( void )
 	
 	// burned things don't sway.
 	Object* obj = draw->getObject();
+#ifdef OG
 	if (obj && (obj->getStatusBits() & OBJECT_STATUS_BURNED) != 0)
+#endif
+#ifdef ZH
+	if( obj && obj->getStatusBits().test( OBJECT_STATUS_BURNED ) )
+#endif
 		stopSway();
 
 }

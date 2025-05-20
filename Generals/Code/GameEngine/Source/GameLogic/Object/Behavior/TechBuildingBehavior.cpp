@@ -126,6 +126,9 @@ void TechBuildingBehavior::onDie( const DamageInfo *damageInfo )
 	// put us on the team of the neutral player so no player has any bonus from us
 	//
 	Object *us = getObject();
+#ifdef ZH
+	us->clearModelConditionState( MODELCONDITION_CAPTURED );
+#endif
 	us->setTeam( ThePlayerList->getNeutralPlayer()->getDefaultTeam() );
 
 }  // end onDie

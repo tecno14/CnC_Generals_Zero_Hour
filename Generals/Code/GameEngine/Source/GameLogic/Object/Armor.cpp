@@ -30,7 +30,9 @@
 // INCLUDES ///////////////////////////////////////////////////////////////////////////////////////
 #include "PreRTS.h"	// This must go first in EVERY cpp file int the GameEngine
 
+#ifdef OG
 #define DEFINE_DAMAGE_NAMES						// for DamageNames[]
+#endif
 
 #include "Common/INI.h"
 #include "Common/ThingFactory.h"
@@ -69,6 +71,10 @@ Real ArmorTemplate::adjustDamage(DamageType t, Real damage) const
 { 
 	if (t == DAMAGE_UNRESISTABLE)
 		return damage;
+#ifdef ZH
+	if (t == DAMAGE_SUBDUAL_UNRESISTABLE)
+		return damage;
+#endif
 
 	damage *= m_damageCoefficient[t];
 
@@ -95,7 +101,12 @@ Real ArmorTemplate::adjustDamage(DamageType t, Real damage) const
 		return;
 	}
 
+#ifdef OG
 	DamageType dt = (DamageType)INI::scanIndexList(damageName, TheDamageNames);
+#endif
+#ifdef ZH
+	DamageType dt = (DamageType)DamageTypeFlags::getSingleBitFromName(damageName);
+#endif
 	self->m_damageCoefficient[dt] = pct;
 }
 

@@ -24,12 +24,30 @@
  *                                                                         * 
  *                     $Archive:: /VSS_Sync/ww3d2/pointgr.cpp             $* 
  *                                                                         * 
+#ifdef OG
  *                      $Author:: Vss_sync                                $* 
+
+#endif
+#ifdef ZH
+ *                    Org Author:: Greg Hjelstrom                                               *
+ *                                                                                             *
+ *                      $Author:: Kenny Mitchell                                               * 
+ *                                                                                             * 
+ *                     $Modtime:: 06/26/02 4:04p                                             $*
+ *                                                                                             *
+ *                    $Revision:: 38                                      $* 
+#endif
  *                                                                         * 
+#ifdef OG
  *                     $Modtime:: 8/29/01 7:29p                           $* 
  *                                                                         * 
  *                    $Revision:: 37                                      $* 
  *                                                                         * 
+#endif
+#ifdef ZH
+ * 06/26/02 KM Matrix name change to avoid MAX conflicts                                       *
+
+#endif
  *-------------------------------------------------------------------------* 
  * Functions:                                                              * 
  *   PointGroupClass::PointGroupClass -- PointGroupClass CTor.             * 
@@ -265,7 +283,12 @@ void PointGroupClass::Set_Arrays(
 	ShareBufferClass<float> *sizes,
 	ShareBufferClass<unsigned char> *orientations,
 	ShareBufferClass<unsigned char> *frames, 
+#ifdef OG
 	unsigned int active_point_count,
+#endif
+#ifdef ZH
+	int active_point_count,
+#endif
 	float vpxmin, 
 	float vpymin, 
 	float vpxmax, 
@@ -876,7 +899,12 @@ void PointGroupClass::Render(RenderInfoClass &rinfo)
 	}
 
 	// Get the world and view matrices
+#ifdef OG
 	Matrix4 view;
+#endif
+#ifdef ZH
+	Matrix4x4 view;
+#endif
 	DX8Wrapper::Get_Transform(D3DTS_VIEW,view);
 
 	// Transform the point locations from worldspace to camera space if needed
@@ -884,6 +912,10 @@ void PointGroupClass::Render(RenderInfoClass &rinfo)
 
 	// need to interrupt this processing. If we are not billboarding, then we need the actual position
 	// of the vertice to lay it down flat.
+#ifdef ZH
+	
+	// (gth) changed this 'if' to use OR rather than AND... The way it was caused all emitters to break
+#endif
 	if (Get_Flag(TRANSFORM) && Billboard) {
 		// Resize transformed location array if needed (2x guardband to prevent
 		// frequent reallocations):
@@ -913,7 +945,12 @@ void PointGroupClass::Render(RenderInfoClass &rinfo)
 	// the locations are now in view space
 	// so set world and view matrices to identity and render
 	
+#ifdef OG
 	Matrix4 identity(true);
+#endif
+#ifdef ZH
+	Matrix4x4 identity(true);
+#endif
 	DX8Wrapper::Set_Transform(D3DTS_WORLD,identity);	
 	DX8Wrapper::Set_Transform(D3DTS_VIEW,identity);	
 
@@ -1195,7 +1232,12 @@ void PointGroupClass::Update_Arrays(
 
 		case QUADS_SIZE_ORIENT:
 			{
+#ifdef OG
 				Matrix4 view;
+#endif
+#ifdef ZH
+				Matrix4x4 view;
+#endif
 				Vector4 result;
 				if (!Billboard) {
 					DX8Wrapper::Get_Transform(D3DTS_VIEW,view);
@@ -1205,7 +1247,12 @@ void PointGroupClass::Update_Arrays(
 				for (i = 0; i < active_points; i++) {
 					if (!Billboard) {
 						// If we're not billboarding, then the coordinate we have is in screen space.
+#ifdef OG
 						Matrix4 rotMat;
+#endif
+#ifdef ZH
+						Matrix4x4 rotMat;
+#endif
 						D3DXMatrixRotationZ(&(D3DXMATRIX&) rotMat, ((float)point_orientation[i] / 255.0f * 2 * D3DX_PI));
 						
 						Vector4 orientedVecX = rotMat * GroundMultiplierX;
@@ -1684,7 +1731,12 @@ void PointGroupClass::RenderVolumeParticle(RenderInfoClass &rinfo, unsigned int 
 	}
 
 		// Get the world and view matrices
+#ifdef OG
 		Matrix4 view;
+#endif
+#ifdef ZH
+		Matrix4x4 view;
+#endif
 		DX8Wrapper::Get_Transform(D3DTS_VIEW,view);
 
 
@@ -1822,7 +1874,12 @@ void PointGroupClass::RenderVolumeParticle(RenderInfoClass &rinfo, unsigned int 
 		// the locations are now in view space
 		// so set world and view matrices to identity and render
 		
+#ifdef OG
 		Matrix4 identity(true);
+#endif
+#ifdef ZH
+		Matrix4x4 identity(true);
+#endif
 		DX8Wrapper::Set_Transform(D3DTS_WORLD,identity);	
 		DX8Wrapper::Set_Transform(D3DTS_VIEW,identity);	
 

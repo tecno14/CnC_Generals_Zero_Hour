@@ -103,6 +103,9 @@ enum
 	INICRC_KEY,
 	PW_KEY,
 	OBS_KEY,
+#ifdef ZH
+  USE_STATS_KEY,
+#endif
 	LADIP_KEY,
 	LADPORT_KEY,
 	PINGSTR_KEY,
@@ -120,6 +123,9 @@ enum
 #define INICRC_STR		"iniCRC"
 #define PW_STR				"pw"
 #define OBS_STR				"obs"
+#ifdef ZH
+#define USE_STATS_STR "stat"
+#endif
 #define LADIP_STR			"ladIP"
 #define LADPORT_STR		"ladPort"
 #define PINGSTR_STR		"pings"
@@ -189,6 +195,9 @@ public:
 		//Added By Sadullah Nader
 		//Initializations inserted
 		m_roomJoined = m_allowObservers = m_hasPassword = FALSE;
+#ifdef ZH
+    m_useStats = TRUE;
+#endif
 		m_exeCRC = m_iniCRC = 0;
 		m_gameVersion = 0;
 		m_ladderPort = 0;
@@ -241,6 +250,9 @@ public:
 	void stopHostingAlready(PEER peer);
 	Bool hasPassword( void ) { return m_hasPassword; }
 	Bool allowObservers( void ) { return m_allowObservers; }
+#ifdef ZH
+  Bool useStats(void) const { return m_useStats; }
+#endif
 	std::string getMapName( void ) { return m_mapName; }
 	UnsignedInt exeCRC( void ) { return m_exeCRC; }
 	UnsignedInt iniCRC( void ) { return m_iniCRC; }
@@ -312,6 +324,9 @@ private:
 	UnsignedInt m_iniCRC;
 	UnsignedInt m_gameVersion;
 	Bool m_allowObservers;
+#ifdef ZH
+  Bool m_useStats;
+#endif
 	std::string m_pingStr;
 	std::string m_ladderIP;
 	UnsignedShort m_ladderPort;
@@ -810,6 +825,11 @@ static void QRServerKeyCallback
 		break;
 	case OBS_KEY:
 		ADDINT(t->allowObservers());
+#ifdef ZH
+		break;
+  case USE_STATS_KEY:
+    ADDINT(t->useStats());
+#endif
 		break;
 	case LADIP_KEY:
 		ADD(t->ladderIP().c_str());
@@ -955,6 +975,9 @@ static void QRKeyListCallback
 		qr2_keybuffer_add(keyBuffer, INICRC_KEY);
 		qr2_keybuffer_add(keyBuffer, PW_KEY);
 		qr2_keybuffer_add(keyBuffer, OBS_KEY);
+#ifdef ZH
+    qr2_keybuffer_add(keyBuffer, USE_STATS_KEY);
+#endif
 		qr2_keybuffer_add(keyBuffer, LADIP_KEY);
 		qr2_keybuffer_add(keyBuffer, LADPORT_KEY);
 		qr2_keybuffer_add(keyBuffer, PINGSTR_KEY);
@@ -1205,6 +1228,9 @@ void PeerThreadClass::Thread_Function()
 	qr2_register_key(INICRC_KEY, INICRC_STR);
 	qr2_register_key(PW_KEY, PW_STR);
 	qr2_register_key(OBS_KEY, OBS_STR);
+#ifdef ZH
+  qr2_register_key(USE_STATS_KEY, USE_STATS_STR);
+#endif
 	qr2_register_key(LADIP_KEY, LADIP_STR);
 	qr2_register_key(LADPORT_KEY, LADPORT_STR);
 	qr2_register_key(PINGSTR_KEY, PINGSTR_STR);
@@ -1217,7 +1243,12 @@ void PeerThreadClass::Thread_Function()
 	qr2_register_key(FACTION__KEY, FACTION__STR "_");
 	qr2_register_key(COLOR__KEY, COLOR__STR "_");
 
+#ifdef OG
 	const Int NumKeys = 14;
+#endif
+#ifdef ZH
+	const Int NumKeys = 15;
+#endif
 	unsigned char allKeysArray[NumKeys] = {
 		/*
 		PID__KEY,
@@ -1234,6 +1265,9 @@ void PeerThreadClass::Thread_Function()
 		INICRC_KEY,
 		PW_KEY,
 		OBS_KEY,
+#ifdef ZH
+    USE_STATS_KEY,
+#endif
 		LADIP_KEY,
 		LADPORT_KEY,
 		PINGSTR_KEY,
@@ -1246,7 +1280,12 @@ void PeerThreadClass::Thread_Function()
 	/*
 	const char *allKeys = "\\pid_\\mapname\\gamever\\gamename" \
 		"\\" EXECRC_STR "\\" INICRC_STR \
+#ifdef OG
 		"\\" PW_STR "\\" OBS_STR "\\" LADIP_STR "\\" LADPORT_STR \
+#endif
+#ifdef ZH
+		"\\" PW_STR "\\" OBS_STR "\\" USE_STATS_STR "\\" LADIP_STR "\\" LADPORT_STR \
+#endif
 		"\\" PINGSTR_STR "\\" NUMOBS_STR \
 		"\\" NUMPLAYER_STR "\\" MAXPLAYER_STR \
 		"\\" NAME__STR "_" "\\" WINS__STR "_" "\\" LOSSES__STR "_" "\\" FACTION__STR "_" "\\" COLOR__STR "_";
@@ -1275,15 +1314,32 @@ void PeerThreadClass::Thread_Function()
 	/*********
 	First step, set our game authentication info
 	We could do:
+#ifdef OG
 		strcpy(gcd_gamename,"ccgenerals");
 		strcpy(gcd_secret_key,"h5T2f6");
+#endif
+#ifdef ZH
+		strcpy(gcd_gamename,"ccgenzh");
+		strcpy(gcd_secret_key,"D6s9k3");
+#endif
 	or
 		strcpy(gcd_gamename,"ccgeneralsb");
+#ifdef OG
 		strcpy(gcd_secret_key,"g3T9s2");
+#endif
+#ifdef ZH
+		strcpy(gcd_secret_key,"whatever the key is");
+#endif
 	...but this is more secure:
 	**********/
+#ifdef OG
 	char gameName[12];
 	char secretKey[7];
+#endif
+#ifdef ZH
+	char gameName[12] = {0};
+	char secretKey[7] = {0};
+#endif
 	/**
 	gameName[0]='c';gameName[1]='c';gameName[2]='g';gameName[3]='e';
 	gameName[4]='n';gameName[5]='e';gameName[6]='r';gameName[7]='a';
@@ -1292,10 +1348,18 @@ void PeerThreadClass::Thread_Function()
 	secretKey[4]='s';secretKey[5]='2';secretKey[6]='\0';
 	/**/
 	gameName[0]='c';gameName[1]='c';gameName[2]='g';gameName[3]='e';
+#ifdef OG
 	gameName[4]='n';gameName[5]='e';gameName[6]='r';gameName[7]='a';
 	gameName[8]='l';gameName[9]='s';gameName[10]='\0';
 	secretKey[0]='h';secretKey[1]='5';secretKey[2]='T';secretKey[3]='2';
 	secretKey[4]='f';secretKey[5]='6';secretKey[6]='\0';
+#endif
+#ifdef ZH
+	gameName[4]='n';gameName[5]='z';gameName[6]='h';gameName[7]='\0';
+	secretKey[0]='D';secretKey[1]='6';secretKey[2]='s';secretKey[3]='9';
+	secretKey[4]='k';secretKey[5]='3';secretKey[6]='\0';
+
+#endif
 	/**/
 
 	// Set the title.
@@ -1634,6 +1698,9 @@ void PeerThreadClass::Thread_Function()
 						s_wantStateChangedHeartbeat = FALSE;
 						m_isHosting = TRUE;
 						m_allowObservers = incomingRequest.stagingRoomCreation.allowObservers;
+#ifdef ZH
+            m_useStats = incomingRequest.stagingRoomCreation.useStats;
+#endif
 						m_mapName = "";
 						for (Int i=0; i<MAX_SLOTS; ++i)
 						{
@@ -2568,12 +2635,20 @@ static void roomKeyChangedCallback(PEER peer, RoomType roomType, const char *nic
 #ifdef USE_BROADCAST_KEYS
 	PeerThreadClass *t = (PeerThreadClass *)param;
 	DEBUG_ASSERTCRASH(t, ("No Peer thread!"));
+#ifdef OG
 	DEBUG_ASSERTCRASH(nick && key && val, ("Bad values %X %X %X\n", nick, key, val));
+#endif
 	if (!t || !nick || !key || !val)
 	{
+#ifdef OG
 		DEBUG_ASSERTLOG(!nick, ("nick = %s\n", nick));
 		DEBUG_ASSERTLOG(!key, ("key = %s\n", key));
 		DEBUG_ASSERTLOG(!val, ("val = %s\n", val));
+#endif
+#ifdef ZH
+		DEBUG_ASSERTCRASH(nick && strcmp(nick,"(END)")==0, ("roomKeyChangedCallback bad values = nick:%X:%s, key:%X:%s, val:%X:%s\n", nick, nick, key, key, val, val));
+
+#endif
 		return;
 	}
 
@@ -2604,9 +2679,18 @@ void getRoomKeysCallback(PEER peer, PEERBool success, RoomType roomType, const c
 {
 	PeerThreadClass *t = (PeerThreadClass *)param;
 	DEBUG_ASSERTCRASH(t, ("No Peer thread!"));
+#ifdef OG
 	DEBUG_ASSERTCRASH(keys && values, ("bad key/value %X/%X", keys, values));
+#endif
 	if (!t || !nick || !num || !success || !keys || !values)
+#ifdef ZH
+	{
+		DEBUG_ASSERTCRASH(!nick || strcmp(nick,"(END)")==0, ("getRoomKeysCallback bad key/value %X/%X, nick=%s", keys, values, nick));
+#endif
 		return;
+#ifdef ZH
+	}
+#endif
 
 	for (Int i=0; i<num; ++i)
 	{
@@ -2689,6 +2773,10 @@ void playerLeftCallback(PEER peer, RoomType roomType, const char * nick, const c
 		roomType, resp.player.flags);
 	TheGameSpyPeerMessageQueue->addResponse(resp);
 
+#ifdef ZH
+//	PeerThreadClass *t = (PeerThreadClass *)param;
+//	DEBUG_ASSERTCRASH(t, ("No Peer thread!"));
+#endif
 	if (t->getQMStatus() != QM_IDLE && t->getQMStatus() != QM_STOPPED)
 	{
 		if (!stricmp(t->getQMBotName().c_str(), nick))
@@ -2744,6 +2832,9 @@ static void playerInfoCallback(PEER peer, RoomType roomType, const char * nick, 
 		resp.locale, resp.player.wins, resp.player.losses,
 		resp.player.rankPoints, resp.player.side, resp.player.preorder,
 		roomType, resp.player.flags);
+#ifdef ZH
+DEBUG_LOG(("**GS playerInfoCallback name=%s, local=%s\n", nick, resp.locale.c_str() ));
+#endif
 	TheGameSpyPeerMessageQueue->addResponse(resp);
 }
 
@@ -2779,6 +2870,12 @@ static void enumFunc(char *key, char *val, void *param)
 
 static void listingGamesCallback(PEER peer, PEERBool success, const char * name, SBServer server, PEERBool staging, int msg, Int percentListed, void * param)
 {
+#ifdef ZH
+	PeerThreadClass *t = (PeerThreadClass *)param;
+	if (!t || !success)
+		return;
+
+#endif
 #ifdef DEBUG_LOGGING
 	AsciiString cmdStr = "<Unknown>";
 	switch(msg)
@@ -2802,8 +2899,14 @@ static void listingGamesCallback(PEER peer, PEERBool success, const char * name,
 	DEBUG_LOG(("listingGamesCallback() - doing command %s on server %X\n", cmdStr.str(), server));
 #endif // DEBUG_LOGGING
 
+#ifdef OG
 	PeerThreadClass *t = (PeerThreadClass *)param;
 	DEBUG_ASSERTCRASH(name, ("Game has no name!\n"));
+#endif
+#ifdef ZH
+//	PeerThreadClass *t = (PeerThreadClass *)param;
+	DEBUG_ASSERTCRASH(name || msg==PEER_CLEAR || msg==PEER_COMPLETE, ("Game has no name!\n"));
+#endif
 	if (!t || !success || (!name && (msg == PEER_ADD || msg == PEER_UPDATE)))
 	{
 		DEBUG_LOG(("Bailing from listingGamesCallback() - success=%d, name=%X, server=%X, msg=%X\n", success, name, server, msg));
@@ -2825,7 +2928,12 @@ static void listingGamesCallback(PEER peer, PEERBool success, const char * name,
 	{
 		DEBUG_LOG(("Game name is '%s'\n", name));
 		const char *newname = SBServerGetStringValue(server, "gamename", (char *)name);
+#ifdef OG
 		if (strcmp(newname, "ccgenerals"))
+#endif
+#ifdef ZH
+		if (strcmp(newname, "ccgenzh"))
+#endif
 			name = newname;
 		DEBUG_LOG(("Game name is now '%s'\n", name));
 	}
@@ -2863,6 +2971,9 @@ static void listingGamesCallback(PEER peer, PEERBool success, const char * name,
 	{
 		Bool hasPassword = (Bool)SBServerGetIntValue(server, PW_STR, FALSE);
 		Bool allowObservers = (Bool)SBServerGetIntValue(server, OBS_STR, FALSE);
+#ifdef ZH
+    Bool usesStats = (Bool)SBServerGetIntValue(server, USE_STATS_STR, TRUE);
+#endif
 		const char *verStr = SBServerGetStringValue(server, "gamever", "000000");
 		const char *exeStr = SBServerGetStringValue(server, EXECRC_STR, "000000");
 		const char *iniStr = SBServerGetStringValue(server, INICRC_STR, "000000");
@@ -2874,6 +2985,9 @@ static void listingGamesCallback(PEER peer, PEERBool success, const char * name,
 		UnsignedInt iniVal = strtoul(iniStr, NULL, 10);
 		resp.stagingRoom.requiresPassword = hasPassword;
 		resp.stagingRoom.allowObservers = allowObservers;
+#ifdef ZH
+    resp.stagingRoom.useStats = usesStats;
+#endif
 		resp.stagingRoom.version = verVal;
 		resp.stagingRoom.exeCRC = exeVal;
 		resp.stagingRoom.iniCRC = iniVal;
@@ -2904,7 +3018,12 @@ static void listingGamesCallback(PEER peer, PEERBool success, const char * name,
 			resp.stagingRoomPlayerNames[0] = hostName.str();
 		}
 		DEBUG_ASSERTCRASH(resp.stagingRoomPlayerNames[0].empty() == false, ("No host!"));
+#ifdef OG
 		DEBUG_LOG(("Raw stuff: [%s] [%s] [%s] [%d] [%d]\n", verStr, exeStr, iniStr, hasPassword, allowObservers));
+#endif
+#ifdef ZH
+		DEBUG_LOG(("Raw stuff: [%s] [%s] [%s] [%d] [%d] [%d]\n", verStr, exeStr, iniStr, hasPassword, allowObservers, usesStats));
+#endif
 		DEBUG_LOG(("Raw stuff: [%s] [%s] [%d]\n", pingStr, ladIPStr, ladPort));
 		DEBUG_LOG(("Saw game with stuff %s %d %X %X %X %s\n", resp.stagingRoomMapName.c_str(), hasPassword, verVal, exeVal, iniVal, SBServerGetStringValue(server, "password", "missing")));
 #ifdef PING_TEST

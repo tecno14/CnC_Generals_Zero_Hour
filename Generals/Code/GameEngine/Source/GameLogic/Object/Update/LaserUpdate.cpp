@@ -30,21 +30,46 @@
 // INCLUDES ///////////////////////////////////////////////////////////////////////////////////////
 #include "PreRTS.h"	// This must go first in EVERY cpp file int the GameEngine
 
+#ifdef ZH
+#include "Common\Player.h"
+#include "Common\PlayerList.h"
+#endif
 #include "Common/Xfer.h"
 #include "Common/DrawModule.h"
+#ifdef ZH
+#include "Common/ThingTemplate.h"
+#endif
 #include "GameClient/Drawable.h"
 #include "GameClient/GameClient.h"
 #include "GameClient/ParticleSys.h"
+#ifdef OG
 #include "GameLogic/GameLogic.h"
+#endif
 #include "GameLogic/Object.h"
+#ifdef ZH
+#include "GameLogic/GameLogic.h" // For frame number
+#endif
 #include "GameLogic/Module/LaserUpdate.h"
 #include "WWMath/Vector3.h"
+#ifdef ZH
+
+#ifdef _INTERNAL
+// for occasional debugging...
+//#pragma optimize("", off)
+//#pragma MESSAGE("************************************** WARNING, optimization disabled for debugging purposes")
+#endif
+#endif
 
 //-------------------------------------------------------------------------------------------------
 //-------------------------------------------------------------------------------------------------
 LaserUpdateModuleData::LaserUpdateModuleData()
 {
+#ifdef OG
 	m_parentFireBoneOnTurret = FALSE;
+#endif
+#ifdef ZH
+	m_punchThroughScalar = 0.0f;
+#endif
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -56,8 +81,14 @@ LaserUpdateModuleData::LaserUpdateModuleData()
 	{
 		{ "MuzzleParticleSystem",		INI::parseAsciiString,	NULL, offsetof( LaserUpdateModuleData, m_particleSystemName ) },
 		{ "TargetParticleSystem",		INI::parseAsciiString,  NULL, offsetof( LaserUpdateModuleData, m_targetParticleSystemName ) },
+#ifdef OG
 		{ "ParentFireBoneName",			INI::parseAsciiString,  NULL, offsetof( LaserUpdateModuleData, m_parentFireBoneName ) },
 		{ "ParentFireBoneOnTurret",	INI::parseAsciiString,  NULL, offsetof( LaserUpdateModuleData, m_parentFireBoneOnTurret ) },
+#endif
+#ifdef ZH
+		{ "PunchThroughScalar",			INI::parseReal,					NULL, offsetof( LaserUpdateModuleData, m_punchThroughScalar ) },
+
+#endif
 		{ 0, 0, 0, 0 }
 	};
 	p.add(dataFieldParse);
@@ -82,6 +113,11 @@ LaserUpdate::LaserUpdate( Thing *thing, const ModuleData* moduleData ) : ClientU
 	m_decaying = false;
 	m_decayStartFrame = 0;
 	m_decayFinishFrame = 0;
+#ifdef ZH
+	m_parentID = INVALID_DRAWABLE_ID;
+	m_targetID = INVALID_DRAWABLE_ID;
+	m_parentBoneName.clear();
+#endif
 } 
 
 //-------------------------------------------------------------------------------------------------
@@ -97,11 +133,108 @@ LaserUpdate::~LaserUpdate( void )
 }
 
 //-------------------------------------------------------------------------------------------------
+#ifdef ZH
+void LaserUpdate::updateStartPos()
+{
+	Coord3D oldStartPos = m_startPos;
+
+	if( m_parentID == INVALID_DRAWABLE_ID )
+		return;// Can't update if not told to update
+
+	const Drawable *parentDrawable = TheGameClient->findDrawableByID(m_parentID);
+	if( parentDrawable == NULL )
+		return;// Can't update if no one to ask
+		
+	if( m_parentBoneName.isNotEmpty() )
+	{
+		Matrix3D startPosMatrix;
+		
+		if( !parentDrawable->getCurrentWorldspaceClientBonePositions( m_parentBoneName.str(), startPosMatrix ) )
+		{
+			// failed to find the required bone, so just die
+
+			//Kris: Doing this CRASHES THE GAME LATER!!!! Instead, let's set the position to the drawable, then
+			//      create a nasty assert.
+			//TheGameClient->destroyDrawable( getDrawable() );
+			
+			m_startPos.set( parentDrawable->getPosition() );
+			DEBUG_CRASH( ("LaserUpdate::updateStartPos() -- Drawable %s is expecting to find a bone %s but can't. Defaulting to position of drawable.", 
+				parentDrawable->getTemplate()->getName().str(), m_parentBoneName.str() ) );
+
+			return;
+		}
+
+		
+
+		m_startPos.x = startPosMatrix.Get_X_Translation();
+		m_startPos.y = startPosMatrix.Get_Y_Translation();
+		m_startPos.z = startPosMatrix.Get_Z_Translation();
+	}
+	else
+	{
+		// Just use parent position
+		m_startPos = *parentDrawable->getPosition();
+	}
+
+	if( !(m_startPos == oldStartPos) ) // No != operator.  Heh.
+		m_dirty = TRUE;
+}
+
+//-------------------------------------------------------------------------------------------------
+void LaserUpdate::updateEndPos()
+{
+	const LaserUpdateModuleData *data = getLaserUpdateModuleData();
+	Coord3D oldEndPos = m_endPos;
+
+	if( m_targetID == INVALID_DRAWABLE_ID )
+		return;// Can't update if not told to update
+
+	const Drawable *targetDrawable = TheGameClient->findDrawableByID(m_targetID);
+	Bool targetDead = (targetDrawable && targetDrawable->getObject()) 
+										? targetDrawable->getObject()->isEffectivelyDead() 
+										: FALSE;
+	if( targetDrawable == NULL || targetDead )
+	{
+		// If here, we used to track something, but now it is gone.  So make our end point pierce through
+		// the old spot, and then stop trying to find a target Drawable
+		if( data->m_punchThroughScalar > 0 )
+		{
+			Vector3 laserVector;
+			laserVector.Set(m_endPos.x, m_endPos.y, m_endPos.z);
+			laserVector = laserVector - Vector3(m_startPos.x, m_startPos.y, m_startPos.z);
+			laserVector *= data->m_punchThroughScalar;
+			laserVector = laserVector + Vector3(m_startPos.x, m_startPos.y, m_startPos.z);
+			m_endPos.x = laserVector.X;
+			m_endPos.y = laserVector.Y;
+			m_endPos.z = laserVector.Z;
+		}
+
+		m_targetID = INVALID_DRAWABLE_ID;
+	}
+	else
+	{
+		m_endPos = *targetDrawable->getPosition();
+	}
+
+	if( !(m_endPos == oldEndPos) ) // No != operator.  Heh.
+		m_dirty = TRUE;
+}
+
+//-------------------------------------------------------------------------------------------------
+#endif
 /** The update callback. */
 //-------------------------------------------------------------------------------------------------
 void LaserUpdate::clientUpdate( void )
 {
+#ifdef OG
 /// @todo srj use SLEEPY_UPDATE here
+
+#endif
+#ifdef ZH
+	updateStartPos();
+	updateEndPos();
+
+#endif
 	if( m_decaying )
 	{
 		UnsignedInt now = TheGameLogic->getFrame();
@@ -144,7 +277,12 @@ void LaserUpdate::setDecayFrames( UnsignedInt decayFrames )
 
 
 //-------------------------------------------------------------------------------------------------
+#ifdef OG
 void LaserUpdate::initLaser( const Object *parent, const Coord3D *startPos, const Coord3D *endPos, Int sizeDeltaFrames )
+#endif
+#ifdef ZH
+void LaserUpdate::initLaser( const Object *parent, const Object *target, const Coord3D *startPos, const Coord3D *endPos, AsciiString parentBoneName, Int sizeDeltaFrames )
+#endif
 {
 	const LaserUpdateModuleData *data = getLaserUpdateModuleData();
 	ParticleSystem *system;
@@ -163,9 +301,20 @@ void LaserUpdate::initLaser( const Object *parent, const Coord3D *startPos, cons
 		m_currentWidthScalar = 1.0f;
 	}
 
+#ifdef OG
 	//Compute startPos
 	if( parent && data->m_parentFireBoneName.isNotEmpty() )
+
+#endif
+#ifdef ZH
+	// Write down the bone name override
+	m_parentBoneName = parentBoneName;
+
+	//Record IDs if we have them, then figure out starting points
+	if( parent )
+#endif
 	{
+#ifdef OG
 		// Override startPos with the logic bone position
 		if( data->m_parentFireBoneOnTurret )
 		{
@@ -174,7 +323,17 @@ void LaserUpdate::initLaser( const Object *parent, const Coord3D *startPos, cons
 				// failed to find the required bone, so just die
 				TheGameClient->destroyDrawable( getDrawable() );
 				return;
+#endif
+#ifdef ZH
+		// If a source object, use it
+		if( parent->getDrawable() )
+			m_parentID = parent->getDrawable()->getID();
+
+		updateStartPos();
+
+#endif
 			}				
+#ifdef OG
 		}
 		else
 		{
@@ -186,6 +345,7 @@ void LaserUpdate::initLaser( const Object *parent, const Coord3D *startPos, cons
 			}				
 		}
 	}
+#endif
 	else if( startPos )
 	{
 		// or just use what they gave
@@ -198,8 +358,22 @@ void LaserUpdate::initLaser( const Object *parent, const Coord3D *startPos, cons
 		return;
 	}
 
+#ifdef OG
 	//Compute endPos
 	if( endPos != NULL )
+
+#endif
+#ifdef ZH
+	if( target && !endPos )
+	{
+		// If a target object, use it (unless we override it!)
+		if( target->getDrawable() )
+			m_targetID = target->getDrawable()->getID();
+
+		m_endPos = *target->getPosition();
+	}
+	else if( endPos )
+#endif
 	{
 		// just use what they gave, no override here 
 		m_endPos = *endPos;
@@ -211,7 +385,18 @@ void LaserUpdate::initLaser( const Object *parent, const Coord3D *startPos, cons
 		return;
 	}
 
+#ifdef ZH
+	// Create special particle systems
+	//PLEASE NOTE You cannot check an ID for NULL.  This should be a check against INVALID_PARTICLE_SYSTEM_ID.  Can't change it on the last day without a bug though.
+#endif
 	if( !m_particleSystemID )
+#ifdef ZH
+	{
+		const Player *localPlayer = ThePlayerList->getLocalPlayer();
+
+		//Make sure the laser flare is visible to the player. If no parent, assume laser owner will handle it.
+		if (!parent || parent->getShroudedStatus( localPlayer->getPlayerIndex() ) <= OBJECTSHROUD_PARTIAL_CLEAR )
+#endif
 	{
 		//If we don't have a particle system for the lense flare (muzzle flare), create it.
 		if( data->m_particleSystemName.isNotEmpty() )
@@ -241,8 +426,14 @@ void LaserUpdate::initLaser( const Object *parent, const Coord3D *startPos, cons
 			}
 		}
 	}
+#ifdef ZH
+	}
+#endif
 
 	//Adjust the position of any existing particle system.
+#ifdef ZH
+	//PLEASE NOTE You cannot check an ID for NULL.  This should be a check against INVALID_PARTICLE_SYSTEM_ID.  Can't change it on the last day without a bug though.
+#endif
 	if( m_particleSystemID )
 	{
 		system = TheParticleSystemManager->findParticleSystem( m_particleSystemID );
@@ -251,6 +442,10 @@ void LaserUpdate::initLaser( const Object *parent, const Coord3D *startPos, cons
 			system->setPosition( &m_startPos );
 		}
 	}
+#ifdef ZH
+	
+	//PLEASE NOTE You cannot check an ID for NULL.  This should be a check against INVALID_PARTICLE_SYSTEM_ID.  Can't change it on the last day without a bug though.
+#endif
 	if( m_targetParticleSystemID )
 	{
 		system = TheParticleSystemManager->findParticleSystem( m_targetParticleSystemID );
@@ -262,6 +457,7 @@ void LaserUpdate::initLaser( const Object *parent, const Coord3D *startPos, cons
 
 	//Important! Set the laser position to the average of both points or else
 	//it probably won't get rendered!!!
+#ifdef OG
 	Coord3D avgPos;
 	avgPos.set( startPos );
 	avgPos.add( endPos );
@@ -269,8 +465,32 @@ void LaserUpdate::initLaser( const Object *parent, const Coord3D *startPos, cons
 	getDrawable()->setPosition( &avgPos );
 	Object *laser = getDrawable()->getObject();
 	if( laser )
+
+#endif
+#ifdef ZH
+	// And as a client update, we cannot set the logic position.
+	Coord3D posToUse;
+	if( parent == NULL )
 	{
+		posToUse.set( startPos );
+		posToUse.add( endPos );
+		posToUse.scale( 0.5 );
+	}
+	else
+	{
+		posToUse = *parent->getPosition();
+	}
+
+	Drawable *draw = getDrawable();
+	if( draw )
+#endif
+	{
+#ifdef OG
 		laser->setPosition( &avgPos );
+#endif
+#ifdef ZH
+		draw->setPosition( &posToUse );
+#endif
 	}
 
 	m_dirty = true;
@@ -358,6 +578,13 @@ void LaserUpdate::xfer( Xfer *xfer )
 
 	// decay finish frame
 	xfer->xferUnsignedInt( &m_decayFinishFrame );
+#ifdef ZH
+
+	xfer->xferDrawableID(&m_parentID);
+	xfer->xferDrawableID(&m_targetID);
+
+	xfer->xferAsciiString(&m_parentBoneName);
+#endif
 
 }  // end xfer
 

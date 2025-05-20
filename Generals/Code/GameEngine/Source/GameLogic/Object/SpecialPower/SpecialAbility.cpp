@@ -39,6 +39,13 @@
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////////
+#ifdef ZH
+#ifdef _INTERNAL
+// for occasional debugging...
+//#pragma optimize("", off)
+//#pragma MESSAGE("************************************** WARNING, optimization disabled for debugging purposes")
+#endif
+#endif
 
 // ------------------------------------------------------------------------------------------------
 // ------------------------------------------------------------------------------------------------
@@ -57,7 +64,12 @@ SpecialAbility::~SpecialAbility( void )
 
 // ------------------------------------------------------------------------------------------------
 // ------------------------------------------------------------------------------------------------
+#ifdef OG
 void SpecialAbility::doSpecialPowerAtLocation( const Coord3D *loc, UnsignedInt commandOptions )
+#endif
+#ifdef ZH
+void SpecialAbility::doSpecialPowerAtLocation( const Coord3D *loc, Real angle, UnsignedInt commandOptions )
+#endif
 {
 	if (getObject()->isDisabled())
 		return;
@@ -67,7 +79,12 @@ void SpecialAbility::doSpecialPowerAtLocation( const Coord3D *loc, UnsignedInt c
 		return;
 
 	// call the base class action cause we are *EXTENDING* functionality
+#ifdef OG
 	SpecialPowerModule::doSpecialPowerAtLocation( loc, commandOptions );
+#endif
+#ifdef ZH
+	SpecialPowerModule::doSpecialPowerAtLocation( loc, angle, commandOptions );
+#endif
 }  
 
 // ------------------------------------------------------------------------------------------------

@@ -72,6 +72,9 @@
 #include "GameClient/Drawable.h"
 #include "GameClient/Eva.h"
 #include "GameClient/GameText.h"
+#ifdef ZH
+#include "GameClient/GameWindowTransitions.h"
+#endif
 #include "GameClient/GameWindowManager.h"
 #include "GameClient/GuiCallbacks.h"
 #include "GameClient/InGameUI.h"
@@ -153,7 +156,12 @@ static void doSetRallyPoint( Object *obj, const Coord3D& pos )
 	NameKeyType key = NAMEKEY( "BasicHumanLocomotor" );
 	LocomotorSet locomotorSet;
 	locomotorSet.addLocomotor( TheLocomotorStore->findLocomotorTemplate( key ) );
+#ifdef OG
 	if( TheAI->pathfinder()->quickDoesPathExist( locomotorSet, obj->getPosition(), &pos ) == FALSE )
+#endif
+#ifdef ZH
+	if( TheAI->pathfinder()->clientSafeQuickDoesPathExist( locomotorSet, obj->getPosition(), &pos ) == FALSE )
+#endif
 	{
 
 		// user feedback
@@ -250,6 +258,10 @@ void GameLogic::clearGameData( Bool showScoreScreen )
 		DEBUG_CRASH(("We tried to clear the game data when we weren't in a game"));
 		return;
 	}
+#ifdef ZH
+	
+	setClearingGameData( TRUE );
+#endif
 
 //	m_background = TheWindowManager->winCreateLayout("Menus/BlankWindow.wnd");
 //	DEBUG_ASSERTCRASH(m_background,("We Couldn't Load Menus/BlankWindow.wnd"));
@@ -265,8 +277,14 @@ void GameLogic::clearGameData( Bool showScoreScreen )
 	if ((!isInShellGame() || !isInGame()) && showScoreScreen)
 	{
 		shellGame = TRUE;
+#ifdef ZH
+		TheTransitionHandler->setGroup("FadeWholeScreen");
+#endif
 		TheShell->push("Menus/ScoreScreen.wnd");
 		TheShell->showShell(FALSE); // by passing in false, we don't want to run the Init on the shell screen we just pushed on
+#ifdef ZH
+		TheTransitionHandler->reverse("FadeWholeScreen");
+#endif
 
 		void FixupScoreScreenMovieWindow( void );
 		FixupScoreScreenMovieWindow();
@@ -295,6 +313,10 @@ void GameLogic::clearGameData( Bool showScoreScreen )
 		m_background = NULL;
 	}
 	
+#ifdef ZH
+	setClearingGameData( FALSE );
+	
+#endif
 }
 
 // ------------------------------------------------------------------------------------------------
@@ -304,8 +326,17 @@ void GameLogic::prepareNewGame( Int gameMode, GameDifficulty diff, Int rankPoint
 {
 	//Added By Sadullah Nader
 	//Fix for loading game scene
+#ifdef OG
 	setGameLoading(TRUE);
 	//
+
+#endif
+#ifdef ZH
+
+	//Kris: Commented this out, but leaving it around incase it bites us later. I cleaned up the 
+	//      nomenclature. Look for setLoadingMap() and setLoadingSave()
+	//setGameLoading(TRUE);
+#endif
 
 	TheScriptEngine->setGlobalDifficulty(diff);
 
@@ -611,6 +642,22 @@ void GameLogic::logicMessageDispatcher( GameMessage *msg, void *userData )
 			if( currentlySelectedGroup )
 			{
 				currentlySelectedGroup->setMineClearingDetail(true);
+#ifdef ZH
+			}
+			break;
+		}
+
+		case GameMessage::MSG_ENABLE_RETALIATION_MODE:
+		{
+			//Logically turns on or off retaliation mode for a specified player.
+			Int playerIndex = msg->getArgument( 0 )->integer;
+			Bool enableRetaliation = msg->getArgument( 1 )->boolean;
+
+			Player *player = ThePlayerList->getNthPlayer( playerIndex );
+			if( player )
+			{
+				player->setLogicalRetaliationModeEnabled( enableRetaliation );
+#endif
 			}
 			break;
 		}
@@ -677,21 +724,46 @@ void GameLogic::logicMessageDispatcher( GameMessage *msg, void *userData )
 			// Location argument 2 is destination
 			Coord3D targetCoord = msg->getArgument(1)->location;
 
+#ifdef ZH
+			// Angle argument 3 is the orientation of the special power (if applicable)
+			Real angle = msg->getArgument(2)->real;
+
+#endif
 			// Object in way -- if applicable (some specials care, others don't)
+#ifdef OG
 			ObjectID objectID = msg->getArgument( 2 )->objectID;
+#endif
+#ifdef ZH
+			ObjectID objectID = msg->getArgument( 3 )->objectID;
+#endif
 			Object *objectInWay = TheGameLogic->findObjectByID( objectID );
 
 			// Command button options -- special power may care about variance options
+#ifdef OG
 			UnsignedInt options = msg->getArgument( 3 )->integer;
+#endif
+#ifdef ZH
+			UnsignedInt options = msg->getArgument( 4 )->integer;
+#endif
 
 			// check for possible specific source, ignoring selection.
+#ifdef OG
 			ObjectID sourceID = msg->getArgument(4)->objectID;
+#endif
+#ifdef ZH
+			ObjectID sourceID = msg->getArgument(5)->objectID;
+#endif
 			Object* source = TheGameLogic->findObjectByID(sourceID);
 			if (source != NULL)
 			{
 				AIGroup* theGroup = TheAI->createGroup();
 				theGroup->add(source);
+#ifdef OG
 				theGroup->groupDoSpecialPowerAtLocation( specialPowerID, &targetCoord, objectInWay, options );
+#endif
+#ifdef ZH
+				theGroup->groupDoSpecialPowerAtLocation( specialPowerID, &targetCoord, angle, objectInWay, options );
+#endif
 				TheAI->destroyGroup(theGroup);
 			}
 			else
@@ -699,7 +771,12 @@ void GameLogic::logicMessageDispatcher( GameMessage *msg, void *userData )
 				//Use the selected group!
 				if( currentlySelectedGroup )
 				{
+#ifdef OG
 					currentlySelectedGroup->groupDoSpecialPowerAtLocation( specialPowerID, &targetCoord, objectInWay, options );
+#endif
+#ifdef ZH
+					currentlySelectedGroup->groupDoSpecialPowerAtLocation( specialPowerID, &targetCoord, angle, objectInWay, options );
+#endif
 				}
 			}
 			break;
@@ -888,7 +965,12 @@ void GameLogic::logicMessageDispatcher( GameMessage *msg, void *userData )
 			break;
 		}
 		
+#ifdef OG
 #if defined(_DEBUG) || defined(_INTERNAL)
+#endif
+#ifdef ZH
+#if defined(_DEBUG) || defined(_INTERNAL) || defined (_ALLOW_DEBUG_CHEATS_IN_RELEASE)
+#endif
 		//---------------------------------------------------------------------------------------------
 		case GameMessage::MSG_DEBUG_KILL_SELECTION:
 		{
@@ -907,7 +989,6 @@ void GameLogic::logicMessageDispatcher( GameMessage *msg, void *userData )
 			}
 			break;
 		}
-
 		//---------------------------------------------------------------------------------------------
 		case GameMessage::MSG_DEBUG_HURT_OBJECT:
 		{

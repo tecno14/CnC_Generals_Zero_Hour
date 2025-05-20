@@ -37,6 +37,9 @@
 #include "Common/ThingTemplate.h"
 #include "Common/Xfer.h"
 #include "GameClient/Drawable.h"
+#ifdef ZH
+#include "GameClient/Eva.h"
+#endif
 #include "GameClient/GameText.h"
 #include "GameClient/InGameUI.h"
 #include "GameClient/ParticleSys.h"
@@ -130,7 +133,12 @@ Bool PartitionFilterStealthedOrStealthGarrisoned::allow( Object *objOther)
 	if( ! objOther )
 		return FALSE;
 
+#ifdef OG
 	if( objOther->getStatusBits() & OBJECT_STATUS_STEALTHED )
+#endif
+#ifdef ZH
+	if( objOther->getStatusBits().test( OBJECT_STATUS_STEALTHED ) )
+#endif
 		return TRUE;
 
 	ContainModuleInterface *contain = objOther->getContain();
@@ -207,8 +215,14 @@ UpdateSleepTime StealthDetectorUpdate::update( void )
 		if ( them->isEffectivelyDead() )
 			continue;
 
+#ifdef OG
 		static NameKeyType key_StealthUpdate = NAMEKEY("StealthUpdate");
 		StealthUpdate* stealth = (StealthUpdate *)them->findUpdateModule(key_StealthUpdate);
+#endif
+#ifdef ZH
+		StealthUpdate* stealth = them->getStealth();
+
+#endif
 		if ( stealth ) 
 		{
 
@@ -228,19 +242,38 @@ UpdateSleepTime StealthDetectorUpdate::update( void )
 				{
 					Bool doFeedback = TRUE;
 
+#ifdef OG
 					//
+
+#endif
+#ifdef ZH
+					//Kris: Aug 18, 2003 -- This whole system is no longer viable with the inclusion of so many
+					//stealth units. It's possible to get spammed hundreds of times in a row in MD_GLA02 because
+					//we're blindly creating radar events for each detection (unless they are mines). The best thing
+					//to do is tryEvent for everything...
+					doFeedback = TheRadar->tryEvent( RADAR_EVENT_STEALTH_DISCOVERED, them->getPosition() );
+					//OLD CODE:
+					/*
+#endif
 					// do a radar event, for mines we only make events if there weren't other
 					// mine events within close proximity and time to other mines
 					//
+#ifdef OG
 					if( them->isKindOf( KINDOF_MINE ) )
+#endif
+#ifdef ZH
+					if( them->isKindOf( KINDOF_MINE ) || them->isKindOf( KINDOF_BOOBY_TRAP ) || them->isKindOf( KINDOF_DEMOTRAP ) )
+#endif
 						doFeedback = TheRadar->tryEvent( RADAR_EVENT_STEALTH_DISCOVERED, them->getPosition() );
 					else
  						TheRadar->createEvent( them->getPosition(), RADAR_EVENT_STEALTH_DISCOVERED );
+#ifdef ZH
+					*/
+#endif
 
 					// do audio and UI message if we need to do feedback
 					if( doFeedback )
 					{
-
  						// audio msg
  						static AudioEventRTS discoveredSound = TheAudio->getMiscAudio()->m_stealthDiscoveredSound;
  						discoveredSound.setPlayerIndex( self->getControllingPlayer()->getPlayerIndex() );
@@ -248,6 +281,14 @@ UpdateSleepTime StealthDetectorUpdate::update( void )
  						// ui msg
  						TheInGameUI->message( TheGameText->fetch( "MESSAGE:StealthDiscovered" ) );
 
+#ifdef ZH
+            // If revealing this unit is suppose to cause an Eva event, do it
+            EvaMessage message = stealth->getEnemyDetectionEvaEvent();
+            if ( message != EVA_Invalid && TheEva != NULL )
+            {
+              TheEva->setShouldPlay( message );
+            }
+#endif
 					}  // end if				 
 
 				}  // end if
@@ -262,7 +303,12 @@ UpdateSleepTime StealthDetectorUpdate::update( void )
 					// do a radar event, for mines we only make events if there weren't other
 					// mine events within close proximity and time to other mines
 					//
+#ifdef OG
 					if( them->isKindOf( KINDOF_MINE ) )
+#endif
+#ifdef ZH
+					if( them->isKindOf( KINDOF_MINE ) || them->isKindOf( KINDOF_BOOBY_TRAP ) || them->isKindOf( KINDOF_DEMOTRAP ) )
+#endif
 						doFeedback = TheRadar->tryEvent( RADAR_EVENT_STEALTH_NEUTRALIZED, them->getPosition() );
 					else
  						TheRadar->createEvent( them->getPosition(), RADAR_EVENT_STEALTH_NEUTRALIZED );
@@ -278,6 +324,14 @@ UpdateSleepTime StealthDetectorUpdate::update( void )
  						// ui msg
  						TheInGameUI->message( TheGameText->fetch( "MESSAGE:StealthNeutralized" ) );
 
+#ifdef ZH
+            // If revealing this unit is suppose to cause an Eva event, do it
+            EvaMessage message = stealth->getOwnDetectionEvaEvent();
+            if ( message != EVA_Invalid && TheEva != NULL )
+            {
+              TheEva->setShouldPlay( message );
+            }
+#endif
 					}  // end if
 				
 				}  // end if
@@ -292,7 +346,12 @@ UpdateSleepTime StealthDetectorUpdate::update( void )
 			Drawable *theirDraw = them->getDrawable();
 			if ( theirDraw && !them->isKindOf(KINDOF_MINE))
 			{
+#ifdef OG
 				theirDraw->setHeatVisionOpacity( 1.0f );
+#endif
+#ifdef ZH
+				theirDraw->setSecondMaterialPassOpacity( 1.0f );
+#endif
 			}
 
 			if (data->m_IRGridParticleSysTmpl)
@@ -324,8 +383,14 @@ UpdateSleepTime StealthDetectorUpdate::update( void )
 				{
 					rider = *it;
 
+#ifdef OG
 					static NameKeyType key_StealthUpdate = NAMEKEY("StealthUpdate");
 					StealthUpdate* stealth = (StealthUpdate *)rider->findUpdateModule(key_StealthUpdate);
+#endif
+#ifdef ZH
+          StealthUpdate *stealth = rider->getStealth();
+
+#endif
 					if ( stealth ) 
 					{
 						// we have found someone
@@ -341,11 +406,29 @@ UpdateSleepTime StealthDetectorUpdate::update( void )
 		}
 	}
 
+#ifdef ZH
+
+  const Player *localPlayer = ThePlayerList->getLocalPlayer();
+
+#endif
 	//Make sure the detector is visible to the local player before we add effects or sounds.
+#ifdef OG
 	if (data->m_IRGridParticleSysTmpl && self->getShroudedStatus(ThePlayerList->getLocalPlayer()->getPlayerIndex()) <= OBJECTSHROUD_PARTIAL_CLEAR)
+
+#endif
+#ifdef ZH
+	if ( self->getShroudedStatus( localPlayer->getPlayerIndex() ) <= OBJECTSHROUD_PARTIAL_CLEAR )
+	{
+    if ( self->testStatus( OBJECT_STATUS_STEALTHED ) == FALSE || self->getControllingPlayer() == localPlayer )
+#endif
 	{
 		Drawable *myDraw = self->getDrawable();
+#ifdef OG
 		Coord3D bonePosition = {-1.66f,5.5f,15};//@todo use bone position
+#endif
+#ifdef ZH
+		  Coord3D bonePosition = {-1.66f,5.5f,15};
+#endif
 		if (myDraw)
 			myDraw->getPristineBonePositions( data->m_IRParticleSysBone.str(), 0, &bonePosition, NULL, 1);
 
@@ -393,6 +476,10 @@ UpdateSleepTime StealthDetectorUpdate::update( void )
 
 		IRPingSound.setObjectID( self->getID() );
 		TheAudio->addAudioEvent(&IRPingSound);
+#ifdef ZH
+
+    }
+#endif
 
 	} // end if doIRFX
 

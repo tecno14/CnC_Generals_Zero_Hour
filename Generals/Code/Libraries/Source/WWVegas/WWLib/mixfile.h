@@ -24,11 +24,26 @@
  *                                                                                             * 
  *                     $Archive:: /Commando/Code/wwlib/mixfile.h                              $* 
  *                                                                                             * 
+#ifdef OG
  *                      $Author:: Patrick                                                     $* 
+#endif
+#ifdef ZH
+ *                      $Author:: Steve_t                                                     $*
+#endif
  *                                                                                             * 
+#ifdef OG
  *                     $Modtime:: 8/06/01 3:14p                                               $* 
+#endif
+#ifdef ZH
+ *                     $Modtime:: 9/07/01 5:29p                                               $*
+#endif
  *                                                                                             * 
+#ifdef OG
  *                    $Revision:: 3                                                           $* 
+#endif
+#ifdef ZH
+ *                    $Revision:: 4                                                           $*
+#endif
  *                                                                                             * 
  *---------------------------------------------------------------------------------------------* 
  * Functions:                                                                                  * 
@@ -60,7 +75,12 @@ class	MixFileFactoryClass : public FileFactoryClass {
 
 public:
 	MixFileFactoryClass( const char * mix_filename, FileFactoryClass * factory );
+#ifdef OG
 	~MixFileFactoryClass( void );
+#endif
+#ifdef ZH
+	virtual ~MixFileFactoryClass( void );
+#endif
 
 	//
 	//	Inherited
@@ -72,6 +92,9 @@ public:
 	//	Filename access
 	//
 	bool		Build_Filename_List (DynamicVectorClass<StringClass> &list);
+#ifdef ZH
+	bool		Build_Ordered_Filename_List (DynamicVectorClass<StringClass> &list);		// ordered by offset in mixfile
+#endif
 	bool		Build_Internal_Filename_List (void)									{ return Build_Filename_List (FilenameList); }
 	void		Get_Filename_List (DynamicVectorClass<StringClass> **list)	{ *list = &FilenameList; }
 	void		Get_Filename_List (DynamicVectorClass<StringClass> &list)	{ list = FilenameList; }
@@ -94,6 +117,9 @@ private:
 	//	Utility functions
 	//
 	bool		Get_Temp_Filename (const char *path, StringClass &full_path);
+#ifdef ZH
+	static int	File_Offset_Compare(const void * a, const void * b);
+#endif
 
 	struct FileInfoStruct {
 		bool operator== (const FileInfoStruct &src)	{ return false; }

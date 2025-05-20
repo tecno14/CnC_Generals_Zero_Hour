@@ -113,6 +113,11 @@ private:
 	Vector3				CurrentMainLightColor;
 	Vector3				CurrentMainLightDir;
 	Vector3				CurrentCameraDir;
+#ifdef ZH
+
+	// Use 16-bit metal maps or not
+	bool					Use16Bit;
+#endif
 };
 
 #endif

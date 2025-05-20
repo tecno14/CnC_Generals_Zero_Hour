@@ -24,7 +24,12 @@
 #ifndef XLSTUFF_H
 #define XLSTUFF_H
 
+#ifdef OG
 #include "noxstringDlg.h"
+#endif
+#ifdef ZH
+#include "BabylonDlg.h"
+#endif
 typedef enum {
     xlAll = -4104,
     xlAutomatic = -4105,

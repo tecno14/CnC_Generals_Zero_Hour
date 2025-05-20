@@ -24,12 +24,33 @@
  *                                                                                             *
  *                     $Archive:: /Commando/Code/WWMath/vp.h                                  $*
  *                                                                                             *
+#ifdef OG
  *                        Author:: Hector Yee                                                  *
+
+#endif
+#ifdef ZH
+ *                     Org Author:: Hector Yee                                                  *
  *                                                                                             *
+ *                       Author : Kenny Mitchell                                               * 
+#endif
+ *                                                                                             *
+#ifdef OG
  *                     $Modtime:: 6/27/01 11:39a                                              $*
+#endif
+#ifdef ZH
+ *                     $Modtime:: 06/26/02 4:04p                                             $*
+#endif
  *                                                                                             *
+#ifdef OG
  *                    $Revision:: 12                                                          $*
+#endif
+#ifdef ZH
+ *                    $Revision:: 13                                                          $*
+#endif
  *                                                                                             *
+#ifdef ZH
+ * 06/26/02 KM Matrix name change to avoid MAX conflicts                                       *
+#endif
  *---------------------------------------------------------------------------------------------*
  * Functions:                                                                                  *
  * Transform - transforms a vector array given  Matrix3D                                       *
@@ -53,13 +74,23 @@ class Vector2;
 class Vector3;
 class Vector4;
 class Matrix3D;
+#ifdef OG
 class Matrix4;
+#endif
+#ifdef ZH
+class Matrix4x4;
+#endif
 
 class VectorProcessorClass
 {
 public:
 	static void Transform(Vector3* dst,const Vector3 *src, const Matrix3D& matrix, const int count);
+#ifdef OG
 	static void Transform(Vector4* dst,const Vector3 *src, const Matrix4& matrix, const int count);
+#endif
+#ifdef ZH
+	static void Transform(Vector4* dst,const Vector3 *src, const Matrix4x4& matrix, const int count);
+#endif
 	static void Copy(unsigned *dst,const unsigned *src, const int count);
 	static void Copy(Vector2 *dst,const Vector2 *src, const int count);
 	static void Copy(Vector3 *dst,const Vector3 *src, const int count);

@@ -43,6 +43,11 @@ void RefreshGameInfoListBox( GameWindow *mainWin, GameWindow *win );
 void RefreshGameListBoxes( void );
 void ToggleGameListType( void );
 
+#ifdef ZH
+void playerTemplateComboBoxTooltip(GameWindow *wndComboBox, WinInstanceData *instData, UnsignedInt mouse);
+void playerTemplateListBoxTooltip(GameWindow *wndListBox, WinInstanceData *instData, UnsignedInt mouse);
+
+#endif
 enum GameSortType
 {
 	GAMESORT_ALPHA_ASCENDING = 0,

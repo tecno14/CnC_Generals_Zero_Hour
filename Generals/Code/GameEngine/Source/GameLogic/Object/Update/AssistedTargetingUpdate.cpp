@@ -41,6 +41,15 @@
 #include "GameLogic/Module/AssistedTargetingUpdate.h"
 #include "GameLogic/Module/LaserUpdate.h"
 
+#ifdef ZH
+
+#ifdef _INTERNAL
+// for occasional debugging...
+//#pragma optimize("", off)
+//#pragma MESSAGE("************************************** WARNING, optimization disabled for debugging purposes")
+#endif
+
+#endif
 //-------------------------------------------------------------------------------------------------
 //-------------------------------------------------------------------------------------------------
 void AssistedTargetingUpdateModuleData::buildFieldParse(MultiIniFieldParse& p) 
@@ -50,8 +59,14 @@ void AssistedTargetingUpdateModuleData::buildFieldParse(MultiIniFieldParse& p)
 	{
 		{ "AssistingClipSize",		INI::parseInt,		NULL, offsetof( AssistedTargetingUpdateModuleData, m_clipSize ) },
 		{ "AssistingWeaponSlot",	INI::parseLookupList,	TheWeaponSlotTypeNamesLookupList, offsetof( AssistedTargetingUpdateModuleData, m_weaponSlot ) },
+#ifdef OG
 		{ "LaserFromAssisted",		INI::parseThingTemplate,				NULL, offsetof( AssistedTargetingUpdateModuleData, m_laserFromAssisted ) },
 		{ "LaserToTarget",				INI::parseThingTemplate,				NULL, offsetof( AssistedTargetingUpdateModuleData, m_laserToTarget ) },
+#endif
+#ifdef ZH
+		{ "LaserFromAssisted",		INI::parseAsciiString,				NULL, offsetof( AssistedTargetingUpdateModuleData, m_laserFromAssistedName ) },
+		{ "LaserToTarget",				INI::parseAsciiString,				NULL, offsetof( AssistedTargetingUpdateModuleData, m_laserToTargetName ) },
+#endif
 		{ 0, 0, 0, 0 }
 	};
   p.add(dataFieldParse);
@@ -61,7 +76,14 @@ void AssistedTargetingUpdateModuleData::buildFieldParse(MultiIniFieldParse& p)
 //-------------------------------------------------------------------------------------------------
 AssistedTargetingUpdate::AssistedTargetingUpdate( Thing *thing, const ModuleData* moduleData ) : UpdateModule( thing, moduleData )
 {
+#ifdef OG
 	setWakeFrame(getObject(), UPDATE_SLEEP_FOREVER);
+
+#endif
+#ifdef ZH
+	m_laserFromAssisted = NULL;
+	m_laserToTarget = NULL;
+#endif
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -96,10 +118,18 @@ void AssistedTargetingUpdate::assistAttack( const Object *requestingObject, Obje
 	me->setWeaponLock( md->m_weaponSlot, LOCKED_TEMPORARILY );
 	me->getAI()->aiAttackObject( victimObject, md->m_clipSize, CMD_FROM_AI );
 
+#ifdef OG
 	if( md->m_laserFromAssisted )
 		makeFeedbackLaser( md->m_laserFromAssisted, requestingObject, me );
 	if( md->m_laserToTarget )
 		makeFeedbackLaser( md->m_laserToTarget, me, victimObject );
+#endif
+#ifdef ZH
+	if( m_laserFromAssisted )
+		makeFeedbackLaser( m_laserFromAssisted, requestingObject, me );
+	if( m_laserToTarget )
+		makeFeedbackLaser( m_laserToTarget, me, victimObject );
+#endif
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -114,6 +144,11 @@ void AssistedTargetingUpdate::makeFeedbackLaser( const ThingTemplate *laserTempl
 	if( !laser )
 		return;
 
+#ifdef ZH
+	// Give it a good basis in reality to ensure it can draw when on screen.
+	laser->setPosition(from->getPosition());
+	
+#endif
 	Drawable *draw = laser->getDrawable();
 	static const NameKeyType key_LaserUpdate = NAMEKEY( "LaserUpdate" );
 	LaserUpdate *update = (LaserUpdate*)draw->findClientUpdateModule( key_LaserUpdate );
@@ -123,16 +158,31 @@ void AssistedTargetingUpdate::makeFeedbackLaser( const ThingTemplate *laserTempl
 		return;
 	}
 
+#ifdef OG
 	/** @todo In case they increase the duration of these, initLaser should be able to take
 			Objects as args instead of positions.
 	*/
 	update->initLaser( getObject(), from->getPosition(), to->getPosition() );
+#endif
+#ifdef ZH
+	update->initLaser( getObject(), to, from->getPosition(), to->getPosition(), "" );
+
+#endif
 }
 
 //-------------------------------------------------------------------------------------------------
 //-------------------------------------------------------------------------------------------------
 UpdateSleepTime AssistedTargetingUpdate::update( void )
 {
+#ifdef ZH
+
+  const AssistedTargetingUpdateModuleData *d = getAssistedTargetingUpdateModuleData();
+
+	m_laserFromAssisted = TheThingFactory->findTemplate( d->m_laserFromAssistedName );
+
+	m_laserToTarget =TheThingFactory->findTemplate( d->m_laserFromAssistedName );
+
+#endif
 	return UPDATE_SLEEP_FOREVER;
 }
 
@@ -170,6 +220,12 @@ void AssistedTargetingUpdate::xfer( Xfer *xfer )
 // ------------------------------------------------------------------------------------------------
 void AssistedTargetingUpdate::loadPostProcess( void )
 {
+#ifdef ZH
+  const AssistedTargetingUpdateModuleData *d = getAssistedTargetingUpdateModuleData();
+
+	m_laserFromAssisted = TheThingFactory->findTemplate( d->m_laserFromAssistedName );
+	m_laserToTarget =TheThingFactory->findTemplate( d->m_laserFromAssistedName );
+#endif
 
 	// extend base class
 	UpdateModule::loadPostProcess();

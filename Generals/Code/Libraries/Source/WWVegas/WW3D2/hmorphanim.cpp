@@ -26,11 +26,26 @@
  *                                                                                             *
  *              Original Author:: Greg Hjelstrom                                               *
  *                                                                                             *
+#ifdef OG
  *                      $Author:: Jani_p                                                      $*
+#endif
+#ifdef ZH
+ *                      $Author:: Byon_g                                                      $*
+#endif
  *                                                                                             *
+#ifdef OG
  *                     $Modtime:: 6/27/01 7:50p                                               $*
+#endif
+#ifdef ZH
+ *                     $Modtime:: 1/16/02 6:39p                                               $*
+#endif
  *                                                                                             *
+#ifdef OG
  *                    $Revision:: 5                                                           $*
+#endif
+#ifdef ZH
+ *                    $Revision:: 7                                                           $*
+#endif
  *                                                                                             *
  *---------------------------------------------------------------------------------------------*
  * Functions:                                                                                  *
@@ -200,6 +215,9 @@ HMorphAnimClass::HMorphAnimClass(void) :
 	PivotChannel(NULL)
 {
 	memset(Name,0,sizeof(Name));
+#ifdef ZH
+	memset(AnimName,0,sizeof(AnimName));	
+#endif
 	memset(HierarchyName,0,sizeof(HierarchyName));
 }
 
@@ -230,7 +248,12 @@ void HMorphAnimClass::Free(void)
 }
 
 
+#ifdef OG
 int Build_List_From_String
+#endif
+#ifdef ZH
+static int Build_List_From_String
+#endif
 (
 	const char *	buffer,
 	const char *	delimiter,
@@ -523,9 +546,16 @@ int HMorphAnimClass::Create_New_Morph(const int channels, HAnimClass *anim[])
 	
 	// set up info
 	//	FrameCount = anim[0]->Get_Num_Frames();
+#ifdef OG
 	//	FrameRate = anim[0]->Get_Frame_Rate();
+#endif
 	FrameCount = 0;
+#ifdef OG
 	FrameRate = 30.0f;
+#endif
+#ifdef ZH
+	FrameRate = anim[0]->Get_Frame_Rate();
+#endif
 	NumNodes = anim[0]->Get_Num_Pivots();
 
 	// Set up the anim data for all the channels

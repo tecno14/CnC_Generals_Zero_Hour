@@ -37,12 +37,22 @@
 #include "Common/SpecialPowerMaskType.h"
 #include "Common/DisabledTypes.h"
 #include "Common/Thing.h"
+#ifdef ZH
+#include "Common/ObjectStatusTypes.h"
+#include "Common/Upgrade.h"
+#endif
 
 #include "GameClient/Color.h"
 
+#ifdef ZH
+#include "GameLogic/Damage.h" //for kill()
+#endif
 #include "GameLogic/WeaponBonusConditionFlags.h"
 #include "GameLogic/WeaponSet.h"
 #include "GameLogic/WeaponSetFlags.h"
+#ifdef ZH
+#include "GameLogic/Module/StealthUpdate.h"
+#endif
 
 //-----------------------------------------------------------------------------
 //           Forward References
@@ -58,6 +68,9 @@ class CollideModule;
 class CollideModuleInterface;
 class CommandButton;
 class ContainModuleInterface;
+#ifdef ZH
+class CountermeasuresBehaviorInterface;
+#endif
 class CreateModuleInterface;
 class DamageInfo;
 class DamageInfoInput;
@@ -78,6 +91,9 @@ class PhysicsUpdate;
 class Player;
 class PolygonTrigger;
 class ProductionUpdateInterface;
+#ifdef ZH
+class ProjectileUpdateInterface;
+#endif
 class RadarObject;
 class SightingInfo;
 class SpawnBehaviorInterface;
@@ -97,11 +113,18 @@ class ObjectHeldHelper;
 class ObjectDisabledHelper;
 class ObjectSMCHelper;
 class ObjectRepulsorHelper;
+#ifdef ZH
+class StatusDamageHelper;
+class SubdualDamageHelper;
+class TempWeaponBonusHelper;
+#endif
 class ObjectWeaponStatusHelper;
 class ObjectDefectionHelper;
 
 enum CommandSourceType;
+#ifdef OG
 enum DamageType;
+#endif
 enum HackerAttackMode;
 enum NameKeyType;
 enum SpecialPowerType;
@@ -109,12 +132,21 @@ enum WeaponBonusConditionType;
 enum WeaponChoiceCriteria;
 enum WeaponSetConditionType;
 enum WeaponSetType;
+#ifdef ZH
+enum ArmorSetType;
+#endif
 enum WeaponStatus;
 enum RadarPriorityType;
 enum CanAttackResult;
 
+#ifdef OG
 // For ObjectStatusBits and TheObjectStatusBitNames
 #include "GameLogic/ObjectStatusBits.h"
+#endif
+#ifdef ZH
+// For ObjectStatusTypes
+#include "Common/ObjectStatusTypes.h"
+#endif
 
 // For ObjectScriptStatusBit
 #include "GameLogic/ObjectScriptStatusBits.h"
@@ -161,7 +193,12 @@ class Object : public Thing, public Snapshot
 public:
 
 	/// Object constructor automatically attaches all objects to "TheGameLogic"
+#ifdef OG
 	Object(const ThingTemplate *thing, ObjectStatusBits statusBits, Team *team);
+#endif
+#ifdef ZH
+	Object(const ThingTemplate *thing, const ObjectStatusMaskType &objectStatusMask, Team *team);
+#endif
 
 	void initObject();
 
@@ -193,9 +230,24 @@ public:
 
 	void maskObject( Bool mask );				///< mask/unmask object
 
+#ifdef ZH
+	/** 
+		Booby traps are set off by many random actions, so those actions are responsible for calling this.
+		Return value is if a booby trap was set off, so caller can react.
+		Those actions are: planting any type of bomb, entering, starting to capture, dying.
+	*/
+	Bool checkAndDetonateBoobyTrap(const Object *victim);
+
+#endif
 	// cannot set velocity, since this is calculated from position every frame
+#ifdef OG
 	Bool isDestroyed() const { return (m_status & OBJECT_STATUS_DESTROYED) != 0; }		///< Returns TRUE if object has been destroyed
 	Bool isAirborneTarget() const { return (m_status & OBJECT_STATUS_AIRBORNE_TARGET) != 0; }	///< Our locomotor will control marking us as a valid target for anti air weapons or not
+#endif
+#ifdef ZH
+	Bool isDestroyed() const { return m_status.test( OBJECT_STATUS_DESTROYED ); }		///< Returns TRUE if object has been destroyed
+	Bool isAirborneTarget() const { return m_status.test( OBJECT_STATUS_AIRBORNE_TARGET ); }	///< Our locomotor will control marking us as a valid target for anti air weapons or not
+#endif
 	Bool isUsingAirborneLocomotor( void ) const;										///< returns true if the current locomotor is an airborne one
 
 	/// central place for us to put any additional capture logic
@@ -211,11 +263,26 @@ public:
 	ObjectID getSoleHealingBenefactor( void ) const;
 
 	Real estimateDamage( DamageInfoInput& damageInfo ) const;
+#ifdef OG
 	void kill();																			///< do max health amount of kill damage to object
+#endif
+#ifdef ZH
+	void kill( DamageType damageType = DAMAGE_UNRESISTABLE, DeathType deathType = DEATH_NORMAL );	///< kill the object with an optional type of damage and death.
+#endif
 	void healCompletely();														///< Restore max health to this Object
+#ifdef ZH
+	void notifySubdualDamage( Real amount );///< At this level, we just pass this on to our helper and do a special tint
+	void doStatusDamage( ObjectStatusTypes status, Real duration );///< At this level, we just pass this on to our helper
+	void doTempWeaponBonus( WeaponBonusConditionType status, UnsignedInt duration );///< At this level, we just pass this on to our helper
+#endif
 
 	void scoreTheKill( const Object *victim );						///< I just killed this object.  
+#ifdef OG
 	void onVeterancyLevelChanged( VeterancyLevel oldLevel, VeterancyLevel newLevel );	///< I just achieved this level right this moment
+#endif
+#ifdef ZH
+	void onVeterancyLevelChanged( VeterancyLevel oldLevel, VeterancyLevel newLevel, Bool provideFeedback = TRUE );	///< I just achieved this level right this moment
+#endif
 	ExperienceTracker* getExperienceTracker() {return m_experienceTracker;}
 	const ExperienceTracker* getExperienceTracker() const {return m_experienceTracker;}
 	VeterancyLevel getVeterancyLevel() const;
@@ -257,6 +324,9 @@ public:
 
 	void onCollide( Object *other, const Coord3D *loc, const Coord3D *normal );
 	
+#ifdef ZH
+	Real getCarrierDeckHeight() const;
+#endif
 	// access to modules
 	//-----------------------------------------------------------------------------
 	
@@ -269,7 +339,13 @@ public:
 
 	BodyModuleInterface* getBodyModule() const { return m_body; }
 	ContainModuleInterface* getContain() const { return m_contain; }
+#ifdef ZH
+  StealthUpdate*          getStealth() const { return m_stealth; }
+#endif
 	SpawnBehaviorInterface* getSpawnBehaviorInterface() const;
+#ifdef ZH
+	ProjectileUpdateInterface* getProjectileUpdateInterface() const;
+#endif
 
 
 	// special case for the AIUpdateInterface, since it will be referred to a great deal
@@ -302,16 +378,38 @@ public:
 
 	// Ditto for special powers -- Kris
 	SpecialPowerModuleInterface* findSpecialPowerModuleInterface( SpecialPowerType type ) const;
+#ifdef ZH
+	SpecialPowerModuleInterface* findAnyShortcutSpecialPowerModuleInterface() const;
+#endif
 	SpecialAbilityUpdate* findSpecialAbilityUpdate( SpecialPowerType type ) const;
 	SpecialPowerCompletionDie* findSpecialPowerCompletionDie() const;
 	SpecialPowerUpdateInterface* findSpecialPowerWithOverridableDestinationActive( SpecialPowerType type = SPECIAL_INVALID ) const;
+#ifdef ZH
+	SpecialPowerUpdateInterface* findSpecialPowerWithOverridableDestination( SpecialPowerType type = SPECIAL_INVALID ) const;
 
+	CountermeasuresBehaviorInterface* Object::getCountermeasuresBehaviorInterface();
+	const CountermeasuresBehaviorInterface* Object::getCountermeasuresBehaviorInterface() const;
+#endif
+
+#ifdef OG
 	inline UnsignedInt getStatusBits() const { return m_status; }
 	inline Bool testStatus(ObjectStatusBits bit) const { return (m_status & bit) != 0; }
 	void setStatus( ObjectStatusBits bits, Bool set = true );
 	inline void clearStatus( ObjectStatusBits bits ) { setStatus(bits, false); }
+#endif
+#ifdef ZH
+	inline ObjectStatusMaskType getStatusBits() const { return m_status; }
+	inline Bool testStatus( ObjectStatusTypes bit ) const { return m_status.test( bit ); }
+	void setStatus( ObjectStatusMaskType objectStatus, Bool set = true );
+	inline void clearStatus( ObjectStatusMaskType objectStatus ) { setStatus( objectStatus, false ); }
+#endif
 	void updateUpgradeModules();	///< We need to go through our Upgrade Modules and see which should be activated
+#ifdef OG
 	Int64 getObjectCompletedUpgradeMask() const { return m_objectUpgradesCompleted; } ///< Upgrades I complete locally
+#endif
+#ifdef ZH
+	UpgradeMaskType getObjectCompletedUpgradeMask() const { return m_objectUpgradesCompleted; } ///< Upgrades I complete locally
+#endif
 
 	//This function sucks.
 	//It was added for objects that can disguise as other objects and contain upgraded subobject overrides. 
@@ -365,6 +463,12 @@ public:
 	void giveUpgrade( const UpgradeTemplate *upgradeT );		///< give upgrade to this object
 	void removeUpgrade( const UpgradeTemplate *upgradeT );	///< remove upgrade from this object
 
+#ifdef ZH
+	Bool hasCountermeasures() const;
+	void reportMissileForCountermeasures( Object *missile );
+	ObjectID calculateCountermeasureToDivertTo( const Object& victim );
+
+#endif
 	void calcNaturalRallyPoint(Coord2D *pt); ///< calc the "natural" starting rally point
   void setConstructionPercent( Real percent ) { m_constructionPercent = percent; }
 	Real getConstructionPercent() const { return m_constructionPercent; }
@@ -396,7 +500,9 @@ public:
 	void setShroudRange( Real newShroudRange );	///< Access to setting someone's shrouding distance
 	Real getShroudClearingRange() const;				///< How far do you clear shroud?
 	void setShroudClearingRange( Real newShroudClearingRange );	///< Access to setting someone's clear shroud distance
-
+#ifdef ZH
+	void setVisionSpied(Bool setting, Int byWhom);///< Change who is looking through our eyes
+#endif
 
 	// Both of these calls are intended to only be used by TerrainLogic, specifically setActiveBoundary()
 	void friend_prepareForMapBoundaryAdjust(void);
@@ -421,12 +527,22 @@ public:
 	SpecialPowerModuleInterface *getSpecialPowerModule( const SpecialPowerTemplate *specialPowerTemplate ) const;
 	void doSpecialPower( const SpecialPowerTemplate *specialPowerTemplate, UnsignedInt commandOptions, Bool forced = false );	///< execute power
 	void doSpecialPowerAtObject( const SpecialPowerTemplate *specialPowerTemplate, Object *obj, UnsignedInt commandOptions, Bool forced = false );	///< execute power
+#ifdef OG
 	void doSpecialPowerAtLocation( const SpecialPowerTemplate *specialPowerTemplate, const Coord3D *loc, UnsignedInt commandOptions, Bool forced = false );	///< execute power
 	void doSpecialPowerAtMultipleLocations( const SpecialPowerTemplate *specialPowerTemplate,
 																					const Coord3D *locations, Int locCount, UnsignedInt commandOptions, Bool forced = false );	///< execute power
+#endif
+#ifdef ZH
+	void doSpecialPowerAtLocation( const SpecialPowerTemplate *specialPowerTemplate, const Coord3D *loc, Real angle, UnsignedInt commandOptions, Bool forced = false );	///< execute power
+	void doSpecialPowerUsingWaypoints( const SpecialPowerTemplate *specialPowerTemplate, const Waypoint *way, UnsignedInt commandOptions, Bool forced = false );	///< execute power
+
+#endif
 	void doCommandButton( const CommandButton *commandButton, CommandSourceType cmdSource );
 	void doCommandButtonAtObject( const CommandButton *commandButton, Object *obj, CommandSourceType cmdSource );
 	void doCommandButtonAtPosition( const CommandButton *commandButton, const Coord3D *pos, CommandSourceType cmdSource );
+#ifdef ZH
+	void doCommandButtonUsingWaypoints( const CommandButton *commandButton, const Waypoint *way, CommandSourceType cmdSource );
+#endif
 	
 	/**
 		 For Object specific dynamic command sets.  Different from the Science specific ones handled in ThingTemplate
@@ -434,7 +550,12 @@ public:
 	const AsciiString& getCommandSetString() const;
 	void setCommandSetStringOverride( AsciiString newCommandSetString ) { m_commandSetStringOverride = newCommandSetString; }
 
+#ifdef OG
  	/// People are faking their commandsets, and, Suprise!, they are authoritative.  Challenge everything.
+#endif
+#ifdef ZH
+	/// People are faking their commandsets, and, Surprise!, they are authoritative.  Challenge everything.
+#endif
  	Bool Object::canProduceUpgrade( const UpgradeTemplate *upgrade );
 
 	// Weapons & Damage -------------------------------------------------------------------------------------------------
@@ -444,8 +565,14 @@ public:
 	Bool hasAnyDamageWeapon() const; //Kris: a should be used for real weapons that directly inflict damage... not deploy, hack, etc.
 	Bool hasWeaponToDealDamageType(DamageType typeToDeal) const;
 	Real getLargestWeaponRange() const;
+#ifdef ZH
+	UnsignedInt getMostPercentReadyToFireAnyWeapon() const;
+#endif
 
 	Weapon* getWeaponInWeaponSlot(WeaponSlotType wslot) const { return m_weaponSet.getWeaponInWeaponSlot(wslot); }
+#ifdef ZH
+	UnsignedInt getWeaponInWeaponSlotCommandSourceMask( WeaponSlotType wSlot ) const { return m_weaponSet.getNthCommandSourceMask( wSlot ); }
+#endif
 
 	// see if this current weapon set's weapons has shared reload times
 	const Bool isReloadTimeShared() const { return m_weaponSet.isSharedReloadTime(); }
@@ -461,6 +588,10 @@ public:
 	ObjectID getLastVictimID() const;						///< Get the last victim we shot at
 	Weapon* findWaypointFollowingCapableWeapon();
 	Bool getAmmoPipShowingInfo(Int& numTotal, Int& numFull) const;
+#ifdef ZH
+
+  void notifyFiringTrackerShotFired( const Weapon* weaponFired, ObjectID victimID ) ;
+#endif
 
 	/**
 		Determines if the unit has any weapon that could conceivably
@@ -474,10 +605,20 @@ public:
 		where we already know that isAbleToAttack() == true. so you should always
 		call isAbleToAttack prior to calling this! (srj)
 	*/
+#ifdef OG
 	CanAttackResult getAbleToAttackSpecificObject( AbleToAttackType t, const Object* target, CommandSourceType commandSource ) const;
+#endif
+#ifdef ZH
+	CanAttackResult getAbleToAttackSpecificObject( AbleToAttackType t, const Object* target, CommandSourceType commandSource, WeaponSlotType specificSlot = (WeaponSlotType)-1 ) const;
+#endif
 
 	//Used for base defenses and otherwise stationary units to see if you can attack a position potentially out of range.
+#ifdef OG
 	CanAttackResult getAbleToUseWeaponAgainstTarget( AbleToAttackType attackType, const Object *victim, const Coord3D *pos, CommandSourceType commandSource ) const;
+#endif
+#ifdef ZH
+	CanAttackResult getAbleToUseWeaponAgainstTarget( AbleToAttackType attackType, const Object *victim, const Coord3D *pos, CommandSourceType commandSource, WeaponSlotType specificSlot = (WeaponSlotType)-1 ) const;
+#endif
 
 	/**
 		Selects the best weapon for the given target, and sets it as the current weapon.
@@ -510,13 +651,27 @@ public:
 	Bool setWeaponLock( WeaponSlotType weaponSlot, WeaponLockType lockType ){ return m_weaponSet.setWeaponLock( weaponSlot, lockType ); }
 	void releaseWeaponLock(WeaponLockType lockType){ m_weaponSet.releaseWeaponLock(lockType); }
 	Bool isCurWeaponLocked() const { return m_weaponSet.isCurWeaponLocked(); }
+#ifdef ZH
+
+	void setArmorSetFlag(ArmorSetType ast);
+	void clearArmorSetFlag(ArmorSetType ast);
+	Bool testArmorSetFlag(ArmorSetType ast) const;
+#endif
 
 	/// return true if the template has the specified special power flag set
 	// @todo: inline
 	Bool hasSpecialPower( SpecialPowerType type ) const;
+#ifdef ZH
+	Bool hasAnySpecialPower() const;
 
+	void setWeaponBonusCondition(WeaponBonusConditionType wst);
+	void clearWeaponBonusCondition(WeaponBonusConditionType wst);
+#endif
+
+#ifdef OG
 	void setWeaponBonusCondition(WeaponBonusConditionType wst) { m_weaponBonusCondition |= (1 << wst); }
 	void clearWeaponBonusCondition(WeaponBonusConditionType wst) { m_weaponBonusCondition &= ~(1 << wst); }
+#endif
   // note, the !=0 at the end is important, to convert this into a boolean type! (srj)
 	Bool testWeaponBonusCondition(WeaponBonusConditionType wst) const { return (m_weaponBonusCondition & (1 << wst)) != 0; }
 	inline WeaponBonusConditionFlags getWeaponBonusCondition() const { return m_weaponBonusCondition; }
@@ -543,6 +698,10 @@ public:
 	void setDisabled( DisabledType type );
 	void setDisabledUntil( DisabledType type, UnsignedInt frame );
 	Bool isDisabledByType( DisabledType type ) const { return TEST_DISABLEDMASK( m_disabledMask, type ); }
+#ifdef ZH
+
+	UnsignedInt getDisabledUntil( DisabledType type = DISABLED_ANY ) const;
+#endif
 
 	void pauseAllSpecialPowers( const Bool disabling ) const;	
 	
@@ -573,6 +732,10 @@ public:
 	// Convenience function for checking certain kindof bits
 	Bool isNonFactionStructure(void) const;
 
+#ifdef ZH
+	Bool isHero(void) const;
+
+#endif
 	Bool getReceivingDifficultyBonus() const { return m_isReceivingDifficultyBonus; }
 	void setReceivingDifficultyBonus(Bool receive);
 
@@ -584,8 +747,10 @@ public:
 	// If incoming is true, we're working on the incoming player, if its false, we're on the outgoing
 	// player. These are friend_s for player.
 	void friend_adjustPowerForPlayer( Bool incoming );
+#ifdef OG
 
 	Bool isHero() const;
+#endif
 
 protected:
 
@@ -655,7 +820,12 @@ private:
 
 	Object *			m_next;
 	Object *			m_prev;
+#ifdef OG
 	UnsignedInt		m_status;									///< status bits (see ObjectStatusBits enum)
+#endif
+#ifdef ZH
+	ObjectStatusMaskType		m_status;									///< status bits (see ObjectStatusMaskType)
+#endif
 
 	GeometryInfo	m_geometryInfo;
 
@@ -663,6 +833,12 @@ private:
 
 	// These will last for my lifetime.  I will reuse them and reset them.  The truly dynamic ones are in PartitionManager
 	SightingInfo	*m_partitionLastLook;		///< Where and for whom I last looked, so I can undo its effects when I stop
+#ifdef ZH
+	SightingInfo		*m_partitionRevealAllLastLook;			///< And a seperate look to reveal at a different range if so marked
+	Int							m_visionSpiedBy[MAX_PLAYER_COUNT];  ///< Reference count of having units spied on by players.
+	PlayerMaskType	m_visionSpiedMask;									///< For quick lookup and edge triggered maintenance
+
+#endif
 	SightingInfo	*m_partitionLastShroud;	///< Where and for whom I last shrouded, so I can undo its effects when I stop
 	SightingInfo	*m_partitionLastThreat;	///< Where and for whom I last delt with threat, so I can undo its effects when I stop
 	SightingInfo	*m_partitionLastValue;	///< Where and for whom I last delt with value, so I can undo its effects when I stop
@@ -676,11 +852,21 @@ private:
 
 	UnsignedInt		m_smcUntil;
 
+#ifdef OG
 	enum { NUM_SLEEP_HELPERS = 5 };
+#endif
+#ifdef ZH
+	enum { NUM_SLEEP_HELPERS = 8 };
+#endif
 	ObjectRepulsorHelper*					m_repulsorHelper;
 	ObjectSMCHelper*							m_smcHelper;
 	ObjectWeaponStatusHelper*			m_wsHelper;
 	ObjectDefectionHelper*				m_defectionHelper;
+#ifdef ZH
+	StatusDamageHelper*						m_statusDamageHelper;
+	SubdualDamageHelper*					m_subdualDamageHelper;
+	TempWeaponBonusHelper*				m_tempWeaponBonusHelper;
+#endif
 	FiringTracker*								m_firingTracker;	///< Tracker is really a "helper" and is included NUM_SLEEP_HELPERS
 
 	// modules
@@ -689,6 +875,9 @@ private:
 	// cache these, for convenience
 	ContainModuleInterface*				m_contain;
 	BodyModuleInterface*					m_body;
+#ifdef ZH
+  StealthUpdate*                m_stealth;
+#endif
 
 	AIUpdateInterface*						m_ai;	///< ai interface (if any), cached for handy access. (duplicate of entry in the module array!)
 	PhysicsBehavior*							m_physics;	///< physics interface (if any), cached for handy access. (duplicate of entry in the module array!)
@@ -703,7 +892,12 @@ private:
 	UnsignedInt										m_containedByFrame;	///< frame we were contained by m_containedBy
 
 	Real													m_constructionPercent;			///< for objects being built ... this is the amount completed (0.0 to 100.0)
+#ifdef OG
 	Int64													m_objectUpgradesCompleted;	///< Bit field of upgrades locally completed.
+#endif
+#ifdef ZH
+	UpgradeMaskType								m_objectUpgradesCompleted;	///< Bit field of upgrades locally completed.
+#endif
 
 	Team*													m_team;								///< team that is current owner of this guy
 	AsciiString										m_originalTeamName;		///< team that was the original ("birth") team of this guy

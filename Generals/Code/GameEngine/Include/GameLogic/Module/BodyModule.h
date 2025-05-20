@@ -77,6 +77,9 @@ enum MaxHealthChangeType
 	SAME_CURRENTHEALTH,
 	PRESERVE_RATIO,
 	ADD_CURRENT_HEALTH_TOO,
+#ifdef ZH
+	FULLY_HEAL,
+#endif
 };
 
 #ifdef DEFINE_MAXHEALTHCHANGETYPE_NAMES
@@ -145,15 +148,32 @@ public:
 	virtual Real getMaxHealth() const = 0;
 
 	virtual Real getInitialHealth() const = 0;
+#ifdef ZH
+
+	virtual Real getPreviousHealth() const = 0;
+	
+	virtual UnsignedInt getSubdualDamageHealRate() const = 0;
+	virtual Real getSubdualDamageHealAmount() const = 0;
+	virtual Bool hasAnySubdualDamage() const = 0;
+	virtual Real getCurrentSubdualDamageAmount() const = 0;
+#endif
 
 	virtual BodyDamageType getDamageState() const = 0;
 	virtual void setDamageState( BodyDamageType newState ) = 0;	///< control damage state directly.  Will adjust hitpoints.
 	virtual void setAflame( Bool setting ) = 0;///< This is a major change like a damage state.  
 
+#ifdef OG
 	virtual void onVeterancyLevelChanged( VeterancyLevel oldLevel, VeterancyLevel newLevel ) = 0;	///< I just achieved this level right this moment
+#endif
+#ifdef ZH
+	virtual void onVeterancyLevelChanged( VeterancyLevel oldLevel, VeterancyLevel newLevel, Bool provideFeedback ) = 0;	///< I just achieved this level right this moment
+#endif
 
 	virtual void setArmorSetFlag(ArmorSetType ast) = 0;
 	virtual void clearArmorSetFlag(ArmorSetType ast) = 0;
+#ifdef ZH
+	virtual Bool testArmorSetFlag(ArmorSetType ast) = 0;
+#endif
 
 	virtual const DamageInfo *getLastDamageInfo() const = 0;
 	virtual UnsignedInt getLastDamageTimestamp() const = 0;
@@ -230,17 +250,35 @@ public:
 	virtual Real getHealth() const = 0;													///< get current health
 
 	virtual Real getMaxHealth() const {return 0.0f;}  ///< return max health
+#ifdef ZH
+	virtual Real getPreviousHealth() const { return 0.0f; } ///< return previous health
+#endif
 
+#ifdef ZH
+	virtual UnsignedInt getSubdualDamageHealRate() const {return 0;}
+	virtual Real getSubdualDamageHealAmount() const {return 0.0f;}
+	virtual Bool hasAnySubdualDamage() const{return FALSE;}
+	virtual Real getCurrentSubdualDamageAmount() const { return 0.0f; }
+
+#endif
 	virtual Real getInitialHealth() const {return 0.0f;}  // return initial health
 
 	virtual BodyDamageType getDamageState() const = 0;
 	virtual void setDamageState( BodyDamageType newState ) = 0;	///< control damage state directly.  Will adjust hitpoints.
 	virtual void setAflame( Bool setting ) = 0;///< This is a major change like a damage state.  
 
+#ifdef OG
 	virtual void onVeterancyLevelChanged( VeterancyLevel oldLevel, VeterancyLevel newLevel ) = 0;	///< I just achieved this level right this moment
+#endif
+#ifdef ZH
+	virtual void onVeterancyLevelChanged( VeterancyLevel oldLevel, VeterancyLevel newLevel, Bool provideFeedback = FALSE ) = 0;	///< I just achieved this level right this moment
+#endif
 
 	virtual void setArmorSetFlag(ArmorSetType ast) = 0;
 	virtual void clearArmorSetFlag(ArmorSetType ast) = 0;
+#ifdef ZH
+	virtual Bool testArmorSetFlag(ArmorSetType ast) = 0;
+#endif
 
 	virtual const DamageInfo *getLastDamageInfo() const { return NULL; }	///< return info on last damage dealt to this object
 	virtual UnsignedInt getLastDamageTimestamp() const { return 0; }	///< return frame of last damage dealt

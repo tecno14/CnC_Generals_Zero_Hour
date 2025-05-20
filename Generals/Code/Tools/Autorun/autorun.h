@@ -89,8 +89,14 @@ typedef enum {
 #define SETUP_NAME					"Setup.exe"
 #define UNINSTALL_NAME	  			"Uninst.exe"
 
+#ifdef OG
 #define SHELL_FOLDERS_KEY			"Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Shell Folders"
 #define SHELL_UNINSTALL_KEY			"Software\\Microsoft\\Windows\\CurrentVersion\\Uninstall"
+#endif
+#ifdef ZH
+//#define SHELL_FOLDERS_KEY			"Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Shell Folders"
+#define SHELL_UNINSTALL_KEY			"Software\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\InstallShield_{F3E9C243-122E-4D6B-ACC1-E1FEC02F6CA1}"
+#endif
 #define SHELL_APP_PATHS_KEY			"Software\\Microsoft\\Windows\\CurrentVersion\\App Paths" 
 #define PROGRAMS_SUBKEY				"Programs"
 #define COMMON_PROGRAMS_SUBKEY		"Common Programs"
@@ -103,10 +109,21 @@ typedef enum {
 */
 #define ELECTRONICARTS_SUBKEY	"Electronic Arts"
 #define EAGAMES_SUBKEY				"EA Games"
+#ifdef OG
 #define GENERALS_SUBKEY				"Generals"
+#endif
+#ifdef ZH
+#define GENERALS_SUBKEY				"Command and Conquer Generals Zero Hour"
+#endif
 #define SOFTWARE_EAGAMES_KEY	"Software\\Electronic Arts\\EA Games\\"
+#ifdef OG
 #define EAGAMES_GENERALS_KEY	"Software\\Electronic Arts\\EA Games\\Generals"
 #define EAGAMES_ERGC_KEY			"Software\\Electronic Arts\\EA Games\\Generals\\ergc"
+#endif
+#ifdef ZH
+#define EAGAMES_GENERALS_KEY		"Software\\Electronic Arts\\EA Games\\Command and Conquer Generals Zero Hour"
+#define EAGAMES_ERGC_KEY			"Software\\Electronic Arts\\EA Games\\Command and Conquer Generals Zero Hour\\ergc"
+#endif
 #define LAUNCHER_FILENAME			"Generals.exe"
 #define WORLDBUILDER_FILENAME	"WorldBuilder.exe"
 #define PATCHGET_FILENAME			"patchget.dat"

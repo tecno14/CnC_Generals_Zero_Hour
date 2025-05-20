@@ -39,7 +39,9 @@
 #include "Common/INI.h"
 #include "Common/GlobalData.h"
 #include "GameClient/Image.h"
-
+#ifdef ZH
+#include "Common/NameKeyGenerator.h"
+#endif
 
 // PRIVATE DATA ///////////////////////////////////////////////////////////////////////////////////
 const FieldParse Image::m_imageFieldParseTable[] = 
@@ -154,7 +156,9 @@ Image::Image( void )
 	m_imageSize.y = 0;
 	m_rawTextureData = NULL;
 	m_status = IMAGE_STATUS_NONE;
+#ifdef OG
 	m_next = NULL;
+#endif
 
 }  // end Image
 
@@ -199,15 +203,18 @@ UnsignedInt Image::clearStatus( UnsignedInt bit )
 //-------------------------------------------------------------------------------------------------
 ImageCollection::ImageCollection( void )
 {
+#ifdef OG
 
 	m_imageList = NULL;
 
+#endif
 }  // end ImageCollection
 
 //-------------------------------------------------------------------------------------------------
 //-------------------------------------------------------------------------------------------------
 ImageCollection::~ImageCollection( void )
 {
+#ifdef OG
 	Image *image, *next;
 
 	// delete the images
@@ -222,13 +229,30 @@ ImageCollection::~ImageCollection( void )
 	}  // end while
 	m_imageList = NULL;
 
+#endif
+#ifdef ZH
+  for (std::map<unsigned,Image *>::iterator i=m_imageMap.begin();i!=m_imageMap.end();++i)
+    i->second->deleteInstance();
+
+#endif
 }  // end ~ImageCollection
 
 //-------------------------------------------------------------------------------------------------
+#ifdef OG
 /** Return the next image in the collection */
+#endif
+#ifdef ZH
+/** adds the given image to the collection, transfers ownership to this object */
+#endif
 //-------------------------------------------------------------------------------------------------
+#ifdef OG
 Image *ImageCollection::nextImage( Image *image )
+#endif
+#ifdef ZH
+void ImageCollection::addImage( Image *image )
+#endif
 {
+#ifdef OG
 
 	if( image )
 		return image->m_next;
@@ -250,6 +274,11 @@ Image *ImageCollection::newImage( void )
 
 	return image;
 
+#endif
+#ifdef ZH
+  m_imageMap[TheNameKeyGenerator->nameToLowercaseKey(image->getName())]=image;
+
+#endif
 }  // end newImage
 
 //-------------------------------------------------------------------------------------------------
@@ -257,6 +286,7 @@ Image *ImageCollection::newImage( void )
 //-------------------------------------------------------------------------------------------------
 const Image *ImageCollection::findImageByName( const AsciiString& name )
 {
+#ifdef OG
 	Image *image;
 
 	/** @todo this needs to be more intelligent if this image collection 
@@ -280,7 +310,14 @@ const Image *ImageCollection::findImageByName( const AsciiString& name )
 	// not found
 	return NULL;
 
+#endif
+#ifdef ZH
+  std::map<unsigned,Image *>::iterator i=m_imageMap.find(TheNameKeyGenerator->nameToLowercaseKey(name));
+  return i==m_imageMap.end()?NULL:i->second;
+
+#endif
 }  // end findImageByName
+#ifdef OG
 
 //-------------------------------------------------------------------------------------------------
 /** Find image given image filename */
@@ -307,6 +344,7 @@ const Image *ImageCollection::findImageByFilename( const AsciiString& filename )
 	return NULL;
 
 }  // end findImageByFilename
+#endif
 
 //-------------------------------------------------------------------------------------------------
 /** Load this image collection with all the images specified in the INI files

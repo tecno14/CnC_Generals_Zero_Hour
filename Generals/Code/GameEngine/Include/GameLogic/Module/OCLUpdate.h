@@ -41,10 +41,30 @@ class ObjectCreationList;
 class OCLUpdateModuleData : public UpdateModuleData
 {
 public:
+#ifdef OG
 	const ObjectCreationList *m_ocl;
 	UnsignedInt m_minDelay;
 	UnsignedInt m_maxDelay;
 	Bool m_isCreateAtEdge; ///< Otherwise, it is created on top of myself
+
+#endif
+#ifdef ZH
+
+	struct FactionOCLInfo
+	{
+		std::string									m_factionName;
+		const ObjectCreationList *	m_ocl;
+	};
+
+	typedef std::list<FactionOCLInfo> FactionOCLList;
+
+	const ObjectCreationList *	m_ocl;
+	FactionOCLList							m_factionOCL;
+	UnsignedInt									m_minDelay;
+	UnsignedInt									m_maxDelay;
+	Bool												m_isCreateAtEdge;				///< Otherwise, it is created on top of myself
+	Bool												m_isFactionTriggered;		///< Faction has to be present before update will happen
+#endif
 
 	OCLUpdateModuleData();
 
@@ -71,11 +91,19 @@ public:
 
 	Real getCountdownPercent() const; ///< goes from 0% to 100%
 	UnsignedInt getRemainingFrames() const; ///< For feedback display
+#ifdef ZH
+	void resetTimer(); ///< added for sabotage purposes.
+	virtual DisabledMaskType getDisabledTypesToProcess() const { return DISABLEDMASK_ALL; }
+#endif
 
 protected:
 	
 	UnsignedInt m_nextCreationFrame;
 	UnsignedInt m_timerStartedFrame;
+#ifdef ZH
+	Bool						m_isFactionNeutral;
+	Color						m_currentPlayerColor;
+#endif
 
 	Bool shouldCreate();
 	void setNextCreationFrame();

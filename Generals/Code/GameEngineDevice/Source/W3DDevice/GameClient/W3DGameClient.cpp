@@ -211,14 +211,45 @@ void W3DGameClient::adjustLOD( Int adj )
 		TheWritableGlobalData->m_textureReductionFactor = 0;
 
 	if (WW3D::Get_Texture_Reduction() != TheWritableGlobalData->m_textureReductionFactor)
+#ifdef OG
 	{	WW3D::Set_Texture_Reduction(TheWritableGlobalData->m_textureReductionFactor,6);
+#endif
+#ifdef ZH
+	{	WW3D::Set_Texture_Reduction(TheWritableGlobalData->m_textureReductionFactor,32);
+#endif
 		TheGameLODManager->setCurrentTextureReduction(TheWritableGlobalData->m_textureReductionFactor);
+#ifdef ZH
+		if( TheTerrainRenderObject ) 
+  			TheTerrainRenderObject->setTextureLOD( TheWritableGlobalData->m_textureReductionFactor );
 	}
 
+}  // end adjustLOD
+
+//-------------------------------------------------------------------------------------------------
+/**  Tell the terrain that an object moved, so it can knock down trees or crush grass
+		or whatever is appropriate. jba. */
+//-------------------------------------------------------------------------------------------------
+void W3DGameClient::notifyTerrainObjectMoved(Object *obj)
+{
+	if (TheTerrainRenderObject) {
+		TheTerrainRenderObject->unitMoved(obj);
+#endif
+	}
+
+#ifdef OG
 //I commented this out because we're no longer using terrain LOD.  So I
 //stole this function and keys to adjust the texture resolution instead. -MW
+#endif
+#ifdef ZH
+}  // end setTimeOfDay
 
+#endif
+
+#ifdef OG
 //	if( TheTerrainRenderObject ) 
 //		TheTerrainRenderObject->adjustTerrainLOD( adj );
+#endif
 
+#ifdef OG
 }  // end adjustLOD
+#endif

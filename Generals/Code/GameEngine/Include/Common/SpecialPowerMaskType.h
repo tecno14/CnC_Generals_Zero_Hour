@@ -31,6 +31,9 @@
 #define __SPECIALPOWERMASKTYPE_H__
 
 #include "Common/BitFlags.h"
+#ifdef ZH
+#include "Common/BitFlagsIO.h"
+#endif
 #include "Common/SpecialPowerType.h"
 
 typedef BitFlags<SPECIALPOWER_COUNT>	SpecialPowerMaskType;

@@ -26,9 +26,19 @@
  *                                                                                             *
  *                       Author:: Patrick Smith                                                *
  *                                                                                             *
+#ifdef OG
  *                     $Modtime:: 8/28/01 11:43a                                              $*
+#endif
+#ifdef ZH
+ *                     $Modtime:: 12/13/01 5:11p                                              $*
+#endif
  *                                                                                             *
+#ifdef OG
  *                    $Revision:: 30                                                          $*
+#endif
+#ifdef ZH
+ *                    $Revision:: 37                                                          $*
+#endif
  *                                                                                             *
  *---------------------------------------------------------------------------------------------*
  * Functions:                                                                                  *
@@ -43,10 +53,20 @@
 
 #include "always.h"
 #include "mutex.h"
+#ifdef ZH
+#include "win.h"
+#endif
 #include <string.h>
 #include <stdarg.h>
 #include <tchar.h>
+#ifdef OG
 #include <wwdebug.h>
+
+#endif
+#ifdef ZH
+#include "trim.h"
+#include "wwdebug.h"
+#endif
 #ifdef _UNIX
 #include "osdep.h"
 #endif
@@ -78,6 +98,9 @@ public:
 	StringClass (const StringClass &string, bool hint_temporary = false);
 	StringClass (const TCHAR *string, bool hint_temporary = false);
 	StringClass (TCHAR ch, bool hint_temporary = false);
+#ifdef ZH
+	StringClass (const WCHAR *string, bool hint_temporary = false);
+#endif
 	~StringClass (void);
 
 	////////////////////////////////////////////////////////////
@@ -89,6 +112,9 @@ public:
 	inline const StringClass &operator= (const StringClass &string);
 	inline const StringClass &operator= (const TCHAR *string);
 	inline const StringClass &operator= (TCHAR ch);
+#ifdef ZH
+	inline const StringClass &operator= (const WCHAR *string);
+#endif
 
 	const StringClass &operator+= (const StringClass &string);
 	const StringClass &operator+= (const TCHAR *string);
@@ -120,9 +146,18 @@ public:
 	int _cdecl  Format (const TCHAR *format, ...);
 	int _cdecl  Format_Args (const TCHAR *format, const va_list & arg_list );
 
+#ifdef ZH
+	// Trim leading and trailing whitespace characters (values <= 32)
+	void Trim(void);
+
+#endif
 	TCHAR *		Get_Buffer (int new_length);
 	TCHAR *		Peek_Buffer (void);
 	const TCHAR * Peek_Buffer (void) const;
+#ifdef ZH
+
+	bool Copy_Wide (const WCHAR *source);
+#endif
 
 	////////////////////////////////////////////////////////////
 	//	Static methods
@@ -179,7 +214,12 @@ private:
 	static unsigned ReservedMask;
 	static char m_TempStrings[];
 
+#ifdef OG
 	static CriticalSectionClass m_Mutex;
+#endif
+#ifdef ZH
+	static FastCriticalSectionClass m_Mutex;
+#endif
 
 	static TCHAR	m_NullChar;
 	static TCHAR *	m_EmptyString;
@@ -191,8 +231,10 @@ private:
 inline const StringClass &
 StringClass::operator= (const StringClass &string)
 {	
+#ifdef OG
 //	return operator= ((const TCHAR *)string);
 
+#endif
 	int len = string.Get_Length();
 	Uninitialised_Grow(len+1);
 	Store_Length(len);
@@ -224,6 +266,21 @@ StringClass::operator= (const TCHAR *string)
 //	operator=
 ///////////////////////////////////////////////////////////////////
 inline const StringClass &
+#ifdef ZH
+StringClass::operator= (const WCHAR *string)
+{
+	if (string != 0) {
+		Copy_Wide (string);
+	}
+
+	return (*this);
+}
+
+///////////////////////////////////////////////////////////////////
+//	operator=
+///////////////////////////////////////////////////////////////////
+inline const StringClass &
+#endif
 StringClass::operator= (TCHAR ch)
 {
 	Uninitialised_Grow (2);
@@ -305,6 +362,24 @@ StringClass::StringClass (const TCHAR *string, bool hint_temporary)
 }
 
 ///////////////////////////////////////////////////////////////////
+#ifdef ZH
+//	StringClass
+///////////////////////////////////////////////////////////////////
+inline
+StringClass::StringClass (const WCHAR *string, bool hint_temporary)
+	:	m_Buffer (m_EmptyString)
+{
+	int len = string ? wcslen (string) : 0;
+	if (hint_temporary || len > 0) {
+		Get_String (len + 1, hint_temporary);
+	}
+
+	(*this) = string;
+	return ;
+}
+
+///////////////////////////////////////////////////////////////////
+#endif
 //	~StringClass
 ///////////////////////////////////////////////////////////////////
 inline
@@ -451,6 +526,16 @@ StringClass::Erase (int start_index, int char_count)
 }
 
 ///////////////////////////////////////////////////////////////////
+#ifdef ZH
+// Trim leading and trailing whitespace characters (values <= 32)
+///////////////////////////////////////////////////////////////////
+inline void StringClass::Trim(void)
+{
+	strtrim(m_Buffer);
+}
+
+///////////////////////////////////////////////////////////////////
+#endif
 //	operator+=
 ///////////////////////////////////////////////////////////////////
 inline const StringClass &
@@ -578,7 +663,14 @@ inline StringClass
 operator+ (const StringClass &string1, const TCHAR *string2)
 {
 	StringClass new_string(string1, true);
+#ifdef OG
 	new_string += string2;
+
+#endif
+#ifdef ZH
+	StringClass new_string2(string2, true);
+	new_string += new_string2;
+#endif
 	return new_string;
 }
 

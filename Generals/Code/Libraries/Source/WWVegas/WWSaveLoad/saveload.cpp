@@ -26,9 +26,19 @@
  *                                                                                             *
  *                       Author:: Greg Hjelstrom                                               *
  *                                                                                             *
+#ifdef OG
  *                     $Modtime:: 5/09/01 11:48a                                              $*
+#endif
+#ifdef ZH
+ *                     $Modtime:: 12/09/01 6:42p                                              $*
+#endif
  *                                                                                             *
+#ifdef OG
  *                    $Revision:: 15                                                          $*
+#endif
+#ifdef ZH
+ *                    $Revision:: 19                                                          $*
+#endif
  *                                                                                             *
  *---------------------------------------------------------------------------------------------*
  * Functions:                                                                                  *
@@ -43,6 +53,13 @@
 #include "wwdebug.h"
 #include "saveloadstatus.h"
 #include "wwhack.h"
+#ifdef ZH
+#include "wwprofile.h"
+
+#pragma warning(disable:4201) // warning C4201: nonstandard extension used : nameless struct/union
+#include <windows.h>
+#include "systimer.h"
+#endif
 
 
 SaveLoadSubSystemClass *		SaveLoadSystemClass::SubSystemListHead = NULL;
@@ -65,41 +82,98 @@ bool SaveLoadSystemClass::Save (ChunkSaveClass &csave,SaveLoadSubSystemClass & s
 	return ok;
 }
 
-
 bool SaveLoadSystemClass::Load (ChunkLoadClass &cload,bool auto_post_load)
 {
+#ifdef OG
 //	WWASSERT(PostLoadList.Head() == NULL);
 
+#endif
+#ifdef ZH
+	WWLOG_PREPARE_TIME_AND_MEMORY("SaveLoadSystemClass::Load");
+
+#endif
 	PointerRemapper.Reset();
+#ifdef ZH
+	WWLOG_INTERMEDIATE("PointerRemapper.Reset()");
+#endif
 	bool ok = true;
 
 	// Load each chunk we encounter and link the manager into the PostLoad list
 	while (cload.Open_Chunk ()) {
+#ifdef ZH
+		SaveLoadStatus::Inc_Status_Count();		// Count the sub systems loaded
+#endif
 		SaveLoadSubSystemClass *sys = Find_Sub_System(cload.Cur_Chunk_ID ());
+#ifdef ZH
+		WWLOG_INTERMEDIATE("Find_Sub_System");
+#endif
 		if (sys != NULL) {
+#ifdef ZH
+//WWRELEASE_SAY(("			Name: %s\n",sys->Name()));
+#endif
 			INIT_SUB_STATUS(sys->Name());
 			ok &= sys->Load(cload);
+#ifdef ZH
+			WWLOG_INTERMEDIATE(sys->Name());
+#endif
 		}
 		cload.Close_Chunk();
 	}
 
 	// Process all of the pointer remap requests
 	PointerRemapper.Process();
+#ifdef ZH
+	WWLOG_INTERMEDIATE("PointerRemapper.Process()");
+#endif
 	PointerRemapper.Reset();
+#ifdef ZH
+	WWLOG_INTERMEDIATE("PointerRemapper.Reset()");
+#endif
 
 	// Call PostLoad on each PersistClass that wanted post-load
 	if (auto_post_load) {
+#ifdef OG
 		Post_Load_Processing();
+#endif
+#ifdef ZH
+		Post_Load_Processing(NULL);
+#endif
 	}
+#ifdef ZH
+	WWLOG_INTERMEDIATE("PostLoadProcessing");
+#endif
 
 	return ok;
 }
 
+#ifdef OG
 bool SaveLoadSystemClass::Post_Load_Processing (void)
+
+#endif
+#ifdef ZH
+// Nework update macro for post loader.
+#define UPDATE_NETWORK 											\
+	if (network_callback) {                            \
+		unsigned long time2 = TIMEGETTIME();            \
+		if (time2 - time > 20) {                        \
+			network_callback();                          \
+			time = time2;                                \
+		}                                               \
+	}                                                  \
+
+bool SaveLoadSystemClass::Post_Load_Processing (void(*network_callback)(void))
+#endif
 {
+#ifdef ZH
+	unsigned long time = TIMEGETTIME();
+
+#endif
 	// Call PostLoad on each PersistClass that wanted post-load
 	PostLoadableClass * obj = PostLoadList.Remove_Head();
 	while (obj) {
+#ifdef ZH
+		UPDATE_NETWORK;
+#endif
 		obj->On_Post_Load();
 		obj->Set_Post_Load_Registered(false);
 		obj = PostLoadList.Remove_Head();
