@@ -56,6 +56,8 @@
 /*------------------------------------------------------------------*/
 /* END ABSTRACT */
 
+#pragma warning(disable : 4996)  // Disable "unsafe function" warning in MSVC
+
 #include <string.h>
 #include "codex.h"
 #include "huffcodex.h"
