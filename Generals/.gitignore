@@ -4,9 +4,10 @@
 
 # Build output folders
 [Rr]elease*
-[Pp]rofile*
+#Profile*
+#!profile					# This because there is a project with that name
 [Ii]nternal*
-[Dd]ebug*
+#[Dd]ebug*
 [Hh]ybrid*
 [Ee]nglish
 [Ff]rench
