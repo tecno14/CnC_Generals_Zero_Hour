@@ -1,4 +1,9 @@
-﻿using DiffPlex;
+﻿/*
+ - Get Identical files from both folders into result folder with : #ifdef{content}#endif
+ - For shared files, generate one that have both changes merged.
+ */
+
+using DiffPlex;
 using DiffPlex.DiffBuilder;
 using DiffPlex.DiffBuilder.Model;
 using System.Text;
@@ -13,7 +18,7 @@ namespace GeneralsCombiner
         static readonly HashSet<string> ValidFiles = new HashSet<string>(
             new[] { ".gitignore", ".dsp", ".dsw", ".txt", ".h", ".rc", ".cpp",
                     ".odl", ".hm", ".pl", ".idl", ".rc2", ".c", ".vsh", ".psh",
-                    ".nvp", ".nvv", ".sln", ".vcxproj", ".vcxproj.filters" },
+                    ".nvp", ".nvv" },
             StringComparer.OrdinalIgnoreCase
         );
 
@@ -97,7 +102,7 @@ namespace GeneralsCombiner
 
                 var content = File.ReadAllText(source);
                 Directory.CreateDirectory(Path.GetDirectoryName(dest)!);
-                File.WriteAllText(dest, $"#ifdef {symbol}\n{content}\n#endif\n");
+                File.WriteAllText(dest, $"#ifdef {symbol}\r\n{content}\r\n#endif\r\n");
                 Console.WriteLine($"[{symbol}] {dest}");
             }
             catch (Exception ex)

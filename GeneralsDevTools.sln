@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GeneralsCombiner", "General
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GelFolderFilesExts", "GelFolderFilesExts\GelFolderFilesExts.csproj", "{C01C1823-0D04-4CA6-AF7B-6EA8E42B8FB2}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DuplicateProjects", "DuplicateProjects\DuplicateProjects.csproj", "{C145D58D-A90C-4648-87F8-8DA54F31CAA7}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{C01C1823-0D04-4CA6-AF7B-6EA8E42B8FB2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C01C1823-0D04-4CA6-AF7B-6EA8E42B8FB2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C01C1823-0D04-4CA6-AF7B-6EA8E42B8FB2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C145D58D-A90C-4648-87F8-8DA54F31CAA7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C145D58D-A90C-4648-87F8-8DA54F31CAA7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C145D58D-A90C-4648-87F8-8DA54F31CAA7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C145D58D-A90C-4648-87F8-8DA54F31CAA7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
