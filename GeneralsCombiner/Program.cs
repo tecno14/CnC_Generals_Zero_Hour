@@ -3,7 +3,6 @@ using DiffPlex.DiffBuilder;
 using DiffPlex.DiffBuilder.Model;
 using System.Text;
 using System.Text.RegularExpressions;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace GeneralsCombiner
 {
@@ -12,9 +11,9 @@ namespace GeneralsCombiner
         const string IgnoreCommentVersion = "**	Command & Conquer Generals Zero Hour(tm)";
         const string CommentVersion = "**	Command & Conquer Generals(tm)";
         static readonly HashSet<string> ValidFiles = new HashSet<string>(
-            new[] { ".gitignore", ".dsp", ".dsw", ".txt", ".h", ".rc", ".cpp", 
-                    ".odl", ".hm", ".pl", ".idl", ".rc2", ".c", ".vsh", ".psh", 
-                    ".nvp", ".nvv" },
+            new[] { ".gitignore", ".dsp", ".dsw", ".txt", ".h", ".rc", ".cpp",
+                    ".odl", ".hm", ".pl", ".idl", ".rc2", ".c", ".vsh", ".psh",
+                    ".nvp", ".nvv", ".sln", ".vcxproj", ".vcxproj.filters" },
             StringComparer.OrdinalIgnoreCase
         );
 
@@ -30,9 +29,9 @@ namespace GeneralsCombiner
             //string zhPath = args[1];
             //string resultPath = args[2];
 
-            string ogPath = @"C:\Projects\3_generalsr\temp\CnC_Generals_Zero_Hour\Generals";
-            string zhPath = @"C:\Projects\3_generalsr\temp\CnC_Generals_Zero_Hour\GeneralsMD";
-            string resultPath = @"C:\Projects\3_generalsr\temp\CnC_Generals_Zero_Hour\Combined";
+            string ogPath = @"C:\Projects\3_generalsr\Original Code Unchanged plus combine\CnC_Generals_Zero_Hour\Generals";
+            string zhPath = @"C:\Projects\3_generalsr\Original Code Unchanged plus combine\CnC_Generals_Zero_Hour\GeneralsMD";
+            string resultPath = @"C:\Projects\3_generalsr\Original Code Unchanged plus combine\CnC_Generals_Zero_Hour\Combined";
 
 
             try
