@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "DependenciesGraph": {
+      "commandName": "Project",
+      "commandLineArgs": "\"C:\\Projects\\3_generalsr\\CnC_Generals_Zero_Hour\\Generals\""
+    }
+  }
+}
