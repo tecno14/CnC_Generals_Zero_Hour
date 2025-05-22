@@ -357,19 +357,25 @@ private:
 /*
 ** Like READ_MICRO_CHUNK but reads items straight into the data safe.
 */
+#ifdef OG
 #define READ_SAFE_MICRO_CHUNK(cload,id,var,type)								\
 	case (id):	{                                                     \
-#ifdef OG
 		void *temp_read_buffer_on_the_stack = _alloca(sizeof(var));		\
 		cload.Read(temp_read_buffer_on_the_stack, sizeof(var));        \
-#endif
-#ifdef ZH
-		void *temp_read_buffer_on_the_stack = _alloca(sizeof(type));	\
-		cload.Read(temp_read_buffer_on_the_stack, sizeof(type));       \
-#endif
 		var = *((type*)temp_read_buffer_on_the_stack);                 \
 		break;                                                         \
 	}
+#endif
+
+#ifdef ZH
+#define READ_SAFE_MICRO_CHUNK(cload,id,var,type)								\
+	case (id):	{                                                     \
+		void *temp_read_buffer_on_the_stack = _alloca(sizeof(type));	\
+		cload.Read(temp_read_buffer_on_the_stack, sizeof(type));       \
+		var = *((type*)temp_read_buffer_on_the_stack);                 \
+		break;                                                         \
+	}
+#endif
 
 #define READ_MICRO_CHUNK_STRING(cload,id,var,size)		\
 	case (id):	WWASSERT(cload.Cur_Micro_Chunk_Length() <= size); cload.Read(var,cload.Cur_Micro_Chunk_Length()); break;	\

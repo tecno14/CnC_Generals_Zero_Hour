@@ -6,6 +6,7 @@
 *.user
 *.sln.docstates
 *.vcxproj.filters
+*.tlog
 
 # Build results
 #[Dd]ebug/
