@@ -56,27 +56,8 @@ BSC32=bscmake.exe
 # ADD BSC32 /nologo
 LINK32=link.exe
 # ADD BASE LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib /nologo /subsystem:windows /dll /machine:I386
-#ifdef OG
 # ADD LINK32 pluglib.lib mesh.lib maxutil.lib maxscrpt.lib bmm.lib kernel32.lib user32.lib gdi32.lib comdlg32.lib shell32.lib comctl32.lib core.lib geom.lib paramblk2.lib /nologo /subsystem:windows /dll /map /debug /machine:I386 /out:"Run\Max2w3d.dle" /libpath:"..\Pluglib\Release" /libpath:"D:\3dsmax4\maxsdk\lib"
 
-#endif
-#ifdef ZH
-# ADD LINK32 pluglib.lib mesh.lib maxutil.lib maxscrpt.lib bmm.lib kernel32.lib user32.lib gdi32.lib comdlg32.lib shell32.lib comctl32.lib core.lib geom.lib paramblk2.lib /nologo /subsystem:windows /dll /machine:I386 /out:"Run\Max2w3d.dle" /libpath:"..\Pluglib\Release" /libpath:"D:\3dsmax4\maxsdk\lib"
-# SUBTRACT LINK32 /debug
-# Begin Custom Build
-TargetPath=.\Run\Max2w3d.dle
-TargetName=Max2w3d
-InputPath=.\Run\Max2w3d.dle
-SOURCE="$(InputPath)"
-
-"$(MAXDIR)\Plugins\Westwood\$(TargetName).dle" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
-	Copy $(TargetPath) $(MAXDIR)\Plugins\Westwood\$(TargetName).dle
-#endif
-
-#ifdef ZH
-# End Custom Build
-
-#endif
 !ELSEIF  "$(CFG)" == "max2w3d - Win32 Debug"
 
 # PROP BASE Use_MFC 0
@@ -101,24 +82,8 @@ BSC32=bscmake.exe
 # ADD BSC32 /nologo
 LINK32=link.exe
 # ADD BASE LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib /nologo /subsystem:windows /dll /debug /machine:I386
-#ifdef OG
 # ADD LINK32 winspool.lib advapi32.lib ole32.lib oleaut32.lib uuid.lib pluglibd.lib mesh.lib maxutil.lib maxscrpt.lib bmm.lib kernel32.lib user32.lib gdi32.lib comdlg32.lib shell32.lib comctl32.lib core.lib geom.lib paramblk2.lib /nologo /subsystem:windows /dll /map /debug /machine:I386 /out:"Run\Max2w3d.dle" /libpath:"..\Pluglib\Debug" /libpath:"D:\3dsmax4\maxsdk\lib"
 # SUBTRACT LINK32
-
-#endif
-#ifdef ZH
-# ADD LINK32 winspool.lib advapi32.lib ole32.lib oleaut32.lib uuid.lib pluglibd.lib mesh.lib maxutil.lib maxscrpt.lib bmm.lib kernel32.lib user32.lib gdi32.lib comdlg32.lib shell32.lib comctl32.lib core.lib geom.lib paramblk2.lib /nologo /subsystem:windows /dll /debug /machine:I386 /out:"Run\Max2w3d.dle" /libpath:"..\Pluglib\Debug" /libpath:"D:\3dsmax4\maxsdk\lib"
-# Begin Custom Build
-TargetPath=.\Run\Max2w3d.dle
-TargetName=Max2w3d
-InputPath=.\Run\Max2w3d.dle
-SOURCE="$(InputPath)"
-
-"$(MAXDIR)\Plugins\Westwood\$(TargetName).dle" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
-	Copy $(TargetPath) $(MAXDIR)\Plugins\Westwood\$(TargetName).dle
-
-# End Custom Build
-#endif
 
 !ELSEIF  "$(CFG)" == "max2w3d - Win32 Hybrid"
 
@@ -146,23 +111,7 @@ BSC32=bscmake.exe
 LINK32=link.exe
 # ADD BASE LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comctl32.lib core.lib geom.lib mesh.lib util.lib bmm.lib pluglib.lib /nologo /subsystem:windows /dll /debug /machine:I386 /out:"c:/3dsmax2/plugins/w3d/max2w3d.dle" /libpath:"..\pluglib\lib"
 # ADD LINK32 pluglib.lib mesh.lib maxutil.lib maxscrpt.lib bmm.lib kernel32.lib user32.lib gdi32.lib comdlg32.lib shell32.lib comctl32.lib core.lib geom.lib paramblk2.lib /nologo /subsystem:windows /dll /debug /machine:I386 /out:"Run\Max2w3d.dle" /libpath:"..\Pluglib\Hybrid" /libpath:"D:\3dsmax4\maxsdk\lib"
-#ifdef OG
 # SUBTRACT LINK32 
-
-#endif
-#ifdef ZH
-# SUBTRACT LINK32 /pdb:none
-# Begin Custom Build
-TargetPath=.\Run\Max2w3d.dle
-TargetName=Max2w3d
-InputPath=.\Run\Max2w3d.dle
-SOURCE="$(InputPath)"
-
-"$(MAXDIR)\Plugins\Westwood\$(TargetName).dle" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
-	Copy $(TargetPath) "$(MAXDIR)\Plugins\Westwood\$(TargetName).dle"
-
-# End Custom Build
-#endif
 
 !ELSEIF  "$(CFG)" == "max2w3d - Win32 Max4Hybrid"
 
@@ -189,27 +138,9 @@ BSC32=bscmake.exe
 # ADD BSC32 /nologo
 LINK32=link.exe
 # ADD BASE LINK32 pluglib.lib mesh.lib maxutil.lib maxscrpt.lib bmm.lib kernel32.lib user32.lib gdi32.lib comdlg32.lib shell32.lib comctl32.lib core.lib geom.lib paramblk2.lib /nologo /subsystem:windows /dll /debug /machine:I386 /out:"Run\Max2w3d.dle" /libpath:"..\Pluglib\Hybrid"
-#ifdef OG
 # SUBTRACT BASE LINK32 
 # ADD LINK32 pluglib.lib mesh.lib maxutil.lib maxscrpt.lib bmm.lib kernel32.lib user32.lib gdi32.lib comdlg32.lib shell32.lib comctl32.lib core.lib geom.lib paramblk2.lib /nologo /subsystem:windows /dll /map /debug /machine:I386 /out:"Run\Max2w3d.dle" /libpath:"..\Pluglib\Hybrid" /libpath:"D:\3dsmax4\maxsdk\lib"
 # SUBTRACT LINK32 
-
-#endif
-#ifdef ZH
-# SUBTRACT BASE LINK32 /pdb:none
-# ADD LINK32 pluglib.lib mesh.lib maxutil.lib maxscrpt.lib bmm.lib kernel32.lib user32.lib gdi32.lib comdlg32.lib shell32.lib comctl32.lib core.lib geom.lib paramblk2.lib /nologo /subsystem:windows /dll /debug /machine:I386 /out:"Run\Max2w3d.dle" /libpath:"..\Pluglib\Hybrid" /libpath:"D:\3dsmax4\maxsdk\lib"
-# SUBTRACT LINK32 /pdb:none
-# Begin Custom Build
-TargetPath=.\Run\Max2w3d.dle
-TargetName=Max2w3d
-InputPath=.\Run\Max2w3d.dle
-SOURCE="$(InputPath)"
-
-"D:\3dsmax4\Plugins\Westwood\$(TargetName).dle" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
-	Copy $(TargetPath) D:\3dsmax4\Plugins\Westwood\$(TargetName).dle
-
-# End Custom Build
-#endif
 
 !ELSEIF  "$(CFG)" == "max2w3d - Win32 Max4Release"
 
@@ -237,24 +168,7 @@ BSC32=bscmake.exe
 LINK32=link.exe
 # ADD BASE LINK32 pluglib.lib mesh.lib maxutil.lib maxscrpt.lib bmm.lib kernel32.lib user32.lib gdi32.lib comdlg32.lib shell32.lib comctl32.lib core.lib geom.lib paramblk2.lib /nologo /subsystem:windows /dll /machine:I386 /out:"Run\Max2w3d.dle" /libpath:"..\Pluglib\Release"
 # SUBTRACT BASE LINK32 /debug
-#ifdef OG
 # ADD LINK32 pluglib.lib mesh.lib maxutil.lib maxscrpt.lib bmm.lib kernel32.lib user32.lib gdi32.lib comdlg32.lib shell32.lib comctl32.lib core.lib geom.lib paramblk2.lib /nologo /subsystem:windows /dll /map /debug /machine:I386 /out:"Run\Max2w3d.dle" /libpath:"..\Pluglib\Release" /libpath:"D:\3dsmax4\maxsdk\lib"
-
-#endif
-#ifdef ZH
-# ADD LINK32 pluglib.lib mesh.lib maxutil.lib maxscrpt.lib bmm.lib kernel32.lib user32.lib gdi32.lib comdlg32.lib shell32.lib comctl32.lib core.lib geom.lib paramblk2.lib /nologo /subsystem:windows /dll /machine:I386 /out:"Run\Max2w3d.dle" /libpath:"..\Pluglib\Release" /libpath:"D:\3dsmax4\maxsdk\lib"
-# SUBTRACT LINK32 /debug
-# Begin Custom Build
-TargetPath=.\Run\Max2w3d.dle
-TargetName=Max2w3d
-InputPath=.\Run\Max2w3d.dle
-SOURCE="$(InputPath)"
-
-"$(MAXDIR)\Plugins\Westwood\$(TargetName).dle" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
-	Copy $(TargetPath) $(MAXDIR)\Plugins\Westwood\$(TargetName).dle
-
-# End Custom Build
-#endif
 
 !ENDIF 
 

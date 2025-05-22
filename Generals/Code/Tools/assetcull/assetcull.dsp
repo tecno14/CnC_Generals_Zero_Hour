@@ -1,4 +1,3 @@
-#ifdef ZH
 # Microsoft Developer Studio Project File - Name="assetcull" - Package Owner=<4>
 # Microsoft Developer Studio Generated Build File, Format Version 6.00
 # ** DO NOT EDIT **
@@ -89,5 +88,3 @@ SOURCE=.\assetcull.cpp
 # End Source File
 # End Target
 # End Project
-
-#endif

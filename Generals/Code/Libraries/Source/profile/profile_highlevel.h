@@ -1,13 +1,5 @@
-#ifdef OG
-#ifdef ZH
-#endif
 /*
-#ifdef OG
 **	Command & Conquer Generals Zero Hour(tm)
-#endif
-#ifdef ZH
-**	Command & Conquer Generals(tm)
-#endif
 **	Copyright 2025 Electronic Arts Inc.
 **
 **	This program is free software: you can redistribute it and/or modify
@@ -30,7 +22,7 @@
 // $Revision: #2 $
 // $DateTime: 2003/07/09 10:57:23 $
 //
-// ï¿½2003 Electronic Arts
+// ©2003 Electronic Arts
 //
 // High level profiling
 //////////////////////////////////////////////////////////////////////////////
@@ -247,7 +239,3 @@ private:
 };
 
 #endif // PROFILE_HIGHLEVEL_H
-#ifdef OG
-
-#endif
-#endif

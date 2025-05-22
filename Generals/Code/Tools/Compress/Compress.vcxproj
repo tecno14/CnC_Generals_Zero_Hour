@@ -95,6 +95,7 @@
       <WarningLevel>Level3</WarningLevel>
       <MinimalRebuild>true</MinimalRebuild>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
+	  <FunctionLevelLinking>true</FunctionLevelLinking>
       <AdditionalIncludeDirectories>../../Libraries/Source;../../Libraries/Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>OG;_DEBUG;WIN32;_CONSOLE;Z_PREFIX;DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AssemblerListingLocation>.\Debug\</AssemblerListingLocation>

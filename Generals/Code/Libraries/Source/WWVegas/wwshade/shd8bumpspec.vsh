@@ -1,4 +1,3 @@
-#ifdef ZH
 //
 //	Command & Conquer Generals Zero Hour(tm)
 //	Copyright 2025 Electronic Arts Inc.
@@ -182,5 +181,3 @@ mov oT0, V_TEXTURE
 mov oT1, V_TEXTURE
 
 
-
-#endif

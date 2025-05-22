@@ -65,12 +65,7 @@ LIB32=link.exe -lib
 # PROP Intermediate_Dir ".\Debug"
 # PROP Target_Dir ""
 # ADD BASE CPP /nologo /W3 /GX /Z7 /Od /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /YX /c
-#ifdef OG
 # ADD CPP /nologo /MDd /W3 /GX /Z7 /Od /D "_DEBUG" /D "_WINDOWS" /YX /FD "WIN32" /c
-#endif
-#ifdef ZH
-# ADD CPP /nologo /MDd /W3 /GX /Z7 /Od /D "_DEBUG" /D "_WINDOWS" /YX /FD WIN32" /c
-#endif
 # ADD BASE RSC /l 0x409
 # ADD RSC /l 0x409
 BSC32=bscmake.exe
@@ -116,22 +111,6 @@ LIB32=link.exe -lib
 # Begin Source File
 
 SOURCE=.\chunkio.cpp
-#ifdef ZH
-DEP_CPP_CHUNK=\
-	".\always.h"\
-	".\bittype.h"\
-	".\bool.h"\
-	".\borlandc.h"\
-	".\chunkio.h"\
-	".\iostruct.h"\
-	".\visualc.h"\
-	".\watcom.h"\
-	".\wwfile.h"\
-	
-NODEP_CPP_CHUNK=\
-	".\osdep.h"\
-	
-#endif
 
 !IF  "$(CFG)" == "pluglib - Win32 Release"
 
@@ -145,11 +124,6 @@ NODEP_CPP_CHUNK=\
 # Begin Source File
 
 SOURCE=.\EULER.CPP
-#ifdef ZH
-DEP_CPP_EULER=\
-	".\EULER.H"\
-	
-#endif
 
 !IF  "$(CFG)" == "pluglib - Win32 Release"
 
@@ -163,17 +137,6 @@ DEP_CPP_EULER=\
 # Begin Source File
 
 SOURCE=.\HSV.CPP
-#ifdef ZH
-DEP_CPP_HSV_C=\
-	".\always.h"\
-	".\bool.h"\
-	".\borlandc.h"\
-	".\hsv.h"\
-	".\rgb.h"\
-	".\visualc.h"\
-	".\watcom.h"\
-	
-#endif
 
 !IF  "$(CFG)" == "pluglib - Win32 Release"
 
@@ -187,15 +150,6 @@ DEP_CPP_HSV_C=\
 # Begin Source File
 
 SOURCE=.\JShell.CPP
-#ifdef ZH
-DEP_CPP_JSHEL=\
-	".\always.h"\
-	".\bool.h"\
-	".\borlandc.h"\
-	".\visualc.h"\
-	".\watcom.h"\
-	
-#endif
 
 !IF  "$(CFG)" == "pluglib - Win32 Release"
 
@@ -209,26 +163,6 @@ DEP_CPP_JSHEL=\
 # Begin Source File
 
 SOURCE=.\matrix3d.cpp
-#ifdef ZH
-DEP_CPP_MATRI=\
-	".\always.h"\
-	".\bool.h"\
-	".\borlandc.h"\
-	".\matrix3d.h"\
-	".\matrix4.h"\
-	".\vector2.h"\
-	".\vector3.h"\
-	".\vector4.h"\
-	".\visualc.h"\
-	".\w3dquat.h"\
-	".\watcom.h"\
-	".\wwmath.h"\
-	".\WWmatrix3.h"\
-	
-NODEP_CPP_MATRI=\
-	".\osdep.h"\
-	
-#endif
 
 !IF  "$(CFG)" == "pluglib - Win32 Release"
 
@@ -242,28 +176,7 @@ NODEP_CPP_MATRI=\
 # Begin Source File
 
 SOURCE=.\matrix4.cpp
-#ifdef ZH
-DEP_CPP_MATRIX=\
-	".\always.h"\
-	".\bool.h"\
-	".\borlandc.h"\
-	".\matrix3d.h"\
-	".\matrix4.h"\
-	".\vector2.h"\
-	".\vector3.h"\
-	".\vector4.h"\
-	".\visualc.h"\
-	".\watcom.h"\
-	".\wwmath.h"\
-	".\WWmatrix3.h"\
-#endif
 
-#ifdef ZH
-NODEP_CPP_MATRIX=\
-	".\osdep.h"\
-	
-
-#endif
 !IF  "$(CFG)" == "pluglib - Win32 Release"
 
 !ELSEIF  "$(CFG)" == "pluglib - Win32 Debug"
@@ -276,15 +189,6 @@ NODEP_CPP_MATRIX=\
 # Begin Source File
 
 SOURCE=.\nodefilt.cpp
-#ifdef ZH
-DEP_CPP_NODEF=\
-	".\always.h"\
-	".\bool.h"\
-	".\borlandc.h"\
-	".\nodefilt.h"\
-	".\visualc.h"\
-	".\watcom.h"\
-#endif
 
 !IF  "$(CFG)" == "pluglib - Win32 Release"
 
@@ -298,17 +202,6 @@ DEP_CPP_NODEF=\
 # Begin Source File
 
 SOURCE=.\nodelist.cpp
-#ifdef ZH
-DEP_CPP_NODEL=\
-	".\always.h"\
-	".\bool.h"\
-	".\borlandc.h"\
-	".\nodefilt.h"\
-	".\nodelist.h"\
-	".\visualc.h"\
-	".\watcom.h"\
-	
-#endif
 
 !IF  "$(CFG)" == "pluglib - Win32 Release"
 
@@ -322,17 +215,6 @@ DEP_CPP_NODEL=\
 # Begin Source File
 
 SOURCE=.\PALETTE.CPP
-#ifdef ZH
-DEP_CPP_PALET=\
-	".\always.h"\
-	".\bool.h"\
-	".\borlandc.h"\
-	".\palette.h"\
-	".\rgb.h"\
-	".\visualc.h"\
-	".\watcom.h"\
-	
-#endif
 
 !IF  "$(CFG)" == "pluglib - Win32 Release"
 
@@ -346,21 +228,6 @@ DEP_CPP_PALET=\
 # Begin Source File
 
 SOURCE=.\RAWFILE.CPP
-#ifdef ZH
-DEP_CPP_RAWFI=\
-	".\always.h"\
-	".\bool.h"\
-	".\borlandc.h"\
-	".\rawfile.h"\
-	".\visualc.h"\
-	".\watcom.h"\
-	".\win.h"\
-	".\wwfile.h"\
-	
-NODEP_CPP_RAWFI=\
-	".\osdep.h"\
-	
-#endif
 
 !IF  "$(CFG)" == "pluglib - Win32 Release"
 
@@ -374,11 +241,6 @@ NODEP_CPP_RAWFI=\
 # Begin Source File
 
 SOURCE=.\realcrc.cpp
-#ifdef ZH
-DEP_CPP_REALC=\
-	".\realcrc.h"\
-	
-#endif
 
 !IF  "$(CFG)" == "pluglib - Win32 Release"
 
@@ -392,17 +254,6 @@ DEP_CPP_REALC=\
 # Begin Source File
 
 SOURCE=.\RGB.CPP
-#ifdef ZH
-DEP_CPP_RGB_C=\
-	".\always.h"\
-	".\bool.h"\
-	".\borlandc.h"\
-	".\hsv.h"\
-	".\palette.h"\
-	".\rgb.h"\
-	".\visualc.h"\
-	".\watcom.h"\
-#endif
 
 !IF  "$(CFG)" == "pluglib - Win32 Release"
 
@@ -416,17 +267,6 @@ DEP_CPP_RGB_C=\
 # Begin Source File
 
 SOURCE=.\Vector.CPP
-#ifdef ZH
-DEP_CPP_VECTO=\
-	".\always.h"\
-	".\bool.h"\
-	".\borlandc.h"\
-	".\noinit.h"\
-	".\Vector.H"\
-	".\visualc.h"\
-	".\watcom.h"\
-	
-#endif
 
 !IF  "$(CFG)" == "pluglib - Win32 Release"
 
@@ -440,26 +280,6 @@ DEP_CPP_VECTO=\
 # Begin Source File
 
 SOURCE=.\w3dquat.cpp
-#ifdef ZH
-DEP_CPP_W3DQU=\
-	".\always.h"\
-	".\bool.h"\
-	".\borlandc.h"\
-	".\matrix3d.h"\
-	".\matrix4.h"\
-	".\vector2.h"\
-	".\vector3.h"\
-	".\vector4.h"\
-	".\visualc.h"\
-	".\w3dquat.h"\
-	".\watcom.h"\
-	".\wwmath.h"\
-	".\WWmatrix3.h"\
-	
-NODEP_CPP_W3DQU=\
-	".\osdep.h"\
-	
-#endif
 
 !IF  "$(CFG)" == "pluglib - Win32 Release"
 
@@ -473,15 +293,6 @@ NODEP_CPP_W3DQU=\
 # Begin Source File
 
 SOURCE=.\wwmath.cpp
-#ifdef ZH
-DEP_CPP_WWMAT=\
-	".\always.h"\
-	".\bool.h"\
-	".\borlandc.h"\
-	".\visualc.h"\
-	".\watcom.h"\
-	".\wwmath.h"\
-#endif
 
 !IF  "$(CFG)" == "pluglib - Win32 Release"
 
@@ -495,26 +306,6 @@ DEP_CPP_WWMAT=\
 # Begin Source File
 
 SOURCE=.\WWmatrix3.cpp
-#ifdef ZH
-DEP_CPP_WWMATR=\
-	".\always.h"\
-	".\bool.h"\
-	".\borlandc.h"\
-	".\matrix3d.h"\
-	".\matrix4.h"\
-	".\vector2.h"\
-	".\vector3.h"\
-	".\vector4.h"\
-	".\visualc.h"\
-	".\w3dquat.h"\
-	".\watcom.h"\
-	".\wwmath.h"\
-	".\WWmatrix3.h"\
-	
-NODEP_CPP_WWMATR=\
-	".\osdep.h"\
-	
-#endif
 
 !IF  "$(CFG)" == "pluglib - Win32 Release"
 

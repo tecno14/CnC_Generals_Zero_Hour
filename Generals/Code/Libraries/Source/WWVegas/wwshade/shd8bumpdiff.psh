@@ -1,4 +1,3 @@
-#ifdef ZH
 //
 //	Command & Conquer Generals Zero Hour(tm)
 //	Copyright 2025 Electronic Arts Inc.
@@ -45,5 +44,3 @@ add r0, r0, r1
 
 // add key light contribution
 mad r0, TEX_DECAL, COL_LIGHT.a, r0
-
-#endif

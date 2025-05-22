@@ -1,6 +1,3 @@
-#ifdef OG
-#ifdef ZH
-#endif
 # Microsoft Developer Studio Project File - Name="test3" - Package Owner=<4>
 # Microsoft Developer Studio Generated Build File, Format Version 6.00
 # ** DO NOT EDIT **
@@ -89,7 +86,3 @@ SOURCE=.\test3.cpp
 # End Source File
 # End Target
 # End Project
-#ifdef OG
-
-#endif
-#endif

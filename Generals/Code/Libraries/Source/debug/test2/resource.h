@@ -1,13 +1,5 @@
-#ifdef OG
-#ifdef ZH
-#endif
 /*
-#ifdef OG
 **	Command & Conquer Generals Zero Hour(tm)
-#endif
-#ifdef ZH
-**	Command & Conquer Generals(tm)
-#endif
 **	Copyright 2025 Electronic Arts Inc.
 **
 **	This program is free software: you can redistribute it and/or modify
@@ -49,9 +41,5 @@
 #define _APS_NEXT_COMMAND_VALUE         32771
 #define _APS_NEXT_CONTROL_VALUE         1000
 #define _APS_NEXT_SYMED_VALUE           110
-#endif
-#ifdef OG
-#endif
-
 #endif
 #endif

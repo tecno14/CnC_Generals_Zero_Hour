@@ -1,6 +1,3 @@
-#ifdef OG
-#ifdef ZH
-#endif
 # Microsoft Developer Studio Project File - Name="profile" - Package Owner=<4>
 # Microsoft Developer Studio Generated Build File, Format Version 6.00
 # ** DO NOT EDIT **
@@ -290,7 +287,3 @@ SOURCE=.\profile_doc.h
 # End Source File
 # End Target
 # End Project
-#ifdef OG
-
-#endif
-#endif

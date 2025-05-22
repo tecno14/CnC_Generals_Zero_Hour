@@ -1,6 +1,3 @@
-#ifdef OG
-#ifdef ZH
-#endif
 # Microsoft Developer Studio Project File - Name="debug_dlg" - Package Owner=<4>
 # Microsoft Developer Studio Generated Build File, Format Version 6.00
 # ** DO NOT EDIT **
@@ -98,7 +95,3 @@ SOURCE=.\debug_dlg.rc
 # End Source File
 # End Target
 # End Project
-#ifdef OG
-
-#endif
-#endif

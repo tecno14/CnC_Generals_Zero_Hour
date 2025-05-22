@@ -1,4 +1,3 @@
-#ifdef ZH
 /*
 **	Command & Conquer Generals Zero Hour(tm)
 **	Copyright 2025 Electronic Arts Inc.
@@ -680,5 +679,3 @@ ShdSubMeshClass * ShdMeshClass::Peek_Sub_Mesh(int i) const
 	return SubMeshes[i].Mesh;
 }
 
-
-#endif

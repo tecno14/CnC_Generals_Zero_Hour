@@ -9,8 +9,8 @@
 *.tlog
 
 # Build results
-#[Dd]ebug/
-#!debug/					# This because there is a project called Debug
+Debug/
+!debug/					# This because there is a project called Debug
 [Dd]ebugPublic/
 [Rr]elease/
 [Rr]eleases/

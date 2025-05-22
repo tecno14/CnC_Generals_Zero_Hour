@@ -1,4 +1,3 @@
-#ifdef ZH
 /*
 **	Command & Conquer Generals Zero Hour(tm)
 **	Copyright 2025 Electronic Arts Inc.
@@ -65,7 +64,5 @@ public:
 
 extern ShdMeshLoaderClass			_ShdMeshLoader;
 extern ShdMeshLegacyLoaderClass	_ShdMeshLegacyLoader;
-
-#endif
 
 #endif

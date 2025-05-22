@@ -1,4 +1,3 @@
-#ifdef ZH
 //
 //	Command & Conquer Generals Zero Hour(tm)
 //	Copyright 2025 Electronic Arts Inc.
@@ -158,5 +157,3 @@ mul LIGHT_LOCAL.xyz, LIGHT_LOCAL, c[CV_CONST].zzz
 mul LIGHT_LOCAL.xyz, LIGHT_LOCAL, c[CV_BUMPINESS].zzz
 add oD0.xyz, LIGHT_LOCAL, c[CV_BUMPINESS].www
 
-
-#endif

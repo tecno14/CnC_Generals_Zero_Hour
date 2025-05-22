@@ -1,4 +1,3 @@
-#ifdef ZH
 /*
 **	Command & Conquer Generals Zero Hour(tm)
 **	Copyright 2025 Electronic Arts Inc.
@@ -249,5 +248,3 @@ void ShdDefManagerClass::Load_Shader(ChunkLoadClass& cload, ShdDefClass** shddef
 	cload.Close_Chunk();
 }
 
-
-#endif

@@ -1,13 +1,5 @@
-#ifdef OG
-#ifdef ZH
-#endif
 /*
-#ifdef OG
 **	Command & Conquer Generals Zero Hour(tm)
-#endif
-#ifdef ZH
-**	Command & Conquer Generals(tm)
-#endif
 **	Copyright 2025 Electronic Arts Inc.
 **
 **	This program is free software: you can redistribute it and/or modify
@@ -56,7 +48,3 @@
 // Microsoft Visual C++ will insert additional declarations immediately before the previous line.
 
 #endif // !defined(AFX_STDAFX_H__A9DB83DB_A9FD_11D0_BFD1_444553540000__INCLUDED_)
-#ifdef OG
-
-#endif
-#endif

@@ -1,4 +1,3 @@
-#ifdef ZH
 /*
 **	Command & Conquer Generals Zero Hour(tm)
 **	Copyright 2025 Electronic Arts Inc.
@@ -23,7 +22,7 @@
 // $Revision: #1 $
 // $DateTime: 2003/07/28 14:54:04 $
 //
-// ï¿½2003 Electronic Arts
+// ©2003 Electronic Arts
 //
 // simple recursive directory compare tool for asset culling
 //////////////////////////////////////////////////////////////////////////////
@@ -178,5 +177,3 @@ int main(int argc, char *argv[])
 
   return 0;
 }
-
-#endif

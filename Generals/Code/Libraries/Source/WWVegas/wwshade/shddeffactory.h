@@ -1,4 +1,3 @@
-#ifdef ZH
 /*
 **	Command & Conquer Generals Zero Hour(tm)
 **	Copyright 2025 Electronic Arts Inc.
@@ -114,5 +113,3 @@ SimpleShdDefFactoryClass<T,ID,T ## Name> T ## Factory \
 
 
 #endif //SHDDEFFACTORY_H
-
-#endif

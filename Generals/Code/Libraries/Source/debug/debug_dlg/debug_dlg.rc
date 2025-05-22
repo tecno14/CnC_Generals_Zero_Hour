@@ -1,6 +1,3 @@
-#ifdef OG
-#ifdef ZH
-#endif
 //Microsoft Developer Studio generated resource script.
 //
 #include "resource.h"
@@ -111,7 +108,3 @@ END
 /////////////////////////////////////////////////////////////////////////////
 #endif    // not APSTUDIO_INVOKED
 
-#ifdef OG
-
-#endif
-#endif

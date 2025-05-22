@@ -1,4 +1,3 @@
-#ifdef ZH
 /*
 **	Command & Conquer Generals Zero Hour(tm)
 **	Copyright 2025 Electronic Arts Inc.
@@ -707,5 +706,3 @@ void ShdDX8RendererNodeClass::Apply_Shared_Shader_Settings(ShdRendererNodeClass*
 	SubMesh->Peek_Shader()->Apply_Shared(pass, *RenderInfo);
 }
 
-
-#endif

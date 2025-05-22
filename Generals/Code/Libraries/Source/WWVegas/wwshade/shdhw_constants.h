@@ -1,4 +1,3 @@
-#ifdef ZH
 /*
 **	Command & Conquer Generals Zero Hour(tm)
 **	Copyright 2025 Electronic Arts Inc.
@@ -40,7 +39,5 @@
 #define CV_AMBIENT							24
 #define CV_DIFFUSE							25
 #define CV_SPECULAR							26
-
-#endif
 
 #endif

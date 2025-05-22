@@ -1,0 +1,195 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset='utf-8' />
+  <title>VC++ Project Dependencies</title>
+  <script src='https://unpkg.com/cytoscape@3.26.0/dist/cytoscape.min.js'></script>
+  <script src='https://unpkg.com/dagre@0.8.5/dist/dagre.min.js'></script>
+  <script src='https://unpkg.com/cytoscape-dagre@2.3.0/cytoscape-dagre.js'></script>
+  <style>
+    html, body, #cy {
+      height: 100%;
+      margin: 0;
+      padding: 0;
+      font-family: sans-serif;
+    }
+  </style>
+</head>
+<body>
+  <div id='cy'></div>
+  <script>
+    const elements = [
+      { data: { id: 'RTS' } },
+      { data: { id: 'GameEngineDevice' } },
+      { data: { id: 'GameEngine' } },
+      { data: { id: 'ww3d2' } },
+      { data: { id: 'wwdebug' } },
+      { data: { id: 'wwlib' } },
+      { data: { id: 'wwmath' } },
+      { data: { id: 'wwsaveload' } },
+      { data: { id: 'wwutil' } },
+      { data: { id: 'RTS_ZH' } },
+      { data: { id: 'GameEngineDevice_ZH' } },
+      { data: { id: 'GameEngine_ZH' } },
+      { data: { id: 'ww3d2_ZH' } },
+      { data: { id: 'wwdebug_ZH' } },
+      { data: { id: 'wwlib_ZH' } },
+      { data: { id: 'wwmath_ZH' } },
+      { data: { id: 'wwsaveload_ZH' } },
+      { data: { id: 'wwutil_ZH' } },
+      { data: { id: 'EABrowserDispatch' } },
+      { data: { id: 'Benchmark_ZH' } },
+      { data: { id: 'Compression_ZH' } },
+      { data: { id: 'EABrowserDispatch_ZH' } },
+      { data: { id: 'assetcull' } },
+      { data: { id: 'assetcull_ZH' } },
+      { data: { id: 'buildVersionUpdate' } },
+      { data: { id: 'buildVersionUpdate_ZH' } },
+      { data: { id: 'Compress' } },
+      { data: { id: 'Compression' } },
+      { data: { id: 'CRCDiff' } },
+      { data: { id: 'CRCDiff_ZH' } },
+      { data: { id: 'DebugWindow' } },
+      { data: { id: 'DebugWindow_ZH' } },
+      { data: { id: 'GUIEdit' } },
+      { data: { id: 'GUIEdit_ZH' } },
+      { data: { id: 'ImagePacker' } },
+      { data: { id: 'ImagePacker_ZH' } },
+      { data: { id: 'launcher' } },
+      { data: { id: 'launcher_ZH' } },
+      { data: { id: 'MapCacheBuilder' } },
+      { data: { id: 'MapCacheBuilder_ZH' } },
+      { data: { id: 'ParticleEditor' } },
+      { data: { id: 'ParticleEditor_ZH' } },
+      { data: { id: 'patchgrabber' } },
+      { data: { id: 'patchgrabber_ZH' } },
+      { data: { id: 'textureCompress' } },
+      { data: { id: 'versionUpdate' } },
+      { data: { id: 'versionUpdate_ZH' } },
+      { data: { id: 'WorldBuilder' } },
+      { data: { id: 'WorldBuilder_ZH' } },
+      { data: { id: 'Benchmark' } },
+      { data: { id: 'debug' } },
+      { data: { id: 'debug_ZH' } },
+      { data: { id: 'profile' } },
+      { data: { id: 'profile_ZH' } },
+      { data: { id: 'DatGen' } },
+      { data: { id: 'DatGen_ZH' } },
+      { data: { id: 'max2w3d' } },
+      { data: { id: 'pluglib' } },
+      { data: { id: 'WWDownload' } },
+      { data: { id: 'WWDownload_ZH' } },
+      { data: { id: 'wwshade' } },
+      { data: { id: 'wwshade_ZH' } },
+      { data: { source: 'RTS', target: 'GameEngineDevice' } },
+      { data: { source: 'RTS', target: 'GameEngine' } },
+      { data: { source: 'RTS', target: 'ww3d2' } },
+      { data: { source: 'RTS', target: 'wwdebug' } },
+      { data: { source: 'RTS', target: 'wwlib' } },
+      { data: { source: 'RTS', target: 'wwmath' } },
+      { data: { source: 'RTS', target: 'wwsaveload' } },
+      { data: { source: 'RTS', target: 'wwutil' } },
+      { data: { source: 'RTS_ZH', target: 'GameEngineDevice_ZH' } },
+      { data: { source: 'RTS_ZH', target: 'GameEngine_ZH' } },
+      { data: { source: 'RTS_ZH', target: 'ww3d2_ZH' } },
+      { data: { source: 'RTS_ZH', target: 'wwdebug_ZH' } },
+      { data: { source: 'RTS_ZH', target: 'wwlib_ZH' } },
+      { data: { source: 'RTS_ZH', target: 'wwmath_ZH' } },
+      { data: { source: 'RTS_ZH', target: 'wwsaveload_ZH' } },
+      { data: { source: 'RTS_ZH', target: 'wwutil_ZH' } },
+      { data: { source: 'GameEngine', target: 'EABrowserDispatch' } },
+      { data: { source: 'GameEngine_ZH', target: 'Benchmark_ZH' } },
+      { data: { source: 'GameEngine_ZH', target: 'Compression_ZH' } },
+      { data: { source: 'GameEngine_ZH', target: 'EABrowserDispatch_ZH' } },
+      { data: { source: 'GameEngineDevice', target: 'EABrowserDispatch' } },
+      { data: { source: 'GameEngineDevice_ZH', target: 'Benchmark_ZH' } },
+      { data: { source: 'GameEngineDevice_ZH', target: 'Compression_ZH' } },
+      { data: { source: 'GameEngineDevice_ZH', target: 'EABrowserDispatch_ZH' } },
+      { data: { source: 'Compress', target: 'Compression' } },
+      { data: { source: 'GUIEdit', target: 'GameEngineDevice' } },
+      { data: { source: 'GUIEdit', target: 'GameEngine' } },
+      { data: { source: 'GUIEdit', target: 'Compression' } },
+      { data: { source: 'GUIEdit', target: 'ww3d2' } },
+      { data: { source: 'GUIEdit', target: 'wwlib' } },
+      { data: { source: 'GUIEdit', target: 'wwmath' } },
+      { data: { source: 'GUIEdit', target: 'wwsaveload' } },
+      { data: { source: 'GUIEdit_ZH', target: 'GameEngineDevice_ZH' } },
+      { data: { source: 'GUIEdit_ZH', target: 'GameEngine_ZH' } },
+      { data: { source: 'GUIEdit_ZH', target: 'ww3d2_ZH' } },
+      { data: { source: 'GUIEdit_ZH', target: 'wwdebug_ZH' } },
+      { data: { source: 'GUIEdit_ZH', target: 'wwlib_ZH' } },
+      { data: { source: 'GUIEdit_ZH', target: 'wwmath_ZH' } },
+      { data: { source: 'GUIEdit_ZH', target: 'wwsaveload_ZH' } },
+      { data: { source: 'GUIEdit_ZH', target: 'wwutil_ZH' } },
+      { data: { source: 'ImagePacker', target: 'GameEngineDevice' } },
+      { data: { source: 'ImagePacker', target: 'GameEngine' } },
+      { data: { source: 'ImagePacker', target: 'Compression' } },
+      { data: { source: 'ImagePacker_ZH', target: 'GameEngineDevice_ZH' } },
+      { data: { source: 'ImagePacker_ZH', target: 'GameEngine_ZH' } },
+      { data: { source: 'ImagePacker_ZH', target: 'ww3d2_ZH' } },
+      { data: { source: 'ImagePacker_ZH', target: 'wwdebug_ZH' } },
+      { data: { source: 'ImagePacker_ZH', target: 'wwlib_ZH' } },
+      { data: { source: 'ImagePacker_ZH', target: 'wwmath_ZH' } },
+      { data: { source: 'ImagePacker_ZH', target: 'wwsaveload_ZH' } },
+      { data: { source: 'ImagePacker_ZH', target: 'wwutil_ZH' } },
+      { data: { source: 'MapCacheBuilder', target: 'GameEngineDevice' } },
+      { data: { source: 'MapCacheBuilder', target: 'GameEngine' } },
+      { data: { source: 'MapCacheBuilder', target: 'Compression' } },
+      { data: { source: 'MapCacheBuilder_ZH', target: 'GameEngineDevice_ZH' } },
+      { data: { source: 'MapCacheBuilder_ZH', target: 'GameEngine_ZH' } },
+      { data: { source: 'MapCacheBuilder_ZH', target: 'EABrowserDispatch_ZH' } },
+      { data: { source: 'WorldBuilder_ZH', target: 'GameEngineDevice_ZH' } },
+      { data: { source: 'WorldBuilder_ZH', target: 'GameEngine_ZH' } },
+      { data: { source: 'WorldBuilder_ZH', target: 'ww3d2_ZH' } },
+      { data: { source: 'WorldBuilder_ZH', target: 'wwdebug_ZH' } },
+      { data: { source: 'WorldBuilder_ZH', target: 'wwlib_ZH' } },
+      { data: { source: 'WorldBuilder_ZH', target: 'wwmath_ZH' } },
+      { data: { source: 'WorldBuilder_ZH', target: 'wwsaveload_ZH' } },
+      { data: { source: 'WorldBuilder_ZH', target: 'wwutil_ZH' } },
+      { data: { source: 'max2w3d', target: 'pluglib' } }
+    ];
+
+    const cy = cytoscape({
+      container: document.getElementById('cy'),
+      elements,
+      layout: {name: 'dagre',
+          rankDir: 'TB',       // Top to Bottom
+          nodeSep: 50,
+          edgeSep: 10,
+          rankSep: 100,
+          ranker: 'longest-path' // Ensures root (leaf) nodes at top
+        },
+      style: [
+        {
+          selector: 'node',
+          style: {
+            'shape': 'roundrectangle',
+            'background-color': '#007acc',
+            'label': 'data(id)',
+            'color': 'white',
+            'text-valign': 'center',
+            'text-halign': 'center',
+            'font-size': '12px',
+            'padding': '8px',
+            'text-wrap': 'wrap',
+            'text-max-width': '120px', // control max width before wrapping
+            'width': 'label',
+            'height': 'label'
+          }
+        }
+        ,
+        {
+          selector: 'edge',
+          style: {
+            'width': 2,
+            'line-color': '#ccc',
+            'target-arrow-color': '#ccc',
+            'target-arrow-shape': 'triangle'
+          }
+        }
+      ]
+    });
+  </script>
+</body>
+</html>

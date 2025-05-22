@@ -1,6 +1,3 @@
-#ifdef OG
-#ifdef ZH
-#endif
 //Microsoft Visual C++ generated resource script.
 //
 
@@ -133,7 +130,3 @@ END
 /////////////////////////////////////////////////////////////////////////////
 #endif    // not APSTUDIO_INVOKED
 
-#ifdef OG
-
-#endif
-#endif

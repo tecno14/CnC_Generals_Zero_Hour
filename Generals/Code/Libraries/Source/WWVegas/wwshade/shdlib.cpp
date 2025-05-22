@@ -1,4 +1,3 @@
-#ifdef ZH
 /*
 **	Command & Conquer Generals Zero Hour(tm)
 **	Copyright 2025 Electronic Arts Inc.
@@ -74,5 +73,3 @@ void SHD_Register_Loader()
 //	WW3DAssetManager::Get_Instance()->Register_Prototype_Loader(&_ShdMeshLegacyLoader);
 	WW3DAssetManager::Get_Instance()->Register_Prototype_Loader(&_MeshLoader);
 }
-
-#endif

@@ -1,13 +1,5 @@
-#ifdef OG
-#ifdef ZH
-#endif
 /*
-#ifdef OG
 **	Command & Conquer Generals Zero Hour(tm)
-#endif
-#ifdef ZH
-**	Command & Conquer Generals(tm)
-#endif
 **	Copyright 2025 Electronic Arts Inc.
 **
 **	This program is free software: you can redistribute it and/or modify
@@ -30,7 +22,7 @@
 // $Revision: #1 $
 // $DateTime: 2003/07/03 11:55:26 $
 //
-// ï¿½2003 Electronic Arts
+// ©2003 Electronic Arts
 //
 // Unhandled exception handler
 //////////////////////////////////////////////////////////////////////////////
@@ -415,7 +407,3 @@ LONG __stdcall DebugExceptionhandler::ExceptionFilter(struct _EXCEPTION_POINTERS
   // Now die
   return EXCEPTION_EXECUTE_HANDLER;
 }
-#ifdef OG
-
-#endif
-#endif

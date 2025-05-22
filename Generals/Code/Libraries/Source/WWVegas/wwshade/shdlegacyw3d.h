@@ -1,4 +1,3 @@
-#ifdef ZH
 /*
 **	Command & Conquer Generals Zero Hour(tm)
 **	Copyright 2025 Electronic Arts Inc.
@@ -159,5 +158,3 @@ protected:
 };
 
 #endif //SHDLEGACYW3D_H
-
-#endif

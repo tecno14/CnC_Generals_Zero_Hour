@@ -1,4 +1,3 @@
-#ifdef ZH
 # Microsoft Developer Studio Project File - Name="wwshade" - Package Owner=<4>
 # Microsoft Developer Studio Generated Build File, Format Version 6.00
 # ** DO NOT EDIT **
@@ -1213,5 +1212,3 @@ SOURCE=.\shdlegacyw3d.h
 # End Group
 # End Target
 # End Project
-
-#endif

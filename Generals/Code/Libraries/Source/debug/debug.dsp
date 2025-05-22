@@ -1,6 +1,3 @@
-#ifdef OG
-#ifdef ZH
-#endif
 # Microsoft Developer Studio Project File - Name="debug" - Package Owner=<4>
 # Microsoft Developer Studio Generated Build File, Format Version 6.00
 # ** DO NOT EDIT **
@@ -321,7 +318,3 @@ SOURCE=.\internal.h
 # End Source File
 # End Target
 # End Project
-#ifdef OG
-
-#endif
-#endif

@@ -53,12 +53,7 @@ BSC32=bscmake.exe
 # ADD BSC32 /nologo
 LINK32=link.exe
 # ADD BASE LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /nologo /subsystem:windows /machine:I386
-#ifdef OG
 # ADD LINK32 user32.lib /nologo /subsystem:windows /pdb:"../../../Run/textureCompress.pdb" /map:"../../../Run/textureCompress.map" /debug /machine:I386 /out:"../../../Run/textureCompress.exe"
-#endif
-#ifdef ZH
-# ADD LINK32 user32.lib /nologo /subsystem:windows /machine:I386
-#endif
 
 !ELSEIF  "$(CFG)" == "textureCompress - Win32 Debug"
 
@@ -84,12 +79,7 @@ BSC32=bscmake.exe
 # ADD BSC32 /nologo
 LINK32=link.exe
 # ADD BASE LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /nologo /subsystem:windows /debug /machine:I386 
-#ifdef OG
 # ADD LINK32 user32.lib /nologo /subsystem:windows /pdb:"../../../Run/textureCompressD.pdb" /map:"../../../Run/textureCompressD.map" /debug /machine:I386 /out:"../../../Run/textureCompressD.exe" 
-#endif
-#ifdef ZH
-# ADD LINK32 user32.lib /nologo /subsystem:windows /debug /machine:I386
-#endif
 # SUBTRACT LINK32 /verbose /incremental:no
 
 !ENDIF 

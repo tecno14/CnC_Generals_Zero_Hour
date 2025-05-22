@@ -6,8 +6,10 @@
 [Rr]elease*
 #Profile*
 #!profile					# This because there is a project with that name
-[Ii]nternal*
-#[Dd]ebug*
+#[Ii]nternal*
+#![Ii]nternal*.h
+Debug/
+!debug/					# This because there is a project called Debug
 [Hh]ybrid*
 [Ee]nglish
 [Ff]rench

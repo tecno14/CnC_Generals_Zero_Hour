@@ -1,6 +1,5 @@
-#ifdef ZH
 /*
-**	Command & Conquer Generals(tm)
+**	Command & Conquer Generals Zero Hour(tm)
 **	Copyright 2025 Electronic Arts Inc.
 **
 **	This program is free software: you can redistribute it and/or modify
@@ -17,7 +16,6 @@
 **	along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#endif
 //{{NO_DEPENDENCIES}}
 // Microsoft Developer Studio generated include file.
 // Used by Script1.rc
