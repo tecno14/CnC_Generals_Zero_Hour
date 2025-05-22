@@ -29,8 +29,7 @@
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
-  <ImportGroup Label="ExtensionSettings">
-  </ImportGroup>
+  <ImportGroup Label="ExtensionSettings"></ImportGroup>
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
     <Import Project="$(VCTargetsPath)Microsoft.Cpp.UpgradeFromVC60.props" />
@@ -89,13 +88,13 @@
     <ClCompile>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <InlineFunctionExpansion>Default</InlineFunctionExpansion>
-      <FunctionLevelLinking>false</FunctionLevelLinking>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
       <Optimization>Disabled</Optimization>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <WarningLevel>Level3</WarningLevel>
       <MinimalRebuild>true</MinimalRebuild>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
-	  <FunctionLevelLinking>true</FunctionLevelLinking>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
       <AdditionalIncludeDirectories>../../Libraries/Source;../../Libraries/Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>OG;_DEBUG;WIN32;_CONSOLE;Z_PREFIX;DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AssemblerListingLocation>.\Debug\</AssemblerListingLocation>
@@ -139,6 +138,5 @@
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
-  <ImportGroup Label="ExtensionTargets">
-  </ImportGroup>
+  <ImportGroup Label="ExtensionTargets"></ImportGroup>
 </Project>
