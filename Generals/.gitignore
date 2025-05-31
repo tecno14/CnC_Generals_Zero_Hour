@@ -3,17 +3,57 @@
 [Rr]un
 
 # Build output folders
-[Rr]elease*
-[Pp]rofile*
-[Ii]nternal*
-[Dd]ebug*
-[Hh]ybrid*
+[Pp]rofile/
+[Ii]nternal/
+[Hh]ybrid/
 [Ee]nglish
 [Ff]rench
 [Gg]erman
 [Ss]panish
 Max4Release
 Max4Hybrid
+
+# Visual C++ files
+*.ncb
+*.opt
+*.plg
+*.aps
+
+# Visual Studio specific files
+*.suo
+*.user
+*.userosscache
+*.sln.ide
+.vs/
+
+# VS Code specific files
+.vscode/
+
+# Build files
+Debug/
+Release/
+x64/
+x86/
+*.obj
+*.exe
+*.dll
+*.pdb
+*.ilk
+*.lib
+*.exp
+
+# CMake files
+CMakeCache.txt
+CMakeFiles/
+cmake_install.cmake
+Makefile
+
+# Logs and temporary files
+*.log
+*.tmp
+
+# Other user-specific files
+*.opendb
 
 # Explicitly ignore these as the depo already contains prebuilt 3rd party .lib files
 /Code/gameengine/Lib/GameEngine.lib
@@ -88,9 +128,3 @@ BrowserDispatch_i.c
 BrowserDispatch.h
 BrowserDispatch.tlb
 /Code/Tools/CRCDiff/out.html
-
-# Visual C++ files
-*.ncb
-*.opt
-*.plg
-*.aps
