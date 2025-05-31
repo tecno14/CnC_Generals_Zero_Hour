@@ -1,0 +1,241 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{5c79c6c8-1c6e-4ee7-ab7c-67bf729a61fd}</UniqueIdentifier>
+      <Extensions>cpp;c;cxx;rc;def;r;odl;idl;hpj;bat</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{d7025562-4e8b-429e-9d19-b7ad09dc73e0}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl</Extensions>
+    </Filter>
+    <Filter Include="Shaders">
+      <UniqueIdentifier>{6370e70d-897f-4e5f-bee8-0dfb73132091}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Shaders\Simple">
+      <UniqueIdentifier>{46838a7d-0696-49ef-a61a-8dadf721909a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Shaders\Bump Specular">
+      <UniqueIdentifier>{8c1d79b2-0703-4846-8fe2-c8d3e6425107}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Shaders\Bump Diffuse">
+      <UniqueIdentifier>{6452e632-0e9d-4b67-bb74-e6b9a37fcccd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Shaders\Gloss Mask">
+      <UniqueIdentifier>{0e2e6d75-a5c4-4a5c-b2d1-a8a62838c4fb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Shaders\Cube Map">
+      <UniqueIdentifier>{de623bf4-893c-4ea7-93d3-c0f2e65615ff}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Shaders\LegacyW3D">
+      <UniqueIdentifier>{fc478ae3-8ca3-4d3b-bb68-b5acf8ecf77d}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="shddef.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="shddeffactory.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="shddefmanager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="shdforcelinks.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="shdhwshader.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="shdinterface.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="shdlib.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="shdloader.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="shdmesh.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="shdrenderer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="shdsubmesh.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="shdsimple.cpp">
+      <Filter>Shaders\Simple</Filter>
+    </ClCompile>
+    <ClCompile Include="shd6bumpspec.cpp">
+      <Filter>Shaders\Bump Specular</Filter>
+    </ClCompile>
+    <ClCompile Include="shd7bumpspec.cpp">
+      <Filter>Shaders\Bump Specular</Filter>
+    </ClCompile>
+    <ClCompile Include="shd8bumpspec.cpp">
+      <Filter>Shaders\Bump Specular</Filter>
+    </ClCompile>
+    <ClCompile Include="shdbumpspec.cpp">
+      <Filter>Shaders\Bump Specular</Filter>
+    </ClCompile>
+    <ClCompile Include="shd6bumpdiff.cpp">
+      <Filter>Shaders\Bump Diffuse</Filter>
+    </ClCompile>
+    <ClCompile Include="shd7bumpdiff.cpp">
+      <Filter>Shaders\Bump Diffuse</Filter>
+    </ClCompile>
+    <ClCompile Include="shd8bumpdiff.cpp">
+      <Filter>Shaders\Bump Diffuse</Filter>
+    </ClCompile>
+    <ClCompile Include="shdbumpdiff.cpp">
+      <Filter>Shaders\Bump Diffuse</Filter>
+    </ClCompile>
+    <ClCompile Include="shdglossmask.cpp">
+      <Filter>Shaders\Gloss Mask</Filter>
+    </ClCompile>
+    <ClCompile Include="shdcubemap.cpp">
+      <Filter>Shaders\Cube Map</Filter>
+    </ClCompile>
+    <ClCompile Include="shdlegacyw3d.cpp">
+      <Filter>Shaders\LegacyW3D</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="shdclassids.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="shddef.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="shddeffactory.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="shddefmanager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="shdforcelinks.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="shdhw_constants.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="shdhwshader.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="shdinterface.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="shdloader.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="shdmesh.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="shdrenderer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="shdsubmesh.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="shdsimple.h">
+      <Filter>Shaders\Simple</Filter>
+    </ClInclude>
+    <ClInclude Include="shd6bumpspec.h">
+      <Filter>Shaders\Bump Specular</Filter>
+    </ClInclude>
+    <ClInclude Include="shd6bumpspec_constants.h">
+      <Filter>Shaders\Bump Specular</Filter>
+    </ClInclude>
+    <ClInclude Include="shd7bumpspec.h">
+      <Filter>Shaders\Bump Specular</Filter>
+    </ClInclude>
+    <ClInclude Include="shd7bumpspec_constants.h">
+      <Filter>Shaders\Bump Specular</Filter>
+    </ClInclude>
+    <ClInclude Include="shd8bumpspec.h">
+      <Filter>Shaders\Bump Specular</Filter>
+    </ClInclude>
+    <ClInclude Include="shd8bumpspec_constants.h">
+      <Filter>Shaders\Bump Specular</Filter>
+    </ClInclude>
+    <ClInclude Include="shdbumpspec.h">
+      <Filter>Shaders\Bump Specular</Filter>
+    </ClInclude>
+    <ClInclude Include="shd6bumpdiff.h">
+      <Filter>Shaders\Bump Diffuse</Filter>
+    </ClInclude>
+    <ClInclude Include="shd6bumpdiff_constants.h">
+      <Filter>Shaders\Bump Diffuse</Filter>
+    </ClInclude>
+    <ClInclude Include="shd7bumpdiff.h">
+      <Filter>Shaders\Bump Diffuse</Filter>
+    </ClInclude>
+    <ClInclude Include="shd7bumpdiff_constants.h">
+      <Filter>Shaders\Bump Diffuse</Filter>
+    </ClInclude>
+    <ClInclude Include="shd8bumpdiff.h">
+      <Filter>Shaders\Bump Diffuse</Filter>
+    </ClInclude>
+    <ClInclude Include="shd8bumpdiff_constants.h">
+      <Filter>Shaders\Bump Diffuse</Filter>
+    </ClInclude>
+    <ClInclude Include="shdbumpdiff.h">
+      <Filter>Shaders\Bump Diffuse</Filter>
+    </ClInclude>
+    <ClInclude Include="shdglossmask.h">
+      <Filter>Shaders\Gloss Mask</Filter>
+    </ClInclude>
+    <ClInclude Include="shdcubemap.h">
+      <Filter>Shaders\Cube Map</Filter>
+    </ClInclude>
+    <ClInclude Include="shdlegacyw3d.h">
+      <Filter>Shaders\LegacyW3D</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="shd6bumpspec.vsh">
+      <Filter>Shaders\Bump Specular</Filter>
+    </CustomBuild>
+    <CustomBuild Include="shd7bumpspecpass0.vsh">
+      <Filter>Shaders\Bump Specular</Filter>
+    </CustomBuild>
+    <CustomBuild Include="shd7bumpspecpass1.vsh">
+      <Filter>Shaders\Bump Specular</Filter>
+    </CustomBuild>
+    <CustomBuild Include="shd8bumpspec.psh">
+      <Filter>Shaders\Bump Specular</Filter>
+    </CustomBuild>
+    <CustomBuild Include="shd8bumpspec.vsh">
+      <Filter>Shaders\Bump Specular</Filter>
+    </CustomBuild>
+    <CustomBuild Include="shd8ssbumpspec.psh">
+      <Filter>Shaders\Bump Specular</Filter>
+    </CustomBuild>
+    <CustomBuild Include="shd8ssbumpspec.vsh">
+      <Filter>Shaders\Bump Specular</Filter>
+    </CustomBuild>
+    <CustomBuild Include="shd6bumpdiff.vsh">
+      <Filter>Shaders\Bump Diffuse</Filter>
+    </CustomBuild>
+    <CustomBuild Include="shd7bumpdiffpass0.vsh">
+      <Filter>Shaders\Bump Diffuse</Filter>
+    </CustomBuild>
+    <CustomBuild Include="shd7bumpdiffpass1.vsh">
+      <Filter>Shaders\Bump Diffuse</Filter>
+    </CustomBuild>
+    <CustomBuild Include="shd8bumpdiff.psh">
+      <Filter>Shaders\Bump Diffuse</Filter>
+    </CustomBuild>
+    <CustomBuild Include="shd8bumpdiff.vsh">
+      <Filter>Shaders\Bump Diffuse</Filter>
+    </CustomBuild>
+    <CustomBuild Include="shd8ssbumpdiff.psh">
+      <Filter>Shaders\Bump Diffuse</Filter>
+    </CustomBuild>
+    <CustomBuild Include="shd8ssbumpdiff.vsh">
+      <Filter>Shaders\Bump Diffuse</Filter>
+    </CustomBuild>
+  </ItemGroup>
+</Project>

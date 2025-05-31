@@ -1,0 +1,208 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4b22eb7f-1b42-4f8b-a551-1a2d1772ffec}</UniqueIdentifier>
+      <Extensions>cpp;c;cxx;rc;def;r;odl;idl;hpj;bat</Extensions>
+    </Filter>
+    <Filter Include="Source Files\Zlib">
+      <UniqueIdentifier>{de96eb86-2612-45a4-ba80-6e7b2e9d0531}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\NoxLZH">
+      <UniqueIdentifier>{33e1b5cf-1d2d-4a86-9e98-6cf56cfd9df0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\EAC">
+      <UniqueIdentifier>{f2232fdb-ee4d-401e-ad42-d97f04b64b0d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{c325cfad-ca32-4f33-b340-fbce766b9f79}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl</Extensions>
+    </Filter>
+    <Filter Include="Header Files\Zlib.H">
+      <UniqueIdentifier>{550241fd-5b19-4ecd-9fa7-89e5f9202a24}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\NoxLZH.H">
+      <UniqueIdentifier>{ce299bc5-f701-4d52-a584-5d6057053d55}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\EAC.H">
+      <UniqueIdentifier>{6466ca8f-cdcd-41db-ab42-10458c457a46}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="ZLib\adler32.c">
+      <Filter>Source Files\Zlib</Filter>
+    </ClCompile>
+    <ClCompile Include="ZLib\compress.c">
+      <Filter>Source Files\Zlib</Filter>
+    </ClCompile>
+    <ClCompile Include="ZLib\crc32.c">
+      <Filter>Source Files\Zlib</Filter>
+    </ClCompile>
+    <ClCompile Include="ZLib\deflate.c">
+      <Filter>Source Files\Zlib</Filter>
+    </ClCompile>
+    <ClCompile Include="ZLib\gzio.c">
+      <Filter>Source Files\Zlib</Filter>
+    </ClCompile>
+    <ClCompile Include="ZLib\infblock.c">
+      <Filter>Source Files\Zlib</Filter>
+    </ClCompile>
+    <ClCompile Include="ZLib\infcodes.c">
+      <Filter>Source Files\Zlib</Filter>
+    </ClCompile>
+    <ClCompile Include="ZLib\inffast.c">
+      <Filter>Source Files\Zlib</Filter>
+    </ClCompile>
+    <ClCompile Include="ZLib\inflate.c">
+      <Filter>Source Files\Zlib</Filter>
+    </ClCompile>
+    <ClCompile Include="ZLib\inftrees.c">
+      <Filter>Source Files\Zlib</Filter>
+    </ClCompile>
+    <ClCompile Include="ZLib\infutil.c">
+      <Filter>Source Files\Zlib</Filter>
+    </ClCompile>
+    <ClCompile Include="ZLib\maketree.c">
+      <Filter>Source Files\Zlib</Filter>
+    </ClCompile>
+    <ClCompile Include="ZLib\trees.c">
+      <Filter>Source Files\Zlib</Filter>
+    </ClCompile>
+    <ClCompile Include="ZLib\uncompr.c">
+      <Filter>Source Files\Zlib</Filter>
+    </ClCompile>
+    <ClCompile Include="ZLib\zutil.c">
+      <Filter>Source Files\Zlib</Filter>
+    </ClCompile>
+    <ClCompile Include="LZHCompress\CompLibSource\Huff.cpp">
+      <Filter>Source Files\NoxLZH</Filter>
+    </ClCompile>
+    <ClCompile Include="LZHCompress\CompLibSource\Lz.cpp">
+      <Filter>Source Files\NoxLZH</Filter>
+    </ClCompile>
+    <ClCompile Include="LZHCompress\CompLibSource\Lzhl.cpp">
+      <Filter>Source Files\NoxLZH</Filter>
+    </ClCompile>
+    <ClCompile Include="LZHCompress\CompLibSource\Lzhl_tcp.cpp">
+      <Filter>Source Files\NoxLZH</Filter>
+    </ClCompile>
+    <ClCompile Include="LZHCompress\NoxCompress.cpp">
+      <Filter>Source Files\NoxLZH</Filter>
+    </ClCompile>
+    <ClCompile Include="EAC\btreeabout.cpp">
+      <Filter>Source Files\EAC</Filter>
+    </ClCompile>
+    <ClCompile Include="EAC\btreedecode.cpp">
+      <Filter>Source Files\EAC</Filter>
+    </ClCompile>
+    <ClCompile Include="EAC\btreeencode.cpp">
+      <Filter>Source Files\EAC</Filter>
+    </ClCompile>
+    <ClCompile Include="EAC\huffabout.cpp">
+      <Filter>Source Files\EAC</Filter>
+    </ClCompile>
+    <ClCompile Include="EAC\huffdecode.cpp">
+      <Filter>Source Files\EAC</Filter>
+    </ClCompile>
+    <ClCompile Include="EAC\huffencode.cpp">
+      <Filter>Source Files\EAC</Filter>
+    </ClCompile>
+    <ClCompile Include="EAC\refabout.cpp">
+      <Filter>Source Files\EAC</Filter>
+    </ClCompile>
+    <ClCompile Include="EAC\refdecode.cpp">
+      <Filter>Source Files\EAC</Filter>
+    </ClCompile>
+    <ClCompile Include="EAC\refencode.cpp">
+      <Filter>Source Files\EAC</Filter>
+    </ClCompile>
+    <ClCompile Include="CompressionManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="ZLib\deflate.h">
+      <Filter>Header Files\Zlib.H</Filter>
+    </ClInclude>
+    <ClInclude Include="ZLib\infblock.h">
+      <Filter>Header Files\Zlib.H</Filter>
+    </ClInclude>
+    <ClInclude Include="ZLib\infcodes.h">
+      <Filter>Header Files\Zlib.H</Filter>
+    </ClInclude>
+    <ClInclude Include="ZLib\inffast.h">
+      <Filter>Header Files\Zlib.H</Filter>
+    </ClInclude>
+    <ClInclude Include="ZLib\inffixed.h">
+      <Filter>Header Files\Zlib.H</Filter>
+    </ClInclude>
+    <ClInclude Include="ZLib\inftrees.h">
+      <Filter>Header Files\Zlib.H</Filter>
+    </ClInclude>
+    <ClInclude Include="ZLib\infutil.h">
+      <Filter>Header Files\Zlib.H</Filter>
+    </ClInclude>
+    <ClInclude Include="ZLib\trees.h">
+      <Filter>Header Files\Zlib.H</Filter>
+    </ClInclude>
+    <ClInclude Include="ZLib\zconf.h">
+      <Filter>Header Files\Zlib.H</Filter>
+    </ClInclude>
+    <ClInclude Include="ZLib\zlib.h">
+      <Filter>Header Files\Zlib.H</Filter>
+    </ClInclude>
+    <ClInclude Include="ZLib\zutil.h">
+      <Filter>Header Files\Zlib.H</Filter>
+    </ClInclude>
+    <ClInclude Include="LZHCompress\CompLibHeader\_huff.h">
+      <Filter>Header Files\NoxLZH.H</Filter>
+    </ClInclude>
+    <ClInclude Include="LZHCompress\CompLibHeader\_lz.h">
+      <Filter>Header Files\NoxLZH.H</Filter>
+    </ClInclude>
+    <ClInclude Include="LZHCompress\CompLibHeader\_lzhl.h">
+      <Filter>Header Files\NoxLZH.H</Filter>
+    </ClInclude>
+    <ClInclude Include="LZHCompress\CompLibHeader\Lzhl.h">
+      <Filter>Header Files\NoxLZH.H</Filter>
+    </ClInclude>
+    <ClInclude Include="LZHCompress\CompLibHeader\Lzhl_tcp.h">
+      <Filter>Header Files\NoxLZH.H</Filter>
+    </ClInclude>
+    <ClInclude Include="LZHCompress\NoxCompress.h">
+      <Filter>Header Files\NoxLZH.H</Filter>
+    </ClInclude>
+    <ClInclude Include="EAC\btreecodex.h">
+      <Filter>Header Files\EAC.H</Filter>
+    </ClInclude>
+    <ClInclude Include="EAC\codex.h">
+      <Filter>Header Files\EAC.H</Filter>
+    </ClInclude>
+    <ClInclude Include="EAC\gimex.h">
+      <Filter>Header Files\EAC.H</Filter>
+    </ClInclude>
+    <ClInclude Include="EAC\huffcodex.h">
+      <Filter>Header Files\EAC.H</Filter>
+    </ClInclude>
+    <ClInclude Include="EAC\refcodex.h">
+      <Filter>Header Files\EAC.H</Filter>
+    </ClInclude>
+    <ClInclude Include="Compression.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="LZHCompress\CompLibSource\Hdec_g.tbl">
+      <Filter>Source Files\NoxLZH</Filter>
+    </CustomBuild>
+    <CustomBuild Include="LZHCompress\CompLibSource\Hdec_s.tbl">
+      <Filter>Source Files\NoxLZH</Filter>
+    </CustomBuild>
+    <CustomBuild Include="LZHCompress\CompLibSource\Hdisp.tbl">
+      <Filter>Source Files\NoxLZH</Filter>
+    </CustomBuild>
+    <CustomBuild Include="LZHCompress\CompLibSource\Henc.tbl">
+      <Filter>Source Files\NoxLZH</Filter>
+    </CustomBuild>
+  </ItemGroup>
+</Project>
