@@ -1,0 +1,479 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset='utf-8' />
+  <title>Project Dependency Graph</title>
+  <script src='https://unpkg.com/cytoscape@3.26.0/dist/cytoscape.min.js'></script>
+  <script src='https://unpkg.com/dagre@0.8.5/dist/dagre.min.js'></script>
+  <script src='https://unpkg.com/cytoscape-dagre@2.3.0/cytoscape-dagre.js'></script>
+  <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css'>
+  <style>
+    * { box-sizing: border-box; }
+    body { 
+        margin: 0; 
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background: #f5f7fa;
+        color: #333;
+        height: 100vh;
+        display: flex;
+        flex-direction: column;
+    }
+    .header {
+        background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+        color: white;
+        padding: 15px 25px;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    .controls {
+        display: flex;
+        gap: 15px;
+        padding: 15px;
+        background: white;
+        border-bottom: 1px solid #e0e0e0;
+        flex-wrap: wrap;
+    }
+    .control-group {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+    input, select, button {
+        padding: 8px 12px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        font-size: 14px;
+    }
+    button {
+        background: #4a6cf7;
+        color: white;
+        border: none;
+        cursor: pointer;
+        transition: background 0.3s;
+    }
+    button:hover { background: #3a5ce0; }
+    #search { width: 250px; }
+    #cy {
+        flex: 1;
+        background: white;
+        border: 1px solid #e0e0e0;
+        margin: 0 15px 15px;
+        border-radius: 4px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    }
+    .panel {
+        display: flex;
+        height: 100%;
+    }
+    .details-panel {
+        width: 350px;
+        background: white;
+        border-left: 1px solid #e0e0e0;
+        padding: 20px;
+        overflow-y: auto;
+        box-shadow: -2px 0 5px rgba(0,0,0,0.05);
+        display: none;
+    }
+    .node-highlight { 
+        border: 3px solid gold !important;
+        z-index: 9999 !important;
+    }
+    .node-dim { opacity: 0.2; }
+    .details-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-bottom: 1px solid #eee;
+        padding-bottom: 15px;
+        margin-bottom: 15px;
+    }
+    .detail-section {
+        margin-bottom: 20px;
+    }
+    .detail-list {
+        max-height: 150px;
+        overflow-y: auto;
+        border: 1px solid #eee;
+        border-radius: 4px;
+        padding: 10px;
+    }
+    .detail-item {
+        padding: 5px 0;
+        border-bottom: 1px solid #f5f5f5;
+        cursor: pointer;
+    }
+    .detail-item:hover { background-color: #f0f5ff; }
+    .fa-close { cursor: pointer; color: #999; }
+    .fa-close:hover { color: #333; }
+    .filter-option { display: flex; align-items: center; gap: 5px; }
+    .legend {
+        display: flex;
+        gap: 15px;
+        margin-top: 10px;
+    }
+    .legend-item {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        font-size: 13px;
+    }
+    .legend-color {
+        width: 15px;
+        height: 15px;
+        border-radius: 3px;
+    }
+    #tooltip {
+        position: absolute;
+        background: rgba(0,0,0,0.8);
+        color: white;
+        padding: 5px 10px;
+        border-radius: 4px;
+        font-size: 12px;
+        pointer-events: none;
+        z-index: 10000;
+        max-width: 400px;
+        display: none;
+    }
+  </style>
+</head>
+<body>
+  <div class='header'>
+    <h1>Project Dependency Graph</h1>
+    <div class='legend'>
+      <div class='legend-item'>
+        <div class='legend-color' style='background: #6a11cb;'></div>
+        <span>Project</span>
+      </div>
+      <div class='legend-item'>
+        <div class='legend-color' style='background: #ff6b6b;'></div>
+        <span>Test Project</span>
+      </div>
+      <div class='legend-item'>
+        <div class='legend-color' style='background: #4cd97b;'></div>
+        <span>Library</span>
+      </div>
+    </div>
+  </div>
+  
+  <div class='controls'>
+    <div class='control-group'>
+      <i class='fas fa-search'></i>
+      <input type='text' id='search' placeholder='Search projects...'>
+    </div>
+    
+    <div class='control-group'>
+      <label for='layout'>Layout:</label>
+      <select id='layout'>
+        <option value='dagre'>Hierarchical</option>
+        <option value='breadthfirst'>Tree</option>
+        <option value='cose'>Force-Directed</option>
+      </select>
+    </div>
+    
+    <div class='control-group'>
+      <span>Show:</span>
+      <div class='filter-option'>
+        <input type='checkbox' id='filter-tests' checked>
+        <label for='filter-tests'>Test Projects</label>
+      </div>
+      <div class='filter-option'>
+        <input type='checkbox' id='filter-libs' checked>
+        <label for='filter-libs'>Libraries</label>
+      </div>
+    </div>
+    
+    <button id='reset'><i class='fas fa-sync-alt'></i> Reset View</button>
+  </div>
+  
+  <div class='panel'>
+    <div id='cy'></div>
+    <div class='details-panel' id='details'>
+      <div class='details-header'>
+        <h2 id='detail-title'>Project Details</h2>
+        <i class='fas fa-close' id='close-details'></i>
+      </div>
+      <div class='detail-section'>
+        <h3>Project Path</h3>
+        <div id='detail-path'></div>
+      </div>
+      <div class='detail-section'>
+        <h3>References ({'<span id="ref-count">0</span>'})</h3>
+        <div class='detail-list' id='detail-references'></div>
+      </div>
+      <div class='detail-section'>
+        <h3>Referenced By ({'<span id="refby-count">0</span>'})</h3>
+        <div class='detail-list' id='detail-referencedby'></div>
+      </div>
+    </div>
+  </div>
+  
+  <div id='tooltip'></div>
+
+  <script>
+    // Graph data
+    const graphData = {"nodes":[{"id":"9DD98B0E-7CB6-4417-84C8-E2820D361978","name":"RTS","path":"C:\\Projects\\3_generals\\src\\Game\\CnC_Generals_Zero_Hour\\Generals\\Code\\RTS.vcxproj","references":["86FBFC08-CFB1-4C6D-AE30-C7712A3800E7","660FFA9B-CD30-43B4-A78B-7614B4CAF011","5FD15F75-7774-422E-A33D-31C5A8E8A684","54DC3DAD-40F1-4FF3-9EBA-FD297DC44F8E","E5AB4747-BBA2-481F-AAEE-09D68C46654B","8511961C-557A-46AD-B76E-78FDBB53C9EA","BC6D7F10-D44C-4581-9925-95C2D1B2D0E3","0576F57F-B51F-43D5-8DDA-B53A19A4D111"],"referencedBy":[],"exists":true},{"id":"A9721F4F-1D0F-45D2-9A02-9955AE814B6E","name":"RTS","path":"C:\\Projects\\3_generals\\src\\Game\\CnC_Generals_Zero_Hour\\GeneralsMD\\Code\\RTS.vcxproj","references":["4EC0A235-0E32-406B-8C8E-49DE4A5F9AF0","ECB2E150-DDEB-4D5E-8466-EE22E8253D3F","D1D9FC72-A928-4104-9CBE-1F54CC2316E1","F26B125E-5277-4E59-95BE-E34E00E1E1C0","4E3095CD-57E5-43AE-9E5C-AD6107F6FB74","12B90D1C-02A5-430A-9B96-2924C26AE9E3","24E99A23-E0C4-486F-8053-73F97AC107A1","859D796E-204E-4350-A747-CCBFDECD5CFC"],"referencedBy":[],"exists":true},{"id":"660FFA9B-CD30-43B4-A78B-7614B4CAF011","name":"GameEngine","path":"C:\\Projects\\3_generals\\src\\Game\\CnC_Generals_Zero_Hour\\Generals\\Code\\GameEngine\\GameEngine.vcxproj","references":["E43D58C6-6F87-4D97-AB26-63225E1F11E5"],"referencedBy":["9DD98B0E-7CB6-4417-84C8-E2820D361978","1B059C6C-56D1-4D67-A45D-F50A822A7E04","492090BA-DAFA-428C-81B5-E1759C817E45","9285552F-427F-4E46-89CA-7A39628AC249"],"exists":true},{"id":"86FBFC08-CFB1-4C6D-AE30-C7712A3800E7","name":"GameEngineDevice","path":"C:\\Projects\\3_generals\\src\\Game\\CnC_Generals_Zero_Hour\\Generals\\Code\\GameEngineDevice\\GameEngineDevice.vcxproj","references":["E43D58C6-6F87-4D97-AB26-63225E1F11E5"],"referencedBy":["9DD98B0E-7CB6-4417-84C8-E2820D361978","1B059C6C-56D1-4D67-A45D-F50A822A7E04","492090BA-DAFA-428C-81B5-E1759C817E45","9285552F-427F-4E46-89CA-7A39628AC249"],"exists":true},{"id":"ECB2E150-DDEB-4D5E-8466-EE22E8253D3F","name":"GameEngine","path":"C:\\Projects\\3_generals\\src\\Game\\CnC_Generals_Zero_Hour\\GeneralsMD\\Code\\GameEngine\\GameEngine.vcxproj","references":["6E2212D6-9B36-4D97-BCB5-3D9DD1895A76","FC613041-2DD4-46DF-A058-2F982808FBD0","C6DE06A0-B677-4CF0-95F6-B1A893BCE37F"],"referencedBy":["A9721F4F-1D0F-45D2-9A02-9955AE814B6E","9D1E5B41-1082-43E9-BA9C-00BFD6B11A73","4FA7F257-3C7D-4F12-82B8-265F03F2BE3A","BE069ACB-AB08-46B4-A5D0-74623F56F0AA","57C8D133-FF4E-40B0-BF88-E9B05E245417"],"exists":true},{"id":"4EC0A235-0E32-406B-8C8E-49DE4A5F9AF0","name":"GameEngineDevice","path":"C:\\Projects\\3_generals\\src\\Game\\CnC_Generals_Zero_Hour\\GeneralsMD\\Code\\GameEngineDevice\\GameEngineDevice.vcxproj","references":["6E2212D6-9B36-4D97-BCB5-3D9DD1895A76","FC613041-2DD4-46DF-A058-2F982808FBD0","C6DE06A0-B677-4CF0-95F6-B1A893BCE37F"],"referencedBy":["A9721F4F-1D0F-45D2-9A02-9955AE814B6E","9D1E5B41-1082-43E9-BA9C-00BFD6B11A73","4FA7F257-3C7D-4F12-82B8-265F03F2BE3A","BE069ACB-AB08-46B4-A5D0-74623F56F0AA","57C8D133-FF4E-40B0-BF88-E9B05E245417"],"exists":true},{"id":"BB79A7B7-A63C-4771-A1A1-E738EEF25767","name":"buildVersionUpdate","path":"C:\\Projects\\3_generals\\src\\Game\\CnC_Generals_Zero_Hour\\Generals\\Code\\Tools\\buildVersionUpdate\\buildVersionUpdate.vcxproj","references":[],"referencedBy":[],"exists":true},{"id":"DE31B57E-6C6D-4CA8-9426-47DAAB651060","name":"Compress","path":"C:\\Projects\\3_generals\\src\\Game\\CnC_Generals_Zero_Hour\\Generals\\Code\\Tools\\Compress\\Compress.vcxproj","references":["FCD3FF3C-9BB9-416E-9C14-8A94B52D3679"],"referencedBy":[],"exists":true},{"id":"772EF884-8649-4E79-98D7-4F0D0E73DB6F","name":"DebugWindow","path":"C:\\Projects\\3_generals\\src\\Game\\CnC_Generals_Zero_Hour\\Generals\\Code\\Tools\\DebugWindow\\DebugWindow.vcxproj","references":[],"referencedBy":[],"exists":true},{"id":"1B059C6C-56D1-4D67-A45D-F50A822A7E04","name":"GUIEdit","path":"C:\\Projects\\3_generals\\src\\Game\\CnC_Generals_Zero_Hour\\Generals\\Code\\Tools\\GUIEdit\\GUIEdit.vcxproj","references":["86FBFC08-CFB1-4C6D-AE30-C7712A3800E7","660FFA9B-CD30-43B4-A78B-7614B4CAF011","FCD3FF3C-9BB9-416E-9C14-8A94B52D3679","5FD15F75-7774-422E-A33D-31C5A8E8A684","E5AB4747-BBA2-481F-AAEE-09D68C46654B","8511961C-557A-46AD-B76E-78FDBB53C9EA","BC6D7F10-D44C-4581-9925-95C2D1B2D0E3"],"referencedBy":[],"exists":true},{"id":"492090BA-DAFA-428C-81B5-E1759C817E45","name":"ImagePacker","path":"C:\\Projects\\3_generals\\src\\Game\\CnC_Generals_Zero_Hour\\Generals\\Code\\Tools\\ImagePacker\\ImagePacker.vcxproj","references":["86FBFC08-CFB1-4C6D-AE30-C7712A3800E7","660FFA9B-CD30-43B4-A78B-7614B4CAF011","FCD3FF3C-9BB9-416E-9C14-8A94B52D3679"],"referencedBy":[],"exists":true},{"id":"76DAB315-2A52-4612-9487-311F7DD5F0A1","name":"launcher","path":"C:\\Projects\\3_generals\\src\\Game\\CnC_Generals_Zero_Hour\\Generals\\Code\\Tools\\Launcher\\launcher.vcxproj","references":[],"referencedBy":[],"exists":true},{"id":"9285552F-427F-4E46-89CA-7A39628AC249","name":"MapCacheBuilder","path":"C:\\Projects\\3_generals\\src\\Game\\CnC_Generals_Zero_Hour\\Generals\\Code\\Tools\\MapCacheBuilder\\MapCacheBuilder.vcxproj","references":["86FBFC08-CFB1-4C6D-AE30-C7712A3800E7","660FFA9B-CD30-43B4-A78B-7614B4CAF011","FCD3FF3C-9BB9-416E-9C14-8A94B52D3679"],"referencedBy":[],"exists":true},{"id":"B7752F60-9B26-41F3-BAA6-1A495DEDEB1D","name":"ParticleEditor","path":"C:\\Projects\\3_generals\\src\\Game\\CnC_Generals_Zero_Hour\\Generals\\Code\\Tools\\ParticleEditor\\ParticleEditor.vcxproj","references":[],"referencedBy":[],"exists":true},{"id":"74C0BCA0-F00E-462F-B146-47E6C8F11A4C","name":"textureCompress","path":"C:\\Projects\\3_generals\\src\\Game\\CnC_Generals_Zero_Hour\\Generals\\Code\\Tools\\textureCompress\\textureCompress.vcxproj","references":[],"referencedBy":[],"exists":true},{"id":"3C13A81E-B5A1-4DDB-9E9D-ADAB930FBABC","name":"versionUpdate","path":"C:\\Projects\\3_generals\\src\\Game\\CnC_Generals_Zero_Hour\\Generals\\Code\\Tools\\versionUpdate\\versionUpdate.vcxproj","references":[],"referencedBy":[],"exists":true},{"id":"616F9120-A708-4106-AF98-F3ABF628DD7B","name":"WorldBuilder","path":"C:\\Projects\\3_generals\\src\\Game\\CnC_Generals_Zero_Hour\\Generals\\Code\\Tools\\WorldBuilder\\WorldBuilder.vcxproj","references":[],"referencedBy":[],"exists":true},{"id":"D4AEA7EB-B4B7-474D-BD7A-0947FF76CB34","name":"assetcull","path":"C:\\Projects\\3_generals\\src\\Game\\CnC_Generals_Zero_Hour\\GeneralsMD\\Code\\Tools\\assetcull\\assetcull.vcxproj","references":[],"referencedBy":[],"exists":true},{"id":"EC1E228F-3010-4B85-893C-493FF08893F6","name":"buildVersionUpdate","path":"C:\\Projects\\3_generals\\src\\Game\\CnC_Generals_Zero_Hour\\GeneralsMD\\Code\\Tools\\buildVersionUpdate\\buildVersionUpdate.vcxproj","references":[],"referencedBy":[],"exists":true},{"id":"891A57AE-D441-4B48-B6F8-9A9360CCA0AA","name":"CRCDiff","path":"C:\\Projects\\3_generals\\src\\Game\\CnC_Generals_Zero_Hour\\GeneralsMD\\Code\\Tools\\CRCDiff\\CRCDiff.vcxproj","references":[],"referencedBy":[],"exists":true},{"id":"CE76C9CB-CD92-42F7-8398-3B6C39AE0678","name":"DebugWindow","path":"C:\\Projects\\3_generals\\src\\Game\\CnC_Generals_Zero_Hour\\GeneralsMD\\Code\\Tools\\DebugWindow\\DebugWindow.vcxproj","references":[],"referencedBy":[],"exists":true},{"id":"9D1E5B41-1082-43E9-BA9C-00BFD6B11A73","name":"GUIEdit","path":"C:\\Projects\\3_generals\\src\\Game\\CnC_Generals_Zero_Hour\\GeneralsMD\\Code\\Tools\\GUIEdit\\GUIEdit.vcxproj","references":["4EC0A235-0E32-406B-8C8E-49DE4A5F9AF0","ECB2E150-DDEB-4D5E-8466-EE22E8253D3F","D1D9FC72-A928-4104-9CBE-1F54CC2316E1","F26B125E-5277-4E59-95BE-E34E00E1E1C0","4E3095CD-57E5-43AE-9E5C-AD6107F6FB74","12B90D1C-02A5-430A-9B96-2924C26AE9E3","24E99A23-E0C4-486F-8053-73F97AC107A1","859D796E-204E-4350-A747-CCBFDECD5CFC"],"referencedBy":[],"exists":true},{"id":"4FA7F257-3C7D-4F12-82B8-265F03F2BE3A","name":"ImagePacker","path":"C:\\Projects\\3_generals\\src\\Game\\CnC_Generals_Zero_Hour\\GeneralsMD\\Code\\Tools\\ImagePacker\\ImagePacker.vcxproj","references":["4EC0A235-0E32-406B-8C8E-49DE4A5F9AF0","ECB2E150-DDEB-4D5E-8466-EE22E8253D3F","D1D9FC72-A928-4104-9CBE-1F54CC2316E1","F26B125E-5277-4E59-95BE-E34E00E1E1C0","4E3095CD-57E5-43AE-9E5C-AD6107F6FB74","12B90D1C-02A5-430A-9B96-2924C26AE9E3","24E99A23-E0C4-486F-8053-73F97AC107A1","859D796E-204E-4350-A747-CCBFDECD5CFC"],"referencedBy":[],"exists":true},{"id":"62EDD771-9CEB-490E-9517-3968B0D263E8","name":"launcher","path":"C:\\Projects\\3_generals\\src\\Game\\CnC_Generals_Zero_Hour\\GeneralsMD\\Code\\Tools\\Launcher\\launcher.vcxproj","references":[],"referencedBy":[],"exists":true},{"id":"BE069ACB-AB08-46B4-A5D0-74623F56F0AA","name":"MapCacheBuilder","path":"C:\\Projects\\3_generals\\src\\Game\\CnC_Generals_Zero_Hour\\GeneralsMD\\Code\\Tools\\MapCacheBuilder\\MapCacheBuilder.vcxproj","references":["4EC0A235-0E32-406B-8C8E-49DE4A5F9AF0","ECB2E150-DDEB-4D5E-8466-EE22E8253D3F","C6DE06A0-B677-4CF0-95F6-B1A893BCE37F"],"referencedBy":[],"exists":true},{"id":"4CCE0D31-9E17-4082-8CCE-357368524930","name":"ParticleEditor","path":"C:\\Projects\\3_generals\\src\\Game\\CnC_Generals_Zero_Hour\\GeneralsMD\\Code\\Tools\\ParticleEditor\\ParticleEditor.vcxproj","references":[],"referencedBy":[],"exists":true},{"id":"5E05EEB3-080B-4908-A463-7CE00B981ACC","name":"patchgrabber","path":"C:\\Projects\\3_generals\\src\\Game\\CnC_Generals_Zero_Hour\\GeneralsMD\\Code\\Tools\\PATCHGET\\patchgrabber.vcxproj","references":[],"referencedBy":[],"exists":true},{"id":"2D445414-1F60-4577-9618-E18D5C0F0A78","name":"versionUpdate","path":"C:\\Projects\\3_generals\\src\\Game\\CnC_Generals_Zero_Hour\\GeneralsMD\\Code\\Tools\\versionUpdate\\versionUpdate.vcxproj","references":[],"referencedBy":[],"exists":true},{"id":"57C8D133-FF4E-40B0-BF88-E9B05E245417","name":"WorldBuilder","path":"C:\\Projects\\3_generals\\src\\Game\\CnC_Generals_Zero_Hour\\GeneralsMD\\Code\\Tools\\WorldBuilder\\WorldBuilder.vcxproj","references":["4EC0A235-0E32-406B-8C8E-49DE4A5F9AF0","ECB2E150-DDEB-4D5E-8466-EE22E8253D3F","D1D9FC72-A928-4104-9CBE-1F54CC2316E1","F26B125E-5277-4E59-95BE-E34E00E1E1C0","4E3095CD-57E5-43AE-9E5C-AD6107F6FB74","12B90D1C-02A5-430A-9B96-2924C26AE9E3","24E99A23-E0C4-486F-8053-73F97AC107A1","859D796E-204E-4350-A747-CCBFDECD5CFC"],"referencedBy":[],"exists":true},{"id":"FCD3FF3C-9BB9-416E-9C14-8A94B52D3679","name":"Compression","path":"C:\\Projects\\3_generals\\src\\Game\\CnC_Generals_Zero_Hour\\Generals\\Code\\Libraries\\Source\\Compression\\Compression.vcxproj","references":[],"referencedBy":["DE31B57E-6C6D-4CA8-9426-47DAAB651060","1B059C6C-56D1-4D67-A45D-F50A822A7E04","492090BA-DAFA-428C-81B5-E1759C817E45","9285552F-427F-4E46-89CA-7A39628AC249"],"exists":true},{"id":"E43D58C6-6F87-4D97-AB26-63225E1F11E5","name":"EABrowserDispatch","path":"C:\\Projects\\3_generals\\src\\Game\\CnC_Generals_Zero_Hour\\Generals\\Code\\Libraries\\Source\\EABrowserDispatch\\EABrowserDispatch.vcxproj","references":[],"referencedBy":["660FFA9B-CD30-43B4-A78B-7614B4CAF011","86FBFC08-CFB1-4C6D-AE30-C7712A3800E7"],"exists":true},{"id":"75C3073F-A9DE-4B69-B774-94381AB91BC0","name":"DatGen","path":"C:\\Projects\\3_generals\\src\\Game\\CnC_Generals_Zero_Hour\\Generals\\Code\\Tools\\Launcher\\DatGen\\DatGen.vcxproj","references":[],"referencedBy":[],"exists":true},{"id":"E87CFC94-9CC9-4714-B163-D0C75A7B6C37","name":"max2w3d","path":"C:\\Projects\\3_generals\\src\\Game\\CnC_Generals_Zero_Hour\\Generals\\Code\\Tools\\WW3D\\max2w3d\\max2w3d.vcxproj","references":["8148A9F3-9AA0-4FA2-BD10-BF651F8732D3"],"referencedBy":[],"exists":true},{"id":"8148A9F3-9AA0-4FA2-BD10-BF651F8732D3","name":"pluglib","path":"C:\\Projects\\3_generals\\src\\Game\\CnC_Generals_Zero_Hour\\Generals\\Code\\Tools\\WW3D\\pluglib\\pluglib.vcxproj","references":[],"referencedBy":["E87CFC94-9CC9-4714-B163-D0C75A7B6C37"],"exists":true},{"id":"6E2212D6-9B36-4D97-BCB5-3D9DD1895A76","name":"Benchmark","path":"C:\\Projects\\3_generals\\src\\Game\\CnC_Generals_Zero_Hour\\GeneralsMD\\Code\\Libraries\\Source\\Benchmark\\Benchmark.vcxproj","references":[],"referencedBy":["ECB2E150-DDEB-4D5E-8466-EE22E8253D3F","4EC0A235-0E32-406B-8C8E-49DE4A5F9AF0"],"exists":true},{"id":"FC613041-2DD4-46DF-A058-2F982808FBD0","name":"Compression","path":"C:\\Projects\\3_generals\\src\\Game\\CnC_Generals_Zero_Hour\\GeneralsMD\\Code\\Libraries\\Source\\Compression\\Compression.vcxproj","references":[],"referencedBy":["ECB2E150-DDEB-4D5E-8466-EE22E8253D3F","4EC0A235-0E32-406B-8C8E-49DE4A5F9AF0"],"exists":true},{"id":"F2403DD2-4B11-4AC0-B149-3A95EB73A2E3","name":"debug","path":"C:\\Projects\\3_generals\\src\\Game\\CnC_Generals_Zero_Hour\\GeneralsMD\\Code\\Libraries\\Source\\debug\\debug.vcxproj","references":[],"referencedBy":[],"exists":true},{"id":"C6DE06A0-B677-4CF0-95F6-B1A893BCE37F","name":"EABrowserDispatch","path":"C:\\Projects\\3_generals\\src\\Game\\CnC_Generals_Zero_Hour\\GeneralsMD\\Code\\Libraries\\Source\\EABrowserDispatch\\EABrowserDispatch.vcxproj","references":[],"referencedBy":["ECB2E150-DDEB-4D5E-8466-EE22E8253D3F","4EC0A235-0E32-406B-8C8E-49DE4A5F9AF0","BE069ACB-AB08-46B4-A5D0-74623F56F0AA"],"exists":true},{"id":"2CBF512E-3A36-442C-806F-D21CB2988596","name":"profile","path":"C:\\Projects\\3_generals\\src\\Game\\CnC_Generals_Zero_Hour\\GeneralsMD\\Code\\Libraries\\Source\\profile\\profile.vcxproj","references":[],"referencedBy":[],"exists":true},{"id":"C32029CA-067F-4274-B4A4-0EC57F5C077D","name":"DatGen","path":"C:\\Projects\\3_generals\\src\\Game\\CnC_Generals_Zero_Hour\\GeneralsMD\\Code\\Tools\\Launcher\\DatGen\\DatGen.vcxproj","references":[],"referencedBy":[],"exists":true},{"id":"5FD15F75-7774-422E-A33D-31C5A8E8A684","name":"ww3d2","path":"C:\\Projects\\3_generals\\src\\Game\\CnC_Generals_Zero_Hour\\Generals\\Code\\Libraries\\Source\\WWVegas\\WW3D2\\ww3d2.vcxproj","references":[],"referencedBy":["9DD98B0E-7CB6-4417-84C8-E2820D361978","1B059C6C-56D1-4D67-A45D-F50A822A7E04"],"exists":true},{"id":"54DC3DAD-40F1-4FF3-9EBA-FD297DC44F8E","name":"wwdebug","path":"C:\\Projects\\3_generals\\src\\Game\\CnC_Generals_Zero_Hour\\Generals\\Code\\Libraries\\Source\\WWVegas\\WWDebug\\wwdebug.vcxproj","references":[],"referencedBy":["9DD98B0E-7CB6-4417-84C8-E2820D361978"],"exists":true},{"id":"064150BD-C643-4578-9A79-AC3294C2F69F","name":"WWDownload","path":"C:\\Projects\\3_generals\\src\\Game\\CnC_Generals_Zero_Hour\\Generals\\Code\\Libraries\\Source\\WWVegas\\WWDownload\\WWDownload.vcxproj","references":[],"referencedBy":[],"exists":true},{"id":"E5AB4747-BBA2-481F-AAEE-09D68C46654B","name":"wwlib","path":"C:\\Projects\\3_generals\\src\\Game\\CnC_Generals_Zero_Hour\\Generals\\Code\\Libraries\\Source\\WWVegas\\WWLib\\wwlib.vcxproj","references":[],"referencedBy":["9DD98B0E-7CB6-4417-84C8-E2820D361978","1B059C6C-56D1-4D67-A45D-F50A822A7E04"],"exists":true},{"id":"8511961C-557A-46AD-B76E-78FDBB53C9EA","name":"wwmath","path":"C:\\Projects\\3_generals\\src\\Game\\CnC_Generals_Zero_Hour\\Generals\\Code\\Libraries\\Source\\WWVegas\\WWMath\\wwmath.vcxproj","references":[],"referencedBy":["9DD98B0E-7CB6-4417-84C8-E2820D361978","1B059C6C-56D1-4D67-A45D-F50A822A7E04"],"exists":true},{"id":"BC6D7F10-D44C-4581-9925-95C2D1B2D0E3","name":"wwsaveload","path":"C:\\Projects\\3_generals\\src\\Game\\CnC_Generals_Zero_Hour\\Generals\\Code\\Libraries\\Source\\WWVegas\\WWSaveLoad\\wwsaveload.vcxproj","references":[],"referencedBy":["9DD98B0E-7CB6-4417-84C8-E2820D361978","1B059C6C-56D1-4D67-A45D-F50A822A7E04"],"exists":true},{"id":"0576F57F-B51F-43D5-8DDA-B53A19A4D111","name":"wwutil","path":"C:\\Projects\\3_generals\\src\\Game\\CnC_Generals_Zero_Hour\\Generals\\Code\\Libraries\\Source\\WWVegas\\Wwutil\\wwutil.vcxproj","references":[],"referencedBy":["9DD98B0E-7CB6-4417-84C8-E2820D361978"],"exists":true},{"id":"D1D9FC72-A928-4104-9CBE-1F54CC2316E1","name":"ww3d2","path":"C:\\Projects\\3_generals\\src\\Game\\CnC_Generals_Zero_Hour\\GeneralsMD\\Code\\Libraries\\Source\\WWVegas\\WW3D2\\ww3d2.vcxproj","references":[],"referencedBy":["A9721F4F-1D0F-45D2-9A02-9955AE814B6E","9D1E5B41-1082-43E9-BA9C-00BFD6B11A73","4FA7F257-3C7D-4F12-82B8-265F03F2BE3A","57C8D133-FF4E-40B0-BF88-E9B05E245417"],"exists":true},{"id":"F26B125E-5277-4E59-95BE-E34E00E1E1C0","name":"wwdebug","path":"C:\\Projects\\3_generals\\src\\Game\\CnC_Generals_Zero_Hour\\GeneralsMD\\Code\\Libraries\\Source\\WWVegas\\WWDebug\\wwdebug.vcxproj","references":[],"referencedBy":["A9721F4F-1D0F-45D2-9A02-9955AE814B6E","9D1E5B41-1082-43E9-BA9C-00BFD6B11A73","4FA7F257-3C7D-4F12-82B8-265F03F2BE3A","57C8D133-FF4E-40B0-BF88-E9B05E245417"],"exists":true},{"id":"0839E58C-DA2B-45E9-B154-0B2D6D6A01D7","name":"WWDownload","path":"C:\\Projects\\3_generals\\src\\Game\\CnC_Generals_Zero_Hour\\GeneralsMD\\Code\\Libraries\\Source\\WWVegas\\WWDownload\\WWDownload.vcxproj","references":[],"referencedBy":[],"exists":true},{"id":"4E3095CD-57E5-43AE-9E5C-AD6107F6FB74","name":"wwlib","path":"C:\\Projects\\3_generals\\src\\Game\\CnC_Generals_Zero_Hour\\GeneralsMD\\Code\\Libraries\\Source\\WWVegas\\WWLib\\wwlib.vcxproj","references":[],"referencedBy":["A9721F4F-1D0F-45D2-9A02-9955AE814B6E","9D1E5B41-1082-43E9-BA9C-00BFD6B11A73","4FA7F257-3C7D-4F12-82B8-265F03F2BE3A","57C8D133-FF4E-40B0-BF88-E9B05E245417"],"exists":true},{"id":"12B90D1C-02A5-430A-9B96-2924C26AE9E3","name":"wwmath","path":"C:\\Projects\\3_generals\\src\\Game\\CnC_Generals_Zero_Hour\\GeneralsMD\\Code\\Libraries\\Source\\WWVegas\\WWMath\\wwmath.vcxproj","references":[],"referencedBy":["A9721F4F-1D0F-45D2-9A02-9955AE814B6E","9D1E5B41-1082-43E9-BA9C-00BFD6B11A73","4FA7F257-3C7D-4F12-82B8-265F03F2BE3A","57C8D133-FF4E-40B0-BF88-E9B05E245417"],"exists":true},{"id":"24E99A23-E0C4-486F-8053-73F97AC107A1","name":"wwsaveload","path":"C:\\Projects\\3_generals\\src\\Game\\CnC_Generals_Zero_Hour\\GeneralsMD\\Code\\Libraries\\Source\\WWVegas\\WWSaveLoad\\wwsaveload.vcxproj","references":[],"referencedBy":["A9721F4F-1D0F-45D2-9A02-9955AE814B6E","9D1E5B41-1082-43E9-BA9C-00BFD6B11A73","4FA7F257-3C7D-4F12-82B8-265F03F2BE3A","57C8D133-FF4E-40B0-BF88-E9B05E245417"],"exists":true},{"id":"49E81967-0E84-4F1F-964A-51A83C579C94","name":"wwshade","path":"C:\\Projects\\3_generals\\src\\Game\\CnC_Generals_Zero_Hour\\GeneralsMD\\Code\\Libraries\\Source\\WWVegas\\wwshade\\wwshade.vcxproj","references":[],"referencedBy":[],"exists":true},{"id":"859D796E-204E-4350-A747-CCBFDECD5CFC","name":"wwutil","path":"C:\\Projects\\3_generals\\src\\Game\\CnC_Generals_Zero_Hour\\GeneralsMD\\Code\\Libraries\\Source\\WWVegas\\Wwutil\\wwutil.vcxproj","references":[],"referencedBy":["A9721F4F-1D0F-45D2-9A02-9955AE814B6E","9D1E5B41-1082-43E9-BA9C-00BFD6B11A73","4FA7F257-3C7D-4F12-82B8-265F03F2BE3A","57C8D133-FF4E-40B0-BF88-E9B05E245417"],"exists":true}],"edges":[{"source":"9DD98B0E-7CB6-4417-84C8-E2820D361978","target":"86FBFC08-CFB1-4C6D-AE30-C7712A3800E7"},{"source":"9DD98B0E-7CB6-4417-84C8-E2820D361978","target":"660FFA9B-CD30-43B4-A78B-7614B4CAF011"},{"source":"9DD98B0E-7CB6-4417-84C8-E2820D361978","target":"5FD15F75-7774-422E-A33D-31C5A8E8A684"},{"source":"9DD98B0E-7CB6-4417-84C8-E2820D361978","target":"54DC3DAD-40F1-4FF3-9EBA-FD297DC44F8E"},{"source":"9DD98B0E-7CB6-4417-84C8-E2820D361978","target":"E5AB4747-BBA2-481F-AAEE-09D68C46654B"},{"source":"9DD98B0E-7CB6-4417-84C8-E2820D361978","target":"8511961C-557A-46AD-B76E-78FDBB53C9EA"},{"source":"9DD98B0E-7CB6-4417-84C8-E2820D361978","target":"BC6D7F10-D44C-4581-9925-95C2D1B2D0E3"},{"source":"9DD98B0E-7CB6-4417-84C8-E2820D361978","target":"0576F57F-B51F-43D5-8DDA-B53A19A4D111"},{"source":"A9721F4F-1D0F-45D2-9A02-9955AE814B6E","target":"4EC0A235-0E32-406B-8C8E-49DE4A5F9AF0"},{"source":"A9721F4F-1D0F-45D2-9A02-9955AE814B6E","target":"ECB2E150-DDEB-4D5E-8466-EE22E8253D3F"},{"source":"A9721F4F-1D0F-45D2-9A02-9955AE814B6E","target":"D1D9FC72-A928-4104-9CBE-1F54CC2316E1"},{"source":"A9721F4F-1D0F-45D2-9A02-9955AE814B6E","target":"F26B125E-5277-4E59-95BE-E34E00E1E1C0"},{"source":"A9721F4F-1D0F-45D2-9A02-9955AE814B6E","target":"4E3095CD-57E5-43AE-9E5C-AD6107F6FB74"},{"source":"A9721F4F-1D0F-45D2-9A02-9955AE814B6E","target":"12B90D1C-02A5-430A-9B96-2924C26AE9E3"},{"source":"A9721F4F-1D0F-45D2-9A02-9955AE814B6E","target":"24E99A23-E0C4-486F-8053-73F97AC107A1"},{"source":"A9721F4F-1D0F-45D2-9A02-9955AE814B6E","target":"859D796E-204E-4350-A747-CCBFDECD5CFC"},{"source":"660FFA9B-CD30-43B4-A78B-7614B4CAF011","target":"E43D58C6-6F87-4D97-AB26-63225E1F11E5"},{"source":"86FBFC08-CFB1-4C6D-AE30-C7712A3800E7","target":"E43D58C6-6F87-4D97-AB26-63225E1F11E5"},{"source":"ECB2E150-DDEB-4D5E-8466-EE22E8253D3F","target":"6E2212D6-9B36-4D97-BCB5-3D9DD1895A76"},{"source":"ECB2E150-DDEB-4D5E-8466-EE22E8253D3F","target":"FC613041-2DD4-46DF-A058-2F982808FBD0"},{"source":"ECB2E150-DDEB-4D5E-8466-EE22E8253D3F","target":"C6DE06A0-B677-4CF0-95F6-B1A893BCE37F"},{"source":"4EC0A235-0E32-406B-8C8E-49DE4A5F9AF0","target":"6E2212D6-9B36-4D97-BCB5-3D9DD1895A76"},{"source":"4EC0A235-0E32-406B-8C8E-49DE4A5F9AF0","target":"FC613041-2DD4-46DF-A058-2F982808FBD0"},{"source":"4EC0A235-0E32-406B-8C8E-49DE4A5F9AF0","target":"C6DE06A0-B677-4CF0-95F6-B1A893BCE37F"},{"source":"DE31B57E-6C6D-4CA8-9426-47DAAB651060","target":"FCD3FF3C-9BB9-416E-9C14-8A94B52D3679"},{"source":"1B059C6C-56D1-4D67-A45D-F50A822A7E04","target":"86FBFC08-CFB1-4C6D-AE30-C7712A3800E7"},{"source":"1B059C6C-56D1-4D67-A45D-F50A822A7E04","target":"660FFA9B-CD30-43B4-A78B-7614B4CAF011"},{"source":"1B059C6C-56D1-4D67-A45D-F50A822A7E04","target":"FCD3FF3C-9BB9-416E-9C14-8A94B52D3679"},{"source":"1B059C6C-56D1-4D67-A45D-F50A822A7E04","target":"5FD15F75-7774-422E-A33D-31C5A8E8A684"},{"source":"1B059C6C-56D1-4D67-A45D-F50A822A7E04","target":"E5AB4747-BBA2-481F-AAEE-09D68C46654B"},{"source":"1B059C6C-56D1-4D67-A45D-F50A822A7E04","target":"8511961C-557A-46AD-B76E-78FDBB53C9EA"},{"source":"1B059C6C-56D1-4D67-A45D-F50A822A7E04","target":"BC6D7F10-D44C-4581-9925-95C2D1B2D0E3"},{"source":"492090BA-DAFA-428C-81B5-E1759C817E45","target":"86FBFC08-CFB1-4C6D-AE30-C7712A3800E7"},{"source":"492090BA-DAFA-428C-81B5-E1759C817E45","target":"660FFA9B-CD30-43B4-A78B-7614B4CAF011"},{"source":"492090BA-DAFA-428C-81B5-E1759C817E45","target":"FCD3FF3C-9BB9-416E-9C14-8A94B52D3679"},{"source":"9285552F-427F-4E46-89CA-7A39628AC249","target":"86FBFC08-CFB1-4C6D-AE30-C7712A3800E7"},{"source":"9285552F-427F-4E46-89CA-7A39628AC249","target":"660FFA9B-CD30-43B4-A78B-7614B4CAF011"},{"source":"9285552F-427F-4E46-89CA-7A39628AC249","target":"FCD3FF3C-9BB9-416E-9C14-8A94B52D3679"},{"source":"9D1E5B41-1082-43E9-BA9C-00BFD6B11A73","target":"4EC0A235-0E32-406B-8C8E-49DE4A5F9AF0"},{"source":"9D1E5B41-1082-43E9-BA9C-00BFD6B11A73","target":"ECB2E150-DDEB-4D5E-8466-EE22E8253D3F"},{"source":"9D1E5B41-1082-43E9-BA9C-00BFD6B11A73","target":"D1D9FC72-A928-4104-9CBE-1F54CC2316E1"},{"source":"9D1E5B41-1082-43E9-BA9C-00BFD6B11A73","target":"F26B125E-5277-4E59-95BE-E34E00E1E1C0"},{"source":"9D1E5B41-1082-43E9-BA9C-00BFD6B11A73","target":"4E3095CD-57E5-43AE-9E5C-AD6107F6FB74"},{"source":"9D1E5B41-1082-43E9-BA9C-00BFD6B11A73","target":"12B90D1C-02A5-430A-9B96-2924C26AE9E3"},{"source":"9D1E5B41-1082-43E9-BA9C-00BFD6B11A73","target":"24E99A23-E0C4-486F-8053-73F97AC107A1"},{"source":"9D1E5B41-1082-43E9-BA9C-00BFD6B11A73","target":"859D796E-204E-4350-A747-CCBFDECD5CFC"},{"source":"4FA7F257-3C7D-4F12-82B8-265F03F2BE3A","target":"4EC0A235-0E32-406B-8C8E-49DE4A5F9AF0"},{"source":"4FA7F257-3C7D-4F12-82B8-265F03F2BE3A","target":"ECB2E150-DDEB-4D5E-8466-EE22E8253D3F"},{"source":"4FA7F257-3C7D-4F12-82B8-265F03F2BE3A","target":"D1D9FC72-A928-4104-9CBE-1F54CC2316E1"},{"source":"4FA7F257-3C7D-4F12-82B8-265F03F2BE3A","target":"F26B125E-5277-4E59-95BE-E34E00E1E1C0"},{"source":"4FA7F257-3C7D-4F12-82B8-265F03F2BE3A","target":"4E3095CD-57E5-43AE-9E5C-AD6107F6FB74"},{"source":"4FA7F257-3C7D-4F12-82B8-265F03F2BE3A","target":"12B90D1C-02A5-430A-9B96-2924C26AE9E3"},{"source":"4FA7F257-3C7D-4F12-82B8-265F03F2BE3A","target":"24E99A23-E0C4-486F-8053-73F97AC107A1"},{"source":"4FA7F257-3C7D-4F12-82B8-265F03F2BE3A","target":"859D796E-204E-4350-A747-CCBFDECD5CFC"},{"source":"BE069ACB-AB08-46B4-A5D0-74623F56F0AA","target":"4EC0A235-0E32-406B-8C8E-49DE4A5F9AF0"},{"source":"BE069ACB-AB08-46B4-A5D0-74623F56F0AA","target":"ECB2E150-DDEB-4D5E-8466-EE22E8253D3F"},{"source":"BE069ACB-AB08-46B4-A5D0-74623F56F0AA","target":"C6DE06A0-B677-4CF0-95F6-B1A893BCE37F"},{"source":"57C8D133-FF4E-40B0-BF88-E9B05E245417","target":"4EC0A235-0E32-406B-8C8E-49DE4A5F9AF0"},{"source":"57C8D133-FF4E-40B0-BF88-E9B05E245417","target":"ECB2E150-DDEB-4D5E-8466-EE22E8253D3F"},{"source":"57C8D133-FF4E-40B0-BF88-E9B05E245417","target":"D1D9FC72-A928-4104-9CBE-1F54CC2316E1"},{"source":"57C8D133-FF4E-40B0-BF88-E9B05E245417","target":"F26B125E-5277-4E59-95BE-E34E00E1E1C0"},{"source":"57C8D133-FF4E-40B0-BF88-E9B05E245417","target":"4E3095CD-57E5-43AE-9E5C-AD6107F6FB74"},{"source":"57C8D133-FF4E-40B0-BF88-E9B05E245417","target":"12B90D1C-02A5-430A-9B96-2924C26AE9E3"},{"source":"57C8D133-FF4E-40B0-BF88-E9B05E245417","target":"24E99A23-E0C4-486F-8053-73F97AC107A1"},{"source":"57C8D133-FF4E-40B0-BF88-E9B05E245417","target":"859D796E-204E-4350-A747-CCBFDECD5CFC"},{"source":"E87CFC94-9CC9-4714-B163-D0C75A7B6C37","target":"8148A9F3-9AA0-4FA2-BD10-BF651F8732D3"}]};
+    
+    // Create GUID to name mapping
+    const guidToName = {};
+    graphData.nodes.forEach(node => {
+        guidToName[node.id] = node.name;
+    });
+    
+    // Initialize Cytoscape
+    const cy = cytoscape({
+      container: document.getElementById('cy'),
+      elements: {
+        nodes: graphData.nodes.map(n => ({
+          data: {
+            id: n.id,
+            name: n.name,
+            path: n.path,
+            references: n.references,
+            referencedBy: n.referencedBy,
+            type: getProjectType(n.name)
+          },
+          classes: getProjectType(n.name)
+        })),
+        edges: graphData.edges.map(e => ({
+          data: { source: e.source, target: e.target }
+        }))
+      },
+      layout: { name: 'dagre', rankDir: 'TB' },
+      style: [
+        // Node styles
+        {
+          selector: 'node',
+          style: {
+            'label': 'data(name)',
+            'text-valign': 'center',
+            'text-halign': 'center',
+            'font-size': '12px',
+            'font-weight': '600',
+            'color': '#fff',
+            'text-outline-width': '1px',
+            'text-outline-color': '#555',
+            'text-wrap': 'wrap',
+            'text-max-width': '120px',
+            'padding': '8px',
+            'shape': 'roundrectangle'
+          }
+        },
+        {
+          selector: '.project',
+          style: { 
+            'background': 'linear-gradient(135deg, #6a11cb 0%, #2575fc 100%)',
+            'width': 'label',
+            'height': 'label'
+          }
+        },
+        {
+          selector: '.test',
+          style: { 
+            'background': 'linear-gradient(135deg, #ff6b6b 0%, #ff8e8e 100%)',
+            'width': 'label',
+            'height': 'label'
+          }
+        },
+        {
+          selector: '.library',
+          style: { 
+            'background': 'linear-gradient(135deg, #4cd97b 0%, #76e89a 100%)',
+            'width': 'label',
+            'height': 'label'
+          }
+        },
+        
+        // Edge styles
+        {
+          selector: 'edge',
+          style: {
+            'width': 2,
+            'line-color': '#aaa',
+            'target-arrow-color': '#aaa',
+            'target-arrow-shape': 'triangle',
+            'curve-style': 'bezier',
+            'arrow-scale': 1.2
+          }
+        },
+        
+        // Highlighting
+        {
+          selector: '.highlight',
+          style: {
+            'border-width': 3,
+            'border-color': 'gold',
+            'border-style': 'solid',
+            'z-index': 9999
+          }
+        },
+        {
+          selector: '.dim',
+          style: { 'opacity': 0.2 }
+        }
+      ]
+    });
+    
+    // Tooltip element
+    const tooltip = document.getElementById('tooltip');
+    
+    // Setup hover events
+    cy.on('mouseover', 'node', function(evt) {
+      const node = evt.target;
+      tooltip.innerHTML = node.data('path');
+      tooltip.style.display = 'block';
+      tooltip.style.left = (evt.originalEvent.pageX + 10) + 'px';
+      tooltip.style.top = (evt.originalEvent.pageY + 10) + 'px';
+    });
+    
+    cy.on('mousemove', 'node', function(evt) {
+      tooltip.style.left = (evt.originalEvent.pageX + 10) + 'px';
+      tooltip.style.top = (evt.originalEvent.pageY + 10) + 'px';
+    });
+    
+    cy.on('mouseout', 'node', function() {
+      tooltip.style.display = 'none';
+    });
+    
+    // Helper function to determine project type
+    function getProjectType(name) {
+      if (name.toLowerCase().includes('test')) return 'test';
+      if (name.toLowerCase().includes('lib')) return 'library';
+      return 'project';
+    }
+    
+    // UI Controls Functionality
+    document.getElementById('search').addEventListener('input', function(e) {
+      const term = e.target.value.toLowerCase();
+      
+      cy.nodes().forEach(node => {
+        if (term === '' || node.data('name').toLowerCase().includes(term)) {
+          node.removeClass('dim');
+          node.addClass('highlight');
+        } else {
+          node.removeClass('highlight');
+          node.addClass('dim');
+        }
+      });
+    });
+    
+    document.getElementById('layout').addEventListener('change', function(e) {
+      const layout = e.target.value;
+      const options = { 
+        name: layout,
+        animate: true,
+        animationDuration: 500
+      };
+      
+      if (layout === 'dagre') {
+        options.rankDir = 'TB';
+      } else if (layout === 'breadthfirst') {
+        options.directed = true;
+        options.circle = false;
+      }
+      
+      cy.layout(options).run();
+    });
+    
+    document.getElementById('reset').addEventListener('click', function() {
+      cy.reset();
+      cy.fit();
+      document.getElementById('search').value = '';
+      cy.nodes().removeClass('highlight dim');
+    });
+    
+    // Filter controls
+    function applyFilters() {
+      const showTests = document.getElementById('filter-tests').checked;
+      const showLibs = document.getElementById('filter-libs').checked;
+      
+      cy.nodes().forEach(node => {
+        const type = node.data('type');
+        
+        if ((type === 'test' && !showTests) || 
+            (type === 'library' && !showLibs)) {
+          node.style('display', 'none');
+        } else {
+          node.style('display', 'element');
+        }
+      });
+      
+      cy.layout({ name: 'dagre' }).run();
+    }
+    
+    document.getElementById('filter-tests').addEventListener('change', applyFilters);
+    document.getElementById('filter-libs').addEventListener('change', applyFilters);
+    
+    // Node click handler
+    cy.on('tap', 'node', function(evt) {
+      const node = evt.target;
+      const detailsPanel = document.getElementById('details');
+      const title = document.getElementById('detail-title');
+      const path = document.getElementById('detail-path');
+      const references = document.getElementById('detail-references');
+      const referencedBy = document.getElementById('detail-referencedby');
+      const refCount = document.getElementById('ref-count');
+      const refByCount = document.getElementById('refby-count');
+      
+      // Update details panel
+      title.textContent = node.data('name');
+      path.textContent = node.data('path');
+      
+      // Populate references
+      references.innerHTML = '';
+      const refs = node.data('references') || [];
+      refs.forEach(guid => {
+        const item = document.createElement('div');
+        item.className = 'detail-item';
+        item.textContent = guidToName[guid] || guid;
+        item.onclick = () => {
+          const targetNode = cy.getElementById(guid);
+          if (targetNode) {
+            cy.animate({
+              center: { eles: targetNode },
+              zoom: cy.zoom() * 1.2
+            });
+            targetNode.trigger('tap');
+          }
+        };
+        references.appendChild(item);
+      });
+      refCount.textContent = refs.length;
+      
+      // Populate referenced by
+      referencedBy.innerHTML = '';
+      const refBy = node.data('referencedBy') || [];
+      refBy.forEach(guid => {
+        const item = document.createElement('div');
+        item.className = 'detail-item';
+        item.textContent = guidToName[guid] || guid;
+        item.onclick = () => {
+          const targetNode = cy.getElementById(guid);
+          if (targetNode) {
+            cy.animate({
+              center: { eles: targetNode },
+              zoom: cy.zoom() * 1.2
+            });
+            targetNode.trigger('tap');
+          }
+        };
+        referencedBy.appendChild(item);
+      });
+      refByCount.textContent = refBy.length;
+      
+      // Show panel
+      detailsPanel.style.display = 'block';
+    });
+    
+    // Close details panel
+    document.getElementById('close-details').addEventListener('click', function() {
+      document.getElementById('details').style.display = 'none';
+    });
+    
+    // Initial fit to viewport
+    cy.fit();
+  </script>
+</body>
+</html>

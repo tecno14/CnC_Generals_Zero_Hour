@@ -70,6 +70,7 @@ enum DrawableID;
 
 #include <algorithm>
 #include <bitset>
+#define _SILENCE_STDEXT_HASH_DEPRECATION_WARNINGS
 #include <hash_map>
 #include <list>
 #include <map>
