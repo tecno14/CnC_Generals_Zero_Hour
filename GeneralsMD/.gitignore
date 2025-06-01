@@ -17,6 +17,8 @@ Max4Hybrid
 *.ncb
 *.opt
 *.plg
+*.aps
+*.sdf
 
 # Visual Studio specific files
 *.suo

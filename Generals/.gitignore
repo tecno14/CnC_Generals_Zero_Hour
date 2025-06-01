@@ -18,6 +18,7 @@ Max4Hybrid
 *.opt
 *.plg
 *.aps
+*.sdf
 
 # Visual Studio specific files
 *.suo
