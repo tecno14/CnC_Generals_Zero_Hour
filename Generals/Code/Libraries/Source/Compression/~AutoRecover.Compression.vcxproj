@@ -174,25 +174,25 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\..\..\..\Dependencies\ThirdParty\ZLib\adler32.c" />
-    <ClCompile Include="..\..\..\..\..\Dependencies\ThirdParty\ZLib\compress.c" />
-    <ClCompile Include="..\..\..\..\..\Dependencies\ThirdParty\ZLib\crc32.c" />
-    <ClCompile Include="..\..\..\..\..\Dependencies\ThirdParty\ZLib\deflate.c" />
-    <ClCompile Include="..\..\..\..\..\Dependencies\ThirdParty\ZLib\gzio.c" />
-    <ClCompile Include="..\..\..\..\..\Dependencies\ThirdParty\ZLib\infblock.c" />
-    <ClCompile Include="..\..\..\..\..\Dependencies\ThirdParty\ZLib\infcodes.c" />
-    <ClCompile Include="..\..\..\..\..\Dependencies\ThirdParty\ZLib\inffast.c" />
-    <ClCompile Include="..\..\..\..\..\Dependencies\ThirdParty\ZLib\inflate.c" />
-    <ClCompile Include="..\..\..\..\..\Dependencies\ThirdParty\ZLib\inftrees.c" />
-    <ClCompile Include="..\..\..\..\..\Dependencies\ThirdParty\ZLib\infutil.c" />
-    <ClCompile Include="..\..\..\..\..\Dependencies\ThirdParty\ZLib\maketree.c" />
-    <ClCompile Include="..\..\..\..\..\Dependencies\ThirdParty\ZLib\trees.c" />
-    <ClCompile Include="..\..\..\..\..\Dependencies\ThirdParty\ZLib\uncompr.c" />
-    <ClCompile Include="..\..\..\..\..\Dependencies\ThirdParty\ZLib\zutil.c" />
-    <ClCompile Include="..\..\..\..\..\Dependencies\ThirdParty\LZHCompress\Source\Huff.cpp" />
-    <ClCompile Include="..\..\..\..\..\Dependencies\ThirdParty\LZHCompress\Source\Lz.cpp" />
-    <ClCompile Include="..\..\..\..\..\Dependencies\ThirdParty\LZHCompress\Source\Lzhl.cpp" />
-    <ClCompile Include="..\..\..\..\..\Dependencies\ThirdParty\LZHCompress\Source\Lzhl_tcp.cpp" />
+    <ClCompile Include="ZLib\adler32.c" />
+    <ClCompile Include="ZLib\compress.c" />
+    <ClCompile Include="ZLib\crc32.c" />
+    <ClCompile Include="ZLib\deflate.c" />
+    <ClCompile Include="ZLib\gzio.c" />
+    <ClCompile Include="ZLib\infblock.c" />
+    <ClCompile Include="ZLib\infcodes.c" />
+    <ClCompile Include="ZLib\inffast.c" />
+    <ClCompile Include="ZLib\inflate.c" />
+    <ClCompile Include="ZLib\inftrees.c" />
+    <ClCompile Include="ZLib\infutil.c" />
+    <ClCompile Include="ZLib\maketree.c" />
+    <ClCompile Include="ZLib\trees.c" />
+    <ClCompile Include="ZLib\uncompr.c" />
+    <ClCompile Include="ZLib\zutil.c" />
+    <ClCompile Include="LZHCompress\CompLibSource\Huff.cpp" />
+    <ClCompile Include="LZHCompress\CompLibSource\Lz.cpp" />
+    <ClCompile Include="LZHCompress\CompLibSource\Lzhl.cpp" />
+    <ClCompile Include="LZHCompress\CompLibSource\Lzhl_tcp.cpp" />
     <ClCompile Include="LZHCompress\NoxCompress.cpp" />
     <ClCompile Include="EAC\btreeabout.cpp" />
     <ClCompile Include="EAC\btreedecode.cpp" />
@@ -206,28 +206,28 @@
     <ClCompile Include="CompressionManager.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <CustomBuild Include="..\..\..\..\..\Dependencies\ThirdParty\LZHCompress\Source\Hdec_g.tbl" />
-    <CustomBuild Include="..\..\..\..\..\Dependencies\ThirdParty\LZHCompress\Source\Hdec_s.tbl" />
-    <CustomBuild Include="..\..\..\..\..\Dependencies\ThirdParty\LZHCompress\Source\Hdisp.tbl" />
-    <CustomBuild Include="..\..\..\..\..\Dependencies\ThirdParty\LZHCompress\Source\Henc.tbl" />
+    <CustomBuild Include="LZHCompress\CompLibSource\Hdec_g.tbl" />
+    <CustomBuild Include="LZHCompress\CompLibSource\Hdec_s.tbl" />
+    <CustomBuild Include="LZHCompress\CompLibSource\Hdisp.tbl" />
+    <CustomBuild Include="LZHCompress\CompLibSource\Henc.tbl" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\..\..\..\Dependencies\ThirdParty\ZLib\deflate.h" />
-    <ClInclude Include="..\..\..\..\..\Dependencies\ThirdParty\ZLib\infblock.h" />
-    <ClInclude Include="..\..\..\..\..\Dependencies\ThirdParty\ZLib\infcodes.h" />
-    <ClInclude Include="..\..\..\..\..\Dependencies\ThirdParty\ZLib\inffast.h" />
-    <ClInclude Include="..\..\..\..\..\Dependencies\ThirdParty\ZLib\inffixed.h" />
-    <ClInclude Include="..\..\..\..\..\Dependencies\ThirdParty\ZLib\inftrees.h" />
-    <ClInclude Include="..\..\..\..\..\Dependencies\ThirdParty\ZLib\infutil.h" />
-    <ClInclude Include="..\..\..\..\..\Dependencies\ThirdParty\ZLib\trees.h" />
-    <ClInclude Include="..\..\..\..\..\Dependencies\ThirdParty\ZLib\zconf.h" />
-    <ClInclude Include="..\..\..\..\..\Dependencies\ThirdParty\ZLib\zlib.h" />
-    <ClInclude Include="..\..\..\..\..\Dependencies\ThirdParty\ZLib\zutil.h" />
-    <ClInclude Include="..\..\..\..\..\Dependencies\ThirdParty\LZHCompress\Header\_huff.h" />
-    <ClInclude Include="..\..\..\..\..\Dependencies\ThirdParty\LZHCompress\Header\_lz.h" />
-    <ClInclude Include="..\..\..\..\..\Dependencies\ThirdParty\LZHCompress\Header\_lzhl.h" />
-    <ClInclude Include="..\..\..\..\..\Dependencies\ThirdParty\LZHCompress\Header\Lzhl.h" />
-    <ClInclude Include="..\..\..\..\..\Dependencies\ThirdParty\LZHCompress\Header\Lzhl_tcp.h" />
+    <ClInclude Include="ZLib\deflate.h" />
+    <ClInclude Include="ZLib\infblock.h" />
+    <ClInclude Include="ZLib\infcodes.h" />
+    <ClInclude Include="ZLib\inffast.h" />
+    <ClInclude Include="ZLib\inffixed.h" />
+    <ClInclude Include="ZLib\inftrees.h" />
+    <ClInclude Include="ZLib\infutil.h" />
+    <ClInclude Include="ZLib\trees.h" />
+    <ClInclude Include="ZLib\zconf.h" />
+    <ClInclude Include="ZLib\zlib.h" />
+    <ClInclude Include="ZLib\zutil.h" />
+    <ClInclude Include="LZHCompress\CompLibHeader\_huff.h" />
+    <ClInclude Include="LZHCompress\CompLibHeader\_lz.h" />
+    <ClInclude Include="LZHCompress\CompLibHeader\_lzhl.h" />
+    <ClInclude Include="LZHCompress\CompLibHeader\Lzhl.h" />
+    <ClInclude Include="LZHCompress\CompLibHeader\Lzhl_tcp.h" />
     <ClInclude Include="LZHCompress\NoxCompress.h" />
     <ClInclude Include="EAC\btreecodex.h" />
     <ClInclude Include="EAC\codex.h" />

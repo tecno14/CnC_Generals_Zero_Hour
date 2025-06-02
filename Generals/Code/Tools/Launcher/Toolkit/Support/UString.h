@@ -136,8 +136,9 @@ class UString
 		//! Resize the string
 		bool Resize(UInt size);
 
-		const WChar* Get(void) const
-			{return (mData != NULL) ? mData : L"";}
+		const WChar* Get(void) const {
+			return (mData != NULL) ? mData : reinterpret_cast<const WChar*>(L"");
+		}
 
 		//! Assignment operator
 		UString operator=(const Char* s)

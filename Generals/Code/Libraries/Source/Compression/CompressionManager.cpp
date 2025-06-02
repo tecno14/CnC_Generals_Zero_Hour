@@ -22,9 +22,9 @@
 //////////////////////////////////////////////////////////////////////////////
 
 #include "Compression.h"
-#include "LZHCompress/NoxCompress.h"
+#include "./LZHCompress/NoxCompress.h"
 extern "C" {
-#include "ZLib/zlib.h"
+#include "../../../../../Dependencies/ThirdParty/ZLib/zlib.h"
 }
 #include "EAC/codex.h"
 #include "EAC/btreecodex.h"

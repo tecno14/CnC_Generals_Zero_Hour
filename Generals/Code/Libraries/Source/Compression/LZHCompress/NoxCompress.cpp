@@ -24,7 +24,7 @@
 #include <stdlib.h>
 #include "Lib/basetype.h"
 #include "Noxcompress.h"
-#include "CompLibHeader/lzhl.h"
+#include "../../../../../../Dependencies/ThirdParty/LZHCompress/Header/lzhl.h"
 
 #ifdef _INTERNAL
 // for occasional debugging...
