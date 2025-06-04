@@ -21,6 +21,7 @@ Max4Hybrid
 *.sdf
 
 # Visual Studio specific files
+*.vcxproj.filters
 *.suo
 *.user
 *.userosscache
