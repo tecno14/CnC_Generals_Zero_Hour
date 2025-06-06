@@ -1,5 +1,12 @@
 ﻿namespace Workers;
 
+/// <summary>
+/// For "file_.bin", copy a new file called "file_versionX.bin"
+/// </summary>
+/// <param name="versionB"></param>
+/// <param name="versionBRoot"></param>
+/// <param name="destinationRoot"></param>
+/// <param name="validFilesExtensions"></param>
 public class Duplicator(
     string versionB,
     string versionBRoot,
@@ -32,18 +39,18 @@ public class Duplicator(
         }
     }
 
-    void ProcessAndCopy(string source, string dest, string symbol)
+    static void ProcessAndCopy(string source, string dest, string symbol)
     {
         try
         {
             var desDir = Path.GetDirectoryName(dest);
-            var desNam = Path.GetDirectoryName(dest);
+            var desNam = Path.GetFileNameWithoutExtension(dest);
             var desExt = Path.GetExtension(dest);
-            var newDes = desDir + desNam + symbol + desExt;
+            var newDes = Path.Combine(desDir!, desNam + symbol + desExt);
 
             Directory.CreateDirectory(desNam!);
-            File.Copy(source, newDes);
-            Console.WriteLine($"[{symbol}] {newDes}");
+            File.Copy(source, newDes, true);
+            Console.WriteLine($"[Duplicated] {newDes}");
         }
         catch (Exception ex)
         {

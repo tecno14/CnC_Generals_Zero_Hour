@@ -7,6 +7,15 @@ using System.Text.RegularExpressions;
 
 namespace Workers;
 
+/// <summary>
+/// Used to merge two versions of code files, by adding #ifdef at changes
+/// </summary>
+/// <param name="versionA"></param>
+/// <param name="versionB"></param>
+/// <param name="versionARoot"></param>
+/// <param name="versionBRoot"></param>
+/// <param name="destinationRoot"></param>
+/// <param name="validFilesExtensions"></param>
 public class Merger(
     string versionA,
     string versionB,
@@ -94,23 +103,12 @@ public class Merger(
         {
             var destFile = Path.Combine(DestinationRoot, relPath);
             var ext = Path.GetExtension(ogFile).ToLower();
-            //if (!ValidFilesExtensions.Contains(ext))
-            //{
-            //    //Directory.CreateDirectory(Path.GetDirectoryName(destFile)!);
-            //    //File.Copy(ogFile, destFile, true);
-            //    return DiffResult.DoNothing;
-            //}
 
             var ogContent = File.ReadAllText(ogFile);
             var zhContent = File.ReadAllText(zhFile);
 
-            // Targeted comment replacement using regex
-            //zhContent = zhContent.Replace(zhContent, $"^{Regex.Escape(IgnoreCommentVersion)}$",
-            //    CommentVersion, RegexOptions.Multiline);
             zhContent = zhContent.ReplaceVersionComments();
 
-            // NEW: Get OG's trailing empty line count and line ending
-            //int trailingEmptyLines = GetTrailingEmptyLines(ogContent);
             string trimmed = GetTrimmedEnd(ogContent);
             string lineEnding = GetLineEnding(ogContent);
 

@@ -1,23 +1,18 @@
-﻿using Workers;
-
-namespace GeneralsCombiner;
+﻿namespace GeneralsCombiner;
 
 internal class Program
 {
     static void Main()
     {
-        var v1DirectoryPath = @"C:\Projects\3_generals\src\temp\test new updater\Generals";
-        var v2DirectoryPath = @"C:\Projects\3_generals\src\temp\test new updater\GeneralsMD";
-        var destinationPath = @"C:\Projects\3_generals\src\temp\test new updater\newGenerals2\Generals";
+        var v1DirectoryPath = @"C:\Projects\3_generals\src\Game\CnC_Generals_Zero_Hour\Generals";
+        var v2DirectoryPath = @"C:\Projects\3_generals\src\Game\CnC_Generals_Zero_Hour\GeneralsMD";
+        var destinationPath = @"C:\Projects\3_generals\src\Game\CnC_Generals_Zero_Hour\Generals";
 
         // Compare two versions files
 #if false
         var analyzerResult = Analyzer.Copmare(v1DirectoryPath, v2DirectoryPath);
         Analyzer.GenerateReport(analyzerResult);
 #endif
-        /*
-            Done.
-         */
 
         // Merge VersionDependent files
 #if false
@@ -34,9 +29,11 @@ internal class Program
          */
 
         // Duplicate OldProjectFiles and ProjectFiles
+#if false
         var duplicator = new Duplicator("_ZH", v2DirectoryPath, destinationPath,
             [.. Constants.OldProjectFiles, .. Constants.ProjectFiles]);
-        //duplicator.Start();
+        duplicator.Start();
+#endif
 
         // add OG or ZH to projects
     }
