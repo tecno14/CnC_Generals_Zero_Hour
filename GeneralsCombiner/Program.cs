@@ -1,4 +1,6 @@
-﻿namespace GeneralsCombiner;
+﻿using Workers;
+
+namespace GeneralsCombiner;
 
 internal class Program
 {
@@ -35,6 +37,23 @@ internal class Program
         duplicator.Start();
 #endif
 
+        // Replace unchanged files to make sure everything is OK
+#if false
+        var replacer = new Replacer(v2DirectoryPath, destinationPath,
+            [.. Constants.OriginalUnchanged]);
+        replacer.Start();
+#endif
+
+        // Replace manual changed files for compair files
+#if false
+        foreach (var ext in Constants.MergedManually)
+        {
+            var replacer = new Replacer(v2DirectoryPath, destinationPath, [ext], false);
+            replacer.Start();
+        }
+#endif
+
         // add OG or ZH to projects
+        // check files that still in zh and not in og
     }
 }

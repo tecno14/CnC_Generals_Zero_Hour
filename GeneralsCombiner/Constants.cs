@@ -20,7 +20,7 @@ public static class Constants
     /// <summary>
     /// Requires manual merging
     /// </summary>
-    public static readonly string[] MergedManually = [".gitignore", ".bmp", ".ico", ".RC", ".txt", ".odl", ".hm", ".idl", ".vsh", ".psh"];
+    public static readonly string[] MergedManually = [".gitignore", ".bmp", ".cur", ".ico", ".RC", ".txt", ".odl", ".hm", ".idl", ".vsh", ".psh"];
 
     /// <summary>
     /// Ignored at merge

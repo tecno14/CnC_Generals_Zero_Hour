@@ -1,4 +1,6 @@
-﻿namespace Workers;
+﻿using GeneralsCombiner;
+
+namespace Workers;
 
 /// <summary>
 /// Overwride new version files with destination files (version files stay)
@@ -10,10 +12,12 @@
 public class Replacer(
     string versionRoot,
     string destinationRoot,
-    string[] validFilesExtensions)
+    string[] validFilesExtensions,
+    bool replaceVersion = true)
 {
     private readonly string DestinationRoot = destinationRoot;
     private readonly string[] ValidFilesExtensions = validFilesExtensions;
+    private readonly bool ReplaceVersion = replaceVersion;
 
     public void Start()
     {
@@ -36,17 +40,24 @@ public class Replacer(
         }
     }
 
-    static void ProcessAndCopy(string source, string dest)
+    void ProcessAndCopy(string source, string dest)
     {
         try
         {
             var fileExist = File.Exists(dest);
-            if (!fileExist)
+            // if not ReplaceVersion, then the file is not text based, then can't use File.ReadAllText and WriteAllText
+            if (!fileExist || !ReplaceVersion)
             {
                 var desName = Path.GetDirectoryName(dest);
                 Directory.CreateDirectory(desName!);
+                File.Copy(source, dest, true);
             }
-            File.Copy(source, dest, true);
+            else
+            {
+                var content = File.ReadAllText(source).ReplaceVersionComments();
+                File.WriteAllText(dest, content);
+            }
+
             Console.WriteLine($"[{(fileExist ? "Overwrite" : "Copy")}] {dest}");
         }
         catch (Exception ex)
