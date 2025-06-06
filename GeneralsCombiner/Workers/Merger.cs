@@ -5,7 +5,7 @@ using GeneralsCombiner;
 using System.Text;
 using System.Text.RegularExpressions;
 
-namespace GeneralsCombiner.Workers;
+namespace Workers;
 
 public class Merger(
     string versionA,

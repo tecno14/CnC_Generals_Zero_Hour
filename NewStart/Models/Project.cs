@@ -1,4 +1,4 @@
-﻿namespace NewStart.Models;
+﻿namespace Models;
 
 public class Project
 {

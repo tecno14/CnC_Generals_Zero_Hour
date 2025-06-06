@@ -1,4 +1,4 @@
-﻿using GeneralsCombiner.Workers;
+﻿using Workers;
 
 namespace GeneralsCombiner;
 
@@ -37,5 +37,7 @@ internal class Program
         var duplicator = new Duplicator("_ZH", v2DirectoryPath, destinationPath,
             [.. Constants.OldProjectFiles, .. Constants.ProjectFiles]);
         //duplicator.Start();
+
+        // add OG or ZH to projects
     }
 }

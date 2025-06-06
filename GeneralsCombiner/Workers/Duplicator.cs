@@ -1,4 +1,4 @@
-﻿namespace GeneralsCombiner.Workers;
+﻿namespace Workers;
 
 public class Duplicator(
     string versionB,

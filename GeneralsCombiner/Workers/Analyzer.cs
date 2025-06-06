@@ -1,7 +1,8 @@
-﻿using System.Security.Cryptography;
+﻿using GeneralsCombiner;
+using System.Security.Cryptography;
 using System.Text;
 
-namespace GeneralsCombiner.Workers;
+namespace Workers;
 
 public static class Analyzer
 {
