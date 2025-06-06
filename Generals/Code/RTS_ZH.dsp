@@ -1170,7 +1170,7 @@ SOURCE=..\Run\Window\ReplayControl.wnd
 # PROP Default_Filter ""
 # Begin Source File
 
-SOURCE=.\Main\Generals.ico
+SOURCE=.\Main\GeneralsZH.ico
 # End Source File
 # Begin Source File
 

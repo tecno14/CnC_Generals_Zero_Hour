@@ -344,7 +344,7 @@
     <ClInclude Include="WSTYPES.H" />
   </ItemGroup>
   <ItemGroup>
-    <Image Include="Generals.ico" />
+    <Image Include="GeneralsZH.ico" />
     <Image Include="GeneralsEnglish.BMP" />
     <Image Include="GeneralsFrench.BMP" />
     <Image Include="GeneralsGerman.BMP" />

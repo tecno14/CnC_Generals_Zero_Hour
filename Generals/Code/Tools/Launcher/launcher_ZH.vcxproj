@@ -196,7 +196,7 @@
     <ClInclude Include="wstypes.h" />
   </ItemGroup>
   <ItemGroup>
-    <Image Include="Generals.ico" />
+    <Image Include="GeneralsZH.ico" />
     <Image Include="..\..\..\Run\launcher.bmp" />
   </ItemGroup>
   <ItemGroup>

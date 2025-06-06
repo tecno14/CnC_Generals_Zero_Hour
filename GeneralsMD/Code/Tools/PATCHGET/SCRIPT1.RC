@@ -135,7 +135,7 @@ IDB_BITMAP              BITMAP  DISCARDABLE     "GeneralsGerman.bmp"
 
 // Icon with lowest ID value placed first to ensure application icon
 // remains consistent on all systems.
-IDI_ICON1               ICON    DISCARDABLE     "Generals.ico"
+IDI_ICON1               ICON    DISCARDABLE     "GeneralsZH.ico"
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -322,7 +322,7 @@ END
 
 // Icon with lowest ID value placed first to ensure application icon
 // remains consistent on all systems.
-IDI_ICON1               ICON    DISCARDABLE     "Generals.ico"
+IDI_ICON1               ICON    DISCARDABLE     "GeneralsZH.ico"
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -504,7 +504,7 @@ IDB_BITMAP              BITMAP  DISCARDABLE     "GeneralsFrench.bmp"
 
 // Icon with lowest ID value placed first to ensure application icon
 // remains consistent on all systems.
-IDI_ICON1               ICON    DISCARDABLE     "Generals.ico"
+IDI_ICON1               ICON    DISCARDABLE     "GeneralsZH.ico"
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -619,7 +619,7 @@ IDB_BITMAP              BITMAP  DISCARDABLE     "GeneralsEnglish.bmp"
 
 // Icon with lowest ID value placed first to ensure application icon
 // remains consistent on all systems.
-IDI_ICON1               ICON    DISCARDABLE     "Generals.ico"
+IDI_ICON1               ICON    DISCARDABLE     "GeneralsZH.ico"
 
 /////////////////////////////////////////////////////////////////////////////
 //

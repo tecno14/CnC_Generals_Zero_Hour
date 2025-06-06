@@ -251,7 +251,7 @@ SOURCE=.\findpatch.h
 # End Source File
 # Begin Source File
 
-SOURCE=.\Generals.ico
+SOURCE=.\GeneralsZH.ico
 # End Source File
 # Begin Source File
 
