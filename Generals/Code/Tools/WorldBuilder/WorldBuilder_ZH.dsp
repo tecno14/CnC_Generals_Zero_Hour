@@ -1103,7 +1103,7 @@ SOURCE=.\res\TileTool.cur
 # End Source File
 # Begin Source File
 
-SOURCE=.\res\Toolbar.bmp
+SOURCE=.\res\ToolbarZH.bmp
 # End Source File
 # Begin Source File
 
@@ -1115,7 +1115,7 @@ SOURCE=.\res\toolbar2.bmp
 # End Source File
 # Begin Source File
 
-SOURCE=.\res\WorldBuilder.bmp
+SOURCE=.\res\WorldBuilderZH.bmp
 # End Source File
 # Begin Source File
 
