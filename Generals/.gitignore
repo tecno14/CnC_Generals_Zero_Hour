@@ -27,6 +27,7 @@ Max4Hybrid
 *.userosscache
 *.sln.ide
 .vs/
+~AutoRecover.*
 
 # VS Code specific files
 .vscode/
