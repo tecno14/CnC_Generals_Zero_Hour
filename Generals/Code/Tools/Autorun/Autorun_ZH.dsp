@@ -365,7 +365,7 @@ SOURCE=.\Autorun.ICO
 # End Source File
 # Begin Source File
 
-SOURCE=.\AUTORUN.RC
+SOURCE=.\AUTORUNZH.RC
 # End Source File
 # Begin Source File
 

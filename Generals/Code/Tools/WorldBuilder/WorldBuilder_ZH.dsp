@@ -1123,7 +1123,7 @@ SOURCE=.\res\WorldBuilder.ico
 # End Source File
 # Begin Source File
 
-SOURCE=.\res\WorldBuilder.rc
+SOURCE=.\res\WorldBuilderZH.rc
 # End Source File
 # Begin Source File
 

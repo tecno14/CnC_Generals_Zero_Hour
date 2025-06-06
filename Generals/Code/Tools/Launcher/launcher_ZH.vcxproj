@@ -204,7 +204,7 @@
     <CustomBuild Include="..\..\..\Run\patchw32.dll" />
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="launcher1.rc" />
+    <ResourceCompile Include="launcher1ZH.rc" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets"></ImportGroup>

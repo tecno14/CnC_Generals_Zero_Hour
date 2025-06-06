@@ -1178,7 +1178,7 @@ SOURCE=.\Main\resource.h
 # End Source File
 # Begin Source File
 
-SOURCE=.\Main\RTS.RC
+SOURCE=.\Main\RTSZH.RC
 # End Source File
 # End Group
 # Begin Source File

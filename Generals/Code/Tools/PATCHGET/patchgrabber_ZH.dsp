@@ -264,7 +264,7 @@ SOURCE=.\GeneralsGerman.BMP
 # End Source File
 # Begin Source File
 
-SOURCE=.\Script1.rc
+SOURCE=.\Script1ZH.rc
 # End Source File
 # End Group
 # End Target

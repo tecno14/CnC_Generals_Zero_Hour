@@ -350,7 +350,7 @@
     <Image Include="GeneralsGerman.BMP" />
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="Script1.rc" />
+    <ResourceCompile Include="Script1ZH.rc" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets"></ImportGroup>

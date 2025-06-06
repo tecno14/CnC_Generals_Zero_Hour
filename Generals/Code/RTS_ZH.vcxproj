@@ -588,7 +588,7 @@ $(TargetDir)buildVersionUpdate.exe .\Main\buildVersion.h </Command>
     <Image Include="Main\Install_Final.bmp" />
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="Main\RTS.RC">
+    <ResourceCompile Include="Main\RTSZH.RC">
       <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Internal|Win32'">Main;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Main;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Profile|Win32'">Main;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>

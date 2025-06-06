@@ -263,7 +263,7 @@ SOURCE=..\..\..\Run\launcher.bmp
 # End Source File
 # Begin Source File
 
-SOURCE=.\launcher1.rc
+SOURCE=.\launcher1ZH.rc
 # End Source File
 # Begin Source File
 
