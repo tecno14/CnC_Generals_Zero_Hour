@@ -30,6 +30,9 @@
 #include "PreRTS.h"	// This must go first in EVERY cpp file int the GameEngine
 
 #include "Common/AudioEventInfo.h"
+#ifdef ZH
+#include "Common/DynamicAudioEventInfo.h"
+#endif
 #include "Common/AudioSettings.h"
 #include "Common/BitFlagsIO.h"
 #include "Common/BuildAssistant.h"
@@ -76,14 +79,27 @@
 #include "GameClient/Shadow.h"
 #include "GameClient/GameText.h"
 
+#ifdef ZH
+//#define KRIS_BRUTAL_HACK_FOR_AIRCRAFT_CARRIER_DEBUGGING 
+#ifdef KRIS_BRUTAL_HACK_FOR_AIRCRAFT_CARRIER_DEBUGGING
+	#include "GameLogic/Module/ParkingPlaceBehavior.h"
+#endif
+
+#endif
 #ifdef _INTERNAL
 // for occasional debugging...
 //#pragma optimize("", off)
 //#pragma MESSAGE("************************************** WARNING, optimization disabled for debugging purposes")
 #endif
 
+#ifdef OG
 #define VERY_TRANSPARENT_HEATVISION (0.001f)
 #define HEATVISION_FADE_SCALAR (0.8f)
+#endif
+#ifdef ZH
+#define VERY_TRANSPARENT_MATERIAL_PASS_OPACITY (0.001f)
+#define MATERIAL_PASS_OPACITY_FADE_SCALAR (0.8f)
+#endif
 
 static const char *TheDrawableIconNames[] = 
 {
@@ -107,7 +123,31 @@ static const char *TheDrawableIconNames[] =
 	"CarBomb",
 	NULL
 };
+#ifdef ZH
 
+
+/** 
+ * Returns a special DynamicAudioEventInfo which can be used to mark a sound as "no sound".
+ * E.g. if m_customSoundAmbientInfo equals the value returned from this function, we
+ * know it really means don't allow an ambient sound to be attached. 
+ *
+ * OK, so it's a bit of a hack, but it saves memory in every Drawable
+ */
+static DynamicAudioEventInfo  * getNoSoundMarker()
+{
+  static DynamicAudioEventInfo  * marker = NULL;
+   
+  if ( marker == NULL )
+  {
+    // Initialize first time function is called
+    marker = newInstance( DynamicAudioEventInfo  );
+  }
+#endif
+
+#ifdef ZH
+  return marker;
+}
+#endif
 
 
 
@@ -178,6 +218,11 @@ DrawableLocoInfo::DrawableLocoInfo()
 	m_wheelInfo.m_framesAirborneCounter = 0;
 	m_wheelInfo.m_framesAirborne = 0;
 	m_wheelInfo.m_wheelAngle = 0;
+#ifdef ZH
+
+  m_yawModulator = 0.0f;
+  m_pitchModulator = 0.0f;
+#endif
 }
 
 // ------------------------------------------------------------------------------------------------
@@ -221,6 +266,11 @@ const UnsignedInt DEFAULT_HEAL_ICON_HEIGHT	= 32;
 const RGBColor SICKLY_GREEN_POISONED_COLOR	= {-1.0f,  1.0f, -1.0f};
 const RGBColor DARK_GRAY_DISABLED_COLOR			= {-0.5f, -0.5f, -0.5f};
 const RGBColor RED_IRRADIATED_COLOR					= { 1.0f, -1.0f, -1.0f};
+#ifdef ZH
+const RGBColor SUBDUAL_DAMAGE_COLOR					= {-0.2f, -0.2f,  0.8f};
+const RGBColor FRENZY_COLOR									= { 0.2f, -0.2f, -0.2f};
+const RGBColor FRENZY_COLOR_INFANTRY				= { 0.0f, -0.7f, -0.7f};
+#endif
 const Int MAX_ENABLED_MODULES								= 16;
 
 // ------------------------------------------------------------------------------------------------
@@ -327,6 +377,10 @@ Drawable::Drawable( const ThingTemplate *thingTemplate, DrawableStatus statusBit
 	m_prevDrawable = NULL;
 	//
 
+#ifdef ZH
+  m_customSoundAmbientInfo = NULL;
+
+#endif
 	// register drawable with the GameClient ... do this first before we start doing anything
 	// complex that uses any of the drawable data so that we have and ID!!  It's ok to initialize
 	// members of the drawable before this registration happens
@@ -353,6 +407,10 @@ Drawable::Drawable( const ThingTemplate *thingTemplate, DrawableStatus statusBit
 																TheInGameUI->isDrawableCaptionBold() ));
 
 	m_ambientSound = NULL;
+#ifdef ZH
+  m_ambientSoundEnabled = true;
+  m_ambientSoundEnabledFromScript = true;
+#endif
 
 	m_decalOpacityFadeTarget = 0;
 	m_decalOpacityFadeRate = 0;
@@ -396,7 +454,9 @@ Drawable::Drawable( const ThingTemplate *thingTemplate, DrawableStatus statusBit
 
 	// initially not bound to an object
 	m_object = NULL;
+#ifdef OG
 	m_particle = NULL;
+#endif
 
 	// tintStatusTracking
 	m_tintStatus = 0;
@@ -408,12 +468,24 @@ Drawable::Drawable( const ThingTemplate *thingTemplate, DrawableStatus statusBit
 
 	m_hidden = false;
 	m_hiddenByStealth = false;
+#ifdef OG
 	m_heatVisionOpacity = 0.0f;
+#endif
+#ifdef ZH
+	m_secondMaterialPassOpacity = 0.0f;
+#endif
 	m_drawableFullyObscuredByShroud = false;
 
+#ifdef OG
 	m_ambientSoundEnabled = TRUE;
+#endif
+#ifdef ZH
+  m_receivesDynamicLights = TRUE; // a good default... overridden by one of my draw modules if at all
+#endif
 
+#ifdef OG
 	//
+#endif
 	// allocate any modules we need to, we should keep
 	// this at or near the end of the drawable construction so that we have
 	// all the valid data about the thing when we create the module
@@ -475,7 +547,26 @@ Drawable::Drawable( const ThingTemplate *thingTemplate, DrawableStatus statusBit
 
 	initStaticImages(); 
 
+#ifdef ZH
+  // If we are inside GameLogic::startNewGame(), then starting the ambient sound 
+  // will be taken care of by Drawable::onLevelStart(). It's important that we 
+  // wait until Drawable::onLevelStart(), because we may have a customized ambient
+  // sound which we'll only learn about after the constructor is finished. The
+  // map maker may also have disabled the ambient sound; again, we only learn that
+  // after the constructor is done.
+  // By the same token, when loading from save, we may learn that the ambient sound 
+  // is enabled or disabled in xfer(), and we may learn we have a customized sound there,
+  // so don't start the ambient sound yet. 
+  // This is all really traceable to the fact that stopAmbientSound() won't stop a sound which 
+  // is in the middle of playing; it will only stop it when the current wavefile is finished.
+  // So we have to be very careful of called startAmbientSound() because we can't "take it back" later.
+  if ( TheGameLogic != NULL && !TheGameLogic->isLoadingMap() && TheGameState != NULL && !TheGameState->isInLoadGame() )
+  {
+#endif
 	startAmbientSound();
+#ifdef ZH
+  }
+#endif
 
 }  // end Drawable
 
@@ -514,13 +605,19 @@ Drawable::~Drawable()
 		m_ambientSound = NULL;
 	}
 
+#ifdef ZH
+  clearCustomSoundAmbient( false );
+
+#endif
 	/// @todo this is nasty, we need a real general effects system
 	// remove any entries that might be present from the ray effect system
 	TheGameClient->removeFromRayEffects( this );
 
 	// reset object to NULL so we never mistaken grab "dead" objects
 	m_object = NULL;
+#ifdef OG
 	m_particle = NULL;
+#endif
 
 	// delete any icons present
 	if (m_iconInfo)
@@ -584,13 +681,33 @@ Bool Drawable::getShouldAnimate( Bool considerPower ) const
 
 		if (obj->isDisabled())
 		{
+#ifdef OG
 			if( obj->isDisabledByType( DISABLED_HACKED ) 
+
+#endif
+#ifdef ZH
+			if( 
+         ! obj->isKindOf( KINDOF_PRODUCED_AT_HELIPAD )  && 
+        // mal sez: helicopters just look goofy if they stop animating, so keep animating them, anyway
+
+        (  obj->isDisabledByType( DISABLED_HACKED ) 
+#endif
 				|| obj->isDisabledByType( DISABLED_PARALYZED ) 
 				|| obj->isDisabledByType( DISABLED_EMP ) 
+#ifdef ZH
+				|| obj->isDisabledByType( DISABLED_SUBDUED ) 
+#endif
 				// srj sez: unmanned things also should not animate. (eg, gattling tanks,
 				// which have a slight barrel animation even when at rest). if this causes
 				// a problem, we will need to fix gattling tanks in another way.
+#ifdef OG
 				|| obj->isDisabledByType( DISABLED_UNMANNED ) 
+
+#endif
+#ifdef ZH
+				|| obj->isDisabledByType( DISABLED_UNMANNED ) )
+        
+#endif
 				)
 				return FALSE;
 
@@ -650,6 +767,20 @@ void Drawable::setAnimationCompletionTime(UnsignedInt numFrames)
 		ObjectDrawInterface* di = (*dm)->getObjectDrawInterface();
 		if (di)
 			di->setAnimationCompletionTime(numFrames);
+#ifdef ZH
+	}
+}
+
+//Kris: Manually set a drawable's current animation to specific frame.
+//-------------------------------------------------------------------------------------------------
+void Drawable::setAnimationFrame( int frame )
+{
+	for (DrawModule** dm = getDrawModules(); *dm; ++dm)
+	{
+		ObjectDrawInterface* di = (*dm)->getObjectDrawInterface();
+		if (di)
+			di->setAnimationFrame( frame );
+#endif
 	}
 }
 
@@ -770,6 +901,7 @@ Bool Drawable::getCurrentWorldspaceClientBonePositions(const char* boneName, Mat
 }
 
 //-------------------------------------------------------------------------------------------------
+#ifdef OG
 /** Attach to a particle system */
 //-------------------------------------------------------------------------------------------------
 void Drawable::attachToParticleSystem( Particle *p )
@@ -790,6 +922,7 @@ void Drawable::detachFromParticleSystem( void )
 }
 
 //-------------------------------------------------------------------------------------------------
+#endif
 void Drawable::setTerrainDecal(TerrainDecalType type)
 {
 	if (m_terrainDecalType == type)
@@ -1068,6 +1201,11 @@ void Drawable::reactToBodyDamageStateChange(BodyDamageType newState)
 		MAKE_MODELCONDITION_MASK3(MODELCONDITION_DAMAGED, MODELCONDITION_REALLY_DAMAGED, MODELCONDITION_RUBBLE), 
 		newDamage);
 
+#ifdef ZH
+  // When loading map, ambient sound starting is handled by onLevelStart(), so that we can
+  // correctly react to customizations
+  if ( !TheGameLogic->isLoadingMap() )
+#endif
 	startAmbientSound(newState, TheGlobalData->m_timeOfDay);
 }
 
@@ -1086,6 +1224,23 @@ void Drawable::setEffectiveOpacity( Real pulseFactor, Real explicitOpacity /* = 
 
 	m_effectiveStealthOpacity = m_stealthOpacity + pulseAmount; 
 }		///< get alpha/opacity value used to override defaults when drawing.
+#ifdef ZH
+
+
+//-------------------------------------------------------------------------------------------------
+void Drawable::imitateStealthLook( Drawable& otherDraw )
+{
+  m_stealthOpacity = otherDraw.friend_getStealthOpacity();
+  m_explicitOpacity = otherDraw.friend_getExplicitOpacity();
+  m_effectiveStealthOpacity = otherDraw.friend_getEffectiveStealthOpacity();
+  m_hidden = otherDraw.isDrawableEffectivelyHidden();
+  m_hiddenByStealth = otherDraw.isDrawableEffectivelyHidden();
+  m_stealthLook = otherDraw.getStealthLook();
+  m_secondMaterialPassOpacity = otherDraw.getSecondMaterialPassOpacity();
+
+}
+
+#endif
 
 //-------------------------------------------------------------------------------------------------
 /** update is called once per frame */
@@ -1184,6 +1339,24 @@ void Drawable::updateDrawable( void )
 			if (m_colorTintEnvelope == NULL)
 				m_colorTintEnvelope = newInstance(TintEnvelope);
 			m_colorTintEnvelope->play( &DARK_GRAY_DISABLED_COLOR, 30, 30, SUSTAIN_INDEFINITELY);
+#ifdef ZH
+		}
+		else if( testTintStatus(TINT_STATUS_GAINING_SUBDUAL_DAMAGE) )
+		{
+			// Disabled has precendence, so it goes first
+			if (m_colorTintEnvelope == NULL)
+				m_colorTintEnvelope = newInstance(TintEnvelope);
+			m_colorTintEnvelope->play( &SUBDUAL_DAMAGE_COLOR, 150, 150, SUSTAIN_INDEFINITELY);
+		}
+		else if( testTintStatus(TINT_STATUS_FRENZY) )
+		{
+			// Disabled has precendence, so it goes first
+			if (m_colorTintEnvelope == NULL)
+				m_colorTintEnvelope = newInstance(TintEnvelope);
+
+      m_colorTintEnvelope->play( isKindOf( KINDOF_INFANTRY) ? &FRENZY_COLOR_INFANTRY:&FRENZY_COLOR, 30, 30, SUSTAIN_INDEFINITELY);
+		
+#endif
 		}
 //		else if ( testTintStatus( TINT_STATUS_POISONED) )
 //		{
@@ -1220,10 +1393,58 @@ void Drawable::updateDrawable( void )
 
 	if (m_selectionFlashEnvelope)
 		m_selectionFlashEnvelope->update(); // selection flashing
+#ifdef ZH
 
+	//If we have an ambient sound, and we aren't currently playing it, attempt to play it now.
+  // However, if the attached sound is a one-shot (non-looping) sound, don't restart it -- only
+  // start it ONCE. The problem is, looping sounds need to keep being restarted. Why? Because 
+  // MilesAudioManager will kill the sound (in MilesAudioManager::processPlayingList) if gets 
+  // out of range. Looping ambient sounds need to restart if the user moves back into range.
+  // The MilesAudioManager doesn't handle this, so we need to keep checking looping sounds 
+  // to see if they are in range. But this messes up non-looping sounds -- they keep looping!
+  // End result: a hack of testing the looping bit and only restarting the sound if the looping
+  // bit is on and the loop count is 0 (loop forever).
+  if( m_ambientSound && m_ambientSoundEnabled && m_ambientSoundEnabledFromScript && 
+      !m_ambientSound->m_event.getEventName().isEmpty() && !m_ambientSound->m_event.isCurrentlyPlaying() ) 
+  {
+    const AudioEventInfo * eventInfo = m_ambientSound->m_event.getAudioEventInfo();
+
+    if ( eventInfo == NULL && TheAudio != NULL )
+    {
+      // We'll need this in a second anyway so cache it
+      TheAudio->getInfoForAudioEvent( &m_ambientSound->m_event );
+      eventInfo = m_ambientSound->m_event.getAudioEventInfo();
+    }
+
+    if ( eventInfo == NULL || ( eventInfo->isPermanentSound() ) )
+    {
+  		startAmbientSound();
+    }
+ 	}
+}	
+#endif
+
+#ifdef OG
 	//If we have an ambient sound, and we aren't currently playing it, attempt to play it now
 	if( m_ambientSound && m_ambientSoundEnabled && !m_ambientSound->m_event.getEventName().isEmpty() && !m_ambientSound->m_event.isCurrentlyPlaying() ) 
+
+#endif
+#ifdef ZH
+//-------------------------------------------------------------------------------------------------
+// Called just after the level loads. Only called for NEW games, not save games.
+void Drawable::onLevelStart()
+{
+  // Make sure the current ambient sound is playing if it should be playing. Needed because
+  // the call to startAmbientSound in the constructor is too early to
+  // actually start the sound if the constructor is called during level load. 
+  if( m_ambientSoundEnabled && m_ambientSoundEnabledFromScript && 
+      ( m_ambientSound == NULL || 
+        ( !m_ambientSound->m_event.getEventName().isEmpty() && !m_ambientSound->m_event.isCurrentlyPlaying() ) ) )
+#endif
 	{
+#ifdef ZH
+    // Unlike the check in the update() function, we want to do this for looping & one-shot sounds equally
+#endif
 		startAmbientSound();
 	}
 }	
@@ -1299,6 +1520,12 @@ Bool Drawable::calcPhysicsXform(PhysicsXformInfo& info)
 					calcPhysicsXformWheels(locomotor, info);
 					hasPhysicsXform = true;
 					break;
+#ifdef ZH
+				case LOCO_MOTORCYCLE:
+					calcPhysicsXformMotorcycle( locomotor, info );
+					hasPhysicsXform = TRUE;
+					break;
+#endif
 				case LOCO_TREADS:
 					calcPhysicsXformTreads(locomotor, info);
 					hasPhysicsXform = true;
@@ -1420,6 +1647,9 @@ void Drawable::calcPhysicsXformHoverOrWings( const Locomotor *locomotor, Physics
 		m_locoInfo = newInstance(DrawableLocoInfo);
 
 	const Real ACCEL_PITCH_LIMIT = locomotor->getAccelPitchLimit();
+#ifdef ZH
+	const Real DECEL_PITCH_LIMIT = locomotor->getDecelPitchLimit();
+#endif
 	const Real PITCH_STIFFNESS = locomotor->getPitchStiffness();
 	const Real ROLL_STIFFNESS =  locomotor->getRollStiffness();
 	const Real PITCH_DAMPING = locomotor->getPitchDamping();
@@ -1498,16 +1728,39 @@ void Drawable::calcPhysicsXformHoverOrWings( const Locomotor *locomotor, Physics
 
 	// limit acceleration pitch and roll
 
+#ifdef OG
 	if (m_locoInfo->m_accelerationPitch > ACCEL_PITCH_LIMIT)
 		m_locoInfo->m_accelerationPitch = ACCEL_PITCH_LIMIT;
+#endif
+#ifdef ZH
+	if (m_locoInfo->m_accelerationPitch > DECEL_PITCH_LIMIT)
+		m_locoInfo->m_accelerationPitch = DECEL_PITCH_LIMIT;
+#endif
 	else if (m_locoInfo->m_accelerationPitch < -ACCEL_PITCH_LIMIT)
 		m_locoInfo->m_accelerationPitch = -ACCEL_PITCH_LIMIT;
 
+#ifdef OG
 	if (m_locoInfo->m_accelerationRoll > ACCEL_PITCH_LIMIT)
 		m_locoInfo->m_accelerationRoll = ACCEL_PITCH_LIMIT;
+#endif
+#ifdef ZH
+	if (m_locoInfo->m_accelerationRoll > DECEL_PITCH_LIMIT)
+		m_locoInfo->m_accelerationRoll = DECEL_PITCH_LIMIT;
+#endif
 	else if (m_locoInfo->m_accelerationRoll < -ACCEL_PITCH_LIMIT)
 		m_locoInfo->m_accelerationRoll = -ACCEL_PITCH_LIMIT;
 
+#ifdef ZH
+
+	const Real RUDDER_CORRECTION_DEGREE   = locomotor->getRudderCorrectionDegree();	
+	const Real RUDDER_CORRECTION_RATE     = locomotor->getRudderCorrectionRate();	
+	const Real ELEVATOR_CORRECTION_DEGREE = locomotor->getElevatorCorrectionDegree();	
+	const Real ELEVATOR_CORRECTION_RATE   = locomotor->getElevatorCorrectionRate();	
+
+  info.m_totalYaw = RUDDER_CORRECTION_DEGREE * sin( m_locoInfo->m_yawModulator += RUDDER_CORRECTION_RATE );
+  info.m_totalPitch += ELEVATOR_CORRECTION_DEGREE * cos( m_locoInfo->m_pitchModulator += ELEVATOR_CORRECTION_RATE );
+
+#endif
 	info.m_totalZ = 0.0f;
 }
 
@@ -1524,6 +1777,9 @@ void Drawable::calcPhysicsXformTreads( const Locomotor *locomotor, PhysicsXformI
 	const Real OVERLAP_ROUGH_VIBRATION_FACTOR = 5.0f;
 	const Real MAX_ROUGH_VIBRATION = 0.5f;
 	const Real ACCEL_PITCH_LIMIT = locomotor->getAccelPitchLimit();
+#ifdef ZH
+	const Real DECEL_PITCH_LIMIT = locomotor->getDecelPitchLimit();
+#endif
 	const Real PITCH_STIFFNESS = locomotor->getPitchStiffness();
 	const Real ROLL_STIFFNESS =  locomotor->getRollStiffness();
 	const Real PITCH_DAMPING = locomotor->getPitchDamping();
@@ -1732,13 +1988,25 @@ void Drawable::calcPhysicsXformTreads( const Locomotor *locomotor, PhysicsXformI
 
 	// limit recoil pitch and roll
 
+#ifdef OG
 	if (m_locoInfo->m_accelerationPitch > ACCEL_PITCH_LIMIT)
 		m_locoInfo->m_accelerationPitch = ACCEL_PITCH_LIMIT;
+#endif
+#ifdef ZH
+	if (m_locoInfo->m_accelerationPitch > DECEL_PITCH_LIMIT)
+		m_locoInfo->m_accelerationPitch = DECEL_PITCH_LIMIT;
+#endif
 	else if (m_locoInfo->m_accelerationPitch < -ACCEL_PITCH_LIMIT)
 		m_locoInfo->m_accelerationPitch = -ACCEL_PITCH_LIMIT;
 
+#ifdef OG
 	if (m_locoInfo->m_accelerationRoll > ACCEL_PITCH_LIMIT)
 		m_locoInfo->m_accelerationRoll = ACCEL_PITCH_LIMIT;
+#endif
+#ifdef ZH
+	if (m_locoInfo->m_accelerationRoll > DECEL_PITCH_LIMIT)
+		m_locoInfo->m_accelerationRoll = DECEL_PITCH_LIMIT;
+#endif
 	else if (m_locoInfo->m_accelerationRoll < -ACCEL_PITCH_LIMIT)
 		m_locoInfo->m_accelerationRoll = -ACCEL_PITCH_LIMIT;
 
@@ -1776,6 +2044,9 @@ void Drawable::calcPhysicsXformWheels( const Locomotor *locomotor, PhysicsXformI
 		m_locoInfo = newInstance(DrawableLocoInfo);
 
 	const Real ACCEL_PITCH_LIMIT = locomotor->getAccelPitchLimit();
+#ifdef ZH
+	const Real DECEL_PITCH_LIMIT = locomotor->getDecelPitchLimit();
+#endif
 	const Real BOUNCE_ANGLE_KICK = locomotor->getBounceKick();
 	const Real PITCH_STIFFNESS = locomotor->getPitchStiffness();
 	const Real ROLL_STIFFNESS =  locomotor->getRollStiffness();
@@ -1928,13 +2199,25 @@ void Drawable::calcPhysicsXformWheels( const Locomotor *locomotor, PhysicsXformI
 
 	// limit acceleration pitch and roll
 
+#ifdef OG
 	if (m_locoInfo->m_accelerationPitch > ACCEL_PITCH_LIMIT)
 		m_locoInfo->m_accelerationPitch = ACCEL_PITCH_LIMIT;
+#endif
+#ifdef ZH
+	if (m_locoInfo->m_accelerationPitch > DECEL_PITCH_LIMIT)
+		m_locoInfo->m_accelerationPitch = DECEL_PITCH_LIMIT;
+#endif
 	else if (m_locoInfo->m_accelerationPitch < -ACCEL_PITCH_LIMIT)
 		m_locoInfo->m_accelerationPitch = -ACCEL_PITCH_LIMIT;
 
+#ifdef OG
 	if (m_locoInfo->m_accelerationRoll > ACCEL_PITCH_LIMIT)
 		m_locoInfo->m_accelerationRoll = ACCEL_PITCH_LIMIT;
+#endif
+#ifdef ZH
+	if (m_locoInfo->m_accelerationRoll > DECEL_PITCH_LIMIT)
+		m_locoInfo->m_accelerationRoll = DECEL_PITCH_LIMIT;
+#endif
 	else if (m_locoInfo->m_accelerationRoll < -ACCEL_PITCH_LIMIT)
 		m_locoInfo->m_accelerationRoll = -ACCEL_PITCH_LIMIT;
 
@@ -2062,7 +2345,306 @@ void Drawable::calcPhysicsXformWheels( const Locomotor *locomotor, PhysicsXformI
 	info.m_totalZ += fabs(rollHeight)/divisor;
 }
 
+#ifdef ZH
 //-------------------------------------------------------------------------------------------------
+#endif
+//-------------------------------------------------------------------------------------------------
+#ifdef ZH
+void Drawable::calcPhysicsXformMotorcycle( const Locomotor *locomotor, PhysicsXformInfo& info )
+{
+	if (m_locoInfo == NULL)
+		m_locoInfo = newInstance(DrawableLocoInfo);
+
+	const Real ACCEL_PITCH_LIMIT = locomotor->getAccelPitchLimit();
+	const Real DECEL_PITCH_LIMIT = locomotor->getDecelPitchLimit();
+	const Real BOUNCE_ANGLE_KICK = locomotor->getBounceKick();
+	const Real PITCH_STIFFNESS = locomotor->getPitchStiffness();
+	const Real ROLL_STIFFNESS =  locomotor->getRollStiffness();
+	const Real PITCH_DAMPING = locomotor->getPitchDamping();
+	const Real ROLL_DAMPING = locomotor->getRollDamping();
+	const Real FORWARD_ACCEL_COEFF = locomotor->getForwardAccelCoef();	
+	const Real LATERAL_ACCEL_COEFF = locomotor->getLateralAccelCoef();	
+	const Real UNIFORM_AXIAL_DAMPING = locomotor->getUniformAxialDamping();	
+
+	const Real MAX_SUSPENSION_EXTENSION = locomotor->getMaxWheelExtension(); //-2.3f;
+//	const Real MAX_SUSPENSION_COMPRESSION = locomotor->getMaxWheelCompression(); //1.4f;
+	const Real WHEEL_ANGLE = locomotor->getWheelTurnAngle(); //PI/8;
+
+	const Bool DO_WHEELS = locomotor->hasSuspension();
+
+	// get object from logic
+	Object *obj = getObject();
+	if (obj == NULL)
+		return;
+
+	AIUpdateInterface *ai = obj->getAIUpdateInterface();
+	if (ai == NULL)
+		return ;
+
+	// get object physics state
+	PhysicsBehavior *physics = obj->getPhysics();
+	if (physics == NULL)
+		return ;
+
+	// get our position and direction vector
+	const Coord3D *pos = getPosition();
+	const Coord3D *dir = getUnitDirectionVector2D();
+	const Coord3D *accel = physics->getAcceleration();
+
+	// compute perpendicular (2d)
+	Coord3D perp;
+	perp.x = -dir->y;
+	perp.y = dir->x;
+	perp.z = 0.0f;
+
+	// find pitch and roll of terrain under chassis
+	Coord3D normal;
+	Real hheight = TheTerrainLogic->getLayerHeight( pos->x, pos->y, obj->getLayer(), &normal );
+
+	Real dot = normal.x * dir->x + normal.y * dir->y;
+	Real groundPitch = dot * (PI/2.0f);
+
+	dot = normal.x * perp.x + normal.y * perp.y;
+	Real groundRoll = dot * (PI/2.0f);
+
+	Bool airborne = obj->isSignificantlyAboveTerrain();
+
+	if (airborne) 
+	{
+		if (DO_WHEELS) 
+		{	
+			// Wheels extend when airborne.
+			m_locoInfo->m_wheelInfo.m_framesAirborne = 0;
+			m_locoInfo->m_wheelInfo.m_framesAirborneCounter++;
+			if (pos->z - hheight > -MAX_SUSPENSION_EXTENSION) 
+			{
+				m_locoInfo->m_wheelInfo.m_rearLeftHeightOffset += (MAX_SUSPENSION_EXTENSION - m_locoInfo->m_wheelInfo.m_rearLeftHeightOffset)/2.0f;
+				m_locoInfo->m_wheelInfo.m_rearRightHeightOffset = m_locoInfo->m_wheelInfo.m_rearLeftHeightOffset;
+			} 
+			else 
+			{
+				m_locoInfo->m_wheelInfo.m_rearLeftHeightOffset += (0 - m_locoInfo->m_wheelInfo.m_rearLeftHeightOffset)/2.0f;
+				m_locoInfo->m_wheelInfo.m_rearRightHeightOffset = m_locoInfo->m_wheelInfo.m_rearLeftHeightOffset;
+			}
+		}
+		// Calculate suspension info.
+		Real length = obj->getGeometryInfo().getMajorRadius();
+		//Real width = obj->getGeometryInfo().getMinorRadius();
+		Real pitchHeight = length*Sin(m_locoInfo->m_pitch + m_locoInfo->m_accelerationPitch - groundPitch);	
+		//Real rollHeight = width*Sin(m_locoInfo->m_roll + m_locoInfo->m_accelerationRoll - groundRoll);
+		info.m_totalZ = fabs(pitchHeight)/4;// + fabs(rollHeight)/4;
+		//return; // maintain the same orientation while we fly through the air.
+	}
+
+	// Bouncy.
+	Real curSpeed = physics->getVelocityMagnitude();
+#if 1 
+	Real maxSpeed = ai->getCurLocomotorSpeed();
+	if (!airborne && curSpeed > maxSpeed/10) 
+	{
+		Real factor = curSpeed/maxSpeed;
+		if (fabs(m_locoInfo->m_pitchRate)<factor*BOUNCE_ANGLE_KICK/4 && fabs(m_locoInfo->m_rollRate)<factor*BOUNCE_ANGLE_KICK/8) 
+		{
+			// do the bouncy. 
+			switch (GameClientRandomValue(0,3)) 
+			{
+			case 0:
+				m_locoInfo->m_pitchRate -= BOUNCE_ANGLE_KICK*factor;
+				m_locoInfo->m_rollRate -= BOUNCE_ANGLE_KICK*factor/2;
+				break;
+			case 1:
+				m_locoInfo->m_pitchRate += BOUNCE_ANGLE_KICK*factor;
+				m_locoInfo->m_rollRate -= BOUNCE_ANGLE_KICK*factor/2;
+				break;
+			case 2:
+				m_locoInfo->m_pitchRate -= BOUNCE_ANGLE_KICK*factor;
+				m_locoInfo->m_rollRate += BOUNCE_ANGLE_KICK*factor/2;
+				break;
+			case 3:
+				m_locoInfo->m_pitchRate += BOUNCE_ANGLE_KICK*factor;
+				m_locoInfo->m_rollRate += BOUNCE_ANGLE_KICK*factor/2;
+				break;
+			}
+		}
+	}
+
+#endif
+
+	// process chassis suspension dynamics - damp back towards groundPitch
+
+	// the ground can only push back if we're touching it
+	if (!airborne)
+	{
+		m_locoInfo->m_pitchRate += ((-PITCH_STIFFNESS * (m_locoInfo->m_pitch - groundPitch)) + (-PITCH_DAMPING * m_locoInfo->m_pitchRate));		// spring/damper
+		m_locoInfo->m_rollRate += ((-ROLL_STIFFNESS * (m_locoInfo->m_roll - groundRoll)) + (-ROLL_DAMPING * m_locoInfo->m_rollRate));		// spring/damper
+	}
+	else
+	{
+		//Autolevel
+		m_locoInfo->m_pitchRate += ( (-PITCH_STIFFNESS * m_locoInfo->m_pitch) + (-PITCH_DAMPING * m_locoInfo->m_pitchRate) );		// spring/damper
+		m_locoInfo->m_rollRate += ( (-ROLL_STIFFNESS * m_locoInfo->m_roll) + (-ROLL_DAMPING * m_locoInfo->m_rollRate) );		// spring/damper
+	}
+
+	m_locoInfo->m_pitch += m_locoInfo->m_pitchRate * UNIFORM_AXIAL_DAMPING;
+	m_locoInfo->m_roll += m_locoInfo->m_rollRate   * UNIFORM_AXIAL_DAMPING;
+
+	// process chassis acceleration dynamics - damp back towards zero
+
+	m_locoInfo->m_accelerationPitchRate += ((-PITCH_STIFFNESS * (m_locoInfo->m_accelerationPitch)) + (-PITCH_DAMPING * m_locoInfo->m_accelerationPitchRate));		// spring/damper
+	m_locoInfo->m_accelerationPitch += m_locoInfo->m_accelerationPitchRate;
+
+	m_locoInfo->m_accelerationRollRate += ((-ROLL_STIFFNESS * m_locoInfo->m_accelerationRoll) + (-ROLL_DAMPING * m_locoInfo->m_accelerationRollRate));		// spring/damper
+	m_locoInfo->m_accelerationRoll += m_locoInfo->m_accelerationRollRate;
+
+	// compute total pitch and roll of tank
+	info.m_totalPitch = m_locoInfo->m_pitch + m_locoInfo->m_accelerationPitch;
+
+  // THis logic had recently been added to Drawable::applyPhysicsXform(), which was naughty, since it clamped the roll in every drawable in the game
+  // Now only motorcycles enjoy this constraint
+  Real unclampedRoll = m_locoInfo->m_roll + m_locoInfo->m_accelerationRoll;
+  info.m_totalRoll = (unclampedRoll > 0.5f && unclampedRoll < -0.5f ? unclampedRoll : 0.0f);
+
+	if( airborne )
+	{
+	}
+
+	if (physics->isMotive()) 
+	{
+		// cause the chassis to pitch & roll in reaction to acceleration/deceleration
+		Real forwardAccel = dir->x * accel->x + dir->y * accel->y;
+		m_locoInfo->m_accelerationPitchRate += -(FORWARD_ACCEL_COEFF * forwardAccel);
+
+		Real lateralAccel = -dir->y * accel->x + dir->x * accel->y;
+		m_locoInfo->m_accelerationRollRate += -(LATERAL_ACCEL_COEFF * lateralAccel);
+	}
+
+	// limit acceleration pitch and roll
+
+	if (m_locoInfo->m_accelerationPitch > DECEL_PITCH_LIMIT)
+		m_locoInfo->m_accelerationPitch = DECEL_PITCH_LIMIT;
+	else if (m_locoInfo->m_accelerationPitch < -ACCEL_PITCH_LIMIT)
+		m_locoInfo->m_accelerationPitch = -ACCEL_PITCH_LIMIT;
+
+	if (m_locoInfo->m_accelerationRoll > DECEL_PITCH_LIMIT)
+		m_locoInfo->m_accelerationRoll = DECEL_PITCH_LIMIT;
+	else if (m_locoInfo->m_accelerationRoll < -ACCEL_PITCH_LIMIT)
+		m_locoInfo->m_accelerationRoll = -ACCEL_PITCH_LIMIT;
+
+	info.m_totalZ = 0;
+
+	// Calculate suspension info.
+	Real length = obj->getGeometryInfo().getMajorRadius();
+	Real width = obj->getGeometryInfo().getMinorRadius();
+	Real pitchHeight = length*Sin(info.m_totalPitch-groundPitch);
+	Real rollHeight = width*Sin(info.m_totalRoll-groundRoll);
+	if (DO_WHEELS) 
+	{	
+		// calculate each wheel position
+		m_locoInfo->m_wheelInfo.m_framesAirborne = m_locoInfo->m_wheelInfo.m_framesAirborneCounter;
+		m_locoInfo->m_wheelInfo.m_framesAirborneCounter = 0;
+		TWheelInfo newInfo = m_locoInfo->m_wheelInfo;
+		PhysicsTurningType rotation = physics->getTurning();
+		if (rotation == TURN_NEGATIVE) {
+			newInfo.m_wheelAngle = -WHEEL_ANGLE;
+		} else if (rotation == TURN_POSITIVE) {
+			newInfo.m_wheelAngle = WHEEL_ANGLE;
+		}	else {
+			newInfo.m_wheelAngle = 0;
+		}
+		if (physics->getForwardSpeed2D() < 0.0f) {
+			// if we're moving backwards, the wheels rotate in the opposite direction.
+			newInfo.m_wheelAngle = -newInfo.m_wheelAngle;
+		}
+
+		//
+		///@todo Steven/John ... please review this and make sure it makes sense (CBD)
+		// we're going to add the angle to the current wheel rotation ... but we're going to 
+		// divide that number to add small angles.  This allows for "smoother" wheel turning
+		// transitions ... and when the AI has things move in a straight line, since it's
+		// constantly telling the object to go left, go straight, go right, go straight,
+		// etc, this smaller angle we'll be adding covers the constant wheel shifting 
+		// left and right when moving in a relatively straight line
+		//
+		#define WHEEL_SMOOTHNESS 10.0f  // higher numbers add smaller angles, make it more "smooth"
+		m_locoInfo->m_wheelInfo.m_wheelAngle += (newInfo.m_wheelAngle - m_locoInfo->m_wheelInfo.m_wheelAngle)/WHEEL_SMOOTHNESS;
+
+		const Real SPRING_FACTOR = 0.9f;
+		if (pitchHeight<0) 
+		{	
+			// Front raising up
+			newInfo.m_frontLeftHeightOffset		= SPRING_FACTOR*(pitchHeight/3+pitchHeight/2);
+			newInfo.m_rearLeftHeightOffset		= -pitchHeight/2 + pitchHeight/4;
+			newInfo.m_frontRightHeightOffset	= newInfo.m_frontLeftHeightOffset;
+			newInfo.m_rearRightHeightOffset		= newInfo.m_rearLeftHeightOffset;
+		}	
+		else 
+		{	
+			// Back raising up.
+			newInfo.m_frontLeftHeightOffset		= (-pitchHeight/4+pitchHeight/2);
+			newInfo.m_rearLeftHeightOffset		= SPRING_FACTOR*(-pitchHeight/2 + -pitchHeight/3);
+			newInfo.m_frontRightHeightOffset	= newInfo.m_frontLeftHeightOffset;
+			newInfo.m_rearRightHeightOffset		= newInfo.m_rearLeftHeightOffset;
+		}
+		/*
+		if (rollHeight>0) {	// Right raising up
+			newInfo.m_frontRightHeightOffset += -SPRING_FACTOR*(rollHeight/3+rollHeight/2);
+			newInfo.m_rearLeftHeightOffset += rollHeight/2 - rollHeight/4;
+		}	else {	// Left raising up.
+			newInfo.m_frontRightHeightOffset += -rollHeight/2 + rollHeight/4;
+			newInfo.m_rearLeftHeightOffset += SPRING_FACTOR*(rollHeight/3+rollHeight/2);
+		}
+		*/
+		if (newInfo.m_frontLeftHeightOffset < m_locoInfo->m_wheelInfo.m_frontLeftHeightOffset) 
+		{
+			// If it's going down, dampen the movement a bit
+			m_locoInfo->m_wheelInfo.m_frontLeftHeightOffset += (newInfo.m_frontLeftHeightOffset - m_locoInfo->m_wheelInfo.m_frontLeftHeightOffset)/2.0f;
+			m_locoInfo->m_wheelInfo.m_frontRightHeightOffset = m_locoInfo->m_wheelInfo.m_frontLeftHeightOffset;
+		}	
+		else 
+		{
+			m_locoInfo->m_wheelInfo.m_frontLeftHeightOffset = newInfo.m_frontLeftHeightOffset;
+			m_locoInfo->m_wheelInfo.m_frontRightHeightOffset = newInfo.m_frontLeftHeightOffset;
+		}
+		if (newInfo.m_rearLeftHeightOffset < m_locoInfo->m_wheelInfo.m_rearLeftHeightOffset) 
+		{
+			// If it's going down, dampen the movement a bit
+			m_locoInfo->m_wheelInfo.m_rearLeftHeightOffset += (newInfo.m_rearLeftHeightOffset - m_locoInfo->m_wheelInfo.m_rearLeftHeightOffset)/2.0f;
+			m_locoInfo->m_wheelInfo.m_rearRightHeightOffset = m_locoInfo->m_wheelInfo.m_rearLeftHeightOffset;
+		}	
+		else 
+		{
+			m_locoInfo->m_wheelInfo.m_rearLeftHeightOffset = newInfo.m_rearLeftHeightOffset;
+			m_locoInfo->m_wheelInfo.m_rearRightHeightOffset = newInfo.m_rearLeftHeightOffset;
+		}
+		//m_locoInfo->m_wheelInfo = newInfo;
+		if (m_locoInfo->m_wheelInfo.m_frontLeftHeightOffset<MAX_SUSPENSION_EXTENSION) 
+		{
+			m_locoInfo->m_wheelInfo.m_frontLeftHeightOffset = MAX_SUSPENSION_EXTENSION;
+			m_locoInfo->m_wheelInfo.m_frontRightHeightOffset = MAX_SUSPENSION_EXTENSION;
+		}
+		if (m_locoInfo->m_wheelInfo.m_rearLeftHeightOffset<MAX_SUSPENSION_EXTENSION) 
+		{
+			m_locoInfo->m_wheelInfo.m_rearLeftHeightOffset = MAX_SUSPENSION_EXTENSION;
+			m_locoInfo->m_wheelInfo.m_rearRightHeightOffset = MAX_SUSPENSION_EXTENSION;
+		}
+	}
+	// If we are > 22 degrees, need to raise height;
+	Real divisor = 4;
+	Real pitch = fabs(info.m_totalPitch-groundPitch);
+
+	if (pitch>PI/8) {
+		divisor = ((4*PI/8) + (1*(pitch-PI/8)))/pitch;
+	} 
+	
+	if( !airborne )
+	{
+		info.m_totalZ += fabs(pitchHeight)/divisor;
+		info.m_totalZ += fabs(rollHeight)/divisor;
+	}
+}
+
+//-------------------------------------------------------------------------------------------------
+#endif
 /** decodes the current previous damage type and sets the ambient sound set from that. */
 //-------------------------------------------------------------------------------------------------
 const AudioEventRTS& Drawable::getAmbientSoundByDamage(BodyDamageType dt)
@@ -2114,7 +2696,12 @@ void Drawable::setStealthLook(StealthLookType look)
 		{
 			case STEALTHLOOK_NONE:
 				m_hiddenByStealth = false;
+#ifdef OG
 				m_heatVisionOpacity = 0.0f;
+#endif
+#ifdef ZH
+				m_secondMaterialPassOpacity = 0.0f;
+#endif
 				break;
 
 			case STEALTHLOOK_VISIBLE_FRIENDLY:
@@ -2126,8 +2713,14 @@ void Drawable::setStealthLook(StealthLookType look)
 				if( obj )
 				{
 					//Try to get the stealthupdate module and see if the opacity value is overriden.
+#ifdef OG
 					static NameKeyType key_StealthUpdate = NAMEKEY("StealthUpdate");
 					StealthUpdate* stealth = (StealthUpdate *)obj->findUpdateModule(key_StealthUpdate);
+#endif
+#ifdef ZH
+          StealthUpdate *stealth = obj->getStealth();
+
+#endif
 					if( stealth )
 					{
 						if( stealth->isDisguised() )
@@ -2153,16 +2746,31 @@ void Drawable::setStealthLook(StealthLookType look)
 			/** @todo srj -- evil hack here... this whole heat-vision thing is fucked.
 				don't want it on mines but no good way to do that. hack for now. */
 				if (look == STEALTHLOOK_VISIBLE_FRIENDLY_DETECTED && !isKindOf(KINDOF_MINE))
+#ifdef OG
 					m_heatVisionOpacity = 1.0f;
+#endif
+#ifdef ZH
+					m_secondMaterialPassOpacity = 1.0f;
+#endif
 				else
+#ifdef OG
 					m_heatVisionOpacity = 0.0f;
+#endif
+#ifdef ZH
+					m_secondMaterialPassOpacity = 0.0f;
+#endif
 
 				break;
 			}
 			
 			case STEALTHLOOK_DISGUISED_ENEMY:
 				m_hiddenByStealth = false;
+#ifdef OG
 				m_heatVisionOpacity = 0.0f;
+#endif
+#ifdef ZH
+				m_secondMaterialPassOpacity = 0.0f;
+#endif
 				break;
 
 			// this is for the non-controllingplayer that can see me anyway
@@ -2171,14 +2779,29 @@ void Drawable::setStealthLook(StealthLookType look)
 				/** @todo srj -- evil hack here... this whole heat-vision thing is fucked.
 					don't want it on mines but no good way to do that. hack for now. */
 				if (isKindOf(KINDOF_MINE))
+#ifdef OG
 					m_heatVisionOpacity = 0.0f;
+#endif
+#ifdef ZH
+					m_secondMaterialPassOpacity = 0.0f;
+#endif
 				else
+#ifdef OG
 					m_heatVisionOpacity = 1.0f;// Draw() will fade until it is set to 1 again
+#endif
+#ifdef ZH
+					m_secondMaterialPassOpacity = 1.0f;// Draw() will fade until it is set to 1 again
+#endif
 				break;
 
 			case STEALTHLOOK_INVISIBLE:
 				m_hiddenByStealth = true;
+#ifdef OG
 				m_heatVisionOpacity = 0.0f;
+#endif
+#ifdef ZH
+				m_secondMaterialPassOpacity = 0.0f;
+#endif
 				break;
 		}
 		m_stealthLook = look;
@@ -2193,13 +2816,30 @@ void Drawable::setStealthLook(StealthLookType look)
 void Drawable::draw( View *view )
 {
 
+#ifdef ZH
+  if ( testTintStatus( TINT_STATUS_FRENZY ) == FALSE )
+  {
+#endif
 	if ( getObject() && getObject()->isEffectivelyDead() )
+#ifdef OG
 		m_heatVisionOpacity = 0.0f;//dead folks don't stealth anyway
 	else if ( m_heatVisionOpacity > VERY_TRANSPARENT_HEATVISION )// keep fading any heatvision unless something has set it to zero
 		m_heatVisionOpacity *= HEATVISION_FADE_SCALAR;
+#endif
+#ifdef ZH
+		  m_secondMaterialPassOpacity = 0.0f;//dead folks don't stealth anyway
+	  else if ( m_secondMaterialPassOpacity > VERY_TRANSPARENT_MATERIAL_PASS_OPACITY )// keep fading any add'l material unless something has set it to zero
+		  m_secondMaterialPassOpacity *= MATERIAL_PASS_OPACITY_FADE_SCALAR;
+#endif
 	else
+#ifdef OG
 		m_heatVisionOpacity = 0.0f;
 
+#endif
+#ifdef ZH
+		  m_secondMaterialPassOpacity = 0.0f;
+  }
+#endif
 
 
 	if (m_hidden || m_hiddenByStealth || getFullyObscuredByShroud())
@@ -2360,6 +3000,12 @@ void Drawable::drawIconUI( void )
 
 		//Moved this to last so that it shows up over contained and ammo icons.
 		drawVeterancy( healthBarRegion ); 
+#ifdef ZH
+
+#ifdef KRIS_BRUTAL_HACK_FOR_AIRCRAFT_CARRIER_DEBUGGING
+		drawUIText();
+#endif
+#endif
 	}
 }
 
@@ -2736,11 +3382,61 @@ void Drawable::drawUIText()
 													TheDrawGroupInfo->m_colorForTextDropShadow, 
 													TheDrawGroupInfo->m_dropShadowOffsetX, 
 													TheDrawGroupInfo->m_dropShadowOffsetY);
+#ifdef ZH
 
 	}
+	
+#ifdef KRIS_BRUTAL_HACK_FOR_AIRCRAFT_CARRIER_DEBUGGING
+	if( obj->testStatus( OBJECT_STATUS_DECK_HEIGHT_OFFSET ) )
+	{
+		Object *carrier = TheGameLogic->findObjectByID( obj->getProducerID() );
+		if( carrier )
+		{
+			for (BehaviorModule** i = carrier->getBehaviorModules(); *i; ++i)
+			{
+				ParkingPlaceBehaviorInterface *pp = (*i)->getParkingPlaceBehaviorInterface();
+				if( pp )
+				{
+					Int index = pp->getSpaceIndex( obj->getID() );
+					
+					Int xPos = healthBarRegion->lo.x;
+					Int yPos = healthBarRegion->lo.y;
+
+					if (TheDrawGroupInfo->m_usingPixelOffsetX) {
+						xPos += TheDrawGroupInfo->m_pixelOffsetX;
+					} else {
+						xPos += (healthBarRegion->width() * TheDrawGroupInfo->m_percentOffsetX);
+					}
+#endif
+
+#ifdef ZH
+					if (TheDrawGroupInfo->m_usingPixelOffsetY) {
+						yPos += TheDrawGroupInfo->m_pixelOffsetY;
+					} else {
+						yPos += (healthBarRegion->width() * TheDrawGroupInfo->m_percentOffsetY);
+#endif
+	}
+#ifdef ZH
+
+					m_groupNumber = TheDisplayStringManager->getGroupNumeralString(index);
+#endif
 
 
+#ifdef ZH
+					m_groupNumber->draw(xPos, yPos, color, 
+															TheDrawGroupInfo->m_colorForTextDropShadow, 
+															TheDrawGroupInfo->m_dropShadowOffsetX, 
+															TheDrawGroupInfo->m_dropShadowOffsetY);
+					break;
+				}
+			}
+#endif
 }
+#ifdef ZH
+	}
+#endif
+}
+#endif
 
 // ------------------------------------------------------------------------------------------------
 // ------------------------------------------------------------------------------------------------
@@ -2750,7 +3446,12 @@ void Drawable::drawHealing(const IRegion2D* healthBarRegion)
 	const Object *obj = getObject();			
 
 	// we do show show icons for things that explicitly forbid it
+#ifdef OG
 	if( obj->isKindOf( KINDOF_NO_HEAL_ICON ) || BitTest( obj->getStatusBits(), OBJECT_STATUS_SOLD ))
+#endif
+#ifdef ZH
+	if( obj->isKindOf( KINDOF_NO_HEAL_ICON ) || obj->getStatusBits().test( OBJECT_STATUS_SOLD ) )
+#endif
 		return;
 
 
@@ -2894,7 +3595,12 @@ void Drawable::drawEnthusiastic(const IRegion2D* healthBarRegion)
 			// given our scaled width and height we need to find the bottom left point to draw the image at
 			ICoord2D screen;
 			screen.x = REAL_TO_INT( healthBarRegion->lo.x + (barWidth * 0.25f) - (frameWidth * 0.5f) );
+#ifdef OG
 			screen.y = healthBarRegion->hi.y;
+#endif
+#ifdef ZH
+			screen.y = healthBarRegion->hi.y + (frameHeight * 0.25);
+#endif
 			getIconInfo()->m_icon[ iconIndex ]->draw( screen.x, screen.y, frameWidth, frameHeight );
 							
 		}	
@@ -2960,6 +3666,13 @@ void Drawable::drawDemoralized(const IRegion2D* healthBarRegion)
 }
 #endif
 
+#ifdef ZH
+enum
+{
+	// The code tries to be below the health bar, but that pus it square under passenger pips.
+	BOMB_ICON_EXTRA_OFFSET = 5
+};
+#endif
 // ------------------------------------------------------------------------------------------------
 // ------------------------------------------------------------------------------------------------
 void Drawable::drawBombed(const IRegion2D* healthBarRegion)
@@ -2998,7 +3711,12 @@ void Drawable::drawBombed(const IRegion2D* healthBarRegion)
 				// given our scaled width and height we need to find the top left point to draw the image at
 				ICoord2D screen;
 				screen.x = REAL_TO_INT( healthBarRegion->lo.x + (barWidth * 0.5f) - (frameWidth * 0.5f) );
+#ifdef OG
 				screen.y = REAL_TO_INT( healthBarRegion->lo.y + barHeight * 0.5f );
+#endif
+#ifdef ZH
+				screen.y = REAL_TO_INT( healthBarRegion->lo.y + barHeight * 0.5f ) + BOMB_ICON_EXTRA_OFFSET;
+#endif
 
 				getIconInfo()->m_icon[ ICON_CARBOMB ]->draw( screen.x, screen.y, frameWidth, frameHeight );	
 				getIconInfo()->m_keepTillFrame[ ICON_CARBOMB ] = FOREVER;
@@ -3075,7 +3793,12 @@ void Drawable::drawBombed(const IRegion2D* healthBarRegion)
 						// given our scaled width and height we need to find the top left point to draw the image at
 						ICoord2D screen;
 						screen.x = REAL_TO_INT( healthBarRegion->lo.x + (barWidth * 0.5f) - (frameWidth * 0.5f) );
+#ifdef OG
 						screen.y = REAL_TO_INT( healthBarRegion->lo.y + barHeight * 0.5f );
+#endif
+#ifdef ZH
+						screen.y = REAL_TO_INT( healthBarRegion->lo.y + barHeight * 0.5f ) + BOMB_ICON_EXTRA_OFFSET;
+#endif
 
 						getIconInfo()->m_icon[ ICON_BOMB_REMOTE ]->draw( screen.x, screen.y, frameWidth, frameHeight );	
 						getIconInfo()->m_keepTillFrame[ ICON_BOMB_REMOTE ] = now + 1;
@@ -3115,7 +3838,12 @@ void Drawable::drawBombed(const IRegion2D* healthBarRegion)
 						// given our scaled width and height we need to find the top left point to draw the image at
 						ICoord2D screen;
 						screen.x = REAL_TO_INT( healthBarRegion->lo.x + (barWidth * 0.5f) - (frameWidth * 0.5f) );
+#ifdef OG
 						screen.y = REAL_TO_INT( healthBarRegion->lo.y + barHeight * 0.5f );
+#endif
+#ifdef ZH
+						screen.y = REAL_TO_INT( healthBarRegion->lo.y + barHeight * 0.5f ) + BOMB_ICON_EXTRA_OFFSET;
+#endif
 
 						getIconInfo()->m_icon[ ICON_BOMB_REMOTE ]->draw( screen.x, screen.y, frameWidth, frameHeight );	
 						getIconInfo()->m_keepTillFrame[ ICON_BOMB_REMOTE ] = now + 1;
@@ -3153,6 +3881,9 @@ void Drawable::drawDisabled(const IRegion2D* healthBarRegion)
 	if( obj->isDisabledByType( DISABLED_HACKED ) 
 		|| obj->isDisabledByType( DISABLED_PARALYZED ) 
 		|| obj->isDisabledByType( DISABLED_EMP ) 
+#ifdef ZH
+		|| obj->isDisabledByType( DISABLED_SUBDUED ) 
+#endif
 		|| obj->isDisabledByType( DISABLED_UNDERPOWERED ) 
 		)
 	{
@@ -3204,8 +3935,14 @@ void Drawable::drawConstructPercent( const IRegion2D *healthBarRegion )
 	// this data is in an attached object
 	Object *obj = getObject();
 
+#ifdef OG
 	if( obj == NULL || BitTest( obj->getStatusBits(), OBJECT_STATUS_UNDER_CONSTRUCTION ) == FALSE ||
 			BitTest( obj->getStatusBits(), OBJECT_STATUS_SOLD ) == TRUE )
+#endif
+#ifdef ZH
+	if( obj == NULL || !obj->getStatusBits().test( OBJECT_STATUS_UNDER_CONSTRUCTION ) ||
+			obj->getStatusBits().test( OBJECT_STATUS_SOLD ) )
+#endif
 	{
 		// no object, or we are now complete get rid of the string if we have one
 		if( m_constructDisplayString )
@@ -3248,6 +3985,11 @@ void Drawable::drawConstructPercent( const IRegion2D *healthBarRegion )
 
 	// convert drawable center position to screen coords
 	TheTacticalView->worldToScreen( &pos, &screen );
+#ifdef ZH
+
+  if ( screen.x < 1 )
+    return;
+#endif
 
 	// draw the text
 	Color color = GameMakeColor( 255, 255, 255, 255 );
@@ -3395,7 +4137,12 @@ void Drawable::drawHealthBar(const IRegion2D* healthBarRegion)
 		//
 
 		Color color, outlineColor;
+#ifdef OG
 		if( BitTest( obj->getStatusBits(), OBJECT_STATUS_UNDER_CONSTRUCTION ) || (obj->isDisabled() && !obj->isDisabledByType(DISABLED_HELD)) )
+#endif
+#ifdef ZH
+		if( obj->getStatusBits().test( OBJECT_STATUS_UNDER_CONSTRUCTION ) || (obj->isDisabled() && !obj->isDisabledByType(DISABLED_HELD)) )
+#endif
 		{
 			color = GameMakeColor( 0, healthRatio * 255.0f, 255, 255 );//blue to cyan
 			outlineColor = GameMakeColor( 0, healthRatio * 128.0f, 128, 255 );//dark blue to dark cyan
@@ -3477,6 +4224,15 @@ void Drawable::clearAndSetModelConditionState( ModelConditionFlagType clr, Model
 }
 
 //-------------------------------------------------------------------------------------------------
+#ifdef ZH
+DrawModule** Drawable::getDrawModulesNonDirty() 
+{ 
+	DrawModule** dm = (DrawModule**)getModuleList(MODULETYPE_DRAW); 
+	return dm;
+}
+
+//-------------------------------------------------------------------------------------------------
+#endif
 DrawModule** Drawable::getDrawModules() 
 { 
 	DrawModule** dm = (DrawModule**)getModuleList(MODULETYPE_DRAW); 
@@ -3663,6 +4419,17 @@ void Drawable::friend_bindToObject( Object *obj ) ///< bind this drawable to an 
 			setIndicatorColor(getObject()->getNightIndicatorColor());
 		else
 			setIndicatorColor(getObject()->getIndicatorColor());
+#ifdef ZH
+
+		if (getObject()->isKindOf(KINDOF_FS_FAKE))
+		{
+			Relationship rel=ThePlayerList->getLocalPlayer()->getRelationship(getObject()->getTeam());
+			if (rel == ALLIES || rel == NEUTRAL)
+				setTerrainDecal(TERRAIN_DECAL_SHADOW_TEXTURE);
+			else
+				setTerrainDecal(TERRAIN_DECAL_NONE);
+		}
+#endif
 	}
 
 	for (DrawModule** dm = getDrawModules(); *dm; ++dm)
@@ -3684,8 +4451,21 @@ void Drawable::changedTeam()
 			setIndicatorColor( object->getNightIndicatorColor() );
 		else
 			setIndicatorColor( object->getIndicatorColor() );
+#ifdef ZH
+
+		if (object->isKindOf(KINDOF_FS_FAKE))
+		{
+			Relationship rel=ThePlayerList->getLocalPlayer()->getRelationship(object->getTeam());
+			if (rel == ALLIES || rel == NEUTRAL)
+				setTerrainDecal(TERRAIN_DECAL_SHADOW_TEXTURE);
+			else
+				setTerrainDecal(TERRAIN_DECAL_NONE);
+#endif
 	}
 }
+#ifdef ZH
+}
+#endif
 
 //-------------------------------------------------------------------------------------------------
 void Drawable::setPosition(const Coord3D *pos) 
@@ -3853,18 +4633,129 @@ void	Drawable::setTimeOfDay(TimeOfDay tod)
 	ModelConditionFlags c = m_conditionState;
 	c.set(MODELCONDITION_NIGHT, (tod == TIME_OF_DAY_NIGHT) ? 1 : 0);
 	replaceModelConditionFlags(c);
+#ifdef ZH
 }
 
+/** 
+ * If you wish to change some parameters of the default ambient sound, but keep the rest, 
+ * this function will give you the default ambient sound's info
+ */
+const AudioEventInfo * Drawable::getBaseSoundAmbientInfo() const
+{
+  const AudioEventRTS * baseAmbient = getTemplate()->getSoundAmbient();
+  if ( baseAmbient )
+    return baseAmbient->getAudioEventInfo();
+
+  return NULL;
+}
+
+/** 
+ * Produce a unique-across-entire-level name for this audio event
+ */
+void Drawable::mangleCustomAudioName( DynamicAudioEventInfo * audioToMangle ) const
+{
+  AsciiString customizedName;
+  customizedName.format( " CUSTOM %d ", (Int)getID() ); // Note space at beginning prevents collision with any names from INI file
+  customizedName.concat( audioToMangle->m_audioName );
+  audioToMangle->overrideAudioName( customizedName );
+}
+
+/** 
+ * Force the Drawable to not ever get an ambient sound attached to it (except possibly for RUBBLE)
+ */
+void Drawable::setCustomSoundAmbientOff()
+{
+  clearCustomSoundAmbient( false );
+  
+  m_customSoundAmbientInfo = getNoSoundMarker();  
+}
+
+/** 
+ * Force the Drawable to use the sound described by customAmbientInfo as its ambient sound.
+ * The Drawable expects TheAudio to own the actual info pointer
+ */
+void Drawable::setCustomSoundAmbientInfo( DynamicAudioEventInfo * customAmbientInfo )
+{
+  clearCustomSoundAmbient( false );
+
+  // This is mostly to make sure no one delete's the no sound marker, causing it to be 
+  // recycled as a new no sound marker
+  DEBUG_ASSERTCRASH( customAmbientInfo != getNoSoundMarker(), ("No sound marker passed as custom ambient") );
+
+  // Set name to something different so we don't get confused
+ 
+  m_customSoundAmbientInfo = customAmbientInfo;
+
+  startAmbientSound(); // Note: checks for enabled flag
+}
+
+/** 
+ * Return to using default ambient sound
+ */
+void Drawable::clearCustomSoundAmbient( bool restartSound )
+{
+  if ( m_ambientSound )
+  {
+    // Make sure sound doesn't keep a reference to the deleted pointer
+    m_ambientSound->m_event.setAudioEventInfo( NULL );
+#endif
+}
+#ifdef ZH
+
+  // Stop using old info
+  stopAmbientSound();
+#endif
+
+#ifdef ZH
+  m_customSoundAmbientInfo = NULL;
+  
+  if ( restartSound )
+  {
+    startAmbientSound(); // Note: checks for enabled flag
+  }
+}
+
+#endif
 //-------------------------------------------------------------------------------------------------
 /** Attach and start playing an ambient sound to this drawable */
 //-------------------------------------------------------------------------------------------------
+#ifdef OG
 void Drawable::startAmbientSound(BodyDamageType dt, TimeOfDay tod)
+#endif
+#ifdef ZH
+void Drawable::startAmbientSound(BodyDamageType dt, TimeOfDay tod, Bool onlyIfPermanent)
+#endif
 {
 	stopAmbientSound();
+#ifdef ZH
 
+  Bool trySound = FALSE;
+
+  // Look for customized sound info
+  if ( dt != BODY_RUBBLE && m_customSoundAmbientInfo != NULL )
+  {
+    if ( m_customSoundAmbientInfo != getNoSoundMarker() )
+    {
+      if (m_ambientSound == NULL)
+        m_ambientSound = newInstance(DynamicAudioEventRTS);
+#endif
+
+#ifdef ZH
+      // Make sure m_event will accept the custom info
+      m_ambientSound->m_event.setEventName( m_customSoundAmbientInfo->m_audioName );
+      m_ambientSound->m_event.setAudioEventInfo( m_customSoundAmbientInfo );
+      trySound = TRUE;
+    }       
+  }
+  else
+  {
+    // Didn't get customized sound
+#endif
 	//Get the specific ambient sound for the damage type.
 	const AudioEventRTS& audio = getAmbientSoundByDamage(dt);
+#ifdef OG
 	Bool trySound = FALSE;
+#endif
 	if( audio.getEventName().isNotEmpty() )
 	{
 		if (m_ambientSound == NULL)
@@ -3887,11 +4778,19 @@ void Drawable::startAmbientSound(BodyDamageType dt, TimeOfDay tod)
 			trySound = TRUE;
 		}
 	}
+#ifdef ZH
+  }
+  
+#endif
 	
 	if( trySound && m_ambientSound )
 	{
 		const AudioEventInfo *info = m_ambientSound->m_event.getAudioEventInfo();
 		if( info )
+#ifdef ZH
+		{
+      if ( !onlyIfPermanent || info->isPermanentSound() )
+#endif
 		{
 			if( BitTest( info->m_type, ST_GLOBAL) || info->m_priority == AP_CRITICAL )
 			{
@@ -3911,6 +4810,9 @@ void Drawable::startAmbientSound(BodyDamageType dt, TimeOfDay tod)
 					m_ambientSound->m_event.setDrawableID(getID());
 					m_ambientSound->m_event.setTimeOfDay(tod);
 					m_ambientSound->m_event.setPlayingHandle(TheAudio->addAudioEvent( &m_ambientSound->m_event ));
+#ifdef ZH
+				  }
+#endif
 				}
 			}
 		}
@@ -3926,8 +4828,19 @@ void Drawable::startAmbientSound(BodyDamageType dt, TimeOfDay tod)
 //-------------------------------------------------------------------------------------------------
 // Attach and start playing an ambient sound to this drawable. Calculates states automatically.
 //-------------------------------------------------------------------------------------------------
+#ifdef OG
 void Drawable::startAmbientSound()
+#endif
+#ifdef ZH
+void Drawable::startAmbientSound( Bool onlyIfPermanent )
+#endif
 {
+#ifdef ZH
+  // Must go through enableAmbientSound() if sound is disabled
+  if ( !m_ambientSoundEnabled || !m_ambientSoundEnabledFromScript )
+    return;
+  
+#endif
 	stopAmbientSound();
 	BodyDamageType bodyCondition = BODY_PRISTINE;
 	Object *obj = getObject();
@@ -3935,7 +4848,12 @@ void Drawable::startAmbientSound()
 	{
 		bodyCondition = obj->getBodyModule()->getDamageState();
 	}
+#ifdef OG
 	startAmbientSound( bodyCondition, TheGlobalData->m_timeOfDay );
+#endif
+#ifdef ZH
+	startAmbientSound( bodyCondition, TheGlobalData->m_timeOfDay, onlyIfPermanent );
+#endif
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -3944,10 +4862,19 @@ void Drawable::startAmbientSound()
 void	Drawable::stopAmbientSound( void )
 {
 	if (m_ambientSound)
+#ifdef ZH
+  {
+#endif
 		TheAudio->removeAudioEvent(m_ambientSound->m_event.getPlayingHandle());
 }
+#ifdef ZH
+}
+#endif
 
 //-------------------------------------------------------------------------------------------------
+#ifdef ZH
+// Enable and disable ambient sound from the game logic
+#endif
 void Drawable::enableAmbientSound( Bool enable )
 {
 	if( m_ambientSoundEnabled == enable )
@@ -3957,8 +4884,15 @@ void Drawable::enableAmbientSound( Bool enable )
 
 	m_ambientSoundEnabled = enable;
 	if( enable )
+#ifdef ZH
+	{
+    if ( m_ambientSoundEnabledFromScript )
+#endif
 	{
 		startAmbientSound();
+#ifdef ZH
+    }
+#endif
 	}
 	else
 	{
@@ -3967,6 +4901,29 @@ void Drawable::enableAmbientSound( Bool enable )
 }
 
 //-------------------------------------------------------------------------------------------------
+#ifdef ZH
+// Enable and disable sound because the map designer wants us too
+void Drawable::enableAmbientSoundFromScript( Bool enable )
+{
+  // Note: deliberately skipping if( m_ambientSoundEnabledFromScript == enable ) check here
+  // Allow ENABLE_OBJECT_SOUND to trigger one-shot attached sound multiple times
+
+  m_ambientSoundEnabledFromScript = enable;
+  if( enable )
+  {
+    if ( m_ambientSoundEnabled )
+    {
+      startAmbientSound();
+    }
+  }
+  else
+  {
+    stopAmbientSound();
+  }
+}
+
+//-------------------------------------------------------------------------------------------------
+#endif
 /** add self to the linked list */
 //-------------------------------------------------------------------------------------------------
 void Drawable::prependToList(Drawable **pListHead)
@@ -4025,7 +4982,12 @@ void Drawable::setDrawableHidden( Bool hidden )
 //-------------------------------------------------------------------------------------------------
 void Drawable::updateDrawableClipStatus( UnsignedInt shotsRemaining, UnsignedInt maxShots, WeaponSlotType slot )
 {
+#ifdef OG
 	for (DrawModule** dm = getDrawModules(); *dm; ++dm)
+#endif
+#ifdef ZH
+	for (DrawModule** dm = getDrawModulesNonDirty(); *dm; ++dm)
+#endif
 	{
 		ObjectDrawInterface* di = (*dm)->getObjectDrawInterface();
 		if (di)
@@ -4262,13 +5224,22 @@ void Drawable::xferDrawableModules( Xfer *xfer )
 	*    during the module xfer (CBD)
 	* 4: Added m_ambientSoundEnabled flag
 	* 5: save full mtx, not pos+orient.
+#ifdef ZH
+  * 6: Added m_ambientSoundEnabledFromScript flag
+  * 7: Save the customize ambient sound info
+#endif
 	*/
 // ------------------------------------------------------------------------------------------------
 void Drawable::xfer( Xfer *xfer )
 {
 
 	// version
+#ifdef OG
 	const XferVersion currentVersion = 5;
+#endif
+#ifdef ZH
+	const XferVersion currentVersion = 7;
+#endif
 	XferVersion version = currentVersion;
 	xfer->xferVersion( &version, currentVersion );
 
@@ -4513,7 +5484,12 @@ void Drawable::xfer( Xfer *xfer )
 	xfer->xferBool( &m_hiddenByStealth );
 
 	// heat vision opacity
+#ifdef OG
 	xfer->xferReal( &m_heatVisionOpacity );
+#endif
+#ifdef ZH
+	xfer->xferReal( &m_secondMaterialPassOpacity );
+#endif
 
 	// instance is identity
 	xfer->xferBool( &m_instanceIsIdentity );
@@ -4657,11 +5633,111 @@ void Drawable::xfer( Xfer *xfer )
 		m_isModelDirty = TRUE;
 #endif
 
+#ifdef ZH
+  if( xfer->getXferMode() == XFER_LOAD )
+  {
+    stopAmbientSound(); // Restarted in loadPostProcess()
+  }
+
+#endif
 	if( version >= 4 )
 	{
 		xfer->xferBool( &m_ambientSoundEnabled );
+#ifdef ZH
 	}
 
+  if( version >= 6 )
+  {
+    xfer->xferBool( &m_ambientSoundEnabledFromScript );
+  }
+
+  if ( version >= 7 )
+  {
+    Bool customized = ( m_customSoundAmbientInfo != NULL );
+    xfer->xferBool( &customized );
+
+    if ( customized )
+    {
+      Bool customizedToSilence = ( m_customSoundAmbientInfo == getNoSoundMarker() );
+
+      xfer->xferBool( &customizedToSilence );
+      if ( xfer->getXferMode() == XFER_LOAD )
+      {
+        if ( customizedToSilence )
+        {
+          setCustomSoundAmbientOff();
+        }
+        else
+        {
+          AsciiString baseInfoName;
+          xfer->xferAsciiString( &baseInfoName );
+
+          const AudioEventInfo * baseInfo = TheAudio->findAudioEventInfo( baseInfoName );
+          DynamicAudioEventInfo * customizedInfo;
+          Bool successfulLoad = true;
+
+          if ( baseInfo == NULL )
+          {
+            DEBUG_CRASH( ( "Load failed to load customized ambient sound because sound '%s' no longer exists", baseInfoName.str() ) );
+            
+            // Keep trying to load if we possibly can... Don't completely ruin save files just because an old sound
+            // entry in the INI files was removed or renamed
+            customizedInfo = newInstance( DynamicAudioEventInfo );
+            successfulLoad = false;
+          }
+          else
+          {
+            customizedInfo = newInstance( DynamicAudioEventInfo )( *baseInfo );
+#endif
+	}
+#ifdef ZH
+
+          try
+          {
+            // Get custom name back
+            mangleCustomAudioName( customizedInfo );
+#endif
+
+#ifdef ZH
+            customizedInfo->xferNoName( xfer );
+
+            if ( successfulLoad )
+            {
+              TheAudio->addAudioEventInfo( customizedInfo );
+
+              clearCustomSoundAmbient( false );
+              m_customSoundAmbientInfo = customizedInfo;
+              
+              customizedInfo = NULL; // Belongs to TheAudio now
+            }
+            else
+            {
+              customizedInfo->deleteInstance();
+              customizedInfo = NULL;
+            }
+          }
+          catch( ... )
+          {
+            // since Xfer can throw exceptions -- don't leak memory!
+            if ( customizedInfo != NULL ) 
+              customizedInfo->deleteInstance();
+
+            throw; //rethrow
+          }
+        }
+      }
+      else // else we are saving...
+      {
+        if ( !customizedToSilence )
+        {
+          AsciiString baseInfoName = m_customSoundAmbientInfo->getOriginalName();
+          xfer->xferAsciiString( &baseInfoName );
+          m_customSoundAmbientInfo->xferNoName( xfer );
+        }
+      }
+    }
+  }
+#endif
 }  // end xfer
 
 // ------------------------------------------------------------------------------------------------
@@ -4676,9 +5752,27 @@ void Drawable::loadPostProcess( void )
 		setTransformMatrix(m_object->getTransformMatrix());
 	}
 	
+#ifdef OG
 	if( m_ambientSoundEnabled )
+#endif
+#ifdef ZH
+	if( m_ambientSoundEnabled && m_ambientSoundEnabledFromScript )
+#endif
 	{
+#ifdef OG
 		startAmbientSound();
+
+#endif
+#ifdef ZH
+    // Do we actually want to start the ambient sound up? 
+    // If it is a permanent sound, then yes; but if it is
+    // a one-shot sound, we don't want to start it even
+    // if it's enabled (because the sound might have finished
+    // playing long ago). This is what the "onlyIfPermanent"
+    // parameter does -- almost like it was added just for
+    // this special case! 
+    startAmbientSound( true );
+#endif
 	}
 	else
 	{

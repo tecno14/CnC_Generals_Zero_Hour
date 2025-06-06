@@ -54,11 +54,24 @@ class TerrainVisual;
 class ThingTemplate;
 class VideoPlayerInterface;
 struct RayEffectData;
+#ifdef ZH
+class ChallengeGenerals;
+class SnowManager;
+#endif
 
 /// Function pointers for use by GameClient callback functions.
 typedef void (*GameClientFuncPtr)( Drawable *draw, void *userData ); 
+#ifdef OG
 typedef std::hash_map<DrawableID, Drawable *, rts::hash<DrawableID>, rts::equal_to<DrawableID> > DrawablePtrHash;
 typedef DrawablePtrHash::iterator DrawablePtrHashIt;
+
+#endif
+#ifdef ZH
+//typedef std::hash_map<DrawableID, Drawable *, rts::hash<DrawableID>, rts::equal_to<DrawableID> > DrawablePtrHash;
+//typedef DrawablePtrHash::iterator DrawablePtrHashIt;
+
+typedef std::vector<Drawable*> DrawablePtrVector;
+#endif
 
 //-----------------------------------------------------------------------------
 /** The Client message dispatcher, this is the last "translator" on the message
@@ -110,6 +123,9 @@ public:
 																										CommandTranslator::CommandEvaluateType cmdType );
 	void addTextBearingDrawable( Drawable *tbd );
 	void flushTextBearingDrawables( void);
+#ifdef ZH
+	void updateFakeDrawables(void);
+#endif
 	
 	virtual void removeFromRayEffects( Drawable *draw );  ///< remove the drawable from the ray effect system if present
 	virtual void getRayEffectData( Drawable *draw, RayEffectData *effectData );  ///< get ray effect data for a drawable
@@ -146,6 +162,10 @@ public:
 	void resetRenderedObjectCount() { m_renderedObjectCount = 0; }
 	UnsignedInt getRenderedObjectCount() const { return m_renderedObjectCount; }
 	void incrementRenderedObjectCount() { m_renderedObjectCount++; }
+#ifdef ZH
+	virtual void notifyTerrainObjectMoved(Object *obj) = 0;
+
+#endif
 
 protected:
 
@@ -158,7 +178,14 @@ protected:
 	UnsignedInt m_frame;																				///< Simulation frame number from server
 
 	Drawable *m_drawableList;																		///< All of the drawables in the world
+#ifdef OG
 	DrawablePtrHash m_drawableHash;															///< Used for DrawableID lookups
+
+#endif
+#ifdef ZH
+//	DrawablePtrHash m_drawableHash;															///< Used for DrawableID lookups
+	DrawablePtrVector m_drawableVector;
+#endif
 
 	DrawableID m_nextDrawableID;																///< For allocating drawable id's
 	DrawableID allocDrawableID( void );													///< Returns a new unique drawable id
@@ -183,7 +210,9 @@ private:
 	virtual TerrainVisual *createTerrainVisual( void ) = 0;			///< Factory for TerrainVisual classes. Called during init to instance TheTerrainVisual
 	virtual Keyboard *createKeyboard( void ) = 0;								///< factory for the keyboard
 	virtual Mouse *createMouse( void ) = 0;											///< factory for the mouse
-
+#ifdef ZH
+	virtual SnowManager *createSnowManager(void) = 0;
+#endif
 	virtual void setFrameRate(Real msecsPerFrame) = 0;
 
 	// ----------------------------------------------------------------------------------------------
@@ -222,6 +251,32 @@ private:
 			} \
 		} \
 	} while (0);
+#ifdef ZH
+
+/** -----------------------------------------------------------------------------------------------
+ * Given an object id, return the associated object.
+ * This method is the primary interface for accessing objects, and should be used
+ * instead of pointers to "attach" objects to each other.
+ */
+inline Drawable* GameClient::findDrawableByID( const DrawableID id )
+{
+	if( id == INVALID_DRAWABLE_ID )
+		return NULL;
+
+//	DrawablePtrHashIt it = m_drawableHash.find(id);
+//	if (it == m_drawableHash.end()) {
+//		// no such drawable	
+//		return NULL;
+//	}
+//
+//	return (*it).second;
+
+	if( (Int)id < m_drawableVector.size() )
+		return m_drawableVector[(Int)id];
+
+	return NULL;
+}
+#endif
 
 
 // the singleton

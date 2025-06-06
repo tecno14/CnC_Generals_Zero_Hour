@@ -43,6 +43,9 @@
 #include "rendobj.h"
 #include "pointgr.h"
 #include "seglinerenderer.h"
+#ifdef ZH
+#include "linegrp.h"
+#endif
 
 class ParticleEmitterClass;
 template<class T> struct ParticlePropertyStruct;
@@ -61,6 +64,9 @@ struct NewParticleStruct
 	Vector3			Position;	// Particle position in worldspace.
 	Vector3			Velocity;	// Particle velocity in worldspace.
 	unsigned int	TimeStamp;	// Millisecond time at creation.
+#ifdef ZH
+	unsigned char	GroupID;		// Group ID of the particle
+#endif
 
 	// These are needed by DynamicVectorClass (will probably never be used).
 	bool operator != (const NewParticleStruct & p)
@@ -89,8 +95,16 @@ class ParticleBufferClass : public RenderObjClass
 		ParticleBufferClass(ParticleEmitterClass *emitter, unsigned int buffer_size,
 			ParticlePropertyStruct<Vector3> &color, ParticlePropertyStruct<float> &opacity,
 			ParticlePropertyStruct<float> &size, ParticlePropertyStruct<float> &rotation,
+#ifdef OG
 			float orient_rnd, ParticlePropertyStruct<float> &frame, Vector3 accel,
 			float max_age, TextureClass *tex, ShaderClass shader, bool pingpong,
+
+#endif
+#ifdef ZH
+			float orient_rnd, ParticlePropertyStruct<float> &frame,
+			ParticlePropertyStruct<float> &blurtime, Vector3 accel,
+			float max_age, float future_start, TextureClass *tex, ShaderClass shader, bool pingpong,
+#endif
 			int render_mode, int frame_mode, const W3dEmitterLinePropertiesStruct * line_props);
 
 		ParticleBufferClass(const ParticleBufferClass & src);
@@ -151,6 +165,9 @@ class ParticleBufferClass : public RenderObjClass
 		void Reset_Size(ParticlePropertyStruct<float> &new_props);
 		void Reset_Rotations(ParticlePropertyStruct<float> &new_rotations, float orient_rnd);
 		void Reset_Frames(ParticlePropertyStruct<float> &new_frames);
+#ifdef ZH
+		void Reset_Blur_Times(ParticlePropertyStruct<float> &new_blur_times);
+#endif
 
 		// This informs the buffer that the emitter is dead, so it can release
 		// its pointer to it and be removed itself after all its particles dies
@@ -183,14 +200,28 @@ class ParticleBufferClass : public RenderObjClass
 		float						Get_Particle_Size (void) const	{ return SizeKeyFrameValues[0]; }
 		Vector3					Get_Acceleration (void) const		{ return Accel * 1000000.0F; }
 		float						Get_Lifetime (void) const			{ return (float(MaxAge)) / 1000.0F; }
+#ifdef ZH
+		float						Get_Future_Start_Time(void) const{ return (float(FutureStartTime)) / 1000.0f; }
+#endif
 		Vector3					Get_Start_Color (void) const		{ return ColorKeyFrameValues[0]; }
 		float						Get_Start_Opacity (void) const	{ return AlphaKeyFrameValues[0]; }
 		Vector3					Get_End_Color (void) const			{ return (NumColorKeyFrames > 1) ? ColorKeyFrameValues[NumColorKeyFrames - 1] : ColorKeyFrameValues[0]; }
 		float						Get_End_Opacity (void) const		{ return (NumAlphaKeyFrames > 1) ? AlphaKeyFrameValues[NumAlphaKeyFrames - 1] : AlphaKeyFrameValues[0]; }
+#ifdef OG
 		TextureClass *			Get_Texture (void) const			{ return PointGroup->Get_Texture (); }
 		void						Set_Texture (TextureClass *tex)  { PointGroup->Set_Texture(tex); }
+#endif
+#ifdef ZH
+		TextureClass *			Get_Texture (void) const;
+		void						Set_Texture (TextureClass *tex);
+#endif
 		float						Get_Fade_Time (void) const			{ return (NumColorKeyFrames > 1) ? (((float)ColorKeyFrameTimes[1]) / 1000.0f) : 0.0f; }
+#ifdef OG
 		ShaderClass				Get_Shader (void) const				{ return PointGroup->Get_Shader (); }
+#endif
+#ifdef ZH
+		ShaderClass				Get_Shader (void) const;
+#endif
 
 		// 
 		// Line rendering properties.  These functions will always return
@@ -217,7 +248,14 @@ class ParticleBufferClass : public RenderObjClass
 		void						Get_Size_Key_Frames (ParticlePropertyStruct<float>	&sizes) const;
 		void						Get_Rotation_Key_Frames (ParticlePropertyStruct<float> &rotations) const;
 		void						Get_Frame_Key_Frames (ParticlePropertyStruct<float> &frames) const;
+#ifdef ZH
+		void						Get_Blur_Time_Key_Frames (ParticlePropertyStruct<float> &blurtimes) const;
+#endif
 		float						Get_Initial_Orientation_Random (void) const { return InitialOrientationRandom; }
+#ifdef ZH
+
+		void						Set_Current_GroupID(unsigned char grp) { CurrentGroupID = grp; }
+#endif
 
 		// Total Active Particle Buffer Count
 		static unsigned int	Get_Total_Active_Count( void )	{ return TotalActiveCount; }
@@ -236,6 +274,11 @@ class ParticleBufferClass : public RenderObjClass
 		// render the particle system as a line
 		void						Render_Line(RenderInfoClass & rinfo);
 
+#ifdef ZH
+		// render the particle system as a line group
+		void						Render_Line_Group(RenderInfoClass & rinfo);
+
+#endif
 		// Update the kinematic particle state. This includes getting new
 		// particles from the new particle queue, updating velocity/position
 		// for any existing particles, killing old ones, and updating
@@ -249,6 +292,12 @@ class ParticleBufferClass : public RenderObjClass
 		// Update the bounding box. (Updates the particle state if it needs to).
 		void Update_Bounding_Box(void);
 
+#ifdef ZH
+		// Helper function for Render_Particles and Render_LineGroup
+		void Generate_APT(ShareBufferClass <unsigned int> **apt,unsigned int &active_point_count);
+		void Combine_Color_And_Alpha();
+
+#endif
 		// Get new particles from the emitter and write them into the circular
 		// particle buffer, possibly overwriting older particles. Perform
 		// partial-interval upddate on them as well.
@@ -276,6 +325,9 @@ class ParticleBufferClass : public RenderObjClass
 		Vector3			Accel;			// Worldspace acceleration per ms^2.
 		bool				HasAccel;		// Is the acceleration non-zero?
 		unsigned int	MaxAge;			// Maximum age in milliseconds.
+#ifdef ZH
+		unsigned int	FutureStartTime;// Future start time in milliseconds
+#endif
 		unsigned int	LastUpdateTime;// Time at last update.
 		bool				IsEmitterDead;
 		float				MaxSize;			// Used for BBox calculations
@@ -329,6 +381,14 @@ class ParticleBufferClass : public RenderObjClass
 		unsigned int * FrameKeyFrameTimes;		// 0th entry is always 0
 		float *			FrameKeyFrameValues;
 		float *			FrameKeyFrameDeltas;
+#ifdef ZH
+		unsigned int	NumBlurTimeKeyFrames;
+		unsigned int * BlurTimeKeyFrameTimes;		// 0th entry is always 0
+		float *			BlurTimeKeyFrameValues;
+		float *			BlurTimeKeyFrameDeltas;
+
+		Vector4			DefaultTailDiffuse;	// For line group mode, when all the tails are the same color
+#endif
 
 		// These tables are indexed by the array position in the particle buffer.
 		// The table size is either the smallest power of two equal or larger
@@ -350,12 +410,19 @@ class ParticleBufferClass : public RenderObjClass
 		float *			RandomOrientationEntries;
 		unsigned int	NumRandomFrameEntriesMinus1;			// 2^n - 1 so can be used as a mask also
 		float *			RandomFrameEntries;
+#ifdef ZH
+		unsigned int	NumRandomBlurTimeEntriesMinus1;		// 2^n - 1 so can be used as a mask also
+		float *			RandomBlurTimeEntries;
+#endif
 		
 		Vector3			ColorRandom;
 		float				OpacityRandom;
 		float				SizeRandom;
 		float				RotationRandom;
 		float				FrameRandom;
+#ifdef ZH
+		float				BlurTimeRandom;
+#endif
 		float				InitialOrientationRandom;
 
 		// This object implements particle rendering
@@ -364,6 +431,11 @@ class ParticleBufferClass : public RenderObjClass
 		// This object implements line rendering
 		SegLineRendererClass	* LineRenderer;
 
+#ifdef ZH
+		// This object implements line group rendering
+		LineGroupClass * LineGroup;
+
+#endif
 		// These are shared with the point group. The position, color and alpha
 		// arrays serve double duty: they are used to store and update particle
 		// state and also to pass point information to the point group. The
@@ -375,8 +447,16 @@ class ParticleBufferClass : public RenderObjClass
 		ShareBufferClass<float> *		Alpha;
 		ShareBufferClass<float> *		Size;
 		ShareBufferClass<uint8> *		Frame;
+#ifdef ZH
+		ShareBufferClass<float> *		UCoord;			// Only used for line groups, uses Frame keyframes
+		ShareBufferClass<Vector3> *	TailPosition;	// Only used for line groups
+		ShareBufferClass<Vector4> *	TailDiffuse;	// Only used for line groups
+#endif
 		ShareBufferClass<uint8> *		Orientation;
 		ShareBufferClass<unsigned int> *	APT;
+#ifdef ZH
+		ShareBufferClass<unsigned char> * GroupID;	// Only used for lines		
+#endif
 
 		// Do we keep two ping-pong position buffers (for collision and possibly other effects
 		// which need the previous frames position as well as this frames)
@@ -417,6 +497,21 @@ class ParticleBufferClass : public RenderObjClass
 		// particle buffer can have. We can change these from being global to
 		// being per-buffer later if we wish. Default is NO_MAX_SCREEN_SIZE.
 		static float						LODMaxScreenSizes[17];
+#ifdef ZH
+
+		enum TailDiffuseTypeEnum {
+			BLACK,
+			WHITE,
+			SAME_AS_HEAD,
+			SAME_AS_HEAD_ALPHA_ZERO
+		};
+
+		// Determine based on shader and texture
+		// what the tail color should be
+		TailDiffuseTypeEnum Determine_Tail_Diffuse();
+
+		unsigned char						CurrentGroupID;
+#endif
 };
 
 #endif // PART_BUF_H

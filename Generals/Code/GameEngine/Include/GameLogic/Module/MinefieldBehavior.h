@@ -38,6 +38,9 @@
 #include "GameLogic/Module/UpdateModule.h"
 #include "GameLogic/Module/DamageModule.h"
 #include "GameLogic/Module/DieModule.h"
+#ifdef ZH
+#include "GameLogic/ObjectCreationList.h"
+#endif
 
 //-------------------------------------------------------------------------------------------------
 // ------------------------------------------------------------------------------------------------
@@ -60,6 +63,9 @@ public:
 	UnsignedInt						m_numVirtualMines;								///< num of "virtual" mines we have
 	Real									m_repeatDetonateMoveThresh;
 	Real									m_healthPercentToDrainPerSecond;
+#ifdef ZH
+	const ObjectCreationList* m_ocl; ///< object creaton list to make
+#endif
 
 };
 
@@ -106,6 +112,9 @@ public:
 	virtual Bool isCarBombCrateCollide() const { return false; }
 	virtual Bool isRailroad() const { return false;}
 	virtual Bool isSalvageCrateCollide() const { return false; }
+#ifdef ZH
+	virtual Bool isSabotageBuildingCrateCollide() const { return FALSE; }
+#endif
 
 	// Minefield specific methods
 	virtual void setScootParms(const Coord3D& start, const Coord3D& end);

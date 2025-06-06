@@ -36,7 +36,13 @@
 #include "Common/GameCommon.h"
 #include "Common/GameType.h"
 #include "Common/MessageStream.h"		// for GameMessageTranslator
+#ifdef ZH
+#include "Common/KindOf.h"
+#endif
 #include "Common/SpecialPowerType.h"
+#ifdef ZH
+#include "Common/Snapshot.h"
+#endif
 #include "Common/STLTypedefs.h"
 #include "Common/SubsystemInterface.h"
 #include "Common/UnicodeString.h"
@@ -44,7 +50,9 @@
 #include "GameClient/Mouse.h"
 #include "GameClient/RadiusDecal.h"
 #include "GameClient/View.h"
+#ifdef OG
 #include "Common/Snapshot.h"
+#endif
 
 // FORWARD DECLARATIONS ///////////////////////////////////////////////////////////////////////////
 class Drawable;
@@ -83,6 +91,10 @@ enum RadiusCursorType
 	RADIUSCURSOR_DAISYCUTTER,
 	RADIUSCURSOR_PARADROP,
 	RADIUSCURSOR_SPYSATELLITE, 
+#ifdef ZH
+	RADIUSCURSOR_SPECTREGUNSHIP,
+	RADIUSCURSOR_HELIX_NAPALM_BOMB,
+#endif
 
 	RADIUSCURSOR_NUCLEARMISSILE, 
 	RADIUSCURSOR_EMPPULSE,
@@ -95,7 +107,14 @@ enum RadiusCursorType
 	RADIUSCURSOR_AMBUSH, 
 	RADIUSCURSOR_RADAR,
 	RADIUSCURSOR_SPYDRONE,
+#ifdef ZH
+	RADIUSCURSOR_FRENZY,
+#endif
 
+#ifdef ZH
+	RADIUSCURSOR_CLEARMINES,
+	RADIUSCURSOR_AMBULANCE,
+#endif
 
 	RADIUSCURSOR_COUNT	// keep last
 };
@@ -119,6 +138,10 @@ static const char *TheRadiusCursorNames[] =
 	"DAISYCUTTER",
 	"PARADROP",
 	"SPYSATELLITE", 
+#ifdef ZH
+  "SPECTREGUNSHIP",
+  "HELIX_NAPALM_BOMB",
+#endif
 
 	"NUCLEARMISSILE", 
 	"EMPPULSE",
@@ -131,7 +154,15 @@ static const char *TheRadiusCursorNames[] =
 	"AMBUSH", 
 	"RADAR",
 	"SPYDRONE",
+#ifdef ZH
+	"FRENZY",
+#endif
 
+#ifdef ZH
+	"CLEARMINES",
+	"AMBULANCE",
+
+#endif
 	NULL
 };
 #endif
@@ -175,6 +206,9 @@ public:
 		Bool hiddenByScript,
 		Bool hiddenByScience,
 		Bool ready,
+#ifdef ZH
+    Bool evaReadyPlayed,
+#endif
 		const AsciiString& superweaponNormalFont, 
 		Int superweaponNormalPointSize, 
 		Bool superweaponNormalBold,
@@ -196,6 +230,9 @@ public:
 	Bool												m_hiddenByScript;
 	Bool												m_hiddenByScience;
  	Bool												m_ready;											///< Stores if we were ready last draw, since readyness can change without time changing
+#ifdef ZH
+  Bool                        m_evaReadyPlayed;             ///< Stores if Eva announced superweapon is ready
+#endif
 // not saved, but public
  	Bool												m_forceUpdateText;
 
@@ -338,6 +375,9 @@ public:  // ********************************************************************
 		ACTIONTYPE_MAKE_DEFECTOR,
 		ACTIONTYPE_SET_RALLY_POINT,
 		ACTIONTYPE_COMBATDROP_INTO,
+#ifdef ZH
+		ACTIONTYPE_SABOTAGE_BUILDING,
+#endif
 
 		//Keep last.
 		NUM_ACTIONTYPES
@@ -416,6 +456,10 @@ public:  // ********************************************************************
 	virtual void placeBuildAvailable( const ThingTemplate *build, Drawable *buildDrawable );				///< built thing being placed
 	virtual const ThingTemplate *getPendingPlaceType( void );					///< get item we're trying to place
 	virtual const ObjectID getPendingPlaceSourceObjectID( void );			///< get producing object
+#ifdef ZH
+	virtual Bool getPreventLeftClickDeselectionInAlternateMouseModeForOneClick() const { return m_preventLeftClickDeselectionInAlternateMouseModeForOneClick; }
+	virtual void setPreventLeftClickDeselectionInAlternateMouseModeForOneClick( Bool set ) { m_preventLeftClickDeselectionInAlternateMouseModeForOneClick = set; }
+#endif
 	virtual void setPlacementStart( const ICoord2D *start );					///< placement anchor point (for choosing angles)
 	virtual void setPlacementEnd( const ICoord2D *end );							///< set target placement point (for choosing angles)
 	virtual Bool isPlacementAnchored( void );													///< is placement arrow anchor set
@@ -482,10 +526,25 @@ public:  // ********************************************************************
 	Bool canSelectedObjectsOverrideSpecialPowerDestination( const Coord3D *loc, SelectionRules rule, SpecialPowerType spType = SPECIAL_INVALID ) const;
 
 	// Selection Methods
+#ifdef OG
 	virtual Int selectMatchingUnits();                        ///< selects matching units
 	virtual Int selectAcrossScreen();                         ///< selects matching units across screen
 	virtual Int selectAcrossMap();                            ///< selects matching units across map
 	virtual Int selectAcrossRegion( IRegion2D *region );			// -1 = no locally-owned selection, 0+ = # of units selected
+
+#endif
+#ifdef ZH
+	virtual Int selectUnitsMatchingCurrentSelection();                        ///< selects matching units
+	virtual Int selectMatchingAcrossScreen();                         ///< selects matching units across screen
+	virtual Int selectMatchingAcrossMap();                            ///< selects matching units across map
+	virtual Int selectMatchingAcrossRegion( IRegion2D *region );			// -1 = no locally-owned selection, 0+ = # of units selected
+
+	virtual Int selectAllUnitsByType(KindOfMaskType mustBeSet, KindOfMaskType mustBeClear);                
+	virtual Int selectAllUnitsByTypeAcrossScreen(KindOfMaskType mustBeSet, KindOfMaskType mustBeClear);                         
+	virtual Int selectAllUnitsByTypeAcrossMap(KindOfMaskType mustBeSet, KindOfMaskType mustBeClear);                            
+	virtual Int selectAllUnitsByTypeAcrossRegion( IRegion2D *region, KindOfMaskType mustBeSet, KindOfMaskType mustBeClear );			
+	
+#endif
 	virtual void buildRegion( const ICoord2D *anchor, const ICoord2D *dest, IRegion2D *region );  ///< builds a region around the specified coordinates
 
 	virtual Bool getDisplayedMaxWarning( void ) { return m_displayedMaxWarning; }
@@ -522,10 +581,16 @@ public:  // ********************************************************************
 	void setCameraRotateRight( Bool set )		{ m_cameraRotatingRight = set; }
 	void setCameraZoomIn( Bool set )				{ m_cameraZoomingIn = set; }
 	void setCameraZoomOut( Bool set )				{ m_cameraZoomingOut = set; }
+#ifdef ZH
+  void setCameraTrackingDrawable( Bool set ) { m_cameraTrackingDrawable = set; }
+#endif
 	Bool isCameraRotatingLeft() const { return m_cameraRotatingLeft; }
 	Bool isCameraRotatingRight() const { return m_cameraRotatingRight; }
 	Bool isCameraZoomingIn() const { return m_cameraZoomingIn; }
 	Bool isCameraZoomingOut() const { return m_cameraZoomingOut; }
+#ifdef ZH
+  Bool isCameraTrackingDrawable() const { return m_cameraTrackingDrawable; }
+#endif
 	void resetCamera();
 
 	virtual void addIdleWorker( Object *obj );
@@ -555,6 +620,11 @@ private:
 public:
 	void registerWindowLayout(WindowLayout *layout); // register a layout for updates
 	void unregisterWindowLayout(WindowLayout *layout); // stop updates for this layout
+#ifdef ZH
+
+  void triggerDoubleClickAttackMoveGuardHint( void );
+  
+#endif
 
 public:
 	// World 2D animation methods
@@ -692,6 +762,9 @@ protected:
 	BuildProgress								m_buildProgress[ MAX_BUILD_PROGRESS ];	///< progress for building units
 	const ThingTemplate *				m_pendingPlaceType;											///< type of built thing we're trying to place
 	ObjectID										m_pendingPlaceSourceObjectID;						///< source object of the thing constructing the item
+#ifdef ZH
+	Bool										m_preventLeftClickDeselectionInAlternateMouseModeForOneClick;
+#endif
 	Drawable **									m_placeIcon;														///< array for drawables to appear at the cursor when building in the world
 	Bool												m_placeAnchorInProgress;								///< is place angle interface for placement active
 	ICoord2D										m_placeAnchorStart;											///< place angle anchor start
@@ -700,6 +773,10 @@ protected:
 	Int													m_maxSelectCount;												///< Max number of objects to select
 	UnsignedInt									m_frameSelectionChanged;								///< Frame when the selection last changed.
 
+#ifdef ZH
+  Int                         m_duringDoubleClickAttackMoveGuardHintTimer; ///< Frames left to draw the doubleClickFeedbackTimer 
+  Coord3D                     m_duringDoubleClickAttackMoveGuardHintStashedPosition; 
+#endif
 
 	// Video playback data
 	VideoBuffer*								m_videoBuffer;			///< video playback buffer
@@ -786,7 +863,9 @@ protected:
 	Bool												m_militaryCaptionBold;
 
 	Bool												m_militaryCaptionRandomizeTyping;
+#ifdef OG
 	Int													m_militaryCaptionDelayMS;
+#endif
 	Int													m_militaryCaptionSpeed;
 
 	RadiusDecalTemplate					m_radiusCursors[RADIUSCURSOR_COUNT];
@@ -811,6 +890,9 @@ protected:
 	Bool												m_cameraRotatingLeft; 
 	Bool 												m_cameraRotatingRight;
 	Bool 												m_cameraZoomingIn;
+#ifdef ZH
+	Bool 												m_cameraTrackingDrawable;
+#endif
 	Bool 												m_cameraZoomingOut;
 	
 	Bool												m_drawRMBScrollAnchor;

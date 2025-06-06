@@ -87,10 +87,29 @@ public:
 
 	void setNumGamesLoyal(Int val);
 	Int getNumGamesLoyal(void) const;
+#ifdef ZH
+
+	void setUSACampaignComplete(GameDifficulty difficulty);
+	Bool getUSACampaignComplete(GameDifficulty difficulty) const;
+
+	void setCHINACampaignComplete(GameDifficulty difficulty);
+	Bool getCHINACampaignComplete(GameDifficulty difficulty) const;
+
+	void setGLACampaignComplete(GameDifficulty difficulty);
+	Bool getGLACampaignComplete(GameDifficulty difficulty) const;
+
+	void setChallengeCampaignComplete(Int challenge, GameDifficulty difficulty);
+	Bool getChallengeCampaignComplete(Int challenge, GameDifficulty difficulty) const;
+#endif
 };
 
 void ResetBattleHonorInsertion(void);
+#ifdef OG
 void InsertBattleHonor(GameWindow *list, const Image *image, Bool enabled, Int itemData, Int& row, Int& column, UnicodeString text = UnicodeString::TheEmptyString);
+#endif
+#ifdef ZH
+void InsertBattleHonor(GameWindow *list, const Image *image, Bool enabled, Int itemData, Int& row, Int& column, UnicodeString text = UnicodeString::TheEmptyString, Int extra = 0);
+#endif
 void BattleHonorTooltip(GameWindow *window,
 												WinInstanceData *instData,
 												UnsignedInt mouse);

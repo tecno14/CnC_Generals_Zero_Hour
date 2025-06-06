@@ -368,6 +368,18 @@ void DataChunkOutput::writeUnicodeString( UnicodeString theString )
 	::fwrite( theString.str(), len*sizeof(WideChar) , 1, m_tmp_file ); 
 }
 
+#ifdef ZH
+void DataChunkOutput::writeNameKey( const NameKeyType key ) 
+{ 
+		AsciiString kname = TheNameKeyGenerator->keyToName(key);
+		Int keyAndType = m_contents.allocateID(kname);
+		keyAndType <<= 8;
+		Dict::DataType t = Dict::DICT_ASCIISTRING;
+		keyAndType |= (t & 0xff);
+		writeInt(keyAndType);
+}
+
+#endif
 void DataChunkOutput::writeDict( const Dict& d ) 
 { 
 	UnsignedShort len = d.getPairCount();
@@ -878,6 +890,22 @@ void DataChunkInput::readArrayOfBytes(char *ptr, Int len)
 	DEBUG_ASSERTCRASH(m_chunkStack->dataLeft>=len, ("Read past end of chunk."));
 	m_file->read( ptr, len ); 
 	decrementDataLeft( len );
+#ifdef ZH
+}
+
+NameKeyType DataChunkInput::readNameKey(void)
+{
+		Int keyAndType = readInt();
+#if (defined(_DEBUG) || defined(_INTERNAL))
+		Dict::DataType t = (Dict::DataType)(keyAndType & 0xff);
+		DEBUG_ASSERTCRASH(t==Dict::DICT_ASCIISTRING,("Invalid key data."));
+#endif
+		keyAndType >>= 8;
+
+		AsciiString kname = m_contents.getName(keyAndType);
+		NameKeyType k = TheNameKeyGenerator->nameToKey(kname);
+		return k;
+#endif
 }
 
 Dict DataChunkInput::readDict() 

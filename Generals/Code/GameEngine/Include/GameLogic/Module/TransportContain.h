@@ -55,8 +55,14 @@ public:
 	Bool							m_orientLikeContainerOnExit;
 	Bool							m_keepContainerVelocityOnExit;
 	Bool							m_goAggressiveOnExit;
+#ifdef ZH
+	Bool							m_armedRidersUpgradeWeaponSet;
+#endif
 	Bool							m_resetMoodCheckTimeOnExit;
 	Bool							m_destroyRidersWhoAreNotFreeToExit;
+#ifdef ZH
+	Bool							m_isDelayExitInAir;
+#endif
 
 	TransportContainModuleData();
 
@@ -80,9 +86,19 @@ public:
 	virtual Bool isValidContainerFor( const Object* obj, Bool checkCapacity) const;
 
 	virtual void onCapture( Player *oldOwner, Player *newOwner ); // have to kick everyone out on capture.
+#ifdef OG
 	virtual void onContaining( Object *obj );		///< object now contains 'obj'
+#endif
+#ifdef ZH
+	virtual void onContaining( Object *obj, Bool wasSelected );		///< object now contains 'obj'
+#endif
 	virtual void onRemoving( Object *obj );			///< object no longer contains 'obj'
 	virtual UpdateSleepTime update();							///< called once per frame
+#ifdef ZH
+
+	virtual Bool isRiderChangeContain() const { return FALSE; }
+  virtual Bool isSpecialOverlordStyleContainer() const {return FALSE;}
+#endif
 
 	virtual Int getContainMax( void ) const;
 
@@ -98,12 +114,24 @@ protected:
 	// exists primarily for TransportContain to override
 	virtual void killRidersWhoAreNotFreeToExit();
 	virtual Bool isSpecificRiderFreeToExit(Object* obj);
+#ifdef ZH
+	virtual Bool isPassengerAllowedToFire( ObjectID id = INVALID_ID ) const;	///< Hey, can I shoot out of this container?
 
+	virtual void createPayload();
+	void letRidersUpgradeWeaponSet( void );
+#endif
+
+#ifdef ZH
+	Bool m_payloadCreated;	
+
+#endif
 private:
 
+#ifdef OG
 	void createPayload();
 	
 	Bool m_payloadCreated;	
+#endif
 	Int m_extraSlotsInUse;
 	UnsignedInt m_frameExitNotBusy;
 

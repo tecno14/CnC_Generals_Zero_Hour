@@ -804,20 +804,41 @@ AsciiString AudioEventRTS::generateFilenameExtension( AudioType audioTypeToPlay 
 //-------------------------------------------------------------------------------------------------
 void AudioEventRTS::adjustForLocalization(AsciiString &strToAdjust)
 {
+#ifdef OG
 	if (TheFileSystem->doesFileExist(strToAdjust.str()))
 	{
 		return;
 	}
 
+#endif
 	const char *str = strToAdjust.reverseFind('\\');
 	if (!str) {
 		return;
 	}
 
+#ifdef ZH
+	// try the localized version first so that we're guarenteed to get it
+	// even if the generic data directory holds a version of the file
+	AsciiString localizedFilePath = generateFilenamePrefix(m_eventInfo->m_soundType, TRUE);
+#endif
 	AsciiString filename = str;
+#ifdef ZH
+	localizedFilePath.concat(filename);
+#endif
 
+#ifdef OG
 	strToAdjust = generateFilenamePrefix(m_eventInfo->m_soundType, TRUE);
 	strToAdjust.concat(filename);
+
+#endif
+#ifdef ZH
+	if (TheFileSystem->doesFileExist(localizedFilePath.str())) {
+		strToAdjust = localizedFilePath;
+	}
+	// else there was no localized version, so leave the path we received unchanged
+
+	return;
+#endif
 }
 
 //-------------------------------------------------------------------------------------------------

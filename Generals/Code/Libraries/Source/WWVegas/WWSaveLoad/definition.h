@@ -43,7 +43,12 @@
 
 #include "always.h"
 // SKB Remove because of G conflicts with CLASSID_?? 
+#ifdef OG
 // #include "definitionclassids.h"
+#endif
+#ifdef ZH
+#include "definitionclassids.h"
+#endif
 #include "definitionmgr.h"
 #include "editable.h"
 #include "wwstring.h"
@@ -58,7 +63,12 @@ class ChunkLoadClass;
 //	DefinitionClass
 //
 //////////////////////////////////////////////////////////////////////////////////
+#ifdef OG
 class DefinitionClass : public EditableClass
+#endif
+#ifdef ZH
+class DefinitionClass : public PersistClass, public EditableClass
+#endif
 {
 public:
 

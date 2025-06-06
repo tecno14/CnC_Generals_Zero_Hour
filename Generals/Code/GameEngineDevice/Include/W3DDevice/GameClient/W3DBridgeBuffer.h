@@ -149,7 +149,12 @@ public:
 //
 class W3DBridgeBuffer 
 {	
+#ifdef OG
 friend class HeightMapRenderObjClass;
+#endif
+#ifdef ZH
+friend class BaseHeightMapRenderObjClass;
+#endif
 public:
 
 	W3DBridgeBuffer(void);
@@ -164,8 +169,14 @@ public:
 	void loadBridges(W3DTerrainLogic *pTerrainLogic, Bool saveGame); ///< Loads the bridges from the map objects list.
 	void worldBuilderUpdateBridgeTowers( W3DAssetManager *assetManager, SimpleSceneClass *scene );			///< for the editor and showing visual bridge towers
 	void updateCenter(CameraClass *camera, RefRenderObjListIterator *pLightsIterator);
+#ifdef OG
 	enum { MAX_BRIDGE_VERTEX=8000, 
 					MAX_BRIDGE_INDEX=2*8000, 
+#endif
+#ifdef ZH
+	enum { MAX_BRIDGE_VERTEX=12000, //make sure it stays under 65535
+					MAX_BRIDGE_INDEX=2*MAX_BRIDGE_VERTEX,	//make sure it stays under 65535 
+#endif
 					MAX_BRIDGES=200};
 protected:
 	DX8VertexBufferClass	*m_vertexBridge;	///<Bridge vertex buffer.

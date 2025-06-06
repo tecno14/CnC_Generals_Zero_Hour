@@ -62,6 +62,11 @@
 // TYPE DEFINES ///////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
 
+#ifdef ZH
+// Add slight improvement to load times -- was 2:30, now 0:02 for test case.
+#define USE_FAST_FIND_ITEM 1
+
+#endif
 // HierarchyOption ------------------------------------------------------------
 //-----------------------------------------------------------------------------
 typedef enum
@@ -135,6 +140,26 @@ protected:
 	GameWindow *m_dragWindow;  ///< for drag drop operations
 	GameWindow *m_dragTarget;  ///< target for drag and drop operations while mouse is moving
 	GameWindow *m_popupTarget;  ///< the target for right mouse popup menus
+#ifdef ZH
+
+#if USE_FAST_FIND_ITEM
+	typedef const GameWindow* ConstGameWindowPtr;
+ 	// use special class for hashing, since std::hash won't compile for arbitrary ptrs
+ 	struct hashConstGameWindowPtr
+ 	{
+ 		size_t operator()(ConstGameWindowPtr p) const
+ 		{
+ 			std::hash<UnsignedInt> hasher;
+ 			return hasher((UnsignedInt)p);
+ 		}
+ 	};
+ 
+ 	typedef std::hash_map< ConstGameWindowPtr, HTREEITEM, hashConstGameWindowPtr, std::equal_to<ConstGameWindowPtr> > TreeHash;
+ 
+ 	TreeHash 		m_treeHash;	///< Speed up the search with a nice hash.
+#endif
+
+#endif
 
 };  // end HierarchyView
 

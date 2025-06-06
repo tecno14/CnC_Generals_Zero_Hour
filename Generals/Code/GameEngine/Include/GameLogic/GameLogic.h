@@ -36,6 +36,9 @@
 #include "Common/GameType.h"
 #include "Common/Snapshot.h"
 #include "Common/STLTypedefs.h"
+#ifdef ZH
+#include "Common/ObjectStatusTypes.h"
+#endif
 #include "GameNetwork/NetworkDefs.h"
 #include "Common/STLTypedefs.h"
 #include "GameLogic/Module/UpdateModule.h"	// needed for DIRECT_UPDATEMODULE_ACCESS
@@ -66,18 +69,24 @@ class TerrainLogic;
 class GhostObjectManager;
 class CommandButton;
 enum BuildableStatus;
+#ifdef OG
 enum ObjectStatusBits;
+#endif
 
 typedef const CommandButton* ConstCommandButtonPtr;
 
 // What kind of game we're in.
 enum
 {
+#ifdef OG
 #if !defined(_PLAYTEST)
+#endif
 	GAME_SINGLE_PLAYER,
 	GAME_LAN,
 	GAME_SKIRMISH,
 	GAME_REPLAY,
+#ifdef OG
+#endif
 #endif
 	GAME_SHELL,
 	GAME_INTERNET,
@@ -92,9 +101,18 @@ enum
 
 /// Function pointers for use by GameLogic callback functions.
 typedef void (*GameLogicFuncPtr)( Object *obj, void *userData ); 
+#ifdef OG
 typedef std::hash_map<ObjectID, Object *, rts::hash<ObjectID>, rts::equal_to<ObjectID> > ObjectPtrHash;
 typedef ObjectPtrHash::const_iterator ObjectPtrIter;
+#endif
+#ifdef ZH
+//typedef std::hash_map<ObjectID, Object *, rts::hash<ObjectID>, rts::equal_to<ObjectID> > ObjectPtrHash;
+//typedef ObjectPtrHash::const_iterator ObjectPtrIter;
+#endif
 
+#ifdef ZH
+typedef std::vector<Object*> ObjectPtrVector;
+#endif
 
 // ------------------------------------------------------------------------------------------------
 /**
@@ -113,6 +131,11 @@ public:
 	virtual void reset( void );															///< Reset the logic system
 	virtual void update( void );														///< update the world
 
+#ifdef ZH
+#if defined(_DEBUG) || defined(_INTERNAL)
+	Int getNumberSleepyUpdates() const {return m_sleepyUpdates.size();} //For profiling, so not in Release.
+#endif
+#endif
 	void processCommandList( CommandList *list );		///< process the command list
 
 	void prepareNewGame( Int gameMode, GameDifficulty diff, Int rankPoints );						///< prepare for new game 
@@ -147,33 +170,70 @@ public:
 
 	//-----------------------------------------------------------------------------------------------
 	/// create an object given the thing template. (Only for use by ThingFactory.)
+#ifdef OG
 	Object *friend_createObject( const ThingTemplate *thing, ObjectStatusBits statusBits, Team *team );
+#endif
+#ifdef ZH
+	Object *friend_createObject( const ThingTemplate *thing, const ObjectStatusMaskType &objectStatusMask, Team *team );
+#endif
 	void destroyObject( Object *obj );							///< Mark object as destroyed for later deletion
 	Object *findObjectByID( ObjectID id );								///< Given an ObjectID, return a pointer to the object.
 	Object *getFirstObject( void );									///< Returns the "first" object in the world. When used with the object method "getNextObject()", all objects in the world can be iterated.
 	ObjectID allocateObjectID( void );							///< Returns a new unique object id
 
 	// super hack
+#ifdef OG
 	void startNewGame( Bool saveGame );
+#endif
+#ifdef ZH
+	void startNewGame( Bool loadSaveGame );
+#endif
 	void loadMapINI( AsciiString mapName );
 
 	void updateLoadProgress( Int progress );
 	void deleteLoadScreen( void );
 	
+#ifdef OG
 	void setGameLoading( Bool loading );
+
+#endif
+#ifdef ZH
+	//Kris: Cut setGameLoading() and replaced with setLoadingMap() and setLoadingSave() -- reason: nomenclature
+	//void setGameLoading( Bool loading ) { m_loadingScene = loading; }
+	void setLoadingMap( Bool loading ) { m_loadingMap = loading; }
+	void setLoadingSave( Bool loading ) { m_loadingSave = loading; }
+	void setClearingGameData( Bool clearing ) { m_clearingGameData = clearing; }
+	
+#endif
 	void setGameMode( Int mode );
 	Int getGameMode( void );
 	Bool isInGame( void );
+#ifdef OG
 #if !defined(_PLAYTEST)
+#endif
 	Bool isInLanGame( void );
 	Bool isInSinglePlayerGame( void );
 	Bool isInSkirmishGame( void );
 	Bool isInReplayGame( void );
+#ifdef OG
+#endif
 #endif
 	Bool isInInternetGame( void );
 	Bool isInShellGame( void );
 	Bool isInMultiplayerGame( void );
+#ifdef OG
 	Bool isLoadingGame();
+
+#endif
+#ifdef ZH
+
+	//Kris: Cut isLoadingGame() and replaced with isLoadingMap() and isLoadingSave() -- reason: nomenclature
+	//Bool isLoadingGame() const { return m_loadingScene; }		// This is the old function that isn't very clear on it's definition.
+	Bool isLoadingMap() const { return m_loadingMap; }			// Whenever a map is in the process of loading.
+	Bool isLoadingSave() const { return m_loadingSave; }		// Whenever a saved game is in the process of loading.
+	Bool isClearingGameData() const { return m_clearingGameData; }
+
+#endif
 	void enableScoring(Bool score) { m_isScoringEnabled = score; }
 	Bool isScoringEnabled() const { return m_isScoringEnabled; }
 
@@ -222,6 +282,11 @@ public:
 	
 	// We need to allow access to this, because on a restartGame, we need to restart with the settings we started with
 	Int getRankPointsToAddAtGameStart() const { return m_rankPointsToAddAtGameStart; }
+#ifdef ZH
+
+  UnsignedShort getSuperweaponRestriction( void ) const; ///< Get any optional limits on superweapons
+  void setSuperweaponRestriction( void );
+#endif
 
 #ifdef DUMP_PERF_STATS
 	void getAIMetricsStatistics( UnsignedInt *numAI, UnsignedInt *numMoving, UnsignedInt *numAttacking, UnsignedInt *numWaitingForPath, UnsignedInt *overallFailedPathfinds );
@@ -284,7 +349,16 @@ private:
 
 	//Added By Sadullah Nader
 	//Used to for load scene
+#ifdef OG
 	Bool m_loadingScene;
+
+#endif
+#ifdef ZH
+	//Bool m_loadingScene;
+	Bool m_loadingMap;
+	Bool m_loadingSave;
+	Bool m_clearingGameData;
+#endif
 
 	Bool m_isInUpdate;
 
@@ -301,7 +375,14 @@ private:
 	WindowLayout *m_background;
 
 	Object* m_objList;																			///< All of the objects in the world.
+#ifdef OG
 	ObjectPtrHash m_objHash;																///< Used for ObjectID lookups
+
+#endif
+#ifdef ZH
+//	ObjectPtrHash m_objHash;																///< Used for ObjectID lookups
+	ObjectPtrVector m_objVector;
+#endif
 
 	// this is a vector, but is maintained as a priority queue.
 	// never modify it directly; please use the proper access methods.
@@ -320,7 +401,12 @@ private:
 
 	ObjectID m_nextObjID;																		///< For allocating object id's
 
+#ifdef OG
 	void setDefaults( Bool saveGame );											///< Set default values of class object
+#endif
+#ifdef ZH
+	void setDefaults( Bool loadSaveGame );									///< Set default values of class object
+#endif
 	void processDestroyList( void );												///< Destroy all pending objects on the destroy list
 
 	void destroyAllObjectsImmediate();											///< destroy, and process destroy list immediately
@@ -331,8 +417,16 @@ private:
 
 	Int m_gameMode;
 	Int m_rankLevelLimit;
+#ifdef ZH
+  UnsignedShort m_superweaponRestriction;
+#endif
 
+#ifdef OG
 	LoadScreen *getLoadScreen( Bool saveGame );
+#endif
+#ifdef ZH
+	LoadScreen *getLoadScreen( Bool loadSaveGame );
+#endif
 	LoadScreen *m_loadScreen;
 	Bool m_gamePaused;
 	Bool m_inputEnabledMemory;// Latches used to remember what to restore to after we unpause
@@ -378,29 +472,53 @@ inline UnsignedInt GameLogic::getFrame( void ) { return m_frame; }
 inline Bool GameLogic::isInGame( void ) { return !(m_gameMode == GAME_NONE); }
 inline void GameLogic::setGameMode( Int mode ) { m_gameMode = mode; }
 inline Int  GameLogic::getGameMode( void ) { return m_gameMode; }
+#ifdef OG
 #if !defined(_PLAYTEST)
+#endif
 inline Bool GameLogic::isInLanGame( void ) { return (m_gameMode == GAME_LAN); }
 inline Bool GameLogic::isInSkirmishGame( void ) { return (m_gameMode == GAME_SKIRMISH); }
 inline Bool GameLogic::isInMultiplayerGame( void ) { return ((m_gameMode == GAME_LAN) || (m_gameMode == GAME_INTERNET)) ; }
 inline Bool GameLogic::isInReplayGame( void ) { return (m_gameMode == GAME_REPLAY); }
+#ifdef OG
 #else
 inline Bool GameLogic::isInMultiplayerGame( void ) { return ((m_gameMode == GAME_INTERNET)) ; }
 #endif
+#endif
 inline Bool GameLogic::isInInternetGame( void ) { return (m_gameMode == GAME_INTERNET); }
 inline Bool GameLogic::isInShellGame( void ) { return (m_gameMode == GAME_SHELL); }
+#ifdef OG
 //Check for loading scene
 inline Bool GameLogic::isLoadingGame(){ return m_loadingScene;}
+#endif
+#ifdef ZH
+inline UnsignedShort GameLogic::getSuperweaponRestriction() const { return m_superweaponRestriction; }
+
+#endif
 
 inline Object* GameLogic::findObjectByID( ObjectID id )
 {
 	if( id == INVALID_ID )
 		return NULL;
+#ifdef ZH
 
+//	ObjectPtrHash::iterator it = m_objHash.find(id);
+//	if (it == m_objHash.end())
+//		return NULL;
+//	
+//	return (*it).second;
+	if( (Int)id < m_objVector.size() )
+		return m_objVector[(Int)id];
+#endif
+
+#ifdef OG
 	ObjectPtrHash::iterator it = m_objHash.find(id);
 	if (it == m_objHash.end())
+#endif
 		return NULL;
+#ifdef OG
 	
 	return (*it).second;
+#endif
 }
 
 

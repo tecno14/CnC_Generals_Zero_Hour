@@ -167,6 +167,10 @@ typedef void (*BuildMultiIniFieldProc)(MultiIniFieldParse& p);
 //-------------------------------------------------------------------------------------------------
 class INI
 {
+#ifdef ZH
+  INI(const INI&);
+  INI& operator=(const INI&);
+#endif
 
 public:
 
@@ -200,6 +204,9 @@ public:
 	static void parseParticleSystemDefinition( INI *ini );
 	static void parseWaterSettingDefinition( INI *ini );
 	static void parseWaterTransparencyDefinition( INI *ini );
+#ifdef ZH
+	static void parseWeatherDefinition( INI *ini );
+#endif
 	static void parseMappedImageDefinition( INI *ini );
 	static void parseArmorDefinition( INI *ini );
 	static void parseDamageFXDefinition( INI *ini );
@@ -212,6 +219,9 @@ public:
 	static void parseObjectCreationListDefinition( INI* ini );
 	static void parseMultiplayerSettingsDefinition( INI* ini );
 	static void parseMultiplayerColorDefinition( INI* ini );
+#ifdef ZH
+  static void parseMultiplayerStartingMoneyChoiceDefinition( INI* ini );
+#endif
 	static void parseOnlineChatColorDefinition( INI* ini );
 	static void parseMapCacheDefinition( INI* ini );
 	static void parseVideoDefinition( INI* ini );
@@ -238,7 +248,9 @@ public:
 	static void parseEvaEvent( INI* ini );
 	static void parseCredits( INI* ini );
 	static void parseWindowTransitions( INI* ini );
-
+#ifdef ZH
+	static void parseChallengeModeDefinition( INI* ini );
+#endif
 
 	inline AsciiString getFilename( void ) const { return m_filename; }
 	inline INILoadType getLoadType( void ) const { return m_loadType; }
@@ -387,12 +399,30 @@ protected:
 
 	void readLine( void );
 
+#ifdef OG
 //	FILE *m_file;															///< file pointer of file currently loading
+#endif
 	File *m_file;															///< file pointer of file currently loading
+#ifdef ZH
+
+  enum
+  {
+    INI_READ_BUFFER = 8192                  ///< size of internal read buffer
+  };
+  char m_readBuffer[INI_READ_BUFFER];       ///< internal read buffer
+  unsigned m_readBufferNext;                ///< next char in read buffer
+  unsigned m_readBufferUsed;                ///< number of bytes in read buffer
+
+#endif
 	AsciiString m_filename;										///< filename of file currently loading
 	INILoadType m_loadType;										///< load time for current file
 	UnsignedInt m_lineNum;										///< current line number that's been read
+#ifdef OG
 	char m_buffer[ INI_MAX_CHARS_PER_LINE ];	///< buffer to read file contents into
+#endif
+#ifdef ZH
+	char m_buffer[ INI_MAX_CHARS_PER_LINE+1 ];///< buffer to read file contents into
+#endif
 	const char *m_seps;												///< for strtok parsing
 	const char *m_sepsPercent;								///< m_seps with percent delimiter as well
 	const char *m_sepsColon;									///< m_seps with colon delimiter as well

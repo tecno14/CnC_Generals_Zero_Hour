@@ -16,7 +16,12 @@
 **	along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#ifdef OG
 /* $Header: /Commando/Code/ww3d2/hanim.h 2     6/29/01 6:41p Jani_p $ */
+#endif
+#ifdef ZH
+/* $Header: /Commando/Code/ww3d2/hanim.h 3     12/13/01 7:01p Patrick $ */
+#endif
 /*********************************************************************************************** 
  ***                            Confidential - Westwood Studios                              *** 
  *********************************************************************************************** 
@@ -27,9 +32,19 @@
  *                                                                                             * 
  *                       Author:: Greg_h                                                       * 
  *                                                                                             * 
+#ifdef OG
  *                     $Modtime:: 6/27/01 7:35p                                               $* 
+#endif
+#ifdef ZH
+ *                     $Modtime:: 12/13/01 6:54p                                              $* 
+#endif
  *                                                                                             * 
+#ifdef OG
  *                    $Revision:: 2                                                           $* 
+#endif
+#ifdef ZH
+ *                    $Revision:: 3                                                           $* 
+#endif
  *                                                                                             * 
  *---------------------------------------------------------------------------------------------* 
  * Functions:                                                                                  * 
@@ -63,7 +78,9 @@ class HTreeClass;
 
 
 
-
+#ifdef ZH
+#define EMBEDDED_SOUND_BONE_INDEX_NOT_SET -1
+#endif
 /**********************************************************************************
 
 	HAnimClass
@@ -82,8 +99,16 @@ public:
 		CLASSID_LASTANIM		= 0x0000FFFF
 	};
 
+#ifdef OG
 	HAnimClass(void)				{ }
 	virtual ~HAnimClass(void)	{ }
+
+#endif
+#ifdef ZH
+	HAnimClass(void)	:
+		EmbeddedSoundBoneIndex (EMBEDDED_SOUND_BONE_INDEX_NOT_SET)	{ }
+	virtual ~HAnimClass(void)		{ }
+#endif
 
 	virtual const char *		Get_Name(void) const = 0;
 	virtual const char *		Get_HName(void) const = 0;
@@ -115,6 +140,15 @@ public:
 	virtual bool				Has_Visibility (int pividx)		{ return true; }
 	virtual int					Class_ID(void)	const															{ return CLASSID_UNKNOWNANIM; }
 
+#ifdef ZH
+	// Animated sound-triggering support
+	virtual bool				Has_Embedded_Sounds (void) const			{ if (EmbeddedSoundBoneIndex < 0) return false; return true;}
+	virtual void				Set_Embedded_Sound_Bone_Index (int bone)	{ EmbeddedSoundBoneIndex = bone; }
+	virtual int					Get_Embedded_Sound_Bone_Index() {return EmbeddedSoundBoneIndex;}
+
+protected:
+	int EmbeddedSoundBoneIndex;					
+#endif
 };
 
 
@@ -185,7 +219,14 @@ class HAnimComboDataClass : public AutoPoolClass<HAnimComboDataClass,256> {
 		void Set_HAnim(HAnimClass *motion);
 		void Give_HAnim(HAnimClass *motion) { if(HAnim) HAnim->Release_Ref(); HAnim = motion; }	// used for giving this object the reference
 
+#ifdef OG
 		void Set_Frame(float frame)		{ Frame = frame; }
+
+#endif
+#ifdef ZH
+		void Set_Frame(float frame)		{ PrevFrame = Frame; Frame = frame; }		
+		void Set_Prev_Frame(float frame)	{ PrevFrame = frame; }
+#endif
 		void Set_Weight(float weight)		{ Weight = weight; }
 		void Set_Pivot_Map(PivotMapClass *map);
 		
@@ -193,6 +234,9 @@ class HAnimComboDataClass : public AutoPoolClass<HAnimComboDataClass,256> {
 		HAnimClass * Peek_HAnim(void)				const { return HAnim; }	// note: does not add reference
 		HAnimClass * Get_HAnim(void)				const { if(HAnim) HAnim->Add_Ref(); return HAnim; }	// note: does not add reference
 		float Get_Frame(void)						const { return Frame; }
+#ifdef ZH
+		float Get_Prev_Frame(void)					const { return PrevFrame; }
+#endif
 		float Get_Weight(void)						const { return Weight; }
 		PivotMapClass * Peek_Pivot_Map(void)	const { return PivotMap; }
 		PivotMapClass * Get_Pivot_Map(void)		const { if(PivotMap) PivotMap->Add_Ref(); return PivotMap; }
@@ -204,6 +248,9 @@ class HAnimComboDataClass : public AutoPoolClass<HAnimComboDataClass,256> {
 
 		HAnimClass *HAnim;
 		float Frame;
+#ifdef ZH
+		float PrevFrame;
+#endif
 		float Weight;
 		PivotMapClass * PivotMap;
 		bool Shared;			// this is set to false when the HAnimCombo allocates it
@@ -232,7 +279,13 @@ public:
 	HAnimClass *Peek_Motion( int indx );
 
 	void	Set_Frame( int indx, float frame );
+#ifdef ZH
+	void	Set_Prev_Frame( int indx, float frame );
+#endif
 	float	Get_Frame( int indx );
+#ifdef ZH
+	float	Get_Prev_Frame( int indx );
+#endif
 
 	void	Set_Weight( int indx, float weight );
 	float	Get_Weight( int indx );

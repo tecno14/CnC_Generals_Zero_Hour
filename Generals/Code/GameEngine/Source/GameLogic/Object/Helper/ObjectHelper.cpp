@@ -51,7 +51,12 @@ ObjectHelper::~ObjectHelper( void )
 // ------------------------------------------------------------------------------------------------
 void ObjectHelper::sleepUntil(UnsignedInt when)
 {
+#ifdef OG
 	if (getObject()->getStatusBits() & OBJECT_STATUS_DESTROYED)
+#endif
+#ifdef ZH
+	if( getObject()->getStatusBits().test( OBJECT_STATUS_DESTROYED ) )
+#endif
 		return;
 
 	// note the setWakeFrame(NEVER) actually awakens immediately, since NEVER==0.

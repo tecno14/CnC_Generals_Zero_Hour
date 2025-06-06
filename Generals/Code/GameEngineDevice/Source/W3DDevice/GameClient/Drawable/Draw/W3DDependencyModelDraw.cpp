@@ -38,6 +38,16 @@
 #include "GameLogic/Module/ContainModule.h"
 #include "W3DDevice/GameClient/Module/W3DDependencyModelDraw.h"
 
+#ifdef ZH
+
+
+#ifdef _INTERNAL
+// for occasional debugging...
+//#pragma optimize("", off)
+//#pragma MESSAGE("************************************** WARNING, optimization disabled for debugging purposes")
+#endif
+
+#endif
 //-------------------------------------------------------------------------------------------------
 W3DDependencyModelDrawModuleData::W3DDependencyModelDrawModuleData() 
 {
@@ -83,6 +93,29 @@ void W3DDependencyModelDraw::doDrawModule(const Matrix3D* transformMtx)
 		// We've been cleared by the thing we were waiting to draw, so we can draw.
 		W3DModelDraw::doDrawModule( transformMtx );
 		m_dependencyCleared = FALSE;
+#ifdef ZH
+
+    
+    // A handy place to synchronize my drawable with container's
+    Drawable *myDrawable = getDrawable();
+    if ( ! myDrawable )
+      return;
+      
+    const Object *me = myDrawable->getObject();
+    if ( ! me )
+      return;
+
+	  Drawable *theirDrawable = NULL;
+    
+	  if( me->getContainedBy() && !me->getContainedBy()->getContain()->isEnclosingContainerFor(me) )
+		  theirDrawable = me->getContainedBy()->getDrawable();
+		
+    if( ! theirDrawable )
+		  return;
+
+    myDrawable->imitateStealthLook( *theirDrawable );
+
+#endif
 	}
 }
 
@@ -119,6 +152,9 @@ void W3DDependencyModelDraw::adjustTransformMtx(Matrix3D& mtx) const
 			}
 			else
 			{
+#ifdef ZH
+        mtx = *theirDrawable->getTransformMatrix();//TransformMatrix();
+#endif
 				DEBUG_LOG(("m_attachToDrawableBoneInContainer %s not found\n",getW3DDependencyModelDrawModuleData()->m_attachToDrawableBoneInContainer.str()));
 			}
 		}

@@ -56,8 +56,10 @@ const FieldParse MultiplayerColorDefinition::m_colorFieldParseTable[] =
 const FieldParse MultiplayerSettings::m_multiplayerSettingsFieldParseTable[] = 
 {
 
+#ifdef OG
 	{ "InitialCreditsMin",				INI::parseInt,	NULL,	offsetof( MultiplayerSettings, m_initialCreditsMin ) },
 	{ "InitialCreditsMax",				INI::parseInt,	NULL,	offsetof( MultiplayerSettings, m_initialCreditsMax ) },
+#endif
 	{ "StartCountdownTimer",			INI::parseInt,	NULL,	offsetof( MultiplayerSettings, m_startCountdownTimerSeconds ) },
 	{ "MaxBeaconsPerPlayer",			INI::parseInt,	NULL,	offsetof( MultiplayerSettings, m_maxBeaconsPerPlayer ) },
 	{ "UseShroud",								INI::parseBool,	NULL,	offsetof( MultiplayerSettings, m_isShroudInMultiplayer ) },
@@ -73,12 +75,14 @@ const FieldParse MultiplayerSettings::m_multiplayerSettingsFieldParseTable[] =
 //-------------------------------------------------------------------------------------------------
 MultiplayerSettings::MultiplayerSettings()
 {
+#ifdef OG
 	m_initialCreditsMin = 5000;
 	
 	//Fixed And Added Code By Sadullah Nader
 	//DID U MEAN m_initialCreditsMax = 10000;?
 	//Initializations inserted
 	m_initialCreditsMax = 10000;
+#endif
 	m_maxBeaconsPerPlayer = 3;
 	//
 
@@ -91,6 +95,10 @@ MultiplayerSettings::MultiplayerSettings()
 	
 	m_observerColor;
 	m_randomColor;
+#ifdef ZH
+
+  m_gotDefaultStartingMoney = false;
+#endif
 }  // end MultiplayerSettings
 
 MultiplayerColorDefinition::MultiplayerColorDefinition()
@@ -144,6 +152,19 @@ MultiplayerColorDefinition * MultiplayerSettings::newMultiplayerColorDefinition(
 	m_numColors = m_colorList.size();
 
 	return &m_colorList[numColors];
+#ifdef ZH
+}
+
+void MultiplayerSettings::addStartingMoneyChoice( const Money & money, Bool isDefault )
+{
+  m_startingMoneyList.push_back( money );
+  if ( isDefault )
+  {
+    DEBUG_ASSERTCRASH( !m_gotDefaultStartingMoney, ("Cannot have more than one default MultiplayerStartingMoneyChoice") );
+    m_defaultStartingMoney = money;
+    m_gotDefaultStartingMoney = true;
+  }
+#endif
 }
 
 MultiplayerColorDefinition * MultiplayerColorDefinition::operator =(const MultiplayerColorDefinition& other)

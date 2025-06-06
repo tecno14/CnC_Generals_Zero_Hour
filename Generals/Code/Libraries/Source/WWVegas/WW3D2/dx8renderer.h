@@ -26,12 +26,30 @@
  *                                                                                             *
  *              Original Author:: Jani Penttinen                                               *
  *                                                                                             *
+#ifdef OG
  *                      $Author:: Jani_p                                                      $*
+#endif
+#ifdef ZH
+ *                       Author : Kenny Mitchell                                               * 
+#endif
  *                                                                                             *
+#ifdef OG
  *                     $Modtime:: 7/10/01 5:49p                                               $*
+#endif
+#ifdef ZH
+ *                     $Modtime:: 06/27/02 1:27p                                              $*
+#endif
  *                                                                                             *
+#ifdef OG
  *                    $Revision:: 28                                                          $*
+#endif
+#ifdef ZH
+ *                    $Revision:: 29                                                          $*
+#endif
  *                                                                                             *
+#ifdef ZH
+ * 06/27/02 KM Changes to max texture stage caps																*
+#endif
  *---------------------------------------------------------------------------------------------*
  * Functions:                                                                                  *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
@@ -52,6 +70,9 @@
 #include "dx8list.h"
 #include "shader.h"
 #include "dx8wrapper.h"
+#ifdef ZH
+#include "meshmatdesc.h"
+#endif
 
 class IndexBufferClass;
 class VertexBufferClass;
@@ -81,7 +102,12 @@ class CameraClass;
 class DX8TextureCategoryClass : public MultiListObjectClass
 {
 	int												pass;
+#ifdef OG
 	TextureClass *									textures[MAX_TEXTURE_STAGES];
+#endif
+#ifdef ZH
+	TextureClass *									textures[MeshMatDescClass::MAX_TEX_STAGES];
+#endif
 	ShaderClass										shader;
 	VertexMaterialClass *						material;					
 	DX8PolygonRendererList						PolygonRendererList;
@@ -153,6 +179,9 @@ protected:
 	unsigned													uv_coordinate_channels;
 	bool														sorting;
 	bool														AnythingToRender;
+#ifdef ZH
+	bool														AnyDelayedPassesToRender;
+#endif
 	
 	void Generate_Texture_Categories(Vertex_Split_Table& split_table,unsigned vertex_offset);
 	void DX8FVFCategoryContainer::Insert_To_Texture_Category(
@@ -162,7 +191,16 @@ protected:
 		ShaderClass shader,
 		int pass,
 		unsigned vertex_offset);
+#ifdef OG
 	inline bool Anything_To_Render();
+
+#endif
+#ifdef ZH
+
+	inline bool Anything_To_Render()					{ return AnythingToRender; }
+	inline bool Any_Delayed_Passes_To_Render()	{ return AnyDelayedPassesToRender; }
+
+#endif
 	void Render_Procedural_Material_Passes(void);
 
 	DX8TextureCategoryClass* Find_Matching_Texture_Category(
@@ -215,10 +253,22 @@ public:
 		AnythingToRender=true;
 	}
 
+#ifdef ZH
+	/*
+	** Material pass rendering.  The following two functions allow procedural material passes
+	** to be applied to meshes in this FVF category.  In certain cases, the game will *only* render
+	** the procedural pass and not the base materials for the mesh.  When this happens there can
+	** be rendering errors unless these procedural passes are rendered after all of the meshes in 
+	** the scene.  The virtual method Add_Delayed_Material_Pass is used in this case.  
+	*/
+#endif
 	void Add_Visible_Material_Pass(MaterialPassClass * pass,MeshClass * mesh);
-	
-	
+#ifdef ZH
+	virtual void Add_Delayed_Visible_Material_Pass(MaterialPassClass * pass, MeshClass * mesh) = 0;
+	virtual void Render_Delayed_Procedural_Material_Passes(void) = 0;
+#endif
 };
+#ifdef OG
 
 bool DX8FVFCategoryContainer::Anything_To_Render()
 {
@@ -233,6 +283,7 @@ bool DX8FVFCategoryContainer::Anything_To_Render()
 */
 	return AnythingToRender;
 }
+#endif
 
 
 /**
@@ -250,11 +301,25 @@ public:
 	bool Check_If_Mesh_Fits(MeshModelClass* mmc);
 
 	void Render(void);	// Generic render function
+#ifdef ZH
+
+	/* 
+	** This method adds a material pass which must be rendered after all of the other rendering is complete. 
+	** This is needed whenever a mesh turns off its base passes and renders a translucent pass on its geometry.
+	*/
+	virtual void Add_Delayed_Visible_Material_Pass(MaterialPassClass * pass, MeshClass * mesh);
+	virtual void Render_Delayed_Procedural_Material_Passes(void);
+#endif
 
 protected:
 
 	VertexBufferClass *	vertex_buffer;
 	int							used_vertices;
+#ifdef ZH
+
+	MatPassTaskClass *	delayed_matpass_head;
+	MatPassTaskClass *	delayed_matpass_tail;
+#endif
 
 };
 
@@ -275,6 +340,15 @@ public:
 	bool Check_If_Mesh_Fits(MeshModelClass* mmc);
 
 	void Add_Visible_Skin(MeshClass * mesh);
+#ifdef ZH
+
+	/* 
+	** Since skins are already rendered after the rigid meshes, the Add_Delayed_Material_Pass function simply
+	** routes into the Add_Visible_Material_Pass method and no extra overhead is added.
+	*/
+	virtual void Add_Delayed_Visible_Material_Pass(MaterialPassClass * pass, MeshClass * mesh) { Add_Visible_Material_Pass(pass,mesh); }
+	virtual void Render_Delayed_Procedural_Material_Passes(void) { }
+#endif
 
 private:
 

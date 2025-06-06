@@ -1,3 +1,4 @@
+#ifdef OG
 /*
 **	Command & Conquer Generals(tm)
 **	Copyright 2025 Electronic Arts Inc.
@@ -105,3 +106,5 @@ static const char *TheObjectStatusBitNames[] =
 #endif
 
 #endif /* __OBJECTSTATUSBITS_H__ */
+
+#endif

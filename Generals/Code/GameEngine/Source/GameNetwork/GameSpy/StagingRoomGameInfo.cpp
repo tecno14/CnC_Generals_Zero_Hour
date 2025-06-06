@@ -669,7 +669,12 @@ AsciiString GameSpyStagingRoom::generateGameSpyGameResultsPacket( void )
 			Int gsPlayerID = slot->getProfileID();
 			Bool disconnected = slot->disconnected();
 
+#ifdef OG
 			AsciiString result = "loss", side = "USA";
+#endif
+#ifdef ZH
+			AsciiString result = "loss";
+#endif
 			if (disconnected)
 				result = "discon";
 			else if (TheNetwork->sawCRCMismatch())
@@ -677,9 +682,19 @@ AsciiString GameSpyStagingRoom::generateGameSpyGameResultsPacket( void )
 			else if (TheVictoryConditions->hasAchievedVictory(p))
 				result = "win";
 
+#ifdef OG
 			side = p->getPlayerTemplate()->getSide();
+#endif
+#ifdef ZH
+			AsciiString side = p->getPlayerTemplate()->getSide();
+#endif
 			if (side == "America")
+#ifdef OG
 				side = "USA";
+#endif
+#ifdef ZH
+				side = "USA";  //conform to GameSpy
+#endif
 
 			AsciiString playerStr;
 			playerStr.format("\\player_%d\\%s\\pid_%d\\%d\\team_%d\\%d\\result_%d\\%s\\side_%d\\%s",
@@ -737,7 +752,12 @@ AsciiString GameSpyStagingRoom::generateLadderGameResultsPacket( void )
 		endFrame, numPlayers, m_isQM, TheGameState->realMapPathToPortableMapPath(getMap()).str());
 
 	AsciiString tempStr;
+#ifdef OG
 	tempStr.format(",ladderIP=%s,ladderPort=%d", getLadderIP().str(), getLadderPort());
+#endif
+#ifdef ZH
+	tempStr.format("ladderIP=%s,ladderPort=%d", getLadderIP().str(), getLadderPort());
+#endif
 	results.concat(tempStr);
 
 	Int playerID = 0;
@@ -773,8 +793,14 @@ AsciiString GameSpyStagingRoom::generateLadderGameResultsPacket( void )
 			playerStr.format(",buildingsKilled%d=%d,buildingsLost%d=%d,buildingsBuilt%d=%d",
 				playerID, buildingsKilled, playerID, buildingsLost, playerID, buildingsBuilt);
 			results.concat(playerStr);
+#ifdef OG
 			playerStr.format(",fps%d=%d,cash%d=%d,capturedTech%d=%d,discon%d=%d,side%d=%s,team%d=%d",
 				playerID, fps, playerID, earnings, playerID, techCaptured, playerID, disconnected, playerID, p[i]->getPlayerTemplate()->getSide().str(), playerID, slot->getTeamNumber());
+#endif
+#ifdef ZH
+			playerStr.format(",fps%d=%d,cash%d=%d,capturedTech%d=%d,discon%d=%d,side%d=%s",
+				playerID, fps, playerID, earnings, playerID, techCaptured, playerID, disconnected, playerID, p[i]->getPlayerTemplate()->getSide().str());
+#endif
 			results.concat(playerStr);
 
 			++playerID;

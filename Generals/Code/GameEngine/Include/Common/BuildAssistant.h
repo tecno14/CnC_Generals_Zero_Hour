@@ -95,6 +95,9 @@ enum LegalBuildCode
 	LBC_NO_CLEAR_PATH,
 	LBC_SHROUD,
 	LBC_TOO_CLOSE_TO_SUPPLIES,
+#ifdef ZH
+	LBC_GENERIC_FAILURE,
+#endif
 };
 
 //-------------------------------------------------------------------------------------------------
@@ -117,7 +120,15 @@ public:
 		NO_OBJECT_OVERLAP			= 0X00000004,	///< Can't overlap enemy objects, or locally controled objects that can't move out of the way			
 		USE_QUICK_PATHFIND    = 0x00000008, ///< Use the quick pathfind method for CLEAR_PATH
 		SHROUD_REVEALED				= 0x00000010,	///< Check to make sure the shroud is revealed
+#ifdef OG
 		NO_ENEMY_OBJECT_OVERLAP=0x00000020,	///< Can't overlap enemy objects only.			
+
+#endif
+#ifdef ZH
+		NO_ENEMY_OBJECT_OVERLAP	= 0x00000020,	///< Can't overlap enemy objects only.			
+		IGNORE_STEALTHED				= 0x00000040, ///< Units that we can't see are legal to "build" on. (when moving mouse around)
+		FAIL_STEALTHED_WITHOUT_FEEDBACK = 0x00000080 ///< USE WITH IGNORE_STEALTHED except it will fail without BIB feedback (when clicking to place).
+#endif
 	};
 
 public:
@@ -155,7 +166,12 @@ public:
 																								 Player *player);
 
 	/// query if we can build at this location
+#ifdef OG
 	virtual Bool isLocationClearOfObjects( const Coord3D *worldPos,
+#endif
+#ifdef ZH
+	virtual LegalBuildCode isLocationClearOfObjects( const Coord3D *worldPos,
+#endif
 																								 const ThingTemplate *build, 
 																								 Real angle,  // angle to construct 'build' a
 																								 Object *builderObject,

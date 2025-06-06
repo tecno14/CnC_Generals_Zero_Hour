@@ -68,6 +68,10 @@
 #include "GameLogic/Weapon.h"
 #include "GameLogic/WeaponSet.h"
 
+#ifdef ZH
+#include "GameLogic/AIPathfind.h"
+
+#endif
 #include "Common/CRCDebug.h"
 
 #ifdef _INTERNAL
@@ -103,16 +107,44 @@ static void adjustVector(Coord3D *vec, const Matrix3D* mtx)
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
 //-------------------------------------------------------------------------------------------------
+#ifdef OG
 void ObjectCreationNugget::create( const Object* primary, const Object* secondary, UnsignedInt lifetimeFrames ) const
+#endif
+#ifdef ZH
+Object* ObjectCreationNugget::create( const Object* primary, const Object* secondary, UnsignedInt lifetimeFrames ) const
+#endif
 {
+#ifdef OG
 	create( primary, primary ? primary->getPosition() : NULL, secondary ? secondary->getPosition() : NULL, lifetimeFrames );
+#endif
+#ifdef ZH
+	return create( primary, primary ? primary->getPosition() : NULL, secondary ? secondary->getPosition() : NULL, INVALID_ANGLE, lifetimeFrames );
+#endif
 }
 
 //-------------------------------------------------------------------------------------------------
+#ifdef ZH
+//void ObjectCreationNugget::create( const Object* primaryObj, const Coord3D *primary, const Coord3D *secondary, Real angle, UnsignedInt lifetimeFrames ) const
+//{
+//	create( primaryObj, primary ? primary->getPosition() : NULL, secondary ? secondary->getPosition() : NULL, angle, lifetimeFrames );
+//}
+
+//-------------------------------------------------------------------------------------------------
+#endif
 //This one is called only when we have a nugget that doesn't care about createOwner.
+#ifdef OG
 void ObjectCreationNugget::create( const Object *primaryObj, const Coord3D *primary, const Coord3D *secondary, Bool createOwner, UnsignedInt lifetimeFrames ) const
+#endif
+#ifdef ZH
+Object* ObjectCreationNugget::create( const Object *primaryObj, const Coord3D *primary, const Coord3D *secondary, Bool createOwner, UnsignedInt lifetimeFrames ) const
+#endif
 {
+#ifdef OG
 	create( primaryObj, primary, secondary, lifetimeFrames );
+#endif
+#ifdef ZH
+	return create( primaryObj, primary, secondary, INVALID_ANGLE, lifetimeFrames );
+#endif
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -128,18 +160,31 @@ public:
 	{
 	}
 
+#ifdef OG
 	virtual void create( const Object* primaryObj, const Coord3D *primary, const Coord3D* secondary, UnsignedInt lifetimeFrames = 0 ) const
+#endif
+#ifdef ZH
+	virtual Object* create( const Object* primaryObj, const Coord3D *primary, const Coord3D* secondary, Real angle, UnsignedInt lifetimeFrames = 0 ) const
+#endif
 	{
 		if (!primaryObj || !primary || !secondary)
 		{ 
 			DEBUG_CRASH(("You must have a primary and secondary source for this effect"));
+#ifdef OG
       return;
+#endif
+#ifdef ZH
+      return NULL;
+#endif
     }
 
 	  if (m_weapon)
 	  {
 		  TheWeaponStore->createAndFireTempWeapon( m_weapon, primaryObj, secondary );
 	  }
+#ifdef ZH
+		return NULL;
+#endif
   }
 
 	static void parse(INI *ini, void *instance, void* /*store*/, const void* /*userData*/)
@@ -174,12 +219,22 @@ public:
 	{
 	}
 
+#ifdef OG
 	virtual void create( const Object* primaryObj, const Coord3D *primary, const Coord3D* secondary, UnsignedInt lifetimeFrames = 0 ) const
+#endif
+#ifdef ZH
+	virtual Object* create( const Object* primaryObj, const Coord3D *primary, const Coord3D* secondary, Real angle, UnsignedInt lifetimeFrames = 0 ) const
+#endif
 	{
 		if (!primaryObj || !primary || !secondary)
 		{ 
 			DEBUG_CRASH(("You must have a primary and secondary source for this effect"));
+#ifdef OG
       return;
+#endif
+#ifdef ZH
+      return NULL;
+#endif
     }
 
 		// Star trekkin, across the universe.
@@ -207,6 +262,9 @@ public:
 			rd->createRadiusDecal(m_deliveryDecalTemplate, m_deliveryDecalRadius, *secondary);
 			rd->killWhenNoLongerAttacking(true);
 		}
+#ifdef ZH
+		return NULL;
+#endif
   }
 
 	static void parse(INI *ini, void *instance, void* /*store*/, const void* /*userData*/)
@@ -261,17 +319,37 @@ public:
 		// End Add
 	}
 
+#ifdef OG
 	virtual void create(const Object *primaryObj, const Coord3D *primary, const Coord3D *secondary, UnsignedInt lifetimeFrames = 0 ) const
+#endif
+#ifdef ZH
+	virtual Object* create(const Object *primaryObj, const Coord3D *primary, const Coord3D *secondary, Real angle, UnsignedInt lifetimeFrames = 0 ) const
+#endif
 	{
+#ifdef OG
 		create( primaryObj, primary, secondary, true, lifetimeFrames );
+#endif
+#ifdef ZH
+		return create( primaryObj, primary, secondary, true, lifetimeFrames );
+#endif
 	}
 
+#ifdef OG
 	virtual void create(const Object* primaryObj, const Coord3D *primary, const Coord3D* secondary, Bool createOwner, UnsignedInt lifetimeFrames = 0 ) const
+#endif
+#ifdef ZH
+	virtual Object* create(const Object* primaryObj, const Coord3D *primary, const Coord3D* secondary, Bool createOwner, UnsignedInt lifetimeFrames = 0 ) const
+#endif
 	{
 		if (!primaryObj || !primary || !secondary)
 		{
 			DEBUG_CRASH(("You must have a primary and secondary source for this effect"));
+#ifdef OG
       return;
+#endif
+#ifdef ZH
+      return NULL;
+#endif
     }
 
 		Team* owner = primaryObj ? primaryObj->getControllingPlayer()->getDefaultTeam() : NULL;
@@ -310,6 +388,9 @@ public:
 			CWy = dx * s + dy * c + dy;
 		}
 		
+#ifdef ZH
+		Object *firstTransport = NULL;
+#endif
 		for( Int formationIndex = 0; formationIndex < m_formationSize; formationIndex++ )
 		{
 			Coord3D offset;
@@ -372,7 +453,17 @@ public:
 				transport = TheThingFactory->newObject( ttn, owner );
 				if( !transport )
 				{
+#ifdef OG
 					return;
+
+#endif
+#ifdef ZH
+					return NULL;
+				}
+				if( !firstTransport )
+				{
+					firstTransport = transport;
+#endif
 				}
 				transport->setPosition(&startPos);
 				transport->setOrientation(orient);
@@ -434,6 +525,14 @@ public:
 				for (std::vector<Payload>::const_iterator it = m_payload.begin(); it != m_payload.end(); ++it)
   			{
 					const ThingTemplate* payloadTmpl = TheThingFactory->findTemplate(it->m_payloadName);
+#ifdef ZH
+					if( !payloadTmpl )
+					{
+						DEBUG_CRASH( ("DeliverPayloadNugget::create() -- %s couldn't create %s (template not found).", 
+							transport->getTemplate()->getName().str(), it->m_payloadName.str() ) );
+						return NULL;
+					}
+#endif
 					for (int i = 0; i < it->m_payloadCount; ++i)
 					{
 						Object* payload = TheThingFactory->newObject( payloadTmpl, owner );
@@ -493,6 +592,9 @@ public:
 				DEBUG_CRASH(("You should really have a DeliverPayloadAIUpdate here"));
 			}
 		}
+#ifdef ZH
+		return firstTransport;
+#endif
 	}
 
 	static void parsePayload( INI* ini, void *instance, void *store, const void* /*userData*/ )
@@ -607,7 +709,12 @@ public:
 	{
 	}
 
+#ifdef OG
 	virtual void create( const Object* primary, const Object* secondary, UnsignedInt lifetimeFrames = 0 ) const
+#endif
+#ifdef ZH
+	virtual Object* create( const Object* primary, const Object* secondary, UnsignedInt lifetimeFrames = 0 ) const
+#endif
 	{
 		if (primary)
 		{
@@ -635,11 +742,22 @@ public:
 		{
 			DEBUG_CRASH(("You must have a primary source for this effect"));
 		}
+#ifdef ZH
+		return NULL;
+#endif
 	}
 
+#ifdef OG
 	virtual void create(const Object* primaryObj, const Coord3D *primary, const Coord3D* secondary, UnsignedInt lifetimeFrames = 0 ) const
+#endif
+#ifdef ZH
+	virtual Object* create(const Object* primaryObj, const Coord3D *primary, const Coord3D* secondary, Real angle, UnsignedInt lifetimeFrames = 0 ) const
+#endif
 	{
 		DEBUG_CRASH(("You must call this effect with an object, not a location"));
+#ifdef ZH
+		return NULL;
+#endif
 	}
 
 	static void parse(INI *ini, void *instance, void* /*store*/, const void* /*userData*/)
@@ -729,6 +847,9 @@ public:
 		m_minLODRequired(STATIC_GAME_LOD_LOW),
 		m_ignorePrimaryObstacle(false),
 		m_inheritsVeterancy(false),
+#ifdef ZH
+    m_diesOnBadLand(FALSE),
+#endif
 		m_skipIfSignificantlyAirborne(false),
 		m_invulnerableTime(0),
 		m_containInsideSourceObject(FALSE),
@@ -761,33 +882,70 @@ public:
 		m_offset.zero(); 
 	}
 
+#ifdef OG
 	virtual void create(const Object* primary, const Object* secondary, UnsignedInt lifetimeFrames = 0 ) const
+#endif
+#ifdef ZH
+	virtual Object* create(const Object* primary, const Object* secondary, UnsignedInt lifetimeFrames = 0 ) const
+#endif
 	{
 		if (primary)
 		{
 			if (m_skipIfSignificantlyAirborne && primary->isSignificantlyAboveTerrain())
+#ifdef OG
 				return;
+#endif
+#ifdef ZH
+				return NULL;
+#endif
 
+#ifdef OG
 			reallyCreate( primary->getPosition(), primary->getTransformMatrix(), primary->getOrientation(), primary, lifetimeFrames );
+#endif
+#ifdef ZH
+			return reallyCreate( primary->getPosition(), primary->getTransformMatrix(), primary->getOrientation(), primary, lifetimeFrames );
+#endif
 		}
 		else
 		{
 			DEBUG_CRASH(("You must have a primary source for this effect"));
 		}
+#ifdef ZH
+		return NULL;
+#endif
 	}
 
+#ifdef OG
 	virtual void create(const Object* primaryObj, const Coord3D *primary, const Coord3D* secondary, UnsignedInt lifetimeFrames = 0 ) const
+#endif
+#ifdef ZH
+	virtual Object* create(const Object* primaryObj, const Coord3D *primary, const Coord3D* secondary, Real angle, UnsignedInt lifetimeFrames = 0 ) const
+#endif
 	{
 		if (primary)
 		{
 			const Matrix3D *xfrm = NULL;
+#ifdef OG
 			const Real orientation = 0.0;
 			reallyCreate( primary, xfrm, orientation, primaryObj, lifetimeFrames );
+
+#endif
+#ifdef ZH
+			if( angle == INVALID_ANGLE )
+			{
+				//Vast majority of OCL's don't care about the angle, so if it comes in invalid, default the angle to 0.
+				angle = 0.0f;
+			}
+			return reallyCreate( primary, xfrm, angle, primaryObj, lifetimeFrames );
+#endif
 		}
 		else
 		{
 			DEBUG_CRASH(("You must have a primary source for this effect"));
 		}
+#ifdef ZH
+		return NULL;
+#endif
 	}
 
 	static const FieldParse* getCommonFieldParse()
@@ -823,6 +981,9 @@ public:
 			{ "FadeTime",	INI::parseDurationUnsignedInt,	NULL, offsetof(GenericObjectCreationNugget, m_fadeFrames) },
 			{ "FadeSound", INI::parseAsciiString, NULL, offsetof( GenericObjectCreationNugget, m_fadeSoundName) },
 			{ "PreserveLayer", INI::parseBool, NULL, offsetof( GenericObjectCreationNugget, m_preserveLayer) },
+#ifdef ZH
+			{ "DiesOnBadLand",	INI::parseBool, NULL, offsetof(GenericObjectCreationNugget, m_diesOnBadLand) },
+#endif
 			{ 0, 0, 0, 0 }
 		};
 		return commonFieldParse;
@@ -1024,8 +1185,31 @@ protected:
 				if (physics)
 					physics->setAllowToFall(true);
 			}	
+#ifdef ZH
+
+      //Lorenzen sez:
+      //Since the sneak attack is a structure created with an ocl, it bypasses a lot of the
+      //goodness that it would have gotten from dozerAI::build( the normal way to make structures )
+      // but, since it is a building... lets stamp it down in the pathfind map, here.
+      if ( obj->isKindOf( KINDOF_STRUCTURE ) )
+      {
+	      // Flatten the terrain underneath the object, then adjust to the flattened height. jba.
+	      TheTerrainLogic->flattenTerrain(obj);
+	      Coord3D adjustedPos = *obj->getPosition();
+	      adjustedPos.z = TheTerrainLogic->getGroundHeight(pos->x, pos->y);
+	      obj->setPosition(&adjustedPos);
+	      // Note - very important that we add to map AFTER we flatten terrain. jba.
+	      TheAI->pathfinder()->addObjectToPathfindMap( obj );
+
+#endif
 		}
 
+#ifdef ZH
+
+
+		}
+
+#endif
 		if( BitTest( m_disposition, ON_GROUND_ALIGNED ) )
 		{
 			chunkPos.z = 99999.0f;
@@ -1205,30 +1389,112 @@ protected:
 				TheGameLogic->destroyObject(obj);
 			}
 		}
+#ifdef ZH
+    
+
+    if ( m_diesOnBadLand && obj )
+    {
+	    // if we land in the water, we die. alas.
+	    const Coord3D* riderPos = obj->getPosition();
+	    Real waterZ, terrainZ;
+	    if (TheTerrainLogic->isUnderwater(riderPos->x, riderPos->y, &waterZ, &terrainZ)
+			    && riderPos->z <= waterZ + 10.0f
+			    && obj->getLayer() == LAYER_GROUND)
+	    {
+		    // don't call kill(); do it manually, so we can specify DEATH_FLOODED
+		    DamageInfo damageInfo;
+		    damageInfo.in.m_damageType = DAMAGE_WATER;	// use this instead of UNRESISTABLE so we don't get a dusty damage effect
+		    damageInfo.in.m_deathType = DEATH_FLOODED;
+		    damageInfo.in.m_sourceID = INVALID_ID;
+		    damageInfo.in.m_amount = HUGE_DAMAGE_AMOUNT;
+		    obj->attemptDamage( &damageInfo );
+#endif
 	}
 
+#ifdef OG
 	void reallyCreate(const Coord3D *pos, const Matrix3D *mtx, Real orientation, const Object *sourceObj, UnsignedInt lifetimeFrames ) const
+
+#endif
+#ifdef ZH
+	    // Kill if materialized on impassable ground
+	    Int cellX = REAL_TO_INT( obj->getPosition()->x / PATHFIND_CELL_SIZE );
+	    Int cellY = REAL_TO_INT( obj->getPosition()->y / PATHFIND_CELL_SIZE );
+	    
+	    PathfindCell* cell = TheAI->pathfinder()->getCell( obj->getLayer(), cellX, cellY );
+	    PathfindCell::CellType cellType = cell ? cell->getType() : PathfindCell::CELL_IMPASSABLE;
+	    
+	    // If we land outside the map, we die too.  
+	    // Otherwise we exist outside the PartitionManger like a cheater.
+	  if( obj->isOffMap() 
+      || (cellType == PathfindCell::CELL_CLIFF) 
+      || (cellType == PathfindCell::CELL_WATER) 
+      || (cellType == PathfindCell::CELL_IMPASSABLE) )
+	    {
+		    // We are sorry, for reasons beyond our control, we are experiencing technical difficulties. Please die.
+		    obj->kill();
+	    }
+
+  // Note: for future enhancement of this feature, we should test the object against the cell type he is on,
+  // using obj->getAI()->hasLocomotorForSurface( __ ). We cshould not assume here that the object can not 
+  // find happiness on cliffs or water or whatever.
+
+    }
+
+	}
+
+	Object* reallyCreate(const Coord3D *pos, const Matrix3D *mtx, Real orientation, const Object *sourceObj, UnsignedInt lifetimeFrames ) const
+#endif
 	{
 		static const ThingTemplate* debrisTemplate = TheThingFactory->findTemplate("GenericDebris");
 
 		if (m_names.size() <= 0)
+#ifdef OG
 			return;
+#endif
+#ifdef ZH
+			return NULL;
+#endif
 
+#ifdef OG
 		if (m_requiresLivePlayer && (!sourceObj || !sourceObj->getControllingPlayer()->isPlayerActive()))
 			return; // don't spawn useful objects for dead players.  Avoid the zombie units from Yuri's.
+#endif
+#ifdef ZH
+		if (m_requiresLivePlayer && (!sourceObj || !sourceObj->getControllingPlayer() || !sourceObj->getControllingPlayer()->isPlayerActive()))
+			return NULL; // don't spawn useful objects for dead players.  Avoid the zombie units from Yuri's.
+#endif
 
 		// Object type debris might need this information to process visual UpgradeModules.
+#ifdef OG
 		Team *debrisOwner = NULL;
 		if( sourceObj )
+
+#endif
+#ifdef ZH
+		Team *debrisOwner = ThePlayerList->getNeutralPlayer() ? ThePlayerList->getNeutralPlayer()->getDefaultTeam() : NULL;
+
+		if( sourceObj && sourceObj->getControllingPlayer() )
+#endif
 			debrisOwner = sourceObj->getControllingPlayer()->getDefaultTeam();
 		
 		Object* container = NULL;
+#ifdef ZH
+		Object *firstObject = NULL;
+#endif
 		if (!m_putInContainer.isEmpty())
 		{
 			const ThingTemplate* containerTmpl = TheThingFactory->findTemplate(m_putInContainer);
 			if (containerTmpl)
 			{
 				container = TheThingFactory->newObject( containerTmpl, debrisOwner );
+#ifdef ZH
+				if( !container )
+				{
+					DEBUG_CRASH( ("OCL::reallyCreate() failed to create container %s.", m_putInContainer.str() ) );
+					return firstObject;
+				}
+				firstObject = container;
+#endif
 				container->setProducer(sourceObj);
 			}
 		}
@@ -1253,6 +1519,17 @@ protected:
 				continue;
 
 			Object *debris = TheThingFactory->newObject( tmpl, debrisOwner );
+#ifdef ZH
+			if( !debris )
+			{
+				DEBUG_CRASH( ("OCL::reallyCreate() failed to create debris %s.", tmpl->getName().str() ) );
+				return firstObject;
+			}
+			if( !firstObject )
+			{
+				firstObject = debris;
+			}
+#endif
 			debris->setProducer(sourceObj);
 			if (m_preserveLayer && sourceObj != NULL && container == NULL)
 			{
@@ -1304,6 +1581,10 @@ protected:
 
 		if (container)
 			doStuffToObj( container, AsciiString::TheEmptyString, pos, mtx, orientation, sourceObj, lifetimeFrames );
+#ifdef ZH
+    
+		return firstObject;
+#endif
 	}
 
 	static void parseDebrisObjectNames( INI* ini, void *instance, void *store, const void* /*userData*/ )
@@ -1367,6 +1648,9 @@ private:
 	Bool											m_fadeOut;
 	Bool											m_ignorePrimaryObstacle;
 	Bool											m_inheritsVeterancy;
+#ifdef ZH
+  Bool                      m_diesOnBadLand;
+#endif
 	Bool											m_skipIfSignificantlyAirborne;
 
 };  
@@ -1404,33 +1688,93 @@ void ObjectCreationList::addObjectCreationNugget(ObjectCreationNugget* nugget)
 }
 
 //-------------------------------------------------------------------------------------------------
+#ifdef OG
 void ObjectCreationList::create( const Object* primaryObj, const Coord3D *primary, const Coord3D* secondary, Bool createOwner, UnsignedInt lifetimeFrames ) const
+#endif
+#ifdef ZH
+Object* ObjectCreationList::createInternal( const Object* primaryObj, const Coord3D *primary, const Coord3D* secondary, Bool createOwner, UnsignedInt lifetimeFrames ) const
+#endif
 {
 	DEBUG_ASSERTCRASH(primaryObj != NULL, ("You should always call OCLs with a non-null primary Obj, even for positional calls, to get team ownership right"));
+#ifdef ZH
+	Object *theFirstObject = NULL;
+#endif
 	for (ObjectCreationNuggetVector::const_iterator i = m_nuggets.begin(); i != m_nuggets.end(); ++i)
 	{
+#ifdef OG
 		(*i)->create( primaryObj, primary, secondary, createOwner, lifetimeFrames );
+
+#endif
+#ifdef ZH
+		Object *curObj = (*i)->create( primaryObj, primary, secondary, createOwner, lifetimeFrames );
+		if (theFirstObject==NULL) {
+			theFirstObject = curObj;
+		}
+#endif
 	}
+#ifdef ZH
+	return theFirstObject;
+#endif
 }
 
 //-------------------------------------------------------------------------------------------------
+#ifdef OG
 void ObjectCreationList::create( const Object* primaryObj, const Coord3D *primary, const Coord3D* secondary, UnsignedInt lifetimeFrames ) const
+#endif
+#ifdef ZH
+Object* ObjectCreationList::createInternal( const Object* primaryObj, const Coord3D *primary, const Coord3D* secondary, Real angle, UnsignedInt lifetimeFrames ) const
+#endif
 {
 	DEBUG_ASSERTCRASH(primaryObj != NULL, ("You should always call OCLs with a non-null primary Obj, even for positional calls, to get team ownership right"));
+#ifdef ZH
+	Object *theFirstObject = NULL;
+#endif
 	for (ObjectCreationNuggetVector::const_iterator i = m_nuggets.begin(); i != m_nuggets.end(); ++i)
 	{
+#ifdef OG
 		(*i)->create( primaryObj, primary, secondary, lifetimeFrames );
+
+#endif
+#ifdef ZH
+		Object *curObj =  (*i)->create( primaryObj, primary, secondary, angle, lifetimeFrames );
+		if (theFirstObject==NULL) {
+			theFirstObject = curObj;
+#endif
 	}
+#ifdef ZH
+	}
+	return theFirstObject;
+#endif
 }
 
 //-------------------------------------------------------------------------------------------------
+#ifdef OG
 void ObjectCreationList::create( const Object* primary, const Object* secondary, UnsignedInt lifetimeFrames ) const
+#endif
+#ifdef ZH
+Object* ObjectCreationList::createInternal( const Object* primary, const Object* secondary, UnsignedInt lifetimeFrames ) const
+#endif
 {
 	DEBUG_ASSERTCRASH(primary != NULL, ("You should always call OCLs with a non-null primary Obj, even for positional calls, to get team ownership right"));
+#ifdef ZH
+	Object *theFirstObject = NULL;
+#endif
 	for (ObjectCreationNuggetVector::const_iterator i = m_nuggets.begin(); i != m_nuggets.end(); ++i)
 	{
+#ifdef OG
 		(*i)->create( primary, secondary, lifetimeFrames );
+
+#endif
+#ifdef ZH
+		Object *curObj =  (*i)->create( primary, secondary, lifetimeFrames );
+		if (theFirstObject==NULL) {
+			theFirstObject = curObj;
+		}
+#endif
 	}
+#ifdef ZH
+	return theFirstObject;
+#endif
 }
 
 //-------------------------------------------------------------------------------------------------

@@ -47,6 +47,14 @@
 #include "GameLogic/Module/UpdateModule.h"
 #include "GameLogic/Module/UpgradeModule.h"
 
+#ifdef ZH
+#ifdef _INTERNAL
+// for occasional debugging...
+//#pragma optimize("", off)
+//#pragma message("************************************** WARNING, optimization disabled for debugging purposes")
+#endif
+
+#endif
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 // PUBLIC FUNCTIONS ///////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -241,13 +249,63 @@ void UpgradeMuxData::performUpgradeFX(Object* obj) const
 }
 
 //-------------------------------------------------------------------------------------------------
+#ifdef OG
 void UpgradeMuxData::getUpgradeActivationMasks(Int64& activation, Int64& conflicting) const
+
+#endif
+#ifdef ZH
+void UpgradeMuxData::muxDataProcessUpgradeRemoval(Object* obj) const
+{
+	if( !m_removalUpgradeNames.empty() )
+	{
+		std::vector<AsciiString>::const_iterator it;
+		for( it = m_removalUpgradeNames.begin();
+					it != m_removalUpgradeNames.end();
+					it++)
+		{
+			const UpgradeTemplate* theTemplate = TheUpgradeCenter->findUpgrade( *it );
+			if( !theTemplate && !it->isEmpty() && !it->isNone())
+			{
+				DEBUG_CRASH(("An upgrade module references %s, which is not an Upgrade", it->str()));
+				throw INI_INVALID_DATA;
+			}
+
+			obj->removeUpgrade(theTemplate);
+		}
+	}
+}
+
+//-------------------------------------------------------------------------------------------------
+Bool UpgradeMuxData::isTriggeredBy(const std::string &upgrade) const
+{
+	std::vector<AsciiString>::const_iterator it;
+	for( it = m_triggerUpgradeNames.begin(); it != m_triggerUpgradeNames.end();	++it)
+	{
+		AsciiString trigger = *it;
+		if (stricmp(trigger.str(), upgrade.c_str()) == 0)
+		{
+			return TRUE;
+		}
+	}
+
+	return FALSE;
+}
+
+//-------------------------------------------------------------------------------------------------
+void UpgradeMuxData::getUpgradeActivationMasks(UpgradeMaskType& activation, UpgradeMaskType& conflicting) const
+#endif
 {
 	// already computed.
 	if (!m_activationUpgradeNames.empty() || !m_conflictingUpgradeNames.empty())
 	{
+#ifdef OG
 		m_activationMask = 0;
 		m_conflictingMask = 0;
+#endif
+#ifdef ZH
+		m_activationMask.clear();
+		m_conflictingMask.clear();
+#endif
 		
 		std::vector<AsciiString>::const_iterator it;
 		for( it = m_activationUpgradeNames.begin();
@@ -261,7 +319,12 @@ void UpgradeMuxData::getUpgradeActivationMasks(Int64& activation, Int64& conflic
 				throw INI_INVALID_DATA;
 			}
 
+#ifdef OG
 			m_activationMask |= theTemplate->getUpgradeMask();
+#endif
+#ifdef ZH
+			m_activationMask.set( theTemplate->getUpgradeMask() );
+#endif
 		}
 
 		for( it = m_conflictingUpgradeNames.begin();
@@ -274,9 +337,23 @@ void UpgradeMuxData::getUpgradeActivationMasks(Int64& activation, Int64& conflic
 				DEBUG_CRASH(("An upgrade module references %s, which is not an Upgrade", it->str()));
 				throw INI_INVALID_DATA;
 			}
+#ifdef OG
 			m_conflictingMask |= theTemplate->getUpgradeMask();
+#endif
+#ifdef ZH
+			m_conflictingMask.set( theTemplate->getUpgradeMask() );
+#endif
 		}
+#ifdef ZH
 
+		// We set the trigger upgrade names with the activationUpgradeNames entries to be used later.
+		// We have to do this because the activationUpgradeNames are toasted just below.
+		m_triggerUpgradeNames = m_activationUpgradeNames;
+#endif
+
+#ifdef ZH
+		//Clear the names now that we've cached the values!
+#endif
 		m_activationUpgradeNames.clear();
 		m_conflictingUpgradeNames.clear();
 	}

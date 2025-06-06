@@ -73,6 +73,9 @@
 	static const FieldParse TheFieldParseTable[] = 
 	{
 		{ "Side",											INI::parseAsciiString,													NULL, offsetof( PlayerTemplate, m_side ) },
+#ifdef ZH
+		{ "BaseSide",								INI::parseAsciiString,													NULL, offsetof( PlayerTemplate, m_baseSide ) },
+#endif
 		{ "PlayableSide",							INI::parseBool,																	NULL, offsetof( PlayerTemplate, m_playableSide ) },
 		{ "DisplayName",							INI::parseAndTranslateLabel,										NULL, offsetof( PlayerTemplate, m_displayName) },
 		{ "StartMoney",								PlayerTemplate::parseStartMoney,								NULL, offsetof( PlayerTemplate, m_money ) },
@@ -99,10 +102,16 @@
 		{ "SpecialPowerShortcutWinName"		,INI::parseAsciiString,													NULL, offsetof( PlayerTemplate, m_specialPowerShortcutWinName) },
 		{ "SpecialPowerShortcutButtonCount",INI::parseInt,												NULL, offsetof( PlayerTemplate, m_specialPowerShortcutButtonCount ) },
 		{ "IsObserver",								INI::parseBool,																	NULL, offsetof( PlayerTemplate, m_observer ) },
+#ifdef ZH
+    { "OldFaction",               INI::parseBool,                                 NULL, offsetof( PlayerTemplate, m_oldFaction ) },
+#endif
 		{ "IntrinsicSciencePurchasePoints",				INI::parseInt,												NULL, offsetof( PlayerTemplate, m_intrinsicSPP ) },
 		{ "ScoreScreenImage",					INI::parseAsciiString,													NULL, offsetof( PlayerTemplate, m_scoreScreenImage ) },
 		{ "LoadScreenImage",					INI::parseAsciiString,													NULL, offsetof( PlayerTemplate, m_loadScreenImage ) },
 		{ "LoadScreenMusic",					INI::parseAsciiString,													NULL, offsetof( PlayerTemplate, m_loadScreenMusic ) },
+#ifdef ZH
+		{ "ScoreScreenMusic",					INI::parseAsciiString,													NULL, offsetof( PlayerTemplate, m_scoreScreenMusic ) },
+#endif
 
 		{ "HeadWaterMark",						INI::parseAsciiString,													NULL, offsetof( PlayerTemplate, m_headWaterMark ) },
 		{ "FlagWaterMark",						INI::parseAsciiString,													NULL, offsetof( PlayerTemplate, m_flagWaterMark ) },
@@ -111,8 +120,19 @@
 		//{ "HiliteImage",							INI::parseAsciiString,													NULL, offsetof( PlayerTemplate, m_hiliteImage ) },
 		//{ "PushedImage",							INI::parseAsciiString,													NULL, offsetof( PlayerTemplate, m_pushedImage ) },
 		{ "SideIconImage",						INI::parseAsciiString,													NULL, offsetof( PlayerTemplate, m_sideIconImage ) },
+#ifdef ZH
+		{ "GeneralImage",						INI::parseAsciiString,													NULL, offsetof( PlayerTemplate, m_generalImage ) },
+#endif
 
 		{ "BeaconName",								INI::parseAsciiString,													NULL, offsetof( PlayerTemplate, m_beaconTemplate ) },
+#ifdef ZH
+		{ "ArmyTooltip",						INI::parseAsciiString,					NULL, offsetof( PlayerTemplate, m_tooltip ) },
+		{ "Features",						INI::parseAsciiString,					NULL, offsetof( PlayerTemplate, m_strGeneralFeatures ) },
+		{ "MedallionRegular",						INI::parseAsciiString,					NULL, offsetof( PlayerTemplate, m_strMedallionNormal ) },
+		{ "MedallionHilite",						INI::parseAsciiString,					NULL, offsetof( PlayerTemplate, m_strMedallionHilite ) },
+		{ "MedallionSelect",						INI::parseAsciiString,					NULL, offsetof( PlayerTemplate, m_strMedallionSelected ) },
+
+#endif
 		{ NULL,											NULL,																				NULL, 0 },
 	};
 
@@ -188,6 +208,9 @@ PlayerTemplate::PlayerTemplate() :
 	m_nameKey(NAMEKEY_INVALID),
 	m_observer(false),
 	m_playableSide(false),
+#ifdef ZH
+  m_oldFaction(false),
+#endif
 	m_intrinsicSPP(0),
 	m_specialPowerShortcutButtonCount(0)
 {
@@ -214,6 +237,14 @@ const Image *PlayerTemplate::getSideIconImage( void ) const
 }
 
 //-----------------------------------------------------------------------------
+#ifdef ZH
+const Image *PlayerTemplate::getGeneralImage( void ) const
+{
+	return TheMappedImageCollection->findImageByName(m_generalImage);
+}
+
+//-----------------------------------------------------------------------------
+#endif
 const Image *PlayerTemplate::getEnabledImage( void ) const
 {
 	return TheMappedImageCollection->findImageByName(m_enabledImage);
@@ -272,6 +303,19 @@ void PlayerTemplateStore::reset()
 void PlayerTemplateStore::update()
 {
 	// nothing
+#ifdef ZH
+}
+
+Int PlayerTemplateStore::getTemplateNumByName(AsciiString name) const
+{
+	for (Int num = 0; num < m_playerTemplates.size(); num++)
+	{
+		if (m_playerTemplates[num].getName().compareNoCase(name.str()) == 0)
+			return num;
+	}
+	DEBUG_ASSERTCRASH(NULL, ("Template doesn't exist for given name"));
+	return -1;
+#endif
 }
 
 //-----------------------------------------------------------------------------

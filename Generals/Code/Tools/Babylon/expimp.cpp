@@ -23,9 +23,19 @@
 #include "stdAfx.h"
 #include "transDB.h"
 #include "XLStuff.h"
+#ifdef OG
 #include "Noxstringdlg.h"
+#endif
+#ifdef ZH
+#include "Babylondlg.h"
+#endif
 #include "VerifyTextDlg.h"
+#ifdef OG
 #include "Noxstring.h"
+#endif
+#ifdef ZH
+#include "Babylon.h"
+#endif
 #include "expimp.h"
 #include "direct.h"
 #include "fileops.h"
@@ -37,7 +47,12 @@ static OLECHAR olebuf[100*1024];
 static OLECHAR olebuf2[100*1024];
 static OLECHAR oletrans[100*1024];
 
+#ifdef OG
 static CNoxstringDlg *progress_dlg;
+#endif
+#ifdef ZH
+static CBabylonDlg *progress_dlg;
+#endif
 static int progress_count;
 
 static void progress_cb ( void )
@@ -169,7 +184,12 @@ static void translateCopy( OLECHAR *outbuf, OLECHAR *inbuf )
 }
 
 
+#ifdef OG
 static void writeLabel ( NoxLabel *label, int row )
+#endif
+#ifdef ZH
+static void writeLabel ( BabylonLabel *label, int row )
+#endif
 {
 	PutCell ( row, CELL_LABEL, label->Name (), 0);
 	wcscpy ( olebuf, label->Comment());
@@ -186,9 +206,19 @@ static void writeLabel ( NoxLabel *label, int row )
 	PutCell ( row, CELL_LISTENER, olebuf , 0);
 }
 
+#ifdef OG
 static void writeText ( NoxText *text, int row )
+#endif
+#ifdef ZH
+static void writeText ( BabylonText *text, int row )
+#endif
 {
+#ifdef OG
 	NoxLabel *label = text->Label ();
+#endif
+#ifdef ZH
+	BabylonLabel *label = text->Label ();
+#endif
 	int maxlen = label->MaxLen ();
 	OLECHAR buffer[100];
 
@@ -214,8 +244,14 @@ static void writeText ( NoxText *text, int row )
 
 static int export_trans ( TransDB *db, LangID langid, TROPTIONS *options, void (*cb) (void ), int write )
 {
+#ifdef OG
 	NoxLabel *label;
 	NoxText *text;
+#endif
+#ifdef ZH
+	BabylonLabel *label;
+	BabylonText *text;
+#endif
 	Translation *trans;
 	ListSearch sh_label, sh_text;
 	int count = 0;
@@ -402,7 +438,12 @@ static int export_trans ( TransDB *db, LangID langid, TROPTIONS *options, void (
 }
 
 
+#ifdef OG
 int ExportTranslations ( TransDB *db, const char *filename, LangID langid, TROPTIONS *options, CNoxstringDlg *dlg )
+#endif
+#ifdef ZH
+int ExportTranslations ( TransDB *db, const char *filename, LangID langid, TROPTIONS *options, CBabylonDlg *dlg )
+#endif
 {
 	int exports ;
 	exports = export_trans ( db, langid, options, NULL, FALSE );
@@ -539,7 +580,12 @@ int ExportTranslations ( TransDB *db, const char *filename, LangID langid, TROPT
 }
 
 
+#ifdef OG
 static int import_trans ( TransDB *db, LangID langid, void (*cb) ( void ), CNoxstringDlg *dlg )
+#endif
+#ifdef ZH
+static int import_trans ( TransDB *db, LangID langid, void (*cb) ( void ), CBabylonDlg *dlg )
+#endif
 {
 	int row = 3;
 	int id;
@@ -561,7 +607,12 @@ static int import_trans ( TransDB *db, LangID langid, void (*cb) ( void ), CNoxs
 			goto skip;
 		}
 
+#ifdef OG
 		NoxText *text;
+#endif
+#ifdef ZH
+		BabylonText *text;
+#endif
 
 		if ( (text = db->FindText ( id )) == NULL )
 		{
@@ -734,7 +785,12 @@ done:
 	return count;
 }
 
+#ifdef OG
 static int update_sent_trans ( TransDB *db, LangID langid, void (*cb) ( void ), CNoxstringDlg *dlg )
+#endif
+#ifdef ZH
+static int update_sent_trans ( TransDB *db, LangID langid, void (*cb) ( void ), CBabylonDlg *dlg )
+#endif
 {
 	int row = 3;
 	int id;
@@ -755,7 +811,12 @@ static int update_sent_trans ( TransDB *db, LangID langid, void (*cb) ( void ), 
 			goto skip;
 		}
 
+#ifdef OG
 		NoxText *text;
+#endif
+#ifdef ZH
+		BabylonText *text;
+#endif
 
 		if ( (text = db->FindText ( id )) == NULL )
 		{
@@ -896,7 +957,12 @@ done:
 	return count;
 }
 
+#ifdef OG
 int ImportTranslations ( TransDB *db, const char *filename, CNoxstringDlg *dlg )
+#endif
+#ifdef ZH
+int ImportTranslations ( TransDB *db, const char *filename, CBabylonDlg *dlg )
+#endif
 {
 	int imports = -1;
 
@@ -962,7 +1028,12 @@ int ImportTranslations ( TransDB *db, const char *filename, CNoxstringDlg *dlg )
 	return imports;
 }
 
+#ifdef OG
 static int generate_noxstr ( TransDB *db, const char *filename, LangID langid, GNOPTIONS *options )
+#endif
+#ifdef ZH
+static int generate_Babylonstr ( TransDB *db, const char *filename, LangID langid, GNOPTIONS *options )
+#endif
 {
 	int ok = FALSE;
 	FILE *file;
@@ -976,8 +1047,14 @@ static int generate_noxstr ( TransDB *db, const char *filename, LangID langid, G
 	fprintf ( file, "// Generated on %s %s\n\n\n", __DATE__, __TIME__ );
 
 	{
+#ifdef OG
 		NoxLabel *label;
 		NoxText *text;
+#endif
+#ifdef ZH
+		BabylonLabel *label;
+		BabylonText *text;
+#endif
 		Translation *trans;
 		ListSearch sh_label, sh_text;
 
@@ -1051,7 +1128,12 @@ error:
 	return ok;
 }
 
+#ifdef OG
 static int writeCSFLabel ( FILE *file, NoxLabel *label )
+#endif
+#ifdef ZH
+static int writeCSFLabel ( FILE *file, BabylonLabel *label )
+#endif
 {
 	int id = CSF_LABEL;
 	int len = strlen ( label->NameSB() );
@@ -1172,8 +1254,14 @@ static int generate_csf ( TransDB *db, const char *filename, LangID langid, GNOP
 	fseek ( file, header_size, SEEK_SET );
 
 	{
+#ifdef OG
 		NoxLabel *label;
 		NoxText *text;
+#endif
+#ifdef ZH
+		BabylonLabel *label;
+		BabylonText *text;
+#endif
 		Translation *trans;
 		ListSearch sh_label, sh_text;
 
@@ -1261,7 +1349,12 @@ error:
 }
 
 
+#ifdef OG
 int GenerateGameFiles ( TransDB *db, const char *filepattern, GNOPTIONS *options, LangID *languages, CNoxstringDlg *dlg)
+#endif
+#ifdef ZH
+int GenerateGameFiles ( TransDB *db, const char *filepattern, GNOPTIONS *options, LangID *languages, CBabylonDlg *dlg)
+#endif
 {
 	static char filename[2*1024];
 	LangID langid;
@@ -1293,7 +1386,12 @@ int GenerateGameFiles ( TransDB *db, const char *filepattern, GNOPTIONS *options
 
 		info = GetLangInfo ( langid );
 
+#ifdef OG
 		sprintf ( filename, "%s_%s.%s", filepattern, info->initials, options->format == GN_NOXSTR ? "str" : "csf" );
+#endif
+#ifdef ZH
+		sprintf ( filename, "%s_%s.%s", filepattern, info->initials, options->format == GN_BABYLONSTR ? "str" : "csf" );
+#endif
 		strlwr ( filename );
 
 		if ( dlg )
@@ -1305,9 +1403,19 @@ int GenerateGameFiles ( TransDB *db, const char *filepattern, GNOPTIONS *options
 		}
 
 
+#ifdef OG
 		if ( options->format == GN_NOXSTR )
+#endif
+#ifdef ZH
+		if ( options->format == GN_BABYLONSTR )
+#endif
 		{
+#ifdef OG
 			done = generate_noxstr ( db, filename, langid, options );
+#endif
+#ifdef ZH
+			done = generate_Babylonstr ( db, filename, langid, options );
+#endif
 		}
 		else
 		{
@@ -1389,7 +1497,12 @@ int GenerateGameFiles ( TransDB *db, const char *filepattern, GNOPTIONS *options
 	return count;
 }
 
+#ifdef OG
 void ProcessWaves ( TransDB *db, const char *filename, CNoxstringDlg *dlg )
+#endif
+#ifdef ZH
+void ProcessWaves ( TransDB *db, const char *filename, CBabylonDlg *dlg )
+#endif
 {
 	int imports = -1;
 
@@ -1425,7 +1538,12 @@ void ProcessWaves ( TransDB *db, const char *filename, CNoxstringDlg *dlg )
 
 			while ( row - last_row < 1000 )
 			{
+#ifdef OG
 				NoxText *text;
+#endif
+#ifdef ZH
+				BabylonText *text;
+#endif
 
 				GetString ( row, 'J' - 'A' + 1, olebuf );
 
@@ -1478,7 +1596,12 @@ void ProcessWaves ( TransDB *db, const char *filename, CNoxstringDlg *dlg )
 }
 
 
+#ifdef OG
 int GenerateReport ( TransDB *db, const char *filename, RPOPTIONS *options, LangID *languages, CNoxstringDlg *dlg)
+#endif
+#ifdef ZH
+int GenerateReport ( TransDB *db, const char *filename, RPOPTIONS *options, LangID *languages, CBabylonDlg *dlg)
+#endif
 {
 	LangID langid;
 	int count= 0 ;
@@ -1522,7 +1645,12 @@ int GenerateReport ( TransDB *db, const char *filename, RPOPTIONS *options, Lang
 		char time[50];
 		_strtime ( time );
 		_strdate ( date );
+#ifdef OG
 		fprintf ( file, "Noxstring Report: %s %s\n", date, time);
+#endif
+#ifdef ZH
+		fprintf ( file, "Babylon Report: %s %s\n", date, time);
+#endif
 	}
 
 
@@ -1605,7 +1733,12 @@ int GenerateReport ( TransDB *db, const char *filename, RPOPTIONS *options, Lang
 	return count;
 }
 
+#ifdef OG
 int UpdateSentTranslations ( TransDB *db, const char *filename, CNoxstringDlg *dlg )
+#endif
+#ifdef ZH
+int UpdateSentTranslations ( TransDB *db, const char *filename, CBabylonDlg *dlg )
+#endif
 {
 	int imports = -1;
 

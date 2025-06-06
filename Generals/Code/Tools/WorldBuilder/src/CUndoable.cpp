@@ -792,9 +792,14 @@ void DictItemUndoable::Do(void)
 			*m_dictToModify[i] = m_newDictData;
 		else
 			m_dictToModify[i]->copyPairFrom(m_newDictData, m_key);
+#ifdef ZH
+	}
+#endif
 		MapObjectProps::update();	// ugh, hack to update panel
 		ObjectOptions::update();	// ditto
+#ifdef OG
 	}
+#endif
 	if (m_inval && m_pDoc) {
 		WbView3d *p3View = m_pDoc->GetActive3DView();
 		p3View->resetRenderObjects();
@@ -809,9 +814,14 @@ void DictItemUndoable::Undo(void)
 			*m_dictToModify[i] = m_oldDictData[i];
 		else
 			m_dictToModify[i]->copyPairFrom(m_oldDictData[i], m_key);
+#ifdef ZH
+	}
+#endif
 		MapObjectProps::update();		// ugh, hack to update panel
 		ObjectOptions::update();	// ditto
+#ifdef OG
 	}
+#endif
 	if (m_inval && m_pDoc) {
 		WbView3d *p3View = m_pDoc->GetActive3DView();
 		p3View->resetRenderObjects();
@@ -1068,6 +1078,10 @@ AddPolygonUndoable::AddPolygonUndoable(PolygonTrigger *pTrig):
 //
 void AddPolygonUndoable::Do(void)
 {
+#ifdef ZH
+	// The call to LayersList must be done here because only the WorldBuilder knows about Layers.
+	TheLayersList->addPolygonTriggerToLayersList(m_trigger, m_trigger->getLayerName()); 
+#endif
 	PolygonTrigger::addPolygonTrigger(m_trigger);
 	m_isTriggerInList = true;
 }
@@ -1077,6 +1091,10 @@ void AddPolygonUndoable::Do(void)
 //
 void AddPolygonUndoable::Undo(void)
 {
+#ifdef ZH
+	// The call to LayersList must be done here because only the WorldBuilder knows about Layers.
+	TheLayersList->removePolygonTriggerFromLayersList(m_trigger);
+#endif
 	PolygonTrigger::removePolygonTrigger(m_trigger);
 	m_isTriggerInList = false;
 }
@@ -1336,6 +1354,9 @@ DeletePolygonUndoable::DeletePolygonUndoable(PolygonTrigger *pTrig):
 //
 void DeletePolygonUndoable::Do(void)
 {
+#ifdef ZH
+	TheLayersList->removePolygonTriggerFromLayersList(m_trigger);
+#endif
 	PolygonTrigger::removePolygonTrigger(m_trigger);
 	m_isTriggerInList = false;
 }
@@ -1346,8 +1367,103 @@ void DeletePolygonUndoable::Do(void)
 void DeletePolygonUndoable::Undo(void)
 {
 	PolygonTrigger::addPolygonTrigger(m_trigger);
+#ifdef ZH
+	TheLayersList->addPolygonTriggerToLayersList(m_trigger, m_trigger->getLayerName());
+#endif
 	m_isTriggerInList = true;
+#ifdef ZH
 }
+
+/*************************************************************************
+**                             MultipleUndoable
+***************************************************************************/
+//
+// MultipleUndoable - constructor.
+//
+MultipleUndoable::MultipleUndoable(void)
+  : m_undoableList( NULL )
+{
+}
+
+//
+// MultipleUndoable - destructor
+//
+MultipleUndoable::~MultipleUndoable(void)
+{
+  if ( m_undoableList )
+  {
+    REF_PTR_RELEASE(m_undoableList);
+#endif
+}
+#ifdef ZH
+}
+#endif
+
+#ifdef ZH
+//
+// Add another undo to the list.
+//
+void MultipleUndoable::addUndoable( Undoable * undoable )
+{
+  undoable->LinkNext( m_undoableList );
+#endif
+
+#ifdef ZH
+  REF_PTR_SET( m_undoableList, undoable );
+}
+
+//
+/// Do all the list's actions.
+//
+void MultipleUndoable::Do(void)
+{
+  Undoable * undoable = m_undoableList;
+
+  while ( undoable != NULL )
+  {
+    Undoable * next = undoable->GetNext();
+    undoable->Do();
+    undoable = next;
+  }
+}
+
+//
+// Recursive function to help tranverse a singly-linked list in reverse order
+//
+static void undoHelper(Undoable * undoable)
+{
+  if ( undoable == NULL )
+    return;
+
+  undoHelper( undoable->GetNext() );
+
+  undoable->Undo();
+}
+
+//
+// Undo all the list's actions. This is harder, because we need to do it in reverse order, for a 
+// singly linked list
+//
+void MultipleUndoable::Undo(void)
+{
+  undoHelper(m_undoableList);
+}
+
+//
+/// Redo all the list's actions.
+//
+void MultipleUndoable::Redo(void)
+{
+  Undoable * undoable = m_undoableList;
+  
+  while ( undoable != NULL )
+  {
+    Undoable * next = undoable->GetNext();
+    undoable->Redo();
+    undoable = next;
+  }
+}
+#endif
 
 
 

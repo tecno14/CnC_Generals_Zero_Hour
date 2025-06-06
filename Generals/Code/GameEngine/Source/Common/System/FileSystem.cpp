@@ -196,12 +196,38 @@ File*		FileSystem::openFile( const Char *filename, Int access )
 Bool FileSystem::doesFileExist(const Char *filename) const
 {
 	USE_PERF_TIMER(FileSystem)
+#ifdef OG
 	if (TheLocalFileSystem->doesFileExist(filename)) {
+
+#endif
+#ifdef ZH
+
+  unsigned key=TheNameKeyGenerator->nameToLowercaseKey(filename);
+  std::map<unsigned,bool>::iterator i=m_fileExist.find(key);
+  if (i!=m_fileExist.end())
+    return i->second;
+
+	if (TheLocalFileSystem->doesFileExist(filename)) 
+  {
+    m_fileExist[key]=true;
+#endif
 		return TRUE;
 	}
+#ifdef OG
 	if (TheArchiveFileSystem->doesFileExist(filename)) {
+
+#endif
+#ifdef ZH
+	if (TheArchiveFileSystem->doesFileExist(filename)) 
+  {
+    m_fileExist[key]=true;
+#endif
 		return TRUE;
 	}
+#ifdef ZH
+
+  m_fileExist[key]=false;
+#endif
 	return FALSE;
 }
 
@@ -254,9 +280,11 @@ Bool FileSystem::createDirectory(AsciiString directory)
 //============================================================================
 Bool FileSystem::areMusicFilesOnCD()
 {
+#ifdef OG
 #if 1
 	return TRUE;
 #else
+#endif
 	if (!TheCDManager) {
 		DEBUG_LOG(("FileSystem::areMusicFilesOnCD() - No CD Manager; returning false\n"));
 		return FALSE;
@@ -274,7 +302,12 @@ Bool FileSystem::areMusicFilesOnCD()
 		cdRoot = cdi->getPath();
 		if (!cdRoot.endsWith("\\"))
 			cdRoot.concat("\\");
+#ifdef OG
 		cdRoot.concat("gensec.big");
+#endif
+#ifdef ZH
+		cdRoot.concat("genseczh.big");
+#endif
 		DEBUG_LOG(("FileSystem::areMusicFilesOnCD() - checking for %s\n", cdRoot.str()));
 		File *musicBig = TheLocalFileSystem->openFile(cdRoot.str());
 		if (musicBig)
@@ -285,6 +318,8 @@ Bool FileSystem::areMusicFilesOnCD()
 		}
 	}
 	return FALSE;
+#ifdef OG
+#endif
 #endif
 }
 //============================================================================

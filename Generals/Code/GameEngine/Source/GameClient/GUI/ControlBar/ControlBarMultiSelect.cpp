@@ -96,7 +96,14 @@ void ControlBar::addCommonCommands( Drawable *draw, Bool firstDrawable )
 		{
 
 			m_commonCommands[ i ] = NULL;
+#ifdef ZH
+			if (m_commandWindows[ i ])
+			{
+#endif
 			m_commandWindows[ i ]->winHide( TRUE );
+#ifdef ZH
+			}
+#endif
 			// After Every change to the m_commandWIndows, we need to show fill in the missing blanks with the images
 	// removed from multiplayer branch
 			//showCommandMarkers();
@@ -118,6 +125,10 @@ void ControlBar::addCommonCommands( Drawable *draw, Bool firstDrawable )
 		// just add each command that is classified as a common command
 		for( i = 0; i < MAX_COMMANDS_PER_SET; i++ )
 		{
+#ifdef ZH
+			// our implementation doesn't necessarily make use of the max possible command buttons
+			if (! m_commandWindows[ i ]) continue;
+#endif
 
 			// get command
 			command = commandSet->getCommandButton(i);
@@ -147,6 +158,11 @@ void ControlBar::addCommonCommands( Drawable *draw, Bool firstDrawable )
 		// go through each command one by one
 		for( i = 0; i < MAX_COMMANDS_PER_SET; i++ )
 		{
+#ifdef ZH
+		
+			// our implementation doesn't necessarily make use of the max possible command buttons
+			if (! m_commandWindows[ i ]) continue;
+#endif
 		
 			// get the command
 			command = commandSet->getCommandButton(i);
@@ -213,7 +229,16 @@ void ControlBar::populateMultiSelect( void )
 
 	// by default, hide all the controls in the command section
 	for( Int i = 0; i < MAX_COMMANDS_PER_SET; i++ )
+#ifdef ZH
+	{
+		if (m_commandWindows[ i ])
+		{
+#endif
 		m_commandWindows[ i ]->winHide( TRUE );
+#ifdef ZH
+		}
+	}
+#endif
 
 	// sanity
 	DEBUG_ASSERTCRASH( TheInGameUI->getSelectCount() > 1,
@@ -248,7 +273,12 @@ void ControlBar::populateMultiSelect( void )
 		// being sold as those objects can't be issued anymore commands
 		//
 		if( draw && draw->getObject() && 
+#ifdef OG
 				BitTest( draw->getObject()->getStatusBits(), OBJECT_STATUS_SOLD ) == FALSE )
+#endif
+#ifdef ZH
+				!draw->getObject()->getStatusBits().test( OBJECT_STATUS_SOLD ) )
+#endif
 		{
 
 			// add the common commands of this drawable to the common command set
@@ -333,6 +363,11 @@ void ControlBar::updateContextMultiSelect( void )
 			// get the control window
 			win = m_commandWindows[ i ];
 
+#ifdef ZH
+			// our implementation doesn't necessarily make use of the max possible command buttons
+			if (!win) continue;
+
+#endif
 			// don't consider hidden windows
 			if( win->winIsHidden() == TRUE )
 				continue;
@@ -389,6 +424,10 @@ void ControlBar::updateContextMultiSelect( void )
 	//
 	for( i = 0; i < MAX_COMMANDS_PER_SET; i++ )
 	{
+#ifdef ZH
+		// our implementation doesn't necessarily make use of the max possible command buttons
+		if (! m_commandWindows[ i ]) continue;
+#endif
 
 		// don't consider hidden commands
 		if( m_commandWindows[ i ]->winIsHidden() == TRUE )

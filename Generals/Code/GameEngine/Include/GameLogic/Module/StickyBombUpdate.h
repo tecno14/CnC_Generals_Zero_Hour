@@ -35,16 +35,29 @@
 
 #include "GameLogic/Module/UpdateModule.h"
 
+#ifdef ZH
+class WeaponTemplate;
+class FXList;
+
+#endif
 //-------------------------------------------------------------------------------------------------
 class StickyBombUpdateModuleData : public UpdateModuleData
 {
 public:
 	AsciiString		m_attachToBone;
 	Real					m_offsetZ;
+#ifdef ZH
+	WeaponTemplate*	m_geometryBasedDamageWeaponTemplate;
+	FXList*					m_geometryBasedDamageFX;
+#endif
 
 	StickyBombUpdateModuleData()
 	{
 		m_offsetZ = 10.0f;
+#ifdef ZH
+		m_geometryBasedDamageWeaponTemplate = NULL;
+		m_geometryBasedDamageFX = NULL;
+#endif
 	}
 
 	static void buildFieldParse(MultiIniFieldParse& p) 
@@ -54,6 +67,10 @@ public:
 		{
 			{ "AttachToTargetBone",	INI::parseAsciiString,						NULL, offsetof( StickyBombUpdateModuleData, m_attachToBone ) },
 			{ "OffsetZ",						INI::parseReal,						NULL, offsetof( StickyBombUpdateModuleData, m_offsetZ ) },
+#ifdef ZH
+			{ "GeometryBasedDamageWeapon",INI::parseWeaponTemplate, NULL, offsetof( StickyBombUpdateModuleData, m_geometryBasedDamageWeaponTemplate ) },
+			{ "GeometryBasedDamageFX",		INI::parseFXList,					NULL, offsetof( StickyBombUpdateModuleData, m_geometryBasedDamageFX ) },
+#endif
 			{ 0, 0, 0, 0 }
 		};
     p.add(dataFieldParse);
@@ -76,7 +93,12 @@ public:
 
 	virtual UpdateSleepTime update();							///< called once per frame
 
+#ifdef OG
 	void init( const Object *object, const Object *bomber );
+#endif
+#ifdef ZH
+	void initStickyBomb( Object *object, const Object *bomber, const Coord3D *specificPos = NULL );
+#endif
 	void detonate();
 	Bool isTimedBomb() const { return m_dieFrame > 0; }
 	UnsignedInt getDetonationFrame() const { return m_dieFrame; }

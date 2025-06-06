@@ -35,7 +35,12 @@
 // INCLUDES ///////////////////////////////////////////////////////////////////////////////////////
 #include "Common/AudioEventRTS.h"
 #include "Common/INI.h"
+#ifdef OG
 #include "GameLogic/Module/UpdateModule.h"
+#endif
+#ifdef ZH
+#include "GameLogic/Module/SpecialPowerUpdateModule.h"
+#endif
 class DamageInfo;
 class SpecialPowerTemplate;
 class SpecialPowerModule;
@@ -90,7 +95,12 @@ public:
 };
 
 //-------------------------------------------------------------------------------------------------
+#ifdef OG
 class MissileLauncherBuildingUpdate : public UpdateModule, public SpecialPowerUpdateInterface
+#endif
+#ifdef ZH
+class MissileLauncherBuildingUpdate : public SpecialPowerUpdateModule
+#endif
 {
 
 	MEMORY_POOL_GLUE_WITH_USERLOOKUP_CREATE( MissileLauncherBuildingUpdate, "MissileLauncherBuildingUpdate" )
@@ -102,12 +112,24 @@ public:
 	// virtual destructor prototype provided by memory pool declaration
 
 	//SpecialPowerUpdateInterface pure virtual implementations
+#ifdef OG
 	virtual void initiateIntentToDoSpecialPower(const SpecialPowerTemplate *specialPowerTemplate, const Object *targetObj, const Coord3D *targetPos, UnsignedInt commandOptions, Int locationCount );
+#endif
+#ifdef ZH
+	virtual Bool initiateIntentToDoSpecialPower(const SpecialPowerTemplate *specialPowerTemplate, const Object *targetObj, const Coord3D *targetPos, const Waypoint *way, UnsignedInt commandOptions );
+#endif
 	virtual Bool isSpecialAbility() const { return false; }
 	virtual Bool isSpecialPower() const { return true; }
 	virtual Bool isActive() const { return m_doorState != m_timeoutState; }
 	SpecialPowerTemplate* getTemplate() const;
+#ifdef OG
 	virtual Bool doesSpecialPowerHaveOverridableDestinationActive() const { return false; }
+
+#endif
+#ifdef ZH
+	virtual Bool doesSpecialPowerHaveOverridableDestinationActive() const { return false; } //Is it active now?
+	virtual Bool doesSpecialPowerHaveOverridableDestination() const { return false; }	//Does it have it, even if it's not active?
+#endif
 	virtual void setSpecialPowerOverridableDestination( const Coord3D *loc ) {}
 
 	virtual SpecialPowerUpdateInterface* getSpecialPowerUpdateInterface() { return this; }

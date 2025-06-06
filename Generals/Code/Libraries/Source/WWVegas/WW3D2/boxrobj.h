@@ -26,9 +26,19 @@
  *                                                                                             *
  *                       Author:: Greg Hjelstrom                                               *
  *                                                                                             *
+#ifdef OG
  *                     $Modtime:: 2/19/01 1:11p                                               $*
+#endif
+#ifdef ZH
+ *                     $Modtime:: 10/11/01 2:24p                                              $*
+#endif
  *                                                                                             *
+#ifdef OG
  *                    $Revision:: 5                                                           $*
+#endif
+#ifdef ZH
+ *                    $Revision:: 6                                                           $*
+#endif
  *                                                                                             *
  *---------------------------------------------------------------------------------------------*
  * Functions:                                                                                  *
@@ -86,6 +96,9 @@ public:
 	virtual const char *				Get_Name(void) const;
 	virtual void						Set_Name(const char * name);
 	void									Set_Color(const Vector3 & color);
+#ifdef ZH
+	void									Set_Opacity(float opacity) { Opacity = opacity; }
+#endif
 
 	static void							Init(void);
 	static void							Shutdown(void);
@@ -109,6 +122,9 @@ protected:
 	Vector3								Color;
 	Vector3								ObjSpaceCenter;
 	Vector3								ObjSpaceExtent;
+#ifdef ZH
+	float									Opacity;
+#endif
 
 	static bool							IsInitted;
 	static int							DisplayMask;

@@ -85,6 +85,9 @@ public:
 	AsciiString m_locationNameLabel;
 	AsciiString m_unitNames[MAX_DISPLAYED_UNITS];
 	Int m_voiceLength;
+#ifdef ZH
+	AsciiString m_generalName;
+#endif
 };
 
 class Campaign : public MemoryPoolObject
@@ -98,6 +101,9 @@ public:
 	Mission *getNextMission( Mission *current);
 	Mission *getMission( AsciiString missionName);
 	AsciiString getFinalVictoryMovie( void );
+#ifdef ZH
+	Bool isChallengeCampaign( void ) { return m_isChallengeCampaign; }
+#endif
 
 public:
 	typedef std::list< Mission* > MissionList;			///< list of Shell Menu schemes
@@ -108,6 +114,10 @@ public:
 	AsciiString m_campaignNameLabel;		///< campaign name label from string manager
 	MissionList m_missions;
 	AsciiString m_finalMovieName;
+#ifdef ZH
+	Bool m_isChallengeCampaign;
+	AsciiString m_playerFactionName;
+#endif
 };
 
 class CampaignManager : public Snapshot
@@ -119,7 +129,12 @@ public:
 	// snapshot methods
 	virtual void crc( Xfer *xfer ) { }
 	virtual void xfer( Xfer *xfer );
+#ifdef OG
 	virtual void loadPostProcess( void ) { }
+#endif
+#ifdef ZH
+	virtual void loadPostProcess( void );
+#endif
 
 	void init( void );
 	Campaign *getCurrentCampaign( void );		///< Returns a point to the current Campaign
@@ -140,7 +155,20 @@ public:
 	void SetVictorious( Bool victory ) { m_victorious = victory;	}
 
 	void setRankPoints( Int rankPoints ) { m_currentRankPoints = rankPoints; }
+#ifdef OG
 	Int getRankPoints() const { return m_currentRankPoints; }
+
+#endif
+#ifdef ZH
+	Int getRankPoints() const { 
+		// All campaign missions, regular and generals' challenge now start each map at rank 0.
+		// This is because they weren't designed with rank persistence in mind, and were primarily
+		// tested in a debug context, with no notion of previous rank.
+		// NOTE: the assumption is being made that this method will never be used for any purpose
+		// other than setting initial starting rank on map load, as it is currently.  08/09/03
+		return 0;
+	}
+#endif
 
 	GameDifficulty getGameDifficulty() const { return m_difficulty; }
 	void setGameDifficulty(GameDifficulty d) { m_difficulty = d; }
@@ -154,6 +182,9 @@ private:
 	Bool m_victorious;
 	Int m_currentRankPoints;
 	GameDifficulty m_difficulty;
+#ifdef ZH
+	Int m_xferChallengeGeneralsPlayerTemplateNum;			///< Need a place to stick this naughty singleton's important bit.
+#endif
 
 };
 //-----------------------------------------------------------------------------

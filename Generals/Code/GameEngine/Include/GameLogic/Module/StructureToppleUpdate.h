@@ -114,7 +114,14 @@ public:
 		m_maxToppleBurstDelay = 0;
 		m_structuralIntegrity = 0.1f;
 		m_structuralDecay = 0.0f;
+#ifdef OG
 		m_damageFXTypes = DAMAGE_TYPE_FLAGS_ALL;
+
+#endif
+#ifdef ZH
+		m_damageFXTypes = DAMAGE_TYPE_FLAGS_NONE;
+		m_damageFXTypes.flip();
+#endif
 		m_toppleStartFXList = NULL;
 		m_toppleDelayFXList = NULL;
 		m_toppleDoneFXList = NULL;

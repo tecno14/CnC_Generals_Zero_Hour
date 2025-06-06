@@ -32,6 +32,9 @@
 #define __GAMEINFO_H__
 
 #include "Common/Snapshot.h"
+#ifdef ZH
+#include "Common/Money.h"
+#endif
 #include "GameNetwork/NetworkDefs.h"
 #include "GameNetwork/FirewallHelper.h"
 
@@ -193,7 +196,18 @@ public:
 	inline Int getMapContentsMask( void ) const;						///< Get the map contents mask
 	void setSeed( Int seed );													///< Set the random seed for the game
 	inline Int getSeed( void ) const;												///< Get the game seed
+#ifdef ZH
+	inline Int getUseStats( void ) const;		///< Does this game count towards gamespy stats?
+	inline void setUseStats( Int useStats );
+#endif
 
+#ifdef ZH
+  inline UnsignedShort getSuperweaponRestriction( void ) const; ///< Get any optional limits on superweapons
+  void setSuperweaponRestriction( UnsignedShort restriction ); ///< Set the optional limits on superweapons
+  inline const Money & getStartingCash(void) const; 
+  void setStartingCash( const Money & startingCash );
+
+#endif
 	void setSlotPointer( Int index, GameSlot *slot );	///< Set the slot info pointer
 
 	void setLocalIP( UnsignedInt ip ) { m_localIP =ip; }	///< Set the local IP
@@ -221,6 +235,11 @@ public:
 	
 	Bool isPlayerPreorder(Int index);
 	void markPlayerAsPreorder(Int index);
+#ifdef ZH
+
+  inline Bool oldFactionsOnly(void) const;
+  inline void setOldFactionsOnly( Bool oldFactionsOnly );
+#endif
 
 protected:
 	Int m_preorderMask;
@@ -239,6 +258,12 @@ protected:
 	UnsignedInt m_mapSize;
 	Int m_mapMask;
 	Int m_seed;
+#ifdef ZH
+	Int m_useStats;
+  Money         m_startingCash;
+  UnsignedShort m_superweaponRestriction;
+  Bool m_oldFactionsOnly; // Only USA, China, GLA -- not USA Air Force General, GLA Toxic General, et al
+#endif
 };
 
 extern GameInfo *TheGameInfo;
@@ -254,6 +279,14 @@ Bool				GameInfo::isInGame( void ) const								{ return m_inGame; }
 void				GameInfo::setInGame( void )											{ m_inGame = true; }
 Bool				GameInfo::isGameInProgress( void ) const				{ return m_inProgress; }
 void				GameInfo::setGameInProgress( Bool inProgress )	{ m_inProgress = inProgress; }
+#ifdef ZH
+Int					GameInfo::getUseStats( void ) const             { return m_useStats; }
+void				GameInfo::setUseStats( Int useStats )           { m_useStats = useStats; }
+const Money&GameInfo::getStartingCash( void ) const         { return m_startingCash; }
+UnsignedShort GameInfo::getSuperweaponRestriction( void ) const { return m_superweaponRestriction; }
+Bool        GameInfo::oldFactionsOnly(void) const           { return m_oldFactionsOnly; }
+void        GameInfo::setOldFactionsOnly( Bool oldFactionsOnly ) { m_oldFactionsOnly = oldFactionsOnly; }
+#endif
 
 AsciiString GameInfoToAsciiString( const GameInfo *game );
 Bool ParseAsciiStringToGameInfo( GameInfo *game, AsciiString options );
@@ -284,5 +317,8 @@ public:
 };
 
 extern SkirmishGameInfo *TheSkirmishGameInfo;
+#ifdef ZH
+extern SkirmishGameInfo *TheChallengeGameInfo;
+#endif
 
 #endif // __GAMEINFO_H__

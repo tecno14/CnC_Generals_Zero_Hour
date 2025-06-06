@@ -46,6 +46,9 @@ class ChinookAIUpdateModuleData : public SupplyTruckAIUpdateModuleData
 {
 public:
 	AsciiString		m_ropeName;
+#ifdef ZH
+  AsciiString   m_rotorWashParticleSystem;
+#endif
 	Real					m_rappelSpeed;
 	Real					m_ropeDropSpeed;
 	Real					m_ropeWidth;
@@ -59,6 +62,9 @@ public:
 	UnsignedInt		m_perRopeDelayMax;
 	Real					m_minDropHeight;
 	Bool					m_waitForRopesToDrop;
+#ifdef ZH
+	Int						m_upgradedSupplyBoost;
+#endif
 
 	ChinookAIUpdateModuleData();
 	static void buildFieldParse(MultiIniFieldParse& p);
@@ -105,12 +111,30 @@ public:
 	const ChinookAIUpdateModuleData* friend_getData() const { return getChinookAIUpdateModuleData(); }
 	void friend_setFlightStatus(ChinookFlightStatus a) { m_flightStatus = a; }
 
+#ifdef ZH
+	void recordOriginalPosition( const Coord3D &pos ) { m_originalPos.set( &pos ); }
+	const Coord3D* getOriginalPosition() const { return &m_originalPos; }
+	
+	Int ChinookAIUpdate::getUpgradedSupplyBoost() const;
+
+#endif
 protected:
 
 	virtual AIStateMachine* makeStateMachine();
 
 	virtual void privateCombatDrop( Object *target, const Coord3D& pos, CommandSourceType cmdSource );
 	virtual void privateGetRepaired( Object *repairDepot, CommandSourceType cmdSource );///< get repaired at repair depot
+#ifdef ZH
+
+
+	virtual void privateAttackObject( Object *victim, Int maxShotsToFire, CommandSourceType cmdSource );///< Extension.  Also tell occupants to attackObject
+	virtual void privateAttackPosition( const Coord3D *pos, Int maxShotsToFire, CommandSourceType cmdSource );///< Extension.  Also tell occupants to attackPosition
+	virtual void privateForceAttackObject( Object *victim, Int maxShotsToFire, CommandSourceType cmdSource );///< Extension.  Also tell occupants to forceAttackObject
+
+  virtual void privateIdle(CommandSourceType cmdSource);
+
+  void private___TellPortableStructureToAttackWithMe( Object *victim, Int maxShotsToFire, CommandSourceType cmdSource );
+#endif
 
 private:
 
@@ -120,6 +144,9 @@ private:
 	AICommandParmsStorage		m_pendingCommand;
 	ChinookFlightStatus			m_flightStatus;
 	ObjectID								m_airfieldForHealing;
+#ifdef ZH
+	Coord3D									m_originalPos;
+#endif
 	Bool										m_hasPendingCommand;
 };
 

@@ -74,7 +74,22 @@ Bool SalvageCrateCollide::isValidToExecute( const Object *other ) const
 //-------------------------------------------------------------------------------------------------
 Bool SalvageCrateCollide::executeCrateBehavior( Object *other )
 {
+#ifdef OG
 	if( eligibleForWeaponSet( other ) && testWeaponChance() )
+
+#endif
+#ifdef ZH
+	if( eligibleForArmorSet(other) )// No percent chance on this one, if you can get it, you get it.
+	{
+		doArmorSet(other);
+
+		//Play the salvage installation crate pickup sound.
+		AudioEventRTS soundToPlay = TheAudio->getMiscAudio()->m_crateSalvage;	
+		soundToPlay.setObjectID( other->getID() );
+		TheAudio->addAudioEvent( &soundToPlay );
+	}
+	else if( eligibleForWeaponSet( other ) && testWeaponChance() )
+#endif
 	{
 		doWeaponSet( other );
 
@@ -105,6 +120,9 @@ Bool SalvageCrateCollide::executeCrateBehavior( Object *other )
 		TheAudio->addAudioEvent(&soundToPlay);
 	}
 
+#ifdef ZH
+	other->getControllingPlayer()->getAcademyStats()->recordSalvageCollected();
+#endif
 
 	return TRUE;
 }
@@ -125,6 +143,23 @@ Bool SalvageCrateCollide::eligibleForWeaponSet( Object *other )
 }
 
 // ------------------------------------------------------------------------------------------------
+#ifdef ZH
+Bool SalvageCrateCollide::eligibleForArmorSet( Object *other )
+{
+	if( other == NULL )
+		return FALSE;
+
+	// A kindof marks eligibility, and you must not be fully upgraded
+	if( !other->isKindOf(KINDOF_ARMOR_SALVAGER) )
+		return FALSE;
+	if( other->testArmorSetFlag(ARMORSET_CRATE_UPGRADE_TWO) )
+		return FALSE;
+
+	return TRUE;
+}
+
+// ------------------------------------------------------------------------------------------------
+#endif
 Bool SalvageCrateCollide::eligibleForLevel( Object *other )
 {
 	if( other == NULL )
@@ -155,6 +190,9 @@ Bool SalvageCrateCollide::testWeaponChance()
 	return FALSE;
 }
 
+#ifdef ZH
+// ------------------------------------------------------------------------------------------------
+#endif
 Bool SalvageCrateCollide::testLevelChance()
 {
 	const SalvageCrateCollideModuleData *md = getSalvageCrateCollideModuleData();
@@ -168,6 +206,9 @@ Bool SalvageCrateCollide::testLevelChance()
 	return FALSE;
 }
 
+#ifdef ZH
+// ------------------------------------------------------------------------------------------------
+#endif
 void SalvageCrateCollide::doWeaponSet( Object *other )
 {
 	if( other->testWeaponSetFlag( WEAPONSET_CRATEUPGRADE_ONE ) )
@@ -178,14 +219,44 @@ void SalvageCrateCollide::doWeaponSet( Object *other )
 	else
 	{
 		other->setWeaponSetFlag( WEAPONSET_CRATEUPGRADE_ONE );
+#ifdef ZH
 	}
 }
 
+// ------------------------------------------------------------------------------------------------
+void SalvageCrateCollide::doArmorSet( Object *other )
+{
+	if( other->testArmorSetFlag( ARMORSET_CRATE_UPGRADE_ONE ) )
+	{
+		other->clearArmorSetFlag( ARMORSET_CRATE_UPGRADE_ONE );
+		other->setArmorSetFlag( ARMORSET_CRATE_UPGRADE_TWO );
+
+		other->clearAndSetModelConditionState(MODELCONDITION_ARMORSET_CRATEUPGRADE_ONE, MODELCONDITION_ARMORSET_CRATEUPGRADE_TWO);
+#endif
+	}
+#ifdef ZH
+	else
+	{
+		other->setArmorSetFlag( ARMORSET_CRATE_UPGRADE_ONE );
+
+		other->setModelConditionState(MODELCONDITION_ARMORSET_CRATEUPGRADE_ONE);
+#endif
+}
+#ifdef ZH
+}
+#endif
+
+#ifdef ZH
+// ------------------------------------------------------------------------------------------------
+#endif
 void SalvageCrateCollide::doLevelGain( Object *other )
 {
 	other->getExperienceTracker()->gainExpForLevel( 1 );
 }
 
+#ifdef ZH
+// ------------------------------------------------------------------------------------------------
+#endif
 void SalvageCrateCollide::doMoney( Object *other )
 {
 	const SalvageCrateCollideModuleData *md = getSalvageCrateCollideModuleData();

@@ -102,11 +102,17 @@ protected:
 
 private:
 	Bool eligibleForWeaponSet( Object *other );
+#ifdef ZH
+	Bool eligibleForArmorSet( Object *other );
+#endif
 	Bool eligibleForLevel( Object *other );
 	Bool testWeaponChance();
 	Bool testLevelChance();
 
 	void doWeaponSet( Object *other );
+#ifdef ZH
+	void doArmorSet( Object *other );
+#endif
 	void doLevelGain( Object *other );
 	void doMoney( Object *other );
 

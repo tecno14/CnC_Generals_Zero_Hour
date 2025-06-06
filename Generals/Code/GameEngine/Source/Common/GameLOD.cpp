@@ -73,6 +73,9 @@ static const FieldParse TheStaticGameLODFieldParseTable[] =
 	{ "UseBuildupScaffolds",			INI::parseBool,					NULL,	offsetof( StaticGameLODInfo, m_useBuildupScaffolds ) },
 	{ "UseTreeSway",					INI::parseBool,					NULL,	offsetof( StaticGameLODInfo, m_useTreeSway ) },
 	{ "UseEmissiveNightMaterials",		INI::parseBool,					NULL,	offsetof( StaticGameLODInfo, m_useEmissiveNightMaterials ) },
+#ifdef ZH
+	{ "UseHeatEffects",					INI::parseBool,					NULL,	offsetof( StaticGameLODInfo, m_useHeatEffects ) },
+#endif
 	{ "TextureReductionFactor",		INI::parseInt,					NULL,	offsetof( StaticGameLODInfo, m_textureReduction ) },
 };
 
@@ -104,6 +107,9 @@ StaticGameLODInfo::StaticGameLODInfo(void)
 	m_useBuildupScaffolds=TRUE;
 	m_useTreeSway=TRUE;
 	m_useEmissiveNightMaterials=TRUE;
+#ifdef ZH
+	m_useHeatEffects=TRUE;
+#endif
 	m_textureReduction = 0;	//none
 	m_useFpsLimit = TRUE;
 	m_enableDynamicLOD = TRUE;
@@ -351,6 +357,9 @@ void GameLODManager::init(void)
 		TheWritableGlobalData->m_useLightMap = optionPref.getLightmapEnabled();
 		TheWritableGlobalData->m_useCloudMap = optionPref.getCloudShadowsEnabled();
 		TheWritableGlobalData->m_showSoftWaterEdge = optionPref.getSmoothWaterEnabled();
+#ifdef ZH
+		TheWritableGlobalData->m_useHeatEffects = optionPref.getUseHeatEffects();
+#endif
 		TheWritableGlobalData->m_useDrawModuleLOD = optionPref.getExtraAnimationsDisabled();
 		TheWritableGlobalData->m_useTreeSway = !TheWritableGlobalData->m_useDrawModuleLOD;	//borrow same setting.
 		TheWritableGlobalData->m_useTrees = optionPref.getTreesEnabled();
@@ -373,6 +382,9 @@ void GameLODManager::refreshCustomStaticLODLevel(void)
 	lodInfo->m_maxTankTrackOpaqueEdges=TheGlobalData->m_maxTankTrackOpaqueEdges;
 	lodInfo->m_maxTankTrackFadeDelay=TheGlobalData->m_maxTankTrackFadeDelay;
 	lodInfo->m_useBuildupScaffolds=!TheGlobalData->m_useDrawModuleLOD;
+#ifdef ZH
+	lodInfo->m_useHeatEffects = TheGlobalData->m_useHeatEffects;
+#endif
 	lodInfo->m_useTreeSway=lodInfo->m_useBuildupScaffolds;// Borrow same setting. //TheGlobalData->m_useTreeSway;
 	lodInfo->m_textureReduction=TheGlobalData->m_textureReductionFactor;
 	lodInfo->m_useFpsLimit = TheGlobalData->m_useFpsLimit;
@@ -574,6 +586,9 @@ void GameLODManager::applyStaticLODLevel(StaticGameLODLevel level)
 		TheWritableGlobalData->m_maxTankTrackFadeDelay=lodInfo->m_maxTankTrackFadeDelay;
 		TheWritableGlobalData->m_useTreeSway=lodInfo->m_useTreeSway;
 		TheWritableGlobalData->m_useDrawModuleLOD=!lodInfo->m_useBuildupScaffolds;
+#ifdef ZH
+		TheWritableGlobalData->m_useHeatEffects=lodInfo->m_useHeatEffects;
+#endif
 		TheWritableGlobalData->m_enableDynamicLOD = lodInfo->m_enableDynamicLOD;
 		TheWritableGlobalData->m_useFpsLimit = lodInfo->m_useFpsLimit;
 		TheWritableGlobalData->m_useTrees = requestedTrees;

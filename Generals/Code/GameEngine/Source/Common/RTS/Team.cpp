@@ -258,7 +258,12 @@ void TeamFactory::addTeamPrototypeToList(TeamPrototype* team)
 	TeamPrototypeMap::iterator it = m_prototypes.find(nk);
 	if (it != m_prototypes.end())
 	{
+#ifdef OG
 		DEBUG_ASSERTCRASH((*it).second==team, ("uh oh, mismatch"));
+#endif
+#ifdef ZH
+		DEBUG_ASSERTCRASH((*it).second==team, ("TeamFactory::addTeamPrototypeToList: Team %s already exists... skipping.", team->getName().str()));
+#endif
 		return;	// already present
 	}
 
@@ -1523,8 +1528,17 @@ Object *Team::getTeamTargetObject(void)
 	Object *target = TheGameLogic->findObjectByID(m_commonAttackTarget);
 	if (target) {
 		//If the enemy unit is stealthed and not detected, then we can't attack it!
+#ifdef OG
 		UnsignedInt status = target->getStatusBits();
 		if( (status & OBJECT_STATUS_STEALTHED) && !(status & OBJECT_STATUS_DETECTED) ) {
+
+#endif
+#ifdef ZH
+	if( target->testStatus( OBJECT_STATUS_STEALTHED ) && 
+			!target->testStatus( OBJECT_STATUS_DETECTED ) &&
+			!target->testStatus( OBJECT_STATUS_DISGUISED ) )
+		{
+#endif
 			target = NULL;
 		}
 	}
@@ -1534,6 +1548,13 @@ Object *Team::getTeamTargetObject(void)
 	if (target && target->getContainedBy()) {
 		target = NULL; // target entered a building or vehicle, so stop targeting.
 	}
+#ifdef ZH
+	if (target && target->isKindOf(KINDOF_AIRCRAFT)) {
+		// It is just generally bad to have an aircraft as the team target. 
+		// Let team members acquire aircraft individually.  jba. [8/27/2003]
+		target = NULL;
+	}
+#endif
 	if (target == NULL) {
 		m_commonAttackTarget = INVALID_ID;
 	}
@@ -1623,7 +1644,12 @@ void Team::countObjectsByThingTemplate(Int numTmplates, const ThingTemplate* con
 			if (ignoreDead && iter.cur()->isEffectivelyDead())
 				continue;
 
+#ifdef OG
 			if( ignoreUnderConstruction && (BitTest(iter.cur()->getStatusBits(), OBJECT_STATUS_UNDER_CONSTRUCTION) == TRUE) )
+#endif
+#ifdef ZH
+			if( ignoreUnderConstruction && iter.cur()->getStatusBits().test( OBJECT_STATUS_UNDER_CONSTRUCTION ) )
+#endif
 				continue;
 
 			counts[i] += 1;
@@ -2220,7 +2246,12 @@ Bool Team::someInsideSomeOutside(PolygonTrigger *pTrigger, UnsignedInt whichToCo
 	return anyConsidered && anyInside && anyOutside;
 }
 
+#ifdef OG
 const Coord3D* Team::getEstimateTeamPosition(void)
+#endif
+#ifdef ZH
+const Coord3D* Team::getEstimateTeamPosition(void) const
+#endif
 {
 	// this doesn't actually calculate the team position, but rather estimates it by
 	// returning the position of the first member of the team

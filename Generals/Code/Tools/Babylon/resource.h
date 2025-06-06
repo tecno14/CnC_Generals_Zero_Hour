@@ -1,13 +1,43 @@
+#ifdef ZH
+/*
+**	Command & Conquer Generals(tm)
+**	Copyright 2025 Electronic Arts Inc.
+**
+**	This program is free software: you can redistribute it and/or modify
+**	it under the terms of the GNU General Public License as published by
+**	the Free Software Foundation, either version 3 of the License, or
+**	(at your option) any later version.
+**
+**	This program is distributed in the hope that it will be useful,
+**	but WITHOUT ANY WARRANTY; without even the implied warranty of
+**	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+**	GNU General Public License for more details.
+**
+**	You should have received a copy of the GNU General Public License
+**	along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
+
+#endif
 //{{NO_DEPENDENCIES}}
 // Microsoft Developer Studio generated include file.
+#ifdef OG
 // Used by noxstring.rc
+#endif
+#ifdef ZH
+// Used by Babylon.rc
+#endif
 //
 #define IDM_ABOUTBOX                    0x0010
 #define IDM_PIC                         0x0010
 #define IDD_ABOUTBOX                    100
 #define IDP_OLE_INIT_FAILED             100
 #define IDS_ABOUTBOX                    101
+#ifdef OG
 #define IDD_NOXSTRING_DIALOG            102
+#endif
+#ifdef ZH
+#define IDD_BABYLON_DIALOG            102
+#endif
 #define IDR_MAINFRAME                   128
 #define IDD_VIEWDBS                     129
 #define IDD_EXPORT                      133
@@ -64,7 +94,12 @@
 #define IDC_RADIOMISSING                1036
 #define IDC_UNICODE                     1037
 #define IDC_RADIOUNSENT                 1037
+#ifdef OG
 #define IDC_NOXSTR                      1038
+#endif
+#ifdef ZH
+#define IDC_BABYLONSTR                      1038
+#endif
 #define IDC_PREFIX                      1039
 #define IDC_LANGUAGE                    1040
 #define IDC_PERCENT                     1041

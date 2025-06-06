@@ -39,6 +39,7 @@ void CancelPatchCheckCallback( void );
 void StartDownloadingPatches( void );
 void HandleCanceledDownload( Bool resetDropDown = TRUE );
 
+#ifdef OG
 enum OverallStatsPeriod
 {
 	STATS_TODAY = 0,
@@ -55,8 +56,14 @@ struct OverallStats
 	Int losses[STATS_MAX];
 };
 
+#endif
 void CheckOverallStats( void );
+#ifdef OG
 void HandleOverallStats( const OverallStats& USA, const OverallStats& China, const OverallStats& GLA );
+#endif
+#ifdef ZH
+void HandleOverallStats( const char* szHTTPStats, unsigned len );
+#endif
 
 void CheckNumPlayersOnline( void );
 void HandleNumPlayersOnline( Int numPlayersOnline );

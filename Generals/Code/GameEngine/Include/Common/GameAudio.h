@@ -152,10 +152,12 @@ class AudioManager : public SubsystemInterface
 		virtual void resumeAudio( AudioAffect which ) = 0;
 		virtual void pauseAmbient( Bool shouldPause ) = 0;
 
+#ifdef OG
 		// device dependent stops.
 		virtual void stopAllAmbientsBy( Object* obj ) = 0;
 		virtual void stopAllAmbientsBy( Drawable* draw ) = 0;
 
+#endif
 		// for focus issues
 		virtual void loseFocus( void );
 		virtual void regainFocus( void );
@@ -239,6 +241,10 @@ class AudioManager : public SubsystemInterface
 		// To get a more 3-D feeling from the universe, we adjust the volume of the 3-D samples based 
 		// on zoom.
 		virtual void set3DVolumeAdjustment( Real volumeAdjustment );
+#ifdef ZH
+
+    virtual Bool has3DSensitiveStreamsPlaying( void ) const = 0;
+#endif
 
  		virtual void *getHandleForBink( void ) = 0;
  		virtual void releaseHandleForBink( void ) = 0;
@@ -257,6 +263,9 @@ class AudioManager : public SubsystemInterface
 		virtual void processRequestList( void );
 	
 		virtual AudioEventInfo *newAudioEventInfo( AsciiString newEventName );
+#ifdef ZH
+    virtual void addAudioEventInfo( AudioEventInfo * newEventInfo );
+#endif
 		virtual AudioEventInfo *findAudioEventInfo( AsciiString eventName ) const;
 
 		const AudioSettings *getAudioSettings( void ) const;
@@ -298,6 +307,9 @@ class AudioManager : public SubsystemInterface
 
 		// For Worldbuilder, to build lists from which to select
 		virtual void findAllAudioEventsOfType( AudioType audioType, std::vector<AudioEventInfo*>& allEvents );
+#ifdef ZH
+    virtual const AudioEventInfoHash & getAllAudioEvents() const { return m_allAudioEventInfo; }
+#endif
 
 		Real getZoomVolume() const { return m_zoomVolume; }
 	protected:
@@ -316,6 +328,13 @@ class AudioManager : public SubsystemInterface
 
 		// For tracking purposes
 		virtual AudioHandle allocateNewHandle( void );	
+#ifdef ZH
+
+    // Remove all AudioEventInfo's with the m_isLevelSpecific flag
+    virtual void removeLevelSpecificAudioEventInfos( void );
+    
+    void removeAllAudioRequests( void );
+#endif
 
 	protected:
 		AudioSettings *m_audioSettings;

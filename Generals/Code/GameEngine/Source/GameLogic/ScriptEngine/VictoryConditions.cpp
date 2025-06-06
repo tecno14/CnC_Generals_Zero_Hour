@@ -44,6 +44,9 @@
 #include "GameClient/GameText.h"
 #include "GameClient/GUICallbacks.h"
 #include "GameClient/MessageBox.h"
+#ifdef ZH
+#include "GameClient/GameClient.h"
+#endif
 #include "GameLogic/GameLogic.h"
 #include "GameLogic/PartitionManager.h"
 #include "GameLogic/ScriptActions.h"
@@ -192,6 +195,9 @@ void VictoryConditions::update( void )
 			if (TheGameLogic->getFrame() > 1)
 			{
 				ThePartitionManager->revealMapForPlayerPermanently( p->getPlayerIndex() );
+#ifdef ZH
+				TheGameClient->updateFakeDrawables();
+#endif
 				
 				TheInGameUI->message("GUI:PlayerHasBeenDefeated", p->getPlayerDisplayName().str() );
 				// People are boneheads. Also play a sound

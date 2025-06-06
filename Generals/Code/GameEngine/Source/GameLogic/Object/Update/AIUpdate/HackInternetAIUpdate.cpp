@@ -171,6 +171,33 @@ void HackInternetAIUpdate::hackInternet()
 }
 
 // ------------------------------------------------------------------------------------------------
+#ifdef ZH
+UnsignedInt HackInternetAIUpdate::getUnpackTime() const
+{
+	// Not yet contained at the time this is queried
+	return getHackInternetAIUpdateModuleData()->m_unpackTime;
+}
+
+// ------------------------------------------------------------------------------------------------
+UnsignedInt HackInternetAIUpdate::getPackTime() const
+{
+	if( getObject()->getContainedBy() != NULL )
+		return 0; //We don't need to pack if exiting a building
+
+	return getHackInternetAIUpdateModuleData()->m_packTime; 
+}
+
+// ------------------------------------------------------------------------------------------------
+UnsignedInt HackInternetAIUpdate::getCashUpdateDelay() const
+{
+	if( getObject()->getContainedBy() != NULL )
+		return getHackInternetAIUpdateModuleData()->m_cashUpdateDelayFast; 
+	else
+		return getHackInternetAIUpdateModuleData()->m_cashUpdateDelay; 
+}
+
+// ------------------------------------------------------------------------------------------------
+#endif
 /** CRC */
 // ------------------------------------------------------------------------------------------------
 void HackInternetAIUpdate::crc( Xfer *xfer )
@@ -450,6 +477,14 @@ StateReturnType HackInternetState::update()
 		return STATE_FAILURE;
 	}
 
+#ifdef ZH
+	if( owner->isDisabledByType( DISABLED_HACKED ) )
+	{
+		//Don't hack while hacked, hehe.
+		return STATE_CONTINUE;
+	}
+
+#endif
 	if( m_framesRemaining > 0 )
 	{
 		//Decrement frame counter.
@@ -507,6 +542,29 @@ StateReturnType HackInternetState::update()
 				//Grant the unit some experience for a successful hack.
 				xp->addExperiencePoints( ai->getXpPerCashUpdate() );
 
+#ifdef ZH
+				Bool displayMoney = TRUE;
+				if( owner->testStatus(OBJECT_STATUS_STEALTHED) )
+				{
+					// OY LOOK!  I AM USING LOCAL PLAYER.  Do not put anything other than TheInGameUI->addFloatingText in the block this controls!!!
+					if( !owner->isLocallyControlled() && !owner->testStatus(OBJECT_STATUS_DETECTED) )
+					{
+						displayMoney = FALSE;
+					}
+				}
+				if( owner->getContainedBy() && owner->getContainedBy()->testStatus(OBJECT_STATUS_STEALTHED) )
+				{
+					// OY LOOK!  I AM USING LOCAL PLAYER.  Do not put anything other than TheInGameUI->addFloatingText in the block this controls!!!
+					if( !owner->getContainedBy()->isLocallyControlled() && !owner->getContainedBy()->testStatus(OBJECT_STATUS_DETECTED) )
+					{
+						displayMoney = FALSE;
+					}
+				}
+				
+				if( displayMoney )
+				{
+					// OY LOOK!  I AM USING LOCAL PLAYER.  Do not put anything other than TheInGameUI->addFloatingText in the block this controls!!!
+#endif
 				//Display cash income floating over the hacker.
 				UnicodeString moneyString;
 				moneyString.format( TheGameText->fetch( "GUI:AddCash" ), amount );
@@ -514,7 +572,23 @@ StateReturnType HackInternetState::update()
 				pos.zero();
 				pos.add( owner->getPosition() );
 				pos.z += 20.0f; //add a little z to make it show up above the unit.
+#ifdef ZH
+          
+
+          Object *internetCenter = owner->getContainedBy();
+          if ( internetCenter )
+          {
+            Real width = internetCenter->getGeometryInfo().getMajorRadius() * 0.3f;
+            Real depth = internetCenter->getGeometryInfo().getMinorRadius() * 0.3f;
+            pos.x += GameClientRandomValue(-width,width);
+            pos.y += GameClientRandomValue(-depth,depth);
+          }
+
+#endif
 				TheInGameUI->addFloatingText( moneyString, &pos, GameMakeColor( 0, 255, 0, 255 ) );
+#ifdef ZH
+				}
+#endif
 
 				AudioEventRTS sound = *(owner->getTemplate()->getPerUnitSound( "UnitCashPing" ));
 				sound.setObjectID( owner->getID() );

@@ -20,8 +20,14 @@
 //
 
 #include "stdafx.h"
+#ifdef OG
 #include "noxstring.h"
 #include "noxstringdlg.h"
+#endif
+#ifdef ZH
+#include "Babylon.h"
+#include "Babylondlg.h"
+#endif
 #include "VIEWDBSII.h"
 #include "transdb.h"
 

@@ -1,3 +1,4 @@
+#ifdef OG
 /*
 **	Command & Conquer Generals(tm)
 **	Copyright 2025 Electronic Arts Inc.
@@ -154,3 +155,5 @@ extern CNoxstringDlg *MainDLG;
 // Microsoft Visual C++ will insert additional declarations immediately before the previous line.
 
 #endif // !defined(AFX_NOXSTRINGDLG_H__2BF3124D_3BA1_11D3_B9DA_006097B90D93__INCLUDED_)
+
+#endif

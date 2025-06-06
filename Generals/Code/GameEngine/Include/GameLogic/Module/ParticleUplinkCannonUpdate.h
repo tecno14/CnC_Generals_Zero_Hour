@@ -34,7 +34,14 @@
 
 // INCLUDES ///////////////////////////////////////////////////////////////////////////////////////
 #include "Common/KindOf.h"
+#ifdef OG
 #include "GameLogic/Module/UpdateModule.h"
+
+#endif
+#ifdef ZH
+#include "Common/Science.h"
+#include "GameLogic/Module/SpecialPowerUpdateModule.h"
+#endif
 
 // FORWARD REFERENCES /////////////////////////////////////////////////////////////////////////////
 class SpecialPowerModule;
@@ -144,7 +151,12 @@ enum IntensityTypes
 //-------------------------------------------------------------------------------------------------
 /** The default	update module */
 //-------------------------------------------------------------------------------------------------
+#ifdef OG
 class ParticleUplinkCannonUpdate : public UpdateModule, public SpecialPowerUpdateInterface
+#endif
+#ifdef ZH
+class ParticleUplinkCannonUpdate : public SpecialPowerUpdateModule
+#endif
 {
 
 	MEMORY_POOL_GLUE_WITH_USERLOOKUP_CREATE( ParticleUplinkCannonUpdate, "ParticleUplinkCannonUpdate" )
@@ -156,13 +168,21 @@ public:
 	// virtual destructor prototype provided by memory pool declaration
 
 	// SpecialPowerUpdateInterface
+#ifdef OG
 	virtual void initiateIntentToDoSpecialPower(const SpecialPowerTemplate *specialPowerTemplate, const Object *targetObj, const Coord3D *targetPos, UnsignedInt commandOptions, Int locationCount );
+#endif
+#ifdef ZH
+	virtual Bool initiateIntentToDoSpecialPower(const SpecialPowerTemplate *specialPowerTemplate, const Object *targetObj, const Coord3D *targetPos, const Waypoint *way, UnsignedInt commandOptions );
+#endif
 	virtual Bool isSpecialAbility() const { return false; }
 	virtual Bool isSpecialPower() const { return true; }
 	virtual Bool isActive() const {return m_status != STATUS_IDLE;}
 	virtual SpecialPowerUpdateInterface* getSpecialPowerUpdateInterface() { return this; }
 	virtual CommandOption getCommandOption() const { return (CommandOption)0; }
 	virtual Bool isPowerCurrentlyInUse( const CommandButton *command = NULL ) const;
+#ifdef ZH
+	virtual ScienceType getExtraRequiredScience() const { return SCIENCE_INVALID; } //Does this object have more than one special power module with the same spTemplate?
+#endif
 
 	virtual void onObjectCreated();
 	virtual UpdateSleepTime update();
@@ -180,11 +200,23 @@ public:
 	Bool calculateDefaultInformation();
 	Bool calculateUpBonePositions();
 
+#ifdef OG
 	virtual Bool doesSpecialPowerHaveOverridableDestinationActive() const;
+
+#endif
+#ifdef ZH
+	virtual Bool doesSpecialPowerHaveOverridableDestinationActive() const; //Is it active now?
+	virtual Bool doesSpecialPowerHaveOverridableDestination() const { return true; }	//Does it have it, even if it's not active?
+#endif
 	virtual void setSpecialPowerOverridableDestination( const Coord3D *loc );
 
 	// Disabled conditions to process (termination conditions!)
+#ifdef OG
 	virtual DisabledMaskType getDisabledTypesToProcess() const { return MAKE_DISABLED_MASK3( DISABLED_UNDERPOWERED, DISABLED_EMP, DISABLED_HACKED ); }
+#endif
+#ifdef ZH
+	virtual DisabledMaskType getDisabledTypesToProcess() const { return MAKE_DISABLED_MASK4( DISABLED_SUBDUED, DISABLED_UNDERPOWERED, DISABLED_EMP, DISABLED_HACKED ); }
+#endif
 
 protected:
 
@@ -227,11 +259,17 @@ protected:
 	UnsignedInt			m_startDecayFrame;
 	UnsignedInt			m_lastDrivingClickFrame;
 	UnsignedInt			m_2ndLastDrivingClickFrame;
+#ifdef ZH
+	UnsignedInt			m_nextDestWaypointID;
+#endif
 
 	Bool						m_upBonesCached;
 	Bool						m_defaultInfoCached;
 	Bool						m_invalidSettings;
 	Bool						m_manualTargetMode;
+#ifdef ZH
+	Bool						m_scriptedWaypointMode;
+#endif
 	Bool						m_clientShroudedLastFrame;
 };
 

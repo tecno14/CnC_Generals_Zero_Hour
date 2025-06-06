@@ -55,7 +55,12 @@
 #include "wwmath.h"
 
 #include <stdio.h>
+#ifdef OG
 //#include <iostream>
+#endif
+#ifdef ZH
+//#include <iostream.h>
+#endif
 #include <stdlib.h>
 #include <math.h>
 #include <assert.h>

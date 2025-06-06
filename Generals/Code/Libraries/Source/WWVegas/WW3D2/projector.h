@@ -26,12 +26,25 @@
  *                                                                                             *
  *              Original Author:: Greg Hjelstrom                                               *
  *                                                                                             *
+#ifdef OG
  *                      $Author:: Greg_h                                                      $*
+#endif
+#ifdef ZH
+ *                      $Author:: Kenny Mitchell                                               * 
+#endif
  *                                                                                             *
+#ifdef OG
  *                     $Modtime:: 2/07/01 2:07p                                               $*
+#endif
+#ifdef ZH
+ *                     $Modtime:: 06/26/02 4:04p                                             $*
+#endif
  *                                                                                             *
  *                    $Revision:: 2                                                           $*
  *                                                                                             *
+#ifdef ZH
+ * 06/26/02 KM Matrix name change to avoid MAX conflicts                                       *
+#endif
  *---------------------------------------------------------------------------------------------*
  * Functions:                                                                                  *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
@@ -70,12 +83,21 @@ public:
 	const OBBoxClass &			Get_Bounding_Volume(void) const { return WorldBoundingVolume; }
 	void								Compute_Texture_Coordinate(const Vector3 & point,Vector3 * set_stq);
 
+#ifdef ZH
+	MatrixMapperClass*			Peek_Mapper() const { return Mapper; }
+
+#endif
 protected:
 
 	virtual void					Update_WS_Bounding_Volume(void);
 
 	Matrix3D							Transform;
+#ifdef OG
 	Matrix4							Projection;
+#endif
+#ifdef ZH
+	Matrix4x4						Projection;
+#endif
 
 	AABoxClass						LocalBoundingVolume;
 	OBBoxClass						WorldBoundingVolume;

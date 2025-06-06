@@ -26,9 +26,19 @@
  *                                                                                             *
  *                       Author:: Greg Hjelstrom                                               *
  *                                                                                             *
+#ifdef OG
  *                     $Modtime:: 5/08/01 9:52a                                               $*
+#endif
+#ifdef ZH
+ *                     $Modtime:: 1/15/02 2:46p                                               $*
+#endif
  *                                                                                             *
+#ifdef OG
  *                    $Revision:: 17                                                          $*
+#endif
+#ifdef ZH
+ *                    $Revision:: 19                                                          $*
+#endif
  *                                                                                             *
  *---------------------------------------------------------------------------------------------*
  * Functions:                                                                                  *
@@ -503,10 +513,22 @@ static inline void aabtri_compute_contact_normal
 	switch(CollisionContext.AxisId) 
 	{
 		case INTERSECTION:
+#ifdef OG
 			set_norm = *CollisionContext.Tri->N;
+
+#endif
+#ifdef ZH
+			set_norm = CollisionContext.N;
+			set_norm.Normalize();
+#endif
 			break;
 		case AXIS_N:
+#ifdef OG
 			set_norm = -CollisionContext.Side * *CollisionContext.Tri->N;
+#endif
+#ifdef ZH
+			set_norm = -CollisionContext.Side * CollisionContext.N;
+#endif
 			set_norm.Normalize();
 			break;
 		case AXIS_A0:
@@ -559,7 +581,14 @@ static inline void aabtri_compute_contact_normal
 	WWASSERT(set_norm.Length2() > 0.0f);
 
 #else
+#ifdef OG
 	set_norm = *CollisionContext.Tri.N;
+
+#endif
+#ifdef ZH
+	set_norm = *CollisionContext.N;
+	set_norm.Normalize();
+#endif
 	if (Vector3::Dot_Product(set_norm,CollisionContext.Move) > 0.0f) {
 		set_norm = -(set_norm);
 	}
@@ -832,8 +861,14 @@ exit:
 				(Vector3::Dot_Product(tmp_norm,move) < Vector3::Dot_Product(result->Normal,move)))
 		{
 			result->Normal = tmp_norm;
+#ifdef OG
 #pragma message("fatal assert disabled for demo")
 			//WWASSERT(WWMath::Fabs(result->Normal.Length() - 1.0f) < WWMATH_EPSILON);
+#endif
+#ifdef ZH
+			WWASSERT(WWMath::Fabs(result->Normal.Length() - 1.0f) < WWMATH_EPSILON);
+
+#endif
 		}
 				
 		result->Fraction = CollisionContext.MaxFrac;

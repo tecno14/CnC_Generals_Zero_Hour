@@ -35,6 +35,9 @@
 #include "Common/Module.h"
 #include "GameLogic/Damage.h"
 #include "GameLogic/Module/BehaviorModule.h"
+#ifdef ZH
+#include "Common/ObjectStatusTypes.h"
+#endif
 
 //-------------------------------------------------------------------------------------------------
 /** OBJECT DIE MODULE base class */
@@ -54,8 +57,14 @@ class DieMuxData	// does NOT inherit from ModuleData.
 public:
 	DeathTypeFlags				m_deathTypes;
 	VeterancyLevelFlags		m_veterancyLevels;
+#ifdef OG
 	UnsignedInt						m_exemptStatus;						///< die module is ignored if any of these status bits are set
 	UnsignedInt						m_requiredStatus;					///< die module is ignored if any of these status bits are clear
+#endif
+#ifdef ZH
+	ObjectStatusMaskType	m_exemptStatus;						///< die module is ignored if any of these status bits are set
+	ObjectStatusMaskType	m_requiredStatus;					///< die module is ignored if any of these status bits are clear
+#endif
 
 	DieMuxData();
 	static const FieldParse* getFieldParse();

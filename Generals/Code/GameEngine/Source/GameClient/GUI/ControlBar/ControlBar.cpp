@@ -65,6 +65,9 @@
 #include "GameClient/ControlBarScheme.h"
 #include "GameClient/Drawable.h"
 #include "GameClient/Display.h"
+#ifdef ZH
+#include "GameClient/DisplayStringManager.h"
+#endif
 #include "GameClient/GameClient.h"
 #include "GameClient/GameWindowManager.h"
 #include "GameClient/GameText.h"
@@ -132,7 +135,40 @@ static void commandButtonTooltip(GameWindow *window,
 {
 	TheControlBar->showBuildTooltipLayout(window);
 }
+#ifdef ZH
 
+/// mark the UI as dirty so the context of everything is re-evaluated
+void ControlBar::markUIDirty( void )
+{ 
+  m_UIDirty = TRUE;
+#endif
+
+#ifdef ZH
+#if defined( _INTERNAL ) || defined( _DEBUG )
+	UnsignedInt now = TheGameLogic->getFrame();
+	if( now == m_lastFrameMarkedDirty )
+	{
+		//Do nothing.
+	}
+	else if( now == m_lastFrameMarkedDirty + 1 )
+	{
+		m_consecutiveDirtyFrames++;
+	}
+	else
+	{
+		m_consecutiveDirtyFrames = 1;
+	}
+	m_lastFrameMarkedDirty = now;
+
+	if( m_consecutiveDirtyFrames > 20 )
+	{
+		DEBUG_CRASH( ("Serious flaw in interface system! Either new code or INI has caused the interface to be marked dirty every frame. This problem actually causes the interface to completely lockup not allowing you to click normal game buttons.") );
+	}
+
+#endif
+}
+
+#endif
 void ControlBar::populatePurchaseScience( Player* player )
 {
 //	TheInGameUI->deselectAllDrawables();
@@ -175,7 +211,12 @@ void ControlBar::populatePurchaseScience( Player* player )
 		commandButton = commandSet1->getCommandButton(i);
 
 		// if button is not present, just hide the window
+#ifdef OG
 		if( commandButton == NULL )
+#endif
+#ifdef ZH
+		if( commandButton == NULL || BitTest( commandButton->getOptions(), SCRIPT_ONLY ) )
+#endif
 		{
 			// hide window on interface
 			m_sciencePurchaseWindowsRank1[ i ]->winHide( TRUE );
@@ -235,7 +276,12 @@ void ControlBar::populatePurchaseScience( Player* player )
 		commandButton = commandSet3->getCommandButton(i);
 
 		// if button is not present, just hide the window
+#ifdef OG
 		if( commandButton == NULL )
+#endif
+#ifdef ZH
+		if( commandButton == NULL || BitTest( commandButton->getOptions(), SCRIPT_ONLY ) )
+#endif
 		{
 			// hide window on interface
 			m_sciencePurchaseWindowsRank3[ i ]->winHide( TRUE );
@@ -252,7 +298,17 @@ void ControlBar::populatePurchaseScience( Player* player )
 
 			setControlCommand( m_sciencePurchaseWindowsRank3[ i ], commandButton );
 			ScienceType	st = SCIENCE_INVALID; 
+#ifdef OG
 			st = commandButton->getScienceVec()[ 0 ];
+
+#endif
+#ifdef ZH
+			ScienceVec sv = commandButton->getScienceVec();
+			if (! sv.empty())
+			{
+				st = sv[ 0 ];
+			}
+#endif
 
 			if( player->isScienceDisabled( st ) )
 			{
@@ -294,7 +350,12 @@ void ControlBar::populatePurchaseScience( Player* player )
 		commandButton = commandSet8->getCommandButton(i);
 
 		// if button is not present, just hide the window
+#ifdef OG
 		if( commandButton == NULL )
+#endif
+#ifdef ZH
+		if( commandButton == NULL || BitTest( commandButton->getOptions(), SCRIPT_ONLY ) )
+#endif
 		{
 			// hide window on interface
 			m_sciencePurchaseWindowsRank8[ i ]->winHide( TRUE );
@@ -355,12 +416,19 @@ void ControlBar::populatePurchaseScience( Player* player )
 		GadgetStaticTextSetText(win, tempUS);
 	}
 	
+#ifdef ZH
+// redundant to StaticTextTitle in the Zero Hour context
+/*
+#endif
 	win = TheWindowManager->winGetWindowFromId( m_contextParent[ CP_PURCHASE_SCIENCE ], TheNameKeyGenerator->nameToKey( "GeneralsExpPoints.wnd:StaticTextLevel" ) );
 	if(win)
 	{
 		tempUS.format(TheGameText->fetch("SCIENCE:Rank"), player->getRankLevel());
 		GadgetStaticTextSetText(win, tempUS);
 	}
+#ifdef ZH
+*/
+#endif
 	
 	win = TheWindowManager->winGetWindowFromId( m_contextParent[ CP_PURCHASE_SCIENCE ], TheNameKeyGenerator->nameToKey( "GeneralsExpPoints.wnd:ProgressBarExperience" ) );
 	if(win)
@@ -603,11 +671,30 @@ Bool CommandButton::isValidToUseOn(const Object *sourceObj, const Object *target
 	if( BitTest( m_options, COMMAND_OPTION_NEED_OBJECT_TARGET ) && !targetObj ) 
 	{
 		return false;
+#ifdef ZH
+	}
+
+	Coord3D pos;
+	if( targetLocation )
+	{
+		pos.set( targetLocation );
+#endif
 	}
 
 	if( BitTest( m_options, NEED_TARGET_POS ) && !targetLocation ) 
 	{
+#ifdef ZH
+		if( targetObj )
+		{
+			pos.set( targetObj->getPosition() );
+		}
+		else
+		{
+#endif
 		return false;
+#ifdef ZH
+		}
+#endif
 	}
 	
 	if( BitTest( m_options, COMMAND_OPTION_NEED_OBJECT_TARGET ) ) 
@@ -617,7 +704,12 @@ Bool CommandButton::isValidToUseOn(const Object *sourceObj, const Object *target
 
 	if( BitTest( m_options, NEED_TARGET_POS ) ) 
 	{
+#ifdef OG
 		return TheActionManager->canDoSpecialPowerAtLocation( sourceObj, targetLocation, commandSource, m_specialPower, NULL, m_options, false );
+#endif
+#ifdef ZH
+		return TheActionManager->canDoSpecialPowerAtLocation( sourceObj, &pos, commandSource, m_specialPower, NULL, m_options, false );
+#endif
 	}
 
 	return TheActionManager->canDoSpecialPower( sourceObj, m_specialPower, commandSource, m_options, false );
@@ -665,6 +757,14 @@ const FieldParse CommandSet::m_commandSetFieldParseTable[] =
 	{ "10",			CommandSet::parseCommandButton, (void *)9,		offsetof( CommandSet, m_command ) },
 	{ "11",			CommandSet::parseCommandButton, (void *)10,		offsetof( CommandSet, m_command ) },
 	{ "12",			CommandSet::parseCommandButton, (void *)11,		offsetof( CommandSet, m_command ) },
+#ifdef ZH
+	{ "13",			CommandSet::parseCommandButton, (void *)12,		offsetof( CommandSet, m_command ) },
+	{ "14",			CommandSet::parseCommandButton, (void *)13,		offsetof( CommandSet, m_command ) },
+	{ "15",			CommandSet::parseCommandButton, (void *)14,		offsetof( CommandSet, m_command ) },
+	{ "16",			CommandSet::parseCommandButton, (void *)15,		offsetof( CommandSet, m_command ) },
+	{ "17",			CommandSet::parseCommandButton, (void *)16,		offsetof( CommandSet, m_command ) },
+	{ "18",			CommandSet::parseCommandButton, (void *)17,		offsetof( CommandSet, m_command ) },
+#endif
 	{ NULL,			NULL,														 NULL,				0	}  // keep this last
 
 };
@@ -695,6 +795,43 @@ void CommandButton::copyImagesFrom( const CommandButton *button, Bool markUIDirt
 	}
 }
 
+#ifdef ZH
+//-------------------------------------------------------------------------------------------------
+// bleah. shouldn't be const, but is. sue me. (Kris) -snork!
+void CommandButton::copyButtonTextFrom( const CommandButton *button, Bool shortcutButton, Bool markUIDirtyIfChanged ) const
+{
+	//This function was added to change the strings when you upgrade from a DaisyCutter to a MOAB. All other special
+	//powers are the same.
+	Bool change = FALSE;
+	if( shortcutButton )
+	{
+		//Not the best code, but conflicting label means shortcut label (most won't have any string specified).
+		if( button->getConflictingLabel().isNotEmpty() && m_textLabel.compare( button->getConflictingLabel() ) )
+		{
+			m_textLabel = button->getConflictingLabel();
+			change = TRUE;
+		}
+	}
+	else
+	{	
+		//Copy the text from the purchase science button if it exists (most won't).
+		if( button->getTextLabel().isNotEmpty() && m_textLabel.compare( button->getTextLabel() ) )
+		{
+			m_textLabel = button->getTextLabel();
+			change = TRUE;
+		}
+	}
+	if( button->getDescriptionLabel().isNotEmpty() && m_descriptionLabel.compare( button->getDescriptionLabel() ) )
+	{
+		m_descriptionLabel = button->getDescriptionLabel();
+		change = TRUE;
+	}
+	if( markUIDirtyIfChanged && change )
+	{
+		TheControlBar->markUIDirty();
+	}
+}
+#endif
 
 //-------------------------------------------------------------------------------------------------
 /** Parse a single command button definition */
@@ -869,6 +1006,13 @@ ControlBar::ControlBar( void )
 	m_remainingRadarAttackGlowFrames = 0;
 	m_radarAttackGlowWindow = NULL;
 
+#ifdef ZH
+#if defined( _INTERNAL ) || defined( _DEBUG )
+	m_lastFrameMarkedDirty = 0;
+	m_consecutiveDirtyFrames = 0;
+#endif
+
+#endif
 }  // end ControlBar
 
 //-------------------------------------------------------------------------------------------------
@@ -940,6 +1084,12 @@ ControlBar::~ControlBar( void )
 	}
 
 	m_radarAttackGlowWindow = NULL;
+#ifdef ZH
+
+	if (m_rightHUDCameoWindow && m_rightHUDCameoWindow->winGetUserData())
+		delete m_rightHUDCameoWindow->winGetUserData();
+
+#endif
 }  // end ~ControlBar
 void ControlBarPopupDescriptionUpdateFunc( WindowLayout *layout, void *param );
 
@@ -1017,9 +1167,16 @@ void ControlBar::init( void )
 			id = TheNameKeyGenerator->nameToKey( windowName.str() );
 			m_commandWindows[ i ] = 
 				TheWindowManager->winGetWindowFromId( m_contextParent[ CP_COMMAND ], id );
+#ifdef ZH
+			if (m_commandWindows[ i ])
+			{
+#endif
 			m_commandWindows[ i ]->winGetPosition(&commandPos.x, &commandPos.y);
 			m_commandWindows[ i ]->winGetSize(&commandSize.x, &commandSize.y);
 			m_commandWindows[ i ]->winSetStatus( WIN_STATUS_USE_OVERLAY_STATES );
+#ifdef ZH
+			}
+#endif
 
 	// removed from multiplayer branch
 //			windowName.format( "ControlBar.wnd:CommandMarker%02d", i + 1 );
@@ -1744,7 +1901,12 @@ void ControlBar::evaluateContextUI( void )
 			return;
 
 		// we show no interface for objects being sold
+#ifdef OG
 		if( BitTest( obj->getStatusBits(), OBJECT_STATUS_SOLD ) )
+#endif
+#ifdef ZH
+		if( obj->getStatusBits().test( OBJECT_STATUS_SOLD ) )
+#endif
 			return;
 
 		static const NameKeyType key_OCLUpdate = NAMEKEY( "OCLUpdate" );
@@ -1756,7 +1918,12 @@ void ControlBar::evaluateContextUI( void )
 		// more important than anything
 		//
 		Bool contextSelected = FALSE;
+#ifdef OG
 		if( BitTest( obj->getStatusBits(), OBJECT_STATUS_UNDER_CONSTRUCTION ) )
+#endif
+#ifdef ZH
+		if( obj->getStatusBits().test( OBJECT_STATUS_UNDER_CONSTRUCTION ) )
+#endif
 		{
 
 			switchToContext( CB_CONTEXT_UNDER_CONSTRUCTION, drawToEvaluateFor );
@@ -1930,7 +2097,14 @@ CommandSet* ControlBar::findNonConstCommandSet( const AsciiString& name )
 const CommandButton *ControlBar::findCommandButton( const AsciiString& name ) 
 { 
 	CommandButton *btn =  findNonConstCommandButton(name); 
+#ifdef ZH
+	if( btn )
+	{
+#endif
 	btn = (CommandButton *)btn->friend_getFinalOverride();
+#ifdef ZH
+	}
+#endif
 	return btn; 
 }
 
@@ -2055,8 +2229,16 @@ void ControlBar::switchToContext( ControlBarContext context, Drawable *draw )
 
 			//Clear any potentially flashing buttons!
 			for( int i = 0; i < MAX_COMMANDS_PER_SET; i++ )
+#ifdef ZH
+			{
+				// the implementation won't necessarily use the max number of windows possible
+				if (m_commandWindows[ i ]) 
+#endif
 			{
 				m_commandWindows[ i ]->winClearStatus( WIN_STATUS_FLASHING );
+#ifdef ZH
+				}
+#endif
 			}
 			// if there is a current selected drawable then we wil display a selection portrait if present
 			if( draw )
@@ -2503,8 +2685,14 @@ void ControlBar::setPortraitByObject( Object *obj )
 				setPortraitByObject( NULL );
 				return;
 			}
+#ifdef OG
 			static NameKeyType key_StealthUpdate = NAMEKEY("StealthUpdate");
 			StealthUpdate* stealth = (StealthUpdate *)obj->findUpdateModule(key_StealthUpdate);
+#endif
+#ifdef ZH
+      StealthUpdate *stealth = obj->getStealth();
+
+#endif
 			if( stealth && stealth->isDisguised() )
 			{
 				//Fake player upgrades too!
@@ -2994,13 +3182,37 @@ void ControlBar::updateSlotExitImage( const Image *image )
 	if(!image)
 		return;
 
+#ifdef ZH
+	//Kris:
+	//Other than this being a completely ridiculously retarded idea, I'm not inclined
+	//to recode this in a better way, yikes! Btw, I DID NOT CODE THIS! But this is
+	//what this does: The button images are overridden by a faction specific icon.
+	//The proper way to fix this would be to make a commandbutton option and loop
+	//through all buttons on init to replace the icon. We need a system like this
+	//for neutral buildings which can have a different empty inventory icon based
+	//on the faction player.
+
+#endif
 	CommandButton *cmdButton = findNonConstCommandButton( "Command_StructureExit" );
 	if(cmdButton)
 		cmdButton->setButtonImage(image);
 
 	cmdButton = findNonConstCommandButton( "Command_TransportExit" );
+#ifdef ZH
 	if(cmdButton)
 		cmdButton->setButtonImage(image);
+
+	cmdButton = findNonConstCommandButton( "Command_BunkerExit" );
+#endif
+	if(cmdButton)
+		cmdButton->setButtonImage(image);
+#ifdef ZH
+
+	cmdButton = findNonConstCommandButton( "Command_FireBaseExit" );
+	if(cmdButton)
+		cmdButton->setButtonImage(image);
+
+#endif
 }
 
 void ControlBar::updateUpDownImages( const Image *toggleButtonUpIn, const Image *toggleButtonUpOn, const Image *toggleButtonUpPushed,
@@ -3131,23 +3343,28 @@ void ControlBar::initSpecialPowershortcutBar( Player *player)
 	parentName = layoutName;
 	parentName.concat(":ButtonParent%d");
 	m_currentlyUsedSpecialPowersButtons = MIN(pt->getSpecialPowerShortcutButtonCount(), MAX_SPECIAL_POWER_SHORTCUTS);
+#ifdef OG
 	for( i = 0; i < m_currentlyUsedSpecialPowersButtons; i++ )
+#endif
+#ifdef ZH
+	for( i = 0; i < MAX_SPECIAL_POWER_SHORTCUTS; i++ )
+#endif
 	{
 		windowName.format( tempName, i+1 );
 		id = TheNameKeyGenerator->nameToKey( windowName.str() );
 		m_specialPowerShortcutButtons[ i ] = 
 			TheWindowManager->winGetWindowFromId( m_specialPowerShortcutParent, id );
 		m_specialPowerShortcutButtons[ i ]->winSetStatus( WIN_STATUS_USE_OVERLAY_STATES );
+#ifdef ZH
+		// Oh god... this is a total hack for shortcut buttons to handle rendering text top left corner...
+		m_specialPowerShortcutButtons[ i ]->winSetStatus( WIN_STATUS_SHORTCUT_BUTTON );
+#endif
 
 		windowName.format( parentName, i+1 );
 		id = TheNameKeyGenerator->nameToKey( windowName.str() );
 		m_specialPowerShortcutButtonParents[ i ] = 
 			TheWindowManager->winGetWindowFromId( m_specialPowerShortcutParent, id );
-		
-
 	}  // end for i
-
-
 
 }
 
@@ -3159,7 +3376,12 @@ void ControlBar::populateSpecialPowerShortcut( Player *player)
 			|| !player->isLocalPlayer() || m_currentlyUsedSpecialPowersButtons == 0
 			|| m_specialPowerShortcutButtons == NULL || m_specialPowerShortcutButtonParents == NULL)
 		return;
+#ifdef OG
 	for( i = 0; i < m_currentlyUsedSpecialPowersButtons; ++i )
+#endif
+#ifdef ZH
+	for( i = 0; i < MAX_SPECIAL_POWER_SHORTCUTS; ++i )
+#endif
 	{
 		if (m_specialPowerShortcutButtons[i])
 			m_specialPowerShortcutButtons[i]->winHide(TRUE);
@@ -3194,7 +3416,18 @@ void ControlBar::populateSpecialPowerShortcut( Player *player)
 		else
 		{
 
-
+#ifdef ZH
+			if( BitTest( commandButton->getOptions(), NEED_UPGRADE ) )
+			{
+				const UpgradeTemplate *upgrade = commandButton->getUpgradeTemplate();
+				if( upgrade && !ThePlayerList->getLocalPlayer()->hasUpgradeComplete( upgrade->getUpgradeMask() ) )
+				{
+					//Kris: 8/13/03 - Don't show shortcut buttons that require upgrades we don't have. As far as 
+					//I know, only the radar van scan has this. The MOAB is handled differently (sciences).
+					continue;
+				}
+			}
+#endif
 
 				//
 				// commands that require sciences we don't have are hidden so they never show up
@@ -3203,8 +3436,29 @@ void ControlBar::populateSpecialPowerShortcut( Player *player)
 				if( BitTest( commandButton->getOptions(), NEED_SPECIAL_POWER_SCIENCE ) )
 				{
 					const SpecialPowerTemplate *power = commandButton->getSpecialPowerTemplate();
+#ifdef ZH
 
+				if( !power )
+				{
+					//Should have the power.. button is probably missing the SpecialPower = xxx entry.
+					DEBUG_CRASH( ("CommandButton %s needs a SpecialPower entry, but it's either incorrect or missing.", commandButton->getName().str()) );
+					continue;
+				}
+
+				//We just need to find something that has the power.
+				Object *obj = ThePlayerList->getLocalPlayer()->findMostReadyShortcutSpecialPowerOfType( commandButton->getSpecialPowerTemplate()->getSpecialPowerType() );
+				if( !obj )
+				{
+					continue;
+				}
+#endif
+
+#ifdef OG
 					if( power && power->getRequiredScience() != SCIENCE_INVALID )
+#endif
+#ifdef ZH
+				if( power->getRequiredScience() != SCIENCE_INVALID )
+#endif
 					{
 						if( player->hasScience( power->getRequiredScience() ) == FALSE )
 						{
@@ -3238,11 +3492,87 @@ void ControlBar::populateSpecialPowerShortcut( Player *player)
 							{
 								//Now get the best sciencetype.
 								science = commandButton->getScienceVec()[ bestIndex ];
+#ifdef ZH
 
+							const CommandSet *commandSet1;
+							const CommandSet *commandSet3;
+							const CommandSet *commandSet8;
+							Int i;
+
+							// get command set
+							if( !player || !player->getPlayerTemplate() 
+									|| player->getPlayerTemplate()->getPurchaseScienceCommandSetRank1().isEmpty()
+									|| player->getPlayerTemplate()->getPurchaseScienceCommandSetRank3().isEmpty()
+									|| player->getPlayerTemplate()->getPurchaseScienceCommandSetRank8().isEmpty() )
+							{
+								continue;
+							}
+							commandSet1 = TheControlBar->findCommandSet( player->getPlayerTemplate()->getPurchaseScienceCommandSetRank1() ); 
+							commandSet3 = TheControlBar->findCommandSet( player->getPlayerTemplate()->getPurchaseScienceCommandSetRank3() ); 
+							commandSet8 = TheControlBar->findCommandSet( player->getPlayerTemplate()->getPurchaseScienceCommandSetRank8() ); 
+
+							if( !commandSet1 || !commandSet3 || !commandSet8 )
+							{
+								continue;
+							}
+#endif
+
+#ifdef OG
 								//Now we have to search through the command buttons to find a matching purchase science button.
 								for( const CommandButton *command = m_commandButtons; command; command = command->getNext() )
+
+#endif
+#ifdef ZH
+							Bool found = FALSE;
+							for( i = 0; !found && i < MAX_PURCHASE_SCIENCE_RANK_1; i++ )
+							{
+								const CommandButton *command = commandSet1->getCommandButton( i );
+								if( command && command->getCommandType() == GUI_COMMAND_PURCHASE_SCIENCE )
 								{
+									//All purchase sciences specify a single science.
+									if( command->getScienceVec().empty() )
+									{
+										DEBUG_CRASH( ("Commandbutton %s is a purchase science button without any science! Please add it.", command->getName().str() ) );
+									}
+									else if( command->getScienceVec()[0] == science )
+									{
+										commandButton->copyImagesFrom( command, TRUE );
+										commandButton->copyButtonTextFrom( command, TRUE, TRUE );
+										found = TRUE;
+										break;
+									}
+								}
+							}
+							for( i = 0; !found && i < MAX_PURCHASE_SCIENCE_RANK_3; i++ )
+							{
+								const CommandButton *command = commandSet3->getCommandButton( i );
+								if( command && command->getCommandType() == GUI_COMMAND_PURCHASE_SCIENCE )
+								{
+									//All purchase sciences specify a single science.
+									if( command->getScienceVec().empty() )
+									{
+										DEBUG_CRASH( ("Commandbutton %s is a purchase science button without any science! Please add it.", command->getName().str() ) );
+									}
+									else if( command->getScienceVec()[0] == science )
+									{
+										commandButton->copyImagesFrom( command, TRUE );
+										commandButton->copyButtonTextFrom( command, TRUE, TRUE );
+										found = TRUE;
+										break;
+									}
+								}
+							}
+							for( i = 0; !found && i < MAX_PURCHASE_SCIENCE_RANK_8; i++ )
+#endif
+								{
+#ifdef OG
 									if( command->getCommandType() == GUI_COMMAND_PURCHASE_SCIENCE )
+
+#endif
+#ifdef ZH
+								const CommandButton *command = commandSet8->getCommandButton( i );
+								if( command && command->getCommandType() == GUI_COMMAND_PURCHASE_SCIENCE )
+#endif
 									{
 										//All purchase sciences specify a single science.
 										if( command->getScienceVec().empty() )
@@ -3251,16 +3581,35 @@ void ControlBar::populateSpecialPowerShortcut( Player *player)
 										}
 										else if( command->getScienceVec()[0] == science )
 										{
+#ifdef OG
 											commandButton->copyImagesFrom( command, true );
+
+#endif
+#ifdef ZH
+										commandButton->copyImagesFrom( command, TRUE );
+										commandButton->copyButtonTextFrom( command, TRUE, TRUE );
+										found = TRUE;
+										break;
+#endif
 										}
 									}
 								}
 							}
-						
-						
 						}
 					}
 				}  // end if			
+#ifdef ZH
+			else if( commandButton->getCommandType() == GUI_COMMAND_SELECT_ALL_UNITS_OF_TYPE )
+			{
+				//Make sure we actually have an object of type that we want to be able to select.
+				Object *obj = ThePlayerList->getLocalPlayer()->findAnyExistingObjectWithThingTemplate( commandButton->getThingTemplate() );
+				if( !obj )
+				{
+					continue;
+				}
+			}
+
+#endif
 				// make sure the window is not hidden
 				m_specialPowerShortcutButtons[ currentButton ]->winHide( FALSE );
 				m_specialPowerShortcutButtonParents[ currentButton ]->winHide( FALSE );
@@ -3282,21 +3631,77 @@ void ControlBar::populateSpecialPowerShortcut( Player *player)
 		animateSpecialPowerShortcut(TRUE);
 	}
 	updateSpecialPowerShortcut();
+#ifdef ZH
 }
 
+//-------------------------------------------------------------------------------------------------
+Bool ControlBar::hasAnyShortcutSelection() const
+{
+	for( Int i = 0; i < m_currentlyUsedSpecialPowersButtons; i++ )
+	{
+		GameWindow *win;
+		const CommandButton *command;
+
+		win = m_specialPowerShortcutButtons[ i ];
+		if( win->winIsHidden() == TRUE )
+			continue;
+
+		// get the command from the control
+		command = (const CommandButton *)GadgetButtonGetData(win);
+		if( !command )
+			continue;
+
+		if( command->getCommandType() == GUI_COMMAND_SELECT_ALL_UNITS_OF_TYPE )
+		{
+			//We found one, so we'll always show shortcuts!
+			return TRUE;
+		}
+#endif
+}
+#ifdef ZH
+	return FALSE;
+}
+#endif
+
+#ifdef ZH
+//-------------------------------------------------------------------------------------------------
+#endif
 void ControlBar::updateSpecialPowerShortcut( void )
 {
 	if(!m_specialPowerShortcutParent || !m_specialPowerShortcutButtons 
 	   || !ThePlayerList || !ThePlayerList->getLocalPlayer())
 		return;
+#ifdef OG
 	if(ThePlayerList->getLocalPlayer()->findNaturalCommandCenter() && 
 		 m_specialPowerShortcutParent->winIsHidden() && 
 		 m_contextParent[ CP_MASTER ] && !m_contextParent[ CP_MASTER ]->winIsHidden())
+
+#endif
+#ifdef ZH
+
+	Bool hasShortcutSelectionButtons = hasAnyShortcutSelection();
+	Bool hasAnyShortcutSpecialPower = ThePlayerList->getLocalPlayer()->hasAnyShortcutSpecialPower();
+
+	Bool hasValidShortcutButton = hasShortcutSelectionButtons || hasAnyShortcutSpecialPower;
+
+	if( hasValidShortcutButton
+		  && m_specialPowerShortcutParent->winIsHidden() 
+			&& m_contextParent[ CP_MASTER ] 
+			&& !m_contextParent[ CP_MASTER ]->winIsHidden() )
+#endif
 	{
 		showSpecialPowerShortcut();
 		animateSpecialPowerShortcut(TRUE);
 	}
+#ifdef OG
 	else if( !ThePlayerList->getLocalPlayer()->findNaturalCommandCenter() && !m_specialPowerShortcutParent->winIsHidden() && m_animateWindowManagerForGenShortcuts->isFinished())
+
+#endif
+#ifdef ZH
+	else if( !hasValidShortcutButton 
+					 && !m_specialPowerShortcutParent->winIsHidden() 
+					 && m_animateWindowManagerForGenShortcuts->isFinished() )
+#endif
 	{
 		animateSpecialPowerShortcut(FALSE);		
 	}
@@ -3335,8 +3740,54 @@ void ControlBar::updateSpecialPowerShortcut( void )
 		// is the command available
 
 		CommandAvailability availability = COMMAND_RESTRICTED;
+#ifdef OG
 		if(ThePlayerList->getLocalPlayer()->findNaturalCommandCenter())
 			availability = getCommandAvailability( command,ThePlayerList->getLocalPlayer()->findNaturalCommandCenter() , win );
+
+#endif
+#ifdef ZH
+
+		const SpecialPowerTemplate *spTemplate = command->getSpecialPowerTemplate();
+		Object *obj = NULL; 
+		if( spTemplate )
+		{
+			obj = ThePlayerList->getLocalPlayer()->findMostReadyShortcutSpecialPowerOfType( command->getSpecialPowerTemplate()->getSpecialPowerType() );
+			availability = getCommandAvailability( command, obj, win );
+		}
+		else if( command->getCommandType() == GUI_COMMAND_SELECT_ALL_UNITS_OF_TYPE )
+		{
+			availability = COMMAND_HIDDEN;
+			Object *obj = ThePlayerList->getLocalPlayer()->findAnyExistingObjectWithThingTemplate( command->getThingTemplate() );
+			if( obj )
+			{
+				//Make command available if it isn't a special power template shortcut power.
+				availability = COMMAND_AVAILABLE;
+
+				UnsignedInt mostReadyPercentage;
+				obj = ThePlayerList->getLocalPlayer()->findMostReadyShortcutSpecialPowerForThing( command->getThingTemplate(), mostReadyPercentage );
+				if( obj )
+				{
+					//Ugh... hacky.
+					//Look for a command button for a special power and if so, then get the command availability for it.
+					const CommandSet *commandSet = TheControlBar->findCommandSet( obj->getCommandSetString() );
+					if( commandSet )
+					{
+						for( Int commandIndex = 0; commandIndex < MAX_COMMANDS_PER_SET; commandIndex++ )
+						{
+							const CommandButton *evalButton = commandSet->getCommandButton( commandIndex );
+							GameWindow *evalButtonWin = m_commandWindows[ commandIndex ];
+							if( evalButton && evalButton->getCommandType() == GUI_COMMAND_SPECIAL_POWER )
+							{
+								//We want to evaluate the special powerbutton... but apply the clock overlay to our button!
+								availability = getCommandAvailability( evalButton, obj, evalButtonWin, win );
+								break;
+							}
+						}
+					}
+				}
+			}
+		}
+#endif
 
 		// enable/disable the window control
 		switch( availability )
@@ -3358,10 +3809,75 @@ void ControlBar::updateSpecialPowerShortcut( void )
 			default:
 				win->winEnable( TRUE );
 				break;
+#ifdef ZH
+		}
+
+	}
+}
+
+//-------------------------------------------------------------------------------------------------
+void ControlBar::drawSpecialPowerShortcutMultiplierText()
+{
+	for( Int i = 0; i < m_currentlyUsedSpecialPowersButtons; i++ )
+	{
+		GameWindow *win;
+		const CommandButton *command;
+		// get the window
+		win = m_specialPowerShortcutButtons[ i ];
+
+		if( win->winIsHidden() == TRUE )
+			continue;
+		// get the command from the control
+		command = (const CommandButton *)GadgetButtonGetData(win);
+		//command = (const CommandButton *)win->winGetUserData();
+		if( command == NULL )
+			continue;
+
+		//draw superweapon ready multipliers
+		for( int i = 0; i < MAX_SPECIAL_POWER_SHORTCUTS; i++ )
+		{
+			if( !m_shortcutDisplayStrings[ i ] )
+			{
+				//m_shortcutDisplayStrings[ i ] = TheDisplayStringManager->newDisplayString();
+				//m_shortcutDisplayStrings[ i ]->setFont( TheFontLibrary->getFont( "Arial", 16, false ) );
+#endif
+		}
+#ifdef ZH
+			
+			const SpecialPowerTemplate *spTemplate = command->getSpecialPowerTemplate();
+			Int numReady = 0;
+			if( spTemplate )
+			{
+				numReady = ThePlayerList->getLocalPlayer()->countReadyShortcutSpecialPowersOfType( spTemplate->getSpecialPowerType() );
+#endif
+	}
+#ifdef ZH
+			if( numReady > 1 ) // Lorenzen changed... Displaying a "1" is superfluous
+			{
+				UnicodeString unibuffer;
+				unibuffer.format( L"%d", numReady );
+#endif
+
+#ifdef ZH
+				GadgetButtonSetText( win, unibuffer );
+
+				//m_shortcutDisplayStrings[ i ]->setText( unibuffer );
+				//TheControlBar->m_shortcutDisplayStrings[ i ]->draw( 600, i * 40 + 40, GameMakeColor(255,255,255,255), GameMakeColor(0,0,0,0), 0, 0 );
+			}
+			else
+			{
+				UnicodeString unibuffer;
+				GadgetButtonSetText( win, unibuffer );
+				//TheDisplayStringManager->freeDisplayString( m_shortcutDisplayStrings[ i ] );
+				//m_shortcutDisplayStrings[ i ] = NULL;
+#endif
+}
+#ifdef ZH
 		}
 	}
-
 }
+
+#endif
 void ControlBar::animateSpecialPowerShortcut( Bool isOn )
 {
 	if(!m_specialPowerShortcutParent || !m_animateWindowManagerForGenShortcuts || !m_currentlyUsedSpecialPowersButtons)
@@ -3403,7 +3919,12 @@ void ControlBar::showSpecialPowerShortcut( void )
 			break;
 		}
 	}
+#ifdef OG
 	if(dontAnimate || !ThePlayerList->getLocalPlayer()->findNaturalCommandCenter())
+#endif
+#ifdef ZH
+	if( dontAnimate || (!ThePlayerList->getLocalPlayer()->hasAnyShortcutSpecialPower() && !hasAnyShortcutSelection()) )
+#endif
 		return;
 	m_specialPowerShortcutParent->winHide(FALSE);
 	populateSpecialPowerShortcut(ThePlayerList->getLocalPlayer());

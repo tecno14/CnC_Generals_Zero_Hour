@@ -117,6 +117,10 @@ public:
 	void DRAW(void);
 	Real getUpdateTime(void) {return m_curUpdateTime;}
 	Real getDrawTime(void) {return m_curDrawTime;}
+#ifdef ZH
+	Bool doDumpUpdate(void) {return m_dumpUpdate;}
+	Bool doDumpDraw(void) {return m_dumpDraw;}
+#endif
 	static Real getTotalTime(void) {return s_msConsumed;}
 	static void clearTotalTime(void) {s_msConsumed = 0;}
 protected:
@@ -126,6 +130,10 @@ protected:
 
 	Real m_startDrawTimeConsumed;
 	Real m_curDrawTime;
+#ifdef ZH
+	Bool m_dumpUpdate;
+	Bool m_dumpDraw;
+#endif
 #else 
 	inline void UPDATE(void) {update();}
 	inline void DRAW(void) {draw();}

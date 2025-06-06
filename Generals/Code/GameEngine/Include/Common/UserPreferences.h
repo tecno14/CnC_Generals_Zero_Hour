@@ -38,6 +38,10 @@
 //-----------------------------------------------------------------------------
 #include "Common/STLTypedefs.h"
 
+#ifdef ZH
+class Money;
+
+#endif
 //-----------------------------------------------------------------------------
 // PUBLIC TYPES ///////////////////////////////////////////////////////////////
 //-----------------------------------------------------------------------------
@@ -85,6 +89,10 @@ public:
 	void setLANIPAddress(UnsignedInt IP);			// convenience function
 	void setOnlineIPAddress(UnsignedInt IP);	// convenience function
 	Bool getAlternateMouseModeEnabled(void);	// convenience function
+#ifdef ZH
+	Bool getRetaliationModeEnabled();					// convenience function
+	Bool getDoubleClickAttackMoveEnabled(void);	// convenience function
+#endif
 	Real getScrollFactor(void);								// convenience function
 	Bool getSendDelay(void);									// convenience function
 	Int getFirewallBehavior(void);						// convenience function
@@ -112,6 +120,9 @@ public:
 	Bool getSmoothWaterEnabled(void);
 	Bool getTreesEnabled(void);
 	Bool getExtraAnimationsDisabled(void);
+#ifdef ZH
+	Bool getUseHeatEffects(void);
+#endif
 	Bool getDynamicLODEnabled(void);
 	Bool getFPSLimitEnabled(void);
 	Bool getNoDynamicLODEnabled(void);
@@ -137,6 +148,13 @@ public:
 	Bool usesSystemMapDir(void);		// convenience function
 	Int getNumRemoteIPs(void);					// convenience function
 	UnicodeString getRemoteIPEntry(Int i);	// convenience function
+#ifdef ZH
+
+  Bool getSuperweaponRestricted(void) const;
+  Money getStartingCash(void) const;
+  void setSuperweaponRestricted( Bool superweaponRestricted);
+  void setStartingCash( const Money & startingCash );
+#endif
 };
 
 #endif // __USERPREFERENCES_H__

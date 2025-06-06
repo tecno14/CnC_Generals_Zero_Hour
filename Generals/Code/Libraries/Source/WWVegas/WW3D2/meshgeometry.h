@@ -22,15 +22,35 @@
  *                                                                                             *
  *                 Project Name : WW3D                                                         *
  *                                                                                             *
+#ifdef OG
  *                     $Archive:: /VSS_Sync/ww3d2/meshgeometry.h                              $*
+#endif
+#ifdef ZH
+ *                     $Archive:: /Commando/Code/ww3d2/meshgeometry.h                         $*
+#endif
  *                                                                                             *
  *              Original Author:: Greg Hjelstrom                                               *
  *                                                                                             *
+#ifdef OG
  *                      $Author:: Vss_sync                                                    $*
+#endif
+#ifdef ZH
+ *                      $Author:: Jani_p                                                      $*
+#endif
  *                                                                                             *
+#ifdef OG
  *                     $Modtime:: 8/29/01 7:29p                                               $*
+#endif
+#ifdef ZH
+ *                     $Modtime:: 11/24/01 7:28p                                              $*
+#endif
  *                                                                                             *
+#ifdef OG
  *                    $Revision:: 10                                                          $*
+#endif
+#ifdef ZH
+ *                    $Revision:: 11                                                          $*
+#endif
  *                                                                                             *
  *---------------------------------------------------------------------------------------------*
  * Functions:                                                                                  *
@@ -59,7 +79,16 @@ class OBBoxClass;
 class SphereClass;
 class ChunkLoadClass;
 class AABTreeClass;
+#ifdef ZH
+class HTreeClass;
+class RenderInfoClass;
+#endif
 
+#ifdef ZH
+// Define which kind of index vector to use (16- or 32 bit)
+typedef Vector3i16 TriIndex;
+//typedef Vector3i TriIndex;
+#endif
 
 /*
 ** The following two defines control two space-saving optimizations.  In Renegade I've found
@@ -134,7 +163,12 @@ public:
 	int							Get_Polygon_Count(void) const								{ return PolyCount; }
 	int							Get_Vertex_Count(void) const								{ return VertexCount; }
 
+#ifdef OG
 	const Vector3i *			Get_Polygon_Array(void)										{ return get_polys(); }
+#endif
+#ifdef ZH
+	const TriIndex*			Get_Polygon_Array(void)										{ return get_polys(); }
+#endif
 	Vector3 *					Get_Vertex_Array(void)										{ WWASSERT(Vertex); return Vertex->Get_Array(); }
 	const Vector3 *			Get_Vertex_Normal_Array(void);
 	const Vector4 *			Get_Plane_Array(bool create = true);
@@ -181,7 +215,12 @@ public:
 protected:
 	
 	// internal accessor functions that are not exposed to the user (non-const...)
+#ifdef OG
 	Vector3i *					get_polys(void);
+#endif
+#ifdef ZH
+	TriIndex *					get_polys(void);
+#endif
 	Vector3 *					get_vert_normals(void);
 	uint32 *						get_shade_indices(bool create = true);
 	Vector4 *					get_planes(bool create = true);
@@ -216,6 +255,13 @@ protected:
 	WW3DErrorType				read_vertex_shade_indices(ChunkLoadClass & cload);
 	WW3DErrorType				read_aabtree(ChunkLoadClass &cload);
 
+#ifdef ZH
+	// functions to compute the deformed vertices of skins.
+	// Destination pointers MUST point to arrays large enough to hold all vertices
+	void get_deformed_vertices(Vector3 *dst_vert, Vector3 *dst_norm, const HTreeClass * htree);
+	void get_deformed_vertices(Vector3 *dst_vert, const HTreeClass * htree);
+	void get_deformed_screenspace_vertices(Vector4 *dst_vert,const RenderInfoClass & rinfo,const Matrix3D & mesh_tm,const HTreeClass * htree);
+#endif
 	
 	// General info
 	ShareBufferClass<char> *							MeshName;
@@ -228,7 +274,12 @@ protected:
 	int														PolyCount;
 	int														VertexCount;
 		
+#ifdef OG
 	ShareBufferClass<Vector3i> *						Poly;
+#endif
+#ifdef ZH
+	ShareBufferClass<TriIndex> *						Poly;
+#endif
 	ShareBufferClass<Vector3> *						Vertex;
 	ShareBufferClass<Vector3> *						VertexNorm;
 	ShareBufferClass<Vector4> *						PlaneEq;
@@ -247,7 +298,12 @@ protected:
 /*
 ** Inline functions for MeshGeometryClass
 */
+#ifdef OG
 inline Vector3i * MeshGeometryClass::get_polys(void)
+#endif
+#ifdef ZH
+inline TriIndex * MeshGeometryClass::get_polys(void)
+#endif
 {
 	WWASSERT(Poly);
 	return Poly->Get_Array();

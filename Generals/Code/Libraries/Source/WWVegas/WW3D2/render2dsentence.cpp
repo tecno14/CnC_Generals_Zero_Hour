@@ -379,14 +379,28 @@ Render2DSentenceClass::Build_Textures (void)
 		//
 		//	Create the new texture
 		//
+#ifdef OG
 		TextureClass *new_texture = W3DNEW TextureClass (desc.Width, desc.Width, WW3D_FORMAT_A4R4G4B4, TextureClass::MIP_LEVELS_1);
+#endif
+#ifdef ZH
+		TextureClass *new_texture = W3DNEW TextureClass (desc.Width, desc.Width, WW3D_FORMAT_A4R4G4B4, MIP_LEVELS_1);
+#endif
 		SurfaceClass *texture_surface = new_texture->Get_Surface_Level ();
 
+#ifdef OG
 		new_texture->Set_U_Addr_Mode(TextureClass::TEXTURE_ADDRESS_CLAMP);
 		new_texture->Set_V_Addr_Mode(TextureClass::TEXTURE_ADDRESS_CLAMP);
 		new_texture->Set_Min_Filter	(TextureClass::FILTER_TYPE_NONE);
 		new_texture->Set_Mag_Filter	(TextureClass::FILTER_TYPE_NONE);
 		new_texture->Set_Mip_Mapping	(TextureClass::FILTER_TYPE_NONE);
+#endif
+#ifdef ZH
+		new_texture->Get_Filter().Set_U_Addr_Mode(TextureFilterClass::TEXTURE_ADDRESS_CLAMP);
+		new_texture->Get_Filter().Set_V_Addr_Mode(TextureFilterClass::TEXTURE_ADDRESS_CLAMP);
+		new_texture->Get_Filter().Set_Min_Filter(TextureFilterClass::FILTER_TYPE_NONE);
+		new_texture->Get_Filter().Set_Mag_Filter(TextureFilterClass::FILTER_TYPE_NONE);
+		new_texture->Get_Filter().Set_Mip_Mapping(TextureFilterClass::FILTER_TYPE_NONE);
+#endif
 
 		//
 		//	Copy the contents of the texture from the surface

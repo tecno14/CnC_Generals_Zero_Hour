@@ -95,6 +95,10 @@ public:
 	virtual Bool projectileHandleCollision( Object *other );
 	virtual Bool projectileIsArmed() const { return true; }
 	virtual ObjectID projectileGetLauncherID() const { return m_launcherID; }
+#ifdef ZH
+	virtual void setFramesTillCountermeasureDiversionOccurs( UnsignedInt frames ) {}
+	virtual void projectileNowJammed() {}
+#endif
 
 protected:
 
@@ -114,6 +118,10 @@ private:
 	Int										m_flightPathSegments;			///< number of segments in the flightpath (in case we must regen it)
 	Int										m_currentFlightPathStep;	///< Our current index in the flight path vector.  Quicker than popping off.
 	WeaponBonusConditionFlags		m_extraBonusFlags;
+#ifdef ZH
+  
+  Bool                  m_hasDetonated;           ///< 
+#endif
 
 	Bool calcFlightPath(Bool recalcNumSegments);
 #if defined(_DEBUG) || defined(_INTERNAL)

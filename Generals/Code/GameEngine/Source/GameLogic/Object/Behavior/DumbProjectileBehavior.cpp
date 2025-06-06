@@ -31,6 +31,9 @@
 #include "Common/BezierSegment.h"
 #include "Common/GameCommon.h"
 #include "Common/GameState.h"
+#ifdef ZH
+#include "Common/Player.h"
+#endif
 #include "Common/ThingTemplate.h"
 #include "Common/RandomValue.h"
 #include "Common/Xfer.h"
@@ -123,6 +126,10 @@ DumbProjectileBehavior::DumbProjectileBehavior( Thing *thing, const ModuleData* 
 	m_flightPathEnd.zero();
 	m_currentFlightPathStep = 0;
 	m_extraBonusFlags = 0;
+#ifdef ZH
+
+  m_hasDetonated = FALSE;
+#endif
 } 
 
 //-------------------------------------------------------------------------------------------------
@@ -506,6 +513,10 @@ Bool DumbProjectileBehavior::projectileHandleCollision( Object *other )
 					// note, fx is played at center of building, not at grenade's location
 					FXList::doFXObj(d->m_garrisonHitKillFX, other, NULL);
 
+#ifdef ZH
+					getObject()->getControllingPlayer()->getAcademyStats()->recordClearedGarrisonedBuilding();
+
+#endif
 					// don't do the normal explosion; just destroy ourselves & return
 					TheGameLogic->destroyObject(getObject());
 					
@@ -520,13 +531,23 @@ Bool DumbProjectileBehavior::projectileHandleCollision( Object *other )
 	detonate();
 
 	// mark ourself as "no collisions" (since we might still exist in slow death mode)
+#ifdef OG
 	getObject()->setStatus(OBJECT_STATUS_NO_COLLISIONS);
+#endif
+#ifdef ZH
+	getObject()->setStatus( MAKE_OBJECT_STATUS_MASK( OBJECT_STATUS_NO_COLLISIONS ) );
+#endif
 	return true;
 }
 
 //-------------------------------------------------------------------------------------------------
 void DumbProjectileBehavior::detonate()
 {
+#ifdef ZH
+  if ( m_hasDetonated )
+    return;
+
+#endif
 	Object* obj = getObject();
 	if (m_detonationWeaponTmpl)
 	{
@@ -561,6 +582,11 @@ void DumbProjectileBehavior::detonate()
 
 	if (obj->getDrawable())
 		obj->getDrawable()->setDrawableHidden(true);
+#ifdef ZH
+  
+  m_hasDetonated = TRUE; 
+
+#endif
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -621,7 +647,15 @@ UpdateSleepTime DumbProjectileBehavior::update()
 	//Otherwise, continue to force the flight path
 	Coord3D flightStep = m_flightPath[m_currentFlightPathStep];
 
+#ifdef OG
 	if (d->m_orientToFlightPath && (!d->m_tumbleRandomly) && m_currentFlightPathStep > 0)
+
+#endif
+#ifdef ZH
+	if (d->m_orientToFlightPath && (!d->m_tumbleRandomly) )
+  {
+    if ( m_currentFlightPathStep > 0)
+#endif
 	{
 	// this seems reasonable; however, if this object has a PhysicsBehavior on it, this calc will be wrong, 
 	// since Physics is applying gravity, which we duly ignore, but the prevPos won't be what we expect.
@@ -632,10 +666,30 @@ UpdateSleepTime DumbProjectileBehavior::update()
 
 		Vector3 curDir(flightStep.x - prevPos.x, flightStep.y - prevPos.y, flightStep.z - prevPos.z);
 		curDir.Normalize();	// buildTransformMatrix wants it this way
+#ifdef ZH
+      Matrix3D orientMtx;
+		  orientMtx.buildTransformMatrix(Vector3(flightStep.x, flightStep.y, flightStep.z), curDir);
+		  getObject()->setTransformMatrix(&orientMtx);
+    }
+    else // oops! how do we orient the projectile on the zeroeth frame? This didn't matter until we started using the
+      //long, blurry projectile graphics which look badly oriented on step 0 of the flight path
+      // so lets orient it the same as if it were on frame 1!
+    {
+		  Coord3D prevPos = m_flightPath[0];
+		  Coord3D curPos = m_flightPath[1];
+#endif
 
+#ifdef ZH
+		  Vector3 curDir(curPos.x - prevPos.x, curPos.y - prevPos.y, curPos.z - prevPos.z);
+		  curDir.Normalize();	// buildTransformMatrix wants it this way
+#endif
 		Matrix3D orientMtx;
 		orientMtx.buildTransformMatrix(Vector3(flightStep.x, flightStep.y, flightStep.z), curDir);
 		getObject()->setTransformMatrix(&orientMtx);
+#ifdef ZH
+    }
+
+#endif
 	}
 	else
 	{

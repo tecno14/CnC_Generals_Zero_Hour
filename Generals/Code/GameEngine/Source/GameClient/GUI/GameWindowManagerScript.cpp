@@ -72,6 +72,14 @@
 #include "GameClient/GameText.h"
 #include "GameClient/HeaderTemplate.h"
 
+#ifdef ZH
+#ifdef _INTERNAL
+// for occasional debugging...
+//#pragma optimize("", off)
+//#pragma MESSAGE("************************************** WARNING, optimization disabled for debugging purposes")
+#endif
+
+#endif
 // DEFINES ////////////////////////////////////////////////////////////////////
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -141,6 +149,9 @@ const char *WindowStatusNames[] = { "ACTIVE", "TOGGLE", "DRAGABLE", "ENABLED", "
 														  "SMOOTH_TEXT", "ONE_LINE", "NO_FLUSH", "SEE_THRU", 
 															"RIGHT_CLICK", "WRAP_CENTERED", "CHECK_LIKE","HOTKEY_TEXT",
 															"USE_OVERLAY_STATES", "NOT_READY", "FLASHING", "ALWAYS_COLOR",
+#ifdef ZH
+															"ON_MOUSE_DOWN",
+#endif
 															NULL };
 
 const char *WindowStyleNames[] = { "PUSHBUTTON",	"RADIOBUTTON",	"CHECKBOX",
@@ -1134,6 +1145,15 @@ static Bool parseStaticTextData( char *token, WinInstanceData *instData,
 	c = strtok( buffer, seps );  // label
 	c = strtok( NULL, seps );  // value
 	scanBool( c, textData->centered );
+#ifdef ZH
+
+	// @todo: add these  to GUIEdit options and output
+	// These are initialized here because any TextData constructor would never get called.
+	// The behavior with these defaults is the same as it was before these members were added.
+	textData->centeredVertically = TRUE;
+	textData->leftMargin = 7;
+	textData->topMargin = 7;
+#endif
 
 	return TRUE;
 
@@ -2726,6 +2746,11 @@ GameWindow *GameWindowManager::winCreateFromScript( AsciiString filenameString,
 		DEBUG_LOG(( "WinCreateFromScript: Cannot access file '%s'.\n", filename ));
 		return NULL;
 	}
+#ifdef ZH
+
+  // read into memory
+  inFile=inFile->convertToRAMFile();
+#endif
 
 	// read the file version
 	Int version;

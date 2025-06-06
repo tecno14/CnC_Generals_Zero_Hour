@@ -53,7 +53,12 @@ will you be ready to leave grasshopper.
 #ifndef WDEBUG_HEADER
 #define WDEBUG_HEADER
 
+#ifdef OG
 #include <iostream>
+#endif
+#ifdef ZH
+#include <iostream.h>
+#endif
 #include "odevice.h"
 #include "streamer.h"
 #include <time.h>
@@ -90,7 +95,12 @@ will you be ready to leave grasshopper.
   strcpy(timebuf,ctime(&clock)); \
   if (MsgManager::errorStream()) \
     (*(MsgManager::errorStream())) << "ERR " << timebuf << " [" << \
+#ifdef OG
         __FILE__ <<  " " << __LINE__ << "] " << X << std::endl; \
+#endif
+#ifdef ZH
+        __FILE__ <<  " " << __LINE__ << "] " << X << endl; \
+#endif
 }
 
 
@@ -146,7 +156,12 @@ will you be ready to leave grasshopper.
 {\
   if (MsgManager::debugStream()) \
     (*(MsgManager::debugStream())) << "DBG [" << __FILE__ <<  \
+#ifdef OG
     " " << __LINE__ << "] " << X << std::endl;\
+#endif
+#ifdef ZH
+    " " << __LINE__ << "] " << X << endl;\
+#endif
 }
 
 // Just get a stream to the debugging device, no extra junk
@@ -184,10 +199,18 @@ class MsgManager
    static void                enableWarn(int flag);
    static void                enableError(int flag);
 
+#ifdef OG
    static std::ostream* debugStream(void);
    static std::ostream* infoStream(void);
    static std::ostream* warnStream(void);
    static std::ostream* errorStream(void);
+#endif
+#ifdef ZH
+   static ostream            *debugStream(void);
+   static ostream            *infoStream(void);
+   static ostream            *warnStream(void);
+   static ostream            *errorStream(void);
+#endif
 };
 
 #endif

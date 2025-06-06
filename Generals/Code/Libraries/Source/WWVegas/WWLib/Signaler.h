@@ -22,13 +22,28 @@
 *     $Archive: /Commando/Code/wwlib/Signaler.h $
 *
 * DESCRIPTION
+#ifdef ZH
+*     Lightweight two-way notification system. This class allows loose coupling
+*     communication between two classes. The only details that need to be know
+*     by both classes is the Signaler class it self and the type of signal they
+*     communicate to each other.
+#endif
 *
 * PROGRAMMER
+#ifdef ZH
+*     Denzil E. Long, Jr.
+#endif
 *     $Author: Denzil_l $
 *
 * VERSION INFO
+#ifdef OG
 *     $Modtime: 8/17/01 7:08p $
 *     $Revision: 3 $
+#endif
+#ifdef ZH
+*     $Modtime: 11/16/01 11:19a $
+*     $Revision: 4 $
+#endif
 *
 ******************************************************************************/
 

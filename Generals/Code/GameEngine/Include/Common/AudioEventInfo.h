@@ -82,6 +82,10 @@ enum AudioControl
 	AC_INTERRUPT						= 0x0010,
 };
 
+#ifdef ZH
+class DynamicAudioEventInfo;
+
+#endif
 struct AudioEventInfo : public MemoryPoolObject
 {
 	MEMORY_POOL_GLUE_WITH_USERLOOKUP_CREATE( AudioEventInfo, "AudioEventInfo" )
@@ -117,6 +121,18 @@ public:
 	Real m_maxDistance;			// greater than this distance and the sound behaves as though it is muted
 
 	AudioType m_soundType;	// This should be either Music, Streaming or SoundEffect
+#ifdef ZH
+	
+  
+  // DynamicAudioEventInfo interfacing functions
+  virtual Bool isLevelSpecific() const { return false; } ///< If true, this sound is only defined on the current level and can be deleted when that level ends
+  virtual DynamicAudioEventInfo * getDynamicAudioEventInfo() { return NULL; }  ///< If this object is REALLY a DynamicAudioEventInfo, return a pointer to the derived class
+  virtual const DynamicAudioEventInfo * getDynamicAudioEventInfo() const { return NULL; } ///< If this object is REALLY a DynamicAudioEventInfo, return a pointer to the derived class
+
+  /// Is this a permenant sound? That is, if I start this sound up, will it ever end
+  /// "on its own" or only if I explicitly kill it?
+  Bool isPermanentSound() const { return BitTest( m_control, AC_LOOP ) && (m_loopCount == 0 );  }
+#endif
 	
 	static const FieldParse m_audioEventInfo[];		///< the parse table for INI definition
 	const FieldParse *getFieldParse( void ) const { return m_audioEventInfo; }

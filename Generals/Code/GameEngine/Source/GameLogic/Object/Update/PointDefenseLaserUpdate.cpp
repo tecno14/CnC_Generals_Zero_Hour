@@ -272,6 +272,13 @@ Object* PointDefenseLaserUpdate::scanClosestTarget()
 			continue;
 		}
 
+#ifdef ZH
+		// Since we don't have an actual weapon or a weapon set, we lose all of the automatic checks.
+		// "Borrow" the check for being an AA only laser to stop from shooting planes on airports.
+		if( !other->isAirborneTarget() && !(data->m_weaponTemplate->getAntiMask() & WEAPON_ANTI_GROUND) )
+			continue;
+
+#endif
 			// order matters: we want to know if I consider it to be an enemy, not vice versa
 		if( getObject()->getRelationship( other ) != ENEMIES )
 		{
@@ -279,7 +286,12 @@ Object* PointDefenseLaserUpdate::scanClosestTarget()
 			continue;
 		}
 
+#ifdef OG
 		if( other->testStatus( OBJECT_STATUS_STEALTHED ) && !other->testStatus( OBJECT_STATUS_DETECTED ) )
+#endif
+#ifdef ZH
+		if( other->testStatus( OBJECT_STATUS_STEALTHED ) && !other->testStatus( OBJECT_STATUS_DETECTED ) && !other->testStatus( OBJECT_STATUS_DISGUISED ) )
+#endif
 		{
 			//We can't see it.
 			continue;

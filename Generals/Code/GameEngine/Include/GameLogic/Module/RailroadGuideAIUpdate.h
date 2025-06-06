@@ -223,9 +223,11 @@ public:
 
 	// PhysicsBehavior methods
 	virtual void onCollide( Object *other, const Coord3D *loc, const Coord3D *normal );
+#ifdef OG
 	virtual Bool wouldLikeToCollideWith(const Object* other) const {return FALSE;}; // will need to add this!
 	virtual Bool isHijackedVehicleCrateCollide() const {return FALSE;};
 	virtual Bool isCarBombCrateCollide() const {return FALSE;};
+#endif
 	virtual Bool isRailroad() const ;
 	virtual UpdateSleepTime update( void );
 
@@ -237,6 +239,12 @@ public:
 	void disembark( void );
 	Bool hasEverBeenHitched( void ) { return m_hasEverBeenHitched; };
 
+#ifdef ZH
+  void setHeld( Bool held ) {m_held = held;};
+
+  void makeAWallOutOfThisTrain( Bool on );
+
+#endif
 protected:
 
 	//definitions
@@ -291,6 +299,10 @@ protected:
 	Bool m_inTunnel; ///< Am I in a tunnel, so I wil not snap to ground height, until the next waypoint, 
 												//  i.e. do I provide the movement and scheduling AI for m_trailerID 
 												//  And therefore for his and his and his..........
+#ifdef ZH
+
+  Bool m_held;   ///< This will prevent a loco from departing a station
+#endif
 
 	ConductorState m_conductorState;
 

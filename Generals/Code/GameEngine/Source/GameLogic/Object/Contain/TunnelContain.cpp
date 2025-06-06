@@ -111,6 +111,59 @@ void TunnelContain::removeFromContain( Object *obj, Bool exposeStealthUnits )
 
 }
 
+#ifdef ZH
+
+
+//--------------------------------------------------------------------------------------------------------
+/** Force all contained objects in the contained list to exit, and kick them in the pants on the way out*/
+//--------------------------------------------------------------------------------------------------------
+void TunnelContain::harmAndForceExitAllContained( DamageInfo *info )
+{
+	Player *owningPlayer = getObject()->getControllingPlayer();
+	const ContainedItemsList *fullList = owningPlayer->getTunnelSystem()->getContainedItemsList();
+
+	Object *obj;
+	ContainedItemsList::const_iterator it;
+
+	//Kris: Patch 1.01 -- November 6, 2003
+	//No longer advances the iterator and saves it. The iterator is fetched from the beginning after
+	//each loop. This is to prevent a crash where dropping a bunker buster on a tunnel network containing
+	//multiple units (if they have the suicide bomb upgrade - demo general). In this case, multiple bunker
+	//busters would hit the tunnel network in close succession. Missile #1 would iterate the list, killing 
+	//infantry #1. Infantry #1 would explode and destroy Missile #2. Missile #2 would start iterating the
+	//same list, killing the remaining units. When Missile #1 picked up and continued processing the list
+	//it would crash because it's iterator was deleted from under it.
+	it = (*fullList).begin();
+	while( it != (*fullList).end() )
+	{
+		obj = *it;
+		removeFromContain( obj, true );
+    obj->attemptDamage( info );
+		it = (*fullList).begin();
+	}  // end while
+
+}  // end removeAllContained
+
+//-------------------------------------------------------------------------------------------------
+/** Remove all contained objects from the contained list */
+//-------------------------------------------------------------------------------------------------
+void TunnelContain::killAllContained( void )
+{
+	Player *owningPlayer = getObject()->getControllingPlayer();
+	const ContainedItemsList *fullList = owningPlayer->getTunnelSystem()->getContainedItemsList();
+
+	Object *obj;
+	ContainedItemsList::const_iterator it;
+	it = (*fullList).begin();
+	while( it != (*fullList).end() )
+	{
+		obj = *it;
+		it++;
+		removeFromContain( obj, true );
+    obj->kill();
+	}
+}
+#endif
 //-------------------------------------------------------------------------------------------------
 /** Remove all contained objects from the contained list */
 //-------------------------------------------------------------------------------------------------
@@ -140,13 +193,31 @@ void TunnelContain::iterateContained( ContainIterateFunc func, void *userData, B
 }
 
 //-------------------------------------------------------------------------------------------------
+#ifdef OG
 void TunnelContain::onContaining( Object *obj )
+#endif
+#ifdef ZH
+void TunnelContain::onContaining( Object *obj, Bool wasSelected )
+#endif
 {
+#ifdef OG
 	OpenContain::onContaining(obj);
+#endif
+#ifdef ZH
+	OpenContain::onContaining( obj, wasSelected );
+#endif
 
 	// objects inside a building are held
 	obj->setDisabled( DISABLED_HELD );
 
+#ifdef ZH
+	obj->getControllingPlayer()->getAcademyStats()->recordUnitEnteredTunnelNetwork();
+  
+
+  
+  obj->handlePartitionCellMaintenance();
+
+#endif
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -330,8 +401,11 @@ void TunnelContain::onCreate( void )
 }
 
 //-------------------------------------------------------------------------------------------------
-void TunnelContain::onBuildComplete( void )
+#ifdef ZH
+void TunnelContain::onObjectCreated()
 {
+	//Kris: July 29, 2003
+	//Added this function to support the sneak attack (which doesn't call onBuildComplete).
 	if( ! shouldDoOnBuildComplete() )
 		return;
 
@@ -346,6 +420,58 @@ void TunnelContain::onBuildComplete( void )
 
 	tunnelTracker->onTunnelCreated( getObject() );
 	m_isCurrentlyRegistered = TRUE;
+}
+
+//-------------------------------------------------------------------------------------------------
+#endif
+void TunnelContain::onBuildComplete( void )
+{
+#ifdef ZH
+	//Kris: July 29, 2003
+	//Obsolete -- onObjectCreated handles it before this function gets called.
+	/*
+#endif
+	if( ! shouldDoOnBuildComplete() )
+		return;
+
+	m_needToRunOnBuildComplete = false;
+
+	Player *owningPlayer = getObject()->getControllingPlayer();
+	if( owningPlayer == NULL )
+		return;
+	TunnelTracker *tunnelTracker = owningPlayer->getTunnelSystem();
+	if( tunnelTracker == NULL )
+		return;
+
+	tunnelTracker->onTunnelCreated( getObject() );
+	m_isCurrentlyRegistered = TRUE;
+#ifdef ZH
+	*/
+} 
+
+// ------------------------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------------------------
+void TunnelContain::onCapture( Player *oldOwner, Player *newOwner )
+{
+	if( m_isCurrentlyRegistered )
+	{
+		TunnelTracker *oldTunnelTracker = oldOwner->getTunnelSystem();
+		if( oldTunnelTracker )
+		{
+			DEBUG_ASSERTCRASH( oldTunnelTracker->getContainCount() == 0, ("You shouldn't force a capture of a Tunnel with people in it. Future ExitFromContainer scripts will fail."));
+			oldTunnelTracker->onTunnelDestroyed(getObject());
+		}
+
+		TunnelTracker *newTunnelTracker = newOwner->getTunnelSystem();
+		if( newTunnelTracker )
+		{
+			newTunnelTracker->onTunnelCreated(getObject());
+		}
+	}
+
+	// extend base class
+	OpenContain::onCapture( oldOwner, newOwner );
+#endif
 } 
 
 // ------------------------------------------------------------------------------------------------

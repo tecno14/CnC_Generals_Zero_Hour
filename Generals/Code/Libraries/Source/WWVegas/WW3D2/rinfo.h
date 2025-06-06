@@ -24,12 +24,33 @@
  *                                                                                             *
  *                     $Archive:: /Commando/Code/ww3d2/rinfo.h                                $*
  *                                                                                             *
+#ifdef OG
  *                       Author:: Greg Hjelstrom                                               *
+#endif
+#ifdef ZH
+ *                   Org Author:: Greg Hjelstrom                                               *
+#endif
  *                                                                                             *
+#ifdef OG
  *                     $Modtime:: 8/24/01 3:33p                                               $*
+#endif
+#ifdef ZH
+ *                       Author : Kenny Mitchell                                               * 
+#endif
  *                                                                                             *
+#ifdef OG
  *                    $Revision:: 13                                                          $*
+
+#endif
+#ifdef ZH
+ *                     $Modtime:: 06/27/02 1:27p                                              $*
  *                                                                                             *
+ *                    $Revision:: 16                                                          $*
+#endif
+ *                                                                                             *
+#ifdef ZH
+ * 06/27/02 KM Render to shadow buffer texture support														*
+#endif
  *---------------------------------------------------------------------------------------------*
  * Functions:                                                                                  *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
@@ -57,6 +78,9 @@ class MaterialPassClass;
 class LightEnvironmentClass;
 class VisRasterizerClass;
 class BWRenderClass;
+#ifdef ZH
+class TexProjectClass;
+#endif
 
 const unsigned MAX_ADDITIONAL_MATERIAL_PASSES=32;
 const unsigned MAX_OVERRIDE_FLAG_LEVEL=32;
@@ -76,10 +100,20 @@ public:
 	~RenderInfoClass(void);
 
 	enum RINFO_OVERRIDE_FLAGS {
+#ifdef OG
 		RINFO_OVERRIDE_DEFAULT						= 0x0,	// No overrides
 		RINFO_OVERRIDE_FORCE_TWO_SIDED			= 0x1,	// Override mesh settings to force no backface culling
 		RINFO_OVERRIDE_FORCE_SORTING				= 0x2,	// Override mesh settings to force sorting
 		RINFO_OVERRIDE_ADDITIONAL_PASSES_ONLY	= 0x4		// Do not render base passes (only additional passes)
+
+#endif
+#ifdef ZH
+		RINFO_OVERRIDE_DEFAULT						= 0x0000,	// No overrides
+		RINFO_OVERRIDE_FORCE_TWO_SIDED			= 0x0001,	// Override mesh settings to force no backface culling
+		RINFO_OVERRIDE_FORCE_SORTING				= 0x0002,	// Override mesh settings to force sorting
+		RINFO_OVERRIDE_ADDITIONAL_PASSES_ONLY	= 0x0004,	// Do not render base passes (only additional passes)
+		RINFO_OVERRIDE_SHADOW_RENDERING			= 0x0008		// Hint: we are rendering a shadow
+#endif
 	};
 
 	void								Push_Material_Pass(MaterialPassClass * matpass);
@@ -102,10 +136,17 @@ public:
 	float								materialPassEmissiveOverride;	////added for 'Generals' to allow variable emissive on additional render passes.-MW
 
 	LightEnvironmentClass*		light_environment;
+#ifdef ZH
+
+	TexProjectClass*				Texture_Projector;
+#endif
 
 protected:
 	MaterialPassClass*			AdditionalMaterialPassArray[MAX_ADDITIONAL_MATERIAL_PASSES];
 	unsigned							AdditionalMaterialPassCount;
+#ifdef ZH
+	unsigned							RejectedMaterialPasses;
+#endif
 	RINFO_OVERRIDE_FLAGS			OverrideFlag[MAX_OVERRIDE_FLAG_LEVEL];
 	unsigned							OverrideFlagLevel;
 

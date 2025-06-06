@@ -65,9 +65,10 @@
 #define USE_DOZER 1	 
 
 
+#ifdef OG
 #if !defined(_PLAYTEST)
 
-
+#endif
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 // PRIVATE DATA ///////////////////////////////////////////////////////////////////////////////////
@@ -151,15 +152,38 @@ void AISkirmishPlayer::processBaseBuilding( void )
 				}	else {
 					if (bldg->getControllingPlayer() == m_player) {
 						// Check for built or dozer missing.
+#ifdef OG
 						if( BitTest( bldg->getStatusBits(), OBJECT_STATUS_UNDER_CONSTRUCTION ) == TRUE) {
 							if (bldg->isKindOf(KINDOF_FS_POWER) && !bldg->isKindOf(KINDOF_CASH_GENERATOR)) {
+
+#endif
+#ifdef ZH
+						if( bldg->getStatusBits().test( OBJECT_STATUS_UNDER_CONSTRUCTION ) ) 
+						{
+							if (bldg->isKindOf(KINDOF_FS_POWER) && !bldg->isKindOf(KINDOF_CASH_GENERATOR)) 
+							{
+#endif
 								powerUnderConstruction = true;
 							}
 							// make sure dozer is working on him.
 							ObjectID builder = bldg->getBuilderID();
 							Object* myDozer = TheGameLogic->findObjectByID(builder);
+#ifdef ZH
+              
+              if (myDozer && ( myDozer->getControllingPlayer() != m_player || myDozer->isDisabledByType( DISABLED_UNMANNED ) ) )
+              {//I don't expect this dozer to work well with me.
+                myDozer = NULL;
+                bldg->setBuilder( NULL );
+              }
+
+#endif
 							if (myDozer==NULL) {
+#ifdef OG
 								DEBUG_LOG(("AI's Dozer got killed.  Find another dozer.\n"));
+#endif
+#ifdef ZH
+								DEBUG_LOG(("AI's Dozer got killed (or captured).  Find another dozer.\n"));
+#endif
 								queueDozer();
  								myDozer = findDozer(bldg->getPosition());
 								if (myDozer==NULL || myDozer->getAI()==NULL) {
@@ -629,11 +653,25 @@ void AISkirmishPlayer::buildAIBaseDefenseStructure(const AsciiString &thingName,
 		offset.x = goalPos.x-m_baseCenter.x;
 		offset.y = goalPos.y-m_baseCenter.y;
 		offset.normalize();
+#ifdef OG
 		offset.x *= m_baseRadius;
 		offset.y *= m_baseRadius;
 
+#endif
+#ifdef ZH
+		Real defenseDistance = m_baseRadius;
+		defenseDistance += TheAI->getAiData()->m_skirmishBaseDefenseExtraDistance;
+		offset.x *= defenseDistance;
+		offset.y *= defenseDistance;
+#endif
+
 		Real structureRadius = tTemplate->getTemplateGeometryInfo().getBoundingCircleRadius();
+#ifdef OG
 		Real baseCircumference = 2*PI*m_baseRadius;
+#endif
+#ifdef ZH
+		Real baseCircumference = 2*PI*defenseDistance;
+#endif
 		Real angleOffset = 2*PI*(structureRadius*4/baseCircumference);
 
 		Int selector;
@@ -673,8 +711,14 @@ void AISkirmishPlayer::buildAIBaseDefenseStructure(const AsciiString &thingName,
 		Real s = sin(angle);
 		Real c = cos(angle);
 
+#ifdef OG
 	  DEBUG_LOG(("Angle is %f sin %f, cos %f \n", 180*angle/PI, s, c));
 		DEBUG_LOG(("Offset is %f  %f, new is %f, %f \n", 
+#endif
+#ifdef ZH
+	  DEBUG_LOG(("buildAIBaseDefenseStructure -- Angle is %f sin %f, cos %f \n", 180*angle/PI, s, c));
+		DEBUG_LOG(("buildAIBaseDefenseStructure -- Offset is %f  %f, Final Position is %f, %f \n", 
+#endif
 			offset.x, offset.y, 
 			offset.x*c - offset.y*s,
 			offset.y*c + offset.x*s
@@ -715,7 +759,12 @@ Bool AISkirmishPlayer::checkBridges(Object *unit, Waypoint *way)
 	const LocomotorSet& locoSet = ai->getLocomotorSet();
 	Waypoint *curWay;
 	for (curWay = way; curWay; curWay = curWay->getNext()) {
+#ifdef OG
 		if (TheAI->pathfinder()->quickDoesPathExist(locoSet, &unitPos, curWay->getLocation())) {
+#endif
+#ifdef ZH
+		if (TheAI->pathfinder()->clientSafeQuickDoesPathExist(locoSet, &unitPos, curWay->getLocation())) {
+#endif
 			continue;
 		}
 		ObjectID brokenBridge = INVALID_ID;
@@ -802,7 +851,12 @@ void AISkirmishPlayer::recruitSpecificAITeam(TeamPrototype *teamProto, Real recr
 						AIUpdateInterface *ai = unit->getAIUpdateInterface();
 						if (ai) 
 						{
+#ifdef OG
 #ifdef DEBUG_LOGGING
+#endif
+#ifdef ZH
+#if defined(_DEBUG) || defined(_INTERNAL)
+#endif
 							Coord3D pos = *unit->getPosition();
 							Coord3D to = teamProto->getTemplateInfo()->m_homeLocation;
 							DEBUG_LOG(("Moving unit from %f,%f to %f,%f\n", pos.x, pos.y , to.x, to.y ));
@@ -1124,13 +1178,25 @@ Object * AISkirmishPlayer::findDozer( const Coord3D *pos )
 /**
  * Find a good spot to fire a superweapon.
  */
+#ifdef OG
 void AISkirmishPlayer::computeSuperweaponTarget(const SpecialPowerTemplate *power, Coord3D *retPos, Int playerNdx, Real weaponRadius)
+#endif
+#ifdef ZH
+Bool AISkirmishPlayer::computeSuperweaponTarget(const SpecialPowerTemplate *power, Coord3D *retPos, Int playerNdx, Real weaponRadius)
+#endif
 {
 
 	Region2D bounds;
 	getPlayerStructureBounds(&bounds, playerNdx);
 
+#ifdef OG
 	if (power->getName() == "SuperweaponClusterMines") {
+
+#endif
+#ifdef ZH
+	if( power->getSpecialPowerType() == SPECIAL_CLUSTER_MINES || power->getSpecialPowerType() == NUKE_SPECIAL_CLUSTER_MINES )
+	{
+#endif
 		// hackus brutus - mine the entrances to our base.
 		AsciiString pathLabel;
 		Int mode = GameLogicRandomValue(0, 2);
@@ -1162,9 +1228,21 @@ void AISkirmishPlayer::computeSuperweaponTarget(const SpecialPowerTemplate *powe
 		retPos->x += offset.x;
 		retPos->y += offset.y;
 		retPos->z = TheTerrainLogic->getGroundHeight(retPos->x, retPos->y);
+#ifdef OG
 		return;
+#endif
+#ifdef ZH
+		return TRUE;
+#endif
 	}
+#ifdef OG
 	AIPlayer::computeSuperweaponTarget(power, retPos, playerNdx, weaponRadius);
+
+#endif
+#ifdef ZH
+
+	return AIPlayer::computeSuperweaponTarget(power, retPos, playerNdx, weaponRadius);
+#endif
 
 }
 
@@ -1226,4 +1304,6 @@ void AISkirmishPlayer::loadPostProcess( void )
 
 }  // end loadPostProcess
 
+#ifdef OG
+#endif
 #endif

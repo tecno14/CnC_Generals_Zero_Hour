@@ -24,6 +24,9 @@
 #endif
 
 #include "always.h"
+#ifdef ZH
+#include "thread.h"
+#endif
 
 
 // Always use mutex or critical section when accessing the same data from multiple threads!
@@ -99,7 +102,9 @@ public:
 		CriticalSectionClass& CriticalSection;
 	public:
 		// In order to lock a mutex create a local instance of LockClass with mutex as a parameter.
+#ifdef OG
 		// Time is in milliseconds, INFINITE means infinite wait.
+#endif
 		LockClass(CriticalSectionClass& c);
 		~LockClass();
 	private:
@@ -107,6 +112,75 @@ public:
 	};
 	friend class LockClass;
 };
+#ifdef ZH
 
+// ----------------------------------------------------------------------------
+//
+// Fast critical section is really fast version of CriticalSection. The downside
+// of it is that it can't be locked multiple times from the same thread.
+//
+// ----------------------------------------------------------------------------
+#endif
+
+#ifdef ZH
+class FastCriticalSectionClass
+{
+	unsigned Flag;
+
+public:
+	// Name can (and usually should) be NULL. Use name only if you wish to create a globally unique mutex
+	FastCriticalSectionClass() : Flag(0) {}
+
+	class LockClass
+	{
+		FastCriticalSectionClass& cs;
+	public:
+		__forceinline LockClass(FastCriticalSectionClass& critical_section) : cs(critical_section)
+		{
+		  unsigned& nFlag=cs.Flag;
+
+		  #define ts_lock _emit 0xF0
+		  assert(((unsigned)&nFlag % 4) == 0);
+
+      // I'm terribly sorry for these emits in here but
+      // VC won't inline any functions that have labels in them...
+
+      // Had to remove the emits back to normal
+      // ASM statements because sometimes the jump
+      // would be 1 byte off....
+      
+		  __asm mov ebx, [nFlag]
+		  __asm ts_lock
+		  __asm bts dword ptr [ebx], 0
+		  __asm jnc BitSet
+      //__asm _emit 0x73
+      //__asm _emit 0x0f
+
+		  The_Bit_Was_Previously_Set_So_Try_Again:
+		    ThreadClass::Switch_Thread();
+		  __asm mov ebx, [nFlag]
+		  __asm ts_lock
+		  __asm bts dword ptr [ebx], 0
+		  __asm jc  The_Bit_Was_Previously_Set_So_Try_Again
+      //_asm _emit 0x72
+      //_asm _emit 0xf1
+
+      BitSet:
+        ;
+		}
+
+		~LockClass()
+		{
+      cs.Flag=0;
+		}
+    
+	private:
+		LockClass &operator=(const LockClass&);
+    LockClass(const LockClass&);
+	};
+
+  friend class LockClass;
+};
+#endif
 
 #endif

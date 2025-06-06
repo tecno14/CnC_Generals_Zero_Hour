@@ -61,6 +61,15 @@
 //-----------------------------------------------------------------------------
 class Player;
 class Thing;
+#ifdef ZH
+void parseUpgradePair( INI *ini, void *instance, void *store, const void *userData );
+struct upgradePair
+{
+	std::string type;
+	Int         amount;
+};
+
+#endif
 //-----------------------------------------------------------------------------
 // TYPE DEFINES ///////////////////////////////////////////////////////////////
 //-----------------------------------------------------------------------------
@@ -70,12 +79,20 @@ public:
 	UnsignedInt m_depositFrame;
 	Int m_depositAmount;
 	Int m_initialCaptureBonus;
+#ifdef ZH
+	Bool m_isActualMoney;
+	std::list<upgradePair> m_upgradeBoost;
+#endif
 
 	AutoDepositUpdateModuleData()
 	{
 		m_depositFrame = 0;
 		m_depositAmount = 0;
 		m_initialCaptureBonus = 0;
+#ifdef ZH
+		m_isActualMoney = TRUE;
+		m_upgradeBoost.clear();
+#endif
 	}
 
 	static void buildFieldParse(MultiIniFieldParse& p) 
@@ -86,6 +103,10 @@ public:
 			{ "DepositTiming",					INI::parseDurationUnsignedInt,		NULL, offsetof( AutoDepositUpdateModuleData, m_depositFrame ) },
 			{ "DepositAmount",					INI::parseInt,		NULL, offsetof( AutoDepositUpdateModuleData, m_depositAmount ) },
 			{ "InitialCaptureBonus",		INI::parseInt,		NULL, offsetof( AutoDepositUpdateModuleData, m_initialCaptureBonus ) },
+#ifdef ZH
+			{ "ActualMoney",						INI::parseBool,		NULL, offsetof( AutoDepositUpdateModuleData, m_isActualMoney ) },
+			{ "UpgradedBoost",					parseUpgradePair,		NULL, offsetof( AutoDepositUpdateModuleData, m_upgradeBoost ) },
+#endif
 			{ 0, 0, 0, 0 }
 		};
     p.add(dataFieldParse);
@@ -109,6 +130,10 @@ public:
 	virtual UpdateSleepTime update( void );
 
 protected:
+#ifdef ZH
+
+	Int getUpgradedSupplyBoost() const;
+#endif
 
 	UnsignedInt m_depositOnFrame;
 	Bool m_awardInitialCaptureBonus;

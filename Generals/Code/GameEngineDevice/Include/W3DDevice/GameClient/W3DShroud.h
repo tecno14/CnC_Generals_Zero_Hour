@@ -116,7 +116,12 @@ protected:
 	TextureClass *m_pDstTexture;			///<stores vidmem copy of visible shroud.
 	Int m_dstTextureWidth;					///<dimensions of m_pDstTexture
 	Int m_dstTextureHeight;					///<dimensions of m_pDstTexture
+#ifdef OG
 	TextureClass::FilterType m_shroudFilter;
+#endif
+#ifdef ZH
+	TextureFilterClass::FilterType m_shroudFilter;
+#endif
 	Real m_drawOriginX;
 	Real m_drawOriginY;
 	Bool m_drawFogOfWar;					///<switch to draw alternate fog style instead of solid black

@@ -52,6 +52,9 @@
 #include "GameClient/GadgetStaticText.h"
 #include "GameClient/MapUtil.h"
 #include "GameClient/GameWindowTransitions.h"
+#ifdef ZH
+#include "GameClient/ChallengeGenerals.h"
+#endif
 
 #include "GameLogic/GameLogic.h"
 
@@ -141,6 +144,7 @@ static Int maxPoints= 100;
 static Int minPoints = 0;
 
 static const LadderInfo * getLadderInfo( void );
+#ifdef OG
 
 
 // [SKB: Jul 01 2003 @ 7:7pm] :
@@ -155,7 +159,7 @@ static const LadderInfo * getLadderInfo( void );
 typedef std::vector<Int> MapListboxIndex;
 static MapListboxIndex mapListboxIndex;
 #endif
-
+#endif
 
 static Bool isInfoShown(void)
 {
@@ -334,6 +338,17 @@ static void populateQMSideComboBox(Int favSide, const LadderInfo *li = NULL)
 				continue; // ladder doesn't allow it.
 		}
 
+#ifdef ZH
+		// Remove disallowed generals from the choice list.
+		// This is also enforced at GUI setup (GUIUtil.cpp and UserPreferences.cpp).
+		// @todo: unlock these when something rad happens
+		Bool disallowLockedGenerals = TRUE;
+		const GeneralPersona *general = TheChallengeGenerals->getGeneralByTemplateName(fac->getName());
+		Bool startsLocked = general ? !general->isStartingEnabled() : FALSE;
+		if (disallowLockedGenerals && startsLocked)
+			continue;
+
+#endif
 		seenSides.insert(side);
 
 		newIndex = GadgetComboBoxAddEntry(comboBoxSide, TheGameText->fetch(side), def->getColor());
@@ -589,9 +604,11 @@ static void populateQuickMatchMapSelectListbox( QuickMatchPreferences& pref )
 		numPlayers = (selected+1)*2;
 	}
 
+#ifdef OG
 	#if VARIABLE_NUMBER_OF_MAPS
 	mapListboxIndex.clear();
 	#endif
+#endif
 
 	GadgetListBoxReset(listboxMapSelect);
 	for (std::list<AsciiString>::const_iterator it = maps.begin(); it != maps.end(); ++it)
@@ -617,6 +634,7 @@ static void populateQuickMatchMapSelectListbox( QuickMatchPreferences& pref )
 			GadgetListBoxAddEntryText(listboxMapSelect, displayName, GameSpyColor[(isSelected)?GSCOLOR_MAP_SELECTED:GSCOLOR_MAP_UNSELECTED], index, 1);
 			GadgetListBoxSetItemData(listboxMapSelect, (void *)isSelected, index);
 			GadgetListBoxSetItemData(listboxMapSelect, (void *)md, index, 1);
+#ifdef OG
 
 			#if VARIABLE_NUMBER_OF_MAPS
 			mapListboxIndex.push_back(index);
@@ -630,6 +648,7 @@ static void populateQuickMatchMapSelectListbox( QuickMatchPreferences& pref )
 			// they are added to the information sent to the QMBot.
 			mapListboxIndex.push_back(-1);
 			#endif
+#endif
 		}
 	}
 }
@@ -1208,6 +1227,102 @@ void WOLQuickMatchMenuUpdate( WindowLayout * layout, void *userData)
 					TheGameSpyInfo->reset();
 					TheShell->pop();
 				}
+#ifdef ZH
+            break; // LORENZEN ADDED. SORRY IF THIS "BREAKS" IT...
+
+			case PeerResponse::PEERRESPONSE_JOINGROUPROOM:
+				/*
+				if (resp.joinGroupRoom.ok)
+				{
+					TheGameSpyInfo->addText(UnicodeString(L"Joined group room"), GameSpyColor[GSCOLOR_DEFAULT], quickmatchTextWindow);
+				}
+				else
+				{
+					TheGameSpyInfo->addText(UnicodeString(L"Didn't join group room"), GameSpyColor[GSCOLOR_DEFAULT], quickmatchTextWindow);
+				}
+				*/
+				break;
+			case PeerResponse::PEERRESPONSE_PLAYERJOIN:
+				{
+					//UnicodeString str;
+					//str.format(L"Player %hs joined the room", resp.nick.c_str());
+					//TheGameSpyInfo->addText(str, GameSpyColor[GSCOLOR_DEFAULT], quickmatchTextWindow);
+				}
+				break;
+			case PeerResponse::PEERRESPONSE_PLAYERLEFT:
+				{
+					//UnicodeString str;
+					//str.format(L"Player %hs left the room", resp.nick.c_str());
+					//TheGameSpyInfo->addText(str, GameSpyColor[GSCOLOR_DEFAULT], quickmatchTextWindow);
+				}
+				break;
+			case PeerResponse::PEERRESPONSE_MESSAGE:
+				{
+					//UnicodeString m;
+					//m.format(L"[%hs]: %ls", resp.nick.c_str(), resp.text.c_str());
+					//TheGameSpyInfo->addText(m, GameSpyColor[GSCOLOR_DEFAULT], quickmatchTextWindow);
+				}
+				break;
+
+// LORENZEN EXPRESSES DOUBT ABOUT THIS ONE, AS IT MAY HAVE SUFFERED MERGE MANGLING... SORRY
+            // I THINK THIS IS THE OBSOLETE VERSION... SEE THE NEWER LOOKING ONE ABOVE
+/*
+  			case PeerResponse::PEERRESPONSE_DISCONNECT:
+  				{
+  					UnicodeString title, body;
+  					AsciiString disconMunkee;
+  					disconMunkee.format("GUI:GSDisconReason%d", resp.discon.reason);
+   				title = TheGameText->fetch( "GUI:GSErrorTitle" );
+  					body = TheGameText->fetch( disconMunkee );
+  					GameSpyCloseAllOverlays();
+  					GSMessageBoxOk( title, body );
+  					TheGameSpyInfo->reset();
+  					TheShell->pop();
+  				}
+*/
+
+			case PeerResponse::PEERRESPONSE_CREATESTAGINGROOM:
+				{
+					if (resp.createStagingRoom.result == PEERJoinSuccess)
+					{
+						// Woohoo!  On to our next screen!
+						UnicodeString str;
+						str.format(L"Created staging room");
+						TheGameSpyInfo->addText(str, GameSpyColor[GSCOLOR_DEFAULT], quickmatchTextWindow);
+					}
+					else
+					{
+						UnicodeString s;
+						s.format(L"createStagingRoom result: %d", resp.createStagingRoom.result);
+						TheGameSpyInfo->addText( s, GameSpyColor[GSCOLOR_DEFAULT], quickmatchTextWindow );
+					}
+				}
+				break;
+			case PeerResponse::PEERRESPONSE_JOINSTAGINGROOM:
+				{
+					if (resp.joinStagingRoom.ok == PEERTrue)
+					{
+						// Woohoo!  On to our next screen!
+						UnicodeString s;
+						s.format(L"joinStagingRoom result: %d", resp.joinStagingRoom.ok);
+						TheGameSpyInfo->addText( s, GameSpyColor[GSCOLOR_DEFAULT], quickmatchTextWindow );
+					}
+					else
+					{
+						UnicodeString s;
+						s.format(L"joinStagingRoom result: %d", resp.joinStagingRoom.ok);
+						TheGameSpyInfo->addText( s, GameSpyColor[GSCOLOR_DEFAULT], quickmatchTextWindow );
+					}
+				}
+				break;
+			case PeerResponse::PEERRESPONSE_STAGINGROOM:
+				{
+					UnicodeString str;
+					str.format(L"Staging room list callback", resp.nick.c_str());
+					TheGameSpyInfo->addText(str, GameSpyColor[GSCOLOR_DEFAULT], quickmatchTextWindow);
+				}
+				break;
+#endif
 			case PeerResponse::PEERRESPONSE_QUICKMATCHSTATUS:
 				{
 					sawImportantMessage = TRUE;
@@ -1275,6 +1390,7 @@ void WOLQuickMatchMenuUpdate( WindowLayout * layout, void *userData)
 							}
 
 							std::list<AsciiString> maps = TheGameSpyConfig->getQMMaps();
+#ifdef OG
 
 							#if VARIABLE_NUMBER_OF_MAPS
 							std::list<AsciiString>::const_iterator it = maps.begin();
@@ -1285,12 +1401,12 @@ void WOLQuickMatchMenuUpdate( WindowLayout * layout, void *userData)
 							TheGameSpyGame->setMap(theMap);
 
 							#else
+#endif
 							for (std::list<AsciiString>::const_iterator it = maps.begin(); it != maps.end(); ++it)
 							{
 								AsciiString theMap = *it;
 								theMap.toLower();
 								const MapMetaData *md = TheMapCache->findMap(theMap);
-
 								if (md && md->m_numPlayers >= numPlayers)
 								{
 									TheGameSpyGame->setMap(*it);
@@ -1298,7 +1414,9 @@ void WOLQuickMatchMenuUpdate( WindowLayout * layout, void *userData)
 										break;
 								}
 							}
+#ifdef OG
 							#endif
+#endif
 
 							Int numPlayersPerTeam = numPlayers/2;
 							DEBUG_ASSERTCRASH(numPlayersPerTeam, ("0 players per team???"));
@@ -1582,6 +1700,7 @@ WindowMsgHandledType WOLQuickMatchMenuSystem( GameWindow *window, UnsignedInt ms
 					PeerRequest req;
 					req.peerRequestType = PeerRequest::PEERREQUEST_STARTQUICKMATCH;
 					req.qmMaps.clear();
+#ifdef OG
 
 					#if VARIABLE_NUMBER_OF_MAPS
 					for (MapListboxIndex::iterator idxIt = mapListboxIndex.begin(); idxIt != mapListboxIndex.end(); ++idxIt) {
@@ -1596,13 +1715,16 @@ WindowMsgHandledType WOLQuickMatchMenuSystem( GameWindow *window, UnsignedInt ms
 						}
 					}
 					#else 
+#endif
 					Int numMaps = GadgetListBoxGetNumEntries(listboxMapSelect);
 					for ( Int i=0; i<numMaps; ++i )
 					{
 						req.qmMaps.push_back(GadgetListBoxGetItemData(listboxMapSelect, i, 0));
 					}
+#ifdef OG
 					#endif
 					
+#endif
 					UnicodeString u;
 					AsciiString a;
 //					u = GadgetTextEntryGetText(textEntryMaxDisconnects);
@@ -1688,6 +1810,24 @@ WindowMsgHandledType WOLQuickMatchMenuSystem( GameWindow *window, UnsignedInt ms
 									break;
 								}
 							}
+#ifdef ZH
+						}
+					}
+					else if( index == PLAYERTEMPLATE_RANDOM )
+					{
+						// If not a forced random ladder, then we need to resolve our pick of random right now anyway, or else
+						// we will get the same pick every darn time.
+						Int randomTries = 0;// Rare to hit Random 10 times in a row, but if it does then random will be converted to a set side by the very bug this tries to fix, so no harm done.
+
+						while( randomTries < 10  &&  index == PLAYERTEMPLATE_RANDOM )
+						{
+							Int numberComboBoxEntries = GadgetComboBoxGetLength(comboBoxSide);
+							Int randomPick = GameClientRandomValue(0, numberComboBoxEntries - 1);
+							index = (Int)GadgetComboBoxGetItemData( comboBoxSide, randomPick );
+							req.QM.side = index;
+
+							randomTries++;
+#endif
 						}
 					}
 

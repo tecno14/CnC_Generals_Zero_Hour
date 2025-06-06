@@ -35,6 +35,9 @@
 // INCLUDES ///////////////////////////////////////////////////////////////////////////////////////
 #include "Common/INI.h"
 #include "GameLogic/Module/DieModule.h"
+#ifdef ZH
+#include "GameLogic/Module/UpgradeModule.h"
+#endif
 #include "GameLogic/Weapon.h"
 #include "GameLogic/Damage.h"
 
@@ -47,12 +50,27 @@ class FXListDieModuleData : public DieModuleData
 {
 public:
 	const FXList *m_defaultDeathFX;								///< default fx to make 
+#ifdef OG
 	Bool m_orientToObject;
+
+#endif
+#ifdef ZH
+	UpgradeMuxData				m_upgradeMuxData;
+	Bool									m_orientToObject;
+	Bool									m_initiallyActive;
+#endif
 
 	FXListDieModuleData()
 	{
 		m_defaultDeathFX = NULL;
+#ifdef OG
 		m_orientToObject = true;
+
+#endif
+#ifdef ZH
+		m_orientToObject = TRUE;
+		m_initiallyActive = TRUE; //Patch 1.02 -- Craptacular HACK -- should default to FALSE but only ONE case sets it false out of 847!
+#endif
 	}
 
 	static void buildFieldParse(MultiIniFieldParse& p) 
@@ -61,16 +79,27 @@ public:
 
 		static const FieldParse dataFieldParse[] = 
 		{
+#ifdef ZH
+			{ "StartsActive",					INI::parseBool, NULL, offsetof( FXListDieModuleData, m_initiallyActive ) },
+#endif
 			{ "DeathFX",							INI::parseFXList,		NULL, offsetof( FXListDieModuleData, m_defaultDeathFX ) },
 			{ "OrientToObject",				INI::parseBool,		NULL, offsetof( FXListDieModuleData, m_orientToObject ) },
 			{ 0, 0, 0, 0 }
 		};
     p.add(dataFieldParse);
+#ifdef ZH
+		p.add(UpgradeMuxData::getFieldParse(), offsetof( FXListDieModuleData, m_upgradeMuxData ));
+#endif
 	}
 };
 
 //-------------------------------------------------------------------------------------------------
+#ifdef OG
 class FXListDie : public DieModule
+#endif
+#ifdef ZH
+class FXListDie : public DieModule, public UpgradeMux
+#endif
 {
 
 	MAKE_STANDARD_MODULE_MACRO_WITH_MODULE_DATA( FXListDie, FXListDieModuleData );
@@ -81,7 +110,51 @@ public:
 	FXListDie( Thing *thing, const ModuleData* moduleData );
 	// virtual destructor prototype provided by memory pool declaration
 
+#ifdef ZH
+	// module methods
+	static Int getInterfaceMask() { return BehaviorModule::getInterfaceMask() | (MODULEINTERFACE_UPGRADE) | (MODULEINTERFACE_DIE); }
+
+	// BehaviorModule
+	virtual UpgradeModuleInterface* getUpgrade() { return this; }
+	virtual DieModuleInterface* getDie() { return this; }
+
+#endif
 	virtual void onDie( const DamageInfo *damageInfo ); 
+#ifdef ZH
+
+protected:
+
+	virtual void upgradeImplementation()
+	{
+		// nothing!
+	}
+
+	virtual void getUpgradeActivationMasks(UpgradeMaskType& activation, UpgradeMaskType& conflicting) const
+	{
+		getFXListDieModuleData()->m_upgradeMuxData.getUpgradeActivationMasks(activation, conflicting);
+	}
+
+	virtual void performUpgradeFX()
+	{
+		getFXListDieModuleData()->m_upgradeMuxData.performUpgradeFX(getObject());
+	}
+
+	virtual void processUpgradeRemoval()
+	{
+		// I can't take it any more.  Let the record show that I think the UpgradeMux multiple inheritence is CRAP.
+		getFXListDieModuleData()->m_upgradeMuxData.muxDataProcessUpgradeRemoval(getObject());
+	}
+
+	virtual Bool requiresAllActivationUpgrades() const
+	{
+		return getFXListDieModuleData()->m_upgradeMuxData.m_requiresAllTriggers;
+	}
+
+	inline Bool isUpgradeActive() const { return isAlreadyUpgraded(); }
+	
+	virtual Bool isSubObjectsUpgrade() { return false; }
+
+#endif
 
 };
 

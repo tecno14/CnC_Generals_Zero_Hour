@@ -40,6 +40,9 @@ class HeightMapRenderObjClass;
 ***************************************************************************/
 class W3DDynamicLight : public LightClass
 {
+#ifdef ZH
+friend class BaseHeightMapRenderObjClass;
+#endif
 friend class HeightMapRenderObjClass;
 protected:
 	/// Values used by HeightMapRenderObjClass to update the height map.

@@ -37,6 +37,9 @@
 // INCLUDES ///////////////////////////////////////////////////////////////////////////////////////
 #include "GameLogic/Module/CreateModule.h"
 #include "GameLogic/Object.h"
+#ifdef ZH
+#include "Common/ObjectStatusTypes.h"
+#endif
 
 // FORWARD REFERENCES /////////////////////////////////////////////////////////////////////////////
 class Thing;
@@ -49,7 +52,12 @@ class GrantUpgradeCreateModuleData : public CreateModuleData
 {
 public:
 	AsciiString		m_upgradeName;			///< name of the upgrade to be granted.
+#ifdef OG
 	UnsignedInt m_exemptStatus;				///< do not execute if this status is set in the object
+#endif
+#ifdef ZH
+	ObjectStatusMaskType m_exemptStatus; ///< do not execute if this status is set in the object
+#endif
 
 	GrantUpgradeCreateModuleData();
 	static void buildFieldParse(MultiIniFieldParse& p);

@@ -26,9 +26,19 @@
  *                                                                                             *
  *                       Author:: Patrick Smith                                                *
  *                                                                                             *
+#ifdef OG
  *                     $Modtime:: 8/27/01 1:42p                                               $*
+#endif
+#ifdef ZH
+ *                     $Modtime:: 12/13/01 10:48p                                             $*
+#endif
  *                                                                                             *
+#ifdef OG
  *                    $Revision:: 10                                                          $*
+#endif
+#ifdef ZH
+ *                    $Revision:: 17                                                          $*
+#endif
  *                                                                                             *
  *---------------------------------------------------------------------------------------------*
  * Functions:                                                                                  *
@@ -45,7 +55,12 @@
 //	Static member initialzation
 ///////////////////////////////////////////////////////////////////
 
+#ifdef OG
 CriticalSectionClass StringClass::m_Mutex;
+#endif
+#ifdef ZH
+FastCriticalSectionClass StringClass::m_Mutex;
+#endif
 
 TCHAR		StringClass::m_NullChar					= 0;
 TCHAR *	StringClass::m_EmptyString				= &m_NullChar;
@@ -87,7 +102,12 @@ StringClass::Get_String (int length, bool is_temp)
 		// the mutex lock, but that is a feature by design and doesn't cause
 		// anything bad to happen.
 		//
+#ifdef OG
 		CriticalSectionClass::LockClass m(m_Mutex);
+#endif
+#ifdef ZH
+		FastCriticalSectionClass::LockClass m(m_Mutex);
+#endif
 
 		//
 		//	Try to find an available temporary buffer
@@ -116,9 +136,23 @@ StringClass::Get_String (int length, bool is_temp)
 	}
 
 	if (string == NULL) {
+#ifdef ZH
+		
+		//
+		//	Allocate a new string as necessary
+		//
+		if (length > 0) {
+#endif
 		Set_Buffer_And_Allocated_Length (Allocate_Buffer (length), length);
+#ifdef ZH
+		} else {
+			Free_String ();
+#endif
 	}
 }
+#ifdef ZH
+}
+#endif
 
 
 ///////////////////////////////////////////////////////////////////
@@ -171,6 +205,12 @@ StringClass::Uninitialised_Grow (int new_len)
 		Set_Buffer_And_Allocated_Length (new_buffer, new_len);
 	}
 
+#ifdef ZH
+	//
+	// Whenever this function is called, clear the cached length 
+	//
+	Store_Length (0);
+#endif
 	return ;
 }
 
@@ -189,11 +229,20 @@ StringClass::Free_String (void)
 		unsigned temp_base=reinterpret_cast<unsigned>(m_TempStrings+MAX_TEMP_BYTES*MAX_TEMP_STRING);
 
 		if ((buffer_base>>11)==(temp_base>>11)) {
+#ifdef ZH
+			m_Buffer[0] = 0;
+
+#endif
 			//
 			//	Make sure no one else is changing the reserved mask
 			// at the same time we are.
 			//
+#ifdef OG
 			CriticalSectionClass::LockClass m(m_Mutex);
+#endif
+#ifdef ZH
+			FastCriticalSectionClass::LockClass m(m_Mutex);
+#endif
 
 			unsigned index=(buffer_base/MAX_TEMP_BYTES)&(MAX_TEMP_STRING-1);
 			unsigned mask=1<<index;
@@ -296,3 +345,35 @@ StringClass::Release_Resources (void)
 {
 	Free_String();
 }
+
+#ifdef ZH
+
+///////////////////////////////////////////////////////////////////
+// Copy_Wide
+//
+///////////////////////////////////////////////////////////////////
+bool StringClass::Copy_Wide (const WCHAR *source)
+{
+	if (source != NULL) {
+
+		int  length;
+		BOOL unmapped;
+			
+		length = WideCharToMultiByte (CP_ACP, 0 , source, -1, NULL, 0, NULL, &unmapped);
+		if (length > 0) {
+
+			// Convert.
+			WideCharToMultiByte (CP_ACP, 0, source, -1, Get_Buffer (length), length, NULL, NULL);
+
+			// Update length.
+			Store_Length (length - 1);
+		}
+
+		// Were all characters successfully mapped?
+		return (!unmapped);
+	}
+
+	// Failure.
+	return (false);
+}
+#endif

@@ -24,11 +24,26 @@
  *                                                                                             * 
  *                     $Archive:: /Commando/Code/wwlib/wwfile.h                               $* 
  *                                                                                             * 
+#ifdef OG
  *                      $Author:: Jani_p                                                      $*
+#endif
+#ifdef ZH
+ *                      $Author:: Ian_l                                                       $*
+#endif
  *                                                                                             * 
+#ifdef OG
  *                     $Modtime:: 5/04/01 7:43p                                               $*
+#endif
+#ifdef ZH
+ *                     $Modtime:: 10/31/01 2:00p                                              $*
+#endif
  *                                                                                             * 
+#ifdef OG
  *                    $Revision:: 8                                                           $*
+#endif
+#ifdef ZH
+ *                    $Revision:: 9                                                           $*
+#endif
  *                                                                                             *
  *---------------------------------------------------------------------------------------------* 
  * Functions:                                                                                  * 
@@ -76,8 +91,14 @@ class FileClass
 		virtual ~FileClass(void) {};
 		virtual char const * File_Name(void) const = 0;
 		virtual char const * Set_Name(char const *filename) = 0;
+#ifdef OG
 		//virtual int Create(void) = 0;
 		//virtual int Delete(void) = 0;
+#endif
+#ifdef ZH
+		virtual int Create(void) = 0;
+		virtual int Delete(void) = 0;
+#endif
 		virtual bool Is_Available(int forced=false) = 0;
 		virtual bool Is_Open(void) const = 0;
 		virtual int Open(char const *filename, int rights=READ) = 0;
@@ -88,10 +109,20 @@ class FileClass
 		virtual int Size(void) = 0;
 		virtual int Write(void const *buffer, int size) = 0;
 		virtual void Close(void) = 0;
+#ifdef OG
 		//virtual unsigned long Get_Date_Time(void) {return(0);}
 		//virtual bool Set_Date_Time(unsigned long ) {return(false);}
 		//virtual void Error(int error, int canretry = false, char const * filename=NULL) = 0;
 		// virtual void * Get_File_Handle(void) { return reinterpret_cast<void *>(-1); } 
+
+#endif
+#ifdef ZH
+		virtual unsigned long Get_Date_Time(void) {return(0);}
+		virtual bool Set_Date_Time(unsigned long ) {return(false);}
+//		virtual void Error(int error, int canretry = false, char const * filename=NULL) = 0;
+		virtual void * Get_File_Handle(void) { return reinterpret_cast<void *>(-1); } 
+//		virtual void Bias(int start, int length=-1) = 0;
+#endif
 
 		operator char const * ()
 		{

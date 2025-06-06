@@ -90,7 +90,12 @@ DefectorSpecialPower::~DefectorSpecialPower( void )
  
 // ------------------------------------------------------------------------------------------------
 
+#ifdef OG
 void DefectorSpecialPower::doSpecialPowerAtLocation( const Coord3D *loc, UnsignedInt commandOptions )
+#endif
+#ifdef ZH
+void DefectorSpecialPower::doSpecialPowerAtLocation( const Coord3D *loc, Real angle, UnsignedInt commandOptions )
+#endif
 {
 	if (getObject()->isDisabled())
 		return;

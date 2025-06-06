@@ -16,7 +16,12 @@
 **	along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#ifdef OG
 /* $Header: /Commando/Code/ww3d2/hanimmgr.cpp 1     1/22/01 3:36p Greg_h $ */
+#endif
+#ifdef ZH
+/* $Header: /Commando/Code/ww3d2/hanimmgr.cpp 3     1/16/02 9:51a Jani_p $ */
+#endif
 /*********************************************************************************************** 
  ***                            Confidential - Westwood Studios                              *** 
  *********************************************************************************************** 
@@ -27,9 +32,19 @@
  *                                                                                             * 
  *                       Author:: Greg_h                                                       * 
  *                                                                                             * 
+#ifdef OG
  *                     $Modtime:: 1/08/01 10:04a                                              $* 
+#endif
+#ifdef ZH
+ *                     $Modtime:: 1/16/02 9:49a                                               $* 
+#endif
  *                                                                                             * 
+#ifdef OG
  *                    $Revision:: 1                                                           $* 
+#endif
+#ifdef ZH
+ *                    $Revision:: 3                                                           $* 
+#endif
  *                                                                                             * 
  *---------------------------------------------------------------------------------------------* 
  * Functions:                                                                                  * 
@@ -55,6 +70,9 @@
 #include "chunkio.h"
 #include "wwmemlog.h"
 #include "w3dexclusionlist.h"
+#ifdef ZH
+#include "animatedsoundmgr.h"
+#endif
 
 
 /*********************************************************************************************** 
@@ -92,6 +110,9 @@ HAnimManagerClass::HAnimManagerClass(void)
 HAnimManagerClass::~HAnimManagerClass(void)
 {
 	Free_All_Anims();
+#ifdef ZH
+	Reset_Missing();	// Jani: Deleting missing animations as well
+#endif
 
 	delete AnimPtrTable;
 	AnimPtrTable = NULL;

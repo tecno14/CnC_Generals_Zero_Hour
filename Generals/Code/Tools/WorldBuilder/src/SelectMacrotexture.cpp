@@ -77,7 +77,12 @@ BOOL SelectMacrotexture::OnInitDialog()
 		char				findBuf[_MAX_PATH];
 		char				fileBuf[_MAX_PATH];
 
+#ifdef OG
 		strcpy(dirBuf, "..\\Art\\TestModelsHere");
+#endif
+#ifdef ZH
+		strcpy(dirBuf, "..\\TestArt");
+#endif
 		int len = strlen(dirBuf);
 
 		if (len > 0 && dirBuf[len - 1] != '\\') {

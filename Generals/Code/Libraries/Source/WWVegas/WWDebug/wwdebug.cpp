@@ -22,13 +22,33 @@
  *                                                                                             *
  *                 Project Name : WWDebug                                                      *
  *                                                                                             *
+#ifdef OG
  *                     $Archive:: /VSS_Sync/wwdebug/wwdebug.cpp                               $*
+#endif
+#ifdef ZH
+ *                     $Archive:: /Commando/Code/wwdebug/wwdebug.cpp                          $*
+#endif
  *                                                                                             *
+#ifdef OG
  *                      $Author:: Vss_sync                                                    $*
+#endif
+#ifdef ZH
+ *                      $Author:: Greg_h                                                      $*
+#endif
  *                                                                                             *
+#ifdef OG
  *                     $Modtime:: 10/19/00 2:12p                                              $*
+#endif
+#ifdef ZH
+ *                     $Modtime:: 1/13/02 1:46p                                               $*
+#endif
  *                                                                                             *
+#ifdef OG
  *                    $Revision:: 13                                                          $*
+#endif
+#ifdef ZH
+ *                    $Revision:: 16                                                          $*
+#endif
  *                                                                                             *
  *---------------------------------------------------------------------------------------------*
  * Functions:                                                                                  *
@@ -50,6 +70,10 @@
 #include <stdio.h>
 #include <assert.h>
 #include <string.h>
+#ifdef ZH
+#include <signal.h>
+#include "except.h"
+#endif
 
 
 static PrintFunc			_CurMessageHandler = NULL;
@@ -192,13 +216,20 @@ ProfileFunc	WWDebug_Install_Profile_Stop_Handler(ProfileFunc func)
  * HISTORY:                                                                                    *
  *   2/19/98    GTH : Created.                                                                 *
  *=============================================================================================*/
+#ifdef OG
 #ifdef WWDEBUG
+#endif
 void WWDebug_Printf(const char * format,...)
 {
 	if (_CurMessageHandler != NULL) {
 		
 		va_list	va;
+#ifdef OG
 		char buffer[1024];
+#endif
+#ifdef ZH
+		char buffer[4096];
+#endif
 
 		va_start(va, format);
 		vsprintf(buffer, format, va);
@@ -209,6 +240,8 @@ void WWDebug_Printf(const char * format,...)
 
 	}
 }
+#ifdef OG
+#endif
 #endif
 
 /***********************************************************************************************
@@ -223,13 +256,20 @@ void WWDebug_Printf(const char * format,...)
  * HISTORY:                                                                                    *
  *   2/19/98    GTH : Created.                                                                 *
  *=============================================================================================*/
+#ifdef OG
 #ifdef WWDEBUG
+#endif
 void WWDebug_Printf_Warning(const char * format,...)
 {
 	if (_CurMessageHandler != NULL) {
 		
 		va_list	va;
+#ifdef OG
 		char buffer[1024];
+#endif
+#ifdef ZH
+		char buffer[4096];
+#endif
 
 		va_start(va, format);
 		vsprintf(buffer, format, va);
@@ -240,6 +280,8 @@ void WWDebug_Printf_Warning(const char * format,...)
 
 	}
 }
+#ifdef OG
+#endif
 #endif
 
 /***********************************************************************************************
@@ -254,13 +296,20 @@ void WWDebug_Printf_Warning(const char * format,...)
  * HISTORY:                                                                                    *
  *   2/19/98    GTH : Created.                                                                 *
  *=============================================================================================*/
+#ifdef OG
 #ifdef WWDEBUG
+#endif
 void WWDebug_Printf_Error(const char * format,...)
 {
 	if (_CurMessageHandler != NULL) {
 		
 		va_list	va;
+#ifdef OG
 		char buffer[1024];
+#endif
+#ifdef ZH
+		char buffer[4096];
+#endif
 
 		va_start(va, format);
 		vsprintf(buffer, format, va);
@@ -271,6 +320,8 @@ void WWDebug_Printf_Error(const char * format,...)
 
 	}
 }
+#ifdef OG
+#endif
 #endif
 
 /***********************************************************************************************
@@ -290,18 +341,84 @@ void WWDebug_Assert_Fail(const char * expr,const char * file, int line)
 {
 	if (_CurAssertHandler != NULL) {
 	
+#ifdef OG
 		char buffer[1024];
+#endif
+#ifdef ZH
+		char buffer[4096];
+#endif
 		sprintf(buffer,"%s (%d) Assert: %s\n",file,line,expr);
 		_CurAssertHandler(buffer);
 
 	} else {
+#ifdef ZH
 
+		/*
+		// If the exception handler is try to quit the game then don't show an assert.
+		*/
+		if (Is_Trying_To_Exit()) {
+			ExitProcess(0);
+		}
+#endif
+
+#ifdef OG
 		assert(0);
 
+#endif
+#ifdef ZH
+      char assertbuf[4096];
+		sprintf(assertbuf, "Assert failed\n\n. File %s Line %d", file, line);
+
+      int code = MessageBoxA(NULL, assertbuf, "WWDebug_Assert_Fail", MB_ABORTRETRYIGNORE|MB_ICONHAND|MB_SETFOREGROUND|MB_TASKMODAL);
+
+      if (code == IDABORT) {
+      	raise(SIGABRT);
+      	_exit(3);
+      }
+#endif
+
+#ifdef ZH
+		if (code == IDRETRY) {
+			_asm int 3;
+      	return;
+		}
+#endif
 	}
+#ifdef ZH
 }
 #endif
 
+/***********************************************************************************************
+ * _assert -- Catch all asserts by overriding lib function                                     *
+ *                                                                                             *
+ *                                                                                             *
+ *                                                                                             *
+ * INPUT:    Assert stuff                                                                      *
+ *                                                                                             *
+ * OUTPUT:   Nothing                                                                           *
+ *                                                                                             *
+ * WARNINGS: None                                                                              *
+ *                                                                                             *
+ * HISTORY:                                                                                    *
+ *   12/11/2001 3:56PM ST : Created                                                            *
+ *=============================================================================================*/
+#if 0 //(gth) this is giving me link errors for some reason...
+
+#ifndef W3D_MAX4
+#ifdef WWDEBUG
+void __cdecl _assert(void *expr, void *filename, unsigned lineno)
+{
+	WWDebug_Assert_Fail((const char*)expr, (const char*)filename, lineno);
+#endif
+}
+#ifdef ZH
+#endif //WWDEBUG
+#endif
+#endif
+
+#ifdef ZH
+#endif
+#endif
 
 /***********************************************************************************************
  * WWDebug_Assert_Fail_Print -- Internal function, passes assert message to handler            *
@@ -320,7 +437,12 @@ void WWDebug_Assert_Fail_Print(const char * expr,const char * file, int line,con
 {
 	if (_CurAssertHandler != NULL) {
 
+#ifdef OG
 		char buffer[1024];
+#endif
+#ifdef ZH
+		char buffer[4096];
+#endif
 		sprintf(buffer,"%s (%d) Assert: %s %s\n",file,line,expr, string);
 		_CurAssertHandler(buffer);
 

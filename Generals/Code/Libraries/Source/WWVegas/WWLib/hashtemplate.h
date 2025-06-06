@@ -26,9 +26,19 @@
  *                                                                                             * 
  *                       Author:: Greg_h                                                       * 
  *                                                                                             * 
+#ifdef OG
  *                     $Modtime:: 7/11/01 9:35p                                               $* 
+#endif
+#ifdef ZH
+ *                     $Modtime:: 11/19/01 12:16p                                             $* 
+#endif
  *                                                                                             * 
+#ifdef OG
  *                    $Revision:: 5                                                           $* 
+#endif
+#ifdef ZH
+ *                    $Revision:: 7                                                           $* 
+#endif
  *                                                                                             * 
  *---------------------------------------------------------------------------------------------* 
  * Functions:                                                                                  * 
@@ -85,6 +95,9 @@ public:
 	~HashTemplateClass(void);
 
 	void Insert(const KeyType& s, const ValueType& d);
+#ifdef ZH
+	void Set_Value(const KeyType& s, const ValueType& d);
+#endif
 	void Remove(const KeyType& s);
 	void Remove(const KeyType& s, const ValueType& d);
 	ValueType Get(const KeyType& s) const;
@@ -163,6 +176,13 @@ public:
 	ValueType& Peek_Value()
 	{
 		return HashTable.Get_Table()[Handle].Value;
+#ifdef ZH
+	}
+
+	const KeyType& Peek_Key()
+	{
+		return HashTable.Get_Table()[Handle].Key;
+#endif
 	}
 };
 
@@ -205,6 +225,9 @@ template <class KeyType, class ValueType> inline void HashTemplateClass<KeyType,
 
 template <class KeyType, class ValueType> inline void HashTemplateClass<KeyType,ValueType>::Remove	(const KeyType& s)
 {
+#ifdef ZH
+	if (!Hash) return;
+#endif
 	unsigned int hval = Get_Hash_Val(s,Size);
 	int  prev = NIL;
 	int	h	 = Hash[hval];
@@ -228,6 +251,9 @@ template <class KeyType, class ValueType> inline void HashTemplateClass<KeyType,
 
 template <class KeyType, class ValueType> inline void HashTemplateClass<KeyType,ValueType>::Remove (const KeyType& s, const ValueType& d)
 {
+#ifdef ZH
+	if (!Hash) return;
+#endif
 	unsigned int hval = Get_Hash_Val(s,Size);
 	int  prev = NIL;
 	int	h	 = Hash[hval];
@@ -249,21 +275,52 @@ template <class KeyType, class ValueType> inline void HashTemplateClass<KeyType,
 	}
 }
 
+#ifdef ZH
+// Set the value at existing key, or if not found insert a new value
+template <class KeyType, class ValueType> inline void HashTemplateClass<KeyType,ValueType>::Set_Value (const KeyType& s, const ValueType& v)
+{
+	if (Hash) {
+		int  h = Hash[Get_Hash_Val(s,Size)];
+		while (h!=NIL)	{
+			if (Table[h].Key == s) {
+				Table[h].Value=v;
+				return;
+			}
+			h = Table[h].Next;
+		}
+	}
+	Insert(s,v);
+}
+
+#endif
 template <class KeyType, class ValueType> inline ValueType HashTemplateClass<KeyType,ValueType>::Get (const KeyType& s) const
 {
+#ifdef ZH
+	if (Hash) {
+#endif
 	int  h = Hash[Get_Hash_Val(s,Size)];
 	while (h!=NIL)
 	{
 		if (Table[h].Key == s)
 			return Table[h].Value;
 		h = Table[h].Next;
+#ifdef ZH
+		}
+#endif
 	}
 	return ValueType(0);
 }
 
 template <class KeyType, class ValueType> inline bool HashTemplateClass<KeyType,ValueType>::Get(const KeyType& s, ValueType& d) const
 {
+#ifdef OG
 	int  h = Hash[Het_Hash_Val(s,Size)];
+
+#endif
+#ifdef ZH
+	if (Hash) {
+		int  h = Hash[Get_Hash_Val(s,Size)];
+#endif
 	while (h!=NIL)
 	{
 		if (Table[h].Key == s)
@@ -272,12 +329,18 @@ template <class KeyType, class ValueType> inline bool HashTemplateClass<KeyType,
 			return true;
 		}
 		h = Table[h].Next;
+#ifdef ZH
+		}
+#endif
 	}
 	return false;
 }
 
 template <class KeyType, class ValueType> inline bool HashTemplateClass<KeyType,ValueType>::Exists(const KeyType& s) const
 {
+#ifdef ZH
+	if (Hash) {
+#endif
 	int  h = Hash[Get_Hash_Val(s,Size)];
 	while (h!=NIL)
 	{
@@ -285,17 +348,26 @@ template <class KeyType, class ValueType> inline bool HashTemplateClass<KeyType,
 			return true;
 		h = Table[h].Next;
 	}
+#ifdef ZH
+	}
+#endif
 	return false;
 }
 
 template <class KeyType, class ValueType> inline bool HashTemplateClass<KeyType,ValueType>::Exists(const KeyType& s, const ValueType& d) const
 {
+#ifdef ZH
+	if (Hash) {
+#endif
 	int  h = Hash[Get_Hash_Val(s,Size)];
 	while (h!=NIL)
 	{
 		if (Table[h].Key == s && Table[h].Value == d)
 			return true;
 		h = Table[h].Next;
+#ifdef ZH
+		}
+#endif
 	}
 	return false;
 }
@@ -364,7 +436,12 @@ template <class KeyType, class ValueType> inline int HashTemplateClass<KeyType,V
 
 template <class KeyType, class ValueType> inline HashTemplateClass<KeyType,ValueType>::HashTemplateClass() : Hash(0),Table(0),First(NIL),Size(0)
 {
+#ifdef OG
 	Re_Hash();
+#endif
+#ifdef ZH
+//	Re_Hash();
+#endif
 }
 
 template <class KeyType, class ValueType> inline HashTemplateClass<KeyType,ValueType>::~HashTemplateClass()

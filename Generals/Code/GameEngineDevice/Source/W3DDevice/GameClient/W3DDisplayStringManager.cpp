@@ -44,7 +44,12 @@
 //-------------------------------------------------------------------------------------------------
 W3DDisplayStringManager::W3DDisplayStringManager( void )
 {
+#ifdef OG
 	for (Int i = 0; i < 10; ++i) 
+#endif
+#ifdef ZH
+	for (Int i = 0; i < MAX_GROUPS; ++i) 
+#endif
 	{
 		m_groupNumeralStrings[i] = NULL;
 	}
@@ -56,7 +61,12 @@ W3DDisplayStringManager::W3DDisplayStringManager( void )
 //-------------------------------------------------------------------------------------------------
 W3DDisplayStringManager::~W3DDisplayStringManager( void )
 {
+#ifdef OG
 	for (Int i = 0; i < 10; ++i) 
+#endif
+#ifdef ZH
+	for (Int i = 0; i < MAX_GROUPS; ++i) 
+#endif
 	{
 		if (m_groupNumeralStrings[i])
 			freeDisplayString(m_groupNumeralStrings[i]);
@@ -79,14 +89,29 @@ void W3DDisplayStringManager::postProcessLoad( void )
 		TheDrawGroupInfo->m_fontSize,
 		TheDrawGroupInfo->m_fontIsBold );
 	
+#ifdef OG
 	for (Int i = 0; i < 10; ++i) 
+#endif
+#ifdef ZH
+	for (Int i = 0; i < MAX_GROUPS; ++i) 
+#endif
 	{
 		m_groupNumeralStrings[i] = newDisplayString();
 		m_groupNumeralStrings[i]->setFont(font);
 
+#ifdef ZH
+#ifdef KRIS_BRUTAL_HACK_FOR_AIRCRAFT_CARRIER_DEBUGGING
+		UnicodeString displayNumber;
+		displayNumber.format( L"%d", i);
+		m_groupNumeralStrings[i]->setText( displayNumber );
+#else
+#endif
 		AsciiString displayNumber;
 		displayNumber.format("NUMBER:%d", i);
 		m_groupNumeralStrings[i]->setText(TheGameText->fetch(displayNumber));
+#ifdef ZH
+#endif
+#endif
 	}
 
 	m_formationLetterDisplayString = newDisplayString();
@@ -225,7 +250,14 @@ void W3DDisplayStringManager::update( void )
 //-------------------------------------------------------------------------------------------------
 DisplayString *W3DDisplayStringManager::getGroupNumeralString( Int numeral )
 {
+#ifdef OG
 	if (numeral < 0 || numeral > 9) {
+
+#endif
+#ifdef ZH
+	if (numeral < 0 || numeral > MAX_GROUPS - 1 ) 
+	{
+#endif
 		DEBUG_CRASH(("Numeral '%d' out of range.\n", numeral));
 		return m_groupNumeralStrings[0];
 	}

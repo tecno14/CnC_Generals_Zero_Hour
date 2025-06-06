@@ -47,7 +47,13 @@
 //#pragma MESSAGE("************************************** WARNING, optimization disabled for debugging purposes")
 #endif
 
+#ifdef ZH
+#if defined(_DEBUG) || defined(_INTERNAL)
+#endif
 #define NO_DEBUG_SUPPLY_STATE
+#ifdef ZH
+#endif
+#endif
 
 #ifdef DEBUG_SUPPLY_STATE
 static const char* statenames[] =
@@ -60,6 +66,12 @@ static const char* statenames[] =
 };
 #endif
 
+#ifdef ZH
+enum {
+	REGROUP_SUCCESS_DISTANCE_SQUARED = 225
+};
+
+#endif
 //-------------------------------------------------------------------------------------------------
 //-------------------------------------------------------------------------------------------------
 //-------------------------------------------------------------------------------------------------
@@ -416,8 +428,14 @@ SupplyTruckStateMachine::SupplyTruckStateMachine( Object *owner ) : StateMachine
 
 	static const StateConditionInfo regroupingConditions[] = 
 	{
+#ifdef OG
 		StateConditionInfo(ownerIdle, ST_IDLE, NULL),
 		StateConditionInfo(ownerDocking, ST_DOCKING, NULL),
+#endif
+#ifdef ZH
+		StateConditionInfo(ownerPlayerCommanded, ST_BUSY, NULL),
+
+#endif
 		StateConditionInfo(NULL, NULL, NULL)	// keep last
 	};
 
@@ -479,6 +497,19 @@ StateReturnType SupplyTruckWantsToPickUpOrDeliverBoxesState::onEnter()
 {
 #ifdef DEBUG_SUPPLY_STATE
 TheInGameUI->DEBUG_addFloatingText("entering wanting state", getMachineOwner()->getPosition(), GameMakeColor(255, 0, 0, 255));
+#endif
+#ifdef ZH
+	Object *owner = getMachineOwner();
+	SupplyTruckAIInterface *update = owner->getAIUpdateInterface()->getSupplyTruckAIInterface();
+	if( !update )
+	{
+		return STATE_FAILURE;
+	}
+
+	// We can only force Wanting for one go at Wanting.  It could fail and we would be stuck forever.
+	// So a force means one try at the wanting state, then back to normal.
+	update->setForceWantingState(false);
+
 #endif
 	return STATE_CONTINUE;
 }
@@ -559,13 +590,17 @@ TheInGameUI->DEBUG_addFloatingText("entering regrouping state", getMachineOwner(
 	{
 		return STATE_FAILURE;
 	}
+#ifdef OG
 	Int numBoxes = update->getNumberBoxes();
 	// If we are forced to regroup, and we have boxes, we want to wait for the player to
 	// rebuild a supply center & go to it. 
 	Bool wanting = numBoxes > 0;
+#endif
 
+#ifdef OG
 	update->setForceWantingState( wanting );
 
+#endif
 	Object *destinationObject = NULL;
 	
 	KindOfMaskType kindof;
@@ -592,6 +627,11 @@ TheInGameUI->DEBUG_addFloatingText("entering regrouping state", getMachineOwner(
 	{
 		return STATE_FAILURE;
 	}
+#ifdef ZH
+
+	if( ThePartitionManager->getDistanceSquared(owner, destinationObject, FROM_BOUNDINGSPHERE_2D) < REGROUP_SUCCESS_DISTANCE_SQUARED )
+		return STATE_CONTINUE; // Don't say Success so we don't spin the machine.  After one update we'll go back.
+#endif
 
 	Coord3D destination;
 	FindPositionOptions fpOptions;
@@ -606,6 +646,19 @@ TheInGameUI->DEBUG_addFloatingText("entering regrouping state", getMachineOwner(
 }
 
 //-------------------------------------------------------------------------------------------------
+#ifdef ZH
+StateReturnType RegroupingState::update()
+{
+	Object *owner = getMachineOwner();
+
+	if( owner->getAI()->isIdle() )
+		return STATE_SUCCESS; // Once we have regrouped, chill with the regrouping.  We will succeed to Wanting, which can handle Busy.
+
+	return STATE_CONTINUE;
+}
+
+//-------------------------------------------------------------------------------------------------
+#endif
 void RegroupingState::onExit(StateExitType status)
 {
 #ifdef DEBUG_SUPPLY_STATE
@@ -717,6 +770,29 @@ TheInGameUI->DEBUG_addFloatingText(tmp, owner->getPosition(), GameMakeColor(255,
 #ifdef DEBUG_SUPPLY_STATE
 AsciiString tmp;
 tmp.format("ownerDocking returns true (%s)",statenames[thisState->getID()]);
+#ifdef ZH
+TheInGameUI->DEBUG_addFloatingText(tmp, owner->getPosition(), GameMakeColor(255, 0, 0, 255));
+#endif
+		return true;
+	}
+
+	return false;
+}
+
+//-------------------------------------------------------------------------------------------------
+/* static */ Bool SupplyTruckStateMachine::ownerPlayerCommanded( State *thisState, void* userData )
+{
+	Object *owner = thisState->getMachineOwner();
+	AIUpdateInterface *ai = owner->getAIUpdateInterface();
+	if( !ai )
+		return false;
+
+	if( ai->getLastCommandSource() == CMD_FROM_PLAYER )
+	{
+#ifdef DEBUG_SUPPLY_STATE
+AsciiString tmp;
+tmp.format("ownerPlayerCommanded returns true (%s)",statenames[thisState->getID()]);
+#endif
 TheInGameUI->DEBUG_addFloatingText(tmp, owner->getPosition(), GameMakeColor(255, 0, 0, 255));
 #endif
 		return true;

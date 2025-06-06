@@ -40,6 +40,9 @@
 #include "Common/RandomValue.h"
 #include "Common/UserPreferences.h"
 #include "Common/Version.h"
+#ifdef ZH
+#include "Common/GameLOD.h"
+#endif
 #include "GameClient/AnimateWindowManager.h"
 #include "GameClient/ExtendedMessageBox.h"
 #include "GameClient/MessageBox.h"
@@ -58,10 +61,16 @@
 #include "GameClient/WindowVideoManager.h"
 #include "GameClient/CampaignManager.h"
 #include "GameClient/HotKey.h"
+#ifdef ZH
+#include "GameClient/GameClient.h"
+#endif
 #include "GameLogic/GameLogic.h"
 #include "GameLogic/ScriptEngine.h"
 #include "GameNetwork/GameSpyOverlay.h"
 #include "GameClient/GameWindowTransitions.h"
+#ifdef ZH
+#include "GameClient/ChallengeGenerals.h"
+#endif
 
 #include "GameNetwork/GameSpy/PeerDefs.h"
 #include "GameNetwork/GameSpy/PeerThread.h"
@@ -75,11 +84,13 @@
 //for accessing the InGameUI
 #include "GameClient/InGameUI.h"
 
+#ifdef OG
 // This define removes the code that could get you to solo and LAN games.
 //#if !defined(_DEBUG) && !defined(_INTERNAL)
 //#define _PLAYTEST
 //#endif
 // 10-20  GS  Made this a project setting so we can set it in one place.  (It has spread to several files, inclding MessageStream.h)
+#endif
 #ifdef _INTERNAL
 // for occasional debugging...
 //#pragma optimize("", off)
@@ -103,7 +114,12 @@ enum
 
 static Bool raiseMessageBoxes = TRUE;
 static Bool campaignSelected = FALSE;
+#ifdef OG
 #if defined _DEBUG || defined _INTERNAL
+#endif
+#ifdef ZH
+#if defined _DEBUG || defined _INTERNAL || defined _PROFILE
+#endif
 static NameKeyType campaignID = NAMEKEY_INVALID;
 static GameWindow *buttonCampaign = NULL;
 #ifdef TEST_COMPRESSION
@@ -123,6 +139,9 @@ static NameKeyType motdID = NAMEKEY_INVALID;
 static NameKeyType worldBuilderID = NAMEKEY_INVALID;
 static NameKeyType getUpdateID = NAMEKEY_INVALID;
 static NameKeyType buttonTRAININGID = NAMEKEY_INVALID;
+#ifdef ZH
+static NameKeyType buttonChallengeID = NAMEKEY_INVALID;
+#endif
 static NameKeyType buttonUSAID = NAMEKEY_INVALID;
 static NameKeyType buttonGLAID = NAMEKEY_INVALID;
 static NameKeyType buttonChinaID = NAMEKEY_INVALID;
@@ -161,6 +180,9 @@ static GameWindow *buttonWorldBuilder = NULL;
 static GameWindow *mainMenuMovie = NULL;
 static GameWindow *getUpdate = NULL;
 static GameWindow *buttonTRAINING = NULL;
+#ifdef ZH
+static GameWindow *buttonChallenge = NULL;
+#endif
 static GameWindow *buttonUSA = NULL;
 static GameWindow *buttonGLA = NULL;
 static GameWindow *buttonChina = NULL;
@@ -207,6 +229,9 @@ static Int  showFrames = 0;
 static Int  showSide = SHOW_NONE;
 static Bool logoIsShown = FALSE;
 static Bool justEntered = FALSE;
+#ifdef ZH
+static Bool launchChallengeMenu = FALSE;
+#endif
 
 static Bool dontAllowTransitions = FALSE;
 
@@ -252,6 +277,20 @@ static void quitCallback( void )
 	TheShell->pop();
 	TheGameEngine->setQuitting( TRUE );
 
+#ifdef ZH
+	//if (!TheGameLODManager->didMemPass())
+	{	//GIANT CRAPTACULAR HACK ALERT!!!!  On sytems with little memory, we skip all normal exit code
+//		//and let Windows clean up the mess.  This reduces exit times from minutes to seconds.
+//		//8-19-03. MW
+//		delete TheGameClient;
+//		_exit(EXIT_SUCCESS);
+
+//  THE CRAP IS NOW EVEN MORE TACULAR
+//  NOW WE PERSUADE THE MEMORYPOOLMANAGER TO RETURN STUPID FROM ITS FREE()
+//    if (TheMemoryPoolFactory) TheMemoryPoolFactory->prepareForMinSpecShutDown();
+
+	}
+#endif
 	if (TheGameLogic->isInGame())
 		TheMessageStream->appendMessage( GameMessage::MSG_CLEAR_GAME_DATA );
 }
@@ -259,11 +298,31 @@ static void quitCallback( void )
 
 void setupGameStart(AsciiString mapName, GameDifficulty diff)
 {
-	startGame = TRUE;
+#ifdef ZH
 	TheCampaignManager->setGameDifficulty(diff);
+
+	if (launchChallengeMenu)
+	{
+		if (TheChallengeGenerals)
+			TheChallengeGenerals->setCurrentDifficulty(diff);
+		
+		campaignSelected = TRUE;
+		TheShell->push( AsciiString("Menus/ChallengeMenu.wnd") );
+		TheTransitionHandler->reverse("MainMenuDifficultyMenuTraining");
+	}
+	else
+	{
+#endif
+	startGame = TRUE;
+#ifdef OG
+	TheCampaignManager->setGameDifficulty(diff);
+#endif
 	TheWritableGlobalData->m_pendingFile = mapName;
 	TheShell->reverseAnimatewindow();
 	TheTransitionHandler->setGroup("FadeWholeScreen");
+#ifdef ZH
+	}
+#endif
 }
 
 void prepareCampaignGame(GameDifficulty diff)
@@ -299,7 +358,9 @@ static MessageBoxReturnType checkCDCallback( void *userData )
 
 static void doGameStart( void )
 {
+#ifdef OG
 #if !defined(_PLAYTEST)
+#endif
 	startGame = FALSE;
 
 	if (TheGameLogic->isInGame())
@@ -313,6 +374,8 @@ static void doGameStart( void )
 	InitRandom(0);
 
 	isShuttingDown = TRUE;
+#ifdef OG
+#endif
 #endif
 }
 
@@ -449,7 +512,14 @@ void MainMenuInit( WindowLayout *layout, void *userData )
 	worldBuilderID = TheNameKeyGenerator->nameToKey( AsciiString("MainMenu.wnd:ButtonWorldBuilder") );
 //	NameKeyType versionID = TheNameKeyGenerator->nameToKey( AsciiString("MainMenu.wnd:LabelVersion") );
 	getUpdateID = TheNameKeyGenerator->nameToKey( AsciiString("MainMenu.wnd:ButtonGetUpdate") );
+#ifdef OG
 	buttonTRAININGID = TheNameKeyGenerator->nameToKey( AsciiString("MainMenu.wnd:ButtonTRAINING") );
+
+#endif
+#ifdef ZH
+//	buttonTRAININGID = TheNameKeyGenerator->nameToKey( AsciiString("MainMenu.wnd:ButtonTRAINING") );
+	buttonChallengeID = TheNameKeyGenerator->nameToKey( AsciiString("MainMenu.wnd:ButtonChallenge") );
+#endif
 	buttonUSAID = TheNameKeyGenerator->nameToKey( AsciiString("MainMenu.wnd:ButtonUSA") );
 	buttonGLAID = TheNameKeyGenerator->nameToKey( AsciiString("MainMenu.wnd:ButtonGLA") );
 	buttonChinaID = TheNameKeyGenerator->nameToKey( AsciiString("MainMenu.wnd:ButtonChina") );
@@ -500,7 +570,14 @@ void MainMenuInit( WindowLayout *layout, void *userData )
 //	GameWindow *labelVersion = TheWindowManager->winGetWindowFromId( parentMainMenu, versionID );
 	
 	getUpdate = TheWindowManager->winGetWindowFromId( parentMainMenu, getUpdateID );
+#ifdef OG
 	buttonTRAINING = TheWindowManager->winGetWindowFromId( parentMainMenu, buttonTRAININGID );
+
+#endif
+#ifdef ZH
+//	buttonTRAINING = TheWindowManager->winGetWindowFromId( parentMainMenu, buttonTRAININGID );
+	buttonChallenge = TheWindowManager->winGetWindowFromId( parentMainMenu, buttonChallengeID );
+#endif
 	buttonUSA = TheWindowManager->winGetWindowFromId( parentMainMenu, buttonUSAID );
 	buttonGLA = TheWindowManager->winGetWindowFromId( parentMainMenu, buttonGLAID );
 	buttonChina = TheWindowManager->winGetWindowFromId( parentMainMenu, buttonChinaID );
@@ -523,7 +600,12 @@ void MainMenuInit( WindowLayout *layout, void *userData )
 	
 	showSelectiveButtons(SHOW_NONE);
 	// Set up the version number
+#ifdef OG
 #if defined _DEBUG || defined _INTERNAL
+#endif
+#ifdef ZH
+#if defined _DEBUG || defined _INTERNAL || defined _PROFILE
+#endif
 	WinInstanceData instData;
 #ifdef TEST_COMPRESSION
 	instData.init();
@@ -617,6 +699,7 @@ void MainMenuInit( WindowLayout *layout, void *userData )
 
 	//pendingDropDown =DROPDOWN_MAIN;
 	
+#ifdef OG
 #if defined(_PLAYTEST)
 	// force these buttons enabled in DEBUG and INTERNAL, so we can still work. :-)
 	buttonNetwork->winEnable(FALSE);
@@ -627,7 +710,9 @@ void MainMenuInit( WindowLayout *layout, void *userData )
 #if defined(_PLAYTEST)
 
 	static Bool didMinSpecCheck = false;
+#endif
 
+#ifdef OG
 	if (!didMinSpecCheck)
 	{
 		Bool videoPassed, cpuPassed, memPassed;
@@ -637,6 +722,7 @@ void MainMenuInit( WindowLayout *layout, void *userData )
 		}
 		didMinSpecCheck = true;
 	}
+#endif
 #endif
 	GameWindow *rule = TheWindowManager->winGetWindowFromId( parentMainMenu, TheNameKeyGenerator->nameToKey( AsciiString("MainMenu.wnd:MainMenuRuler") ) );
 	if(rule)
@@ -1070,7 +1156,9 @@ WindowMsgHandledType MainMenuSystem( GameWindow *window, UnsignedInt msg,
 			break;
 
 		}  // end input
+#ifdef OG
 #ifndef _PLAYTEST
+#endif
 		//---------------------------------------------------------------------------------------------
 		case GBM_MOUSE_ENTERING:
 		{
@@ -1091,9 +1179,29 @@ WindowMsgHandledType MainMenuSystem( GameWindow *window, UnsignedInt msg,
 			else if(controlID == exitID)
 			{
 				TheScriptEngine->signalUIInteract(TheShellHookNames[SHELL_SCRIPT_HOOK_MAIN_MENU_EXIT_HIGHLIGHTED]);
+#ifdef ZH
+			}
+			else if(controlID == buttonChallengeID)
+			{
+				if(dontAllowTransitions && !campaignSelected)
+				{
+					showLogo = TRUE;
+					showSide = SHOW_TRAINING;
+#endif
 			}
 
+#ifdef OG
 			else if(controlID == buttonTRAININGID)
+
+#endif
+#ifdef ZH
+				if(campaignSelected || dontAllowTransitions)
+					break;
+
+				TheTransitionHandler->setGroup("MainMenuFactionTraining");
+			}
+/*			else if(controlID == buttonTRAININGID)
+#endif
 			{
 				if(dontAllowTransitions && !campaignSelected)
 				{
@@ -1109,7 +1217,12 @@ WindowMsgHandledType MainMenuSystem( GameWindow *window, UnsignedInt msg,
 
 				//showSelectiveButtons(SHOW_NONE);
 			}
+#ifdef OG
 			else if(controlID == skirmishID)
+#endif
+#ifdef ZH
+*/			else if(controlID == skirmishID)
+#endif
 			{
 				if(dontAllowTransitions && !campaignSelected)
 				{
@@ -1199,9 +1312,32 @@ WindowMsgHandledType MainMenuSystem( GameWindow *window, UnsignedInt msg,
 			{
 				TheScriptEngine->signalUIInteract(TheShellHookNames[SHELL_SCRIPT_HOOK_MAIN_MENU_EXIT_UNHIGHLIGHTED]);
 			}
+#ifdef OG
 			else if(controlID == buttonTRAININGID)
-			{
 
+#endif
+#ifdef ZH
+			else if(controlID == buttonChallengeID)
+			{
+				if(dontAllowTransitions && !campaignSelected && showLogo)
+#endif
+			{
+#ifdef ZH
+					showLogo = FALSE;
+					showSide = SHOW_NONE;
+				}
+#endif
+
+#ifdef ZH
+				if(campaignSelected || dontAllowTransitions)
+					break;
+
+				// we'll just use the training logo anim for now
+				TheTransitionHandler->reverse("MainMenuFactionTraining");
+			}
+/*			else if(controlID == buttonTRAININGID)
+			{
+#endif
 				if(dontAllowTransitions && !campaignSelected && showLogo)
 				{
 					showLogo = FALSE;
@@ -1214,7 +1350,12 @@ WindowMsgHandledType MainMenuSystem( GameWindow *window, UnsignedInt msg,
 				
 				//showSelectiveButtons(SHOW_NONE);
 			}
+#ifdef OG
 			else if(controlID == skirmishID)
+#endif
+#ifdef ZH
+*/			else if(controlID == skirmishID)
+#endif
 			{
 				if(dontAllowTransitions && !campaignSelected && showLogo)
 				{
@@ -1265,7 +1406,9 @@ WindowMsgHandledType MainMenuSystem( GameWindow *window, UnsignedInt msg,
 			}	
 		break;
 		}
+#ifdef OG
 #endif _PLAYTEST
+#endif
 		//---------------------------------------------------------------------------------------------
 		case GBM_SELECTED:
 		{
@@ -1275,7 +1418,12 @@ WindowMsgHandledType MainMenuSystem( GameWindow *window, UnsignedInt msg,
 			
 			if(buttonPushed)
 				break;
+#ifdef OG
 #if defined _DEBUG || defined _INTERNAL
+#endif
+#ifdef ZH
+#if defined _DEBUG || defined _INTERNAL || defined _PROFILE
+#endif
 			if( control == buttonCampaign )
 			{
 				buttonPushed = TRUE;
@@ -1289,6 +1437,18 @@ WindowMsgHandledType MainMenuSystem( GameWindow *window, UnsignedInt msg,
 			}
 #endif // TEST_COMPRESSION
 			else 
+#endif
+#ifdef ZH
+
+			// don't allow mouse click slop that occurs during transitions to unset this flag
+			if (TheTransitionHandler->isFinished()
+				&& controlID != buttonEasyID && controlID != buttonMediumID && controlID != buttonHardID)
+			{
+				// this toggle must only be reset if one of these buttons have not been pressed
+				// ...the difficulty selection behavior must have a chance to act upon this toggle
+				launchChallengeMenu = FALSE;
+			}
+
 #endif
 			if( controlID == buttonSinglePlayerID )
 			{
@@ -1407,6 +1567,19 @@ WindowMsgHandledType MainMenuSystem( GameWindow *window, UnsignedInt msg,
 				TheTransitionHandler->remove("MainMenuFactionSkirmish");
 
 				TheTransitionHandler->reverse("MainMenuSinglePlayerMenuBackSkirmish");
+#ifdef ZH
+#ifdef _CAMPEA_DEMO
+				TheCampaignManager->setCampaign( "MD_CAMPEA_DEMO" );
+/*
+				TheTransitionHandler->setGroup("MainMenuDifficultyMenuUS");
+				logoIsShown = FALSE;
+				showLogo = FALSE;
+				showSide = SHOW_USA;
+*/
+				checkCDBeforeCampaign(DIFFICULTY_NORMAL);
+				break;
+#endif
+#endif
 				TheShell->push( AsciiString("Menus/SkirmishGameOptionsMenu.wnd") );
 				TheScriptEngine->signalUIInteract(TheShellHookNames[SHELL_SCRIPT_HOOK_MAIN_MENU_SKIRMISH_SELECTED]);
 			}
@@ -1488,8 +1661,34 @@ WindowMsgHandledType MainMenuSystem( GameWindow *window, UnsignedInt msg,
 //#endif
 				
 			}  // end else if
+#ifdef OG
 #ifndef _PLAYTEST
 			else if(controlID == buttonTRAININGID)
+
+#endif
+#ifdef ZH
+			else if(controlID == buttonChallengeID)
+			{
+				if(campaignSelected || dontAllowTransitions)
+					break;
+
+				// set up for the difficulty select into challenge menu
+				TheTransitionHandler->setGroup("MainMenuFactionTraining");
+				GameWindow *win = TheWindowManager->winGetWindowFromId(parentMainMenu, TheNameKeyGenerator->nameToKey("MainMenu.wnd:WinFactionTraining"));
+				if(win)
+					win->winHide(TRUE);
+				TheTransitionHandler->reverse("MainMenuSinglePlayerMenuBackTraining");
+				TheTransitionHandler->setGroup("MainMenuDifficultyMenuTraining");
+				campaignSelected = TRUE;
+				showLogo = FALSE;
+				showSide = SHOW_TRAINING;
+				launchChallengeMenu = TRUE;
+			}
+			
+
+// This button has been removed for the mission disk -June 2003
+/*			else if(controlID == buttonTRAININGID)
+#endif
 			{
 				if(campaignSelected || dontAllowTransitions)
 					break;
@@ -1507,11 +1706,21 @@ WindowMsgHandledType MainMenuSystem( GameWindow *window, UnsignedInt msg,
 
 //				setupGameStart(TheCampaignManager->getCurrentMap());
 			}
+#ifdef OG
 			else if(controlID == buttonUSAID)
+#endif
+#ifdef ZH
+*/			else if(controlID == buttonUSAID)
+#endif
 			{
 				if(campaignSelected || dontAllowTransitions)
 					break;
 				TheCampaignManager->setCampaign( "USA" );
+#ifdef ZH
+#ifdef _CAMPEA_DEMO
+				TheCampaignManager->setCampaign( "MD_USA_1_DEMO" );
+#endif
+#endif
 				TheTransitionHandler->setGroup("MainMenuFactionUS");
 				TheTransitionHandler->remove("MainMenuFactionUS", TRUE);
 				GameWindow *win = TheWindowManager->winGetWindowFromId(parentMainMenu, TheNameKeyGenerator->nameToKey("MainMenu.wnd:WinFactionUS"));
@@ -1523,6 +1732,9 @@ WindowMsgHandledType MainMenuSystem( GameWindow *window, UnsignedInt msg,
 				logoIsShown = FALSE;
 				showLogo = FALSE;
 				showSide = SHOW_USA;
+#ifdef ZH
+//				launchChallengeMenu = FALSE;
+#endif
 //				WindowLayout *layout = NULL;
 //				layout = TheWindowManager->winCreateLayout( AsciiString( "Menus/DifficultySelect.wnd" ) );
 //				layout->runInit();
@@ -1536,6 +1748,11 @@ WindowMsgHandledType MainMenuSystem( GameWindow *window, UnsignedInt msg,
 				if(campaignSelected || dontAllowTransitions)
 					break;
 				TheCampaignManager->setCampaign( "GLA" );
+#ifdef ZH
+#ifdef _CAMPEA_DEMO
+				TheCampaignManager->setCampaign( "MD_USA_2_DEMO" );
+#endif
+#endif
 				TheTransitionHandler->setGroup("MainMenuFactionGLA");
 				TheTransitionHandler->remove("MainMenuFactionGLA", TRUE);
 				GameWindow *win = TheWindowManager->winGetWindowFromId(parentMainMenu, TheNameKeyGenerator->nameToKey("MainMenu.wnd:WinFactionGLA"));
@@ -1547,6 +1764,9 @@ WindowMsgHandledType MainMenuSystem( GameWindow *window, UnsignedInt msg,
 				logoIsShown = FALSE;
 				showLogo = FALSE;
 				showSide = SHOW_GLA;
+#ifdef ZH
+//				launchChallengeMenu = FALSE;
+#endif
 //				WindowLayout *layout = NULL;
 //				layout = TheWindowManager->winCreateLayout( AsciiString( "Menus/DifficultySelect.wnd" ) );
 //				layout->runInit();
@@ -1560,6 +1780,11 @@ WindowMsgHandledType MainMenuSystem( GameWindow *window, UnsignedInt msg,
 				if(campaignSelected || dontAllowTransitions)
 					break;
 				TheCampaignManager->setCampaign( "China" );
+#ifdef ZH
+#ifdef _CAMPEA_DEMO
+				TheCampaignManager->setCampaign( "MD_GLA_3_DEMO" );
+#endif
+#endif
 				TheTransitionHandler->setGroup("MainMenuFactionChina");
 				TheTransitionHandler->remove("MainMenuFactionChina", TRUE);
 				GameWindow *win = TheWindowManager->winGetWindowFromId(parentMainMenu, TheNameKeyGenerator->nameToKey("MainMenu.wnd:WinFactionChina"));
@@ -1571,7 +1796,9 @@ WindowMsgHandledType MainMenuSystem( GameWindow *window, UnsignedInt msg,
 				logoIsShown = FALSE;
 				showLogo = FALSE;
 				showSide = SHOW_CHINA;
-
+#ifdef ZH
+//				launchChallengeMenu = FALSE;
+#endif
 //				WindowLayout *layout = NULL;
 //				layout = TheWindowManager->winCreateLayout( AsciiString( "Menus/DifficultySelect.wnd" ) );
 //				layout->runInit();
@@ -1611,7 +1838,9 @@ WindowMsgHandledType MainMenuSystem( GameWindow *window, UnsignedInt msg,
 				campaignSelected = FALSE;
 			}
 
+#ifdef OG
 #endif _PLAYTEST
+#endif
 
 			break;
 

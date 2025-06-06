@@ -34,6 +34,12 @@
 #include <Common/AsciiString.h>
 
 /**
+#ifdef ZH
+ * Get a string from the original Generals Registry
+ */
+Bool GetStringFromGeneralsRegistry(AsciiString path, AsciiString key, AsciiString& val);
+/**
+#endif
 	* Get a string from the registry
 	*/
 Bool GetStringFromRegistry(AsciiString path, AsciiString key, AsciiString& val);

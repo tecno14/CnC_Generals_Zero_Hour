@@ -66,7 +66,12 @@ class Energy : public Snapshot
 
 public:
 	
+#ifdef OG
 	inline Energy() : m_energyProduction(0), m_energyConsumption(0), m_owner(NULL) { }
+#endif
+#ifdef ZH
+	Energy();
+#endif
 
 	// reset energy information to base values.
 	void init( Player *owner)
@@ -77,7 +82,12 @@ public:
 	}
 
 	/// return current energy production in kilowatts
+#ifdef OG
 	Int getProduction() const { return m_energyProduction; }
+#endif
+#ifdef ZH
+	Int getProduction() const;
+#endif
 
 	/// return current energy consumption in kilowatts
 	Int getConsumption() const { return m_energyConsumption; }
@@ -96,6 +106,11 @@ public:
 	/** Adds an energy bonus to the player's pool if the power bonus status bit is set */
 	void addPowerBonus( Object *obj );
 	void removePowerBonus( Object *obj );
+#ifdef ZH
+
+	void setPowerSabotagedTillFrame( UnsignedInt frame ) { m_powerSabotagedTillFrame = frame; }
+	UnsignedInt getPowerSabotagedTillFrame() const { return m_powerSabotagedTillFrame; }
+#endif
 
 	/**
 		return the percentage of energy needed that we actually produce, as a 0.0 ... 1.0 fraction.
@@ -116,6 +131,9 @@ private:
 
 	Int		m_energyProduction;		///< level of energy production, in kw
 	Int		m_energyConsumption;	///< level of energy consumption, in kw
+#ifdef ZH
+	UnsignedInt m_powerSabotagedTillFrame; ///< If power is sabotaged, the frame will be greater than now.
+#endif
 	Player *m_owner;						///< Tight pointer to the Player I am intrinsic to.
 };
 

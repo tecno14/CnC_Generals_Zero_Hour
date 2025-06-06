@@ -48,6 +48,9 @@
 #include "Common/QuotedPrintable.h"
 #include "Common/MultiplayerSettings.h"
 #include "GameClient/MapUtil.h"
+#ifdef ZH
+#include "GameClient/ChallengeGenerals.h"
+#endif
 #include "GameNetwork/GameSpy/PeerDefs.h"
 
 #ifdef _INTERNAL
@@ -533,7 +536,23 @@ Int CustomMatchPreferences::getPreferredFaction(void)
 		if (!fac)
 			ret = PLAYERTEMPLATE_RANDOM;
 		else if (fac->getStartingBuilding().isEmpty())
+#ifdef ZH
 			ret = PLAYERTEMPLATE_RANDOM;
+		else if (TheGameInfo && TheGameInfo->oldFactionsOnly() && !fac->isOldFaction())
+#endif
+			ret = PLAYERTEMPLATE_RANDOM;
+#ifdef ZH
+		else {
+			// Prevent from loading the disabled Generals, in case you had previously selected one as your preferred faction.
+			// This is also enforced at GUI setup (GUIUtil.cpp and GameLogic.cpp).
+			// @todo: unlock these when something rad happens
+			Bool disallowLockedGenerals = TRUE;
+			const GeneralPersona *general = TheChallengeGenerals->getGeneralByTemplateName(fac->getName());
+			Bool startsLocked = general ? !general->isStartingEnabled() : FALSE;
+			if (disallowLockedGenerals && startsLocked)
+				ret = PLAYERTEMPLATE_RANDOM;
+		}
+#endif
 	}
 
 	return ret;
@@ -655,19 +674,36 @@ AsciiString CustomMatchPreferences::getPreferredMap(void)
 	AsciiString ret;
 	CustomMatchPreferences::const_iterator it = find("Map");
 	if (it == end())
+#ifdef OG
 	{
 		ret = getDefaultMap(TRUE);
+#endif
+#ifdef ZH
+	{	//found find map, use default instead
+		ret = getDefaultOfficialMap();
+#endif
 		return ret;
 	}
 
 	ret = QuotedPrintableToAsciiString(it->second);
 	ret.trim();
 	if (ret.isEmpty() || !isValidMap(ret, TRUE))
+#ifdef OG
 	{
 		ret = getDefaultMap(TRUE);
+#endif
+#ifdef ZH
+	{	//map is invalid, use default instead
+		ret = getDefaultOfficialMap();
+#endif
 		return ret;
 	}
 	
+#ifdef ZH
+	//can only use official maps if recording stats
+	if( getUseStats() && !isOfficialMap(ret) )
+		ret = getDefaultOfficialMap();
+#endif
 	return ret;
 }
 
@@ -676,6 +712,88 @@ void CustomMatchPreferences::setPreferredMap(AsciiString val)
 	(*this)["Map"] = AsciiStringToQuotedPrintable(val);
 }
 
+#ifdef ZH
+
+static const char superweaponRestrictionKey[] = "SuperweaponRestrict";
+
+Bool CustomMatchPreferences::getSuperweaponRestricted(void) const
+{
+  const_iterator it = find(superweaponRestrictionKey);
+  if (it == end())
+  {
+    return false;
+  }
+  
+  return ( it->second.compareNoCase( "yes" ) == 0 );
+}
+
+void CustomMatchPreferences::setSuperweaponRestricted( Bool superweaponRestricted )
+{
+  (*this)[superweaponRestrictionKey] = superweaponRestricted ? "Yes" : "No";
+}
+
+static const char startingCashKey[] = "StartingCash";
+Money CustomMatchPreferences::getStartingCash(void) const
+{
+  const_iterator it = find(startingCashKey);
+  if (it == end())
+  {
+    return TheMultiplayerSettings->getDefaultStartingMoney();
+  }
+  
+  Money money;
+  money.deposit( strtoul( it->second.str(), NULL, 10 ), FALSE  );
+  
+  return money;
+}
+
+void CustomMatchPreferences::setStartingCash( const Money & startingCash )
+{
+  AsciiString option;
+  
+  option.format( "%d", startingCash.countMoney() );
+  
+  (*this)[startingCashKey] = option;
+}
+
+static const char limitFactionsKey[] = "LimitArmies";
+
+// Prefers to only use the original 3 sides, not USA Air Force General, GLA Toxin General, et al
+Bool CustomMatchPreferences::getFactionsLimited(void) const
+{
+  const_iterator it = find(limitFactionsKey);
+  if (it == end())
+  {
+    return false; // The default
+  }
+  
+  return ( it->second.compareNoCase( "yes" ) == 0 );
+}
+
+void CustomMatchPreferences::setFactionsLimited( Bool factionsLimited )
+{
+  (*this)[limitFactionsKey] = factionsLimited ? "Yes" : "No";
+}
+
+static const char useStatsKey[] = "UseStats";
+
+Bool CustomMatchPreferences::getUseStats(void) const
+{
+  const_iterator it = find(useStatsKey);
+  if (it == end())
+  {
+    return true; // The default
+  }
+  
+  return ( it->second.compareNoCase( "yes" ) == 0 );
+}
+
+void CustomMatchPreferences::setUseStats( Bool useStats )
+{
+  (*this)[useStatsKey] = useStats ? "Yes" : "No";
+}
+
+#endif
 //-----------------------------------------------------------------------------
 // GameSpyMiscPreferences base class 
 //-----------------------------------------------------------------------------
@@ -721,7 +839,6 @@ Int GameSpyMiscPreferences::getMaxMessagesPerUpdate( void )
 {
 	return getInt("MaxMessagesPerUpdate", 100);
 }
-
 //-----------------------------------------------------------------------------
 // IgnorePreferences base class 
 //-----------------------------------------------------------------------------

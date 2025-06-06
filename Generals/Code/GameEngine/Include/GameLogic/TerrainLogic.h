@@ -315,6 +315,9 @@ public:
 	void setActiveBoundary(Int newActiveBoundary);
 
   void flattenTerrain(Object *obj);  ///< Flatten the terrain under a building.
+#ifdef ZH
+  void createCraterInTerrain(Object *obj);  ///< Flatten the terrain under a building.
+#endif
 
 protected:
 

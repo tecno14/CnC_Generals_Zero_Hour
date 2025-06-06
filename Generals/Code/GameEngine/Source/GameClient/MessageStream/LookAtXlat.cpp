@@ -225,8 +225,14 @@ GameMessageDisposition LookAtTranslator::translateGameMessage(const GameMessage 
 			m_anchor = msg->getArgument( 0 )->pixel;
 			m_currentPos = msg->getArgument( 0 )->pixel;
 
+#ifdef OG
 			// disable mouse scrolling in alternate mouse mode, per Harvard 7/15/03
 			if (!TheGlobalData->m_useAlternateMouse && !TheInGameUI->isSelecting() && !m_isScrolling)
+#endif
+#ifdef ZH
+			if (!TheInGameUI->isSelecting() && !m_isScrolling)
+
+#endif
 			{
 				setScrolling(SCROLL_RMB);
 			}
@@ -479,7 +485,9 @@ GameMessageDisposition LookAtTranslator::translateGameMessage(const GameMessage 
 			else	//not scrolling so reset amount
 				TheInGameUI->setScrollAmount(offset);
 
+#ifdef OG
 #if !defined(_PLAYTEST)
+#endif
 			//if (TheGlobalData->m_saveCameraInReplay /*&& TheRecorder->getMode() != RECORDERMODETYPE_PLAYBACK *//**/&& (TheGameLogic->isInSinglePlayerGame() || TheGameLogic->isInSkirmishGame())/**/)
 			//if (TheGlobalData->m_saveCameraInReplay && (TheGameLogic->isInMultiplayerGame() || TheGameLogic->isInSinglePlayerGame() || TheGameLogic->isInSkirmishGame()))
 			if (TheGlobalData->m_saveCameraInReplay && (TheGameLogic->isInSinglePlayerGame() || TheGameLogic->isInSkirmishGame()))
@@ -494,6 +502,8 @@ GameMessageDisposition LookAtTranslator::translateGameMessage(const GameMessage 
 				msg->appendIntegerArgument( (Int)TheMouse->getMouseCursor() );
 				msg->appendPixelArgument( m_currentPos );
 			}
+#ifdef OG
+#endif
 #endif
 			break;
 		}
@@ -530,6 +540,20 @@ GameMessageDisposition LookAtTranslator::translateGameMessage(const GameMessage 
 #endif // #if defined(_DEBUG) || defined(_INTERNAL)
 
 		// ------------------------------------------------------------------------
+#ifdef ZH
+#if defined(_ALLOW_DEBUG_CHEATS_IN_RELEASE)
+		case GameMessage::MSG_CHEAT_DESHROUD: 
+		{
+			if (!TheGameLogic->isInMultiplayerGame())
+			{
+				ThePartitionManager->revealMapForPlayerPermanently( ThePlayerList->getLocalPlayer()->getPlayerIndex() );
+			}
+			break;
+		}
+#endif // #if defined(_ALLOW_DEBUG_CHEATS_IN_RELEASE)
+
+		// ------------------------------------------------------------------------
+#endif
 #if defined(_DEBUG) || defined(_INTERNAL)
 		case GameMessage::MSG_META_DEMO_ENSHROUD:
 		{
@@ -544,7 +568,12 @@ GameMessageDisposition LookAtTranslator::translateGameMessage(const GameMessage 
 #if defined(_DEBUG) || defined(_INTERNAL)
 		case GameMessage::MSG_META_DEMO_BEGIN_ADJUST_FOV:
 		{
+#ifdef OG
 			DEBUG_ASSERTCRASH(!m_isChangingFOV, ("hmm, mismatched m_isChangingFOV"));
+#endif
+#ifdef ZH
+			//DEBUG_ASSERTCRASH(!m_isChangingFOV, ("hmm, mismatched m_isChangingFOV"));
+#endif
 			m_isChangingFOV = true;
 			m_anchor = m_currentPos;
 			break;
@@ -555,7 +584,12 @@ GameMessageDisposition LookAtTranslator::translateGameMessage(const GameMessage 
 #if defined(_DEBUG) || defined(_INTERNAL)
 		case GameMessage::MSG_META_DEMO_END_ADJUST_FOV:
 		{
+#ifdef OG
 			DEBUG_ASSERTCRASH(m_isChangingFOV, ("hmm, mismatched m_isChangingFOV"));
+#endif
+#ifdef ZH
+		//	DEBUG_ASSERTCRASH(m_isChangingFOV, ("hmm, mismatched m_isChangingFOV"));
+#endif
 			m_isChangingFOV = false;
 			break;
 		}

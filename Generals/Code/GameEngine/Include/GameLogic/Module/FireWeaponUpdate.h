@@ -41,6 +41,11 @@ class FireWeaponUpdateModuleData : public UpdateModuleData
 {
 public:
 	const WeaponTemplate* m_weaponTemplate;
+#ifdef ZH
+  UnsignedInt m_initialDelayFrames;
+	UnsignedInt m_exclusiveWeaponDelay;	///< If non-zero, any other weapon having fired this recently will keep us from doing anything
+	
+#endif
 	FireWeaponUpdateModuleData();
 
 	static void buildFieldParse(MultiIniFieldParse& p);
@@ -65,8 +70,15 @@ public:
 	virtual UpdateSleepTime update();
 
 protected:
+#ifdef ZH
+
+	Bool isOkayToFire();
+#endif
 	
 	Weapon* m_weapon;
+#ifdef ZH
+  UnsignedInt m_initialDelayFrame;
+#endif
 
 };
 

@@ -43,6 +43,9 @@
 #include "Common/FileSystem.h"
 #include "Common/GameAudio.h"
 #include "Common/INI.h"
+#ifdef ZH
+#include "Common/registry.h"
+#endif
 #include "Common/UserPreferences.h"
 #include "Common/Version.h"
 
@@ -66,10 +69,14 @@ GlobalData* GlobalData::m_theOriginal = NULL;
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 /*static*/ const FieldParse GlobalData::s_GlobalDataFieldParseTable[] = 
 {
+#ifdef OG
 #if !defined(_PLAYTEST)
+#endif
 	{ "Windowed",									INI::parseBool,				NULL,			offsetof( GlobalData, m_windowed ) },
 	{ "XResolution",							INI::parseInt,				NULL,			offsetof( GlobalData, m_xResolution ) },
 	{ "YResolution",							INI::parseInt,				NULL,			offsetof( GlobalData, m_yResolution ) },
+#ifdef OG
+#endif
 #endif
 	{ "MapName",									INI::parseAsciiString,NULL,			offsetof( GlobalData, m_mapName ) },
 	{ "MoveHintName",							INI::parseAsciiString,NULL,			offsetof( GlobalData, m_moveHintName ) },
@@ -88,7 +95,9 @@ GlobalData* GlobalData::m_theOriginal = NULL;
 	{ "Use3WayTerrainBlends",			INI::parseInt,				NULL,			offsetof( GlobalData, m_use3WayTerrainBlends ) },
 	{ "StretchTerrain",						INI::parseBool,				NULL,			offsetof( GlobalData, m_stretchTerrain ) },
 	{ "UseHalfHeightMap",					INI::parseBool,				NULL,			offsetof( GlobalData, m_useHalfHeightMap ) },
+#ifdef OG
 	{ "UserDataLeafName",					INI::parseQuotedAsciiString,	NULL,			offsetof( GlobalData, m_userDataLeafName ) },
+#endif
 	
 	
 	{ "DrawEntireTerrain",					INI::parseBool,				NULL,			offsetof( GlobalData, m_drawEntireTerrain ) },
@@ -460,7 +469,12 @@ GlobalData* GlobalData::m_theOriginal = NULL;
 
 	{ "StandardPublicBone", INI::parseAsciiStringVectorAppend, NULL, offsetof(GlobalData, m_standardPublicBones) },
 	{ "ShowMetrics",								INI::parseBool,				NULL,			offsetof( GlobalData, m_showMetrics ) },
+#ifdef OG
 	{ "DefaultStartingCash",				INI::parseUnsignedInt, NULL,		offsetof( GlobalData, m_defaultStartingCash ) },
+#endif
+#ifdef ZH
+  { "DefaultStartingCash",				Money::parseMoneyAmount, NULL,		offsetof( GlobalData, m_defaultStartingCash ) },
+#endif
 
 // NOTE: m_doubleClickTimeMS is still in use, but we disallow setting it from the GameData.ini file. It is now set in the constructor according to the windows parameter.
 //	{ "DoubleClickTimeMS",									INI::parseUnsignedInt,			NULL, offsetof( GlobalData, m_doubleClickTimeMS ) },
@@ -502,6 +516,9 @@ GlobalData* GlobalData::m_theOriginal = NULL;
 	{ "ShroudOn",										INI::parseBool,				NULL,			offsetof( GlobalData, m_shroudOn ) },
 	{ "FogOfWarOn",										INI::parseBool,				NULL,			offsetof( GlobalData, m_fogOfWarOn ) },
 	{ "ShowCollisionExtents",				INI::parseBool,				NULL,			offsetof( GlobalData, m_showCollisionExtents ) },
+#ifdef ZH
+  { "ShowAudioLocations",  				INI::parseBool,				NULL,			offsetof( GlobalData, m_showAudioLocations ) },
+#endif
 	{ "DebugProjectileTileWidth",		INI::parseReal,				NULL,			offsetof( GlobalData, m_debugProjectileTileWidth) },
 	{ "DebugProjectileTileDuration",INI::parseInt,				NULL,			offsetof( GlobalData, m_debugProjectileTileDuration) },
 	{ "DebugProjectileTileColor",		INI::parseRGBColor,		NULL,			offsetof( GlobalData, m_debugProjectileTileColor) },
@@ -520,6 +537,9 @@ GlobalData* GlobalData::m_theOriginal = NULL;
 	{ "UseLocalMOTD",								INI::parseBool,				NULL,			offsetof( GlobalData, m_useLocalMOTD ) },
 	{ "BaseStatsDir",								INI::parseAsciiString,NULL,			offsetof( GlobalData, m_baseStatsDir ) },
 	{ "LocalMOTDPath",							INI::parseAsciiString,NULL,			offsetof( GlobalData, m_MOTDPath ) },
+#ifdef ZH
+	{ "ExtraLogging",								INI::parseBool,				NULL,			offsetof( GlobalData, m_extraLogging ) },
+#endif
 #endif
 
 	{ NULL,					NULL,						NULL,						0 }  // keep this last
@@ -542,6 +562,13 @@ GlobalData::GlobalData()
 	if( m_theOriginal == NULL )
 		m_theOriginal = this;
 	m_next = NULL;
+#ifdef ZH
+
+#if defined(_DEBUG) || defined(_INTERNAL) || defined(_ALLOW_DEBUG_CHEATS_IN_RELEASE)
+	m_specialPowerUsesDelay = TRUE;
+#endif
+  m_TiVOFastMode = FALSE;
+#endif
 
 #if defined(_DEBUG) || defined(_INTERNAL)
 	m_wireframe = 0;
@@ -552,8 +579,13 @@ GlobalData::GlobalData()
 	m_jabberOn = FALSE;
 	m_munkeeOn = FALSE;
 	m_showCollisionExtents = FALSE;
+#ifdef ZH
+  m_showAudioLocations = FALSE;
+#endif
 	m_debugCamera = FALSE;
+#ifdef OG
 	m_specialPowerUsesDelay = TRUE;
+#endif
 	m_debugVisibility = FALSE;
 	m_debugVisibilityTileCount = 32;	// default to 32.
 	m_debugVisibilityTileDuration = LOGICFRAMES_PER_SECOND;
@@ -585,6 +617,9 @@ GlobalData::GlobalData()
 	m_useLocalMOTD = FALSE;
 	m_baseStatsDir = ".\\";
 	m_MOTDPath = "MOTD.txt";
+#ifdef ZH
+	m_extraLogging = FALSE;
+#endif
 #endif
 
 	m_playStats = -1;
@@ -594,6 +629,9 @@ GlobalData::GlobalData()
 	m_useTrees = 0;
 	m_useTreeSway = TRUE;
 	m_useDrawModuleLOD = FALSE;
+#ifdef ZH
+	m_useHeatEffects = TRUE;
+#endif
 	m_useFpsLimit = FALSE;
 	m_dumpAssetUsage = FALSE;
 	m_framesPerSecondLimit = 0;
@@ -642,6 +680,9 @@ GlobalData::GlobalData()
 	m_featherWater = FALSE;
 	m_showSoftWaterEdge = TRUE;	//display soft water edge
 	m_usingWaterTrackEditor = FALSE;
+#ifdef ZH
+	m_isWorldBuilder = FALSE;
+#endif
 
 	m_showMetrics = false;
 
@@ -802,6 +843,9 @@ GlobalData::GlobalData()
 	// End Add
 
 	m_debugAI = AI_DEBUG_NONE;
+#ifdef ZH
+	m_debugSupplyCenterPlacement = FALSE;
+#endif
 	m_debugAIObstacles = FALSE;
 	m_showClientPhysics = TRUE;
 	m_showTerrainNormals = FALSE;
@@ -880,6 +924,11 @@ GlobalData::GlobalData()
 #endif
 
 	m_hotKeyTextColor = GameMakeColor(255,255,0,255);
+#ifdef ZH
+
+  // THis is put ON ice until later
+  //  m_cheaterHasBeenSpiedIfMyLowestBitIsTrue = GameMakeColor(255,128,0,0);// orange, to the hacker's eye
+#endif
 
 	m_shroudColor.setFromInt( 0x00FFFFFF ) ;
 	m_clearAlpha = 255;
@@ -953,6 +1002,9 @@ GlobalData::GlobalData()
 	m_shellMapName.set("Maps\\ShellMap1\\ShellMap1.map");
 	m_shellMapOn =TRUE;
 	m_playIntro = TRUE;
+#ifdef ZH
+	m_playSizzle = TRUE;
+#endif
 	m_afterIntro = FALSE;
 	m_allowExitOutOfMovies = FALSE;
 	m_loadScreenRender = FALSE;
@@ -1028,19 +1080,72 @@ GlobalData::GlobalData()
 	
 #ifdef DUMP_PERF_STATS
 	m_dumpPerformanceStatistics = FALSE;
+#ifdef ZH
+  m_dumpStatsAtInterval = FALSE;
+  m_statsInterval = 30;      
+#endif
 #endif
 
 	m_forceBenchmark = FALSE;	///<forces running of CPU detection benchmark, even on known cpu's.
 
 	m_keyboardCameraRotateSpeed = 0.1f;
+#ifdef ZH
 
+  // Set user data directory based on registry settings instead of INI parameters. This allows us to 
+  // localize the leaf name.
+  char temp[_MAX_PATH + 1];
+  if (::SHGetSpecialFolderPath(NULL, temp, CSIDL_PERSONAL, true))
+  {
+    AsciiString myDocumentsDirectory = temp;
+#endif
+
+#ifdef OG
 }  // end GlobalData
 
+#endif
+#ifdef ZH
+    if (myDocumentsDirectory.getCharAt(myDocumentsDirectory.getLength() -1) != '\\')
+      myDocumentsDirectory.concat( '\\' );
+
+    AsciiString leafName;
+#endif
+
+#ifdef OG
 //-------------------------------------------------------------------------------------------------
 AsciiString GlobalData::getPath_UserData() const
+#endif
+#ifdef ZH
+    if ( !GetStringFromRegistry( "", "UserDataLeafName", leafName ) )
+
+#endif
 {
+#ifdef OG
 	return m_userDataDir;
+
+#endif
+#ifdef ZH
+      // Use something, anything
+      // [MH] had to remove this, otherwise mapcache build step won't run... DEBUG_CRASH( ( "Could not find registry key UserDataLeafName; defaulting to \"Command and Conquer Generals Zero Hour Data\" " ) );
+      leafName = "Command and Conquer Generals Zero Hour Data";
+    }
+
+    myDocumentsDirectory.concat( leafName );
+    if (myDocumentsDirectory.getCharAt( myDocumentsDirectory.getLength() - 1) != '\\')
+      myDocumentsDirectory.concat( '\\' );
+
+    CreateDirectory(myDocumentsDirectory.str(), NULL);
+    m_userDataDir = myDocumentsDirectory;
+#endif
 }
+#ifdef ZH
+	
+	//-allAdvice feature
+	//m_allAdvice = FALSE;
+
+	m_clientRetaliationModeEnabled = TRUE; //On by default.
+
+}  // end GlobalData
+#endif
 
 //-------------------------------------------------------------------------------------------------
 //-------------------------------------------------------------------------------------------------
@@ -1051,8 +1156,17 @@ GlobalData::~GlobalData( void )
 	if (m_weaponBonusSet)
 		m_weaponBonusSet->deleteInstance();
 
+#ifdef OG
 	if( m_theOriginal == this )
+#endif
+#ifdef ZH
+	if( m_theOriginal == this )	{
+#endif
 		m_theOriginal = NULL;
+#ifdef ZH
+		TheWritableGlobalData = NULL;
+	}
+#endif
 
 }  // end ~GlobalData
 
@@ -1172,8 +1286,11 @@ void GlobalData::parseGameDataDefinition( INI* ini )
 	// parse the ini weapon definition
 	ini->initFromINI( TheWritableGlobalData, s_GlobalDataFieldParseTable );
 
+#ifdef OG
 	TheWritableGlobalData->m_userDataDir.clear();
+#endif
 
+#ifdef OG
 	char temp[_MAX_PATH];
 	if (::SHGetSpecialFolderPath(NULL, temp, CSIDL_PERSONAL, true))
 	{
@@ -1185,9 +1302,14 @@ void GlobalData::parseGameDataDefinition( INI* ini )
 		TheWritableGlobalData->m_userDataDir = temp;
 	}
 
+#endif
 	// override INI values with user preferences
 	OptionPreferences optionPref;
  	TheWritableGlobalData->m_useAlternateMouse = optionPref.getAlternateMouseModeEnabled();
+#ifdef ZH
+	TheWritableGlobalData->m_clientRetaliationModeEnabled = optionPref.getRetaliationModeEnabled();
+	TheWritableGlobalData->m_doubleClickAttackMove = optionPref.getDoubleClickAttackMoveEnabled();
+#endif
 	TheWritableGlobalData->m_keyboardScrollFactor = optionPref.getScrollFactor();
 	TheWritableGlobalData->m_defaultIP = optionPref.getLANIPAddress();
 	TheWritableGlobalData->m_firewallSendDelay = optionPref.getSendDelay();

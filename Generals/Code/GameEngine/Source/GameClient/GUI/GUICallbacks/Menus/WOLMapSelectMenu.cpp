@@ -145,6 +145,12 @@ void WOLMapSelectMenuInit( WindowLayout *layout, void *userData )
 		usesSystemMapDir = mmd->m_isOfficial;
 	}
 
+#ifdef ZH
+	//if stats are enabled, only official maps can be used
+	if( TheGameSpyInfo->getCurrentStagingRoom()->getUseStats() )
+		usesSystemMapDir = true;
+
+#endif
 	buttonBack = TheNameKeyGenerator->nameToKey( AsciiString("WOLMapSelectMenu.wnd:ButtonBack") );
 	buttonOK = TheNameKeyGenerator->nameToKey( AsciiString("WOLMapSelectMenu.wnd:ButtonOK") );
 	listboxMap = TheNameKeyGenerator->nameToKey( AsciiString("WOLMapSelectMenu.wnd:ListboxMap") );
@@ -154,7 +160,18 @@ void WOLMapSelectMenuInit( WindowLayout *layout, void *userData )
 
 	GameWindow *radioButtonSystemMaps = TheWindowManager->winGetWindowFromId( parent, radioButtonSystemMapsID );
 	GameWindow *radioButtonUserMaps = TheWindowManager->winGetWindowFromId( parent, radioButtonUserMapsID );
+#ifdef OG
 	if (usesSystemMapDir)
+
+#endif
+#ifdef ZH
+	if( TheGameSpyInfo->getCurrentStagingRoom()->getUseStats() )
+	{	//disable unofficial maps if stats are being recorded
+		GadgetRadioSetSelection( radioButtonSystemMaps, FALSE );
+		radioButtonUserMaps->winEnable( FALSE );
+	}
+	else if (usesSystemMapDir)
+#endif
 		GadgetRadioSetSelection( radioButtonSystemMaps, FALSE );
 	else
 		GadgetRadioSetSelection( radioButtonUserMaps, FALSE );

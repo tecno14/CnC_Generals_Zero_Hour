@@ -75,7 +75,12 @@ Bool ConvertToCarBombCrateCollide::isValidToExecute( const Object *other ) const
 		return FALSE;
 	}
 
+#ifdef OG
 	if ( other->getStatusBits() & OBJECT_STATUS_IS_CARBOMB )
+#endif
+#ifdef ZH
+	if( other->getStatusBits().test( OBJECT_STATUS_IS_CARBOMB ) )
+#endif
 	{
 		return FALSE;// oops, sorry, I'll convert the next one.
 	}
@@ -118,6 +123,17 @@ Bool ConvertToCarBombCrateCollide::executeCrateBehavior( Object *other )
 	if (ai && ai->getGoalObject() != other)
 		return false;
 
+#ifdef ZH
+	if( other && other->checkAndDetonateBoobyTrap(obj) )
+	{
+		// Whoops, it was mined.  Cancel if it or us is now dead.
+		if( other->isEffectivelyDead() || getObject()->isEffectivelyDead() )
+		{
+			return false;
+		}
+	}
+
+#endif
 	other->setWeaponSetFlag( WEAPONSET_CARBOMB );
 
 	FXList::doFXObj( getConvertToCarBombCrateCollideModuleData()->m_fxList, other );
@@ -131,7 +147,12 @@ Bool ConvertToCarBombCrateCollide::executeCrateBehavior( Object *other )
 	//This is kinda special... we will endow our new ride with our vision and shroud range, since we are driving
 	other->setVisionRange(getObject()->getVisionRange());
 	other->setShroudClearingRange(getObject()->getShroudClearingRange());
+#ifdef OG
 	other->setStatus( OBJECT_STATUS_IS_CARBOMB );
+#endif
+#ifdef ZH
+	other->setStatus( MAKE_OBJECT_STATUS_MASK( OBJECT_STATUS_IS_CARBOMB ) );
+#endif
 
 	ExperienceTracker *exp = other->getExperienceTracker();
 	if (exp)

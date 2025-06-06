@@ -33,11 +33,22 @@
 #include "Lib/BaseType.h"
 #include "Common/INI.h"
 #include "GameClient/MapUtil.h"
+#ifdef ZH
+#include "GameClient/GameText.h"
+#endif
 #include "GameNetwork/NetworkDefs.h"
 #include "Common/NameKeyGenerator.h"
 #include "Common/WellKnownKeys.h"
 #include "Common/QuotedPrintable.h"
 
+#ifdef ZH
+#ifdef _INTERNAL
+// for occasional debugging...
+//#pragma optimize("", off)
+//#pragma MESSAGE("************************************** WARNING, optimization disabled for debugging purposes")
+#endif
+
+#endif
 class MapMetaDataReader
 {
 public:
@@ -45,6 +56,9 @@ public:
 	Int m_numPlayers;
 	Bool m_isMultiplayer;
 	AsciiString m_asciiDisplayName;
+#ifdef ZH
+	AsciiString m_asciiNameLookupTag;
+#endif
 
 	Bool m_isOfficial;
 	WinTimeStamp m_timestamp;
@@ -91,6 +105,9 @@ const FieldParse MapMetaDataReader::m_mapFieldParseTable[] =
 	{ "timestampLo",						INI::parseInt,			NULL,	offsetof( MapMetaDataReader, m_timestamp.m_lowTimeStamp ) },
 	{ "timestampHi",						INI::parseInt,			NULL,	offsetof( MapMetaDataReader, m_timestamp.m_highTimeStamp ) },
 	{ "displayName",						INI::parseAsciiString,	NULL,	offsetof( MapMetaDataReader, m_asciiDisplayName ) },
+#ifdef ZH
+	{ "nameLookupTag",					INI::parseAsciiString,	NULL,	offsetof( MapMetaDataReader, m_asciiNameLookupTag ) },
+#endif
 
 	{ "supplyPosition",					parseSupplyPositionCoord3D,	NULL, NULL },
 	{ "techPosition",						parseTechPositionsCoord3D,	NULL, NULL },
@@ -135,7 +152,40 @@ void INI::parseMapCacheDefinition( INI* ini )
 
 	md.m_waypoints[TheNameKeyGenerator->keyToName(TheKey_InitialCameraPosition)] = mdr.m_initialCameraPosition;
 
+#ifdef OG
 	md.m_displayName = QuotedPrintableToUnicodeString(mdr.m_asciiDisplayName);
+
+#endif
+#ifdef ZH
+//	md.m_displayName = QuotedPrintableToUnicodeString(mdr.m_asciiDisplayName);
+// this string is never to be used, but we'll leave it in to allow people with an old mapcache.ini to parse it
+	md.m_nameLookupTag = QuotedPrintableToAsciiString(mdr.m_asciiNameLookupTag);
+
+	if (md.m_nameLookupTag.isEmpty())
+	{
+		// maps without localized name tags
+		AsciiString tempdisplayname;
+		tempdisplayname = name.reverseFind('\\') + 1;
+		md.m_displayName.translate(tempdisplayname);
+		if (md.m_numPlayers >= 2)
+		{
+			UnicodeString extension;
+			extension.format(L" (%d)", md.m_numPlayers);
+			md.m_displayName.concat(extension);
+		}
+	}
+	else
+	{
+		// official maps with name tags
+		md.m_displayName = TheGameText->fetch(md.m_nameLookupTag);
+		if (md.m_numPlayers >= 2)
+		{
+			UnicodeString extension;
+			extension.format(L" (%d)", md.m_numPlayers);
+			md.m_displayName.concat(extension);
+		}
+	}
+#endif
 
 	AsciiString startingCamName;
 	for (Int i=0; i<md.m_numPlayers; ++i)

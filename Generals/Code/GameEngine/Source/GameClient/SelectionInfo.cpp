@@ -23,18 +23,43 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 #include "PreRTS.h"
+#ifdef OG
 #include "GameClient/SelectionInfo.h"
 
-#include "Common/ActionManager.h"
+#endif
+#ifdef ZH
+
 #include "GameLogic/Damage.h"
+#include "GameLogic/Module/ContainModule.h"
+#endif
+
+#include "Common/ActionManager.h"
+#ifdef OG
+#include "GameLogic/Damage.h"
+
+#endif
+#ifdef ZH
+#include "Common/ThingTemplate.h"
+#include "Common/PlayerList.h"
+#endif
 #include "Common/Player.h"
+#ifdef OG
 #include "Common/PlayerList.h"
 #include "Common/ThingTemplate.h"
+#endif
 
+#ifdef ZH
+#include "GameClient/SelectionInfo.h"
+#endif
 #include "GameClient/CommandXlat.h"
 #include "GameClient/ControlBar.h"
-#include "GameClient/Drawable.h"
+#ifdef ZH
 #include "GameClient/GameClient.h"
+#endif
+#include "GameClient/Drawable.h"
+#ifdef OG
+#include "GameClient/GameClient.h"
+#endif
 #include "GameClient/KeyDefs.h"
 
 #ifdef _INTERNAL
@@ -356,7 +381,47 @@ Bool addDrawableToList( Drawable *draw, void *userData )
 		return FALSE;
 
 	if (!draw->isSelectable())
+#ifdef ZH
+  {
+    const Object *obj = draw->getObject();
+    if ( obj && obj->getContainedBy() )//hmm, interesting... he is not selectable but he is contained
+    {// What we are after here is to propagate the selection the selection ti the container
+      // if the cobtainer is non-enclosing... see also selectionxlat, in the left_click case
+
+      ContainModuleInterface *contain = obj->getContainedBy()->getContain();
+      Drawable *containDraw = obj->getContainedBy()->getDrawable();
+      if (contain && ! contain->isEnclosingContainerFor( obj ) && containDraw )
+        return addDrawableToList( containDraw, userData );
+    }
+    else
+      return FALSE;
+  }
+
+	//Kris: Aug 9, 2003!!! Wow, this bug has been around a LONG time!!
+	//Basically, it was possible to drag select a single enemy/neutral unit even if you couldn't see it
+	//including stealthed units.
+	const Object *obj = draw->getObject();
+	if( obj )
+	{
+		const Player *player = ThePlayerList->getLocalPlayer();
+		Relationship rel = player->getRelationship( obj->getTeam() );
+		if( rel == NEUTRAL || rel == ENEMIES )
+		{
+			if( obj->getShroudedStatus( player->getPlayerIndex() ) >= OBJECTSHROUD_FOGGED )
+			{
+#endif
 		return FALSE;
+#ifdef ZH
+			}
+
+			//If stealthed, no way!
+			if( obj->testStatus( OBJECT_STATUS_STEALTHED ) && !obj->testStatus( OBJECT_STATUS_DETECTED ) )
+			{
+				return FALSE;
+			}
+		}
+	}
+#endif
 
 	pds->drawableListToFill->push_back(draw);
 	return TRUE;

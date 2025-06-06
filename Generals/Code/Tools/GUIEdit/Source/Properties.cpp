@@ -1177,9 +1177,15 @@ void LoadImageListComboBox( HWND comboBox )
 	SendMessage( comboBox, CB_RESETCONTENT, 0, 0 );
 
 	// load the combo box with string names from the GUI image collection
+#ifdef OG
 	for( image = TheMappedImageCollection->firstImage();
 			 image;
 			 image = TheMappedImageCollection->nextImage( image ) )
+#endif
+#ifdef ZH
+  for (unsigned index=0;(image=TheMappedImageCollection->Enum(index))!=NULL;index++)
+
+#endif
 	{
 
 		SendMessage( comboBox, CB_ADDSTRING, 0, (LPARAM)image->getName().str() );

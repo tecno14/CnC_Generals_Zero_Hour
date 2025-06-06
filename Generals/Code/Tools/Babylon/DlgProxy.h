@@ -26,45 +26,100 @@
 #pragma once
 #endif // _MSC_VER > 1000
 
+#ifdef OG
 class CNoxstringDlg;
+#endif
+#ifdef ZH
+class CBabylonDlg;
+#endif
 
 /////////////////////////////////////////////////////////////////////////////
+#ifdef OG
 // CNoxstringDlgAutoProxy command target
+#endif
+#ifdef ZH
+// CBabylonDlgAutoProxy command target
+#endif
 
+#ifdef OG
 class CNoxstringDlgAutoProxy : public CCmdTarget
+#endif
+#ifdef ZH
+class CBabylonDlgAutoProxy : public CCmdTarget
+#endif
 {
+#ifdef OG
 	DECLARE_DYNCREATE(CNoxstringDlgAutoProxy)
+#endif
+#ifdef ZH
+	DECLARE_DYNCREATE(CBabylonDlgAutoProxy)
+#endif
 
+#ifdef OG
 	CNoxstringDlgAutoProxy();           // protected constructor used by dynamic creation
+#endif
+#ifdef ZH
+	CBabylonDlgAutoProxy();           // protected constructor used by dynamic creation
+#endif
 
 // Attributes
 public:
+#ifdef OG
 	CNoxstringDlg* m_pDialog;
+#endif
+#ifdef ZH
+	CBabylonDlg* m_pDialog;
+#endif
 
 // Operations
 public:
 
 // Overrides
 	// ClassWizard generated virtual function overrides
+#ifdef OG
 	//{{AFX_VIRTUAL(CNoxstringDlgAutoProxy)
+#endif
+#ifdef ZH
+	//{{AFX_VIRTUAL(CBabylonDlgAutoProxy)
+#endif
 	public:
 	virtual void OnFinalRelease();
 	//}}AFX_VIRTUAL
 
 // Implementation
 protected:
+#ifdef OG
 	virtual ~CNoxstringDlgAutoProxy();
+#endif
+#ifdef ZH
+	virtual ~CBabylonDlgAutoProxy();
+#endif
 
 	// Generated message map functions
+#ifdef OG
 	//{{AFX_MSG(CNoxstringDlgAutoProxy)
+#endif
+#ifdef ZH
+	//{{AFX_MSG(CBabylonDlgAutoProxy)
+#endif
 		// NOTE - the ClassWizard will add and remove member functions here.
 	//}}AFX_MSG
 
 	DECLARE_MESSAGE_MAP()
+#ifdef OG
 	DECLARE_OLECREATE(CNoxstringDlgAutoProxy)
+#endif
+#ifdef ZH
+	DECLARE_OLECREATE(CBabylonDlgAutoProxy)
+#endif
 
 	// Generated OLE dispatch map functions
+#ifdef OG
 	//{{AFX_DISPATCH(CNoxstringDlgAutoProxy)
+#endif
+#ifdef ZH
+	//{{AFX_DISPATCH(CBabylonDlgAutoProxy)
+#endif
 		// NOTE - the ClassWizard will add and remove member functions here.
 	//}}AFX_DISPATCH
 	DECLARE_DISPATCH_MAP()

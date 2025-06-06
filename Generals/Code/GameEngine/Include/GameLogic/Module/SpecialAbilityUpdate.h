@@ -35,7 +35,12 @@
 // INCLUDES ///////////////////////////////////////////////////////////////////////////////////////
 #include "Common/AudioEventRTS.h"
 #include "Common/INI.h"
+#ifdef OG
 #include "GameLogic/Module/UpdateModule.h"
+#endif
+#ifdef ZH
+#include "GameLogic/Module/SpecialPowerUpdateModule.h"
+#endif
 #include "GameClient/ParticleSys.h"	
 
 class DamageInfo;
@@ -77,6 +82,11 @@ public:
 	Bool									m_doCaptureFX;					///< the house color flashing while a building is getting captured
 	Bool									m_loseStealthOnTrigger;
 	Bool									m_approachRequiresLOS;
+#ifdef ZH
+  Bool                  m_needToFaceTarget;
+  Bool                  m_persistenceRequiresRecharge;
+
+#endif
 	const ParticleSystemTemplate *m_disableFXParticleSystem;
 	AudioEventRTS					m_packSound;
 	AudioEventRTS					m_unpackSound;
@@ -111,6 +121,10 @@ public:
 		m_skillPointsForTriggering = -1;
 		m_approachRequiresLOS = TRUE;
 		m_preTriggerUnstealthFrames = 0;
+#ifdef ZH
+    m_needToFaceTarget = TRUE;
+    m_persistenceRequiresRecharge = FALSE;
+#endif
 	}
 
 	static void buildFieldParse(MultiIniFieldParse& p) 
@@ -153,7 +167,14 @@ public:
 			{ "LoseStealthOnTrigger",				INI::parseBool,										NULL, offsetof( SpecialAbilityUpdateModuleData, m_loseStealthOnTrigger ) },
 			{ "AwardXPForTriggering",				INI::parseInt,										NULL, offsetof( SpecialAbilityUpdateModuleData, m_awardXPForTriggering ) },
 			{ "SkillPointsForTriggering",		INI::parseInt,										NULL, offsetof( SpecialAbilityUpdateModuleData, m_skillPointsForTriggering ) },
+#ifdef ZH
 			{ "ApproachRequiresLOS",				INI::parseBool,										NULL, offsetof( SpecialAbilityUpdateModuleData, m_approachRequiresLOS ) },
+#endif
+			{ "ApproachRequiresLOS",				INI::parseBool,										NULL, offsetof( SpecialAbilityUpdateModuleData, m_approachRequiresLOS ) },
+#ifdef ZH
+      { "NeedToFaceTarget",           INI::parseBool,										NULL, offsetof( SpecialAbilityUpdateModuleData, m_needToFaceTarget ) },
+      { "PersistenceRequiresRecharge",INI::parseBool,										NULL, offsetof( SpecialAbilityUpdateModuleData, m_persistenceRequiresRecharge ) },
+#endif
 			{ 0, 0, 0, 0 }
 		};
     p.add(dataFieldParse);
@@ -161,7 +182,12 @@ public:
 };
 
 //-------------------------------------------------------------------------------------------------
+#ifdef OG
 class SpecialAbilityUpdate : public UpdateModule, public SpecialPowerUpdateInterface
+#endif
+#ifdef ZH
+class SpecialAbilityUpdate : public SpecialPowerUpdateModule
+#endif
 {
 
 	MEMORY_POOL_GLUE_WITH_USERLOOKUP_CREATE( SpecialAbilityUpdate, "SpecialAbilityUpdate" )
@@ -173,11 +199,23 @@ public:
 	// virtual destructor prototype provided by memory pool declaration
 
 	// SpecialPowerUpdateInterface
+#ifdef OG
 	virtual void initiateIntentToDoSpecialPower(const SpecialPowerTemplate *specialPowerTemplate, const Object *targetObj, const Coord3D *targetPos, UnsignedInt commandOptions, Int locationCount );
+#endif
+#ifdef ZH
+	virtual Bool initiateIntentToDoSpecialPower(const SpecialPowerTemplate *specialPowerTemplate, const Object *targetObj, const Coord3D *targetPos, const Waypoint *way, UnsignedInt commandOptions );
+#endif
 	virtual Bool isSpecialAbility() const { return true; }
 	virtual Bool isSpecialPower() const { return false; }
 	virtual Bool isActive() const { return m_active; }
+#ifdef OG
 	virtual Bool doesSpecialPowerHaveOverridableDestinationActive() const { return false; }
+
+#endif
+#ifdef ZH
+	virtual Bool doesSpecialPowerHaveOverridableDestinationActive() const { return false; } //Is it active now?
+	virtual Bool doesSpecialPowerHaveOverridableDestination() const { return false; }	//Does it have it, even if it's not active?
+#endif
 	virtual void setSpecialPowerOverridableDestination( const Coord3D *loc ) {}
 	virtual Bool isPowerCurrentlyInUse( const CommandButton *command = NULL ) const;
 
@@ -235,6 +273,11 @@ protected:
 	Bool needToFace() const;
 	void startFacing();
 
+#ifdef ZH
+  // Lorenzen added this additional flag to support the NapalmBombDrop
+  // It causes this update to force a recharge of the SPM between drops
+  Bool getDoesPersistenceRequireRecharge() const { return getSpecialAbilityUpdateModuleData()->m_persistenceRequiresRecharge; }
+#endif
 //	void setBusy ( Bool is ) { m_isBusy = is; }
 //	Bool m_isBusy; ///< whether I am between trigger and completion
 

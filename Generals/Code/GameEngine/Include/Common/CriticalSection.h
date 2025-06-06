@@ -95,9 +95,18 @@ class ScopedCriticalSection
 		}
 };
 
+#ifdef ZH
+#include "mutex.h"
+
+#endif
 // These should be NULL on creation then non-NULL in WinMain or equivalent.
 // This allows us to be silently non-threadsafe for WB and other single-threaded apps.
+#ifdef OG
 extern CriticalSection *TheAsciiStringCriticalSection;
+#endif
+#ifdef ZH
+extern FastCriticalSectionClass TheAsciiStringCriticalSection;
+#endif
 extern CriticalSection *TheUnicodeStringCriticalSection;
 extern CriticalSection *TheDmaCriticalSection;
 extern CriticalSection *TheMemoryPoolCriticalSection;

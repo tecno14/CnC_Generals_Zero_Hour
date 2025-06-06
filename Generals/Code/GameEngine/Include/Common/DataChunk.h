@@ -136,6 +136,9 @@ public:
 	void writeUnicodeString(UnicodeString string);
 	void writeArrayOfBytes(char *ptr, Int len);
 	void writeDict(const Dict& d);
+#ifdef ZH
+	void writeNameKey(const NameKeyType key);
+#endif
 };
 
 //----------------------------------------------------------------------
@@ -228,6 +231,10 @@ public:
 	UnicodeString readUnicodeString(void);
 	Dict readDict(void);
 	void readArrayOfBytes(char *ptr, Int len);
+#ifdef ZH
+
+	NameKeyType readNameKey(void);
+#endif
 };
 
 

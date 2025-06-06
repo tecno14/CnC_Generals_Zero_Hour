@@ -26,9 +26,19 @@
  *                                                                                             *
  *                       Author:: Greg Hjelstrom                                               *
  *                                                                                             *
+#ifdef OG
  *                     $Modtime:: 5/10/01 11:37p                                              $*
+#endif
+#ifdef ZH
+ *                     $Modtime:: 11/24/01 5:24p                                              $*
+#endif
  *                                                                                             *
+#ifdef OG
  *                    $Revision:: 4                                                           $*
+#endif
+#ifdef ZH
+ *                    $Revision:: 5                                                           $*
+#endif
  *                                                                                             *
  *---------------------------------------------------------------------------------------------*
  * Functions:                                                                                  *
@@ -89,6 +99,56 @@ WWINLINE const int& Vector3i::operator[] (int n) const
 WWINLINE int& Vector3i::operator[] (int n)
 { 
 	return ((int*)this)[n]; 
+#ifdef ZH
+}
+
+// ----------------------------------------------------------------------------
+
+class Vector3i16
+{
+public:
+
+	unsigned short I;
+	unsigned short J;
+	unsigned short K;
+
+	WWINLINE Vector3i16(void);
+	WWINLINE Vector3i16(unsigned short i,unsigned short j,unsigned short k);
+
+	WWINLINE bool			operator== (const Vector3i & v) const;
+   WWINLINE bool			operator!= (const Vector3i& v) const;
+	WWINLINE const	unsigned short &	operator[] (int n) const;
+	WWINLINE unsigned short & operator[] (int n);
+};
+
+WWINLINE Vector3i16::Vector3i16(void)
+{
+}
+
+WWINLINE Vector3i16::Vector3i16(unsigned short i,unsigned short j,unsigned short k) 
+{ 
+	I = i; J = j; K = k; 
+}
+
+WWINLINE bool Vector3i16::operator == (const Vector3i & v) const
+{ 
+	return (I == v.I && J == v.J && K == v.K);	
+}
+
+WWINLINE bool Vector3i16::operator !=	(const Vector3i& v) const
+{ 
+	return !(I == v.I && J == v.J && K == v.K);	
+}
+
+WWINLINE const unsigned short & Vector3i16::operator[] (int n) const				
+{ 
+	return ((unsigned short *)this)[n]; 
+}
+
+WWINLINE unsigned short & Vector3i16::operator[] (int n)
+{ 
+	return ((unsigned short *)this)[n]; 
+#endif
 }
 
 #endif

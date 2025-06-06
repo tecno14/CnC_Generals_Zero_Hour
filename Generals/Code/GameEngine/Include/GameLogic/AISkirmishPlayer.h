@@ -38,8 +38,10 @@ class BuildListInfo;
 class SpecialPowerTemplate;
 
 
+#ifdef OG
 #if !defined(_PLAYTEST)
 
+#endif
 /**
  * The computer-controlled opponent.
  */
@@ -50,7 +52,12 @@ class AISkirmishPlayer : public AIPlayer
 public:	 // AISkirmish specific methods.
 
 	AISkirmishPlayer( Player *p );							///< constructor
+#ifdef OG
 	virtual void computeSuperweaponTarget(const SpecialPowerTemplate *power, Coord3D *pos, Int playerNdx, Real weaponRadius); ///< Calculates best pos for weapon given radius.
+#endif
+#ifdef ZH
+	virtual Bool computeSuperweaponTarget(const SpecialPowerTemplate *power, Coord3D *pos, Int playerNdx, Real weaponRadius); ///< Calculates best pos for weapon given radius.
+#endif
 
 public:	// AIPlayer interface methods.  
 
@@ -120,7 +127,9 @@ protected:
 	Player			*m_currentEnemy;
 
 };
+#ifdef OG
 
+#endif
 #endif
 
 #endif // _AI_SKIRMISH_PLAYER_H_

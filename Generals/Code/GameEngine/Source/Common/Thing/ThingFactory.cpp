@@ -50,8 +50,14 @@
 
 #ifdef _INTERNAL
 // for occasional debugging...
+#ifdef OG
 ///#pragma optimize("", off)
 ///#pragma MESSAGE("************************************** WARNING, optimization disabled for debugging purposes")
+#endif
+#ifdef ZH
+//#pragma optimize("", off)
+//#pragma MESSAGE("************************************** WARNING, optimization disabled for debugging purposes")
+#endif
 #endif
 
 enum { TEMPLATE_HASH_SIZE = 12288 };
@@ -135,7 +141,12 @@ ThingTemplate *ThingFactory::newTemplate( const AsciiString& name )
 	newTemplate = newInstance(ThingTemplate);
 
 	// if the default template is present, get it and copy over any data to the new template
+#ifdef OG
 	const ThingTemplate *defaultT = findTemplate( AsciiString( "DefaultThingTemplate" ) );
+#endif
+#ifdef ZH
+	const ThingTemplate *defaultT = findTemplate( AsciiString( "DefaultThingTemplate" ), FALSE );
+#endif
 	if( defaultT )
 	{
 
@@ -266,7 +277,12 @@ const ThingTemplate *ThingFactory::findByTemplateID( UnsignedShort id )
 //-------------------------------------------------------------------------------------------------
 /** Return the template with the matching database name */
 //-------------------------------------------------------------------------------------------------
+#ifdef OG
 ThingTemplate *ThingFactory::findTemplateInternal( const AsciiString& name )
+#endif
+#ifdef ZH
+ThingTemplate *ThingFactory::findTemplateInternal( const AsciiString& name, Bool check )
+#endif
 {
 	ThingTemplateHashMapIt tIt = m_templateHashMap.find(name);
 
@@ -293,13 +309,27 @@ ThingTemplate *ThingFactory::findTemplateInternal( const AsciiString& name )
 	
 #endif
 	
+#ifdef OG
 	//DEBUG_LOG(("*** Object template %s not found\n",name.str()));
+
+#endif
+#ifdef ZH
+	if( check && name.isNotEmpty() )
+	{
+		DEBUG_CRASH( ("Failed to find thing template %s (case sensitive) This issue has a chance of crashing after you ignore it!", name.str() ) );
+	}
+#endif
 	return NULL;
 
 }  // end getTemplate
 
 //=============================================================================
+#ifdef OG
 Object *ThingFactory::newObject( const ThingTemplate *tmplate, Team *team, ObjectStatusBits statusBits )
+#endif
+#ifdef ZH
+Object *ThingFactory::newObject( const ThingTemplate *tmplate, Team *team, ObjectStatusMaskType statusBits )
+#endif
 {
 	if (tmplate == NULL)
 		throw ERROR_BAD_ARG;
@@ -373,7 +403,12 @@ AsciiString TheThingTemplateBeingParsedName;
 #endif
 
 	// find existing item if present
+#ifdef OG
 	ThingTemplate *thingTemplate = TheThingFactory->findTemplateInternal( name );
+#endif
+#ifdef ZH
+	ThingTemplate *thingTemplate = TheThingFactory->findTemplateInternal( name, FALSE );
+#endif
 	if( !thingTemplate )
 	{
 		// no item is present, create a new one
@@ -421,6 +456,13 @@ AsciiString TheThingTemplateBeingParsedName;
 	}
 
 	thingTemplate->validate();
+#ifdef ZH
+	
+	if( ini->getLoadType() == INI_LOAD_CREATE_OVERRIDES )
+	{
+		thingTemplate->resolveNames();
+	}
+#endif
 
 #if defined(_DEBUG) || defined(_INTERNAL)
 	TheThingTemplateBeingParsedName.clear();

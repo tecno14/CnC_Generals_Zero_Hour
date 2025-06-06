@@ -54,6 +54,14 @@ public:
 	Int getPreferredColor(void);				// convenience function
 	AsciiString getPreferredMap(void);	// convenience function
 	Bool usesSystemMapDir(void);		// convenience function
+#ifdef ZH
+  
+  Bool getSuperweaponRestricted(void) const;
+  void setSuperweaponRestricted( Bool superweaponRestricted);
+  
+  Money getStartingCash(void) const;
+  void setStartingCash( const Money &startingCash );
+#endif
 };
 
 #endif // __SKIRMISHPREFERENCES_H__

@@ -175,7 +175,12 @@ void cMiscUtil::Get_File_Id_String(LPCSTR filename, StringClass & str)
 	{
 		WWDEBUG_SAY(("Error: cMiscUtil::Get_File_Id_String for %s: filesize = %d\n", 
 			filename, filesize));
+#ifdef OG
 		W3D_DIE;
+#endif
+#ifdef ZH
+		//W3D_DIE;
+#endif
 	}
    file.Close();
 

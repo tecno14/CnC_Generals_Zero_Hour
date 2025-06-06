@@ -55,6 +55,11 @@ ProjectileStreamUpdate::ProjectileStreamUpdate( Thing *thing, const ModuleData* 
 	m_owningObject = INVALID_ID;
 	m_nextFreeIndex = 0;
 	m_firstValidIndex = 0;
+#ifdef ZH
+	
+	m_targetObject = INVALID_ID;
+	m_targetPosition.zero();
+#endif
 } 
 
 //-------------------------------------------------------------------------------------------------
@@ -79,11 +84,55 @@ UpdateSleepTime ProjectileStreamUpdate::update( void )
 	return UPDATE_SLEEP_NONE;
 }
 
+#ifdef OG
 void ProjectileStreamUpdate::addProjectile( ObjectID sourceID, ObjectID newID )
+#endif
+#ifdef ZH
+void ProjectileStreamUpdate::addProjectile( ObjectID sourceID, ObjectID newID, ObjectID victimID, const Coord3D *victimPos )
+#endif
 {
 	DEBUG_ASSERTCRASH( m_owningObject == INVALID_ID  ||  m_owningObject == sourceID, ("Two objects are trying to use the same Projectile stream.") );//Don't cross the streams!
 	if( m_owningObject == INVALID_ID )
 		m_owningObject = sourceID;
+#ifdef ZH
+
+	// Keep track of target, and insert a hole if the target has changed
+	if( victimID != INVALID_ID )
+	{
+		// Object shot
+		if( victimID != m_targetObject )
+		{
+			// Changed targets, insert a hole to break the stream
+			m_projectileIDs[ m_nextFreeIndex ] = INVALID_ID;
+			m_nextFreeIndex = (m_nextFreeIndex + 1) % MAX_PROJECTILE_STREAM;
+
+			// And mark this as our new target
+			m_targetObject = victimID;
+		}
+
+		// Clear position so we know we are an object shot
+		m_targetPosition.zero();
+	}
+	else if( victimPos != NULL )
+	{
+		if( ! (m_targetPosition == (*victimPos)) )
+		{
+			// New position, so insert hole
+			m_projectileIDs[ m_nextFreeIndex ] = INVALID_ID;
+			m_nextFreeIndex = (m_nextFreeIndex + 1) % MAX_PROJECTILE_STREAM;
+
+			// And mark this as our new target
+			m_targetPosition = (*victimPos);
+		}
+
+		// Clear object so we know we are a position shot
+		m_targetObject = INVALID_ID;
+	}
+	else
+	{
+		DEBUG_CRASH(("A projectile stream was fired at neither an object nor a position.  Probably bad."));
+	}
+#endif
 
 	// Keep track of the id in a circular array
 	m_projectileIDs[ m_nextFreeIndex ] = newID;
@@ -186,13 +235,26 @@ void ProjectileStreamUpdate::crc( Xfer *xfer )
 // ------------------------------------------------------------------------------------------------
 /** Xfer method
 	* Version Info:
+#ifdef OG
 	* 1: Initial version */
+
+#endif
+#ifdef ZH
+	* 1: Initial version 
+	* 2: Target tracking for line breaking
+*/
+#endif
 // ------------------------------------------------------------------------------------------------
 void ProjectileStreamUpdate::xfer( Xfer *xfer )
 {
 
 	// version
+#ifdef OG
 	XferVersion currentVersion = 1;
+#endif
+#ifdef ZH
+	XferVersion currentVersion = 2;
+#endif
 	XferVersion version = currentVersion;
 	xfer->xferVersion( &version, currentVersion );
 
@@ -210,6 +272,14 @@ void ProjectileStreamUpdate::xfer( Xfer *xfer )
 
 	// owning object
 	xfer->xferObjectID( &m_owningObject );
+#ifdef ZH
+
+	if( version >= 2 )
+	{
+		xfer->xferObjectID( &m_targetObject );
+		xfer->xferCoord3D( &m_targetPosition );
+	}
+#endif
 
 }  // end xfer
 

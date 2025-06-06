@@ -48,6 +48,9 @@
 #include "Common/GameAudio.h"
 #include "Common/MiscAudio.h"
 #include "Common/Player.h"
+#ifdef ZH
+#include "Common/PlayerList.h"
+#endif
 #include "Common/Xfer.h"
 
 // ------------------------------------------------------------------------------------------------
@@ -87,6 +90,17 @@ void Money::deposit(UnsignedInt amountToDeposit, Bool playSound)
 		TheAudio->addAudioEvent(&event);
 	
 	m_money += amountToDeposit;
+#ifdef ZH
+
+	if( amountToDeposit > 0 )
+	{
+		Player *player = ThePlayerList->getNthPlayer( m_playerIndex );
+		if( player )
+		{
+			player->getAcademyStats()->recordIncome();
+		}
+	}
+#endif
 }
 
 // ------------------------------------------------------------------------------------------------
@@ -122,4 +136,16 @@ void Money::loadPostProcess( void )
 {
 
 }  // end loadPostProcess
+
+#ifdef ZH
+// ------------------------------------------------------------------------------------------------
+/** Parse a money amount for the ini file. E.g. DefaultStartingMoney = 10000 */
+// ------------------------------------------------------------------------------------------------
+void Money::parseMoneyAmount( INI *ini, void *instance, void *store, const void* userData )
+{
+  // Someday, maybe, have mulitple fields like Gold:10000 Wood:1000 Tiberian:10
+  Money * money = (Money *)store;
+  INI::parseUnsignedInt( ini, instance, &money->m_money, userData );
+}
+#endif
 

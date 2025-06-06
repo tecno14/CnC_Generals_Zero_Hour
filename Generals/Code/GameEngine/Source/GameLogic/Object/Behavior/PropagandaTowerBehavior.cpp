@@ -43,6 +43,15 @@
 #include "GameLogic/Module/PropagandaTowerBehavior.h"
 #include "GameLogic/Module/BodyModule.h"
 
+#ifdef ZH
+
+#ifdef _INTERNAL
+// for occasional debugging...
+//#pragma optimize("", off)
+//#pragma MESSAGE("************************************** WARNING, optimization disabled for debugging purposes")
+#endif
+
+#endif
 // FORWARD REFERENCES /////////////////////////////////////////////////////////////////////////////
 enum ObjectID;
 
@@ -80,6 +89,9 @@ PropagandaTowerBehaviorModuleData::PropagandaTowerBehaviorModuleData( void )
 	m_pulseFX = NULL;
 	m_upgradeRequired = NULL;
 	m_upgradedPulseFX = NULL;
+#ifdef ZH
+	m_affectsSelf = FALSE;
+#endif
 
 }  // end PropagandaTowerBehaviorModuleData
 
@@ -98,6 +110,9 @@ PropagandaTowerBehaviorModuleData::PropagandaTowerBehaviorModuleData( void )
 		{ "PulseFX",								INI::parseFXList,								NULL,	offsetof( PropagandaTowerBehaviorModuleData, m_pulseFX ) },
 		{ "UpgradeRequired",				INI::parseAsciiString,					NULL, offsetof( PropagandaTowerBehaviorModuleData, m_upgradeRequired ) },
 		{ "UpgradedPulseFX",				INI::parseFXList,								NULL, offsetof( PropagandaTowerBehaviorModuleData, m_upgradedPulseFX ) },
+#ifdef ZH
+		{ "AffectsSelf",						INI::parseBool,									NULL, offsetof( PropagandaTowerBehaviorModuleData, m_affectsSelf ) },
+#endif
 		{ 0, 0, 0, 0 }
 	};
 
@@ -176,7 +191,12 @@ UpdateSleepTime PropagandaTowerBehavior::update( void )
 	
 	//Sep 27, 2002 (Kris): Added this code to prevent the tower from working while under construction.
 	Object *self = getObject();
+#ifdef OG
 	if( BitTest( self->getStatusBits(), OBJECT_STATUS_UNDER_CONSTRUCTION ) )
+#endif
+#ifdef ZH
+	if( self->getStatusBits().test( OBJECT_STATUS_UNDER_CONSTRUCTION ) )
+#endif
 		return UPDATE_SLEEP_NONE;
 
 	if( self->testStatus(OBJECT_STATUS_SOLD) )
@@ -421,11 +441,58 @@ void PropagandaTowerBehavior::doScan( void )
 
 	}  // end if
 
+#ifdef ZH
+
+  Bool doFX = TRUE;
+    // if it is us, or if it is he and we do see him 
+  Object *overlord = us->getContainedBy();
+  if ( overlord )
+  {
+	  if ( us->getControllingPlayer() != ThePlayerList->getLocalPlayer() )// daling with someone else's tower
+    {
+      if ( overlord->testStatus( OBJECT_STATUS_STEALTHED ) && !overlord->testStatus( OBJECT_STATUS_DETECTED ) )
+        doFX = FALSE;// so they don't give up their position
+
+    }
+
+    // Sorry, this is a lot of hard coded mishmash, but it must be done... ship it!
+    // Propaganda towers (proper) never get contained, so they don't care about this code
+    // The PropTowers that ride on the backs of overlord tanks want to suppress their fx if the overlord is stealthed to the local player
+    // The PropTowers that ride on the bellies of Helixes also suppress their fx when hiding stealthed (never happens?)
+    // The PropTowers must do nothing, scanning-or-FX-wise when they are inside something... there are two cases
+    //   1) When the prop tower is on an Overlord that is in a helicopter (likely a Helix II)
+    //   2) When the prop tower is the EmperorTank, which is in a helicopter (likely a Helix II).
+
+    if ( us->isKindOf( KINDOF_VEHICLE ) && !us->isKindOf( KINDOF_PORTABLE_STRUCTURE ) )//craptacular!
+      // oh my dear Lord... I am not a propaganda tower, I am an emperorTank! that means the overlord is a helix or something!
+      return; // proptowers that are riding IN things cannot do their scan!
+
+    //okay this is wacky, but this proptower may be on an overlord thank that is riding in a helix... oy!
+    Object *helix = overlord->getContainedBy();
+    if ( helix )
+      return; // proptowers that are riding ON things that are in-turn riding IN things cannot do their scan!
+
+  }
+	
+	if ( us->getControllingPlayer() != ThePlayerList->getLocalPlayer() )// daling with someone else's tower
+	{
+		if ( us->testStatus( OBJECT_STATUS_STEALTHED ) && !us->testStatus( OBJECT_STATUS_DETECTED ) )
+		{
+			doFX = FALSE;// Certainly don't play if we ourselves are stelthed.
+		}
+	}
+
+  if ( doFX )
+  {
+#endif
 	// play the right pulse
 	if( upgradePresent == TRUE )
 		FXList::doFXObj( modData->m_upgradedPulseFX, us );
 	else
 		FXList::doFXObj( modData->m_pulseFX, us );
+#ifdef ZH
+  }
+#endif
 
 	// setup scan filters
 	PartitionFilterRelationship relationship( us, PartitionFilterRelationship::ALLOW_ALLIES );
@@ -450,8 +517,14 @@ void PropagandaTowerBehavior::doScan( void )
 	for( obj = iter->first(); obj; obj = iter->next() )
 	{
 
+#ifdef OG
 		// ignore ourselves, as a tower we're not interesting anyway
 		if( obj == us )
+#endif
+#ifdef ZH
+		// ignore ourselves, unless Design wants us to affect ourselves
+		if( obj == us  &&  !modData->m_affectsSelf)
+#endif
 			continue;
 
 		// record this object as being in the new "in list"

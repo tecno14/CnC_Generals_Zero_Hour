@@ -104,7 +104,12 @@ WindowMsgHandledType LeftHUDInput( GameWindow *window, UnsignedInt msg,
 			Bool targeting = FALSE;
 			const CommandButton *command = TheInGameUI->getGUICommand();
 			if( command 
+#ifdef OG
 					&& (command->getCommandType() == GUI_COMMAND_SPECIAL_POWER || command->getCommandType() == GUI_COMMAND_SPECIAL_POWER_FROM_COMMAND_CENTER)
+#endif
+#ifdef ZH
+					&& (command->getCommandType() == GUI_COMMAND_SPECIAL_POWER || command->getCommandType() == GUI_COMMAND_SPECIAL_POWER_FROM_SHORTCUT)
+#endif
 					&& BitTest( command->getOptions(), NEED_TARGET_POS ) )
 				targeting = TRUE;
 
@@ -177,7 +182,12 @@ WindowMsgHandledType LeftHUDInput( GameWindow *window, UnsignedInt msg,
 				// keep the cursor for any context commands
 				const CommandButton *command = TheInGameUI->getGUICommand();
 				if( command 
+#ifdef OG
 						&& (command->getCommandType() == GUI_COMMAND_SPECIAL_POWER || command->getCommandType() == GUI_COMMAND_SPECIAL_POWER_FROM_COMMAND_CENTER)
+#endif
+#ifdef ZH
+						&& (command->getCommandType() == GUI_COMMAND_SPECIAL_POWER || command->getCommandType() == GUI_COMMAND_SPECIAL_POWER_FROM_SHORTCUT)
+#endif
 						&& BitTest( command->getOptions(), NEED_TARGET_POS ) )
 				{
 					Int index = TheMouse->getCursorIndex( command->getCursorName() );
@@ -263,7 +273,6 @@ WindowMsgHandledType LeftHUDInput( GameWindow *window, UnsignedInt msg,
 
 				const DrawableList *drawableList = TheInGameUI->getAllSelectedLocalDrawables(); // locally-owned only
 				
-
  				// see if the user wants to move the tactical view
  				if (	drawableList->empty() 
  					||	(! TheGlobalData->m_useAlternateMouse && msg == GWM_RIGHT_DOWN)
@@ -276,7 +285,12 @@ WindowMsgHandledType LeftHUDInput( GameWindow *window, UnsignedInt msg,
 				// evaluate any special powers that can be executed from the radar
 				const CommandButton *command = TheInGameUI->getGUICommand();
 				if( command 
+#ifdef OG
 					&& (command->getCommandType() == GUI_COMMAND_SPECIAL_POWER || command->getCommandType() == GUI_COMMAND_SPECIAL_POWER_FROM_COMMAND_CENTER)
+#endif
+#ifdef ZH
+					&& (command->getCommandType() == GUI_COMMAND_SPECIAL_POWER || command->getCommandType() == GUI_COMMAND_SPECIAL_POWER_FROM_SHORTCUT)
+#endif
 					&& BitTest( command->getOptions(), NEED_TARGET_POS ) 
 					)
 				{

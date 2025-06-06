@@ -32,6 +32,9 @@
 #include "WorldBuilderDoc.h"
 #include "WorldBuilderView.h"
 
+#ifdef ZH
+#include "ScriptDialog.h"
+#endif
 
 /////////////////////////////////////////////////////////////////////////////
 // CMainFrame
@@ -71,12 +74,22 @@ CMainFrame::CMainFrame()
 	m_hAutoSaveTimer = NULL;
 	m_autoSaving = false;
 	m_layersList = NULL;
+#ifdef ZH
+	m_scriptDialog = NULL;
+#endif
 }
 
 CMainFrame::~CMainFrame()
 {
 	if (m_layersList) {
 		delete m_layersList;
+#ifdef ZH
+	}
+
+	if (m_scriptDialog) {
+		delete m_scriptDialog;
+		m_scriptDialog = NULL;
+#endif
 	}
 
 	SaveBarState("MainFrame");
@@ -177,6 +190,14 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	m_moundOptions.Create(IDD_MOUND_OPTIONS, this);
 	m_moundOptions.SetWindowPos(NULL, frameRect.left, frameRect.top,	0, 0, SWP_NOZORDER|SWP_NOSIZE);
 	m_moundOptions.GetWindowRect(&frameRect);
+#ifdef ZH
+	if (m_optionsPanelWidth < frameRect.Width()) m_optionsPanelWidth = frameRect.Width();
+	if (m_optionsPanelHeight < frameRect.Height()) m_optionsPanelHeight = frameRect.Height();
+
+	m_rulerOptions.Create(IDD_RULER_OPTIONS, this);
+	m_rulerOptions.SetWindowPos(NULL, frameRect.left, frameRect.top,	0, 0, SWP_NOZORDER|SWP_NOSIZE);
+	m_rulerOptions.GetWindowRect(&frameRect);
+#endif
 	if (m_optionsPanelWidth < frameRect.Width()) m_optionsPanelWidth = frameRect.Width();
 	if (m_optionsPanelHeight < frameRect.Height()) m_optionsPanelHeight = frameRect.Height();
 
@@ -375,6 +396,9 @@ void CMainFrame::showOptionsDialog(Int dialogID)
 		case IDD_MAPOBJECT_PROPS: newOptions = &m_mapObjectProps; break;
 		case IDD_ROAD_OPTIONS:newOptions  = &m_roadOptions; break;
 		case IDD_MOUND_OPTIONS:newOptions  = &m_moundOptions; break;
+#ifdef ZH
+		case IDD_RULER_OPTIONS:newOptions  = &m_rulerOptions; break;
+#endif
 		case IDD_FEATHER_OPTIONS:newOptions  = &m_featherOptions; break;
 		case IDD_MESHMOLD_OPTIONS:newOptions  = &m_meshMoldOptions; break;
 		case IDD_WAYPOINT_OPTIONS:newOptions  = &m_waypointOptions; break;
@@ -409,6 +433,27 @@ void CMainFrame::showOptionsDialog(Int dialogID)
 void CMainFrame::OnEditGloballightoptions() 
 {
 	m_globalLightOptions.ShowWindow(SW_SHOWNA);
+#ifdef ZH
+}
+
+void CMainFrame::onEditScripts()
+{
+	if (m_scriptDialog) {
+		// Delete the old one since it is no longer valid.
+		delete m_scriptDialog;
+	}
+
+	CRect frameRect;
+	GetWindowRect(&frameRect);
+
+	// Setup the Script Dialog.
+	// This needs to be recreated each time so that it will have the current data.
+	m_scriptDialog = new ScriptDialog(this);
+	m_scriptDialog->Create(IDD_ScriptDialog, this);
+	m_scriptDialog->SetWindowPos(NULL, frameRect.left, frameRect.top, 0, 0, SWP_NOZORDER|SWP_NOSIZE);
+ 	m_scriptDialog->GetWindowRect(&frameRect);
+	m_scriptDialog->ShowWindow(SW_SHOWNA);
+#endif
 }
 
 /////////////////////////////////////////////////////////////////////////////

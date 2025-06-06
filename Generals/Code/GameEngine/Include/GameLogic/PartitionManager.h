@@ -54,6 +54,9 @@
 //-----------------------------------------------------------------------------
 #include "Common/GameCommon.h"	// ensure we get DUMP_PERF_STATS, or not
 #include "GameLogic/ObjectIter.h"
+#ifdef ZH
+#include "Common/ObjectStatusTypes.h"
+#endif
 #include "Common/KindOf.h"
 #include "Common/Snapshot.h"
 #include "Common/Geometry.h"
@@ -117,6 +120,9 @@ enum FindPositionFlags
 	FPF_IGNORE_ENEMY_UNITS								= 0x00000020,		// ignore enemy units (requires relationshipObject)
 	FPF_IGNORE_ENEMY_STRUCTURES						= 0x00000040,		// ignore enemy structures (requires relationshipObject)
 	FPF_USE_HIGHEST_LAYER									= 0x00000080,		// examine pos on highest layer at given xy (rather than on ground layer)
+#ifdef ZH
+	FPF_CLEAR_CELLS_ONLY									= 0x00000100,		// Reject anything that is not PathFindCell::Clear
+#endif
 };
 // ----------------------------------------------------------------------------------------------
 
@@ -657,7 +663,12 @@ private:
 	const Object *m_obj;
 	Int m_flags;
 public:
+#ifdef OG
 	enum 
+#endif
+#ifdef ZH
+	enum RelationshipAllowTypes
+#endif
 	{
 		ALLOW_ALLIES					= (1<<ALLIES),		///< allow objects that m_obj considers allies
 		ALLOW_ENEMIES					= (1<<ENEMIES),		///< allow objects that m_obj considers enemy 
@@ -742,6 +753,44 @@ public:
 	virtual Bool allow(Object *objOther);
 #if defined(_DEBUG) || defined(_INTERNAL)
 	virtual const char* debugGetName() { return "PartitionFilterPossibleToAttack"; }
+#ifdef ZH
+#endif
+};
+
+//=====================================
+/**
+	Only objects that Can Possibly be entered by the given object
+*/
+class PartitionFilterPossibleToEnter : public PartitionFilter
+{
+private:
+	const Object *m_obj;
+	CommandSourceType m_commandSource;
+
+public:
+	PartitionFilterPossibleToEnter(const Object *obj, CommandSourceType commandSource);
+	virtual Bool allow(Object *objOther);
+#if defined(_DEBUG) || defined(_INTERNAL)
+	virtual const char* debugGetName() { return "PartitionFilterPossibleToEnter"; }
+#endif
+};
+
+//=====================================
+/**
+	Only objects that Can Possibly be hijacked by the given object
+*/
+class PartitionFilterPossibleToHijack : public PartitionFilter
+{
+private:
+	const Object *m_obj;
+	CommandSourceType m_commandSource;
+
+public:
+	PartitionFilterPossibleToHijack(const Object *obj, CommandSourceType commandSource);
+	virtual Bool allow(Object *objOther);
+#if defined(_DEBUG) || defined(_INTERNAL)
+	virtual const char* debugGetName() { return "PartitionFilterPossibleToHijack"; }
+#endif
 #endif
 };
 
@@ -768,9 +817,19 @@ public:
 class PartitionFilterAcceptByObjectStatus : public PartitionFilter
 {
 private:
+#ifdef OG
 	UnsignedInt m_mustBeSet, m_mustBeClear;
+#endif
+#ifdef ZH
+	ObjectStatusMaskType m_mustBeSet, m_mustBeClear;
+#endif
 public:
+#ifdef OG
 	PartitionFilterAcceptByObjectStatus(UnsignedInt mustBeSet, UnsignedInt mustBeClear) : m_mustBeSet(mustBeSet), m_mustBeClear(mustBeClear) { }
+#endif
+#ifdef ZH
+	PartitionFilterAcceptByObjectStatus( ObjectStatusMaskType mustBeSet, ObjectStatusMaskType mustBeClear) : m_mustBeSet(mustBeSet), m_mustBeClear(mustBeClear) { }
+#endif
 	virtual Bool allow(Object *objOther);
 #if defined(_DEBUG) || defined(_INTERNAL)
 	virtual const char* debugGetName() { return "PartitionFilterAcceptByObjectStatus"; }
@@ -785,9 +844,19 @@ public:
 class PartitionFilterRejectByObjectStatus : public PartitionFilter
 {
 private:
+#ifdef OG
 	UnsignedInt m_mustBeSet, m_mustBeClear;
+#endif
+#ifdef ZH
+	ObjectStatusMaskType m_mustBeSet, m_mustBeClear;
+#endif
 public:
+#ifdef OG
 	PartitionFilterRejectByObjectStatus(UnsignedInt mustBeSet, UnsignedInt mustBeClear) 
+#endif
+#ifdef ZH
+	PartitionFilterRejectByObjectStatus( ObjectStatusMaskType mustBeSet, ObjectStatusMaskType mustBeClear ) 
+#endif
 		: m_mustBeSet(mustBeSet), m_mustBeClear(mustBeClear) 
 	{ 
 	}
@@ -1481,6 +1550,10 @@ public:
 	*/
 	CellShroudStatus getShroudStatusForPlayer( Int playerIndex, Int x, Int y ) const;
 	CellShroudStatus getShroudStatusForPlayer( Int playerIndex, const Coord3D *loc ) const;
+#ifdef ZH
+
+	ObjectShroudStatus getPropShroudStatusForPlayer(Int playerIndex, const Coord3D *loc ) const; 
+#endif
 
 	Real getGroundOrStructureHeight(Real posx, Real posy);
 

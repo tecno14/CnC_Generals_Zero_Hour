@@ -136,7 +136,12 @@ Object *Bridge::createTower( Coord3D *worldPos,
 	if( towerTemplate == NULL || bridge == NULL )
 	{
 
+#ifdef OG
 		DEBUG_CRASH(( "createTower: Invalid params\n" ));
+#endif
+#ifdef ZH
+		DEBUG_CRASH(( "Bridge::createTower(): Invalid params\n" ));
+#endif
 		return NULL;
 
 	}  // end if
@@ -430,9 +435,15 @@ Bridge::Bridge(Object *bridgeObj)
 
 		}  // end switch
 		tower = createTower( &pos, type, towerTemplate, bridgeObj );
-
+#ifdef ZH
+		if( tower )
+		{
+#endif
 		// store the tower object ID
 		m_bridgeInfo.towerObjectID[ i ] = tower->getID();
+#ifdef ZH
+		}
+#endif
 
 	}  // end for, i
 
@@ -2146,7 +2157,16 @@ Bool TerrainLogic::isUnderwater( Real x, Real y, Real *waterZ, Real *terrainZ )
 
 	// if no water here, no height, no nuttin
 	if( waterHandle == NULL )
+#ifdef ZH
+  {
+    // but we have to return the terrain Z if requested!
+    if (terrainZ)
+      *terrainZ=getGroundHeight(x,y);
+#endif
 		return FALSE;
+#ifdef ZH
+  }
+#endif
 
 	//
 	// if this water handle is a grid water use the grid height function, otherwise look into
@@ -2844,7 +2864,59 @@ void TerrainLogic::flattenTerrain(Object *obj)
 		} // cylinder
 		break;
 	} // switch
+#ifdef ZH
 
+}
+
+// ------------------------------------------------------------------------------------------------
+/** Dig a deep circular gorge into the terrain beneath an object. */
+// ------------------------------------------------------------------------------------------------
+void TerrainLogic::createCraterInTerrain(Object *obj) 
+{
+	if (obj->getGeometryInfo().getIsSmall()) 
+		return;
+
+	const Coord3D *pos = obj->getPosition();
+  Real radius = obj->getGeometryInfo().getMajorRadius();	
+
+  if ( radius <= 0.0f )
+    return; // sanity
+
+  ICoord2D iMin, iMax;
+  iMin.x = REAL_TO_INT_FLOOR( ( pos->x - radius ) / MAP_XY_FACTOR );
+  iMin.y = REAL_TO_INT_FLOOR( ( pos->y - radius ) / MAP_XY_FACTOR );
+  iMax.x = REAL_TO_INT_FLOOR( ( pos->x + radius ) / MAP_XY_FACTOR );
+	iMax.y = REAL_TO_INT_FLOOR( ( pos->y + radius ) / MAP_XY_FACTOR );
+#endif
+
+#ifdef ZH
+  Real deltaX, deltaY;
+
+	for (Int i = iMin.x; i <= iMax.x; i++ ) 
+  {
+		for ( Int j=0; j <= iMax.y; j++ ) 
+    {
+			deltaX = ( i * MAP_XY_FACTOR ) - pos->x;
+			deltaY = ( j * MAP_XY_FACTOR ) - pos->y;
+
+      Real distance = sqrt( sqr( deltaX ) + sqr( deltaY ) );
+
+			if ( distance < radius ) //inside circle
+      {
+				ICoord2D gridPos;
+				gridPos.x = i;
+				gridPos.y = j;
+
+        Real displacementAmount = radius * (1.0f - distance / radius );
+
+        Int targetHeight = MAX( 1, TheTerrainVisual->getRawMapHeight( &gridPos ) - displacementAmount );
+
+				TheTerrainVisual->setRawMapHeight( &gridPos, targetHeight );
+			}
+    } // next j
+  } // next i
+
+#endif
 }
 
 // ------------------------------------------------------------------------------------------------

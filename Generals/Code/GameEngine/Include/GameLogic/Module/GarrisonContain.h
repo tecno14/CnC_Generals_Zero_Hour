@@ -54,6 +54,10 @@ public:
 	Real m_framesForFullHeal;
 	Bool m_mobileGarrison;
 	Bool m_immuneToClearBuildingAttacks;
+#ifdef ZH
+  Bool m_isEnclosingContainer;
+
+#endif
 	InitialRoster		m_initialRoster;
 
 	GarrisonContainModuleData( void );
@@ -69,6 +73,9 @@ public:
 			{ "TimeForFullHeal", INI::parseDurationReal, NULL, offsetof( GarrisonContainModuleData, m_framesForFullHeal ) },
 			{ "InitialRoster", parseInitialRoster, NULL, 0 },
 			{ "ImmuneToClearBuildingAttacks", INI::parseBool, NULL, offsetof( GarrisonContainModuleData, m_immuneToClearBuildingAttacks ) },
+#ifdef ZH
+      { "IsEnclosingContainer", INI::parseBool, NULL, offsetof( GarrisonContainModuleData, m_isEnclosingContainer ) },      
+#endif
 
 			{ 0, 0, 0, 0 }
 		};
@@ -107,22 +114,41 @@ public:
 
 	virtual Bool isValidContainerFor( const Object* obj, Bool checkCapacity) const; // Garrison has an extra check forbidding any containment if ReallyDamaged
 	virtual Bool isGarrisonable() const { return true; }	///< can this unit be Garrisoned? (ick)
+#ifdef ZH
+	virtual Bool isBustable() const { return TRUE; }	///< can this container get busted by a bunkerbuster
+#endif
 	virtual Bool isImmuneToClearBuildingAttacks() const { return getGarrisonContainModuleData()->m_immuneToClearBuildingAttacks; }
 	virtual Bool isHealContain() const { return false; } ///< true when container only contains units while healing (not a transport!)
+#ifdef OG
 	virtual Bool isPassengerAllowedToFire( void ) const;	///< Hey, can I shoot out of this container?
+
+#endif
+#ifdef ZH
+	virtual Bool isTunnelContain() const { return FALSE; }
+	virtual Bool isPassengerAllowedToFire(  ObjectID id = INVALID_ID  ) const;	///< Hey, can I shoot out of this container?
+  virtual Bool isEnclosingContainerFor( const Object *obj ) const { return getGarrisonContainModuleData()->m_isEnclosingContainer; }
+  virtual Bool isSpecialOverlordStyleContainer() const {return FALSE;}
+#endif
 
 	virtual void removeAllContained( Bool exposeStealthUnits );	///< remove all contents of this open container
 
 	virtual void exitObjectViaDoor( Object *exitObj, ExitDoorType exitDoor );	///< exit one of our content items from us
 	virtual void exitObjectByBudding( Object *newObj, Object *budHost ) { return; };
+#ifdef OG
 	virtual void onContaining( Object *obj );				///< object now contains 'obj'
+#endif
+#ifdef ZH
+	virtual void onContaining( Object *obj, Bool wasSelected );				///< object now contains 'obj'
+#endif
 	virtual void onRemoving( Object *obj );					///< object no longer contains 'obj'
+#ifdef ZH
+  virtual void onSelling( void );
+#endif
 
 	// A Garrison Contain must eject all passengers when it crosses the ReallyDamaged threshold.
 	virtual void onBodyDamageStateChange( const DamageInfo* damageInfo, 
 																				BodyDamageType oldState, 
 																				BodyDamageType newState);  ///< Die Interface state change callback
-
 
 	/**
 		return the player that *appears* to control this unit, given an observing player.
@@ -131,7 +157,15 @@ public:
 	virtual const Player* getApparentControllingPlayer( const Player* observingPlayer ) const;
 	virtual void recalcApparentControllingPlayer( void );
 	virtual Bool isDisplayedOnControlBar() const {return TRUE;}///< Does this container display its contents on the ControlBar?
+#ifdef ZH
 
+  virtual void onDamage( DamageInfo *info );
+#endif
+
+#ifdef ZH
+  virtual void setEvacDisposition( EvacDisposition disp ) { m_evacDisposition = disp; };
+
+#endif
 protected:
 
 	virtual void redeployOccupants( void );				///< redeploy the occupants of us at all available garrison points
@@ -153,6 +187,14 @@ protected:
 	void removeInvalidObjectsFromGarrisonPoints( void );	///< remove objects with invalid targets from valid points
 	void trackTargets( void );										///< keep attackers at the closest garrison point to their active target
 
+#ifdef ZH
+  void matchObjectsToGarrisonPoints( void );                ///< Every frame, and whenever anyone enters or leaves 
+  void positionObjectsAtStationGarrisonPoints( void );  ///< enforce that everybody stays at their pre-assigned space
+  void loadStationGarrisonPoints( void );
+  Bool pickAStationForMe( const Object *pbj );
+  void removeObjectFromStationPoint( const Object *obj );
+
+#endif
 	enum { GARRISON_INDEX_INVALID = -1 };
 	Int findConditionIndex( void );										///< find the condition index to use given the current object body state
 	Int getObjectGarrisonPointIndex( Object *obj );		///< get the garrison point index object is at (if present)
@@ -190,6 +232,14 @@ private:
 		};
 	};
 
+#ifdef ZH
+  struct StationPointData
+  {
+    ObjectID  occupantID;
+    Coord3D   position;
+  };
+
+#endif
 	// ----------------------------------------------------------------------------------------------
 	enum 
 	{
@@ -206,9 +256,18 @@ private:
 	Coord3D							m_garrisonPoint[ MAX_GARRISON_POINT_CONDITIONS ][ MAX_GARRISON_POINTS ];		///< the garrison point positions (in world coords) for pristine, damaged, and really damaged
 	Coord3D							m_exitRallyPoint;												///< Point to rally at when exiting structure (if possible)
 
+#ifdef ZH
+  std::vector<StationPointData> m_stationPointList; 
+
+	Bool		m_stationGarrisonPointsInitialized;	///< DO NOT XFER THIS!!!   TRUE once we have loaded the pre-assigned garrison point positions from the art
+#endif
 	Bool		m_garrisonPointsInitialized;							///< TRUE once we have loaded the garrison point positions from the art
 	Bool		m_hideGarrisonedStateFromNonallies;								///< if T, don't appear to be garrisoned (all stealthy)										
 	Bool		m_rallyValid;															///< TRUE when m_exitRallyPoint is valid
+#ifdef ZH
+
+  EvacDisposition m_evacDisposition;
+#endif
 
 };
 

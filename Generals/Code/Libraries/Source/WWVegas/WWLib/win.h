@@ -24,11 +24,26 @@
  *                                                                                             * 
  *                     $Archive:: /Commando/Code/wwlib/win.h                                  $* 
  *                                                                                             * 
+#ifdef OG
  *                      $Author:: Denzil_l                                                    $*
+#endif
+#ifdef ZH
+ *                      $Author:: Ian_l                                                       $*
+#endif
  *                                                                                             * 
+#ifdef OG
  *                     $Modtime:: 6/26/01 1:59p                                               $*
+#endif
+#ifdef ZH
+ *                     $Modtime:: 10/16/01 2:42p                                              $*
+#endif
  *                                                                                             * 
+#ifdef OG
  *                    $Revision:: 10                                                          $*
+#endif
+#ifdef ZH
+ *                    $Revision:: 11                                                          $*
+#endif
  *                                                                                             *
  *---------------------------------------------------------------------------------------------* 
  * Functions:                                                                                  * 

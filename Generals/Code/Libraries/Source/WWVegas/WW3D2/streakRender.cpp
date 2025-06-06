@@ -35,6 +35,13 @@
 #include "random.h"
 #include "v3_rnd.h"
 
+#ifdef ZH
+#ifdef _INTERNAL
+// for occasional debugging...
+// #pragma optimize("", off)
+// #pragma MESSAGE("************************************** WARNING, optimization disabled for debugging purposes")
+#endif
+#endif
 
 /* We have chunking logic which handles N segments at a time. To simplify the subdivision logic,
 ** we will ensure that N is a power of two and that N >= 2^MAX_STREAK_SUBDIV_LEVELS, so that the
@@ -63,13 +70,27 @@ StreakRendererClass::StreakRendererClass(void) :
 		SubdivisionLevel(0),
 		NoiseAmplitude(0.0f),
 		MergeAbortFactor(1.5f),
+#ifdef OG
 		TextureTileFactor(1.0f),
 		LastUsedSyncTime(WW3D::Get_Sync_Time()),
 		CurrentUVOffset(0.0f,0.0f),
 		UVOffsetDeltaPerMS(0.0f, 0.0f),
 		Bits(DEFAULT_BITS)
-{
 
+#endif
+#ifdef ZH
+		// TextureTileFactor(1.0f),
+		// LastUsedSyncTime(WW3D::Get_Sync_Time()),
+		// CurrentUVOffset(0.0f,0.0f),
+		// UVOffsetDeltaPerMS(0.0f, 0.0f),
+		Bits(DEFAULT_BITS),
+		m_vertexBufferSize(0),
+		m_vertexBuffer(NULL)
+#endif
+{
+#ifdef ZH
+  // EMPTY
+#endif
 }
 
 StreakRendererClass::StreakRendererClass(const StreakRendererClass & that) :
@@ -81,11 +102,23 @@ StreakRendererClass::StreakRendererClass(const StreakRendererClass & that) :
 		SubdivisionLevel(0),
 		NoiseAmplitude(0.0f),
 		MergeAbortFactor(1.5f),
+#ifdef OG
 		TextureTileFactor(1.0f),
 		LastUsedSyncTime(that.LastUsedSyncTime),
 		CurrentUVOffset(0.0f,0.0f),
 		UVOffsetDeltaPerMS(0.0f, 0.0f),
 		Bits(DEFAULT_BITS)
+
+#endif
+#ifdef ZH
+		// TextureTileFactor(1.0f),
+		// LastUsedSyncTime(that.LastUsedSyncTime),
+		// CurrentUVOffset(0.0f,0.0f),
+		// UVOffsetDeltaPerMS(0.0f, 0.0f),
+		Bits(DEFAULT_BITS),
+		m_vertexBufferSize(0),
+		m_vertexBuffer(NULL)
+#endif
 {
 	*this = that;
 }
@@ -101,11 +134,22 @@ StreakRendererClass & StreakRendererClass::operator = (const StreakRendererClass
 		SubdivisionLevel = that.SubdivisionLevel;
 		NoiseAmplitude = that.NoiseAmplitude;
 		MergeAbortFactor = that.MergeAbortFactor;
+#ifdef OG
 		TextureTileFactor = that.TextureTileFactor;
 		LastUsedSyncTime = that.LastUsedSyncTime;
 		CurrentUVOffset = that.CurrentUVOffset;
 		UVOffsetDeltaPerMS = that.UVOffsetDeltaPerMS;
+#endif
+#ifdef ZH
+		// TextureTileFactor = that.TextureTileFactor;
+		// LastUsedSyncTime = that.LastUsedSyncTime;
+		// CurrentUVOffset = that.CurrentUVOffset;
+		// UVOffsetDeltaPerMS = that.UVOffsetDeltaPerMS;
+#endif
 		Bits = that.Bits;
+#ifdef ZH
+		// Don't modify m_vertexBufferSize and m_vertexBuffer.
+#endif
 	}
 	return *this;
 }
@@ -113,6 +157,9 @@ StreakRendererClass & StreakRendererClass::operator = (const StreakRendererClass
 StreakRendererClass::~StreakRendererClass(void)
 {
 	REF_PTR_RELEASE(Texture);
+#ifdef ZH
+	delete [] m_vertexBuffer;
+#endif
 }
 
 void StreakRendererClass::Init(const W3dEmitterLinePropertiesStruct & props)
@@ -141,8 +188,14 @@ void StreakRendererClass::Init(const W3dEmitterLinePropertiesStruct & props)
 	Set_Current_Subdivision_Level(props.SubdivisionLevel);
 	Set_Noise_Amplitude(props.NoiseAmplitude);
 	Set_Merge_Abort_Factor(props.MergeAbortFactor);
+#ifdef OG
 	Set_Texture_Tile_Factor(props.TextureTileFactor);
 	Set_UV_Offset_Rate(Vector2(props.UPerSec,props.VPerSec));
+#endif
+#ifdef ZH
+	// Set_Texture_Tile_Factor(props.TextureTileFactor);
+	// Set_UV_Offset_Rate(Vector2(props.UPerSec,props.VPerSec));
+#endif
 }
 
 
@@ -159,11 +212,20 @@ TextureClass * StreakRendererClass::Get_Texture(void) const
 	return Texture;
 }
 
+#ifdef OG
 void StreakRendererClass::Set_Current_UV_Offset(const Vector2 & offset)
 {
 	CurrentUVOffset = offset;
 }
+#endif
+#ifdef ZH
+// void StreakRendererClass::Set_Current_UV_Offset(const Vector2 & offset)
+// {
+// 	CurrentUVOffset = offset;
+// }
+#endif
 
+#ifdef OG
 void StreakRendererClass::Set_Texture_Tile_Factor(float factor)
 {
 	if (factor > 8.0f) {
@@ -174,12 +236,34 @@ void StreakRendererClass::Set_Texture_Tile_Factor(float factor)
 	}
 	TextureTileFactor = factor;
 }
+#endif
+#ifdef ZH
+// void StreakRendererClass::Set_Texture_Tile_Factor(float factor)
+// {
+// 	if (factor > 8.0f) {
+//		factor = 8.0f;
+//		WWDEBUG_SAY(("Texture Tile Factor too large in StreakRendererClass!\r\n"));
+//	} else {
+//		factor = MAX(factor, 0.0f);
+//	}
+//	TextureTileFactor = factor;
+//}
+#endif
 
+#ifdef OG
 void StreakRendererClass::Reset_Line(void)
 {
 	LastUsedSyncTime = WW3D::Get_Sync_Time();
 	CurrentUVOffset.Set(0.0f,0.0f);
 }
+#endif
+#ifdef ZH
+// void StreakRendererClass::Reset_Line(void)
+// {
+	// LastUsedSyncTime = WW3D::Get_Sync_Time();
+	// CurrentUVOffset.Set(0.0f,0.0f);
+// }
+#endif
 
 ///////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////
@@ -193,14 +277,15 @@ void StreakRendererClass::Render
 )
 {
 	//NOTHING!
+#ifdef OG
 
 	int a = 5;
 	++a;
 	++a;
 
 	if (a)
+#endif
 		return;
-
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////
@@ -312,18 +397,34 @@ void StreakRendererClass::RenderStreak
 	unsigned int *personalities			/////////////// DIFFERENT FROM RENDER( )
 )
 {
+#ifdef OG
 	Matrix4 view;
+#endif
+#ifdef ZH
+	Matrix4x4 view;
+#endif
 	DX8Wrapper::Get_Transform(D3DTS_VIEW,view);
 
+#ifdef OG
 	Matrix4 identity(true);
+#endif
+#ifdef ZH
+	Matrix4x4 identity(true);
+#endif
 	DX8Wrapper::Set_Transform(D3DTS_WORLD,identity);	
 	DX8Wrapper::Set_Transform(D3DTS_VIEW,identity);	
 
 	/* 
 	** Handle texture UV offset animation (done once for entire line).
 	*/
+#ifdef OG
 	unsigned int delta = WW3D::Get_Sync_Time() - LastUsedSyncTime;
 	float del = (float)delta;
+#endif
+#ifdef ZH
+	// unsigned int delta = WW3D::Get_Sync_Time() - LastUsedSyncTime;
+	// float del = (float)delta;
+#endif
 	//Vector2 uv_offset = CurrentUVOffset + UVOffsetDeltaPerMS * del;
 
 	// ensure offsets are in [0, 1] range:
@@ -332,7 +433,12 @@ void StreakRendererClass::RenderStreak
 	
 	// Update state
 	//CurrentUVOffset = uv_offset;
+#ifdef OG
 	LastUsedSyncTime = WW3D::Get_Sync_Time();
+#endif
+#ifdef ZH
+	// LastUsedSyncTime = WW3D::Get_Sync_Time();
+#endif
 
 	// Used later
 	TextureMapMode map_mode = Get_Texture_Mapping_Mode();
@@ -531,10 +637,21 @@ void StreakRendererClass::RenderStreak
 		for (segmentIndex = 1; segmentIndex < point_cnt; segmentIndex++) 
 		{	// #segments = #points - 1 (+ 2 dummy segments)
 
+#ifdef OG
 			radius = widths[segmentIndex]; /// NEW /////
+#endif
+#ifdef ZH
+			radius = widths[segmentIndex]; /// NEW ///// // TODO: Does not work correctly when subdivision are not 0
+#endif
 
 			Vector3 &curr_point = points[segmentIndex - 1];
 			Vector3 &next_point = points[segmentIndex];
+#ifdef ZH
+			if (Equal_Within_Epsilon(curr_point, next_point, 0.0001f))
+			{
+				next_point.X += 0.001f;
+			}
+#endif
 
 			// We temporarily store the segment direction in the segment's StartPlane (since it is
 			// used to calculate the StartPlane later).
@@ -1085,7 +1202,12 @@ void StreakRendererClass::RenderStreak
 
 		// Configure vertex array and setup renderer.
 		unsigned int vnum = num_intersections[TOP_EDGE] + num_intersections[BOTTOM_EDGE];		
+#ifdef OG
 		VertexFormatXYZDUV1 *vertexArray=W3DNEWARRAY VertexFormatXYZDUV1[vnum];		
+#endif
+#ifdef ZH
+		VertexFormatXYZUV1 *vertexArray = getVertexBuffer(vnum);
+#endif
 		Vector3i v_index_array[MAX_STREAK_POLY_BUFFER_SIZE];
 		
 		// Vertex and triangle indices
@@ -1103,10 +1225,11 @@ void StreakRendererClass::RenderStreak
 
 
 
-
+#ifdef OG
 char p[]="  &&  &&  &&  &&  &&  &&  &&  &&  &&  &&  &&  &&  &&  &&  &&  &&  &&  &&  &&  &&  &&  &&  &&  ";
 char f[]=" &&  &&  &&  &&  &&  &&  &&  &&  &&  &&  &&  &&  &&  &&  &&  &&  &&  &&  &&  &&  &&  &&  &&   ";
 char e[]="&&  &&  &&  &&  &&  &&  &&  &&  &&  &&  &&  &&  &&  &&  &&  &&  &&  &&  &&  &&  &&  &&  &&    ";
+#endif
 
 // GENERALIZE FOR WHEN NO TEXTURE (DO NOT SET UV IN THESE CASES? NEED TO GENERALIZE FOR DIFFERENT TEXTURING MODES ANYWAY).
 
@@ -1269,9 +1392,11 @@ char e[]="&&  &&  &&  &&  &&  &&  &&  &&  &&  &&  &&  &&  &&  &&  &&  &&  &&  &&
 				break;
 			}
 		}		
+#ifdef OG
 char d[]="  &&  &&  &&  &&  &&  &&  &&  &&  &&  &&  &&  &&  &&  &&  &&  &&  &&  &&  &&  &&  &&  &&  &&  ";
 char w[]=" &&  &&  &&  &&  &&  &&  &&  &&  &&  &&  &&  &&  &&  &&  &&  &&  &&  &&  &&  &&  &&  &&  &&   ";
 char q[]="&&  &&  &&  &&  &&  &&  &&  &&  &&  &&  &&  &&  &&  &&  &&  &&  &&  &&  &&  &&  &&  &&  &&    ";
+#endif
 
 
 
@@ -1340,9 +1465,17 @@ char q[]="&&  &&  &&  &&  &&  &&  &&  &&  &&  &&  &&  &&  &&  &&  &&  &&  &&  &&
 			unsigned int oddEven = 0;
 
 			//oddEven = ( personalities[0] & 1 );
+#ifdef ZH
+
+			const unsigned verticesOffset = fvfinfo.Get_Location_Offset();
+			const unsigned diffuseOffset = fvfinfo.Get_Diffuse_Offset();
+			const unsigned textureOffset = fvfinfo.Get_Tex_Offset(0);
+			const unsigned vbSize = fvfinfo.Get_FVF_Size();
+#endif
 
 			for (i=0; i<vnum; i++)
 			{
+#ifdef OG
 
 				segIdx = MIN((i/2), point_cnt);
 				argb = DX8Wrapper::Convert_Color_Clamp( colors[segIdx] );// twice as many verts as points? or so?
@@ -1355,16 +1488,28 @@ char q[]="&&  &&  &&  &&  &&  &&  &&  &&  &&  &&  &&  &&  &&  &&  &&  &&  &&  &&
 
 				*(unsigned int*)(vb+fvfinfo.Get_Diffuse_Offset())	=	argb;
 
-
-
 	//			((Vector2*)(vb+fvfinfo.Get_Tex_Offset(0)))->V			=	(float)( ((i+oddEven)&1) == 1 );//mirror tiling
 	//			((Vector2*)(vb+fvfinfo.Get_Tex_Offset(0)))->U			=	(float)( ((i+oddEven)&2) == 2 );//mirror tiling
 				((Vector2*)(vb+fvfinfo.Get_Tex_Offset(0)))->V			=	vertexArray[i].v1;
 				((Vector2*)(vb+fvfinfo.Get_Tex_Offset(0)))->U			=	vertexArray[i].u1;
 
-
 				
 				vb+=fvfinfo.Get_FVF_Size();				
+#endif
+#ifdef ZH
+				DEBUG_ASSERTCRASH(vertexArray[i].x != (float)0xdeadbeef && vertexArray[i].y != (float)0xdeadbeef && vertexArray[i].z != (float)0xdeadbeef && vertexArray[i].u1 != (float)0xdeadbeeef && vertexArray[i].v1 != (float)0xdeadbeef, ("Uninitialized vertexArray[%d]", i));
+				DEBUG_ASSERTCRASH((! _isnan(vertexArray[i].x) && _finite(vertexArray[i].x) && ! _isnan(vertexArray[i].y) && _finite(vertexArray[i].y) && ! _isnan(vertexArray[i].z) && _finite(vertexArray[i].z)) , ("Bad vertexArray[%d]", i));
+				Vector3 *vertex = reinterpret_cast<Vector3 *>(vb + verticesOffset);
+				vertex->X = vertexArray[i].x;
+				vertex->Y = vertexArray[i].y;
+				vertex->Z = vertexArray[i].z;
+				*reinterpret_cast<unsigned int *>(vb + diffuseOffset) = DX8Wrapper::Convert_Color_Clamp(colors[MIN((i/2), point_cnt)]); // TODO: Does not work correctly when subdivision are not 0
+				Vector2 *texture = reinterpret_cast<Vector2 *>(vb + textureOffset);
+				texture->U = vertexArray[i].u1;
+				texture->V = vertexArray[i].v1;
+				vb += vbSize;				
+
+#endif
 			}			
 		} // copy
 		
@@ -1374,11 +1519,20 @@ char q[]="&&  &&  &&  &&  &&  &&  &&  &&  &&  &&  &&  &&  &&  &&  &&  &&  &&  &&
 			DynamicIBAccessClass::WriteLockClass lock(&ib_access);
 			unsigned short* inds=lock.Get_Index_Array();
 
+#ifdef ZH
+			try {
+#endif
 			for (i=0; i<triangleIndex; i++)
 			{
 				*inds++=v_index_array[i].I;
 				*inds++=v_index_array[i].J;
 				*inds++=v_index_array[i].K;
+#ifdef ZH
+			}
+			IndexBufferExceptionFunc();
+			} catch(...) {
+				IndexBufferExceptionFunc();
+#endif
 			}
 		}
 
@@ -1396,8 +1550,10 @@ char q[]="&&  &&  &&  &&  &&  &&  &&  &&  &&  &&  &&  &&  &&  &&  &&  &&  &&  &&
 		{
 			DX8Wrapper::Draw_Triangles(0,triangleIndex,0,vnum);
 		}
+#ifdef OG
 		
 		delete [] vertexArray;
+#endif
 
 	}	// Chunking loop
 
@@ -1410,3 +1566,25 @@ char q[]="&&  &&  &&  &&  &&  &&  &&  &&  &&  &&  &&  &&  &&  &&  &&  &&  &&  &&
 /////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////
+#ifdef ZH
+VertexFormatXYZUV1 *StreakRendererClass::getVertexBuffer(unsigned int number)
+{
+	// TODO: use a stl vector instead of our own array.
+	if (number > m_vertexBufferSize)
+	{
+		unsigned int numberToAlloc = number + (number >> 1);
+	  delete [] m_vertexBuffer;
+		m_vertexBuffer = W3DNEWARRAY VertexFormatXYZUV1[numberToAlloc];		
+		m_vertexBufferSize = numberToAlloc;
+	}
+
+#ifdef _INTERNAL
+	for (unsigned i = 0; i < number; ++i)
+	{
+	  m_vertexBuffer[i].x = m_vertexBuffer[i].y = m_vertexBuffer[i].z = m_vertexBuffer[i].u1 = m_vertexBuffer[i].v1 = (float)0xdeadbeef;
+	}
+#endif
+
+	return m_vertexBuffer;
+}
+#endif

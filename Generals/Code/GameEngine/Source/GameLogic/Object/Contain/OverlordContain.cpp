@@ -36,17 +36,37 @@
 #include "PreRTS.h"	// This must go first in EVERY cpp file int the GameEngine
 #include "Common/Player.h"
 #include "Common/Xfer.h"
+#ifdef ZH
+#include "Common/ThingTemplate.h"
+#include "Common/ThingFactory.h"
+#endif
 #include "GameClient/ControlBar.h"
 #include "GameClient/Drawable.h"
+#ifdef ZH
+#include "GameLogic/ExperienceTracker.h"
+#endif
 #include "GameLogic/Module/BodyModule.h"
 #include "GameLogic/Module/OverlordContain.h"
 #include "GameLogic/Object.h"
 #include "GameLogic/PartitionManager.h"
+#ifdef ZH
+
+
+#ifdef _INTERNAL
+// for occasional debugging...
+//#pragma optimize("", off)
+//#pragma MESSAGE("************************************** WARNING, optimization disabled for debugging purposes")
+#endif
+#endif
 
 // ------------------------------------------------------------------------------------------------
 // ------------------------------------------------------------------------------------------------
 OverlordContainModuleData::OverlordContainModuleData()
 {
+#ifdef ZH
+//	m_initialPayload.count = 0;
+	m_experienceSinkForRider = TRUE;
+#endif
 }
 
 // ------------------------------------------------------------------------------------------------
@@ -57,10 +77,29 @@ void OverlordContainModuleData::buildFieldParse(MultiIniFieldParse& p)
 
 	static const FieldParse dataFieldParse[] = 
 	{
+#ifdef ZH
+    { "PayloadTemplateName",  INI::parseAsciiStringVectorAppend, NULL, offsetof(OverlordContainModuleData, m_payloadTemplateNameData) },
+    { "ExperienceSinkForRider",  INI::parseBool, NULL, offsetof(OverlordContainModuleData, m_experienceSinkForRider) },
+
+#endif
 		{ 0, 0, 0, 0 }
 	};
   p.add(dataFieldParse);
 }
+#ifdef ZH
+// ------------------------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------------------------
+//void OverlordContainModuleData::parseInitialPayload( INI* ini, void *instance, void *store, const void* /*userData*/ )
+//{
+//	OverlordContainModuleData* self = (OverlordContainModuleData*)instance;
+//	const char* name = ini->getNextToken();
+//	const char* countStr = ini->getNextTokenOrNull();
+//	Int count = countStr ? INI::scanInt(countStr) : 1;
+	
+//	self->m_initialPayload.name.set(name);
+//	self->m_initialPayload.count = count;
+//}
+#endif
 
 // ------------------------------------------------------------------------------------------------
 // ------------------------------------------------------------------------------------------------
@@ -68,16 +107,77 @@ OverlordContain::OverlordContain( Thing *thing, const ModuleData *moduleData ) :
 								 TransportContain( thing, moduleData )
 {
 	m_redirectionActivated = FALSE;
+#ifdef ZH
+
+  m_payloadCreated = FALSE;
+
+#endif
 }
 
 //-------------------------------------------------------------------------------------------------
 //-------------------------------------------------------------------------------------------------
 OverlordContain::~OverlordContain( void )
 {
+#ifdef ZH
 
 }
 
+#endif
+
+#ifdef ZH
+void OverlordContain::onObjectCreated( void )
+{
+  OverlordContain::createPayload();
+#endif
+}
+
 //-------------------------------------------------------------------------------------------------
+#ifdef ZH
+// ------------------------------------------------------------------------------------------------
+void OverlordContain::createPayload()
+{
+	OverlordContainModuleData* self = (OverlordContainModuleData*)getOverlordContainModuleData();
+
+  // Any number of different passengers can be loaded here at init time
+	Object* object = getObject();
+	ContainModuleInterface *contain = object->getContain();
+	if( contain )
+  {
+		contain->enableLoadSounds( FALSE );
+
+	  TemplateNameList list = self->m_payloadTemplateNameData;
+	  TemplateNameIterator iter = list.begin();
+	  while ( iter != list.end() )
+	  {
+		  const ThingTemplate* temp = TheThingFactory->findTemplate( *iter );
+		  if (temp)
+		  {
+			  Object* payload = TheThingFactory->newObject( temp, object->getTeam() ); 
+
+			  if( contain->isValidContainerFor( payload, true ) )
+			  {
+				  contain->addToContain( payload );
+			  }
+			  else
+			  {
+				  DEBUG_CRASH( ( "OverlordContain::createPayload: %s is full, or not valid for the payload %s!", object->getName().str(), self->m_initialPayload.name.str() ) );
+			  }
+
+      }
+
+      ++iter;
+    }
+
+		contain->enableLoadSounds( TRUE );
+
+  } // endif contain
+
+	m_payloadCreated = TRUE;
+
+}
+
+// ------------------------------------------------------------------------------------------------
+#endif
 //-------------------------------------------------------------------------------------------------
 void OverlordContain::onBodyDamageStateChange( const DamageInfo* damageInfo, 
 																				BodyDamageType oldState, 
@@ -280,21 +380,83 @@ void OverlordContain::iterateContained( ContainIterateFunc func, void *userData,
 }
 
 //-------------------------------------------------------------------------------------------------
+#ifdef OG
 void OverlordContain::onContaining( Object *obj )
+#endif
+#ifdef ZH
+void OverlordContain::onContaining( Object *obj, Bool wasSelected )
+#endif
 {
 	// Do you mean me the Overlord, or my behavior of passing stuff on to my passengers?
 	if( getRedirectedContain() == NULL )
+#ifdef ZH
 	{
+		TransportContain::onContaining( obj, wasSelected );
+
+    if ( obj->isKindOf( KINDOF_PORTABLE_STRUCTURE ) )
+#endif
+	{
+#ifdef OG
 		TransportContain::onContaining( obj );
+#endif
 		activateRedirectedContain();//Am now carrying something
+#ifdef ZH
+
+			// And this contain style explicitly sucks XP from our little friend.
+			if( getOverlordContainModuleData()->m_experienceSinkForRider  &&  obj->getExperienceTracker() )
+				obj->getExperienceTracker()->setExperienceSink(getObject()->getID());
+
+      if ( obj->isKindOf( KINDOF_PORTABLE_STRUCTURE ) && getObject()->testStatus( OBJECT_STATUS_STEALTHED ) )
+      {
+        StealthUpdate *myStealth =  obj->getStealth();
+        if ( myStealth )
+        {
+          myStealth->receiveGrant( true );
+          // note to anyone... once stealth is granted to this gattlingcannon ( or such ) 
+          // let its own stealthupdate govern the allowedtostealth cases
+          // a portable structure never gets removed, so...
+        }
+      }
+  
+
+    }	
+    
+    
+#endif
 		return;
 	}
+#ifdef ZH
 
+	OpenContain::onContaining( obj, wasSelected );
+#endif
+
+#ifdef OG
 	OpenContain::onContaining(obj);
+#endif
+#ifdef ZH
+	getRedirectedContain()->onContaining( obj, wasSelected );
+#endif
 
+#ifdef OG
 	getRedirectedContain()->onContaining( obj );
-
+#endif
+#ifdef ZH
 }
+#endif
+
+#ifdef ZH
+//-------------------------------------------------------------------------------------------------
+void OverlordContain::killAllContained( void )
+{
+	// This is a game call meant to clear actual passengers.  We don't want it to kill our turret.  That'd be wierd.
+	if( getRedirectedContain() )
+	{
+		getRedirectedContain()->killAllContained();
+#endif
+}
+#ifdef ZH
+}
+#endif
 
 //-------------------------------------------------------------------------------------------------
 void OverlordContain::onRemoving( Object *obj ) 
@@ -448,9 +610,36 @@ void OverlordContain::clientVisibleContainedFlashAsSelected()
 			}
 			
 			++it;
+#ifdef ZH
 		}
 	}
 
+#endif
+		}
+#ifdef ZH
+
+
+Bool OverlordContain::isPassengerAllowedToFire( ObjectID id ) const
+{
+	Object *passenger = TheGameLogic->findObjectByID(id);
+
+	if(passenger != NULL)
+	{
+		//only allow infantry, and turrets and such.  no vehicles.
+		if(passenger->isKindOf(KINDOF_INFANTRY) == FALSE && passenger->isKindOf(KINDOF_PORTABLE_STRUCTURE) == FALSE)
+			return FALSE;
+#endif
+	}
+#ifdef ZH
+	
+  
+  if ( getObject() && getObject()->getContainedBy() ) // nested containment voids firing, always
+    return FALSE;
+#endif
+
+#ifdef ZH
+  return TransportContain::isPassengerAllowedToFire();
+#endif
 }
 
 

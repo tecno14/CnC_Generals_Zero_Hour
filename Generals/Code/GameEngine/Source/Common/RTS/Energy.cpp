@@ -49,13 +49,55 @@
 #include "Common/PlayerList.h"
 #include "Common/ThingTemplate.h"
 #include "Common/Xfer.h"
+#ifdef ZH
+
+#include "GameLogic/GameLogic.h"
+#endif
 #include "GameLogic/Object.h"
 
+#ifdef ZH
+#ifdef _INTERNAL
+// for occasional debugging...
+//#pragma optimize("", off)
+//#pragma MESSAGE("************************************** WARNING, optimization disabled for debugging purposes")
+#endif
+
+#endif
 //-----------------------------------------------------------------------------
+#ifdef ZH
+Energy::Energy()
+{
+	m_energyProduction = 0;
+	m_energyConsumption = 0;
+	m_owner = NULL;
+	m_powerSabotagedTillFrame = 0;
+}
+
+//-----------------------------------------------------------------------------
+Int Energy::getProduction() const
+{ 
+	if( TheGameLogic->getFrame() < m_powerSabotagedTillFrame )
+	{
+		//Power sabotaged, therefore no power.
+		return 0;
+	}
+	return m_energyProduction; 
+}
+
+//-----------------------------------------------------------------------------
+#endif
 Real Energy::getEnergySupplyRatio() const 
 { 
 	DEBUG_ASSERTCRASH(m_energyProduction >= 0 && m_energyConsumption >= 0, ("neg Energy numbers\n"));
 
+#ifdef ZH
+	if( TheGameLogic->getFrame() < m_powerSabotagedTillFrame )
+	{
+		//Power sabotaged, therefore no power, no ratio.
+		return 0.0f;
+	}
+
+#endif
 	if (m_energyConsumption == 0)
 		return (Real)m_energyProduction;
 
@@ -65,6 +107,13 @@ Real Energy::getEnergySupplyRatio() const
 //-------------------------------------------------------------------------------------------------
 Bool Energy::hasSufficientPower(void) const
 {
+#ifdef ZH
+	if( TheGameLogic->getFrame() < m_powerSabotagedTillFrame )
+	{
+		//Power sabotaged, therefore no power.
+		return FALSE;
+	}
+#endif
 	return m_energyProduction >= m_energyConsumption;
 }
 
@@ -226,7 +275,12 @@ void Energy::xfer( Xfer *xfer )
 {
 
 	// version
+#ifdef OG
 	XferVersion currentVersion = 2;
+#endif
+#ifdef ZH
+	XferVersion currentVersion = 3;
+#endif
 	XferVersion version = currentVersion;
 	xfer->xferVersion( &version, currentVersion );
 
@@ -247,6 +301,14 @@ void Energy::xfer( Xfer *xfer )
 		owningPlayerIndex = m_owner->getPlayerIndex();
 	xfer->xferInt( &owningPlayerIndex );
 	m_owner = ThePlayerList->getNthPlayer( owningPlayerIndex );
+#ifdef ZH
+
+	//Sabotage
+	if( version >= 3 )
+	{
+		xfer->xferUnsignedInt( &m_powerSabotagedTillFrame );
+	}
+#endif
 
 }  // end xfer
 

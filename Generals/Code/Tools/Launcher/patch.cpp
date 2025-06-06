@@ -467,7 +467,14 @@ __declspec(dllexport) LPVOID CALLBACK PatchCallBack(UINT Id, LPVOID Param)
 
 	case 0xc:
 	  // copyright message
+#ifdef OG
 	break;  // these just display text
+
+#endif
+#ifdef ZH
+		// Need to return this so Foreign Lang chars don't mess up.
+		return "ANSI";
+#endif
 
     case 5:
 	  // % completed

@@ -69,6 +69,9 @@
 #include "W3DDevice/GameClient/W3DGranny.h"
 #include "Common/PerfTimer.h"
 #include "Common/GlobalData.h"
+#ifdef ZH
+#include "Common/GameCommon.h"
+#endif
 
 #ifdef _INTERNAL
 // for occasional debugging...
@@ -167,10 +170,44 @@ W3DAssetManager::~W3DAssetManager(void)
 #ifdef DUMP_PERF_STATS
 __int64 Total_Get_Texture_Time=0;
 #endif
+#ifdef ZH
+
+TextureClass *	W3DAssetManager::Get_Texture
+	(
+		const char * filename, 
+		MipCountType mip_level_count,
+		WW3DFormat texture_format,
+		bool allow_compression,
+		TextureBaseClass::TexAssetType type,
+		bool allow_reduction
+	)
+{
+	//Just call the base implementation after adjusting reduction to deal
+	//with our special types.
+
+	if (filename && *filename && _strnicmp(filename,"ZHC",3) == 0)
+		allow_reduction = false;	//don't allow reduction on our infantry textures.
+
+	return WW3DAssetManager::Get_Texture(	filename, 
+		mip_level_count,
+		texture_format,
+		allow_compression,
+		type,
+		allow_reduction
+	);
+}
+
+#if 0	//this function is obsolete in latest C&C3 drop.  Use the one above.
+#endif
 //---------------------------------------------------------------------
 TextureClass *W3DAssetManager::Get_Texture(
 	const char * filename,
+#ifdef OG
 	TextureClass::MipCountType mip_level_count,
+#endif
+#ifdef ZH
+	MipCountType mip_level_count,
+#endif
 	WW3DFormat texture_format,
 	bool allow_compression
 )
@@ -218,7 +255,12 @@ TextureClass *W3DAssetManager::Get_Texture(
 //			extern std::vector<std::string>	preloadTextureNamesGlobalHack;
 //			preloadTextureNamesGlobalHack.push_back(tex->Get_Texture_Name());
 //		}
+#ifdef OG
 #if defined(_DEBUG) || defined(_INTERNAL)
+#endif
+#ifdef ZH
+#if defined(_DEBUG) || defined(_INTERNAL) || defined(_ALLOW_DEBUG_CHEATS_IN_RELEASE)
+#endif
 		if (TheGlobalData->m_preloadReport)
 		{	
 			//loading a new asset and app is requesting a log of all loaded assets.
@@ -241,6 +283,10 @@ TextureClass *W3DAssetManager::Get_Texture(
 
 	return tex;
 }
+#ifdef ZH
+
+#endif
+#endif
 
 //---------------------------------------------------------------------
 RenderObjClass * W3DAssetManager::Create_Render_Obj(const char* name)
@@ -638,7 +684,12 @@ TextureClass * W3DAssetManager::Recolor_Texture_One_Time(TextureClass *texture, 
 
 	// make sure texture is loaded
 	if (!texture->Is_Initialized())	
+#ifdef OG
 		TextureLoader::Request_High_Priority_Loading(texture, (TextureClass::MipCountType)texture->Get_Mip_Level_Count());
+#endif
+#ifdef ZH
+		TextureLoader::Request_Foreground_Loading(texture);
+#endif
 
 	SurfaceClass::SurfaceDescription desc;
 	SurfaceClass *newsurf, *oldsurf;
@@ -659,12 +710,22 @@ TextureClass * W3DAssetManager::Recolor_Texture_One_Time(TextureClass *texture, 
 	if (*(name+3) == 'A' || *(name+3) == 'a')
 		Remap_Palette(newsurf,color, false, true );	//texture only contains a palette stored in top row.
 
+#ifdef OG
 	TextureClass * newtex=NEW_REF(TextureClass,(newsurf,(TextureClass::MipCountType)texture->Get_Mip_Level_Count()));
 	newtex->Set_Mag_Filter(texture->Get_Mag_Filter());
 	newtex->Set_Min_Filter(texture->Get_Min_Filter());
 	newtex->Set_Mip_Mapping(texture->Get_Mip_Mapping());
 	newtex->Set_U_Addr_Mode(texture->Get_U_Addr_Mode());
 	newtex->Set_V_Addr_Mode(texture->Get_V_Addr_Mode());
+#endif
+#ifdef ZH
+	TextureClass * newtex=NEW_REF(TextureClass,(newsurf,(MipCountType)texture->Get_Mip_Level_Count()));
+	newtex->Get_Filter().Set_Mag_Filter(texture->Get_Filter().Get_Mag_Filter());
+	newtex->Get_Filter().Set_Min_Filter(texture->Get_Filter().Get_Min_Filter());
+	newtex->Get_Filter().Set_Mip_Mapping(texture->Get_Filter().Get_Mip_Mapping());
+	newtex->Get_Filter().Set_U_Addr_Mode(texture->Get_Filter().Get_U_Addr_Mode());
+	newtex->Get_Filter().Set_V_Addr_Mode(texture->Get_Filter().Get_V_Addr_Mode());
+#endif
 
 	char newname[512];	
 	Munge_Texture_Name(newname, name, color);
@@ -826,6 +887,11 @@ RenderObjClass * W3DAssetManager::Create_Render_Obj(
 	if (!isGranny)
 #endif
 	{	
+#ifdef ZH
+		if (reallyscale)
+			rendobj->Scale(scale);	//this also makes it unique
+
+#endif
 		Make_Unique(rendobj,reallyscale,reallycolor);
 		if (reallytexture)
 		{	
@@ -835,8 +901,10 @@ RenderObjClass * W3DAssetManager::Create_Render_Obj(
 			REF_PTR_RELEASE(newTex);
 			REF_PTR_RELEASE(oldTex);
 		}
+#ifdef OG
 		if (reallyscale)
 			rendobj->Scale(scale);
+#endif
 
 		if (reallycolor)
 			Recolor_Asset(rendobj,color);
@@ -1208,6 +1276,9 @@ void W3DAssetManager::Make_Mesh_Unique(RenderObjClass *robj, Bool geometry, Bool
 	{	//mesh has some house color applied so make those components unique to mesh.
 
 		//Create unique data for this mesh
+#ifdef ZH
+		if (!geometry)	//scaling geometry automatically makes it unique so not needed here.
+#endif
 		mesh->Make_Unique();
 		
 		MeshModelClass * model = mesh->Get_Model();
@@ -1218,12 +1289,14 @@ void W3DAssetManager::Make_Mesh_Unique(RenderObjClass *robj, Bool geometry, Bool
 			for (i=0; i<material->Vertex_Material_Count(); i++)
 				material->Peek_Vertex_Material(i)->Make_Unique();	
 			REF_PTR_RELEASE(material);
+#ifdef OG
 		}
 
 		if (geometry)
 		{
 			// make geometry unique		
 			model->Make_Geometry_Unique();		
+#endif
 		}
 
 		REF_PTR_RELEASE(model);

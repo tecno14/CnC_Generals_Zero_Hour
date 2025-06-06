@@ -24,12 +24,33 @@
  *                                                                         * 
  *                     $Archive:: /Commando/Code/ww3d2/bmp2d.cpp          $* 
  *                                                                         * 
+#ifdef OG
  *                      $Author:: Naty_h                                  $* 
+
+#endif
+#ifdef ZH
+ *                  $Org Author:: Jani_p                                  $* 
  *                                                                         * 
+ *                      $Author:: Kenny_m                                  $* 
+#endif
+ *                                                                         * 
+#ifdef OG
  *                     $Modtime:: 4/13/01 1:37p                           $* 
+#endif
+#ifdef ZH
+ *                     $Modtime:: 08/05/02 10:44a                          $* 
+#endif
  *                                                                         * 
+#ifdef OG
  *                    $Revision:: 10                                      $* 
+#endif
+#ifdef ZH
+ *                    $Revision:: 12                                      $* 
+#endif
  *                                                                         * 
+#ifdef ZH
+ * 08/05/02 KM Texture class redesign
+#endif
  *-------------------------------------------------------------------------* 
  * Functions:                                                              * 
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
@@ -39,6 +60,11 @@
 #include "ww3d.h"
 #include "texture.h"
 #include "surfaceclass.h"
+#ifdef ZH
+#include "assetmgr.h"
+#include "textureloader.h"
+#include "ww3dformat.h"
+#endif
 
 Bitmap2DObjClass::Bitmap2DObjClass
 (
@@ -67,7 +93,21 @@ Bitmap2DObjClass::Bitmap2DObjClass
 	
 
 	// load up the surfaces file name
+#ifdef OG
 	SurfaceClass *surface=NEW_REF(SurfaceClass,(filename));	
+
+#endif
+#ifdef ZH
+	TextureClass *tex = WW3DAssetManager::Get_Instance()->Get_Texture(filename, MIP_LEVELS_1);
+	if (!tex->Is_Initialized())	
+		TextureLoader::Request_Foreground_Loading(tex);
+
+	SurfaceClass *surface = tex->Get_Surface_Level(0);
+
+	if (!surface) {
+		surface = NEW_REF(SurfaceClass, (32, 32, Get_Valid_Texture_Format(WW3D_FORMAT_R8G8B8,true)));
+	}
+#endif
 
 	SurfaceClass::SurfaceDescription sd;
 	surface->Get_Description(sd);
@@ -154,9 +194,16 @@ Bitmap2DObjClass::Bitmap2DObjClass
 			// create the texture and turn MIP-mapping off.
 			SurfaceClass *piece_surface=NEW_REF(SurfaceClass,(pot,pot,sd.Format));			
 			piece_surface->Copy(0,0,tlpx,tlpy,pot,pot,surface);
+#ifdef OG
 			TextureClass *piece_texture =NEW_REF(TextureClass,(piece_surface,TextureClass::MIP_LEVELS_1));			
 			piece_texture->Set_U_Addr_Mode(TextureClass::TEXTURE_ADDRESS_CLAMP);
 			piece_texture->Set_V_Addr_Mode(TextureClass::TEXTURE_ADDRESS_CLAMP);
+#endif
+#ifdef ZH
+			TextureClass *piece_texture =NEW_REF(TextureClass,(piece_surface,MIP_LEVELS_1));			
+			piece_texture->Get_Filter().Set_U_Addr_Mode(TextureFilterClass::TEXTURE_ADDRESS_CLAMP);
+			piece_texture->Get_Filter().Set_V_Addr_Mode(TextureFilterClass::TEXTURE_ADDRESS_CLAMP);
+#endif
 			REF_PTR_RELEASE(piece_surface);			
 
 			// calculate our actual texture coordinates based on the difference between
@@ -185,6 +232,9 @@ Bitmap2DObjClass::Bitmap2DObjClass
 			REF_PTR_RELEASE(piece_texture);			
 		}
 	}
+#ifdef ZH
+	REF_PTR_RELEASE(tex);
+#endif
 	REF_PTR_RELEASE(surface);	
 
 	Set_Dirty();
@@ -213,12 +263,28 @@ Bitmap2DObjClass::Bitmap2DObjClass
 	//Set_Aspect(resh/(float)resw);
 
 	// Find the dimensions of the texture:
+#ifdef OG
 	SurfaceClass::SurfaceDescription sd;
 	texture->Get_Level_Description(sd);
+
+#endif
+#ifdef ZH
+//	SurfaceClass::SurfaceDescription sd;
+//	texture->Get_Level_Description(sd);
+
+	if (!texture->Is_Initialized())	
+		TextureLoader::Request_Foreground_Loading(texture);
+#endif
 		
 	// convert image width and image height to normalized values
+#ifdef OG
 	float vw = (float) sd.Width / (float)resw;
 	float vh = (float) sd.Height / (float)resh;
+#endif
+#ifdef ZH
+	float vw = (float) texture->Get_Width() / (float)resw;
+	float vh = (float) texture->Get_Height() / (float)resh;
+#endif
 
 	// if we requested the image to be centered around a point adjust the
 	// coordinates accordingly.
@@ -236,7 +302,12 @@ Bitmap2DObjClass::Bitmap2DObjClass
 	if (additive) {
 		shader = ShaderClass::_PresetAdditive2DShader;
 	} else {
+#ifdef OG
 		if (ignore_alpha == false && Has_Alpha(sd.Format)) {
+#endif
+#ifdef ZH
+		if (ignore_alpha == false && Has_Alpha(texture->Get_Texture_Format())) {
+#endif
 			shader = ShaderClass::_PresetAlpha2DShader;
 		} else {
 			shader = ShaderClass::_PresetOpaque2DShader;

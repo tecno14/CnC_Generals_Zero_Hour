@@ -84,7 +84,30 @@ Int FiringTracker::getNumConsecutiveShotsAtVictim( const Object *victim ) const
 void FiringTracker::shotFired(const Weapon* weaponFired, ObjectID victimID)
 {
 	UnsignedInt now = TheGameLogic->getFrame();
+#ifdef ZH
+	Object *me = getObject();
+	const Object *victim = TheGameLogic->findObjectByID(victimID); // May be null for ground shot
+#endif
 
+#ifdef ZH
+	if( victim && victim->testStatus(OBJECT_STATUS_FAERIE_FIRE) )
+	{
+		if( !me->testWeaponBonusCondition(WEAPONBONUSCONDITION_TARGET_FAERIE_FIRE) )
+		{
+			// We shoot faster at guys marked thusly
+			me->setWeaponBonusCondition(WEAPONBONUSCONDITION_TARGET_FAERIE_FIRE);
+		}
+	}
+	else
+	{
+		// A ground shot or the lack of the status on the target will clear this
+		if( me->testWeaponBonusCondition(WEAPONBONUSCONDITION_TARGET_FAERIE_FIRE) )
+		{
+			me->clearWeaponBonusCondition(WEAPONBONUSCONDITION_TARGET_FAERIE_FIRE);
+		}
+	}
+
+#endif
 	if( victimID == m_victimID )
 	{
 		// Shooting at the same guy
@@ -117,7 +140,12 @@ void FiringTracker::shotFired(const Weapon* weaponFired, ObjectID victimID)
 	Int shotsNeededOne = weaponFired->getContinuousFireOneShotsNeeded();
 	Int shotsNeededTwo = weaponFired->getContinuousFireTwoShotsNeeded();
 
+#ifdef OG
 	if( getObject()->testWeaponBonusCondition( WEAPONBONUSCONDITION_CONTINUOUS_FIRE_MEAN ) )
+#endif
+#ifdef ZH
+	if( me->testWeaponBonusCondition( WEAPONBONUSCONDITION_CONTINUOUS_FIRE_MEAN ) )
+#endif
 	{
 		// Can either go up or down from here.
 		if( m_consecutiveShots < shotsNeededOne )
@@ -125,7 +153,12 @@ void FiringTracker::shotFired(const Weapon* weaponFired, ObjectID victimID)
 		else if( m_consecutiveShots > shotsNeededTwo )
 			speedUp();
 	}
+#ifdef OG
 	else if( getObject()->testWeaponBonusCondition( WEAPONBONUSCONDITION_CONTINUOUS_FIRE_FAST ) )
+#endif
+#ifdef ZH
+	else if( me->testWeaponBonusCondition( WEAPONBONUSCONDITION_CONTINUOUS_FIRE_FAST ) )
+#endif
 	{
 		// Only place I can go here from here is all the way down
 		if( m_consecutiveShots < shotsNeededTwo )
@@ -161,7 +194,12 @@ void FiringTracker::shotFired(const Weapon* weaponFired, ObjectID victimID)
 	}
 
 
+#ifdef OG
 	setWakeFrame(getObject(), calcTimeToSleep());
+#endif
+#ifdef ZH
+	setWakeFrame(me, calcTimeToSleep());
+#endif
 }
 
 //-------------------------------------------------------------------------------------------------

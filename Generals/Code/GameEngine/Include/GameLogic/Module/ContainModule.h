@@ -33,6 +33,10 @@
 #define __ContainModule_H_
 
 #include "Common/Module.h"
+#ifdef ZH
+#include "GameLogic/WeaponBonusConditionFlags.h" // Can't forward a typedef.  This should me made a BitFlags class.
+#include "GameLogic/Damage.h"
+#endif
 
 //-------------------------------------------------------------------------------------------------
 class OpenContain;
@@ -50,6 +54,17 @@ enum ObjectEnterExitType
 	WANTS_NEITHER
 };
 
+#ifdef ZH
+enum EvacDisposition
+{
+  EVAC_INVALID = 0,
+  EVAC_TO_LEFT,
+  EVAC_TO_RIGHT,
+  EVAC_BURST_FROM_CENTER,
+
+};
+
+#endif
 //-------------------------------------------------------------------------------------------------
 
 typedef std::list<Object*> ContainedItemsList;
@@ -84,10 +99,20 @@ public:
 	//===============================================================================================
 
 	virtual Bool isGarrisonable() const = 0;
+#ifdef ZH
+	virtual Bool isBustable() const = 0;
+#endif
 	virtual Bool isSpecialZeroSlotContainer() const = 0;
 	virtual Bool isHealContain() const = 0;
+#ifdef ZH
+	virtual Bool isTunnelContain() const = 0;
+	virtual Bool isRiderChangeContain() const = 0;
+#endif
 	virtual Bool isImmuneToClearBuildingAttacks() const = 0;
-
+#ifdef ZH
+  virtual Bool isSpecialOverlordStyleContainer() const = 0;
+  virtual Bool isAnyRiderAttacking() const = 0;
+#endif
 	
 	///< if my object gets selected, then my visible passengers should, too
 	///< this gets called from
@@ -118,7 +143,12 @@ public:
 	// you will want to override onContaining() and onRemoving() if you need to
 	// do special actions at those event times for your module
 	//
+#ifdef OG
 	virtual void onContaining( Object *obj ) = 0;		///< object now contains 'obj'
+#endif
+#ifdef ZH
+	virtual void onContaining( Object *obj, Bool wasSelected ) = 0;		///< object now contains 'obj'
+#endif
 	virtual void onRemoving( Object *obj ) = 0;			///< object no longer contains 'obj'
 	virtual void onCapture( Player *oldOwner, Player *newOwner ) = 0; // Very important to handle capture of container, don't want to differ in teams from passenger to us.
 	virtual void onSelling() = 0;///< Container is being sold.  Most people respond by kicking everyone out, but not all.
@@ -127,7 +157,15 @@ public:
 
 	virtual ExitInterface* getContainExitInterface() = 0;
 	
+#ifdef OG
 	virtual void orderAllPassengersToExit( CommandSourceType ) = 0; ///< All of the smarts of exiting are in the passenger's AIExit. removeAllFrommContain is a last ditch system call, this is the game Evacuate
+
+#endif
+#ifdef ZH
+	virtual void orderAllPassengersToExit( CommandSourceType, Bool instantly ) = 0; ///< All of the smarts of exiting are in the passenger's AIExit. removeAllFrommContain is a last ditch system call, this is the game Evacuate
+	virtual void orderAllPassengersToIdle( CommandSourceType ) = 0; ///< Just like it sounds
+	virtual void orderAllPassengersToHackInternet( CommandSourceType ) = 0; ///< Just like it sounds
+#endif
 	virtual void markAllPassengersDetected() = 0;										///< Cool game stuff got added to the system calls since this layer didn't exist, so this regains that functionality
 
 	//
@@ -143,8 +181,19 @@ public:
 	virtual void addToContainList( Object *obj ) = 0;		///< The part of AddToContain that inheritors can override (Can't do whole thing because of all the private stuff involved)
 	virtual void removeFromContain( Object *obj, Bool exposeStealthUnits = FALSE ) = 0;			///< remove 'obj' from contain list
 	virtual void removeAllContained( Bool exposeStealthUnits = FALSE ) = 0;									///< remove all objects on contain list
+#ifdef ZH
+	virtual void killAllContained( void ) = 0;									///< kill all objects on contain list
+  virtual void harmAndForceExitAllContained( DamageInfo *info ) = 0; // apply canned damage against those containes 
+#endif
 	virtual Bool isEnclosingContainerFor( const Object *obj ) const = 0;	///< Does this type of Contain Visibly enclose its contents?
+#ifdef OG
 	virtual Bool isPassengerAllowedToFire() const = 0;	///< Hey, can I shoot out of this container?
+
+#endif
+#ifdef ZH
+	virtual Bool isPassengerAllowedToFire( ObjectID id = INVALID_ID ) const = 0;	///< Hey, can I shoot out of this container?
+	virtual void setPassengerAllowedToFire( Bool permission = TRUE ) = 0;	///< Hey, can I shoot out of this container?
+#endif
 	virtual void setOverrideDestination( const Coord3D * ) = 0; ///< Instead of falling peacefully towards a clear spot, I will now aim here
 	virtual Bool isDisplayedOnControlBar() const = 0;///< Does this container display its contents on the ControlBar?
 	virtual Int getExtraSlotsInUse( void ) = 0;
@@ -165,9 +214,24 @@ public:
 	// Player Occupancy.
 	virtual PlayerMaskType getPlayerWhoEntered(void) const = 0;
 
+#ifdef OG
 	virtual void processDamageToContained() = 0; ///< Do our % damage to units now.
 
+#endif
+#ifdef ZH
+	virtual void processDamageToContained(Real percentDamage) = 0; ///< Do our % damage to units now.
+  virtual Object* getClosestRider ( const Coord3D *pos ) = 0;
+#endif
+
 	virtual void enableLoadSounds( Bool enable ) = 0;
+#ifdef ZH
+
+  virtual void setEvacDisposition( EvacDisposition disp ) = 0;
+
+	virtual Bool isWeaponBonusPassedToPassengers() const = 0;
+	virtual WeaponBonusConditionFlags getWeaponBonusPassedToPassengers() const = 0;
+
+#endif
 
 	// this exists really just so someone can override it to prevent pip showings...
 	virtual Bool getContainerPipsToShow(Int& numTotal, Int& numFull)

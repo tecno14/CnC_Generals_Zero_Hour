@@ -159,6 +159,9 @@ const FieldParse ControlBarSchemeManager::m_controlBarSchemeFieldParseTable[] =
 
 	{ "CommandMarkerImage",		INI::parseMappedImage,				NULL, offsetof( ControlBarScheme, m_commandMarkerImage) },
 	{ "ExpBarForegroundImage",		INI::parseMappedImage,				NULL, offsetof( ControlBarScheme, m_expBarForeground) },
+#ifdef ZH
+	{ "PowerPurchaseImage",			INI::parseMappedImage,				NULL, offsetof( ControlBarScheme, m_powerPurchaseImage) },
+#endif
 
 	{ NULL,										NULL,													NULL, 0 }  // keep this last
 
@@ -283,6 +286,9 @@ void ControlBarScheme::reset(void)
 
 	m_commandMarkerImage = NULL;
 	m_expBarForeground = NULL;
+#ifdef ZH
+	m_powerPurchaseImage = NULL;
+#endif
 		
 }
 
@@ -347,6 +353,10 @@ ControlBarScheme::ControlBarScheme(void)
 	m_commandMarkerImage = NULL;
 	m_expBarForeground = NULL;
 
+#ifdef ZH
+	m_powerPurchaseImage = NULL;
+
+#endif
 	m_generalButtonEnable = NULL;
 	m_generalButtonHightlited = NULL;
 	m_generalButtonPushed = NULL;
@@ -362,7 +372,6 @@ ControlBarScheme::ControlBarScheme(void)
 	m_minMaxButtonHightlited = NULL;
 	m_minMaxButtonPushed = NULL;
 
-	
 	m_minMaxUL.x = 0;
 	m_minMaxLR.x = 0;
 
@@ -669,6 +678,18 @@ void ControlBarScheme::init(void)
 		}
 		win->winSetPosition(x,y );
 		win->winSetSize((m_uAttackLR.x - m_uAttackUL.x)*resMultiplier.x+ COMMAND_BAR_SIZE_OFFSET,(m_uAttackLR.y - m_uAttackUL.y)*resMultiplier.y+ COMMAND_BAR_SIZE_OFFSET);
+#ifdef ZH
+	}
+
+	win = TheWindowManager->winGetWindowFromId( NULL, TheNameKeyGenerator->nameToKey( "GeneralsExpPoints.wnd:GenExpParent" ) );
+	if(win)
+	{
+		win->winSetEnabledImage(0,m_powerPurchaseImage);
+		if( m_powerPurchaseImage )
+		{
+			win->winSetSize(m_powerPurchaseImage->getImageWidth() * resMultiplier.x, m_powerPurchaseImage->getImageHeight() * resMultiplier.y);
+		}
+#endif
 	}
 }
 

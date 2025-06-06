@@ -77,6 +77,9 @@ public:
 	UnsignedInt m_warehouseDelay;
 	Real m_warehouseScanDistance;
  	AudioEventRTS m_suppliesDepletedVoice;						///< Sound played when I take the last box.
+#ifdef ZH
+	Int m_upgradedSupplyBoost;
+#endif
 
 	WorkerAIUpdateModuleData()
 	{
@@ -87,6 +90,9 @@ public:
 		m_centerDelay = 0;
 		m_warehouseDelay = 0;
 		m_warehouseScanDistance = 100;
+#ifdef ZH
+		m_upgradedSupplyBoost = 0;
+#endif
 	}
 
 	static void buildFieldParse(MultiIniFieldParse& p) 
@@ -103,6 +109,9 @@ public:
 			{ "SupplyWarehouseActionDelay", INI::parseDurationUnsignedInt, NULL, offsetof( WorkerAIUpdateModuleData, m_warehouseDelay ) },
 			{ "SupplyWarehouseScanDistance", INI::parseReal, NULL, offsetof( WorkerAIUpdateModuleData, m_warehouseScanDistance ) },
  			{ "SuppliesDepletedVoice", INI::parseAudioEventRTS, NULL, offsetof( WorkerAIUpdateModuleData, m_suppliesDepletedVoice) },
+#ifdef ZH
+ 			{ "UpgradedSupplyBoost", INI::parseInt, NULL, offsetof( WorkerAIUpdateModuleData, m_upgradedSupplyBoost) },
+#endif
 			{ 0, 0, 0, 0 }
 		};
     p.add(dataFieldParse);
@@ -209,6 +218,10 @@ public:
 
 	virtual void startBuildingSound( const AudioEventRTS *sound, ObjectID constructionSiteID );
 	virtual void finishBuildingSound();
+#ifdef ZH
+	
+	virtual Int getUpgradedSupplyBoost() const;
+#endif
 	
 protected:
 

@@ -199,7 +199,12 @@ void UpdateDiplomacyBriefingText(AsciiString newText, Bool clear)
 void ShowDiplomacy( Bool immediate )
 {
 	if (!TheInGameUI->getInputEnabled() || TheGameLogic->isIntroMoviePlaying() || 
+#ifdef OG
 			TheGameLogic->isLoadingGame())
+#endif
+#ifdef ZH
+			TheGameLogic->isLoadingMap())
+#endif
 		return;
 	
 

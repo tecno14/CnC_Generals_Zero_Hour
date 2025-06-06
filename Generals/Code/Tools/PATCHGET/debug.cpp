@@ -68,7 +68,12 @@ void DebugLog(const char *fmt, ...)
 {
 	va_list va;
 	va_start( va, fmt );
+#ifdef OG
 	vsnprintf(theBuffer, LARGE_BUFFER, fmt, va );
+#endif
+#ifdef ZH
+	_vsnprintf(theBuffer, LARGE_BUFFER, fmt, va );
+#endif
 	theBuffer[LARGE_BUFFER-1] = 0;
 	va_end( va );
 

@@ -69,6 +69,13 @@ public:
 	std::vector<Upgrades>			m_upgradeOCL;
 	const ObjectCreationList*	m_defaultOCL;
 	OCLCreateLocType					m_createLoc;
+#ifdef ZH
+	Bool											m_isOCLAdjustPositionToPassable; ///< Adjust target to nearest Passable cell
+
+	//We need to know what the final product is going to be for script placement calculations 
+	//for construction sites like the sneak attack.
+	AsciiString				m_referenceThingName;
+#endif
 
 	OCLSpecialPowerModuleData( void );
 	static void buildFieldParse(MultiIniFieldParse& p);
@@ -90,7 +97,16 @@ public:
 
 	virtual void doSpecialPower( UnsignedInt commandOptions );
 	virtual void doSpecialPowerAtObject( Object *obj, UnsignedInt commandOptions );
+#ifdef OG
 	virtual void doSpecialPowerAtLocation( const Coord3D *loc, UnsignedInt commandOptions );
+
+#endif
+#ifdef ZH
+	virtual void doSpecialPowerAtLocation( const Coord3D *loc, Real angle, UnsignedInt commandOptions );
+
+	//If the special power launches a construction site, we need to know the final product for placement purposes.
+	virtual const ThingTemplate* getReferenceThingTemplate() const;
+#endif
 
 protected:
 

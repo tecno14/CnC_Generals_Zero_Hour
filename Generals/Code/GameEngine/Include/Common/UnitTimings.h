@@ -33,7 +33,12 @@
 #define __UNITTIMINGS_H_
 
 
+#ifdef OG
 #define dontDO_UNIT_TIMINGS
+#endif
+#ifdef ZH
+#define dont_DO_UNIT_TIMINGS
+#endif
 
 #endif 
 

@@ -30,6 +30,9 @@
 // INCLUDES ///////////////////////////////////////////////////////////////////////////////////////
 #include "PreRTS.h"	// This must go first in EVERY cpp file int the GameEngine
 
+#ifdef ZH
+#include "Common/Player.h"
+#endif
 #include "Common/Xfer.h"
 
 #include "GameClient/GameClient.h"
@@ -163,6 +166,10 @@ UpdateSleepTime FirestormDynamicGeometryInfoUpdate::update( void )
 
 		// effects have been fired
 		m_effectsFired = TRUE;
+#ifdef ZH
+
+		getObject()->getControllingPlayer()->getAcademyStats()->recordFirestormCreated();
+#endif
 
 	}
 

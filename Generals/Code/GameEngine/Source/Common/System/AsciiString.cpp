@@ -83,13 +83,25 @@ inline char* skipNonWhitespace(char* p)
 	return p;
 }
 
+#ifdef OG
 // -----------------------------------------------------
 AsciiString::AsciiString(const AsciiString& stringSrc) : m_data(stringSrc.m_data)
+#endif
+#ifdef ZH
+void AsciiString::freeBytes(void)
+
+#endif
 {
+#ifdef OG
 	ScopedCriticalSection scopedCriticalSection(TheAsciiStringCriticalSection);
 	if (m_data)
 		++m_data->m_refCount;
 	validate();
+#endif
+#ifdef ZH
+	TheDynamicMemoryAllocator->freeBytes(m_data);
+
+#endif
 }
 
 // -----------------------------------------------------
@@ -169,6 +181,7 @@ void AsciiString::ensureUniqueBufferOfSize(int numCharsNeeded, Bool preserveData
 
 
 // -----------------------------------------------------
+#ifdef OG
 void AsciiString::releaseBuffer()
 {
 	ScopedCriticalSection scopedCriticalSection(TheAsciiStringCriticalSection);
@@ -233,6 +246,7 @@ void AsciiString::set(const char* s)
 }
 
 // -----------------------------------------------------
+#endif
 char*  AsciiString::getBufferForRead(Int len)
 {
 	validate();
@@ -251,6 +265,7 @@ void AsciiString::translate(const UnicodeString& stringSrc)
 	Int len = stringSrc.getLength();
 	for (Int i = 0; i < len; i++)
 		concat((char)stringSrc.getCharAt(i));
+#ifdef OG
 	validate();
 }
 
@@ -270,6 +285,7 @@ void AsciiString::concat(const char* s)
 	{
 		set(s);
 	}
+#endif
 	validate();
 }
 

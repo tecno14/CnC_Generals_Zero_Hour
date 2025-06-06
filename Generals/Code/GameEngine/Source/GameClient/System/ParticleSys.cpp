@@ -75,9 +75,19 @@ ParticleInfo::ParticleInfo( void )
 {
 	//Added By Sadullah Nader
 	//Initializations inserted
+#ifdef OG
 	m_angleX = m_angleY = m_angleZ = 0.0f;
+#endif
+#ifdef ZH
+	m_angleZ = 0.0f;
+#endif
 	m_angularDamping = 0.0f;
+#ifdef OG
 	m_angularRateX = m_angularRateY = m_angularRateZ = 0.0f;
+#endif
+#ifdef ZH
+	m_angularRateZ = 0.0f;
+#endif
 	m_colorScale =0.0f;
   m_size = 0.0f;
 	m_sizeRate = 0.0f;
@@ -130,13 +140,27 @@ void ParticleInfo::xfer( Xfer *xfer )
 	xfer->xferReal( &m_velDamping );
 
 	// angle
+#ifdef OG
 	xfer->xferReal( &m_angleX );
 	xfer->xferReal( &m_angleY );
+
+#endif
+#ifdef ZH
+	Real tempAngle=0;	//temporary value to save out for backwards compatibility when we supported x,y
+	xfer->xferReal( &tempAngle );
+	xfer->xferReal( &tempAngle );
+#endif
 	xfer->xferReal( &m_angleZ );
 
 	// angular rate
+#ifdef OG
 	xfer->xferReal( &m_angularRateX );
 	xfer->xferReal( &m_angularRateY );
+#endif
+#ifdef ZH
+	xfer->xferReal( &tempAngle );
+	xfer->xferReal( &tempAngle );
+#endif
 	xfer->xferReal( &m_angularRateZ );
 
 	// lifetime
@@ -202,6 +226,7 @@ enum
 
 
 //todo move this somewhere more useful.
+#ifdef OG
 // ------------------------------------------------------------------------------------------------
 #if 0
 static Real angleBetween(const Coord2D &vecA, const Coord2D &vecB)
@@ -217,7 +242,13 @@ static Real angleBetween(const Coord2D &vecA, const Coord2D &vecB)
 	}
 
 	Real dotProduct = (vecA->x * vecB->x + vecA->y * vecB->y);
+#endif
+#ifdef ZH
+static Real angleBetween(const Coord2D *vecA, const Coord2D *vecB);
 
+#endif
+
+#ifdef OG
 	// If the dotproduct is 0.0, then they are orthogonal
 	if (dotProduct < FLT_EPSILON && dotProduct > -FLT_EPSILON) {
 		return vecB->x > 0.0f ? PI : 0.0f;
@@ -229,6 +260,7 @@ static Real angleBetween(const Coord2D &vecA, const Coord2D &vecB)
 }
 #endif
 
+#endif
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 // Particle ///////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -289,8 +321,10 @@ Particle::Particle( ParticleSystem *system, const ParticleInfo *info )
 	m_vel = info->m_vel;
 	m_pos = info->m_pos;
 
+#ifdef OG
 	m_angleX = info->m_angleX;
 	m_angleY = info->m_angleY;
+#endif
 	m_angleZ = info->m_angleZ;
 
 	//Added By Sadullah Nader
@@ -302,8 +336,10 @@ Particle::Particle( ParticleSystem *system, const ParticleInfo *info )
 	m_emitterPos = info->m_emitterPos;
 
 	
+#ifdef OG
 	m_angularRateX = info->m_angularRateX;
 	m_angularRateY = info->m_angularRateY;
+#endif
 	m_angularRateZ = info->m_angularRateZ;
 	m_angularDamping = info->m_angularDamping;
 
@@ -335,6 +371,7 @@ Particle::Particle( ParticleSystem *system, const ParticleInfo *info )
 	computeColorRate();
 
 	m_colorScale = info->m_colorScale;
+#ifdef OG
 
 	if (system->isUsingDrawables())
 	{
@@ -347,6 +384,7 @@ Particle::Particle( ParticleSystem *system, const ParticleInfo *info )
 				m_drawable->attachToParticleSystem( this );
 		}
 	}
+#endif
 
 	m_inSystemList = m_inOverallList = FALSE;
 	m_systemPrev = m_systemNext = m_overallPrev = m_overallNext = NULL;
@@ -367,10 +405,12 @@ Particle::~Particle()
 {
 	// tell the particle system that this particle is gone
 	m_system->removeParticle( this );
+#ifdef OG
 
 	if (m_drawable)
 		TheGameClient->destroyDrawable( m_drawable );
 	m_drawable = NULL;
+#endif
 
 	// if this particle was controlling another particle system, destroy that system
 	if (m_systemUnderControl)
@@ -417,21 +457,35 @@ Bool Particle::update( void )
 	m_pos.z += m_vel.z + driftVel->z;
 
 	// integrate the wind (if specified) into position
+#ifdef ZH
+	ParticleSystemInfo::WindMotion windMotion = m_system->getWindMotion();
+
+	// see if we should even do anything
+	if( windMotion != ParticleSystemInfo::WIND_MOTION_NOT_USED )
+#endif
 	doWindMotion();
 
 	// update orientation
+#ifdef OG
 	m_angleX += m_angularRateX;
 	m_angleY += m_angularRateY;
+#endif
 	m_angleZ += m_angularRateZ;
+#ifdef OG
 	m_angularRateX *= m_angularDamping;
 	m_angularRateY *= m_angularDamping;
+#endif
 	m_angularRateZ *= m_angularDamping;
 
 	if (m_particleUpTowardsEmitter) {
 		// adjust the up position back towards the particle
+#ifdef ZH
+		static const Coord2D upVec = { 0.0f, 1.0f };
+#endif
 		Coord2D emitterDir;
 		emitterDir.x = m_pos.x - m_emitterPos.x;
 		emitterDir.y = m_pos.y - m_emitterPos.y;
+#ifdef OG
 #if 0
 		static const Coord2D upVec = { 0.0f, 1.0f };
 		m_angleZ = angleBetween(upVec, emitterDir) + PI;
@@ -446,17 +500,34 @@ Bool Particle::update( void )
 				Real theta = ACos(emitterDir.y/emitterDirLength);
 				m_angleZ = emitterDir.x > 0.0f ? PI + theta : PI - theta;
 			}
+#endif
+#ifdef ZH
+		m_angleZ = (angleBetween(&upVec, &emitterDir) + PI);
+
+#endif
 		}
+#ifdef OG
 #endif
 	}
+#endif
 
 	// update size
 	m_size += m_sizeRate;
 	m_sizeRate *= m_sizeRateDamping;
 
 	//
+#ifdef OG
 	// Update alpha
+#endif
+#ifdef ZH
+	// Update alpha (if used)
+#endif
 	//
+#ifdef ZH
+
+	if (m_system->getShaderType() != ParticleSystemInfo::ADDITIVE)
+	{
+#endif
 	m_alpha += m_alphaRate;
 
 	if (m_alphaTargetKey < MAX_KEYFRAMES && m_alphaKey[ m_alphaTargetKey ].frame)
@@ -475,6 +546,9 @@ Bool Particle::update( void )
 		m_alpha = 0.0f;
 	else if (m_alpha > 1.0f)
 		m_alpha = 1.0f;
+#ifdef ZH
+	}
+#endif
 
 
 	//
@@ -523,6 +597,7 @@ Bool Particle::update( void )
 
 
 	// reset the acceleration for accumulation next frame
+#ifdef OG
 	m_accel.x = 0.0f;
 	m_accel.y = 0.0f;
 	m_accel.z = 0.0f;
@@ -537,6 +612,11 @@ Bool Particle::update( void )
 		m_drawable->setInstanceMatrix( &rot );
 		m_drawable->setPosition( &m_pos );
 	}
+#endif
+#ifdef ZH
+	m_accel.z=m_accel.y=m_accel.x= 0.0f;
+
+#endif
 
 	// monitor lifetime
 	if (m_lifetimeLeft && --m_lifetimeLeft == 0)
@@ -555,12 +635,16 @@ Bool Particle::update( void )
 // ------------------------------------------------------------------------------------------------
 void Particle::doWindMotion( void )
 {
+#ifdef OG
 	ParticleSystemInfo::WindMotion windMotion = m_system->getWindMotion();
+#endif
 
+#ifdef OG
 	// see if we should even do anything
 	if( windMotion == ParticleSystemInfo::WIND_MOTION_NOT_USED )
 		return;
 
+#endif
 	// get the angle of the wind
 	Real windAngle = m_system->getWindAngle();
 
@@ -650,11 +734,13 @@ ParticlePriorityType Particle::getPriority( void )
 // ------------------------------------------------------------------------------------------------
 Bool Particle::isInvisible( void )
 {
+#ifdef OG
 	// Drawables are never invisible (yet)
 	/// @todo Allow Drawables to fade via alpha (MSB)
 	if (m_drawable)
 		return false;
 
+#endif
 	switch (m_system->getShaderType())
 	{
 		case ParticleSystemInfo::ADDITIVE:
@@ -663,14 +749,24 @@ Bool Particle::isInvisible( void )
 			// check that we're not in the process of going to another color
 			if (m_colorKey[ m_colorTargetKey ].frame == 0)
 			{
+#ifdef OG
 				if (m_color.red < 0.01f && m_color.green < 0.01f && m_color.blue < 0.01f)
+#endif
+#ifdef ZH
+				if ((m_color.red + m_color.green + m_color.blue) <= 0.06f)
+#endif
 					return true;
 			}
 			return false;
 
 		case ParticleSystemInfo::ALPHA:
 			// if alpha is zero, this particle is invisible
+#ifdef OG
 			if (m_alpha < 0.01f)
+#endif
+#ifdef ZH
+			if (m_alpha < 0.02f)
+#endif
 				return true;
 			return false;
 
@@ -684,7 +780,12 @@ Bool Particle::isInvisible( void )
 			// check that we're not in the process of going to another color
 			if (m_colorKey[ m_colorTargetKey ].frame == 0)
 			{
+#ifdef OG
 				if (m_color.red > 0.99f && m_color.green > 0.99f && m_color.blue > 0.99f)
+#endif
+#ifdef ZH
+				if ((m_color.red * m_color.green * m_color.blue) > 0.95f)
+#endif
 					return true;
 			}
 			return false;
@@ -752,6 +853,7 @@ void Particle::xfer( Xfer *xfer )
 	xfer->xferInt( &m_colorTargetKey );
 
 	// drawable
+#ifdef OG
 	DrawableID drawableID = m_drawable ? m_drawable->getID() : INVALID_DRAWABLE_ID;
 	xfer->xferDrawableID( &drawableID );
 	if( xfer->getXferMode() == XFER_LOAD && drawableID != INVALID_DRAWABLE_ID )
@@ -777,6 +879,12 @@ void Particle::xfer( Xfer *xfer )
 		m_drawable->friend_setParticle( this );
 
 	}  // end if
+#endif
+#ifdef ZH
+	DrawableID drawableID = INVALID_DRAWABLE_ID;
+	xfer->xferDrawableID( &drawableID );	//saving for backwards compatibility when we supported drawables.
+
+#endif
 
 	// system under control as an id
 	ParticleSystemID systemUnderControlID = m_systemUnderControl ? m_systemUnderControl->getSystemID() : INVALID_PARTICLE_SYSTEM_ID;
@@ -909,13 +1017,27 @@ void ParticleSystemInfo::xfer( Xfer *xfer )
 	xfer->xferAsciiString( &m_particleTypeName );
 
 	// angles
+#ifdef OG
 	xfer->xferUser( &m_angleX, sizeof( GameClientRandomVariable ) );
 	xfer->xferUser( &m_angleY, sizeof( GameClientRandomVariable ) );
+
+#endif
+#ifdef ZH
+	GameClientRandomVariable	tempRandom;	//for backwards compatibility when we supported x,y
+	xfer->xferUser( &tempRandom, sizeof( GameClientRandomVariable ) );
+	xfer->xferUser( &tempRandom, sizeof( GameClientRandomVariable ) );
+#endif
 	xfer->xferUser( &m_angleZ, sizeof( GameClientRandomVariable ) );
 
 	// angular rate
+#ifdef OG
 	xfer->xferUser( &m_angularRateX, sizeof( GameClientRandomVariable ) );
 	xfer->xferUser( &m_angularRateY, sizeof( GameClientRandomVariable ) );
+#endif
+#ifdef ZH
+	xfer->xferUser( &tempRandom, sizeof( GameClientRandomVariable ) );
+	xfer->xferUser( &tempRandom, sizeof( GameClientRandomVariable ) );
+#endif
 	xfer->xferUser( &m_angularRateZ, sizeof( GameClientRandomVariable ) );
 
 	// angular damping
@@ -1154,6 +1276,9 @@ ParticleSystem::ParticleSystem( const ParticleSystemTemplate *sysTemplate,
 
 	m_isIdentity = true;
 	m_transform.Make_Identity();
+#ifdef ZH
+  m_skipParentXfrm = false;
+#endif
 
 	m_isStopped = false;
 	m_isDestroyed = false;
@@ -1214,11 +1339,15 @@ ParticleSystem::ParticleSystem( const ParticleSystemTemplate *sysTemplate,
 
 	m_velDamping = sysTemplate->m_velDamping;
 
+#ifdef OG
 	m_angleX = sysTemplate->m_angleX;
 	m_angleY = sysTemplate->m_angleY;
+#endif
 	m_angleZ = sysTemplate->m_angleZ;
+#ifdef OG
 	m_angularRateX = sysTemplate->m_angularRateX;
 	m_angularRateY = sysTemplate->m_angularRateY;
+#endif
 	m_angularRateZ = sysTemplate->m_angularRateZ;
 	m_angularDamping = sysTemplate->m_angularDamping;
 
@@ -1898,11 +2027,15 @@ const ParticleInfo *ParticleSystem::generateParticleInfo( Int particleNum, Int p
 	info.m_velDamping = m_velDamping.getValue();
 	info.m_angularDamping = m_angularDamping.getValue();
 
+#ifdef OG
 	info.m_angleX = m_angleX.getValue();
 	info.m_angleY = m_angleY.getValue();
+#endif
 	info.m_angleZ = m_angleZ.getValue();
+#ifdef OG
 	info.m_angularRateX = m_angularRateX.getValue();
 	info.m_angularRateY = m_angularRateY.getValue();
+#endif
 	info.m_angularRateZ = m_angularRateZ.getValue();
 
 	info.m_lifetime = (UnsignedInt)m_lifetime.getValue();
@@ -1921,6 +2054,9 @@ const ParticleInfo *ParticleSystem::generateParticleInfo( Int particleNum, Int p
 	{
 		info.m_alphaKey[i].value = m_alphaKey[i].var.getValue();
 		info.m_alphaKey[i].frame = m_alphaKey[i].frame;
+#ifdef ZH
+		info.m_colorKey[i] = m_colorKey[i];
+#endif
 	}
 
 /*
@@ -1929,11 +2065,13 @@ const ParticleInfo *ParticleSystem::generateParticleInfo( Int particleNum, Int p
 	info.m_color.blue = m_color.blue.getValue();
 */
 
+#ifdef OG
 	for( i=0; i<MAX_KEYFRAMES; i++ )
 	{
 		info.m_colorKey[i] = m_colorKey[i];
 	}
 
+#endif
 	info.m_colorScale = m_colorScale.getValue();
 #ifdef ALLOW_TEMPORARIES
 	Vector3 pos = m_transform * Vector3(0, 0, 0);
@@ -1973,6 +2111,9 @@ Bool ParticleSystem::update( Int localPlayerIndex  )
 	}
 
 	// update the wind motion
+#ifdef ZH
+	if (m_windMotion != ParticleSystemInfo::WIND_MOTION_NOT_USED )
+#endif
 	updateWindMotion();
 
 	// if this system is attached to a Drawable/Object, update the current transform
@@ -2004,19 +2145,56 @@ Bool ParticleSystem::update( Int localPlayerIndex  )
 			destroy();
 		}
 	}
+#ifdef OG
 
 	if (m_attachedToObjectID)
-	{
-		Object *attachedTo = TheGameLogic->findObjectByID( m_attachedToObjectID );
+#endif
+#ifdef ZH
+	else if (m_attachedToObjectID)
 
+#endif
+	{
+#ifdef OG
+		Object *attachedTo = TheGameLogic->findObjectByID( m_attachedToObjectID );
+#endif
+#ifdef ZH
+		Object *objectAttachedTo = TheGameLogic->findObjectByID( m_attachedToObjectID );
+#endif
+
+#ifdef OG
 		if (attachedTo)
+#endif
+#ifdef ZH
+		if (objectAttachedTo)
+#endif
 		{
 			if (!isShrouded)
+#ifdef OG
 				isShrouded = (attachedTo->getShroudedStatus(localPlayerIndex) >= OBJECTSHROUD_FOGGED);
+
+#endif
+#ifdef ZH
+				isShrouded = (objectAttachedTo->getShroudedStatus(localPlayerIndex) >= OBJECTSHROUD_FOGGED);
  
+      const Drawable * draw = objectAttachedTo->getDrawable();
+      if ( draw )
+  			parentXfrm = draw->getTransformMatrix();
+      else
+  			parentXfrm = objectAttachedTo->getTransformMatrix();
+      
+
+#endif
+ 
+#ifdef OG
 			parentXfrm = attachedTo->getTransformMatrix();
+#endif
 			m_lastPos = m_pos;
+#ifdef OG
 			m_pos = *attachedTo->getPosition();
+#endif
+#ifdef ZH
+			m_pos = *objectAttachedTo->getPosition();
+#endif
 		}
 		else
 		{ 
@@ -2029,7 +2207,18 @@ Bool ParticleSystem::update( Int localPlayerIndex  )
 	}
 
 	if (parentXfrm)
+#ifdef ZH
 	{
+    if (m_skipParentXfrm)
+#endif
+	{
+#ifdef ZH
+      //this particle system is already in world space so no need to apply parent xform.
+      m_transform = m_localTransform;
+    }
+    else
+    {
+#endif
 		// if system has its own local transform, concatenate them
 		if (m_isLocalIdentity == false)
 #ifdef ALLOW_TEMPORARIES
@@ -2039,6 +2228,9 @@ Bool ParticleSystem::update( Int localPlayerIndex  )
 #endif
 		else
 			m_transform = *parentXfrm;
+#ifdef ZH
+    }
+#endif
 
 		m_isIdentity = false;
 		transformSet = true;
@@ -2409,11 +2601,15 @@ ParticleInfo ParticleSystem::mergeRelatedParticleSystems( ParticleSystem *master
 	mergeInfo.m_sizeRate *= info->m_sizeRate;
 	mergeInfo.m_sizeRateDamping *= info->m_sizeRateDamping;
 
+#ifdef OG
 	mergeInfo.m_angleX = info->m_angleX;
 	mergeInfo.m_angleY = info->m_angleY;
+#endif
 	mergeInfo.m_angleZ = info->m_angleZ;
+#ifdef OG
 	mergeInfo.m_angularRateX = info->m_angularRateX;
 	mergeInfo.m_angularRateY = info->m_angularRateY;
+#endif
 	mergeInfo.m_angularRateZ = info->m_angularRateZ;
 	mergeInfo.m_angularDamping = info->m_angularDamping;
 
@@ -2703,11 +2899,15 @@ const FieldParse ParticleSystemTemplate::m_fieldParseTable[] =
 	{ "Shader",									INI::parseIndexList,			ParticleShaderTypeNames,		offsetof( ParticleSystemTemplate, m_shaderType ) },
 	{ "Type",										INI::parseIndexList,			ParticleTypeNames,		offsetof( ParticleSystemTemplate, m_particleType ) },
 	{ "ParticleName",						INI::parseAsciiString,		NULL,		offsetof( ParticleSystemTemplate, m_particleTypeName ) },
+#ifdef OG
 	{ "AngleX",									INI::parseGameClientRandomVariable,	NULL,		offsetof( ParticleSystemTemplate, m_angleX ) },
 	{ "AngleY",									INI::parseGameClientRandomVariable,	NULL,		offsetof( ParticleSystemTemplate, m_angleY ) },
+#endif
 	{ "AngleZ",									INI::parseGameClientRandomVariable,	NULL,		offsetof( ParticleSystemTemplate, m_angleZ ) },
+#ifdef OG
 	{ "AngularRateX",						INI::parseGameClientRandomVariable,	NULL,		offsetof( ParticleSystemTemplate, m_angularRateX ) },
 	{ "AngularRateY",						INI::parseGameClientRandomVariable,	NULL,		offsetof( ParticleSystemTemplate, m_angularRateY ) },
+#endif
 	{ "AngularRateZ",						INI::parseGameClientRandomVariable,	NULL,		offsetof( ParticleSystemTemplate, m_angularRateZ ) },
 	{ "AngularDamping",					INI::parseGameClientRandomVariable,	NULL,		offsetof( ParticleSystemTemplate, m_angularDamping ) },
 
@@ -3507,3 +3707,35 @@ void ParticleSystemDebugDisplay( DebugDisplayInterface *dd, void *, FILE *fp )
 }
 
 // ------------------------------------------------------------------------------------------------
+#ifdef ZH
+// ------------------------------------------------------------------------------------------------
+static Real angleBetween(const Coord2D *vecA, const Coord2D *vecB)
+{
+	if (!(vecA && vecA->length() && vecB && vecB->length())) {
+		return 0.0;
+	}
+
+	Real lengthA = vecA->length();
+	Real lengthB = vecB->length();
+	Real dotProduct = (vecA->x * vecB->x + vecA->y * vecB->y);
+	Real cosTheta = dotProduct / (lengthA * lengthB);
+
+	// If the dotproduct is 0.0, then they are orthogonal
+	if (dotProduct == 0.0f) {
+		if (vecB->x > 0) {
+			return PI;
+		}
+
+		return 0.0f;
+	}
+
+	Real theta = ACos( cosTheta );
+
+	if (vecB->x > 0) {
+		return theta;
+	}
+	
+	return -theta;
+}
+
+#endif

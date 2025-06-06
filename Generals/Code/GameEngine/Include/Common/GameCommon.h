@@ -50,12 +50,26 @@
 #ifndef _GAMECOMMON_H_
 #define _GAMECOMMON_H_
 
+#ifdef ZH
+
+
+#define DONT_ALLOW_DEBUG_CHEATS_IN_RELEASE ///< Take of the DONT to get cheats back in to release
+
+//#define _CAMPEA_DEMO
+
+#endif
 // ----------------------------------------------------------------------------------------------
 #include "Lib/BaseType.h"
 
 // ----------------------------------------------------------------------------------------------
+#ifdef OG
 #if defined(_INTERNAL) || defined(_DEBUG) || defined(_PLAYTEST)
 	#define NO_DUMP_PERF_STATS
+#endif
+#ifdef ZH
+#if defined(_INTERNAL) || defined(_DEBUG)
+	#define DUMP_PERF_STATS
+#endif
 #else
 	#define NO_DUMP_PERF_STATS
 #endif
@@ -119,6 +133,20 @@ enum
 	#error "this is the wrong size"
 #endif
 
+#ifdef ZH
+// ----------------------------------------------------------------------------------------------
+enum 
+{ 
+	MAX_GLOBAL_GENERAL_TYPES = 9,		///< number of playable General Types, not including the boss)
+	
+	/// The start of the playable global generals playertemplates
+	GLOBAL_GENERAL_BEGIN = 5,
+	
+	/// The end of the playable global generals
+	GLOBAL_GENERAL_END = (GLOBAL_GENERAL_BEGIN + MAX_GLOBAL_GENERAL_TYPES - 1)
+};
+
+#endif
 //-------------------------------------------------------------------------------------------------
 enum GameDifficulty
 {
@@ -211,6 +239,9 @@ enum CommandSourceType
 	CMD_FROM_SCRIPT, 
 	CMD_FROM_AI,
 	CMD_FROM_DOZER,							// Special rare command when the dozer originates a command to attack a mine. Mines are not ai-attackable, and it seems deceitful for the dozer to generate a player or script command. jba.
+#ifdef ZH
+	CMD_DEFAULT_SWITCH_WEAPON,	// Special case: A weapon that can be chosen -- this is the default case (machine gun vs flashbang).
+#endif
 
 };		///< the source of a command
 

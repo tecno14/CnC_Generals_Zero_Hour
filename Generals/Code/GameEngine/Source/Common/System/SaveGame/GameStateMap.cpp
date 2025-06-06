@@ -35,6 +35,9 @@
 #include "Common/GameStateMap.h"
 #include "Common/GlobalData.h"
 #include "Common/Xfer.h"
+#ifdef ZH
+#include "GameClient/CampaignManager.h"
+#endif
 #include "GameClient/GameClient.h"
 #include "GameClient/MapUtil.h"
 #include "GameLogic/GameLogic.h"
@@ -244,7 +247,16 @@ static void extractAndSaveMap( AsciiString mapToSave, Xfer *xfer )
 	*/
 // ------------------------------------------------------------------------------------------------
 void GameStateMap::xfer( Xfer *xfer )
+#ifdef ZH
 {
+	if( xfer->getXferMode() == XFER_LOAD )
+#endif
+{
+#ifdef ZH
+		TheGameLogic->setLoadingSave( TRUE );
+	}
+
+#endif
 	// version
 	const XferVersion currentVersion = 2;
 	XferVersion version = currentVersion;
@@ -410,16 +422,36 @@ void GameStateMap::xfer( Xfer *xfer )
 	xfer->xferDrawableID( &highDrawableID );
 	TheGameClient->setDrawableIDCounter( highDrawableID );
 
+#ifdef OG
 	if (TheGameLogic->getGameMode()==GAME_SKIRMISH) {
 		if (TheSkirmishGameInfo==NULL) {
+
+#endif
+#ifdef ZH
+	// Save the Game Info so the game can be started with the correct players on load
+	if( TheGameLogic->getGameMode()==GAME_SKIRMISH ) 
+	{
+		if( TheSkirmishGameInfo==NULL ) 
+		{
+#endif
 			TheSkirmishGameInfo = NEW SkirmishGameInfo;
 			TheSkirmishGameInfo->init();  
 			TheSkirmishGameInfo->clearSlotList();
 			TheSkirmishGameInfo->reset();
 		}
 		xfer->xferSnapshot(TheSkirmishGameInfo);
+#ifdef OG
 	} else {
 		if (TheSkirmishGameInfo) {
+
+#endif
+#ifdef ZH
+	} 
+	else 
+	{
+		if( TheSkirmishGameInfo ) 
+		{
+#endif
 			delete TheSkirmishGameInfo;
 			TheSkirmishGameInfo = NULL;
 		}
@@ -430,8 +462,18 @@ void GameStateMap::xfer( Xfer *xfer )
 	// things in the map file that don't don't change (terrain, triggers, teams, script
 	// definitions) etc
 	//
+#ifdef OG
 	if( xfer->getXferMode() == XFER_LOAD ) {
+
+#endif
+#ifdef ZH
+	if( xfer->getXferMode() == XFER_LOAD ) 
+	{
+#endif
 		TheGameLogic->startNewGame( TRUE );
+#ifdef ZH
+		TheGameLogic->setLoadingSave( FALSE );
+#endif
 	}
 
 }  // end xfer

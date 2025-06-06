@@ -32,6 +32,9 @@
 
 #include "Common/Xfer.h"
 #include "GameLogic/Module/StealthUpgrade.h"
+#ifdef ZH
+#include "GameLogic/Module/SpawnBehavior.h"
+#endif
 #include "GameLogic/Object.h"
 
 //-------------------------------------------------------------------------------------------------
@@ -51,7 +54,23 @@ void StealthUpgrade::upgradeImplementation( )
 {
 	// The logic that does the stealthupdate will notice this and start stealthing
 	Object *me = getObject();
+#ifdef OG
 	me->setStatus( OBJECT_STATUS_CAN_STEALTH );
+
+#endif
+#ifdef ZH
+	me->setStatus( MAKE_OBJECT_STATUS_MASK( OBJECT_STATUS_CAN_STEALTH ) );
+	
+	//Grant stealth to spawns if applicable.
+	if( me->isKindOf( KINDOF_SPAWNS_ARE_THE_WEAPONS ) )
+	{
+		SpawnBehaviorInterface *sbInterface = me->getSpawnBehaviorInterface();
+		if( sbInterface )
+		{
+			sbInterface->giveSlavesStealthUpgrade( TRUE );
+		}
+	}
+#endif
 }
 
 // ------------------------------------------------------------------------------------------------

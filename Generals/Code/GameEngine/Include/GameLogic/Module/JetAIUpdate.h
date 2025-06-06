@@ -52,7 +52,12 @@ class JetAIUpdateModuleData : public AIUpdateModuleData
 public:
 	Real										m_outOfAmmoDamagePerSecond;				/**< amount of damage to take per SEC (not per frame) when out of ammo
 																																	note that it's expressed as a percent of max health, not an absolute */
+#ifdef OG
 	Real										m_takeoffSpeedForMaxLift;					///< percent of speed that gives us max lift
+#endif
+#ifdef ZH
+	Real										m_takeoffDistForMaxLift;					///< percent of distance from start (100%) to end (0%) that gives us max lift. Higher value lifts off sooner.
+#endif
 	Real										m_minHeight;											///< how far off the ground to lift the drawable when taxiing
 	Real										m_parkingOffset;									///< tweaking the park loc
 	Real										m_sneakyOffsetWhenAttacking;			///< our sneaky offset when attacking (or zero)
@@ -91,11 +96,20 @@ public:
 
 	virtual void onObjectCreated();
 	virtual void onDelete();
+#ifdef ZH
+
+	virtual JetAIUpdate* getJetAIUpdate() { return this; }
+	virtual const JetAIUpdate* getJetAIUpdate() const { return this; }
+#endif
 
  	virtual void aiDoCommand(const AICommandParms* parms);
 	virtual Bool chooseLocomotorSet(LocomotorSetType wst);
 	virtual void setLocomotorGoalNone();
 	virtual Bool isIdle() const;
+#ifdef ZH
+	virtual Bool isTaxiingToParking() const; //only applies to jets interacting with runways.
+	virtual Bool isReloading() const;
+#endif
 
 	virtual Bool isAllowedToMoveAwayFromUnit() const;
 	virtual Bool getSneakyTargetingOffset(Coord3D* offset) const;
@@ -103,12 +117,20 @@ public:
 	virtual Bool isTemporarilyPreventingAimSuccess() const;
 	virtual Bool isDoingGroundMovement() const;
 	virtual void notifyVictimIsDead();
+#ifdef ZH
+	virtual Bool isOutOfSpecialReloadAmmo() const;
+#endif
 
 	const Coord3D* friend_getProducerLocation() const { return &m_producerLocation; }
 	Real friend_getOutOfAmmoDamagePerSecond() const { return getJetAIUpdateModuleData()->m_outOfAmmoDamagePerSecond; }
 	Bool friend_keepsParkingSpaceWhenAirborne() const { return getJetAIUpdateModuleData()->m_keepsParkingSpaceWhenAirborne; }
 	Bool friend_needsRunway() const { return getJetAIUpdateModuleData()->m_needsRunway; }
+#ifdef OG
 	Real friend_getTakeoffSpeedForMaxLift() const { return getJetAIUpdateModuleData()->m_takeoffSpeedForMaxLift; }
+#endif
+#ifdef ZH
+	Real friend_getTakeoffDistForMaxLift() const { return getJetAIUpdateModuleData()->m_takeoffDistForMaxLift; }
+#endif
 	Real friend_getMinHeight() const { return getJetAIUpdateModuleData()->m_minHeight; }
 	Real friend_getParkingOffset() const { return getJetAIUpdateModuleData()->m_parkingOffset; }
 	UnsignedInt friend_getTakeoffPause() const { return getJetAIUpdateModuleData()->m_takeoffPause; }
@@ -125,6 +147,11 @@ public:
 	{
 		return (getFlag(TAKEOFF_IN_PROGRESS) || getFlag(LANDING_IN_PROGRESS));
 	}
+#ifdef ZH
+	void friend_addWaypointToGoalPath( const Coord3D &pos );
+	AICommandType friend_getPendingCommandType() const;
+	void friend_purgePendingCommand();
+#endif
 
 protected:
 
@@ -172,8 +199,14 @@ private:
 	void getProducerLocation();
 	void buildLockonDrawableIfNecessary();
 	void doLandingCommand(Object *airfield, CommandSourceType cmdSource);
+#ifdef OG
 	inline Bool getFlag(FlagType f) const { return (m_flags & (1<<f)) != 0; }
 	inline void setFlag(FlagType f, Bool v) { if (v) m_flags |= (1<<f); else m_flags &= ~(1<<f); }
+#endif
+#ifdef ZH
+	Bool getFlag(FlagType f) const;
+	void setFlag(FlagType f, Bool v);
+#endif
 };
 
 #endif

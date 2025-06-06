@@ -182,6 +182,10 @@ enum
 	WIN_STATUS_NOT_READY					= 0x00400000,		// A disabled button that is available -- but not yet (power charge, fire delay).
 	WIN_STATUS_FLASHING						= 0x00800000,   // Used for buttons that do cameo flashes.
 	WIN_STATUS_ALWAYS_COLOR				= 0x01000000,		// Never render these buttons using greyscale renderer when button disabled.
+#ifdef ZH
+	WIN_STATUS_ON_MOUSE_DOWN			= 0x02000000,		// Pushbutton triggers on mouse down.
+	WIN_STATUS_SHORTCUT_BUTTON		= 0x04000000,   // Oh god... this is a total hack for shortcut buttons to handle rendering text top left corner...
+#endif
 	// when you edit this, remember to edit WindowStatusNames[]
 
 };
@@ -248,6 +252,9 @@ public:
 	Int winBringToTop( void );  ///< bring this window to the top of the win list
 	Int winEnable( Bool enable );  /**< enable/disable a window, a disbled
 																 window can be seen but accepts no input */
+#ifdef ZH
+  Bool winGetEnabled( void ); ///< Is window enabled?
+#endif
 	Int winHide( Bool hide );  ///< hide/unhide a window
 	Bool winIsHidden( void );  ///< is this window hidden/
 	UnsignedInt winSetStatus( UnsignedInt status );  ///< set status bits

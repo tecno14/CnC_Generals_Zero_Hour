@@ -74,7 +74,12 @@ protected:
 		// nothing!
 	}
 
+#ifdef OG
 	virtual void getUpgradeActivationMasks(Int64& activation, Int64& conflicting) const
+#endif
+#ifdef ZH
+	virtual void getUpgradeActivationMasks(UpgradeMaskType& activation, UpgradeMaskType& conflicting) const
+#endif
 	{
 		getFireOCLAfterWeaponCooldownUpdateModuleData()->m_upgradeMuxData.getUpgradeActivationMasks(activation, conflicting);
 	}
@@ -82,6 +87,14 @@ protected:
 	virtual void performUpgradeFX()
 	{
 		getFireOCLAfterWeaponCooldownUpdateModuleData()->m_upgradeMuxData.performUpgradeFX(getObject());
+#ifdef ZH
+	}
+
+	virtual void processUpgradeRemoval()
+	{
+		// I can't take it any more.  Let the record show that I think the UpgradeMux multiple inheritence is CRAP.
+		getFireOCLAfterWeaponCooldownUpdateModuleData()->m_upgradeMuxData.muxDataProcessUpgradeRemoval(getObject());
+#endif
 	}
 
 	virtual Bool requiresAllActivationUpgrades() const

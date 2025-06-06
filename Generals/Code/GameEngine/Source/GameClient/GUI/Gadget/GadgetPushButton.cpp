@@ -54,6 +54,13 @@
 #include "GameClient/GameWindowManager.h"
 #include "GameClient/InGameUI.h"
 
+#ifdef ZH
+#ifdef _INTERNAL
+// for occasional debugging...
+//#pragma optimize("", off)
+//#pragma MESSAGE("************************************** WARNING, optimization disabled for debugging purposes")
+#endif
+#endif
 // DEFINES ////////////////////////////////////////////////////////////////////
 
 // PRIVATE TYPES //////////////////////////////////////////////////////////////
@@ -66,6 +73,20 @@
 
 // PRIVATE FUNCTIONS //////////////////////////////////////////////////////////
 
+#ifdef ZH
+static Bool buttonTriggersOnMouseDown(GameWindow *window)
+{
+	// Buttons with the on down status set trigger on mouse down. jba. [8/6/2003]
+	Bool onDown = BitTest( window->winGetStatus(), WIN_STATUS_ON_MOUSE_DOWN);
+
+	// Checkboxes always trigger on mouse down. jba [8/6/2003]
+	if (BitTest( window->winGetStatus(), WIN_STATUS_CHECK_LIKE )) {
+		onDown = true;
+	}
+	return onDown;
+}
+
+#endif
 // GadgetPushButtonInput ======================================================
 /** Handle input for push button */
 //=============================================================================
@@ -171,8 +192,10 @@ WindowMsgHandledType GadgetPushButtonInput( GameWindow *window,
 				else
 					BitSet( instData->m_state, WIN_STATE_SELECTED );
 
+#ifdef OG
 				TheWindowManager->winSendSystemMsg( instData->getOwner(), GBM_SELECTED,
 																						(WindowMsgData)window, mData1 );
+#endif
 
 			}  // end if
 			else
@@ -183,6 +206,13 @@ WindowMsgHandledType GadgetPushButtonInput( GameWindow *window,
 
 			}  // end else
 
+#ifdef ZH
+			if (buttonTriggersOnMouseDown(window)) {
+				TheWindowManager->winSendSystemMsg( instData->getOwner(), GBM_SELECTED,
+																						(WindowMsgData)window, mData1 );
+			}
+
+#endif
 			break;
 		}  // end left down
 
@@ -198,8 +228,15 @@ WindowMsgHandledType GadgetPushButtonInput( GameWindow *window,
 					BitTest( window->winGetStatus(), WIN_STATUS_CHECK_LIKE ) == FALSE )
 			{
 
+#ifdef ZH
+				if (!buttonTriggersOnMouseDown(window)) {
+					// If it didn't trigger on mouse down, trigger on the mouse up. jba  [8/6/2003]
+#endif
 				TheWindowManager->winSendSystemMsg( instData->getOwner(), GBM_SELECTED,
 																						(WindowMsgData)window, mData1 );
+#ifdef ZH
+				}
+#endif
 
 				BitClear( instData->m_state, WIN_STATE_SELECTED );
 

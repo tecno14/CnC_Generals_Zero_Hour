@@ -38,14 +38,24 @@ class VerifyDlg : public CDialog
 	CBitmapButton pause;
 	CWnd					*wave;
 	CStatic				*text;
+#ifdef OG
 	NoxText				*nox_text;
+#endif
+#ifdef ZH
+	BabylonText				*babylon_text;
+#endif
 	LANGINFO			*linfo;
 	UINT					timer;
 	char					wavefile[1024];
 	CSliderCtrl *slider;
 // Construction
 public:
+#ifdef OG
 	VerifyDlg(NoxText *ntext, LangID langid, const char *path, CWnd* pParent = NULL);   // standard constructor
+#endif
+#ifdef ZH
+	VerifyDlg(BabylonText *ntext, LangID langid, const char *path, CWnd* pParent = NULL);   // standard constructor
+#endif
 	void CloseAudio ( void );
 
 // Dialog Data

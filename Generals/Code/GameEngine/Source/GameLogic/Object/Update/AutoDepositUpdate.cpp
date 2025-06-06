@@ -66,10 +66,48 @@
 #include "GameClient/InGameUI.h"
 #include "GameClient/Color.h"
 #include "GameClient/GameText.h"
+#ifdef OG
 //-----------------------------------------------------------------------------
 // DEFINES ////////////////////////////////////////////////////////////////////
 //-----------------------------------------------------------------------------
 
+#endif
+#ifdef ZH
+
+//-------------------------------------------------------------------------------------------------
+void parseUpgradePair( INI *ini, void *instance, void *store, const void *userData )
+{
+	upgradePair info;
+	info.type = "";
+	info.amount = 0;
+
+	const char *token = ini->getNextToken( ini->getSepsColon() );
+
+	if ( stricmp(token, "UpgradeType") == 0 )
+	{
+		token = ini->getNextTokenOrNull( ini->getSepsColon() );
+		if (!token)	throw INI_INVALID_DATA;
+
+		info.type = token;
+	}
+	else
+		throw INI_INVALID_DATA;
+
+	token = ini->getNextTokenOrNull( ini->getSepsColon() );
+	if ( stricmp(token, "Boost") == 0 )
+		info.amount = INI::scanInt(ini->getNextToken( ini->getSepsColon() ));
+	else
+		throw INI_INVALID_DATA;
+
+	// Insert the info into the upgrade list
+	std::list<upgradePair> * theList = (std::list<upgradePair>*)store;
+	theList->push_back(info);
+#endif
+
+#ifdef ZH
+}  // end parseFactionObjectCreationList
+
+#endif
 //-----------------------------------------------------------------------------
 // PUBLIC FUNCTIONS ///////////////////////////////////////////////////////////
 //-----------------------------------------------------------------------------
@@ -116,6 +154,9 @@ void AutoDepositUpdate::awardInitialCaptureBonus( Player *player )
 //-------------------------------------------------------------------------------------------------
 UpdateSleepTime AutoDepositUpdate::update( void )
 {
+#ifdef ZH
+	const AutoDepositUpdateModuleData *modData = getAutoDepositUpdateModuleData();
+#endif
 /// @todo srj use SLEEPY_UPDATE here
 	if( TheGameLogic->getFrame() >= m_depositOnFrame)
 	{
@@ -125,33 +166,133 @@ UpdateSleepTime AutoDepositUpdate::update( void )
 			m_awardInitialCaptureBonus = TRUE;
 			m_initialized = TRUE;
 		}
+#ifdef OG
 		m_depositOnFrame = TheGameLogic->getFrame() + getAutoDepositUpdateModuleData()->m_depositFrame;
+#endif
+#ifdef ZH
+		m_depositOnFrame = TheGameLogic->getFrame() + modData->m_depositFrame;
+#endif
 		
+#ifdef OG
 		if(getObject()->isNeutralControlled() || getAutoDepositUpdateModuleData()->m_depositAmount <= 0 )
+#endif
+#ifdef ZH
+		if(getObject()->isNeutralControlled() || modData->m_depositAmount <= 0 )
+#endif
 			return UPDATE_SLEEP_NONE;
 
 		// makes sure that buildings under construction do not get a bonus CCB
 		if( getObject()->getConstructionPercent() != CONSTRUCTION_COMPLETE )
 			return UPDATE_SLEEP_NONE;
+#ifdef ZH
 		
+		int moneyAmount = modData->m_depositAmount + getUpgradedSupplyBoost();
+#endif
+		
+#ifdef OG
 		getObject()->getControllingPlayer()->getMoney()->deposit( getAutoDepositUpdateModuleData()->m_depositAmount);
 		getObject()->getControllingPlayer()->getScoreKeeper()->addMoneyEarned( getAutoDepositUpdateModuleData()->m_depositAmount);
+
+#endif
+#ifdef ZH
+		if( modData->m_isActualMoney )
+		{
+			getObject()->getControllingPlayer()->getMoney()->deposit( moneyAmount );
+			getObject()->getControllingPlayer()->getScoreKeeper()->addMoneyEarned( modData->m_depositAmount);
+		}
 		
+		Bool displayMoney = moneyAmount > 0 ? TRUE : FALSE;
+		if( getObject()->testStatus(OBJECT_STATUS_STEALTHED) )
+		{
+			// OY LOOK!  I AM USING LOCAL PLAYER.  Do not put anything other than TheInGameUI->addFloatingText in the block this controls!!!
+			if( !getObject()->isLocallyControlled() && !getObject()->testStatus(OBJECT_STATUS_DETECTED) )
+			{
+				displayMoney = FALSE;
+			}
+
+		}
+		
+		if( displayMoney )
+		{
+#endif
+		
+#ifdef OG
 		//Display cash income floating over the blacklotus
 		if(getAutoDepositUpdateModuleData()->m_depositAmount > 0)
+#endif
+#ifdef ZH
+      const Object *owner = getObject();
+      if ( owner )
+#endif
 		{
+#ifdef ZH
+
+			  // OY LOOK!  I AM USING LOCAL PLAYER.  Do not put anything other than TheInGameUI->addFloatingText in the block this controls!!!
+#endif
 			UnicodeString moneyString;
+#ifdef OG
 			moneyString.format( TheGameText->fetch( "GUI:AddCash" ), getAutoDepositUpdateModuleData()->m_depositAmount );
+#endif
+#ifdef ZH
+			  moneyString.format( TheGameText->fetch( "GUI:AddCash" ), moneyAmount );
+#endif
 			Coord3D pos;
 			pos.set( getObject()->getPosition() );
 			pos.z += 10.0f; //add a little z to make it show up above the unit.
+#ifdef ZH
+		  
+        if ( owner->isKindOf( KINDOF_STRUCTURE ) )
+        {
+          Real width = owner->getGeometryInfo().getMajorRadius() * 0.3f;
+          Real depth = owner->getGeometryInfo().getMinorRadius() * 0.3f;
+          pos.x += GameClientRandomValue(-width,width);
+          pos.y += GameClientRandomValue(-depth,depth);
+        }
+      
+      
+#endif
 			Color color = getObject()->getControllingPlayer()->getPlayerColor() | GameMakeColor( 0, 0, 0, 230 );
 			TheInGameUI->addFloatingText( moneyString, &pos, color );
+#ifdef ZH
+      }
+		}		
+#endif
 		}
 		
+#ifdef ZH
+	return UPDATE_SLEEP_NONE;
+}
+
+//------------------------------------------------------------------------------------------------
+Int AutoDepositUpdate::getUpgradedSupplyBoost() const
+{
+	Player *player = getObject()->getControllingPlayer();
+	if (!player) return 0;
+
+	// Loop through the upgrade pairs and see if an upgrade is present that adds supply boost
+	std::list<upgradePair>::const_iterator it = getAutoDepositUpdateModuleData()->m_upgradeBoost.begin();
+	while (it != getAutoDepositUpdateModuleData()->m_upgradeBoost.end())
+	{
+		upgradePair info = *it;
+
+		// Check if the player has the desired upgrade. If so return the boost
+		static const UpgradeTemplate *upgradeTemplate = TheUpgradeCenter->findUpgrade( info.type.c_str() );
+		if (player && upgradeTemplate && player->hasUpgradeComplete(upgradeTemplate))
+		{
+			return info.amount;
+		}
+
+		// check next
+		++it;
+#endif
 	}
 
+#ifdef OG
 	return UPDATE_SLEEP_NONE;
+#endif
+#ifdef ZH
+	return 0;
+#endif
 }
 
 // ------------------------------------------------------------------------------------------------

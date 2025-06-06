@@ -29,7 +29,17 @@
 namespace SaveLoadStatus
 {
 	void Set_Status_Text(const char* text,int id);
+#ifdef OG
 	StringClass Get_Status_Text(int id);
+
+#endif
+#ifdef ZH
+
+	void	Reset_Status_Count( void );
+	void	Inc_Status_Count( void );
+	int	Get_Status_Count( void );
+	void Get_Status_Text(StringClass& text, int id);
+#endif
 };
 
 #define INIT_STATUS(t) SaveLoadStatus::Set_Status_Text(t,0)

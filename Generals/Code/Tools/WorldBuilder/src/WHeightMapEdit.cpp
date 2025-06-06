@@ -43,6 +43,14 @@
 
 #include "common/DataChunk.h"
 
+#ifdef ZH
+#ifdef _INTERNAL
+// for occasional debugging...
+//#pragma optimize("", off)
+//#pragma MESSAGE("************************************** WARNING, optimization disabled for debugging purposes")
+#endif
+
+#endif
 int WorldHeightMapEdit::m_numGlobalTextureClasses=0;
 TGlobalTextureClass WorldHeightMapEdit::m_globalTextureClasses[NUM_TEXTURE_CLASSES];
 /** Destructor -.
@@ -120,7 +128,12 @@ WorldHeightMapEdit::WorldHeightMapEdit(Int width, Int height, UnsignedByte initi
 	// Note - we have one less cell than the width & height. But for paranoia, allocate
 	// extra row. jba.
 	// 
+#ifdef OG
 	Int numBytesX = (m_width+1)/8;	//how many bytes to fit all bitflags
+#endif
+#ifdef ZH
+	Int numBytesX = (m_width+7)/8;	//how many bytes to fit all bitflags
+#endif
 	Int numBytesY = m_height;	
 
 	m_flipStateWidth=numBytesX;
@@ -209,7 +222,12 @@ m_warnTooManyBlend(false)
 	// Note - we have one less cell than the width & height. But for paranoia, allocate
 	// extra row. jba.
 	// 
+#ifdef OG
 	Int numBytesX = (m_width+1)/8;	//how many bytes to fit all bitflags
+#endif
+#ifdef ZH
+	Int numBytesX = (m_width+7)/8;	//how many bytes to fit all bitflags
+#endif
 	Int numBytesY = m_height;	
 
 	m_flipStateWidth=numBytesX;
@@ -435,9 +453,16 @@ void WorldHeightMapEdit::loadDirectoryOfImages(char *pFilePath)
 	FilenameList::iterator it = filenameList.begin();
 	do {
 		AsciiString filename = *it;
+#ifdef OG
 
 		strcpy(fileBuf, dirBuf);
 		strcat(fileBuf, filename.str());
+#endif
+#ifdef ZH
+		//strcpy(fileBuf, dirBuf);
+		strcpy(fileBuf, filename.str());
+
+#endif
 		loadBitmap(fileBuf, filename.str());
 
 		++it;
@@ -509,7 +534,7 @@ void WorldHeightMapEdit::loadImagesFromTerrainType( TerrainType *terrain )
 
 }																													
 
-
+#ifdef OG
 Bool  WorldHeightMapEdit::getRawTileData(Short tileNdx, Int width, 
 																				 UnsignedByte *buffer, Int bufLen)
 {
@@ -540,8 +565,7 @@ Bool  WorldHeightMapEdit::getRawTileData(Short tileNdx, Int width,
 	return(false);
 }
 
-
-
+#endif
 UnsignedByte * WorldHeightMapEdit::getPointerToClassTileData(Int texClass)
 {
 	TileData *pSrc = NULL;
@@ -636,7 +660,12 @@ void WorldHeightMapEdit::saveToFile(DataChunkOutput &chunkWriter)
 	chunkWriter.closeDataChunk();
 
 	/***************BLEND TILE DATA ***************/
+#ifdef OG
 	chunkWriter.openDataChunk("BlendTileData", K_BLEND_TILE_VERSION_7);
+#endif
+#ifdef ZH
+	chunkWriter.openDataChunk("BlendTileData", K_BLEND_TILE_VERSION_8);
+#endif
 		chunkWriter.writeInt(m_dataSize);
 		chunkWriter.writeArrayOfBytes((char*)m_tileNdxes, m_dataSize*sizeof(Short));
 		chunkWriter.writeArrayOfBytes((char*)m_blendTileNdxes, m_dataSize*sizeof(Short));
@@ -1132,7 +1161,12 @@ void WorldHeightMapEdit::blendSpecificTiles(Int xIndex, Int yIndex, Int srcXInde
 	blendInfo.customBlendEdgeClass = edgeClass;
 
 	//Check if there is already a blend tile at the destination and record its flip state.
+#ifdef OG
 	//We need to know this so that we don't accidently apply a third blend layer with with
+#endif
+#ifdef ZH
+	//We need to know this so that we don't accidently apply a third blend layer with
+#endif
 	//a different flip and introduce z-fighting over this tile.
 	Bool baseNeedsFlip = false;
 	UnsignedByte baseIsDiagonal = 0;
@@ -1202,7 +1236,18 @@ void WorldHeightMapEdit::blendSpecificTiles(Int xIndex, Int yIndex, Int srcXInde
 			//force the primary layer to flip if the extra blend layer needs flip.
 			//we only do this on vertical/horizontal base blends because they work in either flip cases.
 			if (flipped && !baseIsDiagonal)
+#ifdef OG
 				m_blendedTiles[m_blendTileNdxes[ndx]].inverted |= FLIPPED_MASK;
+
+#endif
+#ifdef ZH
+			{	//Find a new tile so as not to affect other cells using the base one.
+				TBlendTileInfo tempBlendTileInfo=m_blendedTiles[m_blendTileNdxes[ndx]];
+				tempBlendTileInfo.inverted |= FLIPPED_MASK;
+				Short newNdx = findOrCreateBlendTile(&tempBlendTileInfo);
+				m_blendTileNdxes[ndx] = newNdx;	//remap this tile to use a new one. 
+			}
+#endif
 		}
 		else
 			m_blendTileNdxes[ndx] = newNdx;
@@ -1888,7 +1933,12 @@ Bool WorldHeightMapEdit::resize(Int newXSize, Int newYSize, Int newHeight, Int n
 	m_dataSize = newDataSize;
 	delete(m_cellCliffState);
 	delete(m_cellFlipState);
+#ifdef OG
 	Int numBytesX = (m_width+1)/8;	//how many bytes to fit all bitflags
+#endif
+#ifdef ZH
+	Int numBytesX = (m_width+7)/8;	//how many bytes to fit all bitflags
+#endif
  	m_flipStateWidth=numBytesX;
 
 	m_cellFlipState	= MSGNEW("WorldHeightMapEdit::resize") UnsignedByte[numBytesX*m_height];
@@ -3446,6 +3496,9 @@ void WorldHeightMapEdit::findBoundaryNear(Coord3D *pt, float okDistance, Int *ou
 	}
 	
 	(*outNdx) = -1;
+#ifdef ZH
+	(*outHandle) = -1;
+#endif
 }
 
 

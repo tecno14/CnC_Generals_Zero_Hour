@@ -22,13 +22,33 @@
  *                                                                                             * 
  *                 Project Name : Command & Conquer                                            * 
  *                                                                                             * 
+#ifdef OG
  *                     $Archive:: /Commando/Library/msgloop.cpp                               $* 
+#endif
+#ifdef ZH
+ *                     $Archive:: /Commando/Code/wwlib/msgloop.cpp                            $*
+#endif
  *                                                                                             * 
+#ifdef OG
  *                      $Author:: Greg_h                                                      $*
+#endif
+#ifdef ZH
+ *                      $Author:: Steve_t                                                     $*
+#endif
  *                                                                                             * 
+#ifdef OG
  *                     $Modtime:: 7/22/97 11:37a                                              $*
+#endif
+#ifdef ZH
+ *                     $Modtime:: 2/05/02 1:17p                                               $*
+#endif
  *                                                                                             * 
+#ifdef OG
  *                    $Revision:: 1                                                           $*
+#endif
+#ifdef ZH
+ *                    $Revision:: 2                                                           $*
+#endif
  *                                                                                             *
  *---------------------------------------------------------------------------------------------* 
  * Functions:                                                                                  * 
@@ -113,9 +133,15 @@ void Windows_Message_Handler(void)
 		*/
 		bool processed = false;
 		for (int aindex = 0; aindex < _Accelerators.Count(); aindex++) {
+#ifdef ZH
+			if (_Accelerators[aindex].Window) {
+#endif
 			if (TranslateAccelerator(_Accelerators[aindex].Window, _Accelerators[aindex].Accelerator, &msg)) {
 				processed = true;
 			}
+#ifdef ZH
+			}
+#endif
 			break;
 		}
 		if (processed) continue;

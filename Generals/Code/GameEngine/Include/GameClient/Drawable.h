@@ -55,6 +55,9 @@ class Shadow;
 class ModuleInfo;
 class Anim2DTemplate;
 class Image;
+#ifdef ZH
+class DynamicAudioEventInfo;
+#endif
 enum BodyDamageType;
 
 // this is a very worthwhile performance win. left conditionally defined for now, just 
@@ -150,6 +153,10 @@ public:
 	Real m_overlapZVel;					///< fake Z velocity
 	Real m_overlapZ;						///< current height (additional)
 	Real m_wobble;							///< for wobbling
+#ifdef ZH
+  Real m_yawModulator;        ///< for the swimmy soft hover of a helicopter
+  Real m_pitchModulator;        ///< for the swimmy soft hover of a helicopter
+#endif
 	TWheelInfo m_wheelInfo;			///< Wheel offset & angle info for a wheeled type locomotor.
 
 	DrawableLocoInfo();
@@ -240,6 +247,10 @@ enum TintStatus
 	TINT_STATUS_DISABLED		= 0x00000001,///< drawable tint color is deathly dark grey
 	TINT_STATUS_IRRADIATED	= 0x00000002,///< drawable tint color is sickly green
 	TINT_STATUS_POISONED		= 0x00000004,///< drawable tint color is open-sore red
+#ifdef ZH
+	TINT_STATUS_GAINING_SUBDUAL_DAMAGE		= 0x00000008,///< When gaining subdual damage, we tint SUBDUAL_DAMAGE_COLOR
+	TINT_STATUS_FRENZY			= 0x00000010,///< When frenzied, we tint FRENZY_COLOR
+#endif
 
 };
 
@@ -261,7 +272,14 @@ enum TerrainDecalType
 	TERRAIN_DECAL_HORDE_VEHICLE,
 	TERRAIN_DECAL_HORDE_WITH_NATIONALISM_UPGRADE_VEHICLE,
 	TERRAIN_DECAL_CRATE,
+#ifdef ZH
+    TERRAIN_DECAL_HORDE_WITH_FANATICISM_UPGRADE,
+	TERRAIN_DECAL_CHEMSUIT,
+#endif
 	TERRAIN_DECAL_NONE,
+#ifdef ZH
+	TERRAIN_DECAL_SHADOW_TEXTURE,	//use the shadow texture as the terrain decal.
+#endif
 
 	TERRAIN_DECAL_MAX	///< keep this last
 };
@@ -286,6 +304,9 @@ public:
 	Drawable( const ThingTemplate *thing, DrawableStatus statusBits = DRAWABLE_STATUS_NONE );
 
 	void onDestroy( void );																							///< run from GameClient::destroyDrawable
+#ifdef ZH
+  void onLevelStart();                                                ///< run from GameLogic::startNewGame
+#endif
 
 	Drawable *getNextDrawable( void ) const { return m_nextDrawable; }	///< return the next drawable in the global list
 	Drawable *getPrevDrawable( void ) const { return m_prevDrawable; }  ///< return the prev drawable in the global list
@@ -300,6 +321,10 @@ public:
 	TintEnvelope *getColorTintEnvelope( void ) { return m_colorTintEnvelope; }
 	void setColorTintEnvelope( TintEnvelope &source ) { if (m_colorTintEnvelope) *m_colorTintEnvelope = source; }
 
+#ifdef ZH
+  void imitateStealthLook( Drawable& otherDraw );
+
+#endif
 	void setTerrainDecal(TerrainDecalType type);	///<decal that is to appear under the drawable
 	void setTerrainDecalSize(Real x, Real y);
 	void setTerrainDecalFadeTarget(Real target, Real rate = 0.1f);
@@ -346,6 +371,9 @@ public:
 	ClientUpdateModule const** getClientUpdateModules() const { return (ClientUpdateModule const**)getModuleList(MODULETYPE_CLIENT_UPDATE); }
 	ClientUpdateModule* findClientUpdateModule( NameKeyType key );
 
+#ifdef ZH
+	DrawModule** getDrawModulesNonDirty();
+#endif
 	DrawModule** getDrawModules();
 	DrawModule const** getDrawModules() const;
 
@@ -365,6 +393,11 @@ public:
 
 	void setFullyObscuredByShroud(Bool fullyObscured);
 	inline Bool getFullyObscuredByShroud(void) {return m_drawableFullyObscuredByShroud;}
+#ifdef ZH
+
+  // Put on ice until later... M Lorenzen
+  //	inline UnsignedByte getFullyObscuredByShroudWithCheatSpy(void) {return (UnsignedByte)m_drawableFullyObscuredByShroud | 128;}//8 looks like a zero in most fonts
+#endif
 
 	Bool getDrawsInMirror() const { return BitTest(m_status, DRAWABLE_STATUS_DRAWS_IN_MIRROR) || isKindOf(KINDOF_CAN_CAST_REFLECTIONS); }
 
@@ -395,10 +428,18 @@ public:
 
 	void drawIconUI( void );													///< draw "icon"(s) needed on drawable (health bars, veterency, etc)
 
+#ifdef OG
 	void startAmbientSound();
+#endif
+#ifdef ZH
+	void startAmbientSound( Bool onlyIfPermanent = false );
+#endif
 	void stopAmbientSound( void );
 	void enableAmbientSound( Bool enable );
 	void setTimeOfDay( TimeOfDay tod );
+#ifdef ZH
+  Bool getAmbientSoundEnabledFromScript( void ) const { return m_ambientSoundEnabledFromScript; }
+#endif
 
 	void prependToList(Drawable **pListHead);
 	void removeFromList(Drawable **pListHead);
@@ -420,9 +461,11 @@ public:
 	void clearAndSetModelConditionFlags( const ModelConditionFlags& clr, const ModelConditionFlags& set );
 	void replaceModelConditionFlags( const ModelConditionFlags &flags, Bool forceReplace = FALSE );
 
+#ifdef OG
 	void attachToParticleSystem( Particle *p );								///< attach this Drawable to a particle system
 	void detachFromParticleSystem( void );										///< detach this from any particle system 
 
+#endif
 	Bool handleWeaponFireFX(
 							WeaponSlotType wslot, 
 							Int specificBarrelToUse, 
@@ -443,6 +486,10 @@ public:
 	void changedTeam();
 
 	const TWheelInfo *getWheelInfo(void) const { return m_locoInfo ? &m_locoInfo->m_wheelInfo : NULL; }
+#ifdef ZH
+	
+	const DrawableLocoInfo *getLocoInfo() const { return m_locoInfo; }
+#endif
 
 	// this method must ONLY be called from the client, NEVER From the logic, not even indirectly.
 	Bool clientOnly_getFirstRenderObjInfo(Coord3D* pos, Real* boundingSphereRadius, Matrix3D* transform);
@@ -481,6 +528,12 @@ public:
 		"inbetween", it is included in the completion time.
 	*/
 	void setAnimationCompletionTime(UnsignedInt numFrames);
+#ifdef ZH
+	
+	//Kris: Manually set a drawable's current animation to specific frame.
+	virtual void setAnimationFrame( int frame );
+
+#endif
 	void updateSubObjects();
 	void showSubObject( const AsciiString& name, Bool show );
 
@@ -512,9 +565,16 @@ public:
 	inline Real getEffectiveOpacity() const { return m_explicitOpacity * m_effectiveStealthOpacity; }		///< get alpha/opacity value used to override defaults when drawing.
 	void setEffectiveOpacity( Real pulseFactor, Real explicitOpacity = -1.0f );
 	
+#ifdef OG
 	// this is for the heatvision effect which operates completely independently of the stealth opacity effects. Draw() does the fading every frame.
 	inline Real getHeatVisionOpacity() const { return m_heatVisionOpacity; }		///< get alpha/opacity value used to render add'l heatvision rendering pass.
 	void setHeatVisionOpacity( Real op ) { m_heatVisionOpacity = op; }; ///< set alpha/opacity value used to render add'l heatvision rendering pass.
+#endif
+#ifdef ZH
+	// this is for the add'l pass fx which operates completely independently of the stealth opacity effects. Draw() does the fading every frame.
+	inline Real getSecondMaterialPassOpacity() const { return m_secondMaterialPassOpacity; }		///< get alpha/opacity value used to render add'l  rendering pass.
+	void setSecondMaterialPassOpacity( Real op ) { m_secondMaterialPassOpacity = op; }; ///< set alpha/opacity value used to render add'l  rendering pass.
+#endif
 	
 	// both of these assume that you are starting at one extreme 100% or 0% opacity and are trying to go to the other!! -- amit
 	void fadeOut( UnsignedInt frames );		///< fade object out...how gradually this is done is determined by frames
@@ -525,8 +585,10 @@ public:
 	Bool isVisible();											///< for limiting tree sway, etc to visible objects
 
 	Bool getShouldAnimate( Bool considerPower ) const;
+#ifdef OG
 
 	void friend_setParticle( Particle *particle ) { m_particle = particle; }
+#endif
 
 	// flash drawable methods ---------------------------------------------------------
   Int getFlashCount( void ) { return m_flashCount; }
@@ -545,6 +607,27 @@ public:
 	void killIcon(DrawableIconType t) { if (m_iconInfo) m_iconInfo->killIcon(t); }
 	Bool hasIconInfo() const { return m_iconInfo != NULL; }
 
+#ifdef ZH
+  
+  Bool getReceivesDynamicLights( void ) { return m_receivesDynamicLights; };
+  void setReceivesDynamicLights( Bool set ) { m_receivesDynamicLights = set; };
+  
+  //---------------------------------------------------------------------------------
+  // Stuff for overriding ambient sound
+  const AudioEventInfo * getBaseSoundAmbientInfo() const; //< Possible starting point if only some parameters are customized
+  void enableAmbientSoundFromScript( Bool enable );
+  const AudioEventRTS * getAmbientSound() const { return m_ambientSound == NULL ? NULL : &m_ambientSound->m_event; }
+  void setCustomSoundAmbientOff(); //< Kill the ambient sound
+  void setCustomSoundAmbientInfo( DynamicAudioEventInfo * customAmbientInfo ); //< Set ambient sound.
+  void clearCustomSoundAmbient( ) { clearCustomSoundAmbient( true ); } //< Return to using defaults
+  Bool getAmbientSoundEnabled( void ) const { return m_ambientSoundEnabled; }
+  void mangleCustomAudioName( DynamicAudioEventInfo * audioToMangle ) const;
+
+  Real friend_getStealthOpacity( void ) { return m_stealthOpacity; }
+  Real friend_getExplicitOpacity( void ) { return m_explicitOpacity; }
+  Real friend_getEffectiveStealthOpacity( void ) { return m_effectiveStealthOpacity; }
+  
+#endif
 protected:
 
 	// snapshot methods
@@ -553,7 +636,12 @@ protected:
 	virtual void loadPostProcess( void );
 	void xferDrawableModules( Xfer *xfer );
 
+#ifdef OG
 	void	startAmbientSound(BodyDamageType dt, TimeOfDay tod);
+#endif
+#ifdef ZH
+	void	startAmbientSound( BodyDamageType dt, TimeOfDay tod, Bool onlyIfPermanent = false );
+#endif
 
 	Drawable *asDrawableMeth() { return this; }
 	const Drawable *asDrawableMeth() const { return this; }
@@ -587,8 +675,15 @@ protected:
 	void calcPhysicsXformHoverOrWings(const Locomotor *locomotor, PhysicsXformInfo& info);
 	void calcPhysicsXformTreads(const Locomotor *locomotor, PhysicsXformInfo& info);
 	void calcPhysicsXformWheels(const Locomotor *locomotor, PhysicsXformInfo& info);
+#ifdef ZH
+	void calcPhysicsXformMotorcycle( const Locomotor *locomotor, PhysicsXformInfo& info );
+#endif
 
 	const AudioEventRTS& getAmbientSoundByDamage(BodyDamageType dt);
+#ifdef ZH
+
+  void clearCustomSoundAmbient( bool restartSound ); //< Return to using defaults
+#endif
 
 #ifdef _DEBUG
 	void validatePos() const;
@@ -619,11 +714,17 @@ private:
 	Real m_decalOpacity;
 
 	Object *m_object;						///< object (if any) that this drawable represents
+#ifdef OG
 	Particle *m_particle;				///< particle (if any) that this Drawable is associated with
+#endif
 		
 	DrawableID m_id;						///< this drawable's unique ID
 	Drawable *m_nextDrawable; 
 	Drawable *m_prevDrawable;		///< list links
+#ifdef ZH
+
+  DynamicAudioEventInfo *m_customSoundAmbientInfo; ///< If not NULL, info about the ambient sound to attach to this object
+#endif
 
 	UnsignedInt m_status;				///< status bits (see DrawableStatus enum)
 	UnsignedInt m_tintStatus;				///< tint color status bits (see TintStatus enum)
@@ -644,7 +745,9 @@ private:
 	DrawableLocoInfo*	m_locoInfo;	// lazily allocated
 
 	DynamicAudioEventRTS*	m_ambientSound;		///< sound module for ambient sound (lazily allocated)
+#ifdef OG
 	Bool								m_ambientSoundEnabled;
+#endif
 
 	Module** m_modules[NUM_DRAWABLE_MODULE_TYPES];
 
@@ -667,14 +770,27 @@ private:
 	UnsignedInt					m_expirationDate;		///< if nonzero, Drawable should destroy itself at this frame
 	DrawableIconInfo*		m_iconInfo;					///< lazily allocated!
 
+#ifdef OG
 	Real m_heatVisionOpacity;			///< drawable draws for everybody in the heatvision special effect
 
+#endif
+#ifdef ZH
+	Real m_secondMaterialPassOpacity;			///< drawable gets rendered again in hardware with an extra material layer
+
+#endif
 	// --------- BYTE-SIZED THINGS GO HERE
 	Byte m_selected;						///< drawable is selected or not
 	Bool m_hidden;							///< drawable is "hidden" or not (overrides stealth effects)
 	Bool m_hiddenByStealth;			///< drawable is hidden due to stealth
 	Bool m_instanceIsIdentity;	///< If true, instance matrix can be skipped
 	Bool m_drawableFullyObscuredByShroud;	///<drawable is hidden by shroud/fog
+#ifdef ZH
+  Bool m_ambientSoundEnabled;
+  Bool m_ambientSoundEnabledFromScript;
+
+  Bool m_receivesDynamicLights;
+
+#endif
 #ifdef DIRTY_CONDITION_FLAGS
 	mutable Bool m_isModelDirty;				///< if true, must call replaceModelConditionState() before drawing or accessing drawmodule info
 #endif

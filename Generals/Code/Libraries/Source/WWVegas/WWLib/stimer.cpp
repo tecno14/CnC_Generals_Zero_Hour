@@ -22,13 +22,33 @@
  *                                                                                             * 
  *                 Project Name : Command & Conquer                                            * 
  *                                                                                             * 
+#ifdef OG
  *                     $Archive:: /Commando/Code/wwlib/STIMER.CPP                             $* 
+#endif
+#ifdef ZH
+ *                     $Archive:: /Commando/Code/wwlib/stimer.cpp                             $*
+#endif
  *                                                                                             * 
+#ifdef OG
  *                      $Author:: Greg_h                                                      $*
+#endif
+#ifdef ZH
+ *                      $Author:: Steve_t                                                     $*
+#endif
  *                                                                                             * 
+#ifdef OG
  *                     $Modtime:: 7/09/99 1:46p                                               $*
+#endif
+#ifdef ZH
+ *                     $Modtime:: 12/09/01 6:42p                                              $*
+#endif
  *                                                                                             * 
+#ifdef OG
  *                    $Revision:: 3                                                           $*
+#endif
+#ifdef ZH
+ *                    $Revision:: 4                                                           $*
+#endif
  *                                                                                             *
  *---------------------------------------------------------------------------------------------* 
  * Functions:                                                                                  * 
@@ -42,7 +62,12 @@
 #pragma warning (push,3)
 #endif
 
+#ifdef OG
 #include <mmsystem.h>
+#endif
+#ifdef ZH
+#include "systimer.h"
+#endif
 
 #ifdef _MSC_VER
 #pragma warning (pop)
@@ -51,11 +76,21 @@
 
 long SystemTimerClass::operator () (void) const
 {
+#ifdef OG
 	return timeGetTime()/16;
+#endif
+#ifdef ZH
+	return TIMEGETTIME()/16;
+#endif
 }
 
 
 SystemTimerClass::operator long (void) const
 {
+#ifdef OG
 	return timeGetTime()/16;
+#endif
+#ifdef ZH
+	return TIMEGETTIME()/16;
+#endif
 }

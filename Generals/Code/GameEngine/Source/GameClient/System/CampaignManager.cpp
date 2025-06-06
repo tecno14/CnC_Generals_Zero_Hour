@@ -52,14 +52,37 @@
 //-----------------------------------------------------------------------------
 #include "PreRTS.h"	// This must go first in EVERY cpp file int the GameEngine
 
+#ifdef ZH
+#include "GameClient/CampaignManager.h"
+
+#endif
 #include "Common/INI.h"
 #include "Common/Xfer.h"
+#ifdef OG
 #include "GameClient/CampaignManager.h"
+#endif
+#ifdef ZH
+#include "GameClient/ChallengeGenerals.h"//For TheChallengeGenerals, so I can save it too.
+#endif
 #include "GameClient/GameClient.h"
+#ifdef ZH
+#include "GameNetwork/GameInfo.h" //For Challenge Info.  It and Skirmish info are in the wrong place it seems.
+
+#endif
 //-----------------------------------------------------------------------------
 // DEFINES ////////////////////////////////////////////////////////////////////
 //-----------------------------------------------------------------------------
 CampaignManager *TheCampaignManager = NULL;
+#ifdef ZH
+
+
+#ifdef _INTERNAL
+// for occasional debugging...
+//#pragma optimize("", off)
+//#pragma MESSAGE("************************************** WARNING, optimization disabled for debugging purposes")
+#endif
+
+#endif
 
 const FieldParse CampaignManager::m_campaignFieldParseTable[] = 
 {
@@ -68,6 +91,10 @@ const FieldParse CampaignManager::m_campaignFieldParseTable[] =
 	{ "FirstMission",				INI::parseAsciiString,							NULL,	offsetof( Campaign, m_firstMission )  },
 	{ "CampaignNameLabel",	INI::parseAsciiString,							NULL, offsetof( Campaign, m_campaignNameLabel ) },
 	{ "FinalVictoryMovie",	INI::parseAsciiString,							NULL, offsetof( Campaign, m_finalMovieName ) },
+#ifdef ZH
+	{ "IsChallengeCampaign",			INI::parseBool,				NULL, offsetof( Campaign, m_isChallengeCampaign ) },
+	{ "PlayerFaction",		INI::parseAsciiString,					NULL, offsetof( Campaign, m_playerFactionName ) },
+#endif
 
 	{ NULL,										NULL,													NULL, 0 }  // keep this last
 
@@ -104,7 +131,14 @@ void INI::parseCampaignDefinition( INI *ini )
 }  // end parseCampaignDefinition
 
 //-----------------------------------------------------------------------------
+#ifdef OG
 Campaign::Campaign( void )
+
+#endif
+#ifdef ZH
+Campaign::Campaign( void ):
+	m_isChallengeCampaign(FALSE)
+#endif
 {
 	m_missions.clear();
 	m_firstMission.clear();
@@ -211,6 +245,9 @@ CampaignManager::CampaignManager( void )
 	m_victorious = FALSE;
 	m_currentRankPoints = 0;
 	m_difficulty = DIFFICULTY_NORMAL;
+#ifdef ZH
+	m_xferChallengeGeneralsPlayerTemplateNum = 0;
+#endif
 }
 
 //-----------------------------------------------------------------------------
@@ -361,9 +398,11 @@ void CampaignManager::parseMissionPart( INI* ini, void *instance, void *store, c
 			{ "UnitNames0",				INI::parseAsciiString,				NULL, offsetof( Mission, m_unitNames[0] ) },
 			{ "UnitNames1",				INI::parseAsciiString,				NULL, offsetof( Mission, m_unitNames[1] ) },
 			{ "UnitNames2",				INI::parseAsciiString,				NULL, offsetof( Mission, m_unitNames[2] ) },
+#ifdef ZH
+			{ "GeneralName",			INI::parseAsciiString,			NULL, offsetof( Mission, m_generalName)	},
+#endif
 			{ "LocationNameLabel",INI::parseAsciiString,				NULL, offsetof( Mission, m_locationNameLabel ) },
 			{ "VoiceLength",			INI::parseInt ,								NULL, offsetof( Mission, m_voiceLength ) },
-
 
 			{ NULL,							NULL,											NULL, 0 }  // keep this last
 		};
@@ -404,13 +443,26 @@ Campaign *CampaignManager::newCampaign(AsciiString name)
 /** Xfer method
 	* Version Info
 	* 1: Initial version 
+#ifdef OG
 	* 2: Added RankPoints Saving*/
+
+#endif
+#ifdef ZH
+	* 2: Added RankPoints Saving
+	* 4: Need to have Challenge info in Mission saves as well as normal saves
+*/
+#endif
 // ------------------------------------------------------------------------------------------------
 void CampaignManager::xfer( Xfer *xfer )
 {
 
 	// version
+#ifdef OG
 	const XferVersion currentVersion = 3;
+#endif
+#ifdef ZH
+	const XferVersion currentVersion = 5;
+#endif
 	XferVersion version = currentVersion;
 	xfer->xferVersion( &version, currentVersion );
 
@@ -436,8 +488,66 @@ void CampaignManager::xfer( Xfer *xfer )
 	// when loading, need to set the current campaign and mission
 	if( xfer->getXferMode() == XFER_LOAD )
 		setCampaignAndMission( currentCampaign, currentMission );
+#ifdef ZH
 
+	if( version >= 4 )
+	{
+		// The saving of SkirmishInfo in GameStateMap is in the "wrong" place, but I can't move it.
+		// We need to ensure this is saved in a mission save as well as a normal save.
+		// Singletons are bad.  THis is here because a) it is one of two blocks in a Mission Save
+		// b) It is not the block that is loaded for every save to get desc's in populating the saveload window.
+		// So it is here.  <sob> I've got nowhere else to go!
+		Bool isChallengeCampaign = m_currentCampaign ? m_currentCampaign->m_isChallengeCampaign : FALSE;
+		xfer->xferBool(&isChallengeCampaign);
+
+		if( isChallengeCampaign ) 
+		{
+			if( TheChallengeGameInfo==NULL ) 
+			{
+				TheChallengeGameInfo = NEW SkirmishGameInfo;
+				TheChallengeGameInfo->init();  
+				TheChallengeGameInfo->clearSlotList();
+				TheChallengeGameInfo->reset();
+			}
+			xfer->xferSnapshot(TheChallengeGameInfo);
+		} 
+		else 
+		{
+			if( TheChallengeGameInfo ) 
+			{
+				delete TheChallengeGameInfo;
+				TheChallengeGameInfo = NULL;
+			}
+		}
+	}
+#endif
+
+#ifdef ZH
+	if( version >= 5 )
+	{
+		// Even more singleton goodness. TheChallengeGenerals is not a subsystem, nor even a snapshot.
+		// I need to know what side I am for use by The Continue and Play Again buttons.  I can only just
+		// reach in and save it here.
+		Int playerTemplateNum = TheChallengeGenerals->getCurrentPlayerTemplateNum();
+		xfer->xferInt(&playerTemplateNum);
+		m_xferChallengeGeneralsPlayerTemplateNum = playerTemplateNum;
+	}
+
+#endif
 }  // end xfer
+#ifdef ZH
+
+void CampaignManager::loadPostProcess( void )
+{
+	if(TheChallengeGenerals == NULL)
+	{
+		DEBUG_CRASH(("TheChallengeGenerals singleton does not exist. This loaded game will not have a working Continue button for GC mode."));
+		return;
+	}
+
+	TheChallengeGenerals->setCurrentPlayerTemplateNum(m_xferChallengeGeneralsPlayerTemplateNum);
+}
+#endif
 
 //-----------------------------------------------------------------------------
 // PRIVATE FUNCTIONS //////////////////////////////////////////////////////////

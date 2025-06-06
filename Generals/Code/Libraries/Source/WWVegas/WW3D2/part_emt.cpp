@@ -24,12 +24,33 @@
  *                                                                         * 
  *                     $Archive:: /Commando/Code/ww3d2/part_emt.cpp       $* 
  *                                                                         * 
+#ifdef OG
  *                      $Author:: Naty_h                                  $* 
+
+#endif
+#ifdef ZH
+ *                  $Org Author:: Jani_p                                  $* 
  *                                                                         * 
+ *                      $Author:: Kenny_m                                  $* 
+#endif
+ *                                                                         * 
+#ifdef OG
  *                     $Modtime:: 8/01/01 3:36p                           $* 
+#endif
+#ifdef ZH
+ *                     $Modtime:: 08/05/02 10:44a                          $* 
+#endif
  *                                                                         * 
+#ifdef OG
  *                    $Revision:: 12                                      $* 
+#endif
+#ifdef ZH
+ *                    $Revision:: 14                                      $* 
+#endif
  *                                                                         * 
+#ifdef ZH
+ * 08/05/02 KM Texture class redesign
+#endif
  *-------------------------------------------------------------------------* 
  * Functions:                                                              * 
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
@@ -73,10 +94,22 @@ ParticleEmitterClass::ParticleEmitterClass(float emit_rate, unsigned int burst_s
 			ParticlePropertyStruct<float> &size,
 			ParticlePropertyStruct<float> &rotation, float orient_rnd,
 			ParticlePropertyStruct<float> &frames,
+#ifdef OG
 			Vector3 accel, float max_age, TextureClass *tex, ShaderClass shader, int max_particles,
+
+#endif
+#ifdef ZH
+			ParticlePropertyStruct<float> &blur_times,
+			Vector3 accel, float max_age, float future_start, TextureClass *tex, ShaderClass shader, int max_particles,
+#endif
 			int max_buffer_size, bool pingpong,int render_mode,int frame_mode,
 			const W3dEmitterLinePropertiesStruct * line_props
 ) :
+#ifdef ZH
+	RenderObjClass(),
+	EmitRate(emit_rate > 0.0f ? (unsigned int)(1000.0f / emit_rate) : 1000U),
+	BurstSize(burst_size != 0	? burst_size : 1),
+#endif
 	OneTimeBurstSize(1),
 	OneTimeBurst(false),
 	PosRand(pos_rnd),
@@ -89,16 +122,34 @@ ParticleEmitterClass::ParticleEmitterClass(float emit_rate, unsigned int burst_s
 	PrevOrig(0.0, 0.0, 0.0),
 	Active(false),
 	FirstTime(true),
+#ifdef ZH
+	BufferSceneNeeded(true),
+#endif
 	ParticlesLeft(max_particles),
 	MaxParticles(max_particles),
 	IsComplete(false),
+#ifdef ZH
+	NameString(::_strdup ("ParticleEmitter")),
+	UserString(NULL),
+#endif
 	RemoveOnComplete(DefaultRemoveOnComplete),
+#ifdef OG
 	NameString(NULL),
 	UserString(NULL),
 	IsInScene(false)
+
+#endif
+#ifdef ZH
+	IsInScene(false),
+	GroupID(0),
+	Buffer(NULL),
+	IsInvisible(false)
+#endif
 {
+#ifdef OG
 	EmitRate		= emit_rate	>	0.0f ? (unsigned int)(1000.0f / emit_rate) : 1000U;
 	BurstSize	= burst_size != 0	? burst_size : 1;
+#endif
 	max_age		= max_age	> 	0.0f ? max_age : 1.0f;
 	VelRand->Scale(0.001f);
 
@@ -111,19 +162,59 @@ ParticleEmitterClass::ParticleEmitterClass(float emit_rate, unsigned int burst_s
 	max_num = MAX(max_num, 2);	// max_num of 1 causes problems
 
 	Buffer = W3DNEW ParticleBufferClass(this, max_num, color, opacity, size, rotation, orient_rnd,
+#ifdef OG
 		frames, accel/1000000.0f,max_age, tex, shader, pingpong, render_mode, frame_mode,
+#endif
+#ifdef ZH
+		frames, blur_times, accel/1000000.0f,max_age, future_start, tex, shader, pingpong, render_mode, frame_mode,
+#endif
 		line_props);
 	SET_REF_OWNER( Buffer );
+#ifdef OG
 	BufferSceneNeeded = true;
 
 	NameString = ::_strdup ("ParticleEmitter");
+#endif
 }
 
 
 ParticleEmitterClass::ParticleEmitterClass(const ParticleEmitterClass & src) :
+#ifdef ZH
+	RenderObjClass(src),
+	EmitRate(src.EmitRate),
+	BurstSize(src.BurstSize),
+	OneTimeBurstSize(src.OneTimeBurstSize),
+	OneTimeBurst(src.OneTimeBurst),
+	PosRand(src.PosRand ? src.PosRand->Clone() : NULL),
+	BaseVel(src.BaseVel),
+	VelRand(src.VelRand ? src.VelRand->Clone() : NULL),
+	OutwardVel(src.OutwardVel),
+	VelInheritFactor(src.VelInheritFactor),
+	EmitRemain(src.EmitRemain),
+	PrevQ(src.PrevQ),
+	PrevOrig(src.PrevOrig),
+	Active(true),	// default to on
+	FirstTime(true),
+	BufferSceneNeeded(true),
+	ParticlesLeft(src.ParticlesLeft),
+	MaxParticles(src.MaxParticles),
+	IsComplete(false),
+	NameString(::_strdup (src.NameString)),
+	UserString(::_strdup (src.UserString)),
+	RemoveOnComplete(src.RemoveOnComplete),
+#endif
 	IsInScene(false),
+#ifdef OG
 	RenderObjClass(src)
+
+#endif
+#ifdef ZH
+	GroupID(0),
+	Buffer(NULL),
+	IsInvisible(src.IsInvisible)
+#endif
 {
+#ifdef OG
 
 	EmitRate = src.EmitRate;
 	BurstSize = src.BurstSize;
@@ -148,9 +239,11 @@ ParticleEmitterClass::ParticleEmitterClass(const ParticleEmitterClass & src) :
 	MaxParticles = src.MaxParticles;
 	ParticlesLeft = src.ParticlesLeft;
 
+#endif
 	Buffer = (ParticleBufferClass *) src.Buffer->Clone();
 	Buffer->Set_Emitter(this);
 	SET_REF_OWNER( Buffer );
+#ifdef OG
 	BufferSceneNeeded = true;
 
 	Active = true;	// default to on
@@ -158,6 +251,7 @@ ParticleEmitterClass::ParticleEmitterClass(const ParticleEmitterClass & src) :
 	IsComplete = false;
 
 	NameString = ::_strdup (src.NameString);
+#endif
 }
 
 
@@ -191,6 +285,13 @@ ParticleEmitterClass::~ParticleEmitterClass(void)
 	if (NameString != NULL) {
 		::free (NameString);
 		NameString = NULL;
+#ifdef ZH
+	}
+
+	if (UserString != NULL) {
+		::free (UserString);
+		UserString = NULL;
+#endif
 	}
 
 	return ;
@@ -207,11 +308,27 @@ ParticleEmitterClass::Create_From_Definition (const ParticleEmitterDefClass &def
 	const char *ptexture_filename = definition.Get_Texture_Filename ();
 	TextureClass *ptexture = NULL;
 	if (ptexture_filename && ptexture_filename[0]) {
+#ifdef OG
 		ptexture = WW3DAssetManager::Get_Instance()->Get_Texture(
+
+#endif
+#ifdef ZH
+		ptexture = WW3DAssetManager::Get_Instance()->Get_Texture
+		(
+#endif
 			ptexture_filename,
+#ifdef OG
 			TextureClass::MIP_LEVELS_ALL,
 			WW3D_FORMAT_UNKNOWN,
 			false);	// no compression for particle textures!
+
+#endif
+#ifdef ZH
+			MIP_LEVELS_ALL,
+			WW3D_FORMAT_UNKNOWN
+		);
+//			false);	// no compression for particle textures!
+#endif
 	}
 	
 	ShaderClass shader;
@@ -237,12 +354,18 @@ ParticleEmitterClass::Create_From_Definition (const ParticleEmitterDefClass &def
 	ParticlePropertyStruct<float> size_keys;
 	ParticlePropertyStruct<float> rotation_keys;
 	ParticlePropertyStruct<float> frame_keys;
+#ifdef ZH
+	ParticlePropertyStruct<float> blur_time_keys;
+#endif
 
 	definition.Get_Color_Keyframes (color_keys);
 	definition.Get_Opacity_Keyframes (opacity_keys);
 	definition.Get_Size_Keyframes (size_keys);
 	definition.Get_Rotation_Keyframes (rotation_keys);
 	definition.Get_Frame_Keyframes (frame_keys);
+#ifdef ZH
+	definition.Get_Blur_Time_Keyframes (blur_time_keys);
+#endif
 
 	//
 	//	Create the emitter
@@ -260,8 +383,14 @@ ParticleEmitterClass::Create_From_Definition (const ParticleEmitterDefClass &def
 																rotation_keys,
 																definition.Get_Initial_Orientation_Random(),
 																frame_keys,
+#ifdef ZH
+																blur_time_keys,
+#endif
 																definition.Get_Acceleration (),
 																definition.Get_Lifetime (),
+#ifdef ZH
+																definition.Get_Future_Start_Time(),
+#endif
 																ptexture,
 																shader, 
 																definition.Get_Max_Emissions (),
@@ -281,6 +410,10 @@ ParticleEmitterClass::Create_From_Definition (const ParticleEmitterDefClass &def
 	if (rotation_keys.Values != NULL) delete [] rotation_keys.Values;
 	if (frame_keys.KeyTimes != NULL) delete [] frame_keys.KeyTimes;
 	if (frame_keys.Values != NULL) delete [] frame_keys.Values;
+#ifdef ZH
+	if (blur_time_keys.KeyTimes != NULL) delete [] blur_time_keys.KeyTimes;
+	if (blur_time_keys.Values != NULL) delete [] blur_time_keys.Values;
+#endif
 
 	// Pass the name along to the emitter
 	pemitter->Set_Name (definition.Get_Name ());
@@ -344,6 +477,9 @@ void ParticleEmitterClass::Scale(float scale)
 // - hopefully can be rewritten more cleanly in future)...
 void ParticleEmitterClass::On_Frame_Update(void)
 {
+#ifdef ZH
+	WWPROFILE("ParticleEmitterClass::On_Frame_Update");
+#endif
 	if (Active && !IsComplete) {
 		if (FirstTime) {
 
@@ -416,6 +552,13 @@ void ParticleEmitterClass::Start(void)
 		ParticlesLeft = MaxParticles;
 		IsComplete = false;
 	}
+#ifdef ZH
+
+	// This is to keep track of particles so that
+	// the line segments can start and stop properly
+	GroupID++;
+	Buffer->Set_Current_GroupID(GroupID);
+#endif
 }
 
 
@@ -683,6 +826,11 @@ void ParticleEmitterClass::Initialize_Particle(NewParticleStruct * newpart,
 
 	// Rotate velocity to worldspace and add emitter's inherited velocity.
 	newpart->Velocity = InheritedWorldSpaceEmitterVel + quat.Rotate_Vector(rand_vel);
+#ifdef ZH
+
+	// GroupID
+	newpart->GroupID = GroupID;	
+#endif
 }
 
 
@@ -706,6 +854,9 @@ ParticleEmitterClass::Build_Definition (void) const
 		pdefinition->Set_Frame_Mode (Get_Frame_Mode());
 		pdefinition->Set_Name (Get_Name ());
 		pdefinition->Set_Lifetime (Get_Lifetime ());
+#ifdef ZH
+		pdefinition->Set_Future_Start_Time (Get_Future_Start_Time());
+#endif
 		pdefinition->Set_Emission_Rate (Get_Emission_Rate ());
 		pdefinition->Set_Max_Emissions (Get_Max_Particles ());
 		pdefinition->Set_Fade_Time (Get_Fade_Time ());
@@ -775,7 +926,20 @@ ParticleEmitterClass::Build_Definition (void) const
 		if (frames.KeyTimes != NULL) delete [] frames.KeyTimes;
 		if (frames.Values != NULL) delete [] frames.Values;
 
+#ifdef ZH
 		//
+		//	Pass the blur time keyframes onto the definition
+#endif
+		//
+#ifdef ZH
+		ParticlePropertyStruct<float> blur_times;
+		Get_Blur_Time_Key_Frames (blur_times);
+		pdefinition->Set_Blur_Time_Keyframes (blur_times);
+		if (blur_times.KeyTimes != NULL) delete [] blur_times.KeyTimes;
+		if (blur_times.Values != NULL) delete [] blur_times.Values;
+
+		//
+#endif
 		// Set up the line parameters 
 		//
 		pdefinition->Set_Line_Texture_Mapping_Mode(Get_Line_Texture_Mapping_Mode());
@@ -834,9 +998,19 @@ ParticleEmitterClass::Update_On_Visibilty(void)
 {
 	// Simply start or stop the emission based on
 	// the visibility state of the emitter.
+#ifdef OG
 	if (Is_Not_Hidden_At_All () && Is_Stopped () && IsInScene) {
+#endif
+#ifdef ZH
+	if (Is_Not_Hidden_At_All() && !IsInvisible && Is_Stopped() && IsInScene) {
+#endif
 		Start ();
+#ifdef OG
 	} else if ((Is_Not_Hidden_At_All () == false) && (Is_Stopped () == false)) {
+#endif
+#ifdef ZH
+	} else if ((!Is_Not_Hidden_At_All() || IsInvisible) && !Is_Stopped()) {
+#endif
 		Stop ();
 	}
 

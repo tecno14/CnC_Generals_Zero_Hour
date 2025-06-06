@@ -147,8 +147,10 @@ public:
 };
 
 
+#ifdef OG
 #if !defined(_PLAYTEST)
 
+#endif
 /**
  * The computer-controlled opponent.
  */
@@ -161,7 +163,12 @@ public:
 
 	AIPlayer( Player *p );							///< constructor
 	
+#ifdef OG
 	virtual void computeSuperweaponTarget(const SpecialPowerTemplate *power, Coord3D *pos, Int playerNdx, Real weaponRadius); ///< Calculates best pos for weapon given radius.
+#endif
+#ifdef ZH
+	virtual Bool computeSuperweaponTarget(const SpecialPowerTemplate *power, Coord3D *pos, Int playerNdx, Real weaponRadius); ///< Calculates best pos for weapon given radius.
+#endif
 
 public: // AIPlayer interface, may be overridden by AISkirmishPlayer.  jba.
 
@@ -199,6 +206,9 @@ public:
 	GameDifficulty getAIDifficulty(void) const;
 	void setAIDifficulty(GameDifficulty difficulty) {m_difficulty = difficulty;}
 	void buildBySupplies(Int minimumCash, const AsciiString &thingName ); ///< Builds a building by supplies.
+#ifdef ZH
+	void buildSpecificBuildingNearestTeam( const AsciiString &thingName, const Team *team );
+#endif
 	void buildUpgrade(const AsciiString &upgrade ); ///< Builds an upgrade.
 	/// A team is about to be destroyed.
 	void aiPreTeamDestroy( const Team *team );
@@ -214,6 +224,11 @@ public:
 
 	void setTeamDelaySeconds(Int delay) {m_teamSeconds = delay;}
 
+#ifdef ZH
+	/// Calculates the closest construction zone location based on a template.
+	Bool calcClosestConstructionZoneLocation( const ThingTemplate *constructTemplate, Coord3D *location );
+
+#endif
 protected:
 
 	// snapshot methods
@@ -234,7 +249,12 @@ protected:
 	virtual Bool isAGoodIdeaToBuildTeam( TeamPrototype *proto );		///< return true if team should be built
 	virtual void processBaseBuilding( void );		///< do base-building behaviors
 	virtual void processTeamBuilding( void );		///< do team-building behaviors
+#ifdef OG
  	static Int getPlayerSuperweaponValue(Coord3D *center, Int playerNdx, Real radius);
+#endif
+#ifdef ZH
+ 	static Int getPlayerSuperweaponValue( Coord3D *center, Int playerNdx, Real radius, Bool includeMilitaryUnits = TRUE );
+#endif
 // End of aiplayer interface. 
 
 protected:
@@ -255,7 +275,12 @@ protected:
 	void updateBridgeRepair(void);
 	Bool dozerInQueue(void);
 	Object *findSupplyCenter(Int minSupplies);
+#ifdef OG
 	static void getPlayerStructureBounds(Region2D *bounds, Int playerNdx);
+#endif
+#ifdef ZH
+	static void getPlayerStructureBounds(Region2D *bounds, Int playerNdx, Bool conservative = FALSE );
+#endif
 
 protected:	 
 
@@ -295,6 +320,8 @@ protected:
 
 	ObjectID m_curWarehouseID;
 };
+#ifdef OG
+#endif
 #endif
 
 #endif // _AI_PLAYER_H_

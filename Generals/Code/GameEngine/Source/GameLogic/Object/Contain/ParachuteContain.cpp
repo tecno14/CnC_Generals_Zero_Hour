@@ -36,6 +36,9 @@
 #include "Common/ThingTemplate.h"
 #include "Common/Xfer.h"
 
+#ifdef ZH
+#include "GameLogic/AIPathfind.h"
+#endif
 #include "GameLogic/Locomotor.h"
 #include "GameLogic/Module/AIUpdate.h"
 #include "GameLogic/Module/ParachuteContain.h"
@@ -124,7 +127,12 @@ ParachuteContain::ParachuteContain( Thing *thing, const ModuleData *moduleData )
 		m_rollRate = GameLogicRandomValueReal(-d->m_rollRateMax, d->m_rollRateMax);
 	}
 
+#ifdef OG
 	getObject()->setStatus(OBJECT_STATUS_PARACHUTING);
+#endif
+#ifdef ZH
+	getObject()->setStatus( MAKE_OBJECT_STATUS_MASK( OBJECT_STATUS_PARACHUTING ) );
+#endif
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -350,6 +358,11 @@ UpdateSleepTime ParachuteContain::update( void )
 				parachuteAI->aiMoveToPosition( &target, CMD_FROM_AI );
 			}
 		}
+#ifdef ZH
+    else if ( rider )
+			rider->clearAndSetModelConditionState( MODELCONDITION_PARACHUTING, MODELCONDITION_FREEFALL );
+
+#endif
 	}
 	draw->setDrawableHidden(!m_opened);
 
@@ -357,16 +370,36 @@ UpdateSleepTime ParachuteContain::update( void )
 	{
 		// unopened, or empty, chutes, don't collide with anything, to simplify
 		// ejections, paradrops, landings, etc...
+#ifdef OG
 		parachute->setStatus(OBJECT_STATUS_NO_COLLISIONS);
+#endif
+#ifdef ZH
+		parachute->setStatus( MAKE_OBJECT_STATUS_MASK( OBJECT_STATUS_NO_COLLISIONS ) );
+#endif
 		if (rider)
+#ifdef OG
 			rider->setStatus(OBJECT_STATUS_NO_COLLISIONS);
+#endif
+#ifdef ZH
+			rider->setStatus( MAKE_OBJECT_STATUS_MASK( OBJECT_STATUS_NO_COLLISIONS ) );
+#endif
 	}
 	else
 	{
 		// opened/nonempty chutes DO collide...
+#ifdef OG
 		parachute->clearStatus(OBJECT_STATUS_NO_COLLISIONS);
+#endif
+#ifdef ZH
+		parachute->clearStatus( MAKE_OBJECT_STATUS_MASK( OBJECT_STATUS_NO_COLLISIONS ) );
+#endif
 		if (rider)
+#ifdef OG
 			rider->clearStatus(OBJECT_STATUS_NO_COLLISIONS);
+#endif
+#ifdef ZH
+			rider->clearStatus( MAKE_OBJECT_STATUS_MASK( OBJECT_STATUS_NO_COLLISIONS ) );
+#endif
 	}
 
 	AIUpdateInterface* ai = parachute->getAIUpdateInterface();
@@ -449,13 +482,28 @@ UpdateSleepTime ParachuteContain::update( void )
 
 //-------------------------------------------------------------------------------------------------
 //-------------------------------------------------------------------------------------------------
+#ifdef OG
 void ParachuteContain::onContaining( Object *rider )
+#endif
+#ifdef ZH
+void ParachuteContain::onContaining( Object *rider, Bool wasSelected )
+#endif
 {
+#ifdef OG
 	OpenContain::onContaining(rider);	
+#endif
+#ifdef ZH
+	OpenContain::onContaining( rider, wasSelected );	
+#endif
 
 	// objects inside a transport are held
 	rider->setDisabled( DISABLED_HELD );
+#ifdef OG
 	rider->setStatus(OBJECT_STATUS_PARACHUTING);
+#endif
+#ifdef ZH
+	rider->setStatus( MAKE_OBJECT_STATUS_MASK( OBJECT_STATUS_PARACHUTING ) );
+#endif
 
 	rider->clearAndSetModelConditionState(MODELCONDITION_PARACHUTING, MODELCONDITION_FREEFALL);
 	m_needToUpdateRiderBones = true;
@@ -474,12 +522,22 @@ void ParachuteContain::onRemoving( Object *rider )
 
 	// object is no longer held inside a transport
 	rider->clearDisabled( DISABLED_HELD );
+#ifdef OG
 	rider->clearStatus(OBJECT_STATUS_PARACHUTING);
+#endif
+#ifdef ZH
+	rider->clearStatus( MAKE_OBJECT_STATUS_MASK( OBJECT_STATUS_PARACHUTING ) );
+#endif
 
 	// mark parachute as "no-collisions"... it is just ephemeral at this point,
 	// and having the chute collide with the soldier (and both bounce apart) is
 	// just dumb-lookin'...
+#ifdef OG
 	getObject()->setStatus(OBJECT_STATUS_NO_COLLISIONS);
+#endif
+#ifdef ZH
+	getObject()->setStatus( MAKE_OBJECT_STATUS_MASK( OBJECT_STATUS_NO_COLLISIONS ) );
+#endif
 
 	// position him correctly.
 	positionRider(rider);
@@ -505,10 +563,42 @@ void ParachuteContain::onRemoving( Object *rider )
 	{
 		Player* controller = rider->getControllingPlayer();
 		if (controller && controller->isSkirmishAIPlayer())
+#ifdef ZH
+		{
+#endif
 			riderAI->aiHunt(CMD_FROM_AI);	// hunt, as per Dustin's request.
+#ifdef ZH
+		}
+#endif
 		else
+#ifdef ZH
+		{
+			bool hasRallyPoint = false;
+			// Get the transport of the rider
+			Object *transport = TheGameLogic->findObjectByID(rider->getProducerID());
+			if (transport)
+			{
+				// Get the building that produced the transport
+				Object *transportProducer = TheGameLogic->findObjectByID(transport->getProducerID());
+				if (transportProducer)
+				{
+					// See if we need to set a rally point for the object being parachuted
+					ExitInterface* exitInterface = transportProducer->getObjectExitInterface();
+					if (exitInterface && exitInterface->useSpawnRallyPoint())
+					{
+						exitInterface->exitObjectViaDoor(rider, DOOR_1);
+						hasRallyPoint = true;
+					}			
+				}
+			}
+
+			if (!hasRallyPoint)
+#endif
 			riderAI->aiIdle(CMD_FROM_AI); // become idle.		
 	}
+#ifdef ZH
+	}
+#endif
 	
 	// if we land in the water, we die. alas.
 	const Coord3D* riderPos = rider->getPosition();
@@ -524,7 +614,35 @@ void ParachuteContain::onRemoving( Object *rider )
 		damageInfo.in.m_sourceID = INVALID_ID;
 		damageInfo.in.m_amount = HUGE_DAMAGE_AMOUNT;
 		rider->attemptDamage( &damageInfo );
+#ifdef ZH
 	}
+	
+	// Kill if we landed on impassable ground
+	Int cellX = REAL_TO_INT( rider->getPosition()->x / PATHFIND_CELL_SIZE );
+	Int cellY = REAL_TO_INT( rider->getPosition()->y / PATHFIND_CELL_SIZE );
+	
+	PathfindCell* cell = TheAI->pathfinder()->getCell( rider->getLayer(), cellX, cellY );
+	PathfindCell::CellType cellType = cell ? cell->getType() : PathfindCell::CELL_IMPASSABLE;
+	
+	// If we land outside the map from a faulty parachute, we die too.  
+	// Otherwise we exist outside the PartitionManger like a cheater.
+	if( rider->isOffMap() 
+    || (cellType == PathfindCell::CELL_CLIFF) 
+    || (cellType == PathfindCell::CELL_WATER) 
+    || (cellType == PathfindCell::CELL_IMPASSABLE) )
+	{
+		// The Paradrop command was legal, the parachute destination was legal, but the parachute
+		// can still fail to adjust back on the map.  SO this is the place to cap the cheater.
+		rider->kill();
+#endif
+	}
+#ifdef ZH
+
+  // Note: for future enhancement of this feature, we should test the object against the cell type he is on,
+  // using obj->getAI()->hasLocomotorForSurface( __ ). We cshould not assume here that the parachutist can not 
+  // find happiness on cliffs or water or whatever.
+
+#endif
 }
 
 //-------------------------------------------------------------------------------------------------

@@ -42,6 +42,10 @@
 #include "GameNetwork/GameSpyOverlay.h"
 #include "GameNetwork/GameSpy/PeerDefsImplementation.h"
 
+#ifdef ZH
+#include <rts/profile.h>
+
+#endif
 // PUBLIC DATA ////////////////////////////////////////////////////////////////////////////////////
 Shell *TheShell = NULL;  ///< the shell singleton definition
 
@@ -457,8 +461,17 @@ void Shell::showShell( Bool runInit )
 	
 
 	if (!TheGlobalData->m_shellMapOn && m_screenCount == 0)
+#ifdef ZH
+  {
+#ifdef _PROFILE
+    Profile::StopRange("init");
+#endif
+#endif
 	//else
 		TheShell->push( AsciiString("Menus/MainMenu.wnd") );
+#ifdef ZH
+  }
+#endif
 	m_isShellActive = TRUE;
 }  // end showShell
 

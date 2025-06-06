@@ -20,7 +20,12 @@
 //
 
 #include "stdafx.h"
+#ifdef OG
 #include "noxstring.h"
+#endif
+#ifdef ZH
+#include "Babylon.h"
+#endif
 #include "MatchDlg.h"
 
 #ifdef _DEBUG
@@ -29,12 +34,24 @@
 static char THIS_FILE[] = __FILE__;
 #endif
 
+#ifdef OG
 NoxText *MatchingNoxText = NULL;
 NoxText *MatchOriginalText;
 NoxLabel *MatchLabel;
+#endif
+#ifdef ZH
+BabylonText *MatchingBabylonText = NULL;
+BabylonText *MatchOriginalText;
+BabylonLabel *MatchLabel;
+#endif
 
 #define MAX_MATCH 256
+#ifdef OG
 static NoxText *current_match = NULL;
+#endif
+#ifdef ZH
+static BabylonText *current_match = NULL;
+#endif
 
 /////////////////////////////////////////////////////////////////////////////
 // CMatchDlg dialog
@@ -74,21 +91,36 @@ void CMatchDlg::OnCancel()
 {
 	// TODO: Add extra cleanup here
 	
+#ifdef OG
 	MatchingNoxText = NULL;	
+#endif
+#ifdef ZH
+	MatchingBabylonText = NULL;	
+#endif
 	CDialog::OnCancel();
 }
 
 void CMatchDlg::OnNomatch() 
 {
 	// TODO: Add your control notification handler code here
+#ifdef OG
 	MatchingNoxText = NULL;	
+#endif
+#ifdef ZH
+	MatchingBabylonText = NULL;	
+#endif
 	CDialog::OnOK ();
 }
 
 void CMatchDlg::OnMatch() 
 {
 	// TODO: Add your control notification handler code here
+#ifdef OG
 	if ( (MatchingNoxText = current_match ) )
+#endif
+#ifdef ZH
+	if ( (MatchingBabylonText = current_match ) )
+#endif
 	{
 		CButton *check = (CButton *) GetDlgItem ( IDC_CHECKRETRANSLATE );
 
@@ -99,7 +131,12 @@ void CMatchDlg::OnMatch()
 
 BOOL CMatchDlg::OnInitDialog() 
 {
+#ifdef OG
 	NoxText *text;
+#endif
+#ifdef ZH
+	BabylonText *text;
+#endif
 	ListSearch sh;
 	int index;
 	CStatic *newtext;
@@ -149,7 +186,12 @@ BOOL CMatchDlg::OnInitDialog()
 
 	combo->SetCurSel ( 0 );
 	OnSelchangeMatchcombo();
+#ifdef OG
 	MatchingNoxText = NULL;	
+#endif
+#ifdef ZH
+	MatchingBabylonText = NULL;	
+#endif
 	// TODO: Add extra initialization here
 	
 	return TRUE;  // return TRUE unless you set the focus to a control
@@ -168,7 +210,12 @@ void CMatchDlg::OnSelchangeMatchcombo()
 	if ( index >= 0  )
 	{
 		CStatic *newtext = (CStatic *) GetDlgItem ( IDC_MATCHTEXT );
+#ifdef OG
 		current_match = (NoxText *) combo->GetItemDataPtr ( index );
+#endif
+#ifdef ZH
+		current_match = (BabylonText *) combo->GetItemDataPtr ( index );
+#endif
 		newtext->SetWindowText ( current_match->GetSB());
 	}
 	else

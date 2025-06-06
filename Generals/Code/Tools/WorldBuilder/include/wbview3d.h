@@ -112,6 +112,7 @@ protected:
 	afx_msg void OnViewShowmacrotexture();
 	afx_msg void OnUpdateViewShowmacrotexture(CCmdUI* pCmdUI);
 	afx_msg void OnEditSelectmacrotexture();
+#ifdef OG
 	afx_msg void OnLookEast();
 	afx_msg void OnUpdateLookEast(CCmdUI* pCmdUI);
 	afx_msg void OnLookNorth();
@@ -120,6 +121,7 @@ protected:
 	afx_msg void OnUpdateLookSouth(CCmdUI* pCmdUI);
 	afx_msg void OnLookWest();
 	afx_msg void OnUpdateLookWest(CCmdUI* pCmdUI);
+#endif
 	afx_msg void OnViewShowshadows();
 	afx_msg void OnUpdateViewShowshadows(CCmdUI* pCmdUI);
 	afx_msg void OnViewShowSoftWater();
@@ -141,6 +143,18 @@ protected:
 	afx_msg void OnUpdateViewPartialmapsize128x128(CCmdUI* pCmdUI);
 	afx_msg void OnViewShowModels();
 	afx_msg void OnUpdateViewShowModels(CCmdUI* pCmdUI);
+#ifdef ZH
+	afx_msg void OnViewBoundingBoxes();
+	afx_msg void OnUpdateViewBoundingBoxes(CCmdUI* pCmdUI);
+	afx_msg void OnViewSightRanges();
+	afx_msg void OnUpdateViewSightRanges(CCmdUI* pCmdUI);
+	afx_msg void OnViewWeaponRanges();
+	afx_msg void OnUpdateViewWeaponRanges(CCmdUI* pCmdUI);
+	afx_msg void OnHighlightTestArt();
+	afx_msg void OnUpdateHighlightTestArt(CCmdUI* pCmdUI);
+	afx_msg void OnShowLetterbox();
+	afx_msg void OnUpdateShowLetterbox(CCmdUI* pCmdUI);
+#endif
 	afx_msg void OnViewLayersList();
 	afx_msg void OnUpdateViewLayersList(CCmdUI* pCmdUI);
 	afx_msg void OnViewGarrisoned();
@@ -149,6 +163,10 @@ protected:
 	afx_msg void OnUpdateViewShowMapBoundaries(CCmdUI* pCmdUI);
 	afx_msg void OnViewShowAmbientSounds();
 	afx_msg void OnUpdateViewShowAmbientSounds(CCmdUI* pCmdUI);
+#ifdef ZH
+  afx_msg void OnViewShowSoundCircles();
+  afx_msg void OnUpdateViewShowSoundCircles(CCmdUI* pCmdUI);
+#endif
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 
@@ -203,6 +221,14 @@ private:
 	Bool										m_showLayersList;	///< Flag whether the layers list is visible or not.
 	Bool										m_showMapBoundaries;	///< Flag whether to show all the map boundaries or not
 	Bool										m_showAmbientSounds;	///< Flag whether to show all the ambient sounds or not
+#ifdef ZH
+  Bool										m_showSoundCircles;	///< Flag whether to show the minimum and maximum radii of the ambient sounds attached to the selected object
+	Bool										m_showBoundingBoxes;
+	Bool										m_showSightRanges;
+	Bool										m_showWeaponRanges;
+	Bool										m_highlightTestArt;
+	Bool										m_showLetterbox;
+#endif
 
 
 	ID3DXFont*							m3DFont;
@@ -215,6 +241,9 @@ protected:
 	void init3dScene();
 	void initAssets();
 	void initWW3D();
+#ifdef ZH
+  void drawCircle( HDC hdc, const Coord3D & centerPoint, Real radius, COLORREF color );
+#endif
 	void drawLabels(HDC hdc);
 	void drawLabels(void);
 	void shutdownWW3D();
@@ -224,6 +253,9 @@ protected:
 	void updateHysteresis(void);
 	void updateLights();
 	void updateScorches();
+#ifdef ZH
+	void updateTrees();
+#endif
 
 public:
 	virtual Bool viewToDocCoords(CPoint curPt, Coord3D *newPt, Bool constrain=true);
@@ -251,10 +283,16 @@ public:
 	virtual void pitchCamera(Real delta);
 	void setCameraPitch(Real absolutePitch);
 	Real getCameraPitch(void);
+#ifdef ZH
+	Real getCurrentZoom(void); //WST 10/17/2002
+#endif
 	Real getHeightAboveGround(void) { return m_actualHeightAboveGround; }
 	Vector3 getCameraSource(void) { return m_cameraSource; }
 	Vector3 getCameraTarget(void) { return m_cameraTarget; }
 	Real getCameraAngle(void) { return m_cameraAngle; }
+#ifdef ZH
+	CPoint getActualWinSize(void) {return m_actualWinSize;}
+#endif
 
 	virtual MapObject *picked3dObjectInView(CPoint viewPt);
 	virtual BuildListInfo *pickedBuildObjectInView(CPoint viewPt);
@@ -294,6 +332,18 @@ public:
 
 	void togglePitchAndRotation( void ) { m_doPitch = !m_doPitch; }
 	virtual Bool isDoingPitch( void ) { return m_doPitch; }
+#ifdef ZH
+	void setShowBoundingBoxes(Bool toggle) {m_showBoundingBoxes = toggle;}
+	Bool getShowBoundingBoxes(void) { return m_showBoundingBoxes;}
+	void setShowSightRanges(Bool toggle) {m_showSightRanges = toggle;}
+	Bool getShowSightRanges(void) { return m_showSightRanges;}
+	void setShowWeaponRanges(Bool toggle) {m_showWeaponRanges = toggle;}
+	Bool getShowWeaponRanges(void) { return m_showWeaponRanges;}
+	void setHighlightTestArt(Bool toggle) {m_highlightTestArt = toggle;}
+	Bool getHighlightTestArt(void) { return m_highlightTestArt;}
+	void setShowLetterbox(Bool toggle) {m_showLetterbox = toggle;}
+	Bool getShowLetterbox(void) { return m_showLetterbox;}
+#endif
 };
 
 inline UINT WbView3d::getLastDrawTime() { return m_time; }

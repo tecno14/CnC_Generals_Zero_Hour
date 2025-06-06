@@ -25,12 +25,28 @@
  *                                                                                             * 
  *                    File Name : MATRIX3D.CPP                                                 * 
  *                                                                                             * 
+#ifdef OG
  *                   Programmer : Greg Hjelstrom                                               * 
+
+#endif
+#ifdef ZH
+ *                Org Programmer : Greg Hjelstrom                                               * 
+ *                                                                                             * 
+ *                   Programmer : Kenny Mitchell                          * 
+#endif
  *                                                                                             * 
  *                   Start Date : 02/24/97                                                     * 
  *                                                                                             * 
+#ifdef OG
  *                  Last Update : February 28, 1997 [GH]                                       * 
+#endif
+#ifdef ZH
+ *                  Last Update : June 6, 2002 [KM]                                            * 
+#endif
  *                                                                                             * 
+#ifdef ZH
+ * 06/26/02 KM Matrix name change to avoid MAX conflicts                                       *
+#endif
  *---------------------------------------------------------------------------------------------* 
  * Functions:                                                                                  * 
  *   Matrix3D::Set_Rotation -- Sets the rotation part of the matrix                            *
@@ -147,7 +163,12 @@ const Matrix3D	Matrix3D::RotateZ270
  *                                                                                             *
  * HISTORY:                                                                                    *
  *=============================================================================================*/
+#ifdef OG
 void Matrix3D::Set(const Matrix3 & rot,const Vector3 & pos)
+#endif
+#ifdef ZH
+void Matrix3D::Set(const Matrix3x3 & rot,const Vector3 & pos)
+#endif
 {
 	Row[0].Set( rot[0][0], rot[0][1], rot[0][2], pos[0]);
 	Row[1].Set( rot[1][0], rot[1][1], rot[1][2], pos[1]);
@@ -185,7 +206,12 @@ void Matrix3D::Set(const Quaternion & rot,const Vector3 & pos)
  * HISTORY:                                                                                    *
  *   5/11/98    GTH : Created.                                                                 *
  *=============================================================================================*/
+#ifdef OG
 void Matrix3D::Set_Rotation(const Matrix3 & m)
+#endif
+#ifdef ZH
+void Matrix3D::Set_Rotation(const Matrix3x3 & m)
+#endif
 {
 	Row[0][0] = m[0][0];
 	Row[0][1] = m[0][1];
@@ -513,8 +539,14 @@ void Matrix3D::Get_Inverse(Matrix3D & inv) const
 	// TODO: Implement the general purpose inverse function here (once we need it :-)
 	//Get_Orthogonal_Inverse(inv);
 
+#ifdef OG
 	Matrix4	mat4(*this);
 	Matrix4	mat4Inv;
+#endif
+#ifdef ZH
+	Matrix4x4	mat4(*this);
+	Matrix4x4	mat4Inv;
+#endif
 
 	float det;
 	D3DXMatrixInverse((D3DXMATRIX *)&mat4Inv, &det, (D3DXMATRIX*)&mat4);

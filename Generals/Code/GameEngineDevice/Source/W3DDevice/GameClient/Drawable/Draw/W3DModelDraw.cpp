@@ -44,6 +44,9 @@
 #include "Common/GameLOD.h"
 #include "Common/Xfer.h"
 #include "Common/GameState.h"
+#ifdef ZH
+#include "Common/QuickTrig.h"
+#endif
 #include "GameClient/Drawable.h"
 #include "GameClient/FXList.h"
 #include "GameClient/Shadow.h"
@@ -271,7 +274,12 @@ inline Bool isCommonMaintainFrameFlagSet(Int a, Int b)
 // Note: these values are saved in save files, so you MUST NOT REMOVE OR CHANGE
 // existing values!
 //
+#ifdef OG
 static char *TerrainDecalTextureName[TERRAIN_DECAL_MAX-1]=
+#endif
+#ifdef ZH
+static char *TerrainDecalTextureName[TERRAIN_DECAL_MAX]=
+#endif
 {
 #ifdef ALLOW_DEMORALIZE
 	"DM_RING",//demoralized
@@ -283,6 +291,12 @@ static char *TerrainDecalTextureName[TERRAIN_DECAL_MAX-1]=
 	"EXHordeB",//enthusiastic vehicle
 	"EXHordeB_UP", //enthusiastic vehicle with nationalism
 	"EXJunkCrate",//Marks a crate as special
+#ifdef ZH
+	"EXHordeC_UP", //enthusiastic with fanaticism 
+	"EXChemSuit", //Marks a unit as having chemical suit on
+	"",	//dummy entry for TERRAIN_DECAL_NONE
+	"" //dummy entry for TERRAIN_DECAL_SHADOW_TEXTURE
+#endif
 };
 
 const UnsignedInt NO_NEXT_DURATION = 0xffffffff;
@@ -730,6 +744,25 @@ void ModelConditionInfo::validateWeaponBarrelInfo() const
 		const AsciiString& recoilBoneName = m_weaponRecoilBoneName[wslot];
 		const AsciiString& mfName = m_weaponMuzzleFlashName[wslot];
 		const AsciiString& plbName = m_weaponProjectileLaunchBoneName[wslot];
+#ifdef ZH
+    
+// a useful tool for finding missing INI entries in the weapon-bone block
+// since this class has no idea which object it refers to, it must assume that the projectilelaunchbonename
+// is required if the fxBoneName is specified
+// this is not always true, since some weapons have no launched projectiles, hence the caveat in the assert message
+//#if defined(_DEBUG) || defined(_INTERNAL)
+//    if (
+//          ( m_modelName.startsWith("UV") || m_modelName.startsWith("NV") || m_modelName.startsWith("AV") ||
+//            m_modelName.startsWith("uv") || m_modelName.startsWith("nv") || m_modelName.startsWith("av")
+//          )
+//
+//          && fxBoneName.isNotEmpty()
+//          
+//      )
+//    DEBUG_ASSERTCRASH( plbName.isNotEmpty(), ("You appear to have a missing projectilelaunchbonename. \n Promptly ignore this assert if this model is used by a non-projectile-weapon-bearing unit\nModel name = %s.", m_modelName.str()) );
+//#endif
+
+#endif
 		if (fxBoneName.isNotEmpty() || recoilBoneName.isNotEmpty() || mfName.isNotEmpty() || plbName.isNotEmpty())
 		{
 			Int prevFxBone = 0;
@@ -998,6 +1031,9 @@ void ModelConditionInfo::clear()
 W3DModelDrawModuleData::W3DModelDrawModuleData() : 
 	m_validated(0),
 	m_okToChangeModelColor(false),
+#ifdef ZH
+  m_particlesAttachedToAnimatedBones(false),
+#endif
 	m_animationsRequirePower(true),
 #ifdef CACHE_ATTACH_BONE
 	m_attachToDrawableBoneOffsetValid(false),
@@ -1015,6 +1051,12 @@ W3DModelDrawModuleData::W3DModelDrawModuleData() :
 	m_maxRecoil = MAX_SHIFT;
 	m_recoilDamping = RECOIL_DAMPING;
 	m_recoilSettle = SETTLE_RATE;
+#ifdef ZH
+
+
+  m_receivesDynamicLights = TRUE;
+
+#endif
 	// m_ignoreConditionStates defaults to all zero, which is what we want
 }
 
@@ -1177,6 +1219,9 @@ void W3DModelDrawModuleData::buildFieldParse(MultiIniFieldParse& p)
 		{ "RecoilSettleSpeed",	INI::parseVelocityReal, NULL, offsetof(W3DModelDrawModuleData, m_recoilSettle) },
 		{ "OkToChangeModelColor",	INI::parseBool, NULL, offsetof(W3DModelDrawModuleData, m_okToChangeModelColor) },
 		{ "AnimationsRequirePower",	INI::parseBool, NULL, offsetof(W3DModelDrawModuleData, m_animationsRequirePower) },
+#ifdef ZH
+		{ "ParticlesAttachedToAnimatedBones",	INI::parseBool, NULL, offsetof(W3DModelDrawModuleData, m_particlesAttachedToAnimatedBones) },
+#endif
 		{ "MinLODRequired",		INI::parseStaticGameLODLevel,	NULL,	offsetof(W3DModelDrawModuleData, m_minLODRequired) },
 		{ "ProjectileBoneFeedbackEnabledSlots", INI::parseBitString32, TheWeaponSlotTypeNames, offsetof(W3DModelDrawModuleData, m_projectileBoneFeedbackEnabledSlots) },
 		{ "DefaultConditionState", W3DModelDrawModuleData::parseConditionState, (void*)PARSE_DEFAULT, 0 },
@@ -1187,6 +1232,9 @@ void W3DModelDrawModuleData::buildFieldParse(MultiIniFieldParse& p)
 		{ "ExtraPublicBone", INI::parseAsciiStringVectorAppend, NULL, offsetof(W3DModelDrawModuleData, m_extraPublicBones) },
 		{ "AttachToBoneInAnotherModule", parseAsciiStringLC, NULL, offsetof(W3DModelDrawModuleData, m_attachToDrawableBone) },
 		{ "IgnoreConditionStates", ModelConditionFlags::parseFromINI, NULL, offsetof(W3DModelDrawModuleData, m_ignoreConditionStates) },
+#ifdef ZH
+		{ "ReceivesDynamicLights", INI::parseBool, NULL, offsetof(W3DModelDrawModuleData, m_receivesDynamicLights) },
+#endif
 		{ 0, 0, 0, 0 }
 	};
   p.add(dataFieldParse);
@@ -1725,7 +1773,16 @@ W3DModelDraw::W3DModelDraw(Thing *thing, const ModuleData* moduleData) : DrawMod
 	}
 
 	Drawable* draw = getDrawable();
+#ifdef OG
 	Object* obj = draw ? draw->getObject() : NULL;
+
+#endif
+#ifdef ZH
+
+  if ( draw )
+  {
+	  Object* obj = draw->getObject();
+#endif
 	if (obj)
 	{	
 		if (TheGlobalData->m_timeOfDay == TIME_OF_DAY_NIGHT)
@@ -1734,6 +1791,16 @@ W3DModelDraw::W3DModelDraw(Thing *thing, const ModuleData* moduleData) : DrawMod
 			m_hexColor = obj->getIndicatorColor();
 	}
 
+#ifdef ZH
+    // THE VAST MAJORITY OF THESE SHOULD BE TRUE
+    if ( ! getW3DModelDrawModuleData()->m_receivesDynamicLights)
+    {
+      draw->setReceivesDynamicLights( FALSE );
+		  DEBUG_LOG(("setReceivesDynamicLights = FALSE: %s\n", draw->getTemplate()->getName().str()));
+    }
+  }
+
+#endif
 	setModelState(info);
 }
 
@@ -2061,6 +2128,14 @@ void W3DModelDraw::doDrawModule(const Matrix3D* transformMtx)
 
 	handleClientTurretPositioning();
 	recalcBonesForClientParticleSystems();
+#ifdef ZH
+  
+  const W3DModelDrawModuleData *modData = getW3DModelDrawModuleData();
+  if ( modData->m_particlesAttachedToAnimatedBones )
+    updateBonesForClientParticleSystems();// LORENZEN ADDED THIS 
+                                          // IT REPOSITIONS PARTICLESYSTEMS TO TSTAY IN SYNC WITH ANIMATED BONES
+	
+#endif
 	handleClientRecoil();
 
 }
@@ -2633,22 +2708,44 @@ Bool W3DModelDraw::updateBonesForClientParticleSystems()
 	const Drawable* drawable = getDrawable();
 	if (drawable != NULL && m_curState != NULL && m_renderObject != NULL ) 
 	{
+#ifdef ZH
+
+//		Matrix3D originalTransform = m_renderObject->Get_Transform();
+//		Matrix3D tmp = originalTransform;
+ //   Vector3 zeroTranslation(0,0,0);
+  //  tmp.Set_Translation( zeroTranslation );
+	//	tmp.Scale(drawable->getScale());
+//		m_renderObject->Set_Transform(tmp);					
+				
+    
+
+#endif
 		for (std::vector<ParticleSysTrackerType>::const_iterator it = m_particleSystemIDs.begin(); it != m_particleSystemIDs.end(); ++it)
 		{
 			ParticleSystem *sys = TheParticleSystemManager->findParticleSystem((*it).id);
 			Int boneIndex = (*it).boneIndex;
 			if ( (sys != NULL) && (boneIndex != 0)  ) 
 			{
+#ifdef OG
 				Matrix3D originalTransform = m_renderObject->Get_Transform();	
 				Matrix3D tmp(1);
 				tmp.Scale(drawable->getScale());
 				m_renderObject->Set_Transform(tmp);					
+#endif
+#ifdef ZH
+    		const Matrix3D boneTransform = m_renderObject->Get_Bone_Transform(boneIndex);// just a little worried about state changes
 
+#endif
+
+#ifdef OG
 				const Matrix3D boneTransform = m_renderObject->Get_Bone_Transform(boneIndex);// just a little worried about state changes
+#endif
 				Vector3 vpos = boneTransform.Get_Translation();
+#ifdef OG
 				Real rotation = boneTransform.Get_Z_Rotation();
 
 				m_renderObject->Set_Transform(originalTransform);					
+#endif
 
 				Coord3D pos;
 				pos.x = vpos.X;
@@ -2656,11 +2753,32 @@ Bool W3DModelDraw::updateBonesForClientParticleSystems()
 				pos.z = vpos.Z;
 
 				sys->setPosition(&pos);
+#ifdef OG
 				sys->rotateLocalTransformZ(rotation);
 
-			}
-		}
+#endif
+#ifdef ZH
 
+        Real orientation = boneTransform.Get_Z_Rotation();
+				sys->rotateLocalTransformZ(orientation);
+        
+        sys->setLocalTransform(&boneTransform);
+        sys->setSkipParentXfrm(true);
+#endif
+
+#ifdef OG
+			}
+#endif
+		}
+#ifdef ZH
+		}// next praticle system
+#endif
+
+#ifdef ZH
+
+//  	m_renderObject->Set_Transform(originalTransform);	
+
+#endif
 	}// end if Drawable
 
 	return TRUE;
@@ -2692,6 +2810,11 @@ void W3DModelDraw::setTerrainDecal(TerrainDecalType type)
 
 	//decalInfo.m_type = SHADOW_ADDITIVE_DECAL;//temporary kluge to test graphics
 
+#ifdef ZH
+	if (type == TERRAIN_DECAL_SHADOW_TEXTURE)
+		strcpy(decalInfo.m_ShadowName,tmplate->getShadowTextureName().str());
+	else
+#endif
 	strcpy(decalInfo.m_ShadowName,TerrainDecalTextureName[type]);
 	decalInfo.m_sizeX = tmplate->getShadowSizeX();
 	decalInfo.m_sizeY = tmplate->getShadowSizeY();
@@ -3447,6 +3570,47 @@ Int W3DModelDraw::getPristineBonePositionsForConditionState(
 //	}
 
 	return posCount;
+#ifdef ZH
+}
+
+//-------------------------------------------------------------------------------------------------
+// (gth) C&C3 Added this accessor for the bounding box of a render object in a W3DModelDraw module
+// this method must ONLY be called from the client, NEVER From the logic, not even indirectly.
+Bool W3DModelDraw::clientOnly_getRenderObjBoundBox(OBBoxClass * boundbox) const
+{
+	if (!m_renderObject)
+		return false;
+
+	AABoxClass aabox;
+	m_renderObject->Get_Obj_Space_Bounding_Box(aabox);
+
+	Matrix3D tm = m_renderObject->Get_Transform();
+
+	// build an OBB for this AAB,transform
+	OBBoxClass box0(aabox.Center,aabox.Extent);
+	OBBoxClass::Transform(tm,box0,boundbox);
+
+	return true;
+}
+
+//-------------------------------------------------------------------------------------------------
+// (gth) C&C3 Added this accessor for a bone transform in the render object
+// this method must ONLY be called from the client, NEVER From the logic, not even indirectly.
+Bool W3DModelDraw::clientOnly_getRenderObjBoneTransform(const AsciiString & boneName,Matrix3D * set_tm) const
+{
+	if (!m_renderObject) {
+		return false;
+	}
+
+	int idx = m_renderObject->Get_Bone_Index(boneName.str());
+	if (idx == 0) {
+		set_tm->Make_Identity();
+		return false;
+	} else {
+		*set_tm = m_renderObject->Get_Bone_Transform(idx);
+		return true;
+	}
+#endif
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -3562,7 +3726,12 @@ void W3DModelDraw::reactToTransformChange( const Matrix3D* oldMtx,
 		Object *obj = getDrawable()->getObject();
 		const Coord3D* pos = getDrawable()->getPosition();
 
+#ifdef OG
 		if (m_fullyObscuredByShroud)
+#endif
+#ifdef ZH
+		if ( m_fullyObscuredByShroud || obj->testStatus( OBJECT_STATUS_STEALTHED ) == TRUE )
+#endif
 		{
 				m_trackRenderObject->addCapEdgeToTrack(pos->x, pos->y);
 		}
@@ -3712,6 +3881,20 @@ void W3DModelDraw::setAnimationCompletionTime(UnsignedInt numFrames)
 	else
 	{
 		setAnimationLoopDuration(numFrames);
+#ifdef ZH
+	}
+}
+
+//-------------------------------------------------------------------------------------------------
+void W3DModelDraw::setAnimationFrame( int frame )
+{
+	if( m_renderObject && m_whichAnimInCurState >= 0 )
+	{
+		const W3DAnimationInfo& animInfo = m_curState->m_animations[ m_whichAnimInCurState ];
+		HAnimClass* animHandle = animInfo.getAnimHandle();	// note that this now returns an ADDREFED handle, which must be released by the caller!
+		m_renderObject->Set_Animation( animHandle, frame );
+		REF_PTR_RELEASE(animHandle);
+#endif
 	}
 }
 
@@ -3845,7 +4028,12 @@ void W3DModelDraw::doHideShowProjectileObjects( UnsignedInt showCount, UnsignedI
 		for( Int projectileIndex = 0; projectileIndex < maxCount; projectileIndex++ )
 		{
 			oneEntry.subObjName.format("%s%02d", m_curState->m_weaponProjectileLaunchBoneName[slot].str(), (projectileIndex + 1));
+#ifdef OG
 			oneEntry.hide = (projectileIndex < hideCount);
+#endif
+#ifdef ZH
+			oneEntry.hide = ((projectileIndex + 1) <= hideCount);
+#endif
 			showHideVector.push_back( oneEntry );
 		}
 	}

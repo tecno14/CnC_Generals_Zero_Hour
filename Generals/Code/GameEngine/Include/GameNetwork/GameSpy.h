@@ -1,3 +1,4 @@
+#ifdef OG
 /*
 **	Command & Conquer Generals(tm)
 **	Copyright 2025 Electronic Arts Inc.
@@ -146,3 +147,5 @@ extern const Color GameSpyColor[GSCOLOR_MAX];
 
 
 #endif // __GameSpy_H__
+
+#endif

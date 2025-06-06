@@ -71,6 +71,10 @@
 #endif	//_MSC_VER
 #endif	//_DEBUG
 
+#ifdef ZH
+#if 1 // (gth) killing the Generals Memory Manager!
+
+#endif
 #ifndef _OPERATOR_NEW_DEFINED_
 
 	#define _OPERATOR_NEW_DEFINED_
@@ -153,7 +157,11 @@ public:
 };
 // ----------------------------------------------------------------------------
 
+#ifdef ZH
+#else
+#endif
 
+#ifdef OG
 // Jani: Intel's C++ compiler issues too many warnings in WW libraries when using warning level 4
 #if defined (__ICL)    // Detect Intel compiler
 #pragma warning (3)
@@ -162,6 +170,21 @@ public:
 #pragma warning ( disable: 271 ) // trailing comma is nonstandard
 #pragma warning ( disable: 171 ) // invalid type conversion
 #pragma warning ( disable: 1 ) // last line of file ends without a newline
+#endif
+
+#endif
+#ifdef ZH
+	#define MSGW3DNEW(MSG)					new
+	#define MSGW3DNEWARRAY(MSG)			new
+	#define W3DNEW									new
+	#define W3DNEWARRAY							new
+
+	#define W3DMPO_GLUE(ARGCLASS)
+
+	class W3DMPO { };
+
+#endif // (gth) removing the generals memory stuff from W3D
+
 #endif
 
 // Jani: MSVC doesn't necessarily inline code with inline keyword. Using __forceinline results better inlining

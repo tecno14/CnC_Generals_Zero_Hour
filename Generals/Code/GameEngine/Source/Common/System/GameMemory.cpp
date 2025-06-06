@@ -207,7 +207,9 @@ static Bool theMainInitFlag = false;
 #define MEM_BOUND_ALIGNMENT 4
 
 static Int roundUpMemBound(Int i);
+#ifdef OG
 static void *sysAllocate(Int numBytes);
+#endif
 static void *sysAllocateDoNotZero(Int numBytes);
 static void sysFree(void* p);
 static void memset32(void* ptr, Int value, Int bytesToFill);
@@ -230,6 +232,7 @@ static Int roundUpMemBound(Int i)
 
 //-----------------------------------------------------------------------------
 /**
+#ifdef OG
 	identical to sysAllocateDoNotZero, except that the memory block returned
 	is filled to all-zero-bytes.
 */
@@ -251,6 +254,7 @@ static void* sysAllocate(Int numBytes)
 
 //-----------------------------------------------------------------------------
 /** 
+#endif
 	this is the low-level allocator that we use to request memory from the OS.
 	all (repeat, all) memory allocations in this module should ultimately
 	go thru this routine (or sysAllocate).
@@ -844,7 +848,12 @@ Bool BlockCheckpointInfo::shouldBeInReport(Int flags, Int startCheckpoint, Int e
 
 	BlockCheckpointInfo *freed = NULL;
 	try {
+#ifdef OG
 		freed = (BlockCheckpointInfo *)::sysAllocate(sizeof(BlockCheckpointInfo));
+#endif
+#ifdef ZH
+		freed = (BlockCheckpointInfo *)::sysAllocateDoNotZero(sizeof(BlockCheckpointInfo));
+#endif
 	} catch (...) {
 		freed = NULL;
 	}
@@ -1206,7 +1215,12 @@ void MemoryPoolBlob::initBlob(MemoryPool *owningPool, Int allocationCount)
 	m_usedBlocksInBlob = 0;
 
 	Int rawBlockSize = MemoryPoolSingleBlock::calcRawBlockSize(m_owningPool->getAllocationSize());
+#ifdef OG
 	m_blockData = (char *)::sysAllocate(rawBlockSize * m_totalBlocksInBlob);	// throws on failure
+#endif
+#ifdef ZH
+	m_blockData = (char *)::sysAllocateDoNotZero(rawBlockSize * m_totalBlocksInBlob);	// throws on failure
+#endif
 
 	// set up the list of free blocks in the blob (namely, all of 'em)
 	MemoryPoolSingleBlock *block = (MemoryPoolSingleBlock *)m_blockData;
@@ -1579,7 +1593,12 @@ MemoryPoolBlob* MemoryPool::createBlob(Int allocationCount)
 {
 	DEBUG_ASSERTCRASH(allocationCount > 0 && allocationCount%MEM_BOUND_ALIGNMENT==0, ("bad allocationCount (must be >0 and evenly divisible by %d)",MEM_BOUND_ALIGNMENT));
 
+#ifdef OG
 	MemoryPoolBlob* blob = new (::sysAllocate(sizeof MemoryPoolBlob)) MemoryPoolBlob;	// will throw on failure
+#endif
+#ifdef ZH
+	MemoryPoolBlob* blob = new (::sysAllocateDoNotZero(sizeof MemoryPoolBlob)) MemoryPoolBlob;	// will throw on failure
+#endif
 
 	blob->initBlob(this, allocationCount);	// will throw on failure
 
@@ -2176,6 +2195,10 @@ void DynamicMemoryAllocator::debugIgnoreLeaksForThisBlock(void* pBlockPtr)
 	allocate a chunk-o-bytes from this DMA and return it, but don't bother zeroing
 	out the block. if unable to allocate, throw ERROR_OUT_OF_MEMORY. this
 	function will never return null.
+#ifdef ZH
+
+  added code to make sure we're on a DWord boundary, throw exception if not
+#endif
 */
 void *DynamicMemoryAllocator::allocateBytesDoNotZeroImplementation(Int numBytes DECLARE_LITERALSTRING_ARG2)
 {
@@ -2262,6 +2285,15 @@ void *DynamicMemoryAllocator::allocateBytesDoNotZeroImplementation(Int numBytes 
 		::memset32(result, s_initFillerValue, numBytes);
 	}
 	#endif
+#endif
+#ifdef ZH
+
+#if defined(_DEBUG) || defined(_INTERNAL)
+  // check alignment
+  if (unsigned(result)&3)
+    throw ERROR_OUT_OF_MEMORY;
+#endif
+
 #endif
 	return result;
 }
@@ -2671,7 +2703,12 @@ MemoryPool *MemoryPoolFactory::createMemoryPool(const char *poolName, Int alloca
 		throw ERROR_OUT_OF_MEMORY;
 	}
 
+#ifdef OG
 	pool = new (::sysAllocate(sizeof MemoryPool)) MemoryPool;	// will throw on failure
+#endif
+#ifdef ZH
+	pool = new (::sysAllocateDoNotZero(sizeof MemoryPool)) MemoryPool;	// will throw on failure
+#endif
 	pool->init(this, poolName, allocationSize, initialAllocationCount, overflowAllocationCount);	// will throw on failure
 
 	pool->addToList(&m_firstPoolInFactory);
@@ -2726,7 +2763,12 @@ DynamicMemoryAllocator *MemoryPoolFactory::createDynamicMemoryAllocator(Int numS
 {
 	DynamicMemoryAllocator *dma;
 
+#ifdef OG
 	dma = new (::sysAllocate(sizeof DynamicMemoryAllocator)) DynamicMemoryAllocator;	// will throw on failure
+#endif
+#ifdef ZH
+	dma = new (::sysAllocateDoNotZero(sizeof DynamicMemoryAllocator)) DynamicMemoryAllocator;	// will throw on failure
+#endif
 	dma->init(this, numSubPools, pParms);	// will throw on failure
 
 	dma->addToList(&m_firstDmaInFactory);
@@ -3433,7 +3475,12 @@ void initMemoryManager()
 		Int numSubPools;
 		const PoolInitRec *pParms;
 		userMemoryManagerGetDmaParms(&numSubPools, &pParms);
+#ifdef OG
 		TheMemoryPoolFactory = new (::sysAllocate(sizeof MemoryPoolFactory)) MemoryPoolFactory;	// will throw on failure
+#endif
+#ifdef ZH
+		TheMemoryPoolFactory = new (::sysAllocateDoNotZero(sizeof MemoryPoolFactory)) MemoryPoolFactory;	// will throw on failure
+#endif
 		TheMemoryPoolFactory->init();	// will throw on failure
 		TheDynamicMemoryAllocator = TheMemoryPoolFactory->createDynamicMemoryAllocator(numSubPools, pParms);	// will throw on failure
 		userMemoryManagerInitPools();
@@ -3508,7 +3555,12 @@ static void preMainInitMemoryManager()
 		Int numSubPools;
 		const PoolInitRec *pParms;
 		userMemoryManagerGetDmaParms(&numSubPools, &pParms);
+#ifdef OG
 		TheMemoryPoolFactory = new (::sysAllocate(sizeof MemoryPoolFactory)) MemoryPoolFactory;	// will throw on failure
+#endif
+#ifdef ZH
+		TheMemoryPoolFactory = new (::sysAllocateDoNotZero(sizeof MemoryPoolFactory)) MemoryPoolFactory;	// will throw on failure
+#endif
 		TheMemoryPoolFactory->init();	// will throw on failure
 
 		TheDynamicMemoryAllocator = TheMemoryPoolFactory->createDynamicMemoryAllocator(numSubPools, pParms);	// will throw on failure

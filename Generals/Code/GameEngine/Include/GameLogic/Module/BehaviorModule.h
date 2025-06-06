@@ -65,12 +65,17 @@ class LandMineInterface;
 class ProjectileUpdateInterface;
 class AIUpdateInterface;
 class ExitInterface;
+#ifdef OG
 class DelayedUpgradeUpdateInterface;
+#endif
 class DockUpdateInterface;
 class RailedTransportDockUpdateInterface;
 class SpecialPowerUpdateInterface;
 class SlavedUpdateInterface;
 class SpawnBehaviorInterface;
+#ifdef ZH
+class CountermeasuresBehaviorInterface;
+#endif
 class SlowDeathBehaviorInterface;
 class PowerPlantUpdateInterface;
 class ProductionUpdateInterface;
@@ -79,6 +84,10 @@ class SpecialPowerTemplate;
 class WeaponTemplate;
 class DamageInfo;
 class ParticleSystemTemplate;
+#ifdef ZH
+class StealthUpdate;
+class SpyVisionUpdate;
+#endif
 
 
 //-------------------------------------------------------------------------------------------------
@@ -126,7 +135,9 @@ public:
 	virtual ProjectileUpdateInterface* getProjectileUpdateInterface() = 0;
 	virtual AIUpdateInterface* getAIUpdateInterface() = 0;
 	virtual ExitInterface* getUpdateExitInterface() = 0;
+#ifdef OG
 	virtual DelayedUpgradeUpdateInterface* getDelayedUpgradeUpdateInterface() = 0;
+#endif
 	virtual DockUpdateInterface* getDockUpdateInterface() = 0;
 	virtual RailedTransportDockUpdateInterface *getRailedTransportDockUpdateInterface( void ) = 0;
 	virtual SlowDeathBehaviorInterface* getSlowDeathBehaviorInterface() = 0;
@@ -136,6 +147,10 @@ public:
 	virtual HordeUpdateInterface* getHordeUpdateInterface() = 0;
 	virtual PowerPlantUpdateInterface* getPowerPlantUpdateInterface() = 0;
 	virtual SpawnBehaviorInterface* getSpawnBehaviorInterface() = 0;
+#ifdef ZH
+	virtual CountermeasuresBehaviorInterface* getCountermeasuresBehaviorInterface() = 0;
+	virtual const CountermeasuresBehaviorInterface* getCountermeasuresBehaviorInterface() const = 0;
+#endif
 
 };
 
@@ -163,6 +178,10 @@ public:
 	virtual SpecialPowerModuleInterface* getSpecialPower() { return NULL; }
 	virtual UpdateModuleInterface* getUpdate() { return NULL; }
 	virtual UpgradeModuleInterface* getUpgrade() { return NULL; }
+#ifdef ZH
+  virtual StealthUpdate* getStealth() { return NULL; }
+	virtual SpyVisionUpdate* getSpyVisionUpdate() { return NULL; }
+#endif
 
 	virtual ParkingPlaceBehaviorInterface* getParkingPlaceBehaviorInterface() { return NULL; }
 	virtual RebuildHoleBehaviorInterface* getRebuildHoleBehaviorInterface() { return NULL; }
@@ -178,7 +197,9 @@ public:
 	virtual ProjectileUpdateInterface* getProjectileUpdateInterface() { return NULL; }
 	virtual AIUpdateInterface* getAIUpdateInterface() { return NULL; }
 	virtual ExitInterface* getUpdateExitInterface() { return NULL; }
+#ifdef OG
 	virtual DelayedUpgradeUpdateInterface* getDelayedUpgradeUpdateInterface() { return NULL; }
+#endif
 	virtual DockUpdateInterface* getDockUpdateInterface() { return NULL; }
 	virtual RailedTransportDockUpdateInterface *getRailedTransportDockUpdateInterface( void ) { return NULL; }
 	virtual SlowDeathBehaviorInterface* getSlowDeathBehaviorInterface() { return NULL; }
@@ -188,6 +209,10 @@ public:
 	virtual HordeUpdateInterface* getHordeUpdateInterface() { return NULL; }
 	virtual PowerPlantUpdateInterface* getPowerPlantUpdateInterface() { return NULL; }
 	virtual SpawnBehaviorInterface* getSpawnBehaviorInterface() { return NULL; }
+#ifdef ZH
+	virtual CountermeasuresBehaviorInterface* getCountermeasuresBehaviorInterface() { return NULL; }
+	virtual const CountermeasuresBehaviorInterface* getCountermeasuresBehaviorInterface() const { return NULL; }
+#endif
 
 protected:
 
@@ -199,6 +224,15 @@ protected:
 };
 inline BehaviorModule::BehaviorModule( Thing *thing, const ModuleData* moduleData ) : ObjectModule( thing, moduleData ) { }
 inline BehaviorModule::~BehaviorModule() { }
+#ifdef ZH
+
+
+enum RunwayReservationType
+{
+	RESERVATION_TAKEOFF,
+	RESERVATION_LANDING,
+};
+#endif
 
 //-------------------------------------------------------------------------------------------------
 class ParkingPlaceBehaviorInterface
@@ -211,24 +245,52 @@ public:
 		Coord3D		runwayPrep; 
 		Coord3D		runwayStart; 
 		Coord3D		runwayEnd; 
+#ifdef ZH
+		Coord3D		runwayExit;
+		Coord3D	  runwayLandingStart;
+		Coord3D	  runwayLandingEnd;
+#endif
 		Coord3D		runwayApproach;
 		Coord3D		hangarInternal;
+#ifdef ZH
+		Real			runwayTakeoffDist;
+#endif
 		Real			hangarInternalOrient;
 	};
 	virtual Bool shouldReserveDoorWhenQueued(const ThingTemplate* thing) const = 0; 
 	virtual Bool hasAvailableSpaceFor(const ThingTemplate* thing) const = 0; 
 	virtual Bool hasReservedSpace(ObjectID id) const = 0; 
+#ifdef ZH
+	virtual Int  getSpaceIndex( ObjectID id ) const = 0;
+#endif
 	virtual Bool reserveSpace(ObjectID id, Real parkingOffset, PPInfo* info) = 0;
 	virtual void releaseSpace(ObjectID id) = 0; 
 	virtual Bool reserveRunway(ObjectID id, Bool forLanding) = 0;
+#ifdef ZH
+	virtual void calcPPInfo( ObjectID id, PPInfo *info ) = 0;
+#endif
 	virtual void releaseRunway(ObjectID id) = 0; 
 	virtual Int getRunwayCount() const = 0;
+#ifdef OG
 	virtual ObjectID getRunwayReservation(Int r) = 0;
+#endif
+#ifdef ZH
+	virtual ObjectID getRunwayReservation( Int r, RunwayReservationType type = RESERVATION_TAKEOFF ) = 0;
+#endif
 	virtual void transferRunwayReservationToNextInLineForTakeoff(ObjectID id) = 0;
 	virtual Real getApproachHeight() const = 0;
+#ifdef ZH
+	virtual Real getLandingDeckHeightOffset() const = 0;
+#endif
 	virtual void setHealee(Object* healee, Bool add) = 0;
 	virtual void killAllParkedUnits() = 0;
 	virtual void defectAllParkedUnits(Team* newTeam, UnsignedInt detectionTime) = 0;
+#ifdef ZH
+	virtual Bool calcBestParkingAssignment( ObjectID id, Coord3D *pos, Int *oldIndex = NULL, Int *newIndex = NULL ) = 0;
+
+	virtual const std::vector<Coord3D>* getTaxiLocations( ObjectID id ) const = 0;
+	virtual const std::vector<Coord3D>* getCreationLocations( ObjectID id ) const = 0;
+#endif
 };
 
 //-------------------------------------------------------------------------------------------------

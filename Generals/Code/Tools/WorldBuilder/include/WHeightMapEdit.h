@@ -60,8 +60,10 @@ typedef struct
 } TGlobalTextureClass;
 
 
+#ifdef OG
 #define NUM_ALPHA_TILES 8
 
+#endif
 class WorldHeightMapEdit : public WorldHeightMap
 {
 protected:
@@ -151,8 +153,10 @@ public: // Editing methods.
 	Bool remapTextures(void); ///< returns true if the operation had an effect.
 	void reloadTextures(void); ///< Reloads textures from disk.
 	void resetResources(void); ///< Releases textures in preparation for device reset.
+#ifdef OG
 
 	Bool getRawTileData(Short tileNdx, Int width, UnsignedByte *buffer, Int bufLen);
+#endif
 
 	void dbgVerifyAfterUndo(void); ///< Verifies the structures are still consistent.
 	Bool doCliffAdjustment(Int xIndex, Int yIndex);

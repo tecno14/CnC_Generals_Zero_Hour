@@ -16,7 +16,12 @@
 **	along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#ifdef OG
 /* $Header: /Commando/Code/wwlib/chunkio.h 21    7/31/01 6:41p Patrick $ */
+#endif
+#ifdef ZH
+/* $Header: /Commando/Code/wwlib/chunkio.h 22    10/22/01 6:42p Steve_t $ */
+#endif
 /*********************************************************************************************** 
  ***                            Confidential - Westwood Studios                              *** 
  *********************************************************************************************** 
@@ -25,11 +30,26 @@
  *                                                                                             * 
  *                     $Archive:: /Commando/Code/wwlib/chunkio.h                              $* 
  *                                                                                             * 
+#ifdef OG
  *                      $Author:: Patrick                                                     $* 
+#endif
+#ifdef ZH
+ *                      $Author:: Steve_t                                                     $*
+#endif
  *                                                                                             * 
+#ifdef OG
  *                     $Modtime:: 7/27/01 2:47p                                               $* 
+#endif
+#ifdef ZH
+ *                     $Modtime:: 10/21/01 8:58p                                              $*
+#endif
  *                                                                                             * 
+#ifdef OG
  *                    $Revision:: 21                                                          $* 
+#endif
+#ifdef ZH
+ *                    $Revision:: 22                                                          $*
+#endif
  *                                                                                             * 
  *---------------------------------------------------------------------------------------------* 
  * Functions:                                                                                  * 
@@ -339,8 +359,14 @@ private:
 */
 #define READ_SAFE_MICRO_CHUNK(cload,id,var,type)								\
 	case (id):	{                                                     \
+#ifdef OG
 		void *temp_read_buffer_on_the_stack = _alloca(sizeof(var));		\
 		cload.Read(temp_read_buffer_on_the_stack, sizeof(var));        \
+#endif
+#ifdef ZH
+		void *temp_read_buffer_on_the_stack = _alloca(sizeof(type));	\
+		cload.Read(temp_read_buffer_on_the_stack, sizeof(type));       \
+#endif
 		var = *((type*)temp_read_buffer_on_the_stack);                 \
 		break;                                                         \
 	}

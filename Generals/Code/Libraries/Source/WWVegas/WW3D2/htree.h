@@ -16,20 +16,40 @@
 **	along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#ifdef OG
 /* $Header: /VSS_Sync/ww3d2/htree.h 4     8/29/01 9:49p Vss_sync $ */
+#endif
+#ifdef ZH
+/* $Header: /Commando/Code/ww3d2/htree.h 6     10/01/01 5:55p Patrick $ */
+#endif
 /*********************************************************************************************** 
  ***                            Confidential - Westwood Studios                              *** 
  *********************************************************************************************** 
  *                                                                                             * 
  *                 Project Name : Commando / G 3D Library                                      * 
  *                                                                                             * 
+#ifdef OG
  *                     $Archive:: /VSS_Sync/ww3d2/htree.h                                     $* 
+#endif
+#ifdef ZH
+ *                     $Archive:: /Commando/Code/ww3d2/htree.h                                $* 
+#endif
  *                                                                                             * 
  *                       Author:: Greg_h                                                       * 
  *                                                                                             * 
+#ifdef OG
  *                     $Modtime:: 8/29/01 7:29p                                               $* 
+#endif
+#ifdef ZH
+ *                     $Modtime:: 9/28/01 3:05p                                               $* 
+#endif
  *                                                                                             * 
+#ifdef OG
  *                    $Revision:: 4                                                           $* 
+#endif
+#ifdef ZH
+ *                    $Revision:: 6                                                           $* 
+#endif
  *                                                                                             * 
  *---------------------------------------------------------------------------------------------* 
  * Functions:                                                                                  * 
@@ -123,6 +143,9 @@ public:
 	void					Release_Bone(int boneindex);
 	bool					Is_Bone_Captured(int boneindex) const;
 	void					Control_Bone(int boneindex,const Matrix3D & relative_tm,bool world_space_translation = false);
+#ifdef ZH
+	void					Get_Bone_Control(int boneindex, Matrix3D & relative_tm) const;
+#endif
 
 
 
@@ -132,9 +155,17 @@ public:
 	// a pivot at a given frame.
 	//
 	bool					Simple_Evaluate_Pivot (HAnimClass *motion, int pivot_index, float frame, const Matrix3D &obj_tm, Matrix3D *end_tm) const;
+#ifdef ZH
+	bool					Simple_Evaluate_Pivot (int pivot_index, const Matrix3D &obj_tm, Matrix3D *end_tm) const;
+#endif
 
 	// Scale this HTree by a constant factor:
 	void					Scale(float factor);
+#ifdef ZH
+
+	// Morph the bones on the HTree based on the scale passed in
+	static HTreeClass *	Alter_Avatar_HTree( const HTreeClass *tree, Vector3 &scale );
+#endif
 
 	// Morph the bones on the HTree using weights from a number of other HTrees
 	static HTreeClass *	Create_Morphed( int num_morph_sources,

@@ -44,7 +44,12 @@ void __cdecl Print_Win32Error(unsigned long win32Error)
 			FORMAT_MESSAGE_IGNORE_INSERTS, NULL, win32Error, MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),
 			(LPTSTR)&lpMsgBuf, 0, NULL);
 
+#ifdef OG
 	WWDEBUG_SAY(((const char*)lpMsgBuf));
+#endif
+#ifdef ZH
+	WWDEBUG_SAY(("Win32 Error: %s\n", (const char*)lpMsgBuf));
+#endif
 	LocalFree(lpMsgBuf);
 }
 #endif

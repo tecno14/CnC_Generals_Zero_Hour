@@ -90,7 +90,12 @@ W3DShroud::W3DShroud(void)
 	m_cellHeight=DEFAULT_SHROUD_CELL_SIZE;
 	m_numCellsX=0;
 	m_numCellsY=0;
+#ifdef OG
 	m_shroudFilter=TextureClass::FILTER_TYPE_DEFAULT;
+#endif
+#ifdef ZH
+	m_shroudFilter=TextureFilterClass::FILTER_TYPE_DEFAULT;
+#endif
 }
 
 //-----------------------------------------------------------------------------
@@ -125,16 +130,36 @@ void W3DShroud::init(WorldHeightMap *pMap, Real worldCellSizeX, Real worldCellSi
 	//Precompute a bounding box for entire shroud layer
 	if (pMap)
 	{	
+#ifdef OG
 		m_numCellsX = REAL_TO_INT_CEIL((Real)(pMap->getXExtent() - 1 - pMap->getBorderSize()*2)*MAP_XY_FACTOR/m_cellWidth);
 		m_numCellsY = REAL_TO_INT_CEIL((Real)(pMap->getYExtent() - 1 - pMap->getBorderSize()*2)*MAP_XY_FACTOR/m_cellHeight);
+#endif
+#ifdef ZH
+		m_numCellsX = REAL_TO_INT_CEIL((Real)(pMap->getXExtent() - 1 - pMap->getBorderSizeInline()*2)*MAP_XY_FACTOR/m_cellWidth);
+		m_numCellsY = REAL_TO_INT_CEIL((Real)(pMap->getYExtent() - 1 - pMap->getBorderSizeInline()*2)*MAP_XY_FACTOR/m_cellHeight);
+#endif
 
 		//Maximum visible cells will depend on maximum drawable terrain size plus 1 for partial cells (since
 		//shroud cells are larger than terrain cells).
 		dstTextureWidth=m_numMaxVisibleCellsX=REAL_TO_INT_FLOOR((Real)(pMap->getDrawWidth()-1)*MAP_XY_FACTOR/m_cellWidth)+1;
 		dstTextureHeight=m_numMaxVisibleCellsY=REAL_TO_INT_FLOOR((Real)(pMap->getDrawHeight()-1)*MAP_XY_FACTOR/m_cellHeight)+1;
+#ifdef ZH
+
+		dstTextureWidth = m_numCellsX;
+		dstTextureHeight = m_numCellsY; 
+		
+#endif
 		dstTextureWidth += 2;	//enlarge by 2 pixels so we can have a border color all the way around.
+#ifdef ZH
+		unsigned int depth = 1;
+#endif
 		dstTextureHeight += 2;	//enlarge by 2 pixels so we can have border color all the way around.
+#ifdef OG
 		TextureLoader::Validate_Texture_Size((unsigned int &)dstTextureWidth,(unsigned int &)dstTextureHeight);
+#endif
+#ifdef ZH
+		TextureLoader::Validate_Texture_Size((unsigned int &)dstTextureWidth,(unsigned int &)dstTextureHeight, depth);
+#endif
 	}
 
 	UnsignedInt srcWidth,srcHeight;
@@ -234,10 +259,20 @@ Bool W3DShroud::ReAcquireResources(void)
 		// Since we control the video memory copy, we can do partial updates more efficiently. Or do shift blits.
 #if defined(_DEBUG) || defined(_INTERNAL)
 		if (TheGlobalData && TheGlobalData->m_fogOfWarOn)
+#ifdef OG
 			m_pDstTexture = MSGNEW("TextureClass") TextureClass(m_dstTextureWidth,m_dstTextureHeight,WW3D_FORMAT_A4R4G4B4,TextureClass::MIP_LEVELS_1, TextureClass::POOL_DEFAULT);
+#endif
+#ifdef ZH
+			m_pDstTexture = MSGNEW("TextureClass") TextureClass(m_dstTextureWidth,m_dstTextureHeight,WW3D_FORMAT_A4R4G4B4,MIP_LEVELS_1, TextureClass::POOL_DEFAULT);
+#endif
 		else
 #endif
+#ifdef OG
 			m_pDstTexture = MSGNEW("TextureClass") TextureClass(m_dstTextureWidth,m_dstTextureHeight,WW3D_FORMAT_R5G6B5,TextureClass::MIP_LEVELS_1, TextureClass::POOL_DEFAULT);
+#endif
+#ifdef ZH
+			m_pDstTexture = MSGNEW("TextureClass") TextureClass(m_dstTextureWidth,m_dstTextureHeight,WW3D_FORMAT_R5G6B5,MIP_LEVELS_1, TextureClass::POOL_DEFAULT);
+#endif
 
 		DEBUG_ASSERTCRASH( m_pDstTexture != NULL, ("Failed ReAcquire of shroud texture"));
 
@@ -247,9 +282,16 @@ Bool W3DShroud::ReAcquireResources(void)
 			m_dstTextureHeight = 0;
 			return FALSE;
 		}
+#ifdef OG
 		m_pDstTexture->Set_U_Addr_Mode(TextureClass::TEXTURE_ADDRESS_CLAMP);
 		m_pDstTexture->Set_V_Addr_Mode(TextureClass::TEXTURE_ADDRESS_CLAMP);
 		m_pDstTexture->Set_Mip_Mapping(TextureClass::FILTER_TYPE_NONE);
+#endif
+#ifdef ZH
+		m_pDstTexture->Get_Filter().Set_U_Addr_Mode(TextureFilterClass::TEXTURE_ADDRESS_CLAMP);
+		m_pDstTexture->Get_Filter().Set_V_Addr_Mode(TextureFilterClass::TEXTURE_ADDRESS_CLAMP);
+		m_pDstTexture->Get_Filter().Set_Mip_Mapping(TextureFilterClass::FILTER_TYPE_NONE);
+#endif
 		m_clearDstTexture = TRUE;	//force clearing of destination texture first time it's used.
 
 		return TRUE;
@@ -614,15 +656,38 @@ void W3DShroud::render(CameraClass *cam)
 
 
 	WorldHeightMap *hm=TheTerrainRenderObject->getMap();
+#ifdef OG
 	Int visStartX=REAL_TO_INT_FLOOR((Real)(hm->getDrawOrgX()-hm->getBorderSize())*MAP_XY_FACTOR/m_cellWidth);	//start of rendered heightmap rectangle
+#endif
+#ifdef ZH
+	Int visStartX=REAL_TO_INT_FLOOR((Real)(hm->getDrawOrgX()-hm->getBorderSizeInline())*MAP_XY_FACTOR/m_cellWidth);	//start of rendered heightmap rectangle
+#endif
 	if (visStartX < 0)
 		visStartX = 0;	//no shroud is applied in border area so it always starts at > 0
+#ifdef OG
 	Int visStartY=REAL_TO_INT_FLOOR((Real)(hm->getDrawOrgY()-hm->getBorderSize())*MAP_XY_FACTOR/m_cellHeight);
+#endif
+#ifdef ZH
+	Int visStartY=REAL_TO_INT_FLOOR((Real)(hm->getDrawOrgY()-hm->getBorderSizeInline())*MAP_XY_FACTOR/m_cellHeight);
+#endif
 	if (visStartY < 0)
 		visStartY = 0;	//no shroud is applied in border area so it always starts at > 0
+#ifdef ZH
+
+	// Do it all [3/11/2003]
+	visStartX = 0;
+	visStartY = 0;
+
+#endif
 	Int visEndX=visStartX+REAL_TO_INT_FLOOR((Real)(hm->getDrawWidth()-1)*MAP_XY_FACTOR/m_cellWidth)+1;	//size of rendered heightmap rectangle
 	Int visEndY=visStartY+REAL_TO_INT_FLOOR((Real)(hm->getDrawHeight()-1)*MAP_XY_FACTOR/m_cellHeight)+1;
 
+#ifdef ZH
+	// Do it all [3/11/2003]
+	visEndX = m_numCellsX;
+	visEndY = m_numCellsY;
+
+#endif
 	if (visEndX > m_numCellsX)
 	{	
 		visStartX -= visEndX - m_numCellsX;	//shift visible rectangle to fall within terrain bounds
@@ -663,10 +728,21 @@ void W3DShroud::render(CameraClass *cam)
 
 	pSurface->Unlock();
 */
+#ifdef OG
 	if (m_pDstTexture->Get_Mag_Filter() != m_shroudFilter)
+#endif
+#ifdef ZH
+	if (m_pDstTexture->Get_Filter().Get_Mag_Filter() != m_shroudFilter)
+#endif
 	{
+#ifdef OG
 		m_pDstTexture->Set_Mag_Filter(m_shroudFilter);
 		m_pDstTexture->Set_Min_Filter(m_shroudFilter);
+#endif
+#ifdef ZH
+		m_pDstTexture->Get_Filter().Set_Mag_Filter(m_shroudFilter);
+		m_pDstTexture->Get_Filter().Set_Min_Filter(m_shroudFilter);
+#endif
 	}
 
 	//Update video memory texture with sysmem copy
@@ -762,9 +838,19 @@ void W3DShroud::interpolateFogLevels(RECT *rect)
 void W3DShroud::setShroudFilter(Bool enable)
 {
 	if (enable)
+#ifdef OG
 		m_shroudFilter=TextureClass::FILTER_TYPE_DEFAULT;
+#endif
+#ifdef ZH
+		m_shroudFilter=TextureFilterClass::FILTER_TYPE_DEFAULT;
+#endif
 	else
+#ifdef OG
 		m_shroudFilter=TextureClass::FILTER_TYPE_NONE;
+#endif
+#ifdef ZH
+		m_shroudFilter=TextureFilterClass::FILTER_TYPE_NONE;
+#endif
 }
 
 //-----------------------------------------------------------------------------

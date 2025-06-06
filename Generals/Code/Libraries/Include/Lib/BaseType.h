@@ -113,6 +113,13 @@
 #define FALSE false
 #endif
 
+#ifdef ZH
+// Elements in an array
+#ifndef ELEMENTS_OF
+#define ELEMENTS_OF( x ) ( sizeof( x ) / sizeof( x[0] ) )
+#endif
+
+#endif
 //--------------------------------------------------------------------
 // Fundamental type definitions
 //--------------------------------------------------------------------
@@ -184,9 +191,52 @@ __forceinline long fast_float2long_round(float f)
 	}
 
 	return i;
+#ifdef ZH
 }
 
+// super fast float trunc routine, works always (independent of any FPU modes)
+// code courtesy of Martin Hoffesommer (grin)
+__forceinline float fast_float_trunc(float f)
+{
+  _asm
+  {
+    mov ecx,[f]
+    shr ecx,23
+    mov eax,0xff800000
+    xor ebx,ebx
+    sub cl,127
+    cmovc eax,ebx
+    sar eax,cl
+    and [f],eax
+#endif
+}
+#ifdef ZH
+  return f;
+}
+#endif
+
+#ifdef ZH
+// same here, fast floor function
+__forceinline float fast_float_floor(float f)
+{
+  static unsigned almost1=(126<<23)|0x7fffff;
+  if (*(unsigned *)&f &0x80000000)
+    f-=*(float *)&almost1;
+  return fast_float_trunc(f);
+}
+
+// same here, fast ceil function
+__forceinline float fast_float_ceil(float f)
+{
+  static unsigned almost1=(126<<23)|0x7fffff;
+  if ( (*(unsigned *)&f &0x80000000)==0)
+    f+=*(float *)&almost1;
+  return fast_float_trunc(f);
+}
+
+#endif
 //-------------------------------------------------------------------------------------------------
+#ifdef OG
 #define REAL_TO_INT(x)						((Int)(x))
 #define REAL_TO_UNSIGNEDINT(x)		((UnsignedInt)(x))
 #define REAL_TO_SHORT(x)					((Short)(x))
@@ -194,13 +244,39 @@ __forceinline long fast_float2long_round(float f)
 #define REAL_TO_BYTE(x)						((Byte)(x))
 #define REAL_TO_UNSIGNEDBYTE(x)		((UnsignedByte)(x))
 #define REAL_TO_CHAR(x)						((Char)(x))
+#endif
+#ifdef ZH
+#define REAL_TO_INT(x)						((Int)(fast_float2long_round(fast_float_trunc(x))))
+#define REAL_TO_UNSIGNEDINT(x)		((UnsignedInt)(fast_float2long_round(fast_float_trunc(x))))
+#define REAL_TO_SHORT(x)					((Short)(fast_float2long_round(fast_float_trunc(x))))
+#define REAL_TO_UNSIGNEDSHORT(x)	((UnsignedShort)(fast_float2long_round(fast_float_trunc(x))))
+#define REAL_TO_BYTE(x)						((Byte)(fast_float2long_round(fast_float_trunc(x))))
+#define REAL_TO_UNSIGNEDBYTE(x)		((UnsignedByte)(fast_float2long_round(fast_float_trunc(x))))
+#define REAL_TO_CHAR(x)						((Char)(fast_float2long_round(fast_float_trunc(x))))
+#endif
 #define DOUBLE_TO_REAL(x)					((Real) (x))
+#ifdef OG
 #define DOUBLE_TO_INT(x)					((Int) (x))
+#endif
+#ifdef ZH
+#define DOUBLE_TO_INT(x)					((Int) (fast_float2long_round(fast_float_trunc(x))))
+#endif
 #define INT_TO_REAL(x)						((Real) (x))
 
 // once we've ceiled/floored, trunc and round are identical, and currently, round is faster... (srj)
+#ifdef OG
 #define REAL_TO_INT_CEIL(x)				(fast_float2long_round(ceilf(x)))
 #define REAL_TO_INT_FLOOR(x)			(fast_float2long_round(floorf(x)))
+
+#endif
+#ifdef ZH
+#define REAL_TO_INT_CEIL(x)				(fast_float2long_round(fast_float_ceil(x)))
+#define REAL_TO_INT_FLOOR(x)			(fast_float2long_round(fast_float_floor(x)))
+
+#define FAST_REAL_TRUNC(x)        fast_float_trunc(x)
+#define FAST_REAL_CEIL(x)         fast_float_ceil(x)
+#define FAST_REAL_FLOOR(x)        fast_float_floor(x)
+#endif
 
 //--------------------------------------------------------------------
 // Derived type definitions
@@ -239,12 +315,23 @@ struct Coord2D
 		}
 	}
 	
+#ifdef OG
 	Real toAngle( void );  ///< turn 2D vector into angle (where angle 0 is down the +x axis)
+#endif
+#ifdef ZH
+	Real toAngle( void ) const;  ///< turn 2D vector into angle (where angle 0 is down the +x axis)
+#endif
 
 };
 
+#ifdef OG
 inline Real Coord2D::toAngle( void )
+#endif
+#ifdef ZH
+inline Real Coord2D::toAngle( void ) const
+#endif
 {
+#ifdef OG
 	Coord2D vector;
 
 	vector.x = x;
@@ -254,8 +341,15 @@ inline Real Coord2D::toAngle( void )
 
 	// normalize
 	if (dist == 0.0f)
+#endif
+#ifdef ZH
+	const Real len = length();
+	if (len == 0.0f)
+
+#endif
 		return 0.0f;
 
+#ifdef OG
 	Coord2D dir;
 	dir.x = 1.0f;
 	dir.y = 0.0f;
@@ -267,12 +361,26 @@ inline Real Coord2D::toAngle( void )
 	// dot of two unit vectors is cos of angle
 	Real c = dir.x*vector.x + dir.y*vector.y;
 
+#endif
+#ifdef ZH
+	Real c = x/len;
+
+#endif
 	// bound it in case of numerical error
+#ifdef OG
 	if (c < -1.0)
 		c = -1.0;
 	else if (c > 1.0)
 		c = 1.0;
+#endif
+#ifdef ZH
+	if (c < -1.0f)
+		c = -1.0f;
+	else if (c > 1.0f)
+		c = 1.0f;
+#endif
 
+#ifdef OG
 	Real value = (Real)ACos( (Real)c );
 
 	// Determine sign by checking Z component of dir cross vector
@@ -287,6 +395,11 @@ inline Real Coord2D::toAngle( void )
 
 	return value;
 
+#endif
+#ifdef ZH
+	return y < 0.0f ? -ACos(c) : ACos(c);
+
+#endif
 }  // end toAngle
 
 struct ICoord2D 

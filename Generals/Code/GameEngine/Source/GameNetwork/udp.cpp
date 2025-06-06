@@ -43,7 +43,12 @@
 
 //-------------------------------------------------------------------------
 
+#ifdef OG
 #if defined(_DEBUG) || defined(_INTERNAL)
+#endif
+#ifdef ZH
+#ifdef DEBUG_LOGGING
+#endif
 
 #define CASE(x) case (x): return #x;
 

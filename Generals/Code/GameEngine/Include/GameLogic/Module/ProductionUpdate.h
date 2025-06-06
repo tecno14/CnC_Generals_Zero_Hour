@@ -173,6 +173,13 @@ public:
 
 	virtual void setHoldDoorOpen(ExitDoorType exitDoor, Bool holdIt) = 0;
 
+#ifdef ZH
+	//These functions keep track of the special power construction of a new building via a special power instead of standard production interface.
+	//This was added for the sneak attack building functionality.
+	virtual const CommandButton* getSpecialPowerConstructionCommandButton() const = 0;
+	virtual void setSpecialPowerConstructionCommandButton( const CommandButton *commandButton ) = 0;
+
+#endif
 };
 
 //-------------------------------------------------------------------------------------------------
@@ -227,6 +234,13 @@ public:
 
 	virtual UpdateSleepTime update( void );					///< the update
 
+#ifdef ZH
+	//These functions keep track of the special power construction of a new building via a special power instead of standard production interface.
+	//This was added for the sneak attack building functionality.
+	virtual const CommandButton* getSpecialPowerConstructionCommandButton() const { return m_specialPowerConstructionCommandButton; }
+	virtual void setSpecialPowerConstructionCommandButton( const CommandButton *commandButton ) { m_specialPowerConstructionCommandButton = commandButton; }
+
+#endif
 	// DieModuleInterface
 	virtual void onDie( const DamageInfo *damageInfo );
 
@@ -246,6 +260,9 @@ protected:
 		Bool				m_holdOpen;															///< if T, don't allow door to close
 	};
 
+#ifdef ZH
+	const CommandButton *m_specialPowerConstructionCommandButton; ///< In a mode to construct a specific building via a special power. (NO NEED TO SAVE DATA ON THIS FIELD)
+#endif
 	ProductionEntry*		m_productionQueue;							///< queue of things we want to build
 	ProductionEntry*		m_productionQueueTail;					///< tail pointer for m_productionQueue
 	ProductionID				m_uniqueID;											///< unique ID counter for producing units

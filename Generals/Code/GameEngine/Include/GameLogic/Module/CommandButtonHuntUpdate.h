@@ -79,6 +79,9 @@ protected:
 	Object* scanClosestTarget(void);
 	UpdateSleepTime huntSpecialPower(AIUpdateInterface *ai);
 	UpdateSleepTime huntWeapon(AIUpdateInterface *ai);
+#ifdef ZH
+	UpdateSleepTime huntEnter( AIUpdateInterface *ai );
+#endif
 
 
 protected:

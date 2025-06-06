@@ -52,13 +52,21 @@
 #include "Common/CriticalSection.h"
 #endif
 #include "Common/Debug.h"
+#ifdef OG
 #include "Common/registry.h"
+#endif
 #include "Common/SystemInfo.h"
 #include "Common/UnicodeString.h"
 #include "GameClient/GameText.h"
 #include "GameClient/Keyboard.h"
 #include "GameClient/Mouse.h"
+#ifdef ZH
+#if defined(DEBUG_STACKTRACE) || defined(IG_DEBUG_STACKTRACE)
+#endif
 #include "Common/StackDump.h"
+#ifdef ZH
+#endif
+#endif
 
 // Horrible reference, but we really, really need to know if we are windowed.
 extern bool DX8Wrapper_IsWindowed;
@@ -109,11 +117,13 @@ static DWORD theMainThreadID = 0;
 // ----------------------------------------------------------------------------
 
 char* TheCurrentIgnoreCrashPtr = NULL;
+#ifdef OG
 #ifdef DEBUG_LOGGING
 UnsignedInt DebugLevelMask = 0;
 const char *TheDebugLevels[DEBUG_LEVEL_MAX] = {
 	"NET"
 };
+#endif
 #endif
 
 // ----------------------------------------------------------------------------
@@ -139,7 +149,12 @@ static void doStackDump();
 inline Bool ignoringAsserts()
 {
 #if defined(_DEBUG) || defined(_INTERNAL)
+#ifdef OG
 	return !DX8Wrapper_IsWindowed || TheGlobalData->m_debugIgnoreAsserts;
+#endif
+#ifdef ZH
+	return !DX8Wrapper_IsWindowed || (TheGlobalData&&TheGlobalData->m_debugIgnoreAsserts);
+#endif
 #else
 	return !DX8Wrapper_IsWindowed;
 #endif
@@ -249,8 +264,14 @@ static int doCrashBox(const char *buffer, Bool logResult)
 	int result;
 
 	if (!ignoringAsserts()) {
+#ifdef OG
 		//result = MessageBoxWrapper(buffer, "Assertion Failure", MB_ABORTRETRYIGNORE|MB_TASKMODAL|MB_ICONWARNING|MB_DEFBUTTON3);
 		result = MessageBoxWrapper(buffer, "Assertion Failure", MB_ABORTRETRYIGNORE|MB_TASKMODAL|MB_ICONWARNING);
+#endif
+#ifdef ZH
+		result = MessageBoxWrapper(buffer, "Assertion Failure", MB_ABORTRETRYIGNORE|MB_TASKMODAL|MB_ICONWARNING|MB_DEFBUTTON3);
+		//result = MessageBoxWrapper(buffer, "Assertion Failure", MB_ABORTRETRYIGNORE|MB_TASKMODAL|MB_ICONWARNING);
+#endif
 	}	else {
 		result = IDIGNORE;
 	}
@@ -335,7 +356,12 @@ void DebugInit(int flags)
 //		::MessageBox(NULL, "Debug already inited", "", MB_OK|MB_APPLMODAL);
 
 	// just quietly allow multiple calls to this, so that static ctors can call it.
+#ifdef OG
 	if (theDebugFlags == 0 && strcmp(gAppPrefix, "wb_") != 0) 
+#endif
+#ifdef ZH
+	if (theDebugFlags == 0) 
+#endif
 	{
 		theDebugFlags = flags;
 
@@ -464,7 +490,12 @@ void DebugCrash(const char *format, ...)
 	doLogOutput(theCrashBuffer);
 #endif
 #ifdef DEBUG_STACKTRACE
+#ifdef OG
 	if (!TheGlobalData->m_debugIgnoreStackTrace)
+#endif
+#ifdef ZH
+	if (!(TheGlobalData && TheGlobalData->m_debugIgnoreStackTrace))
+#endif
 	{
 		doStackDump();
 	}
@@ -546,7 +577,12 @@ void DebugSetFlags(int flags)
 
 #endif	// ALLOW_DEBUG_UTILS
 
+#ifdef OG
 #ifdef ALLOW_DEBUG_UTILS
+#endif
+#ifdef ZH
+#ifdef DEBUG_PROFILE
+#endif
 // ----------------------------------------------------------------------------
 SimpleProfiler::SimpleProfiler()
 {
@@ -655,10 +691,31 @@ void ReleaseCrash(const char *reason)
 {
 	/// do additional reporting on the crash, if possible
 
+#ifdef ZH
+	if (!DX8Wrapper_IsWindowed) {
+		if (ApplicationHWnd) {
+			ShowWindow(ApplicationHWnd, SW_HIDE);
+		}
+	}
+//#if defined(_DEBUG) || defined(_INTERNAL)
+//	/* static */ char buff[8192]; // not so static so we can be threadsafe
+//	_snprintf(buff, 8192, "Sorry, a serious error occurred. (%s)", reason);/
+//	buff[8191] = 0;
+//	::MessageBox(NULL, buff, "Technical Difficulties...", MB_OK|MB_SYSTEMMODAL|MB_ICONERROR);
+//#else
+//	::MessageBox(NULL, "Sorry, a serious error occurred.", "Technical Difficulties...", MB_OK|MB_TASKMODAL|MB_ICONERROR);
+//#endif
+#endif
 
 	char prevbuf[ _MAX_PATH ];
 	char curbuf[ _MAX_PATH ];
 
+#ifdef ZH
+	if (TheGlobalData==NULL) {
+		return; // We are shutting down, and TheGlobalData has been freed.  jba. [4/15/2003]
+	}
+
+#endif
 	strcpy(prevbuf, TheGlobalData->getPath_UserData().str());
 	strcat(prevbuf, RELEASECRASH_FILE_NAME_PREV);
 	strcpy(curbuf, TheGlobalData->getPath_UserData().str());
@@ -688,7 +745,6 @@ void ReleaseCrash(const char *reason)
 			ShowWindow(ApplicationHWnd, SW_HIDE);
 		}
 	}
-
 #if defined(_DEBUG) || defined(_INTERNAL)
 	/* static */ char buff[8192]; // not so static so we can be threadsafe
 	_snprintf(buff, 8192, "Sorry, a serious error occurred. (%s)", reason);
@@ -697,15 +753,25 @@ void ReleaseCrash(const char *reason)
 #else
 // crash error messaged changed 3/6/03 BGC
 //	::MessageBox(NULL, "Sorry, a serious error occurred.", "Technical Difficulties...", MB_OK|MB_TASKMODAL|MB_ICONERROR);
+#ifdef ZH
+//	::MessageBox(NULL, "You have encountered a serious error.  Serious errors can be caused by many things including viruses, overheated hardware and hardware that does not meet the minimum specifications for the game. Please visit the forums at www.generals.ea.com for suggested courses of action or consult your manual for Technical Support contact information.", "Technical Difficulties...", MB_OK|MB_TASKMODAL|MB_ICONERROR);
 
+// crash error message changed again 8/22/03 M Lorenzen... made this message box modal to the system so it will appear on top of any task-modal windows, splash-screen, etc.
+  ::MessageBox(NULL, "You have encountered a serious error.  Serious errors can be caused by many things including viruses, overheated hardware and hardware that does not meet the minimum specifications for the game. Please visit the forums at www.generals.ea.com for suggested courses of action or consult your manual for Technical Support contact information.", 
+   "Technical Difficulties...", 
+   MB_OK|MB_SYSTEMMODAL|MB_ICONERROR);
+#endif
+
+#ifdef OG
 	if (!GetRegistryLanguage().compareNoCase("german2") || !GetRegistryLanguage().compareNoCase("german") )
 	{
-		::MessageBox(NULL, "Es ist ein gravierender Fehler aufgetreten. Solche Fehler können durch viele verschiedene Dinge wie Viren, überhitzte Hardware und Hardware, die den Mindestanforderungen des Spiels nicht entspricht, ausgelöst werden. Tipps zur Vorgehensweise findest du in den Foren unter www.generals.ea.com, Informationen zum Technischen Kundendienst im Handbuch zum Spiel.", "Fehler...", MB_OK|MB_TASKMODAL|MB_ICONERROR);
+		::MessageBox(NULL, "Es ist ein gravierender Fehler aufgetreten. Solche Fehler kï¿½nnen durch viele verschiedene Dinge wie Viren, ï¿½berhitzte Hardware und Hardware, die den Mindestanforderungen des Spiels nicht entspricht, ausgelï¿½st werden. Tipps zur Vorgehensweise findest du in den Foren unter www.generals.ea.com, Informationen zum Technischen Kundendienst im Handbuch zum Spiel.", "Fehler...", MB_OK|MB_TASKMODAL|MB_ICONERROR);
 	} 
 	else
 	{
 		::MessageBox(NULL, "You have encountered a serious error.  Serious errors can be caused by many things including viruses, overheated hardware and hardware that does not meet the minimum specifications for the game. Please visit the forums at www.generals.ea.com for suggested courses of action or consult your manual for Technical Support contact information.", "Technical Difficulties...", MB_OK|MB_TASKMODAL|MB_ICONERROR);
 	}
+#endif
 
 #endif
 

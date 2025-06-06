@@ -33,15 +33,29 @@
 #define __DAMAGE_H_
 
 // INCLUDES ///////////////////////////////////////////////////////////////////////////////////////
+#ifdef ZH
+#include "Common/BitFlags.h"
+#endif
 #include "Common/GameType.h"
+#ifdef ZH
+#include "Common/ObjectStatusTypes.h" // Precompiled header anyway, no detangling possibility
+#endif
 #include "Common/Snapshot.h"
 
 // FORWARD REFERENCES /////////////////////////////////////////////////////////////////////////////
 class Object;
 class INI;
+#ifdef ZH
+class ThingTemplate;
+#endif
 
 //-------------------------------------------------------------------------------------------------
+#ifdef OG
 /** Damage types, keep this in sync with TheDamageNames[] */
+#endif
+#ifdef ZH
+/** Damage types, keep this in sync with DamageTypeFlags::s_bitNameList[] */
+#endif
 //-------------------------------------------------------------------------------------------------
 enum DamageType
 {	
@@ -59,7 +73,9 @@ enum DamageType
 	DAMAGE_UNRESISTABLE						= 11,		// this is for scripting to cause 'armorproof' damage
 	DAMAGE_WATER									= 12,	
 	DAMAGE_DEPLOY									= 13,					// for transports to deploy units and order them to all attack.
+#ifdef OG
 // this stays, even if ALLOW_SURRENDER is not defed, since flashbangs still use 'em
+#endif
 	DAMAGE_SURRENDER							= 14,				// if something "dies" to surrender damage, they surrender.... duh!
 	DAMAGE_HACK										= 15,
 	DAMAGE_KILLPILOT							= 16,				// special snipe attack that kills the pilot and renders a vehicle unmanned.
@@ -77,13 +93,32 @@ enum DamageType
 	DAMAGE_STEALTHJET_MISSILES		= 28,	
 	DAMAGE_MOLOTOV_COCKTAIL				= 29,	
 	DAMAGE_COMANCHE_VULCAN				= 30,	
+#ifdef OG
 	DAMAGE_FLESHY_SNIPER					= 31,		// like DAMAGE_SNIPER, but (generally) does no damage to vehicles.
 
+#endif
+#ifdef ZH
+	DAMAGE_SUBDUAL_MISSILE				= 31,	///< Damage that does not kill you, but produces some special effect based on your Body Module. Seperate HP from normal damage.
+	DAMAGE_SUBDUAL_VEHICLE				= 32,
+	DAMAGE_SUBDUAL_BUILDING				= 33,
+	DAMAGE_SUBDUAL_UNRESISTABLE		= 34,
+	DAMAGE_MICROWAVE							= 35, ///< Radiation that only affects infantry
+	DAMAGE_KILL_GARRISONED				= 36, ///< Kills Passengers up to the number specified in Damage
+	DAMAGE_STATUS									= 37, ///< Damage that gives a status condition, not that does hitpoint damage
+#endif
+
+#ifdef OG
 	// Please note: There is a string array below this enum, and when you change them,
 	// you need to search on the array names to find all the stuff that generates names
 	// based on these strings.  (eg DamageFX does a strcat to make its array of names so 
 	// change DamageFX.ini and its Default)
+#endif
+#ifdef ZH
+	// Please note: There is a string array DamageTypeFlags::s_bitNameList[]
 
+#endif
+
+#ifdef OG
 
 	// !!!!!!!!!!!!!!!!!!!!! NOTE !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	// !!!!!!!!!!!!!!!!!!!!! NOTE !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -96,9 +131,11 @@ enum DamageType
 	// !!!!!!!!!!!!!!!!!!!!! NOTE !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	// !!!!!!!!!!!!!!!!!!!!! NOTE !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
+#endif
 	DAMAGE_NUM_TYPES			// keep this last
 };
 
+#ifdef OG
 #ifdef DEFINE_DAMAGE_NAMES
 static const char *TheDamageNames[] = 
 {
@@ -139,30 +176,105 @@ static const char *TheDamageNames[] =
 };
 #endif // end DEFINE_DAMAGE_NAMES
 
-
+#endif
 //-------------------------------------------------------------------------------------------------
 //-------------------------------------------------------------------------------------------------
 
+#ifdef OG
 typedef UnsignedInt DamageTypeFlags;
+#endif
+#ifdef ZH
+typedef BitFlags<DAMAGE_NUM_TYPES> DamageTypeFlags;
+#endif
 
+#ifdef OG
 const DamageTypeFlags DAMAGE_TYPE_FLAGS_ALL = 0xffffffff;
 const DamageTypeFlags DAMAGE_TYPE_FLAGS_NONE = 0x00000000;
 
+#endif
 inline Bool getDamageTypeFlag(DamageTypeFlags flags, DamageType dt)
 {
+#ifdef OG
 	return (flags & (1UL << (dt - 1))) != 0;
+#endif
+#ifdef ZH
+	return flags.test(dt);
+#endif
 }
 
 inline DamageTypeFlags setDamageTypeFlag(DamageTypeFlags flags, DamageType dt)
 {
+#ifdef OG
 	return (flags | (1UL << (dt - 1)));
+
+#endif
+#ifdef ZH
+	flags.set(dt, TRUE);
+	return flags;
+#endif
 }
 
 inline DamageTypeFlags clearDamageTypeFlag(DamageTypeFlags flags, DamageType dt)
+#ifdef ZH
 {
-	return (flags & ~(1UL << (dt - 1)));
+	flags.set(dt, FALSE);
+	return flags;
 }
 
+// Instead of checking against a single damage type, gather the question here so we can have more than one
+inline Bool IsSubdualDamage( DamageType type )
+{
+	switch( type )
+	{
+		case DAMAGE_SUBDUAL_MISSILE:
+		case DAMAGE_SUBDUAL_VEHICLE:
+		case DAMAGE_SUBDUAL_BUILDING:
+		case DAMAGE_SUBDUAL_UNRESISTABLE:
+			return TRUE;
+	}
+
+	return FALSE;
+}
+
+/// Does this type of damage go to internalChangeHealth?
+inline Bool IsHealthDamagingDamage( DamageType type )
+{
+	// The need for this function brought to you by "Have the guy with no game experience write the weapon code" Foundation.
+	// Health Damage should be one type of WeaponEffect.  Thinking "Weapons can only do damage" is why AoE is boring.
+	switch( type )
+#endif
+{
+#ifdef OG
+	return (flags & ~(1UL << (dt - 1)));
+
+#endif
+#ifdef ZH
+		case DAMAGE_STATUS:
+		case DAMAGE_SUBDUAL_MISSILE:
+		case DAMAGE_SUBDUAL_VEHICLE:
+		case DAMAGE_SUBDUAL_BUILDING:
+		case DAMAGE_SUBDUAL_UNRESISTABLE:
+		case DAMAGE_KILLPILOT:
+		case DAMAGE_KILL_GARRISONED:
+			return FALSE;
+	}
+
+	return TRUE;
+#endif
+}
+
+#ifdef ZH
+inline void SET_ALL_DAMAGE_TYPE_BITS(DamageTypeFlags& m)
+{
+	m.clear();
+	m.flip();
+}
+
+extern DamageTypeFlags DAMAGE_TYPE_FLAGS_NONE;
+extern DamageTypeFlags DAMAGE_TYPE_FLAGS_ALL;
+void initDamageTypeFlags();
+
+#endif
 //-------------------------------------------------------------------------------------------------
 /** Death types, keep this in sync with TheDeathNames[] */
 //-------------------------------------------------------------------------------------------------
@@ -195,6 +307,9 @@ enum DeathType
 	DEATH_EXTRA_6		= 17,	
 	DEATH_EXTRA_7		= 18,	
 	DEATH_EXTRA_8		= 19,	
+#ifdef ZH
+	DEATH_POISONED_GAMMA = 20,
+#endif
 	
 	DEATH_NUM_TYPES			// keep this last
 };
@@ -215,7 +330,6 @@ static const char *TheDeathNames[] =
 	"DETONATED",
 	"SPLATTED",
 	"POISONED_BETA",	
-
 	"EXTRA_2",	
 	"EXTRA_3",	
 	"EXTRA_4",	
@@ -223,6 +337,9 @@ static const char *TheDeathNames[] =
 	"EXTRA_6",	
 	"EXTRA_7",	
 	"EXTRA_8",	
+#ifdef ZH
+	"POISONED_GAMMA",	
+#endif
 
 	NULL
 };
@@ -263,17 +380,49 @@ public:
 	DamageInfoInput( void ) 
 	{ 
 		m_sourceID = INVALID_ID; 
+#ifdef ZH
+		m_sourceTemplate = NULL;
+#endif
 		m_sourcePlayerMask = 0;
 		m_damageType = DAMAGE_EXPLOSION; 
+#ifdef ZH
+		m_damageStatusType = OBJECT_STATUS_NONE;
+		m_damageFXOverride = DAMAGE_UNRESISTABLE;
+#endif
 		m_deathType = DEATH_NORMAL; 
 		m_amount = 0; 
+#ifdef ZH
+		m_kill = FALSE;
+    
+    m_shockWaveVector.zero();	
+    m_shockWaveAmount   = 0.0f;	
+    m_shockWaveRadius   = 0.0f;	
+    m_shockWaveTaperOff = 0.0f;
+#endif
 	}
 
 	ObjectID		   m_sourceID;							///< source of the damage
+#ifdef ZH
+	const ThingTemplate *m_sourceTemplate;  ///< source of the damage (the template).
+#endif
 	PlayerMaskType m_sourcePlayerMask;			///< Player mask of m_sourceID.
 	DamageType		 m_damageType;						///< type of damage
+#ifdef ZH
+	ObjectStatusTypes m_damageStatusType;		///< If status damage, what type
+	DamageType		 m_damageFXOverride;			///< If not marked as the default of Unresistable, the damage type to use in doDamageFX instead of the real damamge type
+#endif
 	DeathType			 m_deathType;						///< if this kills us, death type to be used
 	Real					 m_amount;								///< # value of how much damage to inflict
+#ifdef ZH
+	Bool						m_kill;									///< will always cause object to die regardless of damage.
+
+	// These are used for damage causing shockwave, forcing units affected to be pushed around
+	Coord3D				 m_shockWaveVector;				///< This represents the incoming damage vector
+	Real					 m_shockWaveAmount;				///< This represents the amount of shockwave created by the damage. 0 = no shockwave, 1.0 = shockwave equal to damage.
+	Real					 m_shockWaveRadius;			  ///< This represents the effect radius of the shockwave. 
+	Real					 m_shockWaveTaperOff;			///< This represents the taper off effect of the shockwave at the tip of the radius. 0.0 means shockwave is 0% at the radius edge.
+
+#endif
 
 protected:
 

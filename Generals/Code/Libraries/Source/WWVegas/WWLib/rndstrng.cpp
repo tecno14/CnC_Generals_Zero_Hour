@@ -24,11 +24,26 @@
  *                                                                                             * 
  *                     $Archive:: /Commando/Code/wwlib/rndstrng.cpp                           $* 
  *                                                                                             * 
+#ifdef OG
  *                      $Author:: Byon_g                                                      $*
+#endif
+#ifdef ZH
+ *                      $Author:: Jani_p                                                      $*
+#endif
  *                                                                                             * 
+#ifdef OG
  *                     $Modtime:: 2/08/00 10:59a                                              $*
+#endif
+#ifdef ZH
+ *                     $Modtime:: 9/01/01 11:05a                                              $*
+#endif
  *                                                                                             * 
+#ifdef OG
  *                    $Revision:: 3                                                           $*
+#endif
+#ifdef ZH
+ *                    $Revision:: 4                                                           $*
+#endif
  *                                                                                             *
  *---------------------------------------------------------------------------------------------* 
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
@@ -39,6 +54,7 @@
 /*
 **
 */
+#ifdef OG
 RandomStringClass::RandomStringClass( void )
 {
 }
@@ -50,11 +66,18 @@ RandomStringClass::~RandomStringClass( void )
 		Strings.Delete( 0 );
 	}
 }
+#endif
 
 void RandomStringClass::Add_String( const char * str )
 {
+#ifdef OG
 	StringClass	 * string = W3DNEW StringClass( str );
 	Strings.Add( string );
+#endif
+#ifdef ZH
+	Strings.Add( str );
+
+#endif
 }
 
 const char * RandomStringClass::Get_String( void )
@@ -64,6 +87,11 @@ const char * RandomStringClass::Get_String( void )
 	}
 	unsigned int index = Randomizer();
 	index %= Strings.Count();
+#ifdef OG
 	return *Strings[index];
+#endif
+#ifdef ZH
+	return Strings[index];
+#endif
 }
 

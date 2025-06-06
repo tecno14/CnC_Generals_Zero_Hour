@@ -53,6 +53,10 @@
 #include "PreRTS.h"	// This must go first in EVERY cpp file int the GameEngine
 
 #include "Common/Xfer.h"
+#ifdef ZH
+#include "Common/Player.h"
+#include "Common/Upgrade.h"
+#endif
 #include "GameLogic/Object.h"
 #include "GameLogic/Module/ArmorUpgrade.h"
 #include "GameLogic/Module/BodyModule.h"
@@ -93,6 +97,14 @@ void ArmorUpgrade::upgradeImplementation( )
 	BodyModuleInterface* body = obj->getBodyModule();
 	if ( body )
 		body->setArmorSetFlag( ARMORSET_PLAYER_UPGRADE );
+#ifdef ZH
+
+	// Unique case for AMERICA to test for upgrade to set flag
+	if(isTriggeredBy("Upgrade_AmericaChemicalSuits"))
+	{
+		obj->getDrawable()->setTerrainDecal(TERRAIN_DECAL_CHEMSUIT);
+	}
+#endif
 }
 
 // ------------------------------------------------------------------------------------------------

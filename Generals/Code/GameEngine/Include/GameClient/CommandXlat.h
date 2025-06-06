@@ -79,6 +79,9 @@ enum FilterTypes
 	FT_VIEW_BW_FILTER,		//filter to apply a black & white filter to the screen.
 	FT_VIEW_MOTION_BLUR_FILTER, //filter to apply motion blur filter to screen.
 	FT_VIEW_CROSSFADE,				///<filter to apply a cross blend between previous/current views.
+#ifdef ZH
+	FT_VIEW_DEFAULT,				///<default filter mode for default filter.
+#endif
 	FT_MAX
 };
 
@@ -104,7 +107,9 @@ enum FilterModes
 	FM_VIEW_MB_OUT_SATURATE, // Motion blur filter out saturated blur
 	FM_VIEW_MB_END_PAN_ALPHA, // Moton blur on screen pan (for camera tracks object mode)
 
-	
+#ifdef ZH
+	FM_VIEW_DEFAULT,	//Default filter that's enabled when all others are off.
+#endif
 	
 	// NOTE: This has to be the last entry in this enum.
 	// Add new entries before this one.  jba.

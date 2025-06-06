@@ -85,6 +85,9 @@ public:
 	inline UnicodeString getDisplayName() const { return m_displayName; }
 
 	inline AsciiString getSide() const { return m_side; }
+#ifdef ZH
+	inline AsciiString getBaseSide() const  { return m_baseSide; }
+#endif
 
 	/// return the tech tree for the player.
 	inline const Handicap *getHandicap() const { return &m_handicap; }
@@ -114,7 +117,18 @@ public:
 	//const Image *getHiliteImage( void ) const;
 	//const Image *getPushedImage( void ) const;
 	const Image *getSideIconImage( void ) const;
+#ifdef ZH
+	const Image *getGeneralImage( void ) const;
+	inline const AsciiString getTooltip() const { return m_tooltip; }
+	inline const AsciiString getGeneralFeatures( void ) const { return m_strGeneralFeatures; }
+#endif
 	
+#ifdef ZH
+	AsciiString getMedallionNormal() const { return m_strMedallionNormal; }
+	AsciiString getMedallionHilite() const { return m_strMedallionHilite; }
+	AsciiString getMedallionSelected() const { return m_strMedallionSelected; }
+	
+#endif
 	const ScienceVec& getIntrinsicSciences() const { return m_intrinsicSciences; }
 	Int getIntrinsicSciencePurchasePoints() const { return m_intrinsicSPP; }
 	AsciiString getPurchaseScienceCommandSetRank1( void ) const {return m_purchaseScienceCommandSetRank1;	}
@@ -126,7 +140,13 @@ public:
 	Int getSpecialPowerShortcutButtonCount( void ) const {return m_specialPowerShortcutButtonCount;	}
 	
 	AsciiString getLoadScreenMusic( void ) const {return m_loadScreenMusic;	}
+#ifdef ZH
+	AsciiString getScoreScreenMusic() const { return m_scoreScreenMusic; }
+#endif
 	
+#ifdef ZH
+  inline Bool isOldFaction( void ) const { return m_oldFaction; }
+#endif
 
 	static const FieldParse* getFieldParse();
 
@@ -143,7 +163,12 @@ private:
 
 	NameKeyType			m_nameKey;
 	UnicodeString		m_displayName;
+#ifdef OG
 	AsciiString			m_side;
+#endif
+#ifdef ZH
+	AsciiString			m_side, m_baseSide;
+#endif
 	Handicap				m_handicap;						///< initial baseline for Player capabilities
 	Money						m_money;							///< starting credits, if any
 	RGBColor				m_preferredColor;			///< our preferred starting color
@@ -161,8 +186,15 @@ private:
 	AsciiString				m_specialPowerShortcutWinName;			///< The name of the window we'll be using for the shortcut bar
 	Int								m_specialPowerShortcutButtonCount;	///< The number of buttons located on the shortcut bar
 	AsciiString				m_loadScreenMusic;									///< the load screen music we want to play
+#ifdef ZH
+	AsciiString				m_scoreScreenMusic;									///< the score screen music we want to play
+	AsciiString				m_tooltip;								///< The tooltip describing this player template
+#endif
 	Bool							m_observer;
 	Bool							m_playableSide;
+#ifdef ZH
+  Bool              m_oldFaction;                       ///< Faction existed in the original Generals
+#endif
 
 	Int								m_intrinsicSPP;
 
@@ -176,8 +208,18 @@ private:
 	//AsciiString			m_hiliteImage;					///< hilite button image
 	//AsciiString			m_pushedImage;					///< pushed button image
 	AsciiString			m_sideIconImage;				///< The little icon we show on game info screens for the sides
+#ifdef ZH
+	AsciiString			m_generalImage;				///< The icon overlayed on the rank image in My Persona
+#endif
 
 	AsciiString			m_beaconTemplate;				///< ThingTemplate name for beacons
+#ifdef ZH
+
+	AsciiString m_strGeneralFeatures;		///< used in loadscreens
+	AsciiString m_strMedallionNormal;
+	AsciiString m_strMedallionHilite;
+	AsciiString m_strMedallionSelected;
+#endif
 };
 
 // ----------------------------------------------------------------------------------------------
@@ -200,7 +242,9 @@ public:
 	const PlayerTemplate* getNthPlayerTemplate(Int i) const;
 	const PlayerTemplate* findPlayerTemplate(NameKeyType namekey) const;
 	inline Int getPlayerTemplateCount() const { return m_playerTemplates.size(); }
-
+#ifdef ZH
+	Int getTemplateNumByName(AsciiString name) const;
+#endif
 	
 	// This function will fill outStringList with all the sides found in all the templates
 	void getAllSideStrings(AsciiStringList *outStringList);	

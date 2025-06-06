@@ -66,6 +66,9 @@ public:
 
 	virtual UpdateSleepTime update();												///< called once per frame
 	virtual Bool isHealContain() const { return true; } ///< true when container only contains units while healing (not a transport!)
+#ifdef ZH
+	virtual Bool isTunnelContain() const { return FALSE; }
+#endif
 
 protected:
 

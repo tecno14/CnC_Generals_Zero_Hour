@@ -16,7 +16,12 @@
 **	along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#ifdef OG
 /* $Header: /Commando/Code/ww3d2/mesh.h 15    8/20/01 9:31a Jani_p $ */
+#endif
+#ifdef ZH
+/* $Header: /Commando/Code/ww3d2/mesh.h 16    11/07/01 5:50p Jani_p $ */
+#endif
 /*********************************************************************************************** 
  ***                            Confidential - Westwood Studios                              *** 
  *********************************************************************************************** 
@@ -139,11 +144,13 @@ public:
 
 	bool								Contains(const Vector3 &point);
 
+#ifdef OG
 	void								Compose_Deformed_Vertex_Buffer(
 											VertexFormatXYZNDUV2* verts,
 											const Vector2* uv0,
 											const Vector2* uv1,
 											const unsigned* diffuse);
+#endif
 	void								Get_Deformed_Vertices(Vector3 *dst_vert, Vector3 *dst_norm);
 	void								Get_Deformed_Vertices(Vector3 *dst_vert);
 
@@ -162,8 +169,20 @@ public:
 
 	void								Replace_Texture(TextureClass* texture,TextureClass* new_texture);
 	void								Replace_VertexMaterial(VertexMaterialClass* vmat,VertexMaterialClass* new_vmat);
+#ifdef ZH
 
+	void								Make_Unique(bool force_meshmdl_clone = false);
+	unsigned							Get_Debug_Id() const { return  MeshDebugId; }
+#endif
+
+#ifdef OG
 	void								Make_Unique();
+
+#endif
+#ifdef ZH
+	void								Set_Debugger_Disable(bool b) { IsDisabledByDebugger=b; }
+	bool								Is_Disabled_By_Debugger() const { return IsDisabledByDebugger; }
+#endif
 	
 protected:
 
@@ -186,6 +205,11 @@ protected:
 	float					m_materialPassAlphaOverride;	//added for 'Generals' to allow variable alpha on additional render passes.
 	int								BaseVertexOffset;		// offset to our first vertex in whatever vb this mesh is in.
 	MeshClass *						NextVisibleSkin;		// linked list of visible skins
+#ifdef ZH
+
+	unsigned							MeshDebugId;
+	bool								IsDisabledByDebugger;
+#endif
 
 	friend class MeshBuilderClass;
 };

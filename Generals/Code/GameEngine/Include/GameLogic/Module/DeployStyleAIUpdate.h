@@ -54,6 +54,9 @@ public:
 	Bool						m_resetTurretBeforePacking;	
 	Bool						m_turretsFunctionOnlyWhenDeployed;
 	Bool						m_turretsMustCenterBeforePacking;
+#ifdef ZH
+	Bool						m_manualDeployAnimations;
+#endif
 
 	DeployStyleAIUpdateModuleData()
 	{
@@ -65,6 +68,9 @@ public:
 		// Initialization necessary 
 		m_turretsMustCenterBeforePacking = FALSE;
 		// End Add
+#ifdef ZH
+		m_manualDeployAnimations = FALSE;
+#endif
 	}
 
 	static void buildFieldParse(MultiIniFieldParse& p)
@@ -78,6 +84,9 @@ public:
 			{ "ResetTurretBeforePacking", INI::parseBool,						NULL, offsetof( DeployStyleAIUpdateModuleData, m_resetTurretBeforePacking ) },
 			{ "TurretsFunctionOnlyWhenDeployed", INI::parseBool,		NULL, offsetof( DeployStyleAIUpdateModuleData, m_turretsFunctionOnlyWhenDeployed ) },
 			{ "TurretsMustCenterBeforePacking", INI::parseBool,			NULL, offsetof( DeployStyleAIUpdateModuleData, m_turretsMustCenterBeforePacking ) },
+#ifdef ZH
+			{ "ManualDeployAnimations",	INI::parseBool,							NULL, offsetof( DeployStyleAIUpdateModuleData, m_manualDeployAnimations ) },
+#endif
 			{ 0, 0, 0, 0 }
 		};
 		p.add(dataFieldParse);
@@ -106,14 +115,23 @@ public:
 	UnsignedInt getPackTime()						const { return getDeployStyleAIUpdateModuleData()->m_packTime; }
 	Bool doTurretsFunctionOnlyWhenDeployed() const { return getDeployStyleAIUpdateModuleData()->m_turretsFunctionOnlyWhenDeployed; }
 	Bool doTurretsHaveToCenterBeforePacking() const { return getDeployStyleAIUpdateModuleData()->m_turretsMustCenterBeforePacking; }
+#ifdef OG
 	void setMyState( DeployStateTypes StateID );
 	void reset();
+#endif
+#ifdef ZH
+	void setMyState( DeployStateTypes StateID, Bool reverseDeploy = FALSE );
+
+#endif
 
 protected:
 
+#ifdef OG
 	AICommandParmsStorage		m_lastOutsideCommand;
 	Bool										m_hasOutsideCommand;
+#endif
 	DeployStateTypes				m_state;
+#ifdef OG
 	UnsignedInt							m_frameToWakeForDeploy;
 
   ObjectID								m_designatedTargetID;
@@ -124,6 +142,11 @@ protected:
 	Bool										m_isAttackPosition;
 	Bool										m_isGuardingPosition;
 	Bool										m_overriddenAttack;
+#endif
+#ifdef ZH
+	UnsignedInt							m_frameToWaitForDeploy;
+
+#endif
 };
 
 #endif

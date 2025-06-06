@@ -247,6 +247,9 @@ void W3DDebugIcons::Render(RenderInfoClass & rinfo)
 		shadeR = 0;
 		shadeG = 0;
 		shadeB = 255;
+#ifdef ZH
+		try {
+#endif
 		for(;  numVertex<numRect*4 && k<m_numDebugIcons; k++) {
 			Int theAlpha = 64;
 			const Int FADE_FRAMES = 100;
@@ -298,6 +301,12 @@ void W3DDebugIcons::Render(RenderInfoClass & rinfo)
 			*curIb++ = numVertex+3;
 			curIndex += 6;
 			numVertex += 4;
+#ifdef ZH
+		}
+		IndexBufferExceptionFunc();
+		} catch(...) {
+			IndexBufferExceptionFunc();
+#endif
 		}
 		}	
 		if (numVertex == 0) break;

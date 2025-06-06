@@ -443,7 +443,12 @@ Bool NeutronMissileUpdate::projectileHandleCollision( Object *other )
 	detonate();
 
 	// mark ourself as "no collisions" (since we might still exist in slow death mode)
+#ifdef OG
 	obj->setStatus(OBJECT_STATUS_NO_COLLISIONS);
+#endif
+#ifdef ZH
+	obj->setStatus( MAKE_OBJECT_STATUS_MASK( OBJECT_STATUS_NO_COLLISIONS ) );
+#endif
 	return true;
 }
 

@@ -236,6 +236,9 @@ CWorldBuilderApp::CWorldBuilderApp() :
 	m_tools[21] = &m_rampTool;
 	m_tools[22] = &m_scorchTool;
 	m_tools[23] = &m_borderTool;
+#ifdef ZH
+	m_tools[24] = &m_rulerTool;
+#endif
 
 	// set up initial values.
 	m_brushTool.setHeight(16);
@@ -262,6 +265,9 @@ CWorldBuilderApp::~CWorldBuilderApp()
 			m_tools[i] = NULL;
 		}
 	}
+#ifdef ZH
+	_exit(0);
+#endif
 }
 
 
@@ -270,17 +276,35 @@ CWorldBuilderApp::~CWorldBuilderApp()
 
 BOOL CWorldBuilderApp::InitInstance()
 {
+#ifdef ZH
+//#ifdef _RELEASE
+#endif
 	EulaDialog eulaDialog;
 	if( eulaDialog.DoModal() == IDCANCEL )
 	{
 		return FALSE;
 	}
+#ifdef ZH
+//#endif
+#endif
 
+#ifdef ZH
+	ApplicationHWnd = GetDesktopWindow();
+
+#endif
 	// initialization
   _set_se_translator( DumpExceptionInfo ); // Hook that allows stack trace.
 
 	// start the log
 	DEBUG_INIT(DEBUG_FLAGS_DEFAULT);
+#ifdef ZH
+
+#ifdef DEBUG_LOGGING
+	// Turn on console output jba [3/20/2003]
+	DebugSetFlags(DebugGetFlags() | DEBUG_FLAG_LOG_TO_CONSOLE);
+#endif
+
+#endif
 	DEBUG_LOG(("starting Worldbuilder.\n"));
 #ifdef _INTERNAL
 	DEBUG_LOG(("_INTERNAL defined.\n"));
@@ -341,12 +365,23 @@ BOOL CWorldBuilderApp::InitInstance()
 	
 #if defined(_DEBUG) || defined(_INTERNAL)
 	ini.load( AsciiString( "Data\\INI\\GameDataDebug.ini" ), INI_LOAD_MULTIFILE, NULL );
+#ifdef ZH
+	TheWritableGlobalData->m_debugIgnoreAsserts = false;
+#endif
 #endif
 
+#ifdef OG
 #if defined(_DEBUG) || defined(_INTERNAL)
 	TheWritableGlobalData->m_debugIgnoreAsserts = true;
 #endif
-
+#ifdef ZH
+#if defined(_INTERNAL)
+	// leave on asserts for a while. jba. [4/15/2003] TheWritableGlobalData->m_debugIgnoreAsserts = true;
+#endif
+#endif
+#ifdef ZH
+	DEBUG_LOG(("TheWritableGlobalData %x\n", TheWritableGlobalData));
+#endif
 #if 1
 	// srj sez: put INI into our user data folder, not the ap dir
 	free((void*)m_pszProfileName);
@@ -378,6 +413,13 @@ BOOL CWorldBuilderApp::InitInstance()
 
 	initSubsystem(TheScriptEngine, (ScriptEngine*)(new ScriptEngine()));
 
+#ifdef ZH
+	TheScriptEngine->turnBreezeOff(); // stop the tree sway.
+
+	//  [2/11/2003]
+	ini.load( AsciiString( "Data\\Scripts\\Scripts.ini" ), INI_LOAD_OVERWRITE, NULL );
+
+#endif
 	// need this before TheAudio in case we're running off of CD - TheAudio can try to open Music.big on the CD...
 	initSubsystem(TheCDManager, CreateCDManager(), NULL);
 	initSubsystem(TheAudio, (AudioManager*)new MilesAudioManager());
@@ -414,6 +456,10 @@ BOOL CWorldBuilderApp::InitInstance()
 #if defined(_DEBUG) || defined(_INTERNAL)
 	// WB never uses the shroud.
 	TheWritableGlobalData->m_shroudOn = FALSE;
+#endif
+#ifdef ZH
+
+	TheWritableGlobalData->m_isWorldBuilder = TRUE;
 #endif
 
 	// Change the registry key under which our settings are stored.
@@ -637,7 +683,9 @@ int CWorldBuilderApp::ExitInstance()
 
 	delete TheFileSystem;
 	TheFileSystem = NULL;
+#ifdef OG
 	TextureLoadTaskClass::shutdown();  
+#endif
 
 	delete TheW3DFileSystem;
 	TheW3DFileSystem = NULL;
@@ -650,6 +698,11 @@ int CWorldBuilderApp::ExitInstance()
 #endif
 #ifdef MEMORYPOOL_CHECKPOINTING
 	TheMemoryPoolFactory->debugMemoryReport(REPORT_FACTORYINFO | REPORT_CP_LEAKS | REPORT_CP_STACKTRACE, gFirstCP, lastCP);
+#ifdef ZH
+#endif
+	#ifdef MEMORYPOOL_DEBUG
+		TheMemoryPoolFactory->debugMemoryReport(REPORT_POOLINFO | REPORT_POOL_OVERFLOW | REPORT_SIMPLE_LEAKS, 0, 0);
+#endif
 #endif
 	shutdownMemoryManager();
 	DEBUG_SHUTDOWN();

@@ -26,12 +26,27 @@
 // W3D Particle System implementation
 // Author: Michael S. Booth, November 2001
 
+#ifdef ZH
+#include "common/GlobalData.h"
+#endif
 #include "GameClient/Color.h"
 #include "W3DDevice/GameClient/W3DParticleSys.h"
 #include "W3DDevice/GameClient/W3DAssetManager.h"
 #include "W3DDevice/GameClient/W3DDisplay.h"
 #include "W3DDevice/GameClient/heightmap.h"
+#ifdef ZH
+#include "W3DDevice/GameClient/W3DSmudge.h"
+#include "W3DDevice/GameClient/W3DSnow.h"
+#endif
 #include "WW3D2/Camera.h"
+#ifdef ZH
+
+#ifdef _INTERNAL
+// for occasional debugging...
+//#pragma optimize("", off)
+//#pragma MESSAGE("************************************** WARNING, optimization disabled for debugging purposes")
+#endif
+#endif
 
 //------------------------------------------------------------------------------ Performance Timers 
 //#include "Common/PerfMetrics.h"
@@ -112,6 +127,11 @@ void W3DParticleSystemManager::doParticles(RenderInfoClass &rinfo)
 	/// @todo lorenzen sez: this should be debug only:
 	m_onScreenParticleCount = 0;
 
+#ifdef ZH
+	Int visibleSmudgeCount = 0;
+	if (TheSmudgeManager)
+		TheSmudgeManager->setSmudgeCountLastFrame(0);	//keep track of visible smudges
+#endif
 
  	const FrustumClass & frustum = rinfo.Camera.Get_Frustum();
 	AABoxClass bbox;
@@ -134,6 +154,12 @@ void W3DParticleSystemManager::doParticles(RenderInfoClass &rinfo)
 
 
 	m_fieldParticleCount = 0;
+#ifdef ZH
+
+	SmudgeSet *set=NULL;
+	if (TheSmudgeManager)
+		set=TheSmudgeManager->addSmudgeSet();	//global smudge set through which all smudges are rendered.
+#endif
 
 	ParticleSystemManager::ParticleSystemList &particleSysList = TheParticleSystemManager->getAllParticleSystems();
 	for( ParticleSystemManager::ParticleSystemListIt it = particleSysList.begin(); it != particleSysList.end(); ++it)
@@ -145,8 +171,44 @@ void W3DParticleSystemManager::doParticles(RenderInfoClass &rinfo)
 
 		// only look at particle/point style systems
 		if (sys->isUsingDrawables())
+#ifdef ZH
 			continue;
 
+		//temporary hack that checks if texture name starts with "SMUD" - if so, we can assume it's a smudge type
+		if (/*sys->isUsingSmudge()*/ *((DWORD *)sys->getParticleTypeName().str()) == 0x44554D53)
+		{
+			if (TheSmudgeManager && ((W3DSmudgeManager*)TheSmudgeManager)->getHardwareSupport() && TheGlobalData->m_useHeatEffects)
+			{
+				//set-up all the per-particle
+				for (Particle *p = sys->getFirstParticle(); p; p = p->m_systemNext)
+				{
+					const Coord3D *pos = p->getPosition();
+					Real psize = p->getSize();
+
+					//Cull particle to edges of screen and terrain.
+					if (WWMath::Fabs( pos->x - bcX ) > ( beX + psize ) )
+						continue;
+
+					if (WWMath::Fabs( pos->y - bcY ) > ( beY + psize ) )
+#endif
+			continue;
+
+#ifdef ZH
+					if (WWMath::Fabs( pos->z - bcZ ) > ( beZ + psize ) )
+						continue;
+
+					Smudge *smudge = set->addSmudgeToSet();
+
+					smudge->m_pos.Set( pos->x, pos->y, pos->z );
+					smudge->m_offset.Set( GameClientRandomValueReal(-0.06f,0.06f), GameClientRandomValueReal(-0.03f,0.03f) );
+					smudge->m_size = psize;
+					smudge->m_opacity = p->getAlpha();
+					visibleSmudgeCount++;
+				}
+			}
+			continue;
+		}
+#endif
 
 		/// @todo lorenzen sez: declare these outside the sys loop, and put some in registers
 		// initialize them here still, of course
@@ -165,10 +227,12 @@ void W3DParticleSystemManager::doParticles(RenderInfoClass &rinfo)
 		//set-up all the per-particle
 		for (Particle *p = sys->getFirstParticle(); p; p = p->m_systemNext)
 		{
+#ifdef OG
 			// do not attempt to render totally invisible particles
 			if (p->isInvisible())
 				continue;
 
+#endif
 			pos = p->getPosition();
 			psize = p->getSize();
 
@@ -329,4 +393,18 @@ void W3DParticleSystemManager::doParticles(RenderInfoClass &rinfo)
 
 		/// @todo lorenzen sez: this should be debug only:
 	TheParticleSystemManager->setOnScreenParticleCount(m_onScreenParticleCount);
+#ifdef ZH
+
+	//Draw any particles belonging to weather effects
+	if (TheSnowManager)
+		((W3DSnowManager *)TheSnowManager)->render(rinfo);
+
+	//Now process screen smudges which are particles that distort the background behind them.
+	if(TheSmudgeManager)
+	{
+		((W3DSmudgeManager *)TheSmudgeManager)->render(rinfo);
+		TheSmudgeManager->reset();	//clear all the smudges after rendering since we fill again each frame.
+		TheSmudgeManager->setSmudgeCountLastFrame(visibleSmudgeCount);
+	}
+#endif
 }

@@ -26,9 +26,19 @@
  *                                                                                             *
  *                       Author:: Greg Hjelstrom                                               *
  *                                                                                             *
+#ifdef OG
  *                     $Modtime:: 6/06/01 11:04a                                              $*
+#endif
+#ifdef ZH
+ *                     $Modtime:: 9/26/01 3:11p                                               $*
+#endif
  *                                                                                             *
+#ifdef OG
  *                    $Revision:: 7                                                           $*
+#endif
+#ifdef ZH
+ *                    $Revision:: 9                                                           $*
+#endif
  *                                                                                             *
  *---------------------------------------------------------------------------------------------*
  * Functions:                                                                                  *
@@ -52,6 +62,10 @@
 
 #include "bittype.h"
 #include "wwdebug.h"
+#ifdef ZH
+#include "mutex.h"
+#include <new.h>
+#endif
 #include <stdlib.h>
 #include <stddef.h>
 
@@ -92,6 +106,9 @@ protected:
 	uint32 *	BlockListHead;			
 	int		FreeObjectCount;
 	int		TotalObjectCount;
+#ifdef ZH
+	FastCriticalSectionClass ObjectPoolCS;
+#endif
 
 };
 
@@ -155,8 +172,12 @@ private:
 ** the class.
 */
 #define DEFINE_AUTO_POOL(T,BLOCKSIZE) \
+#ifdef OG
 ObjectPoolClass<T,BLOCKSIZE> AutoPoolClass<T,BLOCKSIZE>::Allocator
-
+#endif
+#ifdef ZH
+ObjectPoolClass<T,BLOCKSIZE> AutoPoolClass<T,BLOCKSIZE>::Allocator;
+#endif
 
 
 /***********************************************************************************************
@@ -274,6 +295,10 @@ void ObjectPoolClass<T,BLOCK_SIZE>::Free_Object(T * obj)
 template<class T,int BLOCK_SIZE> 
 T * ObjectPoolClass<T,BLOCK_SIZE>::Allocate_Object_Memory(void)
 {
+#ifdef ZH
+	FastCriticalSectionClass::LockClass lock(ObjectPoolCS);
+
+#endif
 	if ( FreeListHead == 0 ) {  
 
 		// No free objects, allocate another block
@@ -315,6 +340,10 @@ T * ObjectPoolClass<T,BLOCK_SIZE>::Allocate_Object_Memory(void)
 template<class T,int BLOCK_SIZE> 
 void ObjectPoolClass<T,BLOCK_SIZE>::Free_Object_Memory(T * obj)
 {
+#ifdef ZH
+	FastCriticalSectionClass::LockClass lock(ObjectPoolCS);
+
+#endif
 	WWASSERT(obj != NULL);
 	*(T**)(obj) = FreeListHead;		// Link to the Head
 	FreeListHead = obj;					// Set the Head

@@ -26,11 +26,26 @@
  *                                                                                             *
  *              Original Author:: Greg Hjelstrom                                               *
  *                                                                                             *
+#ifdef OG
  *                      $Author:: Greg_h                                                      $*
+#endif
+#ifdef ZH
+ *                      $Author:: Jani_p                                                      $*
+#endif
  *                                                                                             *
+#ifdef OG
  *                     $Modtime:: 1/08/01 10:04a                                              $*
+#endif
+#ifdef ZH
+ *                     $Modtime:: 11/24/01 5:49p                                              $*
+#endif
  *                                                                                             *
+#ifdef OG
  *                    $Revision:: 1                                                           $*
+#endif
+#ifdef ZH
+ *                    $Revision:: 2                                                           $*
+#endif
  *                                                                                             *
  *---------------------------------------------------------------------------------------------*
  * Functions:                                                                                  *
@@ -64,6 +79,9 @@
 #include <string.h>
 #include <assert.h>
 
+#ifdef ZH
+#undef WWASSERT
+#endif
 #define WWASSERT	assert					// can't use WWASSERT because we use this module in the MAX plugin...
 const float COINCIDENCE_EPSILON = 0.001f;
 
@@ -149,7 +167,12 @@ void AABTreeBuilderClass::Reset(void)
  * HISTORY:                                                                                    *
  *   6/19/98    GTH : Created.                                                                 *
  *=============================================================================================*/
+#ifdef OG
 void AABTreeBuilderClass::Build_AABTree(int polycount,Vector3i * polys,int vertcount,Vector3 * verts)
+#endif
+#ifdef ZH
+void AABTreeBuilderClass::Build_AABTree(int polycount,TriIndex * polys,int vertcount,Vector3 * verts)
+#endif
 {
 	WWASSERT(polycount > 0);
 	WWASSERT(vertcount > 0);
@@ -167,7 +190,12 @@ void AABTreeBuilderClass::Build_AABTree(int polycount,Vector3i * polys,int vertc
 	VertCount = vertcount;
 	PolyCount = polycount;
 	Verts = W3DNEWARRAY Vector3[VertCount];
+#ifdef OG
 	Polys = W3DNEWARRAY Vector3i[PolyCount];
+#endif
+#ifdef ZH
+	Polys = W3DNEWARRAY TriIndex[PolyCount];
+#endif
 
 	for (int vi=0; vi<VertCount; vi++) {
 		Verts[vi] = verts[vi];
@@ -198,9 +226,81 @@ void AABTreeBuilderClass::Build_AABTree(int polycount,Vector3i * polys,int vertc
 	*/
 	Compute_Bounding_Box(Root);
 	Assign_Index(Root,0);
+#ifdef ZH
 
 }
 
+/***********************************************************************************************
+ * AABTreeBuilderClass::Build_AABTree -- Build an AABTree for the given mesh.                  *
+ *                                                                                             *
+ * INPUT:                                                                                      *
+ *                                                                                             *
+ * OUTPUT:                                                                                     *
+ *                                                                                             *
+ * WARNINGS:                                                                                   *
+ *                                                                                             *
+ * HISTORY:                                                                                    *
+ *   6/19/98    GTH : Created.                                                                 *
+ *	  6/28/02	 KJM : This version handles 32-bit indexes
+ *=============================================================================================*/
+void AABTreeBuilderClass::Build_AABTree(int polycount,Vector3i * polys,int vertcount,Vector3 * verts)
+{
+	WWASSERT(polycount > 0);
+	WWASSERT(vertcount > 0);
+	WWASSERT(polys != NULL);
+	WWASSERT(verts != NULL);
+
+	/*
+	** If we already have allocated data, release it
+	*/
+	Reset();
+
+	/*
+	** Copy the mesh data
+	*/
+	VertCount = vertcount;
+	PolyCount = polycount;
+	Verts = new Vector3[VertCount];
+	Polys = new TriIndex[PolyCount];
+
+	for (int vi=0; vi<VertCount; vi++) {
+		Verts[vi] = verts[vi];
+	}
+	for (int pi=0; pi<PolyCount; pi++) {
+		Polys[pi].I = polys[pi].I;
+		Polys[pi].J = polys[pi].J;
+		Polys[pi].K = polys[pi].K;
+	}
+#endif
+
+#ifdef ZH
+	/*
+	** First, create a list of all of the poly indices
+	*/
+	int * polyindices = new int[PolyCount];
+	for (int i=0; i<PolyCount; i++) {
+		polyindices[i] = i;
+#endif
+}
+
+#ifdef ZH
+	/*
+	** Build the tree, note that the array of poly indices will be
+	** deleted by the Build_Tree function.
+	*/
+	Root = new CullNodeStruct;
+	Build_Tree(Root,PolyCount,polyindices);
+	polyindices = NULL;
+
+	/*
+	** fill in the remaining information needed in the tree:
+	** for example: bounding boxes, index assignments
+	*/
+	Compute_Bounding_Box(Root);
+	Assign_Index(Root,0);
+
+}
+#endif
 
 /***********************************************************************************************
  * AABTreeBuilderClass::Build_Tree -- recursivly builds the culling tree                       *
@@ -326,7 +426,12 @@ AABTreeBuilderClass::Select_Splitting_Plane(int polycount,int * polyindices)
 		*/
 		int poly_index = polyindices[rand() % polycount];
 		int vert_index = rand() % 3;
+#ifdef OG
 		const Vector3i * polyverts = Polys + poly_index;
+#endif
+#ifdef ZH
+		const TriIndex * polyverts = Polys + poly_index;
+#endif
 		const Vector3 * vert = Verts + (*polyverts)[vert_index];
 		
 		/*
@@ -572,8 +677,16 @@ void AABTreeBuilderClass::Compute_Bounding_Box(CullNodeStruct * node)
 	/*
 	** compute bounding volume for the polys in this node
 	*/
+#ifdef OG
 	node->Min.Set(100000.0f,100000.0f,100000.0f);
 	node->Max.Set(-100000.0f,-100000.0f,-100000.0f);
+
+#endif
+#ifdef ZH
+	const float really_big=WWMATH_FLOAT_MAX;
+	node->Min.Set(really_big,really_big,really_big);
+	node->Max.Set(-really_big,-really_big,-really_big);
+#endif
 
 	for (int poly_index = 0; poly_index < node->PolyCount; poly_index++) {
 		Update_Min_Max(node->PolyIndices[poly_index],node->Min,node->Max );
@@ -607,12 +720,22 @@ void AABTreeBuilderClass::Compute_Bounding_Box(CullNodeStruct * node)
 		if (node->Back->Max.Z > node->Max.Z) node->Max.Z = node->Back->Max.Z;
 	}
 
+#ifdef OG
 	WWASSERT(node->Min.X != 100000.0f);
 	WWASSERT(node->Min.Y != 100000.0f);
 	WWASSERT(node->Min.Z != 100000.0f);
 	WWASSERT(node->Max.X != -100000.0f);
 	WWASSERT(node->Max.Y != -100000.0f);
 	WWASSERT(node->Max.Z != -100000.0f);
+#endif
+#ifdef ZH
+	WWASSERT(node->Min.X != really_big);
+	WWASSERT(node->Min.Y != really_big);
+	WWASSERT(node->Min.Z != really_big);
+	WWASSERT(node->Max.X != -really_big);
+	WWASSERT(node->Max.Y != -really_big);
+	WWASSERT(node->Max.Z != -really_big);
+#endif
 }
 
 
@@ -732,7 +855,12 @@ void AABTreeBuilderClass::Update_Min(int poly_index,Vector3 & min)
 {
 	for (int vert_index = 0; vert_index < 3; vert_index++) {
 
+#ifdef OG
 		const Vector3i * polyverts = Polys + poly_index;
+#endif
+#ifdef ZH
+		const TriIndex * polyverts = Polys + poly_index;
+#endif
 		const Vector3 * point = Verts + (*polyverts)[vert_index];
 
 		if (point->X  < min.X) min.X = point->X;
@@ -758,7 +886,12 @@ void AABTreeBuilderClass::Update_Max(int poly_index,Vector3 & max)
 {
 	for (int vert_index = 0; vert_index < 3; vert_index++) {
 
+#ifdef OG
 		const Vector3i * polyverts = Polys + poly_index;
+#endif
+#ifdef ZH
+		const TriIndex * polyverts = Polys + poly_index;
+#endif
 		const Vector3 * point = Verts + (*polyverts)[vert_index];
 
 		if (point->X  > max.X) max.X = point->X;
@@ -784,7 +917,12 @@ void	AABTreeBuilderClass::Update_Min_Max(int poly_index, Vector3 & min, Vector3 
 {
 	for (int vert_index = 0; vert_index < 3; vert_index++) {
 
+#ifdef OG
 		const Vector3i * polyverts = Polys + poly_index;
+#endif
+#ifdef ZH
+		const TriIndex * polyverts = Polys + poly_index;
+#endif
 		const Vector3 * point = Verts + (*polyverts)[vert_index];
 
 		if (point->X  < min.X) min.X = point->X;

@@ -34,24 +34,71 @@
 #include "Common/AudioEventRTS.h"
 
 class Player;
+#ifdef ZH
+class INI;
+#endif
 
 //------------------------------------------------------------------------------------ Eva Messages
 // Keep in sync with TheEvaMessageNames AND Eva::s_shouldPlayFuncs
 enum EvaMessage
 {
+#ifdef ZH
+  EVA_Invalid = -1,
+    
+#endif
 	EVA_FIRST = 0,
 	EVA_LowPower = EVA_FIRST,
 	EVA_InsufficientFunds,
+#ifdef OG
 	EVA_SuperweaponDetected_ParticleCannon,
 	EVA_SuperweaponDetected_Nuke,
 	EVA_SuperweaponDetected_ScudStorm,
 	EVA_SuperweaponLaunched_ParticleCannon,
 	EVA_SuperweaponLaunched_Nuke,
 	EVA_SuperweaponLaunched_ScudStorm,
+
+#endif
+#ifdef ZH
+	EVA_SuperweaponDetected_Own_ParticleCannon,
+	EVA_SuperweaponDetected_Own_Nuke,
+	EVA_SuperweaponDetected_Own_ScudStorm,
+  EVA_SuperweaponDetected_Ally_ParticleCannon,
+  EVA_SuperweaponDetected_Ally_Nuke,
+  EVA_SuperweaponDetected_Ally_ScudStorm,
+  EVA_SuperweaponDetected_Enemy_ParticleCannon,
+  EVA_SuperweaponDetected_Enemy_Nuke,
+  EVA_SuperweaponDetected_Enemy_ScudStorm,
+	EVA_SuperweaponLaunched_Own_ParticleCannon,
+	EVA_SuperweaponLaunched_Own_Nuke,
+	EVA_SuperweaponLaunched_Own_ScudStorm,
+  EVA_SuperweaponLaunched_Ally_ParticleCannon,
+  EVA_SuperweaponLaunched_Ally_Nuke,
+  EVA_SuperweaponLaunched_Ally_ScudStorm,
+  EVA_SuperweaponLaunched_Enemy_ParticleCannon,
+  EVA_SuperweaponLaunched_Enemy_Nuke,
+  EVA_SuperweaponLaunched_Enemy_ScudStorm,
+  EVA_SuperweaponReady_Own_ParticleCannon,
+  EVA_SuperweaponReady_Own_Nuke,
+  EVA_SuperweaponReady_Own_ScudStorm,
+  EVA_SuperweaponReady_Ally_ParticleCannon,
+  EVA_SuperweaponReady_Ally_Nuke,
+  EVA_SuperweaponReady_Ally_ScudStorm,
+  EVA_SuperweaponReady_Enemy_ParticleCannon,
+  EVA_SuperweaponReady_Enemy_Nuke,
+  EVA_SuperweaponReady_Enemy_ScudStorm,
+#endif
 	EVA_BuldingLost,
 	EVA_BaseUnderAttack,
 	EVA_AllyUnderAttack,
 	EVA_BeaconDetected,
+#ifdef ZH
+  EVA_EnemyBlackLotusDetected,
+  EVA_EnemyJarmenKellDetected,
+  EVA_EnemyColonelBurtonDetected,
+  EVA_OwnBlackLotusDetected,
+  EVA_OwnJarmenKellDetected,
+  EVA_OwnColonelBurtonDetected,
+#endif
 	EVA_UnitLost,
 	EVA_GeneralLevelUp,
 	EVA_VehicleStolen,
@@ -59,6 +106,15 @@ enum EvaMessage
 	EVA_CashStolen,
 	EVA_UpgradeComplete,
 	EVA_BuildingBeingStolen,
+#ifdef ZH
+	EVA_BuildingSabotaged,
+	EVA_SuperweaponLaunched_Own_GPS_Scrambler,
+  EVA_SuperweaponLaunched_Ally_GPS_Scrambler,
+  EVA_SuperweaponLaunched_Enemy_GPS_Scrambler,
+	EVA_SuperweaponLaunched_Own_Sneak_Attack,
+  EVA_SuperweaponLaunched_Ally_Sneak_Attack,
+  EVA_SuperweaponLaunched_Enemy_Sneak_Attack,
+#endif
 
 	EVA_COUNT,
 };
@@ -160,6 +216,11 @@ class Eva : public SubsystemInterface
 
 		void setEvaEnabled(Bool enabled);
 
+#ifdef ZH
+    // Parse EvaMessage enum name in INI
+    static void parseEvaMessageFromIni( INI * ini, void *instance, void *store, const void* userData );
+
+#endif
 	protected: 	// Note: These are all protected. They should *NEVER* be made public. They are for internal use only
 		Bool isTimeForCheck(EvaMessage messageToTest, UnsignedInt currentFrame) const;
 		Bool messageShouldPlay(EvaMessage messageToTest, UnsignedInt currentFrame) const;

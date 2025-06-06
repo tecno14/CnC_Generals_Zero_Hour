@@ -598,7 +598,12 @@ void BridgeBehavior::doAreaEffects( TerrainRoadType *bridgeTemplate,
 		{
 
 			getRandomSurfacePosition( bridgeTemplate, bridgeInfo, &pos );
+#ifdef OG
 			ObjectCreationList::create( ocl, getObject(), &pos, NULL );
+#endif
+#ifdef ZH
+			ObjectCreationList::create( ocl, getObject(), &pos, NULL, INVALID_ANGLE );
+#endif
 
 		}  // end if
 
@@ -812,7 +817,12 @@ UpdateSleepTime BridgeBehavior::update( void )
 						us->getSingleLogicalBonePosition( boneName.str(), &pos, NULL );
 
 						// launch the fx list
+#ifdef OG
 						ObjectCreationList::create( (*oclIt).ocl, us, &pos, NULL );
+#endif
+#ifdef ZH
+						ObjectCreationList::create( (*oclIt).ocl, us, &pos, NULL, INVALID_ANGLE );
+#endif
 					
 					}  // end else
 
@@ -827,7 +837,12 @@ UpdateSleepTime BridgeBehavior::update( void )
 						pos.set( getObject()->getPosition() );
 
 					// launch the fx list
+#ifdef OG
 					ObjectCreationList::create( (*oclIt).ocl, us, &pos, NULL );
+#endif
+#ifdef ZH
+					ObjectCreationList::create( (*oclIt).ocl, us, &pos, NULL, INVALID_ANGLE );
+#endif
 
 				}  // end else
 

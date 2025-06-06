@@ -57,6 +57,10 @@
 
 class UnicodeString;
 
+#ifdef ZH
+#include "windows.h"
+
+#endif
 // -----------------------------------------------------
 /**
 	AsciiString is the fundamental single-byte string type used in the Generals
@@ -104,6 +108,10 @@ private:
 	#else
 	inline void validate() const { }
 	#endif
+#ifdef ZH
+
+  void freeBytes(void);
+#endif
 
 protected:
 	AsciiStringData* m_data;   // pointer to ref counted string data
@@ -351,11 +359,57 @@ inline char* AsciiString::peek() const
 
 // -----------------------------------------------------
 inline AsciiString::AsciiString() : m_data(0)
+#ifdef ZH
 {
 	validate();
 }
 
 // -----------------------------------------------------
+inline AsciiString::AsciiString(const char* s) : m_data(0)
+{
+	//DEBUG_ASSERTCRASH(isMemoryManagerOfficiallyInited(), ("Initializing AsciiStrings prior to main (ie, as static vars) can cause memory leak reporting problems. Are you sure you want to do this?\n"));
+	int len = (s)?strlen(s):0;
+	if (len)
+#endif
+{
+#ifdef ZH
+		ensureUniqueBufferOfSize(len + 1, false, s, NULL);
+	}
+#endif
+	validate();
+}
+
+// -----------------------------------------------------
+#ifdef ZH
+inline AsciiString::AsciiString(const AsciiString& stringSrc) : m_data(stringSrc.m_data)
+{
+  // don't need this if we're using InterlockedIncrement
+  // FastCriticalSectionClass::LockClass lock(TheAsciiStringCriticalSection);
+	if (m_data)
+		// ++m_data->m_refCount;
+    // yes, I know it's not a DWord but we're incrementing so we're safe
+    InterlockedIncrement((long *)&m_data->m_refCount);
+	validate();
+}
+
+// -----------------------------------------------------
+inline void AsciiString::releaseBuffer()
+{
+  // FastCriticalSectionClass::LockClass lock(TheAsciiStringCriticalSection);
+
+	validate();
+	if (m_data)
+	{
+    InterlockedDecrement((long *)&m_data->m_refCount);
+		if (!m_data->m_refCount)
+			freeBytes();
+		m_data = 0;
+	}
+	validate();
+}
+
+// -----------------------------------------------------
+#endif
 inline AsciiString::~AsciiString()
 {
 	validate();
@@ -398,6 +452,51 @@ inline const char* AsciiString::str() const
 	validate();
 	static const char TheNullChr = 0;
 	return m_data ? peek() : &TheNullChr;
+#ifdef ZH
+}
+
+// -----------------------------------------------------
+inline void AsciiString::set(const AsciiString& stringSrc)
+{
+  //FastCriticalSectionClass::LockClass lock(TheAsciiStringCriticalSection);
+
+	validate();
+	if (&stringSrc != this)
+	{
+    // do not call releaseBuffer(); here, it locks the CS twice
+    // from the same thread which is illegal using fast CS's
+		if (m_data)
+    {
+      InterlockedDecrement((long *)&m_data->m_refCount);
+		  if (!m_data->m_refCount)
+			  freeBytes();
+    }
+
+		m_data = stringSrc.m_data;
+		if (m_data)
+      InterlockedIncrement((long *)&m_data->m_refCount);
+	}
+	validate();
+}
+
+// -----------------------------------------------------
+inline void AsciiString::set(const char* s)
+{
+	validate();
+	if (!m_data || s != peek())
+	{
+		int len = s ? strlen(s) : 0;
+		if (len)
+		{
+			ensureUniqueBufferOfSize(len + 1, false, s, NULL);
+		}
+		else
+		{
+			releaseBuffer();
+		}
+	}
+	validate();
+#endif
 }
 
 // -----------------------------------------------------
@@ -416,6 +515,27 @@ inline AsciiString& AsciiString::operator=(const char* s)
 	set(s);
 	validate();
 	return *this;
+#ifdef ZH
+}
+
+// -----------------------------------------------------
+inline void AsciiString::concat(const char* s)
+{
+	validate();
+	int addlen = strlen(s);
+	if (addlen == 0)
+		return;	// my, that was easy
+
+	if (m_data)
+	{
+		ensureUniqueBufferOfSize(getLength() + addlen + 1, true, NULL, s);
+	}
+	else
+	{
+		set(s);
+	}
+	validate();
+#endif
 }
 
 // -----------------------------------------------------

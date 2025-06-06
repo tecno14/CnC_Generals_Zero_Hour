@@ -26,12 +26,30 @@
  *                                                                                             *
  *              Original Author:: Greg Hjelstrom                                               *
  *                                                                                             *
+#ifdef OG
  *                      $Author:: Hector_y                                                    $*
+#endif
+#ifdef ZH
+ *                       Author : Kenny Mitchell                                               * 
+#endif
  *                                                                                             *
+#ifdef OG
  *                     $Modtime:: 4/25/01 1:37p                                               $*
+#endif
+#ifdef ZH
+ *                     $Modtime:: 06/27/02 1:27p                                              $*
+#endif
  *                                                                                             *
+#ifdef OG
  *                    $Revision:: 4                                                           $*
+#endif
+#ifdef ZH
+ *                    $Revision:: 5                                                           $*
+#endif
  *                                                                                             *
+#ifdef ZH
+ * 06/27/02 KM Texture class abstraction																			*
+#endif
  *---------------------------------------------------------------------------------------------*
  * Functions:                                                                                  *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
@@ -64,9 +82,16 @@ class DX8PolygonRendererClass;
 typedef MultiListClass<DX8PolygonRendererClass>			DX8PolygonRendererList;
 typedef MultiListIterator<DX8PolygonRendererClass>		DX8PolygonRendererListIterator; 
 
+#ifdef OG
 class DX8TextureTrackerClass;
 typedef MultiListClass<DX8TextureTrackerClass>			DX8TextureTrackerList;
 typedef MultiListIterator<DX8TextureTrackerClass>		DX8TextureTrackerListIterator;
+#endif
+#ifdef ZH
+class TextureTrackerClass;
+typedef MultiListClass<TextureTrackerClass>				TextureTrackerList;
+typedef MultiListIterator<TextureTrackerClass>			TextureTrackerListIterator;
+#endif
 
 
 #endif //DX8LIST_H

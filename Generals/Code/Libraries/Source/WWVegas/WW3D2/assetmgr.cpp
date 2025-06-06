@@ -16,7 +16,12 @@
 **	along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#ifdef OG
 /* $Header: /Commando/Code/ww3d2/assetmgr.cpp 36    8/24/01 3:23p Jani_p $ */
+#endif
+#ifdef ZH
+/* $Header: /Commando/Code/ww3d2/assetmgr.cpp 43    11/01/01 1:11a Jani_p $ */
+#endif
 /*********************************************************************************************** 
  ***                            Confidential - Westwood Studios                              *** 
  *********************************************************************************************** 
@@ -24,13 +29,37 @@
  *                 Project Name : Commando                                                     * 
  *                                                                                             * 
  *                     $Archive:: /Commando/Code/ww3d2/assetmgr.cpp                           $* 
+#ifdef ZH
  *                                                                                             * 
+ *                   Org Author:: Greg_h                                                       * 
+#endif
+ *                                                                                             * 
+#ifdef OG
  *                       Author:: Greg_h                                                       * 
+#endif
+#ifdef ZH
+ *                       Author : Kenny Mitchell                                               * 
+#endif
  *                                                                                             * 
+#ifdef OG
  *                     $Modtime:: 8/22/01 6:54p                                               $* 
+#endif
+#ifdef ZH
+ *                     $Modtime:: 08/05/02 10:14a                                              $*
+#endif
  *                                                                                             * 
+#ifdef OG
  *                    $Revision:: 36                                                          $* 
+#endif
+#ifdef ZH
+ *                    $Revision:: 46                                                          $* 
+#endif
  *                                                                                             * 
+#ifdef ZH
+ * 06/27/02 KM Texture class abstraction																			*
+ * 07/01/02 KM Shader library integration
+ * 08/05/02 KM Texture class redesign (revisited)
+#endif
  *---------------------------------------------------------------------------------------------* 
  * Functions:                                                                                  * 
  *   WW3DAssetManager::WW3DAssetManager -- Constructor                                         *
@@ -110,10 +139,18 @@
 #include <windows.h>
 #include <stdio.h>
 #include <D3dx8core.h>
-
 #include "texture.h"
 #include "wwprofile.h"
+#ifdef ZH
+#include "assetstatus.h"
+#include "ringobj.h"
+#include "sphereobj.h"
+#endif
 
+#ifdef ZH
+#include "shdlib.h"
+
+#endif
 /*
 ** Static member variable which keeps track of the single instanced asset manager
 */
@@ -216,7 +253,14 @@ WW3DAssetManager::WW3DAssetManager(void) :
 	Prototypes.Set_Growth_Step(PROTOTYPES_GROWTH_RATE);
 
 	// install the default loaders
+#ifdef ZH
+#ifndef USE_WWSHADE
+#endif
 	Register_Prototype_Loader(&_MeshLoader);
+#ifdef ZH
+#endif
+
+#endif
 	Register_Prototype_Loader(&_HModelLoader);
 	Register_Prototype_Loader(&_CollectionLoader);
 	Register_Prototype_Loader(&_BoxLoader);
@@ -225,6 +269,12 @@ WW3DAssetManager::WW3DAssetManager(void) :
 	Register_Prototype_Loader(&_AggregateLoader);
 	Register_Prototype_Loader(&_NullLoader);
 	Register_Prototype_Loader(&_DazzleLoader);
+#ifdef ZH
+	Register_Prototype_Loader (&_RingLoader);
+	Register_Prototype_Loader (&_SphereLoader);
+
+	SHD_REG_LOADER;
+#endif
 	
 	// allocate the hash table and clear it.
 	PrototypeHashTable = W3DNEWARRAY PrototypeClass * [PROTOTYPE_HASH_TABLE_SIZE];
@@ -302,7 +352,12 @@ static void Log_Textures(bool inited,unsigned& total_count, unsigned& total_mem)
 		if (tex->Is_Initialized()!=inited) continue;
 
 		D3DSURFACE_DESC desc;
+#ifdef OG
 		IDirect3DTexture8* d3d_texture=tex->Peek_DX8_Texture();
+#endif
+#ifdef ZH
+		IDirect3DTexture8* d3d_texture=tex->Peek_D3D_Texture();
+#endif
 		if (!d3d_texture) continue;
 		DX8_ErrorCode(d3d_texture->GetLevelDesc(0,&desc));
 
@@ -789,6 +844,10 @@ RenderObjClass * WW3DAssetManager::Create_Render_Obj(const char * name)
 	PrototypeClass * proto = Find_Prototype(name);
 
 	if (WW3D_Load_On_Demand && proto == NULL) {	// If we didn't find one, try to load on demand
+#ifdef ZH
+		AssetStatusClass::Peek_Instance()->Report_Load_On_Demand_RObj(name);
+
+#endif
 		char filename [MAX_PATH];
 		char *mesh_name = ::strchr (name, '.');
 		if (mesh_name != NULL) {
@@ -800,7 +859,14 @@ RenderObjClass * WW3DAssetManager::Create_Render_Obj(const char * name)
 
 		// If we can't find it, try the parent directory
 		if ( Load_3D_Assets( filename ) == false ) {
+#ifdef OG
 			StringClass	new_filename = StringClass("..\\") + filename;
+
+#endif
+#ifdef ZH
+			StringClass	new_filename(StringClass("..\\"),true);
+			new_filename+=filename;
+#endif
 			Load_3D_Assets( new_filename );
 		}
 
@@ -814,6 +880,9 @@ RenderObjClass * WW3DAssetManager::Create_Render_Obj(const char * name)
 			if (++warning_count <= 20) {
 				WWDEBUG_SAY(("WARNING: Failed to create Render Object: %s\r\n",name));
 			}
+#ifdef ZH
+			AssetStatusClass::Peek_Instance()->Report_Missing_RObj(name);
+#endif
 		}
 		return NULL;		// Failed to find a prototype
 	}
@@ -965,13 +1034,24 @@ HAnimClass *	WW3DAssetManager::Get_HAnim(const char * name)
 	if (WW3D_Load_On_Demand && anim == NULL) {	// If we didn't find it, try to load on demand
 		
 		if ( !HAnimManager.Is_Missing( name ) ) {	// if this is NOT a known missing anim
+#ifdef ZH
+
+			AssetStatusClass::Peek_Instance()->Report_Load_On_Demand_HAnim(name);
+#endif
 
 			char filename[ MAX_PATH ];
 			char *animname = strchr( name, '.');
 			if (animname != NULL) {
 				sprintf( filename, "%s.w3d", animname+1);
 			} else {
+#ifdef OG
 				WWASSERT_PRINT( 0,"Animation has no . in the name\n");
+
+#endif
+#ifdef ZH
+				WWDEBUG_SAY(( "Animation %s has no . in the name\n", name ));
+				WWASSERT( 0 );
+#endif
 				return NULL;
 			}
 
@@ -983,8 +1063,13 @@ HAnimClass *	WW3DAssetManager::Get_HAnim(const char * name)
 
 			anim = HAnimManager.Get_Anim(name);		// Try agai
 			if (anim == NULL) {
+#ifdef OG
 //				WWDEBUG_SAY(("WARNING: Animation %s not found!\n", name));
+#endif
 				HAnimManager.Register_Missing( name );		// This is now a KNOWN missing anim
+#ifdef ZH
+				AssetStatusClass::Peek_Instance()->Report_Missing_HAnim(name);
+#endif
 			}
 		}
 	}
@@ -1015,20 +1100,41 @@ HTreeClass *	WW3DAssetManager::Get_HTree(const char * name)
 
 	if (WW3D_Load_On_Demand && htree == NULL) {	// If we didn't find it, try to load on demand
 		
+#ifdef ZH
+		AssetStatusClass::Peek_Instance()->Report_Load_On_Demand_HTree(name);
+
+#endif
 		char filename[ MAX_PATH ];
 		sprintf( filename, "%s.w3d", name);
 
 		// If we can't find it, try the parent directory
 		if ( Load_3D_Assets( filename ) == false ) {
+#ifdef OG
 			StringClass	new_filename = StringClass("..\\") + filename;
+
+#endif
+#ifdef ZH
+			StringClass	new_filename("..\\",true);
+			new_filename+=filename;
+#endif
 			Load_3D_Assets( new_filename );
 		}
 
 		htree = HTreeManager.Get_Tree(name);	// Try again
+#ifdef OG
 	}
+#endif
 
+#ifdef OG
 	return htree;
+
+#endif
+#ifdef ZH
+		if (htree == NULL) {
+			AssetStatusClass::Peek_Instance()->Report_Missing_HTree(name);
+#endif
 }
+#ifdef OG
 
 /***********************************************************************************************
  * WW3DAssetManager::Get_Bumpmap_Based_On_Texture -- Generate a bumpmap from texture. The      *
@@ -1064,10 +1170,17 @@ TextureClass* WW3DAssetManager::Get_Bumpmap_Based_On_Texture(TextureClass* textu
 		tex = NEW_REF(BumpmapTextureClass,(texture));
 		tex->Set_Texture_Name(bump_name);
 		TextureHash.Insert(tex->Get_Texture_Name(),tex);
+#endif
 	}
 
+#ifdef OG
 	tex->Add_Ref();
 	return tex;
+#endif
+#ifdef ZH
+	return htree;
+
+#endif
 }
 
 /***********************************************************************************************
@@ -1082,18 +1195,56 @@ TextureClass* WW3DAssetManager::Get_Bumpmap_Based_On_Texture(TextureClass* textu
  * HISTORY:                                                                                    *
  *   1/31/2001  NH : Created.                                                                  *
  *=============================================================================================*/
+#ifdef OG
 TextureClass * WW3DAssetManager::Get_Texture(
+
+#endif
+#ifdef ZH
+TextureClass * WW3DAssetManager::Get_Texture
+(
+#endif
 	const char * filename, 
+#ifdef OG
 	TextureClass::MipCountType mip_level_count,
+#endif
+#ifdef ZH
+	MipCountType mip_level_count,
+#endif
 	WW3DFormat texture_format,
+#ifdef OG
 	bool allow_compression)
+
+#endif
+#ifdef ZH
+	bool allow_compression,
+	TextureBaseClass::TexAssetType type,
+	bool allow_reduction
+)
+#endif
 {
 	WWPROFILE( "WW3DAssetManager::Get_Texture 1" );
+#ifdef ZH
+
+	/*
+	** We cannot currently mip-map bumpmaps
+	*/
+	if (texture_format==WW3D_FORMAT_U8V8) 
+	{
+		mip_level_count=MIP_LEVELS_1;
+	}
+#endif
 
 	/*
 	** Bail if the user isn't really asking for anything
 	*/
+#ifdef OG
 	if ((filename == NULL) || (strlen(filename) == 0)) {
+
+#endif
+#ifdef ZH
+	if ((filename == NULL) || (strlen(filename) == 0)) 
+	{
+#endif
 		return NULL;
 	}
 
@@ -1103,17 +1254,43 @@ TextureClass * WW3DAssetManager::Get_Texture(
 	/*
 	** See if the texture has already been loaded.
 	*/
-
 	TextureClass* tex = TextureHash.Get(lower_case_name);
+#ifdef OG
 	if (tex && texture_format!=WW3D_FORMAT_UNKNOWN) {
 		WWASSERT_PRINT(tex->Get_Texture_Format()==texture_format,("Texture %s has already been loaded witt different format",filename));
+
+#endif
+#ifdef ZH
+	if (tex && (tex->Is_Initialized() == true) && (texture_format!=WW3D_FORMAT_UNKNOWN)) 
+	{
+		WWASSERT_PRINT(tex->Get_Texture_Format()==texture_format,("Texture %s has already been loaded with different format",filename));
+#endif
 	}
 
 	/*
 	** Didn't have it so we have to create a new texture
 	*/
+#ifdef OG
 	if (!tex) {
 		tex = NEW_REF(TextureClass,(lower_case_name, NULL, mip_level_count, texture_format, allow_compression));
+
+#endif
+#ifdef ZH
+	if (!tex) 
+	{
+		if (type==TextureBaseClass::TEX_REGULAR)
+		{
+			tex = NEW_REF (TextureClass, (lower_case_name, NULL, mip_level_count, texture_format, allow_compression, allow_reduction));
+		}
+		else if (type==TextureBaseClass::TEX_CUBEMAP)
+		{
+			tex = NEW_REF (CubeTextureClass, (lower_case_name, NULL, mip_level_count, texture_format, allow_compression, allow_reduction));
+		}
+		else if (type==TextureBaseClass::TEX_VOLUME)
+		{
+			tex = NEW_REF (VolumeTextureClass, (lower_case_name, NULL, mip_level_count, texture_format, allow_compression, allow_reduction));
+		}
+#endif
 		TextureHash.Insert(tex->Get_Texture_Name(),tex);
 	}
 
@@ -1169,7 +1346,9 @@ void WW3DAssetManager::Release_Unused_Textures(void)
 	** for each texture in the list, get it, check it's refcount, and and release ref it if the
 	** refcount is one.
 	*/
+#ifdef OG
 //	SLNode<TextureClass> *node, *next;
+#endif
 
 	unsigned count=0;
 	TextureClass* temp_textures[256];
@@ -1216,6 +1395,7 @@ void WW3DAssetManager::Release_Texture(TextureClass *tex)
 
 	TextureHash.Remove(tex->Get_Texture_Name());
 	tex->Release_Ref();
+#ifdef OG
 
 //	for (	SLNode<TextureClass> *node = Textures.Head(); node; node = node->Next()) {
 //		if (node->Data() == tex) {
@@ -1225,6 +1405,7 @@ void WW3DAssetManager::Release_Texture(TextureClass *tex)
 //			return;
 //		}
 //	}
+#endif
 }
 
 void WW3DAssetManager::Log_All_Textures(void)

@@ -84,7 +84,12 @@ CleanupAreaPower::~CleanupAreaPower()
 }
 
 //-------------------------------------------------------------------------------------------------
+#ifdef OG
 void CleanupAreaPower::doSpecialPowerAtLocation( const Coord3D *loc, UnsignedInt commandOptions )
+#endif
+#ifdef ZH
+void CleanupAreaPower::doSpecialPowerAtLocation( const Coord3D *loc, Real angle, UnsignedInt commandOptions )
+#endif
 {
 	if (getObject()->isDisabled())
 		return;

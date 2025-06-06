@@ -26,11 +26,26 @@
  *                                                                                             *
  *              Original Author:: Greg Hjelstrom                                               *
  *                                                                                             *
+#ifdef OG
  *                      $Author:: Greg_h                                                      $*
+#endif
+#ifdef ZH
+ *                      $Author:: Jani_p                                                      $*
+#endif
  *                                                                                             *
+#ifdef OG
  *                     $Modtime:: 6/14/01 9:32a                                               $*
+#endif
+#ifdef ZH
+ *                     $Modtime:: 11/24/01 6:18p                                              $*
+#endif
  *                                                                                             *
+#ifdef OG
  *                    $Revision:: 6                                                           $*
+#endif
+#ifdef ZH
+ *                    $Revision:: 7                                                           $*
+#endif
  *                                                                                             *
  *---------------------------------------------------------------------------------------------*
  * Functions:                                                                                  *
@@ -53,6 +68,9 @@
 #include "vector4.h"
 #include "shader.h"
 #include "vertmaterial.h"
+#ifdef ZH
+#include "meshgeometry.h"
+#endif
 
 class MeshClass;
 class RenderInfoClass;
@@ -148,7 +166,12 @@ protected:
 	/*
 	** Connectivity
 	*/
+#ifdef OG
 	SimpleDynVecClass<Vector3i>						Polys;
+#endif
+#ifdef ZH
+	SimpleDynVecClass<TriIndex>						Polys;
+#endif
 
 	/*
 	** Geometry
@@ -213,7 +236,12 @@ protected:
 	/*
 	** Connectivity
 	*/
+#ifdef OG
 	SimpleDynVecClass<Vector3i>						Polys;
+#endif
+#ifdef ZH
+	SimpleDynVecClass<TriIndex>						Polys;
+#endif
 
 	/*
 	** Indirected vertex indices (for copying dynamically updated mesh geometry)

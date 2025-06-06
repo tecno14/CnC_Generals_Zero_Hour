@@ -26,11 +26,26 @@
  *                                                                                             *
  *              Original Author:: Greg Hjelstrom                                               *
  *                                                                                             *
+#ifdef OG
  *                      $Author:: Jani_p                                                      $*
+#endif
+#ifdef ZH
+ *                      $Author:: Greg_h                                                      $*
+#endif
  *                                                                                             *
+#ifdef OG
  *                     $Modtime:: 7/11/01 9:49p                                               $*
+#endif
+#ifdef ZH
+ *                     $Modtime:: 12/03/01 4:57p                                              $*
+#endif
  *                                                                                             *
+#ifdef OG
  *                    $Revision:: 7                                                           $*
+#endif
+#ifdef ZH
+ *                    $Revision:: 11                                                          $*
+#endif
  *                                                                                             *
  *---------------------------------------------------------------------------------------------*
  * Functions:                                                                                  *
@@ -855,6 +870,12 @@ void ShatterSystem::Shutdown(void)
 
 void ShatterSystem::Shatter_Mesh(MeshClass * mesh,const Vector3 & point,const Vector3 & direction)
 {
+#ifdef ZH
+	if (ShatterPatterns.Count() == 0) {
+		return ;
+	}
+
+#endif
 	int ivert,ipoly;
 	int ipass,istage;
 
@@ -959,7 +980,12 @@ void ShatterSystem::Shatter_Mesh(MeshClass * mesh,const Vector3 & point,const Ve
 	** Grab the arrays out of the mesh and transform verts and vnorms
 	** into "shatter-space"
 	*/
+#ifdef OG
 	const Vector3i * polys = model->Get_Polygon_Array();
+#endif
+#ifdef ZH
+	const TriIndex * polys = model->Get_Polygon_Array();
+#endif
 	const Vector3 * src_verts = model->Get_Vertex_Array();
 	const Vector3 * src_vnorms = model->Get_Vertex_Normal_Array();
 
@@ -1136,9 +1162,20 @@ void ShatterSystem::Process_Clip_Pools
 				if (model->Peek_Single_Material(ipass) != NULL) {
 					matinfo->Add_Vertex_Material(model->Peek_Single_Material(ipass));
 				}
+#ifdef OG
 				if (model->Peek_Single_Texture(ipass) != NULL) {
 					matinfo->Add_Texture(model->Peek_Single_Texture(ipass));
+
+#endif
+#ifdef ZH
+				for (int istage=0; istage<MeshMatDescClass::MAX_TEX_STAGES; istage++) {
+					if (model->Peek_Single_Texture(ipass,istage) != NULL) {
+						matinfo->Add_Texture(model->Peek_Single_Texture(ipass,istage));
+#endif
 					has_textures = true;
+#ifdef ZH
+					}
+#endif
 				}
 			}
 			new_mesh->Set_Material_Info(matinfo);
@@ -1147,9 +1184,23 @@ void ShatterSystem::Process_Clip_Pools
 				new_mesh->Set_Vertex_Material(model->Peek_Single_Material(ipass),false,ipass);
 				new_mesh->Set_Shader(model->Get_Single_Shader(ipass),ipass);
 
+#ifdef OG
 				TextureClass * tex = model->Peek_Single_Texture(ipass,0);	
+
+#endif
+#ifdef ZH
+				for (istage=0; istage<MeshMatDescClass::MAX_TEX_STAGES; istage++) {
+					TextureClass * tex = model->Peek_Single_Texture(ipass,istage);	
+#endif
 				if (tex != NULL) {
+#ifdef OG
 					new_mesh->Set_Texture(tex,true,ipass);
+
+#endif
+#ifdef ZH
+						new_mesh->Peek_Model()->Set_Single_Texture(tex,ipass,istage);
+					}
+#endif
 				}
 			}
 			
@@ -1198,6 +1249,9 @@ void ShatterSystem::Process_Clip_Pools
 							mycolor=vert.DCG[ipass];							
 						}
 
+#ifdef ZH
+						// HY- Multiplying DIG with DCG as in meshmdlio
+#endif
 						if (mtl_params.DIG[ipass] != NULL) {
 							SHATTER_DEBUG_SAY(("DIG: pass:%d: %f %f %f\n",ipass,vert.DIG[ipass].X,vert.DIG[ipass].Y,vert.DIG[ipass].Z));
 							Vector4 mc=DX8Wrapper::Convert_Color(mycolor);
@@ -1212,16 +1266,25 @@ void ShatterSystem::Process_Clip_Pools
 						** If there were UV coordinates in the original mesh for either stage,
 						** then copy the vertex's uv's into into the new mesh.
 						*/
+#ifdef ZH
+//						#pragma MESSAGE("HY- Naty, will dynamesh support multiple stages of UV?")
+#endif
 						for (istage=0; istage<MeshMatDescClass::MAX_TEX_STAGES; istage++) {
 							if (mtl_params.UV[ipass][istage] != NULL) {
 								SHATTER_DEBUG_SAY(("UV: pass:%d stage: %d: %f %f\n",ipass,istage,vert.TexCoord[ipass][istage].X,vert.TexCoord[ipass][istage].Y));
+#ifdef OG
 								new_mesh->UV(vert.TexCoord[ipass][istage]);
+#endif
+#ifdef ZH
+								new_mesh->UV(vert.TexCoord[ipass][istage],istage);
+#endif
 							}
 						}
 					}
 
 					new_mesh->End_Vertex();
 			
+#ifdef OG
 					/*
 					** Set the texture for each pass and stage.  
 					** TODO: support texture arrays?
@@ -1233,6 +1296,7 @@ void ShatterSystem::Process_Clip_Pools
 							new_mesh->Set_Texture(tex,true,ipass);
 						}
 					}
+#endif
 				}
 				new_mesh->End_Tri_Fan();
 			}

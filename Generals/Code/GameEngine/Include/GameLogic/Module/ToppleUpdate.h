@@ -105,6 +105,9 @@ public:
 	virtual Bool isCarBombCrateCollide() const { return false; }
 	virtual Bool isRailroad() const { return false; }
 	virtual Bool isSalvageCrateCollide() const { return false; }
+#ifdef ZH
+	virtual Bool isSabotageBuildingCrateCollide() const { return FALSE; }
+#endif
 
 protected:
 

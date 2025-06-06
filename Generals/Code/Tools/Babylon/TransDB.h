@@ -28,7 +28,12 @@
 #include "list.h"
 #include "bin.h"
 
+#ifdef OG
 class CNoxstringDlg;
+#endif
+#ifdef ZH
+class CBabylonDlg;
+#endif
 
 typedef struct 
 {
@@ -142,8 +147,14 @@ class DBAttribs
 };
 
 class TransDB;
+#ifdef OG
 class NoxLabel;
 class NoxText;
+#endif
+#ifdef ZH
+class BabylonLabel;
+class BabylonText;
+#endif
 
 class Translation : public DBAttribs
 {
@@ -186,18 +197,33 @@ class Translation : public DBAttribs
 	char*					Language		( void )									{ return GetLangName ( langid );};
 	void					AddToTree		( CTreeCtrl *tc, HTREEITEM parent, int changes = FALSE );
 	int						TooLong			( int maxlen );
+#ifdef OG
 	int						ValidateFormat ( NoxText *text );
+#endif
+#ifdef ZH
+	int						ValidateFormat ( BabylonText *text );
+#endif
 	int						IsSent ( void );
 	void						Sent ( int val );
 };
 
+#ifdef OG
 class NoxText : public DBAttribs
+#endif
+#ifdef ZH
+class BabylonText : public DBAttribs
+#endif
 {
 
 	TransDB				*db;
 
 	OLEString			*text;
+#ifdef OG
 	NoxLabel			*label;
+#endif
+#ifdef ZH
+	BabylonLabel			*label;
+#endif
 	OLEString			*wavefile;
 	unsigned int	line_number;
 	List					translations;
@@ -211,8 +237,14 @@ class NoxText : public DBAttribs
 	public:
 	CWaveInfo			WaveInfo;
 
+#ifdef OG
 	NoxText( void );
 	~NoxText( );
+#endif
+#ifdef ZH
+	BabylonText( void );
+	~BabylonText( );
+#endif
 
 	void					AddTranslation ( Translation *trans );
 	Translation*	FirstTranslation ( ListSearch &sh );
@@ -223,7 +255,12 @@ class NoxText : public DBAttribs
 	void					ClearProcessed ( void );
 	void					ClearMatched ( void );
 	int						Clear				( void );
+#ifdef OG
 	NoxText*			Clone				( void );
+#endif
+#ifdef ZH
+	BabylonText*			Clone				( void );
+#endif
 	void					Remove			( void );
 	void					AssignID		( void );
 	void					Set					( OLECHAR *string );
@@ -237,12 +274,22 @@ class NoxText : public DBAttribs
 	char*					GetSB				( void )									{ return text->GetSB (); } ;
 	void					SetWave			( OLECHAR *string )				{ wavefile->Set ( string ); Changed(); InvalidateAllWaves (); }; 
 	void					SetWave			( char *string )					{ wavefile->Set ( string ); Changed(); InvalidateAllWaves (); }; 
+#ifdef OG
 	void					SetLabel		( NoxLabel *new_label )		{ label = new_label; };
+#endif
+#ifdef ZH
+	void					SetLabel		( BabylonLabel *new_label )		{ label = new_label; };
+#endif
 	void					SetRetranslate ( int flag = TRUE )		{ retranslate = flag;};
 	int						Retranslate ( void )									{ return retranslate; };
 	OLECHAR*			Wave				( void )									{ return wavefile->Get (); } ;
 	char*					WaveSB			( void )									{ return wavefile->GetSB (); } ;
+#ifdef OG
 	NoxLabel*			Label				( void )									{ return label; } ;
+#endif
+#ifdef ZH
+	BabylonLabel*			Label				( void )									{ return label; } ;
+#endif
 	int						Revision		( void )									{ return revision; } ;
 	void					SetRevision	( int new_rev )						{ revision = new_rev; Changed(); } ;
 	void					IncRevision ( void )									{ revision++; Changed(); };
@@ -263,7 +310,12 @@ class NoxText : public DBAttribs
 };
 
 
+#ifdef OG
 class NoxLabel : public DBAttribs
+#endif
+#ifdef ZH
+class BabylonLabel : public DBAttribs
+#endif
 {
 	TransDB				*db;
 
@@ -281,8 +333,14 @@ class NoxLabel : public DBAttribs
 
 	public:
 
+#ifdef OG
 	NoxLabel ( void );
 	~NoxLabel ( );
+#endif
+#ifdef ZH
+	BabylonLabel ( void );
+	~BabylonLabel ( );
+#endif
 
 	int						Clear				( void );
 	void					ClearChanges ( void );
@@ -290,13 +348,27 @@ class NoxLabel : public DBAttribs
 	void					ClearMatched ( void );
 	int						AllMatched	( void );
 	void					Remove			( void );
+#ifdef OG
 	void					AddText			( NoxText *new_text );
 	void					RemoveText	( NoxText *new_text );
 	NoxText*			FirstText		( ListSearch& sh );
 	NoxText*			NextText		( ListSearch& sh);
 	NoxText*			FindText		( OLECHAR *find_text );
+#endif
+#ifdef ZH
+	void					AddText			( BabylonText *new_text );
+	void					RemoveText	( BabylonText *new_text );
+	BabylonText*			FirstText		( ListSearch& sh );
+	BabylonText*			NextText		( ListSearch& sh);
+	BabylonText*			FindText		( OLECHAR *find_text );
+#endif
 	void					SetDB				( TransDB *new_db );
+#ifdef OG
 	NoxLabel*			Clone				( void );
+#endif
+#ifdef ZH
+	BabylonLabel*			Clone				( void );
+#endif
 	int						NumStrings	( void )									{ return text.NumItems(); };
 	void					SetMaxLen		( int max )								{ max_len = max; Changed(); };
 	int						MaxLen			( void )									{ return max_len; };
@@ -364,6 +436,7 @@ class TransDB : public DBAttribs
 	void					VerifyDialog( LangID langid, void (*cb) ( void ) = NULL  );
 	int						ReportDialog( DLGREPORT *report, LangID langid, void (*print) ( const char *)= NULL, PMASK pmask= PMASK_ALL );
 	int						ReportTranslations( TRNREPORT *report, LangID langid, void (*print) ( const char *) = NULL, PMASK pmask = PMASK_ALL );
+#ifdef OG
 	void					ReportDuplicates ( CNoxstringDlg *dlg = NULL );
 	void					AddLabel		( NoxLabel *label );
 	void					AddText			( NoxText *text );
@@ -372,11 +445,28 @@ class TransDB : public DBAttribs
 	void					RemoveText	( NoxText *text );
 	void					RemoveObsolete	( NoxText *text );
 	int						Errors		( CNoxstringDlg *dlg = NULL );
+#endif
+#ifdef ZH
+	void					ReportDuplicates ( CBabylonDlg *dlg = NULL );
+	void					AddLabel		( BabylonLabel *label );
+	void					AddText			( BabylonText *text );
+	void					AddObsolete ( BabylonText *text );
+	void					RemoveLabel ( BabylonLabel *label );
+	void					RemoveText	( BabylonText *text );
+	void					RemoveObsolete	( BabylonText *text );
+	int						Errors		( CBabylonDlg *dlg = NULL );
+#endif
 	int						HasErrors ( void ) { return checked_for_errors ? last_error_count != 0 : FALSE; };
+#ifdef OG
 	int						Warnings		( CNoxstringDlg *dlg = NULL );
+#endif
+#ifdef ZH
+	int						Warnings		( CBabylonDlg *dlg = NULL );
+#endif
 	int						NumLabelsChanged	( void );
 	int						NumLabels		( void );
 	int						NumObsolete		( void ) { return num_obsolete; };
+#ifdef OG
 	NoxLabel*			FirstLabel	( ListSearch& sh );
 	NoxLabel*			NextLabel		( ListSearch& sh);
 	NoxText*			FirstObsolete	( ListSearch& sh );
@@ -388,6 +478,20 @@ class TransDB : public DBAttribs
 	NoxText*			FindNextText ( void );
 	NoxText*			FindObsolete		( OLECHAR *text );
 	NoxText*			FindNextObsolete ( void );
+#endif
+#ifdef ZH
+	BabylonLabel*			FirstLabel	( ListSearch& sh );
+	BabylonLabel*			NextLabel		( ListSearch& sh);
+	BabylonText*			FirstObsolete	( ListSearch& sh );
+	BabylonText*			NextObsolete	( ListSearch& sh);
+	BabylonLabel*			FindLabel		( OLECHAR *name );
+	BabylonText*			FindText		( OLECHAR *text );
+	BabylonText*			FindSubText	( OLECHAR *text, int item = 0 );
+	BabylonText*			FindText		( int id );
+	BabylonText*			FindNextText ( void );
+	BabylonText*			FindObsolete		( OLECHAR *text );
+	BabylonText*			FindNextObsolete ( void );
+#endif
 	int						Clear				( void );
 	void					ClearChanges ( void );
 	void					ClearProcessed ( void );
@@ -410,14 +514,31 @@ class TransDB : public DBAttribs
 
 class DupNode : public ListNode
 {				 
+#ifdef OG
 	NoxText *original;																	
 	NoxText *duplicate;																	
+#endif
+#ifdef ZH
+	BabylonText *original;																	
+	BabylonText *duplicate;																	
+#endif
 
 	public:
+#ifdef OG
 	DupNode ( NoxText *dup, NoxText *orig ) { original = orig; duplicate = dup, SetPriority ( orig->LineNumber ());};
+#endif
+#ifdef ZH
+	DupNode ( BabylonText *dup, BabylonText *orig ) { original = orig; duplicate = dup, SetPriority ( orig->LineNumber ());};
+#endif
 
+#ifdef OG
 	NoxText *Duplicate ( void ) { return duplicate; };
 	NoxText *Original ( void ) { return original; };
+#endif
+#ifdef ZH
+	BabylonText *Duplicate ( void ) { return duplicate; };
+	BabylonText *Original ( void ) { return original; };
+#endif
 
 };
 

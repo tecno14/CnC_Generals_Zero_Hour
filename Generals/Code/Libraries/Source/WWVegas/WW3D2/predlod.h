@@ -26,9 +26,19 @@
  *                                                                         * 
  *                      $Author:: Jani_p                                  $* 
  *                                                                         * 
+#ifdef OG
  *                     $Modtime:: 8/23/01 5:04p                           $* 
+#endif
+#ifdef ZH
+ *                     $Modtime:: 9/20/01 10:10a                          $* 
+#endif
  *                                                                         * 
+#ifdef OG
  *                    $Revision:: 2                                       $* 
+#endif
+#ifdef ZH
+ *                    $Revision:: 3                                       $* 
+#endif
  *                                                                         * 
  *-------------------------------------------------------------------------* 
  * Functions:                                                              * 
@@ -79,7 +89,12 @@ class PredictiveLODOptimizerClass {
 
 		static LODHeapNode *VisibleObjArray1;
 		static LODHeapNode *VisibleObjArray2;
+#ifdef OG
 		static int NumVisibleObjects;
+#endif
+#ifdef ZH
+		static int VisibleObjArraySize;
+#endif
 
 };
 

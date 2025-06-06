@@ -69,6 +69,9 @@
 #endif
 
 // PRIVATE DATA ///////////////////////////////////////////////////////////////////////////////////
+#ifdef ZH
+// Note: if you add more columns, you must modify the .wnd files and change the listbox properties (yuck!)
+#endif
 static enum {
 	COLUMN_NAME = 0,
 	COLUMN_MAP,
@@ -76,6 +79,9 @@ static enum {
 	COLUMN_NUMPLAYERS,
 	COLUMN_PASSWORD,
 	COLUMN_OBSERVER,
+#ifdef ZH
+  COLUMN_USE_STATS,
+#endif
 	COLUMN_PING,
 };
 
@@ -220,7 +226,12 @@ static void gameTooltip(GameWindow *window,
 
 	if (col == COLUMN_PING)
 	{
+#ifdef OG
 #ifdef DEBUG_LOGGING
+#endif
+#ifdef ZH
+#if 0 //def DEBUG_LOGGING
+#endif
 		UnicodeString s;
 		s.format(L"Ping is %d ms (cutoffs are %d ms and %d ms\n%hs local pings\n%hs remote pings",
 			room->getPingAsInt(), TheGameSpyConfig->getPingCutoffGood(), TheGameSpyConfig->getPingCutoffBad(),
@@ -248,6 +259,20 @@ static void gameTooltip(GameWindow *window,
 		}
 		else
 			TheMouse->setCursorTooltip( UnicodeString::TheEmptyString );
+#ifdef ZH
+		return;
+	}
+  if (col == COLUMN_USE_STATS)
+  {
+    if ( room->getUseStats() )
+    {
+      TheMouse->setCursorTooltip( TheGameText->fetch("TOOLTIP:UseStatsOn") );
+    }
+    else
+    {
+      TheMouse->setCursorTooltip( TheGameText->fetch("TOOLTIP:UseStatsOff") );
+    }
+#endif
 		return;
 	}
 
@@ -632,6 +657,17 @@ static Int insertGame( GameWindow *win, GameSpyStagingRoom *game, Bool showMap )
 	else
 	{
 		GadgetListBoxAddEntryText(win, UnicodeString(L" "), gameColor, index, COLUMN_OBSERVER);
+#ifdef ZH
+	}
+
+  {
+    if (game->getUseStats())
+    {
+      const Image *img = TheMappedImageCollection->findImageByName("GoodStatsIcon");
+      GadgetListBoxAddEntryImage(win, img, index, COLUMN_USE_STATS, img->getImageHeight(), img->getImageWidth());
+	}
+    
+#endif
 	}
 
 	s.format(L"%d", game->getPingAsInt());
@@ -856,4 +892,63 @@ void ToggleGameListType( void )
 
 	RefreshGameListBoxes();
 }
+
+#ifdef ZH
+// for use by GameWindow::winSetTooltipFunc
+// displays the Army Tooltip for the player templates
+void playerTemplateComboBoxTooltip(GameWindow *wndComboBox, WinInstanceData *instData, UnsignedInt mouse)
+{
+	Int index = 0;
+	GadgetComboBoxGetSelectedPos(wndComboBox, &index);
+	Int templateNum = (Int)GadgetComboBoxGetItemData(wndComboBox, index);
+	UnicodeString ustringTooltip;
+	if (templateNum == -1)
+	{
+			// the "Random" template is always first
+			ustringTooltip = TheGameText->fetch("TOOLTIP:BioStrategyLong_Random");
+	}
+	else
+	{
+		const PlayerTemplate *playerTemplate = ThePlayerTemplateStore->getNthPlayerTemplate(templateNum);
+		if (playerTemplate)
+		{
+			ustringTooltip = TheGameText->fetch(playerTemplate->getTooltip());
+		}
+	}
+	TheMouse->setCursorTooltip(ustringTooltip);
+}
+
+// -----------------------------------------------------------------------------
+
+// for use by GameWindow::winSetTooltipFunc
+// displays the Army Tooltip for the player templates
+void playerTemplateListBoxTooltip(GameWindow *wndListBox, WinInstanceData *instData, UnsignedInt mouse)
+{
+	Int x, y, row, col;
+	x = LOLONGTOSHORT(mouse);
+	y = HILONGTOSHORT(mouse);
+	GadgetListBoxGetEntryBasedOnXY(wndListBox, x, y, row, col);
+	if (row == -1 || col == -1)
+		return;
+
+	Int templateNum = (Int)GadgetListBoxGetItemData(wndListBox, row, col);
+	UnicodeString ustringTooltip;
+	if (templateNum == -1)
+	{
+			// the "Random" template is always first
+			ustringTooltip = TheGameText->fetch("TOOLTIP:BioStrategyLong_Random");
+	}
+	else
+	{
+		const PlayerTemplate *playerTemplate = ThePlayerTemplateStore->getNthPlayerTemplate(templateNum);
+		if (playerTemplate)
+		{
+			ustringTooltip = TheGameText->fetch(playerTemplate->getTooltip());
+		}
+	}
+
+	// use no tooltip delay here
+	TheMouse->setCursorTooltip(ustringTooltip, 0);
+}
+#endif
 

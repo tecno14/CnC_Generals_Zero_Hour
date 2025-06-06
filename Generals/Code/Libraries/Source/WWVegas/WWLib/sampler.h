@@ -125,6 +125,9 @@ public:
 	QMCSamplingClass(unsigned int dimensions, unsigned char divisions=0);
 	virtual void Reset() {index=0;};
 	virtual void Sample(float *target);
+#ifdef ZH
+	void Set_Offset(unsigned int offset) { index=offset; }
+#endif
 protected:
 	unsigned int index;
 };

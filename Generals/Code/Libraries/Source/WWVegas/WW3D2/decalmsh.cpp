@@ -26,12 +26,30 @@
  *                                                                                             *
  *              Original Author:: Greg Hjelstrom                                               *
  *                                                                                             *
+#ifdef OG
  *                      $Author:: Greg_h                                                      $*
+#endif
+#ifdef ZH
+ *                      $Author:: Kenny Mitchell                                               * 
+#endif
  *                                                                                             *
+#ifdef OG
  *                     $Modtime:: 7/26/01 9:03a                                               $*
+#endif
+#ifdef ZH
+ *                     $Modtime:: 06/26/02 4:04p                                             $*
+#endif
  *                                                                                             *
+#ifdef OG
  *                    $Revision:: 20                                                          $*
+#endif
+#ifdef ZH
+ *                    $Revision:: 24                                                          $*
+#endif
  *                                                                                             *
+#ifdef ZH
+ * 06/26/02 KM Matrix name change to avoid MAX conflicts                                       *
+#endif
  *---------------------------------------------------------------------------------------------*
  * Functions:                                                                                  *
  *   DecalMeshClass::DecalMeshClass -- Constructor                                             *
@@ -62,6 +80,9 @@
 #include "simplevec.h"
 #include "texture.h"
 #include "dx8wrapper.h"
+#ifdef ZH
+#include "dx8caps.h"
+#endif
 
 #define DISABLE_CLIPPING	0
 
@@ -420,14 +441,29 @@ bool RigidDecalMeshClass::Create_Decal
 	// Since we can't rely on the hardware polygon offset function, I'm physically offsetting
 	// the decal polygons along the normal of the decal generator.  If we could instead rely
 	// on hardware "polygon offset" we could remove this code and we could make decals non-sorting
+#ifdef OG
 #if 0
+
+#endif
+#ifdef ZH
+	Vector3 zbias_offset(0.0f,0.0f,0.0f);
+	
+	if (!DX8Wrapper::Get_Current_Caps()->Support_ZBias()) {
+#endif
 	const float ZBIAS_DISTANCE = 0.01f;
+#ifdef OG
 	Vector3 zbias_offset;
+#endif
 	generator->Get_Transform().Get_Z_Vector(&zbias_offset);
 	Matrix3D invtm;
 	Parent->Get_Transform().Get_Orthogonal_Inverse(invtm);
 	Matrix3D::Rotate_Vector(invtm,zbias_offset,&zbias_offset);
 	zbias_offset *= ZBIAS_DISTANCE;
+#ifdef OG
+#endif
+#endif
+#ifdef ZH
+	}
 #endif
 
 	// NOTE: world_vertex_locs/norms should not be set for this class
@@ -454,7 +490,12 @@ bool RigidDecalMeshClass::Create_Decal
 	** Grab pointers to the parent mesh's components
 	*/
 	MeshModelClass * model = Parent->Peek_Model();
+#ifdef OG
 	const Vector3i * src_polys		= model->Get_Polygon_Array();
+#endif
+#ifdef ZH
+	const TriIndex * src_polys		= model->Get_Polygon_Array();
+#endif
 	const Vector3 * src_verts		= model->Get_Vertex_Array();
 	const Vector3 * src_vnorms		= model->Get_Vertex_Normal_Array();
 
@@ -474,13 +515,23 @@ bool RigidDecalMeshClass::Create_Decal
 	PlaneClass planes[4];
 	Vector3 extent;
 
+#ifdef OG
 	Matrix3::Rotate_Vector(localbox.Basis,Vector3(localbox.Extent.X,0,0),&extent);
+#endif
+#ifdef ZH
+	Matrix3x3::Rotate_Vector(localbox.Basis,Vector3(localbox.Extent.X,0,0),&extent);
+#endif
 	Vector3 direction(localbox.Basis.Get_X_Vector());
 	
 	planes[0].Set(-direction,localbox.Center + extent);
 	planes[1].Set(direction,localbox.Center - extent);
 	
+#ifdef OG
 	Matrix3::Rotate_Vector(localbox.Basis,Vector3(0,localbox.Extent.Y,0),&extent);
+#endif
+#ifdef ZH
+	Matrix3x3::Rotate_Vector(localbox.Basis,Vector3(0,localbox.Extent.Y,0),&extent);
+#endif
 	direction.Set(localbox.Basis.Get_Y_Vector());
 	
 	planes[2].Set(-direction,localbox.Center + extent);
@@ -506,9 +557,19 @@ bool RigidDecalMeshClass::Create_Decal
 			** Copy src_polys[apt[i]] into our clip polygon
 			*/
 			_DecalPoly0.Reset();
+#ifdef OG
 			const Vector3i & poly = src_polys[apt[i]];
+#endif
+#ifdef ZH
+			const TriIndex & poly = src_polys[apt[i]];
+#endif
 			for (j=0; j<3; j++) {
+#ifdef OG
 				_DecalPoly0.Add_Vertex(src_verts[poly[j]] /*+ zbias_offset*/,src_vnorms[poly[j]]);
+#endif
+#ifdef ZH
+				_DecalPoly0.Add_Vertex(src_verts[poly[j]] + zbias_offset,src_vnorms[poly[j]]);
+#endif
 			}
 
 			/*
@@ -540,7 +601,12 @@ bool RigidDecalMeshClass::Create_Decal
 					** Add the triangle, its plane equation, and the per-tri materials
 					*/
 					added_polys = true;
+#ifdef OG
 					Polys.Add(Vector3i(first_vert,first_vert + j,first_vert + j + 1));
+#endif
+#ifdef ZH
+					Polys.Add(TriIndex(first_vert,first_vert + j,first_vert + j + 1));
+#endif
 					Shaders.Add(material->Peek_Shader());
 					Textures.Add(material->Get_Texture());					// Get_Texture gives us a reference...
 				}
@@ -935,7 +1001,12 @@ bool SkinDecalMeshClass::Create_Decal(DecalGeneratorClass * generator,
 	** Grab pointers to the parent mesh's components
 	*/
 	MeshModelClass * model = Parent->Peek_Model();
+#ifdef OG
 	const Vector3i * src_polys = model->Get_Polygon_Array();
+#endif
+#ifdef ZH
+	const TriIndex * src_polys = model->Get_Polygon_Array();
+#endif
 
 	/*
 	** Grab a pointer to the material settings
@@ -955,7 +1026,12 @@ bool SkinDecalMeshClass::Create_Decal(DecalGeneratorClass * generator,
 	int first_vert = ParentVertexIndices.Count();
 	for (i = 0; i < apt.Count(); i++) {
 		int offset = first_vert + i * 3;
+#ifdef OG
 		Polys.Add(Vector3i(offset, offset + 1, offset + 2), face_size_hint);
+#endif
+#ifdef ZH
+		Polys.Add(TriIndex(offset, offset + 1, offset + 2), face_size_hint);
+#endif
 		
 		Shaders.Add(material->Peek_Shader(), face_size_hint);
 		Textures.Add(material->Get_Texture(), face_size_hint);		// Get_Texture gives us a reference...

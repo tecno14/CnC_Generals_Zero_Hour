@@ -124,6 +124,12 @@ class UDP
 	Int						AllowBroadcasts(Bool status);
 };
 
+#ifdef ZH
+#ifdef DEBUG_LOGGING
+#endif
 AsciiString GetWSAErrorString( Int error );
+#ifdef ZH
+#endif
+#endif
 
 #endif

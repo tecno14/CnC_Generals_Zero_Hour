@@ -43,10 +43,17 @@
 
 // behavior includes
 #include "GameLogic/Module/AutoHealBehavior.h"
+#ifdef ZH
+#include "GameLogic/Module/GrantStealthBehavior.h"
+#include "GameLogic/Module/NeutronBlastBehavior.h"
+#endif
 #include "GameLogic/Module/BehaviorModule.h"
 #include "GameLogic/Module/BridgeBehavior.h"
 #include "GameLogic/Module/BridgeScaffoldBehavior.h"
 #include "GameLogic/Module/BridgeTowerBehavior.h"
+#ifdef ZH
+#include "GameLogic/Module/CountermeasuresBehavior.h"
+#endif
 #include "GameLogic/Module/DumbProjectileBehavior.h"
 #include "GameLogic/Module/InstantDeathBehavior.h"
 #include "GameLogic/Module/SlowDeathBehavior.h"
@@ -57,11 +64,21 @@
 #include "GameLogic/Module/OverchargeBehavior.h"
 #include "GameLogic/Module/HealContain.h"
 #include "GameLogic/Module/GarrisonContain.h"
-#include "GameLogic/Module/TransportContain.h"
+#ifdef ZH
+#include "GameLogic/Module/InternetHackContain.h"
 #include "GameLogic/Module/RailedTransportContain.h"
+#include "GameLogic/Module/RiderChangeContain.h"
+#endif
+#include "GameLogic/Module/TransportContain.h"
+#ifdef OG
+#include "GameLogic/Module/RailedTransportContain.h"
+#endif
 #include "GameLogic/Module/MobNexusContain.h"
 #include "GameLogic/Module/TunnelContain.h"
 #include "GameLogic/Module/OverlordContain.h"
+#ifdef ZH
+#include "GameLogic/Module/HelixContain.h"
+#endif
 #include "GameLogic/Module/ParachuteContain.h"
 #ifdef ALLOW_SURRENDER
 #include "GameLogic/Module/POWTruckBehavior.h"
@@ -69,15 +86,24 @@
 #include "GameLogic/Module/PropagandaCenterBehavior.h"
 #endif
 #include "GameLogic/Module/PropagandaTowerBehavior.h"
+#ifdef ZH
+#include "GameLogic/Module/BunkerBusterBehavior.h"
+#endif
 #include "GameLogic/Module/FireWeaponWhenDamagedBehavior.h"
 #include "GameLogic/Module/FireWeaponWhenDeadBehavior.h"
 #include "GameLogic/Module/GenerateMinefieldBehavior.h"
 #include "GameLogic/Module/ParkingPlaceBehavior.h"
+#ifdef ZH
+#include "GameLogic/Module/FlightDeckBehavior.h"
+#endif
 #include "GameLogic/Module/PoisonedBehavior.h"
 #include "GameLogic/Module/RebuildHoleBehavior.h"
 #include "GameLogic/Module/SupplyWarehouseCripplingBehavior.h"
 #include "GameLogic/Module/TechBuildingBehavior.h"
 #include "GameLogic/Module/MinefieldBehavior.h"
+#ifdef ZH
+#include "GameLogic/Module/BattleBusSlowDeathBehavior.h"
+#endif
 #include "GameLogic/Module/JetSlowDeathBehavior.h"
 
 // die includes
@@ -95,13 +121,21 @@
 
 // logic update includes
 #include "GameLogic/Module/AIUpdate.h"
+#ifdef ZH
+#include "GameLogic/Module/AnimationSteeringUpdate.h"
+#endif
 #include "GameLogic/Module/AssistedTargetingUpdate.h"
 #include "GameLogic/Module/BaseRegenerateUpdate.h"
 #include "GameLogic/Module/BoneFXUpdate.h"
 #include "GameLogic/Module/ChinookAIUpdate.h"
 #include "GameLogic/Module/DefaultProductionExitUpdate.h"
+#ifdef OG
 #include "GameLogic/Module/DelayedWeaponSetUpgradeUpdate.h" 
+#endif
 #include "GameLogic/Module/DeletionUpdate.h"
+#ifdef ZH
+#include "GameLogic/Module/SmartBombTargetHomingUpdate.h"
+#endif
 #include "GameLogic/Module/DeliverPayloadAIUpdate.h"
 #include "GameLogic/Module/DozerAIUpdate.h"
 #include "GameLogic/Module/DynamicGeometryInfoUpdate.h"
@@ -127,6 +161,10 @@
 #include "GameLogic/Module/PilotFindVehicleUpdate.h"
 #include "GameLogic/Module/DemoTrapUpdate.h"
 #include "GameLogic/Module/ParticleUplinkCannonUpdate.h"
+#ifdef ZH
+#include "GameLogic/Module/SpectreGunshipUpdate.h"
+#include "GameLogic/Module/SpectreGunshipDeploymentUpdate.h"
+#endif
 #include "GameLogic/Module/BaikonurLaunchPower.h"
 #include "GameLogic/Module/BattlePlanUpdate.h"
 #include "GameLogic/Module/LifetimeUpdate.h"
@@ -173,6 +211,9 @@
 #include "GameLogic/Module/TransportAIUpdate.h"
 #include "GameLogic/Module/WanderAIUpdate.h"
 #include "GameLogic/Module/WaveGuideUpdate.h"
+#ifdef ZH
+#include "GameLogic/Module/WeaponBonusUpdate.h"
+#endif
 #include "GameLogic/Module/WorkerAIUpdate.h"
 #include "GameLogic/Module/PowerPlantUpdate.h"
 #include "GameLogic/Module/CheckpointUpdate.h"
@@ -182,11 +223,22 @@
 #include "GameLogic/Module/ActiveShroudUpgrade.h"
 #include "GameLogic/Module/ArmorUpgrade.h"
 #include "GameLogic/Module/CommandSetUpgrade.h"
+#ifdef OG
 #include "GameLogic/Module/DelayedUpgrade.h"
+
+#endif
+#ifdef ZH
+#include "GameLogic/Module/GrantScienceUpgrade.h"
+#include "GameLogic/Module/PassengersFireUpgrade.h"
+#endif
 #include "GameLogic/Module/LocomotorSetUpgrade.h"
 #include "GameLogic/Module/ObjectCreationUpgrade.h"
 #include "GameLogic/Module/RadarUpgrade.h"
 #include "GameLogic/Module/PowerPlantUpgrade.h"
+#ifdef ZH
+#include "GameLogic/Module/ReplaceObjectUpgrade.h"
+#include "GameLogic/Module/ModelConditionUpgrade.h"
+#endif
 #include "GameLogic/Module/StatusBitsUpgrade.h"
 #include "GameLogic/Module/SubObjectsUpgrade.h"
 #include "GameLogic/Module/StealthUpgrade.h"
@@ -199,6 +251,9 @@
 #include "GameLogic/Module/MaxHealthUpgrade.h"
 
 // create includes
+#ifdef ZH
+#include "GameLogic/Module/LockWeaponCreate.h"
+#endif
 #include "GameLogic/Module/SupplyCenterCreate.h"
 #include "GameLogic/Module/SupplyWarehouseCreate.h"
 #include "GameLogic/Module/GrantUpgradeCreate.h"
@@ -214,14 +269,31 @@
 #include "GameLogic/Module/FireWeaponCollide.h"
 #include "GameLogic/Module/SquishCollide.h"
 
+#ifdef ZH
+#include "GameLogic/Module/ConvertToCarBombCrateCollide.h"
+#include "GameLogic/Module/ConvertToHijackedVehicleCrateCollide.h"
+#endif
 #include "GameLogic/Module/HealCrateCollide.h"
 #include "GameLogic/Module/MoneyCrateCollide.h"
+#ifdef ZH
+#include "GameLogic/Module/SabotageCommandCenterCrateCollide.h"
+#include "GameLogic/Module/SabotageFakeBuildingCrateCollide.h"
+#include "GameLogic/Module/SabotageInternetCenterCrateCollide.h"
+#include "GameLogic/Module/SabotageMilitaryFactoryCrateCollide.h"
+#include "GameLogic/Module/SabotagePowerPlantCrateCollide.h"
+#include "GameLogic/Module/SabotageSuperweaponCrateCollide.h"
+#include "GameLogic/Module/SabotageSupplyCenterCrateCollide.h"
+#include "GameLogic/Module/SabotageSupplyDropzoneCrateCollide.h"
+#include "GameLogic/Module/SalvageCrateCollide.h"
+#endif
 #include "GameLogic/Module/ShroudCrateCollide.h"
 #include "GameLogic/Module/UnitCrateCollide.h"
 #include "GameLogic/Module/VeterancyCrateCollide.h"
+#ifdef OG
 #include "GameLogic/Module/ConvertToCarBombCrateCollide.h"
 #include "GameLogic/Module/ConvertToHijackedVehicleCrateCollide.h"
 #include "GameLogic/Module/SalvageCrateCollide.h"
+#endif
 
 // body includes
 #include "GameLogic/Module/InactiveBody.h"
@@ -230,6 +302,9 @@
 #include "GameLogic/Module/ImmortalBody.h"
 #include "GameLogic/Module/StructureBody.h"
 #include "GameLogic/Module/HiveStructureBody.h"
+#ifdef ZH
+#include "GameLogic/Module/UndeadBody.h"
+#endif
 
 // contain includes
 // (none)
@@ -245,6 +320,9 @@
 #include "GameLogic/Module/SpyVisionSpecialPower.h"
 #include "GameLogic/Module/CashBountyPower.h"
 #include "GameLogic/Module/CleanupAreaPower.h"
+#ifdef ZH
+#include "GameLogic/Module/FireWeaponPower.h"
+#endif
 
 // destroy includes
 // (none)
@@ -299,9 +377,16 @@ void ModuleFactory::init( void )
 
 	// behavior modules
 	addModule( AutoHealBehavior );
+#ifdef ZH
+	addModule( GrantStealthBehavior );
+	addModule( NeutronBlastBehavior );
+#endif
 	addModule( BridgeBehavior );
 	addModule( BridgeScaffoldBehavior );
 	addModule( BridgeTowerBehavior );
+#ifdef ZH
+	addModule( CountermeasuresBehavior );
+#endif
 	addModule( DumbProjectileBehavior );
 	addModule( PhysicsBehavior );
 	addModule( InstantDeathBehavior );
@@ -313,11 +398,20 @@ void ModuleFactory::init( void )
 	addModule( OverchargeBehavior );
 	addModule( HealContain );
 	addModule( GarrisonContain );
+#ifdef ZH
+	addModule( InternetHackContain );
+#endif
 	addModule( TransportContain );
+#ifdef ZH
+	addModule( RiderChangeContain );
+#endif
 	addModule( RailedTransportContain );
 	addModule( MobNexusContain );
 	addModule( TunnelContain );
 	addModule( OverlordContain );
+#ifdef ZH
+	addModule( HelixContain );
+#endif
 	addModule( ParachuteContain );
 #ifdef ALLOW_SURRENDER
 	addModule( POWTruckBehavior );
@@ -325,15 +419,24 @@ void ModuleFactory::init( void )
 	addModule( PropagandaCenterBehavior );
 #endif
 	addModule( PropagandaTowerBehavior );
+#ifdef ZH
+	addModule( BunkerBusterBehavior );
+#endif
 	addModule( FireWeaponWhenDamagedBehavior );
 	addModule( FireWeaponWhenDeadBehavior );
 	addModule( GenerateMinefieldBehavior );
 	addModule( ParkingPlaceBehavior );
+#ifdef ZH
+	addModule( FlightDeckBehavior );
+#endif
 	addModule( PoisonedBehavior );
 	addModule( RebuildHoleBehavior );
 	addModule( SupplyWarehouseCripplingBehavior );
 	addModule( TechBuildingBehavior );
 	addModule( MinefieldBehavior );
+#ifdef ZH
+	addModule( BattleBusSlowDeathBehavior );
+#endif
 	addModule( JetSlowDeathBehavior );
 	addModule( RailroadBehavior );
 	addModule( SpawnBehavior );
@@ -357,8 +460,13 @@ void ModuleFactory::init( void )
 	addModule( BaseRegenerateUpdate );
 	addModule( StealthDetectorUpdate );
 	addModule( StealthUpdate );
+#ifdef OG
 	addModule( DelayedWeaponSetUpgradeUpdate );
+#endif
 	addModule( DeletionUpdate );
+#ifdef ZH
+	addModule( SmartBombTargetHomingUpdate );
+#endif
 	addModule( DynamicShroudClearingRangeUpdate );
 	addModule( DeployStyleAIUpdate );
 	addModule( AssaultTransportAIUpdate );
@@ -368,7 +476,13 @@ void ModuleFactory::init( void )
 	addModule( LifetimeUpdate );
 	addModule( RadiusDecalUpdate );
 	addModule( EMPUpdate );
+#ifdef ZH
+  addModule( LeafletDropBehavior );
+#endif
 	addModule( AutoDepositUpdate );
+#ifdef ZH
+	addModule( WeaponBonusUpdate );
+#endif
 	addModule( MissileAIUpdate );
 	addModule( NeutronMissileUpdate );
 	addModule( FireSpreadUpdate );
@@ -392,6 +506,10 @@ void ModuleFactory::init( void )
 	addModule( PilotFindVehicleUpdate );
 	addModule( DemoTrapUpdate );
 	addModule( ParticleUplinkCannonUpdate );
+#ifdef ZH
+	addModule( SpectreGunshipUpdate );
+	addModule( SpectreGunshipDeploymentUpdate );
+#endif
 	addModule( BaikonurLaunchPower );
 	addModule( BattlePlanUpdate );
 	addModule( ProjectileStreamUpdate );
@@ -426,6 +544,9 @@ void ModuleFactory::init( void )
 	addModule( StructureCollapseUpdate );
 	addModule( BoneFXUpdate );
 	addModule( RadarUpdate );
+#ifdef ZH
+	addModule( AnimationSteeringUpdate );
+#endif
 	addModule( TransportAIUpdate );
 	addModule( WanderAIUpdate );
 	addModule( WaveGuideUpdate );
@@ -438,7 +559,14 @@ void ModuleFactory::init( void )
 	addModule( ActiveShroudUpgrade );
 	addModule( ArmorUpgrade );
 	addModule( CommandSetUpgrade );
+#ifdef OG
 	addModule( DelayedUpgrade );
+
+#endif
+#ifdef ZH
+	addModule( GrantScienceUpgrade );
+	addModule( PassengersFireUpgrade );
+#endif
 	addModule( StatusBitsUpgrade );
 	addModule( SubObjectsUpgrade );
 	addModule( StealthUpgrade );
@@ -446,6 +574,10 @@ void ModuleFactory::init( void )
 	addModule( PowerPlantUpgrade );
 	addModule( LocomotorSetUpgrade );
 	addModule( ObjectCreationUpgrade );
+#ifdef ZH
+	addModule( ReplaceObjectUpgrade );
+	addModule( ModelConditionUpgrade );
+#endif
 	addModule( UnpauseSpecialPowerUpgrade );
 	addModule( WeaponBonusUpgrade );
 	addModule( WeaponSetUpgrade );
@@ -454,6 +586,9 @@ void ModuleFactory::init( void )
 	addModule( MaxHealthUpgrade );
 
 	// create modules
+#ifdef ZH
+	addModule( LockWeaponCreate );
+#endif
 	addModule( PreorderCreate );
 	addModule( SupplyCenterCreate );
 	addModule( SupplyWarehouseCreate );
@@ -476,6 +611,16 @@ void ModuleFactory::init( void )
 	addModule( VeterancyCrateCollide );
 	addModule( ConvertToCarBombCrateCollide );
 	addModule( ConvertToHijackedVehicleCrateCollide );
+#ifdef ZH
+	addModule( SabotageCommandCenterCrateCollide );
+	addModule( SabotageFakeBuildingCrateCollide );
+	addModule( SabotageInternetCenterCrateCollide );
+	addModule( SabotageMilitaryFactoryCrateCollide );
+	addModule( SabotagePowerPlantCrateCollide );
+	addModule( SabotageSuperweaponCrateCollide );
+	addModule( SabotageSupplyCenterCrateCollide );
+	addModule( SabotageSupplyDropzoneCrateCollide );
+#endif
 	addModule( SalvageCrateCollide );
 
 	// body modules
@@ -485,6 +630,9 @@ void ModuleFactory::init( void )
 	addModule( ImmortalBody );
 	addModule( StructureBody );
 	addModule( HiveStructureBody );
+#ifdef ZH
+	addModule( UndeadBody );
+#endif
 
 	// contain modules
 	// (none)
@@ -496,6 +644,9 @@ void ModuleFactory::init( void )
 	addModule( DemoralizeSpecialPower );
 #endif
 	addModule( OCLSpecialPower );
+#ifdef ZH
+	addModule( FireWeaponPower );
+#endif
 	addModule( SpecialAbility );
 	addModule( SpyVisionSpecialPower );
 	addModule( CashBountyPower );

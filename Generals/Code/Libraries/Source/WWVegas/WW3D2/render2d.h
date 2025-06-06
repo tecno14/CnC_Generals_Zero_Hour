@@ -26,9 +26,19 @@
  *                                                                                             *
  *                       Author:: Greg Hjelstrom                                               *
  *                                                                                             *
+#ifdef OG
  *                     $Modtime:: 8/28/01 5:00p                                               $*
+#endif
+#ifdef ZH
+ *                     $Modtime:: 12/17/01 11:47a                                             $*
+#endif
  *                                                                                             *
+#ifdef OG
  *                    $Revision:: 21                                                          $*
+#endif
+#ifdef ZH
+ *                    $Revision:: 26                                                          $*
+#endif
  *                                                                                             *
  *---------------------------------------------------------------------------------------------*
  * Functions:                                                                                  *
@@ -43,7 +53,14 @@
 #define RENDER2D_H
 
 #include "always.h"
+#ifdef OG
 #include "simplevec.h"
+
+#endif
+#ifdef ZH
+//#include "simplevec.h"
+#include "vector.h"
+#endif
 #include "vector2.h"
 
 #include "shader.h"
@@ -73,6 +90,14 @@ class	Vector4;
 #define RGBA_TO_INT32(r,g,b,a)	(unsigned(a)<<24)|(unsigned(r)<<16)|(unsigned(g)<<8)|(unsigned(b))
 
 //
+#ifdef ZH
+// Float RGB to INT32 methods (each component is a float between 0.0 and 1.0)
+//
+#define FRGB_TO_INT32(r,g,b)		(unsigned(r*255.0f)<<16)|(unsigned(g*255.0f)<<8)|(unsigned(b*255.0f))|0xFF000000
+#define FRGBA_TO_INT32(r,g,b,a)	(unsigned(a*255.0f)<<24)|(unsigned(r*255.0f)<<16)|(unsigned(g*255.0f)<<8)|(unsigned(b*255.0f))
+
+//
+#endif
 //	INT32 to Vector RGB methods
 //
 #define INT32_TO_VRGB(color, vrgb)							\
@@ -144,12 +169,28 @@ public:
 
 	// Move all verts 
 	void	Move( const Vector2 & a );
+#ifdef ZH
+
+	// Force all alphas 
+	void	Force_Alpha( float alpha );
+	void	Force_Color( int color );
+#endif
 
 	// Color access
+#ifdef OG
 	SimpleDynVecClass<unsigned long> &	Get_Color_Array (void)	{ return Colors; }
+#endif
+#ifdef ZH
+	DynamicVectorClass<unsigned long> &	Get_Color_Array (void)	{ return Colors; }
+#endif
 
 	// statics to access the Screen Resolution in Pixels
+#ifdef OG
 	static void	Set_Screen_Resolution( const RectClass & screen )	{ ScreenResolution = screen; }
+#endif
+#ifdef ZH
+	static void	Set_Screen_Resolution( const RectClass & screen );
+#endif
 	static const RectClass & Get_Screen_Resolution( void )			{ return ScreenResolution; }
 
 protected:
@@ -158,10 +199,23 @@ protected:
 	Vector2										BiasedCoordinateOffset;
 	TextureClass *							Texture;
 	ShaderClass									Shader;
+#ifdef OG
 	SimpleDynVecClass<unsigned short>	Indices;
 	SimpleDynVecClass<Vector2>				Vertices;
 	SimpleDynVecClass<Vector2>				UVCoordinates;
 	SimpleDynVecClass<unsigned long>		Colors;
+
+#endif
+#ifdef ZH
+	DynamicVectorClass<unsigned short>	Indices;
+	unsigned short								PreAllocatedIndices[60];
+	DynamicVectorClass<Vector2>				Vertices;
+	Vector2										PreAllocatedVertices[60];
+	DynamicVectorClass<Vector2>				UVCoordinates;
+	Vector2										PreAllocatedUVCoordinates[60];
+	DynamicVectorClass<unsigned long>		Colors;
+	unsigned long								PreAllocatedColors[60];
+#endif
 	bool											IsHidden;
 	bool											IsGrayScale;
 	float											ZValue;

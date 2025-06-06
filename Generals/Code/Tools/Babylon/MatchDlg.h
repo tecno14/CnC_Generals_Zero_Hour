@@ -66,9 +66,16 @@ protected:
 	DECLARE_MESSAGE_MAP()
 };
 
+#ifdef OG
 extern NoxText *MatchingNoxText;
 extern NoxText *MatchOriginalText;
 extern NoxLabel *MatchLabel;
+#endif
+#ifdef ZH
+extern BabylonText *MatchingBabylonText;
+extern BabylonText *MatchOriginalText;
+extern BabylonLabel *MatchLabel;
+#endif
 
 //{{AFX_INSERT_LOCATION}}
 // Microsoft Visual C++ will insert additional declarations immediately before the previous line.

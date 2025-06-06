@@ -83,9 +83,17 @@ public:
 
 	virtual OpenContain *asOpenContain() { return this; }  ///< treat as open container
 	virtual Bool isGarrisonable() const { return false; }	///< can this unit be Garrisoned? (ick)
+#ifdef ZH
+	virtual Bool isBustable() const { return TRUE; }	///< can this container get busted by a bunkerbuster
+#endif
 	virtual Bool isHealContain() const { return false; } ///< true when container only contains units while healing (not a transport!)
 
+#ifdef OG
 	virtual void onContaining( Object *obj );		///< object now contains 'obj'
+#endif
+#ifdef ZH
+	virtual void onContaining( Object *obj, Bool wasSelected );		///< object now contains 'obj'
+#endif
 	virtual void onRemoving( Object *obj );			///< object no longer contains 'obj'
 
 	virtual Bool isValidContainerFor(const Object* obj, Bool checkCapacity) const;

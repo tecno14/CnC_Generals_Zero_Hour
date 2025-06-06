@@ -24,12 +24,33 @@
  *                                                                                             *
  *                     $Archive:: /Commando/Code/ww3d2/camera.h                               $*
  *                                                                                             *
+#ifdef OG
  *                       Author:: Greg_h                                                       *
+
+#endif
+#ifdef ZH
+ *                    Org Author:: Greg_h                                                       *
  *                                                                                             *
+ *                       $Author:: Kenny Mitchell                                               * 
+#endif
+ *                                                                                             *
+#ifdef OG
  *                     $Modtime:: 7/31/01 10:52a                                              $*
+#endif
+#ifdef ZH
+ *                     $Modtime:: 06/26/02 4:04p                                             $*
+#endif
  *                                                                                             *
+#ifdef OG
  *                    $Revision:: 13                                                          $*
+#endif
+#ifdef ZH
+ *                    $Revision:: 14                                                          $*
+#endif
  *                                                                                             *
+#ifdef ZH
+ * 06/26/02 KM Matrix name change to avoid MAX conflicts                                       *
+#endif
  *---------------------------------------------------------------------------------------------*
  * Functions:                                                                                  *
  *   CameraClass::Get_Frustum -- returns the frustum of the camera                             *
@@ -90,7 +111,12 @@ public:
 ** they are render objects is so that they can be inserted onto the bone of 
 ** some animation and move with the animation...
 **
+#ifdef OG
 ** For all of the projection functions (Matrix4, ProjectorClass (used by 
+#endif
+#ifdef ZH
+** For all of the projection functions (Matrix4x4, ProjectorClass (used by 
+#endif
 ** decals and texture projections), and CameraClass) I followed the OpenGL 
 ** convention of passing positive distances for your clip planes even though 
 ** in a right-handed coordinate system your z values are negative after 
@@ -176,10 +202,21 @@ public:
 	float								Get_Aspect_Ratio(void) const;
 
 	// Access to the projection matrices for this camera
+#ifdef OG
 	void								Get_Projection_Matrix(Matrix4 * set_tm);
 	void								Get_D3D_Projection_Matrix(Matrix4 * set_tm);
+#endif
+#ifdef ZH
+	void								Get_Projection_Matrix(Matrix4x4 * set_tm);
+	void								Get_D3D_Projection_Matrix(Matrix4x4 * set_tm);
+#endif
 	void								Get_View_Matrix(Matrix3D * set_tm);
+#ifdef OG
 	const Matrix4 &				Get_Projection_Matrix(void);
+#endif
+#ifdef ZH
+	const Matrix4x4 &				Get_Projection_Matrix(void);
+#endif
 	const Matrix3D &				Get_View_Matrix(void);
 
 	// Projecting and Un-Projecting a point
@@ -248,7 +285,12 @@ protected:
 	mutable FrustumClass			Frustum;							// world-space frustum and clip planes
 	mutable FrustumClass			ViewSpaceFrustum;				// view-space frustum and clip planes
 	mutable OBBoxClass			NearClipBBox;					// obbox which bounds the near clip plane
+#ifdef OG
 	mutable Matrix4				ProjectionTransform;
+#endif
+#ifdef ZH
+	mutable Matrix4x4				ProjectionTransform;
+#endif
 	mutable Matrix3D				CameraInvTransform;
 };
 

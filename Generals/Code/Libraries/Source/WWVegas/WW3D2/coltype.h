@@ -26,12 +26,30 @@
  *                                                                                             *
  *              Original Author:: Greg Hjelstrom                                               *
  *                                                                                             *
+#ifdef OG
  *                      $Author:: Greg_h                                                      $*
+#endif
+#ifdef ZH
+ *                       Author : Kenny Mitchell                                               * 
+#endif
  *                                                                                             *
+#ifdef OG
  *                     $Modtime:: 1/08/01 10:04a                                              $*
+#endif
+#ifdef ZH
+ *                     $Modtime:: 07/01/02 12:45p                                              $*
+#endif
  *                                                                                             *
+#ifdef OG
  *                    $Revision:: 1                                                           $*
+#endif
+#ifdef ZH
+ *                    $Revision:: 2                                                           $*
+#endif
  *                                                                                             *
+#ifdef ZH
+ * 07/01/02 KM Coltype enum change to avoid MAX conflicts									   *
+#endif
  *---------------------------------------------------------------------------------------------*
  * Functions:                                                                                  *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
@@ -65,12 +83,18 @@
 // things like making bullets ignore each other, etc.
 //
 // One more wrinkle to the system:  The collision type in the render obj
+#ifdef OG
 // will always have the LSB set (COLLISION_TYPE_ALL) so that you can always
+#endif
+#ifdef ZH
+// will always have the LSB set (COLL_TYPE_ALL) so that you can always
+#endif
 // do queries against every piece of geometry in a render obj if desired.
 // 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////
 enum
 {
+#ifdef OG
 	COLLISION_TYPE_ALL	= 0x01,		// perform this test against *EVERYTHING*
 	COLLISION_TYPE_0		= 0x02,		// perform this test against type 0 collision objects
 	COLLISION_TYPE_1		= 0x04,		// perform this test against type 1 collision objects
@@ -79,12 +103,32 @@ enum
 	COLLISION_TYPE_4		= 0x20,
 	COLLISION_TYPE_5		= 0x40,
 	COLLISION_TYPE_6		= 0x80,
+#endif
+#ifdef ZH
+	COLL_TYPE_ALL	= 0x01,		// perform this test against *EVERYTHING*
+	COLL_TYPE_0		= 0x02,		// perform this test against type 0 collision objects
+	COLL_TYPE_1		= 0x04,		// perform this test against type 1 collision objects
+	COLL_TYPE_2		= 0x08,
+	COLL_TYPE_3		= 0x10,
+	COLL_TYPE_4		= 0x20,
+	COLL_TYPE_5		= 0x40,
+	COLL_TYPE_6		= 0x80,
+#endif
 
+#ifdef OG
 	COLLISION_TYPE_PHYSICAL =		COLLISION_TYPE_0,		// physics collisions
 	COLLISION_TYPE_PROJECTILE =	COLLISION_TYPE_1,		// projectile collisions
 	COLLISION_TYPE_VIS =				COLLISION_TYPE_2,		// "vis node" detection
 	COLLISION_TYPE_CAMERA =			COLLISION_TYPE_3,		// camera collision (99% should match physical setting)
 	COLLISION_TYPE_VEHICLE =		COLLISION_TYPE_4,		// vehicles will collide with physical and this.
+#endif
+#ifdef ZH
+	COLL_TYPE_PHYSICAL	=		COLL_TYPE_0,		// physics collisions
+	COLL_TYPE_PROJECTILE =	COLL_TYPE_1,		// projectile collisions
+	COLL_TYPE_VIS			=				COLL_TYPE_2,		// "vis node" detection
+	COLL_TYPE_CAMERA		=			COLL_TYPE_3,		// camera collision (99% should match physical setting)
+	COLL_TYPE_VEHICLE		=		COLL_TYPE_4,		// vehicles will collide with physical and this.
+#endif
 };
 
 

@@ -47,7 +47,9 @@
 class ProjectileUpdateInterface;
 class AIUpdateInterface;		///< @todo Clean up this nasty hack (MSB)
 class ExitInterface;
+#ifdef OG
 class DelayedUpgradeUpdateInterface;
+#endif
 class DockUpdateInterface;
 class RailedTransportDockUpdateInterface;
 class SpecialPowerUpdateInterface;
@@ -62,6 +64,9 @@ class WeaponTemplate;
 class DamageInfo;
 class ParticleSystemTemplate;
 class CommandButton;
+#ifdef ZH
+class Waypoint;
+#endif
 enum CommandOption;
 
 //-------------------------------------------------------------------------------------------------
@@ -259,6 +264,7 @@ public:
 };
 
 //-------------------------------------------------------------------------------------------------
+#ifdef OG
 class SpecialPowerUpdateInterface
 {
 public:
@@ -273,6 +279,7 @@ public:
 };
 
 //-------------------------------------------------------------------------------------------------
+#endif
 class ProjectileUpdateInterface
 {
 public:
@@ -281,6 +288,10 @@ public:
 	virtual Bool projectileIsArmed() const = 0;													///< return true if the projectile is armed and ready to explode
 	virtual ObjectID projectileGetLauncherID() const = 0;								///< All projectiles need to keep track of their firer
 	virtual Bool projectileHandleCollision(Object *other) = 0;
+#ifdef ZH
+	virtual void setFramesTillCountermeasureDiversionOccurs( UnsignedInt frames ) = 0; ///< Number of frames till missile diverts to countermeasures.
+	virtual void projectileNowJammed() = 0;
+#endif
 };
 
 //-------------------------------------------------------------------------------------------------
@@ -373,8 +384,12 @@ public:
 
 	virtual void setRallyPoint( const Coord3D *pos ) = 0;				///< define a "rally point" for units to move towards
 	virtual const Coord3D *getRallyPoint( void ) const = 0;			///< define a "rally point" for units to move towards
+#ifdef ZH
+	virtual Bool useSpawnRallyPoint( void ) const { return FALSE; }
+#endif
 	virtual Bool getNaturalRallyPoint( Coord3D& rallyPoint, Bool offset = TRUE ) const {rallyPoint.x=rallyPoint.y=rallyPoint.z=0; return false;}	///< get the natural "rally point" for units to move towards
 	virtual Bool getExitPosition( Coord3D& exitPosition ) const {exitPosition.x=exitPosition.y=exitPosition.z=0; return false;};					///< access to the "Door" position of the production object
+#ifdef OG
 };
 
 //-------------------------------------------------------------------------------------------------
@@ -383,6 +398,7 @@ class DelayedUpgradeUpdateInterface
 public:
 	virtual Bool isTriggeredBy( Int64 potentialMask ) = 0;	///< If you were an upgrade, would you trigger for this?
 	virtual void setDelay( UnsignedInt startingDelay ) = 0;	///< Start the upgrade doing countdown
+#endif
 };
 
 #endif

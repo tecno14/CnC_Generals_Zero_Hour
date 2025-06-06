@@ -202,6 +202,22 @@ UpdateSleepTime DemoTrapUpdate::update()
 			continue;
 		}
 
+#ifdef ZH
+		if( other->isKindOf( KINDOF_DOZER ) )
+		{
+			//If we're dealing with a dozer... check if it's trying to disarm me. If so, don't blow up!
+			Weapon *weapon = other->getCurrentWeapon();
+			if( weapon && weapon->getDamageType() == DAMAGE_DISARM )
+			{
+				//Also check if it's attacking, because it seems to stay in disarm mode.
+				if( other->testStatus( OBJECT_STATUS_IS_ATTACKING ) )
+				{
+					continue;
+				}
+			}
+		}
+
+#endif
 			// order matters: we want to know if I consider it to be an enemy, not vice versa
 		if( getObject()->getRelationship( other ) != ENEMIES )
 		{

@@ -26,12 +26,30 @@
  *                                                                                             *
  *              Original Author:: Greg Hjelstrom                                               *
  *                                                                                             *
+#ifdef OG
  *                      $Author:: Greg_h                                                      $*
+#endif
+#ifdef ZH
+ *                       Author : Kenny Mitchell                                               * 
+#endif
  *                                                                                             *
+#ifdef OG
  *                     $Modtime:: 5/13/01 11:25a                                              $*
+#endif
+#ifdef ZH
+ *                     $Modtime:: 06/27/02 1:27p                                              $*
+#endif
  *                                                                                             *
+#ifdef OG
  *                    $Revision:: 5                                                           $*
+#endif
+#ifdef ZH
+ *                    $Revision:: 6                                                           $*
+#endif
  *                                                                                             *
+#ifdef ZH
+ * 06/27/02 KM Texture class abstraction																			*
+#endif
  *---------------------------------------------------------------------------------------------*
  * Functions:                                                                                  *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
@@ -107,7 +125,12 @@ public:
 
 protected:
 	
+#ifdef OG
 	enum { MAX_TEX_STAGES = 2 };
+#endif
+#ifdef ZH
+	enum { MAX_TEX_STAGES = 8 };
+#endif
 
 	TextureClass *				Texture[MAX_TEX_STAGES];
 	ShaderClass					Shader;

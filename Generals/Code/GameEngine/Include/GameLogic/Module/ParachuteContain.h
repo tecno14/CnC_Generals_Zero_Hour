@@ -69,7 +69,12 @@ public:
 	virtual Bool isEnclosingContainerFor( const Object *obj ) const { return FALSE; }	///< Does this type of Contain Visibly enclose its contents?
 	virtual Bool isSpecialZeroSlotContainer() const { return true; }
 
+#ifdef OG
 	virtual void onContaining( Object *obj );		///< object now contains 'obj'
+#endif
+#ifdef ZH
+	virtual void onContaining( Object *obj, Bool wasSelected );		///< object now contains 'obj'
+#endif
 	virtual void onRemoving( Object *obj );			///< object no longer contains 'obj'
 
 	virtual UpdateSleepTime update();							///< called once per frame

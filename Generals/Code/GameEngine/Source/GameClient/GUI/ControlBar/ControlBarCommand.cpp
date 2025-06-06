@@ -35,6 +35,9 @@
 #include "Common/ThingFactory.h"
 #include "Common/Player.h"
 #include "Common/PlayerList.h"
+#ifdef ZH
+#include "Common/PlayerTemplate.h"
+#endif
 #include "Common/SpecialPower.h"
 #include "Common/Upgrade.h"
 #include "Common/BuildAssistant.h"
@@ -179,6 +182,10 @@ void ControlBar::doTransportInventoryUI( Object *transport, const CommandSet *co
 	const CommandButton *commandButton;
 	for( Int i = 0; i < MAX_COMMANDS_PER_SET; i++ )
 	{
+#ifdef ZH
+		// our implementation doesn't necessarily make use of the max possible command buttons
+		if (! m_commandWindows[ i ]) continue;
+#endif
 
 		// get command button
 		commandButton = commandSet->getCommandButton(i);
@@ -203,6 +210,11 @@ void ControlBar::doTransportInventoryUI( Object *transport, const CommandSet *co
 			// show the window, but disable by default unless something is actually loaded in there
 			m_commandWindows[ i ]->winHide( FALSE );
 			m_commandWindows[ i ]->winEnable( FALSE );
+#ifdef ZH
+
+      
+///////// poopy
+#endif
 
 			//Clear any potential veterancy rank, or else we'll see it when it's empty!
 			GadgetButtonDrawOverlayImage( m_commandWindows[ i ], NULL );
@@ -213,6 +225,11 @@ void ControlBar::doTransportInventoryUI( Object *transport, const CommandSet *co
  				m_commandWindows[ i ]->winHide( TRUE );
  			}
 
+#ifdef ZH
+      
+     //  is this where we set the cameos disabled when container is subdued?
+
+#endif
 			// if we've counted more UI spots than the transport can hold, hide this command window
 			if( inventoryCommandCount > transportMax )
 				m_commandWindows[ i ]->winHide( TRUE );
@@ -279,7 +296,14 @@ void ControlBar::populateCommand( Object *obj )
 
 		// hide all the buttons
 		for( i = 0; i < MAX_COMMANDS_PER_SET; i++ )
+#ifdef ZH
+			if (m_commandWindows[ i ])
+			{
+#endif
 			m_commandWindows[ i ]->winHide( TRUE );
+#ifdef ZH
+			}
+#endif
 
 		// nothing left to do
 		return;
@@ -294,6 +318,10 @@ void ControlBar::populateCommand( Object *obj )
 	const CommandButton *commandButton;
 	for( i = 0; i < MAX_COMMANDS_PER_SET; i++ )
 	{
+#ifdef ZH
+		// our implementation doesn't necessarily make use of the max possible command buttons
+		if (! m_commandWindows[ i ]) continue;
+#endif
 
 		// get command button
 		commandButton = commandSet->getCommandButton(i);
@@ -342,6 +370,12 @@ void ControlBar::populateCommand( Object *obj )
 
 					if( power && power->getRequiredScience() != SCIENCE_INVALID )
 					{
+#ifdef ZH
+						if( commandButton->getCommandType() != GUI_COMMAND_PURCHASE_SCIENCE && 
+								commandButton->getCommandType() != GUI_COMMAND_PLAYER_UPGRADE &&
+								commandButton->getCommandType() != GUI_COMMAND_OBJECT_UPGRADE )
+						{
+#endif
 						if( player->hasScience( power->getRequiredScience() ) == FALSE )
 						{
 							//Hide the power
@@ -373,11 +407,87 @@ void ControlBar::populateCommand( Object *obj )
 							{
 								//Now get the best sciencetype.
 								science = commandButton->getScienceVec()[ bestIndex ];
+#ifdef ZH
 
+									const CommandSet *commandSet1;
+									const CommandSet *commandSet3;
+									const CommandSet *commandSet8;
+									Int i;
+
+									// get command set
+									if( !player || !player->getPlayerTemplate() 
+											|| player->getPlayerTemplate()->getPurchaseScienceCommandSetRank1().isEmpty()
+											|| player->getPlayerTemplate()->getPurchaseScienceCommandSetRank3().isEmpty()
+											|| player->getPlayerTemplate()->getPurchaseScienceCommandSetRank8().isEmpty() )
+									{
+										continue;
+									}
+									commandSet1 = TheControlBar->findCommandSet( player->getPlayerTemplate()->getPurchaseScienceCommandSetRank1() ); 
+									commandSet3 = TheControlBar->findCommandSet( player->getPlayerTemplate()->getPurchaseScienceCommandSetRank3() ); 
+									commandSet8 = TheControlBar->findCommandSet( player->getPlayerTemplate()->getPurchaseScienceCommandSetRank8() ); 
+#endif
+
+#ifdef OG
 								//Now we have to search through the command buttons to find a matching purchase science button.
 								for( const CommandButton *command = m_commandButtons; command; command = command->getNext() )
+
+#endif
+#ifdef ZH
+									if( !commandSet1 || !commandSet3 || !commandSet8 )
+									{
+										continue;
+									}
+
+									Bool found = FALSE;
+									for( i = 0; !found && i < MAX_PURCHASE_SCIENCE_RANK_1; i++ )
+									{
+										const CommandButton *command = commandSet1->getCommandButton( i );
+										if( command && command->getCommandType() == GUI_COMMAND_PURCHASE_SCIENCE )
+										{
+											//All purchase sciences specify a single science.
+											if( command->getScienceVec().empty() )
+											{
+												DEBUG_CRASH( ("Commandbutton %s is a purchase science button without any science! Please add it.", command->getName().str() ) );
+											}
+											else if( command->getScienceVec()[0] == science )
+											{
+												commandButton->copyImagesFrom( command, TRUE );
+												commandButton->copyButtonTextFrom( command, FALSE, TRUE );
+												found = TRUE;
+												break;
+											}
+										}
+									}
+									for( i = 0; !found && i < MAX_PURCHASE_SCIENCE_RANK_3; i++ )
+									{
+										const CommandButton *command = commandSet3->getCommandButton( i );
+										if( command && command->getCommandType() == GUI_COMMAND_PURCHASE_SCIENCE )
+										{
+											//All purchase sciences specify a single science.
+											if( command->getScienceVec().empty() )
+											{
+												DEBUG_CRASH( ("Commandbutton %s is a purchase science button without any science! Please add it.", command->getName().str() ) );
+											}
+											else if( command->getScienceVec()[0] == science )
+											{
+												commandButton->copyImagesFrom( command, TRUE );
+												commandButton->copyButtonTextFrom( command, FALSE, TRUE );
+												found = TRUE;
+												break;
+											}
+										}
+									}
+									for( i = 0; !found && i < MAX_PURCHASE_SCIENCE_RANK_8; i++ )
+#endif
 								{
+#ifdef OG
 									if( command->getCommandType() == GUI_COMMAND_PURCHASE_SCIENCE )
+
+#endif
+#ifdef ZH
+										const CommandButton *command = commandSet8->getCommandButton( i );
+										if( command && command->getCommandType() == GUI_COMMAND_PURCHASE_SCIENCE )
+#endif
 									{
 										//All purchase sciences specify a single science.
 										if( command->getScienceVec().empty() )
@@ -386,7 +496,17 @@ void ControlBar::populateCommand( Object *obj )
 										}
 										else if( command->getScienceVec()[0] == science )
 										{
+#ifdef OG
 											commandButton->copyImagesFrom( command, true );
+
+#endif
+#ifdef ZH
+												commandButton->copyImagesFrom( command, TRUE );
+												commandButton->copyButtonTextFrom( command, FALSE, TRUE );
+												found = TRUE;
+												break;
+											}
+#endif
 										}
 									}
 								}
@@ -731,6 +851,11 @@ void ControlBar::updateContextCommand( void )
 	{
 		GameWindow *win;
 		const CommandButton *command;
+#ifdef ZH
+
+		// our implementation doesn't necessarily make use of the max possible command buttons
+		if (! m_commandWindows[ i ]) continue;
+#endif
 
 		// get the window
 		win = m_commandWindows[ i ];
@@ -746,7 +871,14 @@ void ControlBar::updateContextCommand( void )
 		//command = (const CommandButton *)win->winGetUserData();
 		if( command == NULL )
 			continue;
+#ifdef ZH
 
+
+// LORENZEN COMMENTED THIS OUT 8/11
+    // Reason: ExitCameos can be greyed out when the container object gets subdued 
+#endif
+
+#ifdef OG
 		// ignore transport/structure inventory commands, they are handled elsewhere
 		if( command->getCommandType() == GUI_COMMAND_EXIT_CONTAINER )
 		{
@@ -754,6 +886,16 @@ void ControlBar::updateContextCommand( void )
 			continue;
 		}
 		else
+#endif
+#ifdef ZH
+//		// ignore transport/structure inventory commands, they are handled elsewhere
+//		if( command->getCommandType() == GUI_COMMAND_EXIT_CONTAINER )
+//		{
+//			win->winSetStatus( WIN_STATUS_ALWAYS_COLOR ); //Don't let these buttons render in grayscale ever!
+//			continue;
+//		}
+//		else
+#endif
 		{
 			win->winClearStatus( WIN_STATUS_NOT_READY );
 			win->winClearStatus( WIN_STATUS_ALWAYS_COLOR );
@@ -786,8 +928,16 @@ void ControlBar::updateContextCommand( void )
   
 		//Determine by the production type of this button, whether or not the created object
 		//will have a veterancy rank
+#ifdef ZH
+		if( command->getCommandType() != GUI_COMMAND_EXIT_CONTAINER )
+		{
+			//Already handled for contained members -- see ControlBar::populateButtonProc()
+#endif
 		const Image *image = calculateVeterancyOverlayForThing( command->getThingTemplate() );
 		GadgetButtonDrawOverlayImage( win, image );
+#ifdef ZH
+		}
+#endif
     
 		//
 		// for check-like commands we will keep the push button "pushed" or "unpushed" depending
@@ -846,15 +996,37 @@ const Image* ControlBar::calculateVeterancyOverlayForThing( const ThingTemplate 
 		if( !modName.compare( "VeterancyGainCreate" ) )
 		{
 			data = (const VeterancyGainCreateModuleData*)mi.getNthData( modIdx );
+#ifdef OG
 			break;
 		}
 	}
+#endif
 
 	//It does, so see if the player has that upgrade
+#ifdef OG
 	if( data && player->hasScience( data->m_scienceRequired ) )
+#endif
+#ifdef ZH
+			if( data )
+#endif
 	{
+#ifdef ZH
+				//If no science is specified, he gets it automatically (or check the science).
+				if( data->m_scienceRequired == SCIENCE_INVALID || player->hasScience( data->m_scienceRequired ) )
+				{
+#endif
 		//We do! So now check to see what the veterancy level would be.
+#ifdef ZH
+					if( data->m_startingLevel > level )
+					{
+#endif
 		level = data->m_startingLevel;
+#ifdef ZH
+					}
+				}
+			}
+		}
+#endif
 	}
 
 	//Return the appropriate image (including NULL if no veterancy levels)
@@ -917,14 +1089,38 @@ static Int getRappellerCount(Object* obj)
 CommandAvailability ControlBar::getCommandAvailability( const CommandButton *command, 
 																												Object *obj, 
 																												GameWindow *win,
+#ifdef ZH
+																												GameWindow *applyToWin,
+#endif
 																												Bool forceDisabledEvaluation ) const
 {
+#ifdef OG
 	if (command->getCommandType() == GUI_COMMAND_SPECIAL_POWER_FROM_COMMAND_CENTER)
+
+#endif
+#ifdef ZH
+	if(	command->getCommandType() == GUI_COMMAND_SPECIAL_POWER_FROM_SHORTCUT 
+			|| command->getCommandType() == GUI_COMMAND_SPECIAL_POWER_CONSTRUCT_FROM_SHORTCUT )
+#endif
 	{
 		if (ThePlayerList && ThePlayerList->getLocalPlayer())
+#ifdef OG
 			obj = ThePlayerList->getLocalPlayer()->findNaturalCommandCenter();
+#endif
+#ifdef ZH
+			obj = ThePlayerList->getLocalPlayer()->findMostReadyShortcutSpecialPowerOfType( command->getSpecialPowerTemplate()->getSpecialPowerType() );
+#endif
 		else
 			obj = NULL;
+#ifdef ZH
+	}
+
+	//If we modify the button (like a gadget clock overlay), then sometimes we may wish to apply it to a specific different button.
+	//But if we don't specify anything (default), then make them the same.
+	if( !applyToWin )
+	{
+		applyToWin = win;
+#endif
 	}
 
 	if (obj == NULL)
@@ -946,9 +1142,23 @@ CommandAvailability ControlBar::getCommandAvailability( const CommandButton *com
 
 	//It's possible for command buttons to be a single use only type of a button -- like detonating a nuke from a convoy truck.
 	if( obj->hasSingleUseCommandBeenUsed() )
+#ifdef ZH
 	{
 		return COMMAND_RESTRICTED;
 	}
+	
+	if( BitTest( command->getOptions(), MUST_BE_STOPPED ) )
+	{
+		//This button can only be activated when the unit isn't moving!
+		AIUpdateInterface *ai = obj->getAI();
+		if( ai && ai->isMoving() )
+#endif
+	{
+		return COMMAND_RESTRICTED;
+	}
+#ifdef ZH
+	}
+#endif
  
 	//Other disabled objects are unable to use buttons -- so gray them out.
 	Bool disabled = obj->isDisabled();
@@ -971,9 +1181,17 @@ CommandAvailability ControlBar::getCommandAvailability( const CommandButton *com
 				commandType != GUI_COMMAND_EXIT_CONTAINER && 
 				commandType != GUI_COMMAND_BEACON_DELETE && 
 				commandType != GUI_COMMAND_SET_RALLY_POINT && 
+#ifdef ZH
+				commandType != GUI_COMMAND_STOP && 
+#endif
 				commandType != GUI_COMMAND_SWITCH_WEAPON )
 		{
+#ifdef OG
 			if( getCommandAvailability( command, obj, win, TRUE ) == COMMAND_HIDDEN )
+#endif
+#ifdef ZH
+			if( getCommandAvailability( command, obj, win, applyToWin, TRUE ) == COMMAND_HIDDEN )
+#endif
 			{
 				return COMMAND_HIDDEN;
 			}
@@ -1015,11 +1233,24 @@ CommandAvailability ControlBar::getCommandAvailability( const CommandButton *com
 	{
 		case GUI_COMMAND_DOZER_CONSTRUCT:
 		{
+#ifdef ZH
+      const ThingTemplate * whatToBuild = command->getThingTemplate();
+#endif
 			// if the command is a dozer construct task and the object dozer is building anything
 			// this command is not available
+#ifdef OG
 			if(command->getThingTemplate())
+#endif
+#ifdef ZH
+			if(whatToBuild)
+#endif
 			{
+#ifdef OG
 				BuildableStatus bStatus = command->getThingTemplate()->getBuildable();
+#endif
+#ifdef ZH
+				BuildableStatus bStatus = whatToBuild->getBuildable();
+#endif
 				if (bStatus == BSTATUS_NO || (bStatus == BSTATUS_ONLY_BY_AI && obj->getControllingPlayer()->getPlayerType() != PLAYER_COMPUTER))
 					return COMMAND_HIDDEN;
 			}
@@ -1044,10 +1275,20 @@ CommandAvailability ControlBar::getCommandAvailability( const CommandButton *com
 				return COMMAND_RESTRICTED;
 			
 			// return whether or not the player can build this thing
+#ifdef OG
 			if( player->canBuild( command->getThingTemplate() ) == FALSE )
+#endif
+#ifdef ZH
+			if( player->canBuild( whatToBuild ) == FALSE )
+#endif
 				return COMMAND_RESTRICTED;
 
+#ifdef OG
 			if( !player->canAffordBuild( command->getThingTemplate() ) )
+#endif
+#ifdef ZH
+			if( !player->canAffordBuild( whatToBuild ) )
+#endif
 			{
 				return COMMAND_RESTRICTED;//COMMAND_CANT_AFFORD;
 			}
@@ -1061,6 +1302,13 @@ CommandAvailability ControlBar::getCommandAvailability( const CommandButton *com
 			// if so, remove the button, otherwise, its available
 			if (obj->testScriptStatusBit(OBJECT_STATUS_SCRIPT_UNSELLABLE))
 				return COMMAND_HIDDEN;
+#ifdef ZH
+
+    //since the container can be subdued, , M Lorenzen 8/11
+      if ( obj->isDisabledByType( DISABLED_SUBDUED ) )
+        return COMMAND_RESTRICTED;
+
+#endif
 			break;
 		}
 
@@ -1113,6 +1361,16 @@ CommandAvailability ControlBar::getCommandAvailability( const CommandButton *com
 			if( TheUpgradeCenter->canAffordUpgrade( player, command->getUpgradeTemplate() ) == FALSE )
 				return COMMAND_RESTRICTED;//COMMAND_CANT_AFFORD;
 
+#ifdef ZH
+			for( Int i = 0; i < command->getScienceVec().size(); i++ )
+			{
+				ScienceType st = command->getScienceVec()[ i ];
+				if( !player->hasScience( st ) )
+				{
+					return COMMAND_RESTRICTED;
+				}
+			}
+#endif
 			break;
 		} 
 
@@ -1140,6 +1398,17 @@ CommandAvailability ControlBar::getCommandAvailability( const CommandButton *com
 
 			if( TheUpgradeCenter->canAffordUpgrade( player, command->getUpgradeTemplate() ) == FALSE )
 				return COMMAND_RESTRICTED;//COMMAND_CANT_AFFORD;
+#ifdef ZH
+
+			for( Int i = 0; i < command->getScienceVec().size(); i++ )
+			{
+				ScienceType st = command->getScienceVec()[ i ];
+				if( !player->hasScience( st ) )
+				{
+					return COMMAND_RESTRICTED;
+				}
+			}
+#endif
 			break;
 		} 
 
@@ -1184,7 +1453,12 @@ CommandAvailability ControlBar::getCommandAvailability( const CommandButton *com
 					if ( w->getStatus() == RELOADING_CLIP)
 					{
 						Int percent = w->getPercentReadyToFire() * 100;
+#ifdef OG
 						GadgetButtonDrawInverseClock(win, percent, m_buildUpClockColor);
+#endif
+#ifdef ZH
+						GadgetButtonDrawInverseClock( applyToWin, percent, m_buildUpClockColor );
+#endif
 					}
 					return COMMAND_NOT_READY;
 				}
@@ -1230,6 +1504,13 @@ CommandAvailability ControlBar::getCommandAvailability( const CommandButton *com
 			// disable logic handled elsewhere, where if the contained count of the entire
 			// container changes the UI is completely repopulated
 			//
+#ifdef ZH
+
+    //since the container can be subdued, the above is no longer true, M Lorenzen 8/11
+      if ( obj->isDisabledByType( DISABLED_SUBDUED ) )
+        return COMMAND_RESTRICTED;
+
+#endif
 			break;
 		} 
 
@@ -1238,6 +1519,11 @@ CommandAvailability ControlBar::getCommandAvailability( const CommandButton *com
 
 			// if we have no contained objects we can't evacuate anything
 			if( !obj->getContain() || obj->getContain()->getContainCount() <= 0 )
+#ifdef ZH
+				return COMMAND_RESTRICTED;
+
+      if ( obj->isDisabledByType( DISABLED_SUBDUED ) )
+#endif
 				return COMMAND_RESTRICTED;
 			break;
 		}  
@@ -1252,8 +1538,15 @@ CommandAvailability ControlBar::getCommandAvailability( const CommandButton *com
 			break;
 		}  
 
+#ifdef OG
 		case GUI_COMMAND_SPECIAL_POWER_FROM_COMMAND_CENTER:
+#endif
 		case GUI_COMMAND_SPECIAL_POWER:
+#ifdef ZH
+		case GUI_COMMAND_SPECIAL_POWER_FROM_SHORTCUT:
+		case GUI_COMMAND_SPECIAL_POWER_CONSTRUCT:
+		case GUI_COMMAND_SPECIAL_POWER_CONSTRUCT_FROM_SHORTCUT:
+#endif
 		{
 			// sanity
 			DEBUG_ASSERTCRASH( command->getSpecialPowerTemplate() != NULL,
@@ -1265,19 +1558,35 @@ CommandAvailability ControlBar::getCommandAvailability( const CommandButton *com
 			{
 				// sanity ... we must have a module for the special power, if we don't somebody probably
 				// forgot to put it in the object
+#ifdef OG
 				DEBUG_CRASH(( "Object does not contain special power module (%s) to execute.  Did you forget to add it to the object INI?\n",
 											command->getSpecialPowerTemplate()->getName().str() ));
+#endif
+#ifdef ZH
+				DEBUG_CRASH(( "Object %s does not contain special power module (%s) to execute.  Did you forget to add it to the object INI?\n",
+											obj->getTemplate()->getName().str(), command->getSpecialPowerTemplate()->getName().str() ));
+#endif
 			} 
 			else if( mod->isReady() == FALSE )
 			{
 				Int percent =  mod->getPercentReady() * 100;
 
+#ifdef OG
 				GadgetButtonDrawInverseClock(win, percent, m_buildUpClockColor);
+#endif
+#ifdef ZH
+				GadgetButtonDrawInverseClock( applyToWin, percent, m_buildUpClockColor );
+#endif
 				return COMMAND_NOT_READY;
 			}
 			else if( SpecialAbilityUpdate *spUpdate = obj->findSpecialAbilityUpdate( command->getSpecialPowerTemplate()->getSpecialPowerType() ) )
 			{
+#ifdef OG
 				if( spUpdate->isPowerCurrentlyInUse( command ) )
+#endif
+#ifdef ZH
+				if( spUpdate && spUpdate->isPowerCurrentlyInUse( command ) )
+#endif
 				{
 					return COMMAND_RESTRICTED;
 				}
@@ -1367,7 +1676,17 @@ CommandAvailability ControlBar::getCommandAvailability( const CommandButton *com
 			if( bpUpdate && bpUpdate->getActiveBattlePlan() != PLANSTATUS_BOMBARDMENT )
 			{
 				return COMMAND_RESTRICTED;
+#ifdef ZH
 			}
+			return COMMAND_AVAILABLE;
+#endif
+			}
+#ifdef ZH
+		
+		case GUI_COMMAND_SELECT_ALL_UNITS_OF_TYPE:
+		{
+			//We can *always* select a unit :)
+#endif
 			return COMMAND_AVAILABLE;
 		}
 	}
