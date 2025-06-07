@@ -1,7 +1,7 @@
 ﻿namespace Workers;
 
 /// <summary>
-/// Overwride new version files with destination files (version files stay)
+/// Copy new files from a version to core
 /// </summary>
 /// <param name="versionRoot"></param>
 /// <param name="destinationRoot"></param>

@@ -16,35 +16,29 @@ internal class Program
         Analyzer.GenerateReport(analyzerResult);
 #endif
 
-        // Merge VersionDependent files
+// Merge VersionDependent files
 #if false
         var merger = new Merger("OG", "ZH",
             v1DirectoryPath, v2DirectoryPath, destinationPath, Constants.VersionDependent);
         var mergerResult = merger.Start();
         Merger.GenerateReport(mergerResult);
 #endif
-        /*
-            VersionA: 16
-            VersionB: 288
-            Same: 1775
-            Custom: 895
-         */
 
-        // Duplicate OldProjectFiles and ProjectFiles
+// Duplicate OldProjectFiles and ProjectFiles
 #if false
         var duplicator = new Duplicator("_ZH", v2DirectoryPath, destinationPath,
             [.. Constants.OldProjectFiles, .. Constants.ProjectFiles]);
         duplicator.Start();
 #endif
 
-        // Replace unchanged files to make sure everything is OK
+// Replace unchanged files to make sure everything is OK
 #if false
         var replacer = new Replacer(v2DirectoryPath, destinationPath,
             [.. Constants.OriginalUnchanged]);
         replacer.Start();
 #endif
 
-        // Replace manual changed files for compair files
+// Replace manual changed files for compair files
 #if false
         foreach (var ext in Constants.MergedManually)
         {
@@ -53,123 +47,17 @@ internal class Program
         }
 #endif
 
-        // Add versions as projects variables for project files
+// Add versions as projects variables for project files
 #if false
         var varDefiner = new VarDefiner("OG", "ZH", destinationPath);
         varDefiner.Start();
 #endif
-        /*
-[DSP Deleted] old project file detected and deleted (C:\Projects\3_generals\src\Game\CnC_Generals_Zero_Hour\Generals\Code\RTS.dsp)
-[Updated] C:\Projects\3_generals\src\Game\CnC_Generals_Zero_Hour\Generals\Code\RTS.vcxproj
-[DSP Deleted] old project file detected and deleted (C:\Projects\3_generals\src\Game\CnC_Generals_Zero_Hour\Generals\Code\RTS_ZH.dsp)
-[Updated] C:\Projects\3_generals\src\Game\CnC_Generals_Zero_Hour\Generals\Code\RTS_ZH.vcxproj
-[DSP Deleted] old project file detected and deleted (C:\Projects\3_generals\src\Game\CnC_Generals_Zero_Hour\Generals\Code\GameEngine\GameEngine.dsp)
-[Updated] C:\Projects\3_generals\src\Game\CnC_Generals_Zero_Hour\Generals\Code\GameEngine\GameEngine.vcxproj
-[DSP Deleted] old project file detected and deleted (C:\Projects\3_generals\src\Game\CnC_Generals_Zero_Hour\Generals\Code\GameEngine\GameEngine_ZH.dsp)
-[Updated] C:\Projects\3_generals\src\Game\CnC_Generals_Zero_Hour\Generals\Code\GameEngine\GameEngine_ZH.vcxproj
-[DSP Deleted] old project file detected and deleted (C:\Projects\3_generals\src\Game\CnC_Generals_Zero_Hour\Generals\Code\GameEngineDevice\GameEngineDevice.dsp)
-[Updated] C:\Projects\3_generals\src\Game\CnC_Generals_Zero_Hour\Generals\Code\GameEngineDevice\GameEngineDevice.vcxproj
-[DSP Deleted] old project file detected and deleted (C:\Projects\3_generals\src\Game\CnC_Generals_Zero_Hour\Generals\Code\GameEngineDevice\GameEngineDevice_ZH.dsp)
-[Updated] C:\Projects\3_generals\src\Game\CnC_Generals_Zero_Hour\Generals\Code\GameEngineDevice\GameEngineDevice_ZH.vcxproj
-[DSP Deleted] old project file detected and deleted (C:\Projects\3_generals\src\Game\CnC_Generals_Zero_Hour\Generals\Code\Tools\assetcull\assetcull_ZH.dsp)
-[Updated] C:\Projects\3_generals\src\Game\CnC_Generals_Zero_Hour\Generals\Code\Tools\assetcull\assetcull_ZH.vcxproj
-[DSP Deleted] old project file detected and deleted (C:\Projects\3_generals\src\Game\CnC_Generals_Zero_Hour\Generals\Code\Tools\buildVersionUpdate\buildVersionUpdate.dsp)
-[Updated] C:\Projects\3_generals\src\Game\CnC_Generals_Zero_Hour\Generals\Code\Tools\buildVersionUpdate\buildVersionUpdate.vcxproj
-[DSP Deleted] old project file detected and deleted (C:\Projects\3_generals\src\Game\CnC_Generals_Zero_Hour\Generals\Code\Tools\buildVersionUpdate\buildVersionUpdate_ZH.dsp)
-[Updated] C:\Projects\3_generals\src\Game\CnC_Generals_Zero_Hour\Generals\Code\Tools\buildVersionUpdate\buildVersionUpdate_ZH.vcxproj
-[DSP Deleted] old project file detected and deleted (C:\Projects\3_generals\src\Game\CnC_Generals_Zero_Hour\Generals\Code\Tools\Compress\Compress.dsp)
-[Updated] C:\Projects\3_generals\src\Game\CnC_Generals_Zero_Hour\Generals\Code\Tools\Compress\Compress.vcxproj
-[DSP Deleted] old project file detected and deleted (C:\Projects\3_generals\src\Game\CnC_Generals_Zero_Hour\Generals\Code\Tools\CRCDiff\CRCDiff_ZH.dsp)
-[Updated] C:\Projects\3_generals\src\Game\CnC_Generals_Zero_Hour\Generals\Code\Tools\CRCDiff\CRCDiff_ZH.vcxproj
-[DSP Deleted] old project file detected and deleted (C:\Projects\3_generals\src\Game\CnC_Generals_Zero_Hour\Generals\Code\Tools\DebugWindow\DebugWindow.dsp)
-[Updated] C:\Projects\3_generals\src\Game\CnC_Generals_Zero_Hour\Generals\Code\Tools\DebugWindow\DebugWindow.vcxproj
-[DSP Deleted] old project file detected and deleted (C:\Projects\3_generals\src\Game\CnC_Generals_Zero_Hour\Generals\Code\Tools\DebugWindow\DebugWindow_ZH.dsp)
-[Updated] C:\Projects\3_generals\src\Game\CnC_Generals_Zero_Hour\Generals\Code\Tools\DebugWindow\DebugWindow_ZH.vcxproj
-[DSP Deleted] old project file detected and deleted (C:\Projects\3_generals\src\Game\CnC_Generals_Zero_Hour\Generals\Code\Tools\GUIEdit\GUIEdit.dsp)
-[Updated] C:\Projects\3_generals\src\Game\CnC_Generals_Zero_Hour\Generals\Code\Tools\GUIEdit\GUIEdit.vcxproj
-[DSP Deleted] old project file detected and deleted (C:\Projects\3_generals\src\Game\CnC_Generals_Zero_Hour\Generals\Code\Tools\GUIEdit\GUIEdit_ZH.dsp)
-[Updated] C:\Projects\3_generals\src\Game\CnC_Generals_Zero_Hour\Generals\Code\Tools\GUIEdit\GUIEdit_ZH.vcxproj
-[DSP Deleted] old project file detected and deleted (C:\Projects\3_generals\src\Game\CnC_Generals_Zero_Hour\Generals\Code\Tools\ImagePacker\ImagePacker.dsp)
-[Updated] C:\Projects\3_generals\src\Game\CnC_Generals_Zero_Hour\Generals\Code\Tools\ImagePacker\ImagePacker.vcxproj
-[DSP Deleted] old project file detected and deleted (C:\Projects\3_generals\src\Game\CnC_Generals_Zero_Hour\Generals\Code\Tools\ImagePacker\ImagePacker_ZH.dsp)
-[Updated] C:\Projects\3_generals\src\Game\CnC_Generals_Zero_Hour\Generals\Code\Tools\ImagePacker\ImagePacker_ZH.vcxproj
-[DSP Deleted] old project file detected and deleted (C:\Projects\3_generals\src\Game\CnC_Generals_Zero_Hour\Generals\Code\Tools\Launcher\launcher.dsp)
-[Updated] C:\Projects\3_generals\src\Game\CnC_Generals_Zero_Hour\Generals\Code\Tools\Launcher\launcher.vcxproj
-[DSP Deleted] old project file detected and deleted (C:\Projects\3_generals\src\Game\CnC_Generals_Zero_Hour\Generals\Code\Tools\Launcher\launcher_ZH.dsp)
-[Updated] C:\Projects\3_generals\src\Game\CnC_Generals_Zero_Hour\Generals\Code\Tools\Launcher\launcher_ZH.vcxproj
-[DSP Deleted] old project file detected and deleted (C:\Projects\3_generals\src\Game\CnC_Generals_Zero_Hour\Generals\Code\Tools\MapCacheBuilder\MapCacheBuilder.dsp)
-[Updated] C:\Projects\3_generals\src\Game\CnC_Generals_Zero_Hour\Generals\Code\Tools\MapCacheBuilder\MapCacheBuilder.vcxproj
-[DSP Deleted] old project file detected and deleted (C:\Projects\3_generals\src\Game\CnC_Generals_Zero_Hour\Generals\Code\Tools\MapCacheBuilder\MapCacheBuilder_ZH.dsp)
-[Updated] C:\Projects\3_generals\src\Game\CnC_Generals_Zero_Hour\Generals\Code\Tools\MapCacheBuilder\MapCacheBuilder_ZH.vcxproj
-[DSP Deleted] old project file detected and deleted (C:\Projects\3_generals\src\Game\CnC_Generals_Zero_Hour\Generals\Code\Tools\ParticleEditor\ParticleEditor.dsp)
-[Updated] C:\Projects\3_generals\src\Game\CnC_Generals_Zero_Hour\Generals\Code\Tools\ParticleEditor\ParticleEditor.vcxproj
-[DSP Deleted] old project file detected and deleted (C:\Projects\3_generals\src\Game\CnC_Generals_Zero_Hour\Generals\Code\Tools\ParticleEditor\ParticleEditor_ZH.dsp)
-[Updated] C:\Projects\3_generals\src\Game\CnC_Generals_Zero_Hour\Generals\Code\Tools\ParticleEditor\ParticleEditor_ZH.vcxproj
-[DSP Deleted] old project file detected and deleted (C:\Projects\3_generals\src\Game\CnC_Generals_Zero_Hour\Generals\Code\Tools\PATCHGET\patchgrabber_ZH.dsp)
-[Updated] C:\Projects\3_generals\src\Game\CnC_Generals_Zero_Hour\Generals\Code\Tools\PATCHGET\patchgrabber_ZH.vcxproj
-[DSP Deleted] old project file detected and deleted (C:\Projects\3_generals\src\Game\CnC_Generals_Zero_Hour\Generals\Code\Tools\textureCompress\textureCompress.dsp)
-[Updated] C:\Projects\3_generals\src\Game\CnC_Generals_Zero_Hour\Generals\Code\Tools\textureCompress\textureCompress.vcxproj
-[DSP Deleted] old project file detected and deleted (C:\Projects\3_generals\src\Game\CnC_Generals_Zero_Hour\Generals\Code\Tools\versionUpdate\versionUpdate.dsp)
-[Updated] C:\Projects\3_generals\src\Game\CnC_Generals_Zero_Hour\Generals\Code\Tools\versionUpdate\versionUpdate.vcxproj
-[DSP Deleted] old project file detected and deleted (C:\Projects\3_generals\src\Game\CnC_Generals_Zero_Hour\Generals\Code\Tools\versionUpdate\versionUpdate_ZH.dsp)
-[Updated] C:\Projects\3_generals\src\Game\CnC_Generals_Zero_Hour\Generals\Code\Tools\versionUpdate\versionUpdate_ZH.vcxproj
-[DSP Deleted] old project file detected and deleted (C:\Projects\3_generals\src\Game\CnC_Generals_Zero_Hour\Generals\Code\Tools\WorldBuilder\WorldBuilder.dsp)
-[Updated] C:\Projects\3_generals\src\Game\CnC_Generals_Zero_Hour\Generals\Code\Tools\WorldBuilder\WorldBuilder.vcxproj
-[DSP Deleted] old project file detected and deleted (C:\Projects\3_generals\src\Game\CnC_Generals_Zero_Hour\Generals\Code\Tools\WorldBuilder\WorldBuilder_ZH.dsp)
-[Updated] C:\Projects\3_generals\src\Game\CnC_Generals_Zero_Hour\Generals\Code\Tools\WorldBuilder\WorldBuilder_ZH.vcxproj
-[DSP Deleted] old project file detected and deleted (C:\Projects\3_generals\src\Game\CnC_Generals_Zero_Hour\Generals\Code\Libraries\Source\Benchmark\Benchmark_ZH.dsp)
-[Updated] C:\Projects\3_generals\src\Game\CnC_Generals_Zero_Hour\Generals\Code\Libraries\Source\Benchmark\Benchmark_ZH.vcxproj
-[DSP Deleted] old project file detected and deleted (C:\Projects\3_generals\src\Game\CnC_Generals_Zero_Hour\Generals\Code\Libraries\Source\Compression\Compression.dsp)
-[Updated] C:\Projects\3_generals\src\Game\CnC_Generals_Zero_Hour\Generals\Code\Libraries\Source\Compression\Compression.vcxproj
-[DSP Deleted] old project file detected and deleted (C:\Projects\3_generals\src\Game\CnC_Generals_Zero_Hour\Generals\Code\Libraries\Source\Compression\Compression_ZH.dsp)
-[Updated] C:\Projects\3_generals\src\Game\CnC_Generals_Zero_Hour\Generals\Code\Libraries\Source\Compression\Compression_ZH.vcxproj
-[DSP Deleted] old project file detected and deleted (C:\Projects\3_generals\src\Game\CnC_Generals_Zero_Hour\Generals\Code\Libraries\Source\debug\debug_ZH.dsp)
-[Updated] C:\Projects\3_generals\src\Game\CnC_Generals_Zero_Hour\Generals\Code\Libraries\Source\debug\debug_ZH.vcxproj
-[DSP Deleted] old project file detected and deleted (C:\Projects\3_generals\src\Game\CnC_Generals_Zero_Hour\Generals\Code\Libraries\Source\EABrowserDispatch\EABrowserDispatch.dsp)
-[Updated] C:\Projects\3_generals\src\Game\CnC_Generals_Zero_Hour\Generals\Code\Libraries\Source\EABrowserDispatch\EABrowserDispatch.vcxproj
-[DSP Deleted] old project file detected and deleted (C:\Projects\3_generals\src\Game\CnC_Generals_Zero_Hour\Generals\Code\Libraries\Source\EABrowserDispatch\EABrowserDispatch_ZH.dsp)
-[Updated] C:\Projects\3_generals\src\Game\CnC_Generals_Zero_Hour\Generals\Code\Libraries\Source\EABrowserDispatch\EABrowserDispatch_ZH.vcxproj
-[DSP Deleted] old project file detected and deleted (C:\Projects\3_generals\src\Game\CnC_Generals_Zero_Hour\Generals\Code\Libraries\Source\profile\profile_ZH.dsp)
-[Updated] C:\Projects\3_generals\src\Game\CnC_Generals_Zero_Hour\Generals\Code\Libraries\Source\profile\profile_ZH.vcxproj
-[DSP Deleted] old project file detected and deleted (C:\Projects\3_generals\src\Game\CnC_Generals_Zero_Hour\Generals\Code\Tools\Launcher\DatGen\DatGen.dsp)
-[Updated] C:\Projects\3_generals\src\Game\CnC_Generals_Zero_Hour\Generals\Code\Tools\Launcher\DatGen\DatGen.vcxproj
-[DSP Deleted] old project file detected and deleted (C:\Projects\3_generals\src\Game\CnC_Generals_Zero_Hour\Generals\Code\Tools\Launcher\DatGen\DatGen_ZH.dsp)
-[Updated] C:\Projects\3_generals\src\Game\CnC_Generals_Zero_Hour\Generals\Code\Tools\Launcher\DatGen\DatGen_ZH.vcxproj
-[DSP Deleted] old project file detected and deleted (C:\Projects\3_generals\src\Game\CnC_Generals_Zero_Hour\Generals\Code\Tools\WW3D\max2w3d\max2w3d.dsp)
-[Updated] C:\Projects\3_generals\src\Game\CnC_Generals_Zero_Hour\Generals\Code\Tools\WW3D\max2w3d\max2w3d.vcxproj
-[DSP Deleted] old project file detected and deleted (C:\Projects\3_generals\src\Game\CnC_Generals_Zero_Hour\Generals\Code\Tools\WW3D\pluglib\pluglib.dsp)
-[Updated] C:\Projects\3_generals\src\Game\CnC_Generals_Zero_Hour\Generals\Code\Tools\WW3D\pluglib\pluglib.vcxproj
-[DSP Deleted] old project file detected and deleted (C:\Projects\3_generals\src\Game\CnC_Generals_Zero_Hour\Generals\Code\Libraries\Source\WWVegas\WW3D2\ww3d2.dsp)
-[Updated] C:\Projects\3_generals\src\Game\CnC_Generals_Zero_Hour\Generals\Code\Libraries\Source\WWVegas\WW3D2\ww3d2.vcxproj
-[DSP Deleted] old project file detected and deleted (C:\Projects\3_generals\src\Game\CnC_Generals_Zero_Hour\Generals\Code\Libraries\Source\WWVegas\WW3D2\ww3d2_ZH.dsp)
-[Updated] C:\Projects\3_generals\src\Game\CnC_Generals_Zero_Hour\Generals\Code\Libraries\Source\WWVegas\WW3D2\ww3d2_ZH.vcxproj
-[DSP Deleted] old project file detected and deleted (C:\Projects\3_generals\src\Game\CnC_Generals_Zero_Hour\Generals\Code\Libraries\Source\WWVegas\WWDebug\wwdebug.dsp)
-[Updated] C:\Projects\3_generals\src\Game\CnC_Generals_Zero_Hour\Generals\Code\Libraries\Source\WWVegas\WWDebug\wwdebug.vcxproj
-[DSP Deleted] old project file detected and deleted (C:\Projects\3_generals\src\Game\CnC_Generals_Zero_Hour\Generals\Code\Libraries\Source\WWVegas\WWDebug\wwdebug_ZH.dsp)
-[Updated] C:\Projects\3_generals\src\Game\CnC_Generals_Zero_Hour\Generals\Code\Libraries\Source\WWVegas\WWDebug\wwdebug_ZH.vcxproj
-[DSP Deleted] old project file detected and deleted (C:\Projects\3_generals\src\Game\CnC_Generals_Zero_Hour\Generals\Code\Libraries\Source\WWVegas\WWDownload\WWDownload.dsp)
-[Updated] C:\Projects\3_generals\src\Game\CnC_Generals_Zero_Hour\Generals\Code\Libraries\Source\WWVegas\WWDownload\WWDownload.vcxproj
-[DSP Deleted] old project file detected and deleted (C:\Projects\3_generals\src\Game\CnC_Generals_Zero_Hour\Generals\Code\Libraries\Source\WWVegas\WWDownload\WWDownload_ZH.dsp)
-[Updated] C:\Projects\3_generals\src\Game\CnC_Generals_Zero_Hour\Generals\Code\Libraries\Source\WWVegas\WWDownload\WWDownload_ZH.vcxproj
-[DSP Deleted] old project file detected and deleted (C:\Projects\3_generals\src\Game\CnC_Generals_Zero_Hour\Generals\Code\Libraries\Source\WWVegas\WWLib\wwlib.dsp)
-[Updated] C:\Projects\3_generals\src\Game\CnC_Generals_Zero_Hour\Generals\Code\Libraries\Source\WWVegas\WWLib\wwlib.vcxproj
-[DSP Deleted] old project file detected and deleted (C:\Projects\3_generals\src\Game\CnC_Generals_Zero_Hour\Generals\Code\Libraries\Source\WWVegas\WWLib\wwlib_ZH.dsp)
-[Updated] C:\Projects\3_generals\src\Game\CnC_Generals_Zero_Hour\Generals\Code\Libraries\Source\WWVegas\WWLib\wwlib_ZH.vcxproj
-[DSP Deleted] old project file detected and deleted (C:\Projects\3_generals\src\Game\CnC_Generals_Zero_Hour\Generals\Code\Libraries\Source\WWVegas\WWMath\wwmath.dsp)
-[Updated] C:\Projects\3_generals\src\Game\CnC_Generals_Zero_Hour\Generals\Code\Libraries\Source\WWVegas\WWMath\wwmath.vcxproj
-[DSP Deleted] old project file detected and deleted (C:\Projects\3_generals\src\Game\CnC_Generals_Zero_Hour\Generals\Code\Libraries\Source\WWVegas\WWMath\wwmath_ZH.dsp)
-[Updated] C:\Projects\3_generals\src\Game\CnC_Generals_Zero_Hour\Generals\Code\Libraries\Source\WWVegas\WWMath\wwmath_ZH.vcxproj
-[DSP Deleted] old project file detected and deleted (C:\Projects\3_generals\src\Game\CnC_Generals_Zero_Hour\Generals\Code\Libraries\Source\WWVegas\WWSaveLoad\wwsaveload.dsp)
-[Updated] C:\Projects\3_generals\src\Game\CnC_Generals_Zero_Hour\Generals\Code\Libraries\Source\WWVegas\WWSaveLoad\wwsaveload.vcxproj
-[DSP Deleted] old project file detected and deleted (C:\Projects\3_generals\src\Game\CnC_Generals_Zero_Hour\Generals\Code\Libraries\Source\WWVegas\WWSaveLoad\wwsaveload_ZH.dsp)
-[Updated] C:\Projects\3_generals\src\Game\CnC_Generals_Zero_Hour\Generals\Code\Libraries\Source\WWVegas\WWSaveLoad\wwsaveload_ZH.vcxproj
-[DSP Deleted] old project file detected and deleted (C:\Projects\3_generals\src\Game\CnC_Generals_Zero_Hour\Generals\Code\Libraries\Source\WWVegas\wwshade\wwshade_ZH.dsp)
-[Updated] C:\Projects\3_generals\src\Game\CnC_Generals_Zero_Hour\Generals\Code\Libraries\Source\WWVegas\wwshade\wwshade_ZH.vcxproj
-[DSP Deleted] old project file detected and deleted (C:\Projects\3_generals\src\Game\CnC_Generals_Zero_Hour\Generals\Code\Libraries\Source\WWVegas\Wwutil\wwutil.dsp)
-[Updated] C:\Projects\3_generals\src\Game\CnC_Generals_Zero_Hour\Generals\Code\Libraries\Source\WWVegas\Wwutil\wwutil.vcxproj
-[DSP Deleted] old project file detected and deleted (C:\Projects\3_generals\src\Game\CnC_Generals_Zero_Hour\Generals\Code\Libraries\Source\WWVegas\Wwutil\wwutil_ZH.dsp)
-[Updated] C:\Projects\3_generals\src\Game\CnC_Generals_Zero_Hour\Generals\Code\Libraries\Source\WWVegas\Wwutil\wwutil_ZH.vcxproj
-         */
+
+// Apply PragmaOnceOptimizer and remove additional check (to fix mismatch)
+#if true
+        var pragmaOptimizer = new PragmaOnceOptimizer(destinationPath, Constants.VersionDependent);
+        pragmaOptimizer.Start();
+#endif
 
         // - solve ifdef confligts:
         //      merge code using #ifdef wasn't perfect which made mismatch errors,
@@ -179,24 +67,24 @@ internal class Program
         //      add comment at #endif 
 
         // temp
-        
-        var tmp_gv1 = @"C:\Projects\3_generals\src\temp\new merger\CnC_Generals_Zero_Hour\Generals";
-        var tmp_gv2 = @"C:\Projects\3_generals\src\temp\new merger\CnC_Generals_Zero_Hour\GeneralsMD";
-        var tmp_gv3 = @"C:\Projects\3_generals\src\temp\new merger\CnC_Generals_Zero_Hour\Generals3";
+
+        //var tmp_gv1 = @"C:\Projects\3_generals\src\temp\new merger\CnC_Generals_Zero_Hour\Generals";
+        //var tmp_gv2 = @"C:\Projects\3_generals\src\temp\new merger\CnC_Generals_Zero_Hour\GeneralsMD";
+        //var tmp_gv3 = @"C:\Projects\3_generals\src\temp\new merger\CnC_Generals_Zero_Hour\Generals3";
 
         //1- delete all files but VersionDependent
-        var otherFiles = Directory.GetFiles(tmp_gv1, "*", SearchOption.AllDirectories)
-            .Where(file => !Constants.VersionDependent.Any(ex => Path.GetExtension(file).Equals(ex, StringComparison.OrdinalIgnoreCase)))
-            .ToList();
+        //var otherFiles = Directory.GetFiles(tmp_gv1, "*", SearchOption.AllDirectories)
+        //    .Where(file => !Constants.VersionDependent.Any(ex => Path.GetExtension(file).Equals(ex, StringComparison.OrdinalIgnoreCase)))
+        //    .ToList();
 
-        otherFiles.ForEach(File.Delete);
-        Console.WriteLine($"({otherFiles.Count}) files removed");
+        //otherFiles.ForEach(File.Delete);
+        //Console.WriteLine($"({otherFiles.Count}) files removed");
 
-        var oldmerger = new Merger("OG", "ZH",
-            tmp_gv1, tmp_gv2, tmp_gv3,
-            Constants.VersionDependent);
-        var oldmergerResult = oldmerger.Start();
-        Merger.GenerateReport(oldmergerResult);
+        //var oldmerger = new Merger("OG", "ZH",
+        //    tmp_gv1, tmp_gv2, destinationPath,
+        //    Constants.VersionDependent);
+        //var oldmergerResult = oldmerger.Start();
+        //Merger.GenerateReport(oldmergerResult);
 
         // - check files that still in zh and not in og
         // - fix c++ upgrade from98 to new version errors

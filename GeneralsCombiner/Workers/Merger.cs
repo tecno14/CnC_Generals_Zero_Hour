@@ -2,6 +2,7 @@
 using DiffPlex.DiffBuilder;
 using DiffPlex.DiffBuilder.Model;
 using GeneralsCombiner;
+using System.Diagnostics;
 using System.Text;
 using System.Text.RegularExpressions;
 
@@ -53,8 +54,13 @@ public class Merger(
             var ogRelative = ogFiles.ToDictionary(f => Path.GetRelativePath(VersionARoot, f), f => f);
             var zhRelative = zhFiles.ToDictionary(f => Path.GetRelativePath(VersionBRoot, f), f => f);
 
+            //var supportedForDebug = new string[] { "wwmemlog.h" };
+
             foreach (var (rel, fullOg) in ogRelative)
             {
+                //if (!supportedForDebug.Contains(Path.GetFileName(fullOg)))
+                //    continue;
+
                 if (zhRelative.TryGetValue(rel, out var fullZh))
                 {
                     var result = HandleCommonFile(fullOg, fullZh, rel);
@@ -66,7 +72,7 @@ public class Merger(
                     ProcessAndCopy(fullOg, Path.Combine(DestinationRoot, rel), VersionA);
                     diffs.Add(DiffResult.VersionA);
                 }
-            }
+            }//return diffs;
 
             foreach (var (rel, fullZh) in zhRelative)
             {
@@ -137,6 +143,19 @@ public class Merger(
             }
 
             string mergedText = merged.ToString().TrimEnd() + trimmed;
+
+            // NEW: Validate conditional directives in merged text
+            if (!ValidateConditionalBlocks(mergedText))
+            {
+                Console.WriteLine($"[MANUAL MERGE REQUIRED] {relPath} due to mismatched conditionals");
+                mergedText = $"/* MANUAL MERGE REQUIRED: conditionals mismatched in merged version */\r\n" +
+                    $"#ifdef {VersionA}\r\n{ogContent}\r\n#endif // {VersionA}\r\n" +
+                    $"#ifdef {VersionB}\r\n{zhContent}\r\n#endif // {VersionB}\r\n";
+                Directory.CreateDirectory(Path.GetDirectoryName(destFile)!);
+                File.WriteAllText(destFile, mergedText);
+                return DiffResult.Error;
+            }
+
             Directory.CreateDirectory(Path.GetDirectoryName(destFile)!);
             File.WriteAllText(destFile, mergedText);
 
@@ -156,6 +175,31 @@ public class Merger(
             Console.ReadLine();
             return DiffResult.Error;
         }
+    }
+
+    // NEW: Validate balanced preprocessor directives
+    static bool ValidateConditionalBlocks(string content)
+    {
+        var stack = new Stack<string>();
+        var lines = content.Replace("\r", "").Split('\n');
+
+        for (int i = 0; i < lines.Length; i++)
+        {
+            string trimmedLine = lines[i].Trim();
+            if (trimmedLine.StartsWith("#if "))
+                stack.Push("#if");
+            else if (trimmedLine.StartsWith("#ifdef "))
+                stack.Push("#ifdef");
+            else if (trimmedLine.StartsWith("#ifndef "))
+                stack.Push("#ifndef");
+            else if (trimmedLine.StartsWith("#endif"))
+            {
+                if (stack.Count == 0)
+                    return false;
+                stack.Pop();
+            }
+        }
+        return stack.Count == 0;
     }
 
     // NEW: Calculate trailing empty lines from OG content
@@ -245,7 +289,8 @@ public class Merger(
            $"VersionA: {results.Count(r => r == DiffResult.VersionA)}{Environment.NewLine}" +
            $"VersionB: {results.Count(r => r == DiffResult.VersionB)}{Environment.NewLine}" +
            $"Same: {results.Count(r => r == DiffResult.Same)}{Environment.NewLine}" +
-           $"Custom: {results.Count(r => r == DiffResult.Custom)}{Environment.NewLine}"
+           $"Custom: {results.Count(r => r == DiffResult.Custom)}{Environment.NewLine}" +
+           $"Errors: {results.Count(r => r == DiffResult.Error)}{Environment.NewLine}"
         );
     }
 }
