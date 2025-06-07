@@ -8,6 +8,7 @@ namespace Workers;
 /// <param name="versionA"></param>
 /// <param name="versionB"></param>
 /// <param name="destinationRoot"></param>
+[Obsolete("Broken, don't use it", true)]
 public partial class PragmaOnceOptimizer(
     string destinationRoot,
     string[] validFilesExtensions)
@@ -54,6 +55,58 @@ public partial class PragmaOnceOptimizer(
         try
         {
             var fileContent = File.ReadAllText(filePath);
+
+            // Check if #pragma once exists
+            if (!PragmaOnceRegex().IsMatch(fileContent))
+                return;
+
+            // Find first #ifndef and #define
+            var ifndefMatch = IfndefRegex().Match(fileContent);
+            if (!ifndefMatch.Success)
+                return;
+
+            var defineMatch = DefineRegex().Match(fileContent, ifndefMatch.Index + ifndefMatch.Length);
+            if (!defineMatch.Success || ifndefMatch.Groups[1].Value != defineMatch.Groups[1].Value)
+                return; // throw new Exception("Couldn't find #define for same value");
+
+            // Remove #ifndef and #define
+            fileContent = fileContent.Remove(ifndefMatch.Index, defineMatch.Index + defineMatch.Length - ifndefMatch.Index);
+
+            // Remove last #endif
+            var endifMatches = EndifRegex().Matches(fileContent);
+            if (endifMatches.Count == 0)
+                throw new Exception("Couldn't find last #endif");
+
+            // Get the last match
+            var lastEndifMatch = endifMatches[^1]; // Using `^1` to get the last item in C# 8+
+
+            // Remove only the last occurrence
+            fileContent = fileContent.Remove(lastEndifMatch.Index, lastEndifMatch.Length);
+
+            // Remove all occurrences of #pragma once
+            fileContent = PragmaOnceRegex().Replace(fileContent, "");
+
+            // Add a single #pragma once at the beginning
+            fileContent = "#pragma once\r\n" + fileContent;
+
+            // Write back the modified content
+            File.WriteAllText(filePath, fileContent);
+            Console.WriteLine($"Processed: {filePath}");
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"[Error] processing {filePath}: {ex.Message}");
+            Console.WriteLine("Press ENTER to continue ...");
+            Console.ReadLine();
+        }
+    }
+
+    static void ProcessFiles2(string filePath)
+    {
+        try
+        {
+            var fileContent = File.ReadAllText(filePath);
+            var pragmaAdded = false;
 
             // Check if #pragma once exists
             if (!PragmaOnceRegex().IsMatch(fileContent))

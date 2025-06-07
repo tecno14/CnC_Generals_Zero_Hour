@@ -16,7 +16,15 @@ internal class Program
         Analyzer.GenerateReport(analyzerResult);
 #endif
 
-// Merge VersionDependent files
+        // Apply PragmaOnceOptimizer and remove additional check (to fix mismatch)
+#if false
+        var pragmaOptimizer1 = new PragmaOnceOptimizer(v1DirectoryPath, Constants.VersionDependent);
+        pragmaOptimizer1.Start();
+        var pragmaOptimizer2 = new PragmaOnceOptimizer(v2DirectoryPath, Constants.VersionDependent);
+        pragmaOptimizer2.Start();
+#endif
+
+        // Merge VersionDependent files
 #if false
         var merger = new Merger("OG", "ZH",
             v1DirectoryPath, v2DirectoryPath, destinationPath, Constants.VersionDependent);
@@ -24,21 +32,21 @@ internal class Program
         Merger.GenerateReport(mergerResult);
 #endif
 
-// Duplicate OldProjectFiles and ProjectFiles
+        // Duplicate OldProjectFiles and ProjectFiles
 #if false
         var duplicator = new Duplicator("_ZH", v2DirectoryPath, destinationPath,
             [.. Constants.OldProjectFiles, .. Constants.ProjectFiles]);
         duplicator.Start();
 #endif
 
-// Replace unchanged files to make sure everything is OK
+        // Replace unchanged files to make sure everything is OK
 #if false
         var replacer = new Replacer(v2DirectoryPath, destinationPath,
             [.. Constants.OriginalUnchanged]);
         replacer.Start();
 #endif
 
-// Replace manual changed files for compair files
+        // Replace manual changed files for compair files
 #if false
         foreach (var ext in Constants.MergedManually)
         {
@@ -47,16 +55,10 @@ internal class Program
         }
 #endif
 
-// Add versions as projects variables for project files
+        // Add versions as projects variables for project files
 #if false
         var varDefiner = new VarDefiner("OG", "ZH", destinationPath);
         varDefiner.Start();
-#endif
-
-// Apply PragmaOnceOptimizer and remove additional check (to fix mismatch)
-#if true
-        var pragmaOptimizer = new PragmaOnceOptimizer(destinationPath, Constants.VersionDependent);
-        pragmaOptimizer.Start();
 #endif
 
         // - solve ifdef confligts:
@@ -76,7 +78,11 @@ internal class Program
         //var otherFiles = Directory.GetFiles(tmp_gv1, "*", SearchOption.AllDirectories)
         //    .Where(file => !Constants.VersionDependent.Any(ex => Path.GetExtension(file).Equals(ex, StringComparison.OrdinalIgnoreCase)))
         //    .ToList();
-
+        //otherFiles.ForEach(File.Delete);
+        //Console.WriteLine($"({otherFiles.Count}) files removed");
+        //otherFiles = Directory.GetFiles(tmp_gv2, "*", SearchOption.AllDirectories)
+        //   .Where(file => !Constants.VersionDependent.Any(ex => Path.GetExtension(file).Equals(ex, StringComparison.OrdinalIgnoreCase)))
+        //   .ToList();
         //otherFiles.ForEach(File.Delete);
         //Console.WriteLine($"({otherFiles.Count}) files removed");
 
