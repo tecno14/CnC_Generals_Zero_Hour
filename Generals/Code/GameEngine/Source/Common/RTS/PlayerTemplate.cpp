@@ -75,7 +75,7 @@
 		{ "Side",											INI::parseAsciiString,													NULL, offsetof( PlayerTemplate, m_side ) },
 #ifdef ZH
 		{ "BaseSide",								INI::parseAsciiString,													NULL, offsetof( PlayerTemplate, m_baseSide ) },
-#endif
+#endif // ZH
 		{ "PlayableSide",							INI::parseBool,																	NULL, offsetof( PlayerTemplate, m_playableSide ) },
 		{ "DisplayName",							INI::parseAndTranslateLabel,										NULL, offsetof( PlayerTemplate, m_displayName) },
 		{ "StartMoney",								PlayerTemplate::parseStartMoney,								NULL, offsetof( PlayerTemplate, m_money ) },
@@ -104,14 +104,14 @@
 		{ "IsObserver",								INI::parseBool,																	NULL, offsetof( PlayerTemplate, m_observer ) },
 #ifdef ZH
     { "OldFaction",               INI::parseBool,                                 NULL, offsetof( PlayerTemplate, m_oldFaction ) },
-#endif
+#endif // ZH
 		{ "IntrinsicSciencePurchasePoints",				INI::parseInt,												NULL, offsetof( PlayerTemplate, m_intrinsicSPP ) },
 		{ "ScoreScreenImage",					INI::parseAsciiString,													NULL, offsetof( PlayerTemplate, m_scoreScreenImage ) },
 		{ "LoadScreenImage",					INI::parseAsciiString,													NULL, offsetof( PlayerTemplate, m_loadScreenImage ) },
 		{ "LoadScreenMusic",					INI::parseAsciiString,													NULL, offsetof( PlayerTemplate, m_loadScreenMusic ) },
 #ifdef ZH
 		{ "ScoreScreenMusic",					INI::parseAsciiString,													NULL, offsetof( PlayerTemplate, m_scoreScreenMusic ) },
-#endif
+#endif // ZH
 
 		{ "HeadWaterMark",						INI::parseAsciiString,													NULL, offsetof( PlayerTemplate, m_headWaterMark ) },
 		{ "FlagWaterMark",						INI::parseAsciiString,													NULL, offsetof( PlayerTemplate, m_flagWaterMark ) },
@@ -122,7 +122,7 @@
 		{ "SideIconImage",						INI::parseAsciiString,													NULL, offsetof( PlayerTemplate, m_sideIconImage ) },
 #ifdef ZH
 		{ "GeneralImage",						INI::parseAsciiString,													NULL, offsetof( PlayerTemplate, m_generalImage ) },
-#endif
+#endif // ZH
 
 		{ "BeaconName",								INI::parseAsciiString,													NULL, offsetof( PlayerTemplate, m_beaconTemplate ) },
 #ifdef ZH
@@ -132,7 +132,7 @@
 		{ "MedallionHilite",						INI::parseAsciiString,					NULL, offsetof( PlayerTemplate, m_strMedallionHilite ) },
 		{ "MedallionSelect",						INI::parseAsciiString,					NULL, offsetof( PlayerTemplate, m_strMedallionSelected ) },
 
-#endif
+#endif // ZH
 		{ NULL,											NULL,																				NULL, 0 },
 	};
 
@@ -210,7 +210,7 @@ PlayerTemplate::PlayerTemplate() :
 	m_playableSide(false),
 #ifdef ZH
   m_oldFaction(false),
-#endif
+#endif // ZH
 	m_intrinsicSPP(0),
 	m_specialPowerShortcutButtonCount(0)
 {
@@ -244,7 +244,7 @@ const Image *PlayerTemplate::getGeneralImage( void ) const
 }
 
 //-----------------------------------------------------------------------------
-#endif
+#endif // ZH
 const Image *PlayerTemplate::getEnabledImage( void ) const
 {
 	return TheMappedImageCollection->findImageByName(m_enabledImage);
@@ -315,7 +315,7 @@ Int PlayerTemplateStore::getTemplateNumByName(AsciiString name) const
 	}
 	DEBUG_ASSERTCRASH(NULL, ("Template doesn't exist for given name"));
 	return -1;
-#endif
+#endif // ZH
 }
 
 //-----------------------------------------------------------------------------

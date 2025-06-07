@@ -18,10 +18,10 @@
 
 #ifdef OG
 /* $Header: /Commando/Code/ww3d2/motchan.cpp 3     5/05/01 7:10p Jani_p $ */
-#endif
+#endif // OG
 #ifdef ZH
 /* $Header: /Commando/Code/ww3d2/motchan.cpp 6     11/29/01 1:07p Jani_p $ */
-#endif
+#endif // ZH
 /*********************************************************************************************** 
  ***                            Confidential - Westwood Studios                              *** 
  *********************************************************************************************** 
@@ -34,17 +34,17 @@
  *                                                                                             * 
 #ifdef OG
  *                     $Modtime:: 5/05/01 6:28p                                               $* 
-#endif
+#endif // OG
 #ifdef ZH
  *                     $Modtime:: 11/29/01 1:01p                                              $* 
-#endif
+#endif // ZH
  *                                                                                             * 
 #ifdef OG
  *                    $Revision:: 3                                                           $* 
-#endif
+#endif // OG
 #ifdef ZH
  *                    $Revision:: 6                                                           $* 
-#endif
+#endif // ZH
  *                                                                                             * 
  *---------------------------------------------------------------------------------------------* 
  * Functions:                                                                                  * 
@@ -69,7 +69,7 @@
 #include "wwmath.h"
 //#include <stdio.h>
 //#include <Windows.h>
-#endif
+#endif // ZH
 // Static Table, for Adaptive Delta Decompressor
 #define FILTER_TABLE_SIZE (256)
 #define FILTER_TABLE_GEN_START (16)
@@ -117,13 +117,13 @@ MotionChannelClass::MotionChannelClass(void) :
 #ifdef OG
 	LastFrame(-1)
 
-#endif
+#endif // OG
 #ifdef ZH
 	LastFrame(-1),
 	CompressedData(NULL),
 	ValueScale(0.0f),
 	ValueOffset(0.0f)
-#endif
+#endif // ZH
 {
 }
 
@@ -163,7 +163,7 @@ void MotionChannelClass::Free(void)
 		delete[] CompressedData;
 		CompressedData=NULL;
 	}
-#endif
+#endif // ZH
 	if (Data) {
 		delete[] Data;
 		Data = NULL;
@@ -189,11 +189,11 @@ bool MotionChannelClass::Load_W3D(ChunkLoadClass & cload)
 #ifdef OG
 	unsigned int datasize = (size - sizeof(W3dAnimChannelStruct));
 	unsigned int num_floats = (datasize / sizeof(float32)) + 1;
-#endif
+#endif // OG
 #ifdef ZH
 	// There was a bug in the exporter which saved too much data, so let's try and not load everything.
 	unsigned int saved_datasize = (size - sizeof(W3dAnimChannelStruct));
-#endif
+#endif // ZH
   
 	W3dAnimChannelStruct chan;
 	if (cload.Read(&chan,sizeof(W3dAnimChannelStruct)) != sizeof(W3dAnimChannelStruct)) {
@@ -210,7 +210,7 @@ bool MotionChannelClass::Load_W3D(ChunkLoadClass & cload)
 	unsigned int num_floats = LastFrame-FirstFrame+1;//(datasize / sizeof(float32)) + 1;
 	num_floats*=VectorLen;
 	unsigned int datasize=(num_floats-1)*sizeof(float);
-#endif
+#endif // ZH
 
 	Data = MSGW3DNEWARRAY("MotionChannelClass::Data") float32[num_floats];
 	Data[0] = chan.Data[0];
@@ -223,12 +223,12 @@ bool MotionChannelClass::Load_W3D(ChunkLoadClass & cload)
 	// Skip over the extra data at the end of the chunk (saved by an error in the exporter)
 	if (saved_datasize-datasize>0) {
 		cload.Seek(saved_datasize-datasize);
-#endif
+#endif // ZH
 	}	
 #ifdef ZH
 
 	Do_Data_Compression(datasize);
-#endif
+#endif // ZH
 	return true;
 }
 
@@ -1324,7 +1324,7 @@ return;
 		if (value>100000.0f) value=0.0f;
 		if (value<-100000.0f) value=0.0f;
 		Data[i]=value;
-#endif
+#endif // ZH
 
 #ifdef ZH
 		if (value_min > value) value_min = value;
@@ -1335,7 +1335,7 @@ return;
 	// Can't compress if the range is too high
 	if (ValueScale>2000.0f) return;
 	if (Type==ANIM_CHANNEL_Q/* && ValueScale>3.0f*/) return;
-#endif
+#endif // ZH
 
 #ifdef ZH
 	WWASSERT(!CompressedData);
@@ -1365,5 +1365,5 @@ return;
 	Data=NULL;
 }
 
-#endif
+#endif // ZH
 // EOF - motchan.cpp

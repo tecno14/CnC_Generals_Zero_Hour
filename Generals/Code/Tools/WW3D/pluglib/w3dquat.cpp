@@ -57,10 +57,10 @@
 #include <stdio.h>
 #ifdef OG
 //#include <iostream>
-#endif
+#endif // OG
 #ifdef ZH
 //#include <iostream.h>
-#endif
+#endif // ZH
 #include <stdlib.h>
 #include <math.h>
 #include <assert.h>

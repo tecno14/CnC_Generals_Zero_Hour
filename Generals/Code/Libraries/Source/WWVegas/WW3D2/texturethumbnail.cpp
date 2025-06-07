@@ -37,7 +37,7 @@ static bool message_box_displayed=false;
 bool ThumbnailManagerClass::CreateThumbnailIfNotFound=false;
 
 const char* ThumbFileHeader="THU6";
-#endif
+#endif // ZH
 
 #ifdef OG
 static HashTemplateClass<StringClass,ThumbnailClass*> thumbnail_hash;
@@ -45,7 +45,7 @@ static bool _ThumbHashModified;
 static unsigned char* _ThumbnailMemory;
 static const char *THUMBNAIL_FILENAME = "thumbnails.dat";
 
-#endif
+#endif // OG
 #ifdef ZH
 static void Create_Hash_Name(StringClass& name, const StringClass& thumb_name)
 {
@@ -74,12 +74,12 @@ static void Create_Hash_Name(StringClass& name, const StringClass& thumb_name)
 
 	}
 */
-#endif
+#endif // ZH
 
 #ifdef OG
 ThumbnailClass::ThumbnailClass(const char* name, unsigned char* bitmap, unsigned w, unsigned h, bool allocated)
 
-#endif
+#endif // OG
 #ifdef ZH
 
 ThumbnailClass::ThumbnailClass(
@@ -94,11 +94,11 @@ ThumbnailClass::ThumbnailClass(
 	WW3DFormat original_format,
 	bool allocated,
 	unsigned long date_time)
-#endif
+#endif // ZH
 	:
 #ifdef ZH
 	Manager(manager),
-#endif
+#endif // ZH
 	Name(name), 
 	Bitmap(bitmap), 
 	Allocated(allocated),
@@ -106,7 +106,7 @@ ThumbnailClass::ThumbnailClass(
 #ifdef OG
 	Height(h)
 
-#endif
+#endif // OG
 #ifdef ZH
 	Height(h),
 	OriginalTextureWidth(original_w),
@@ -114,14 +114,14 @@ ThumbnailClass::ThumbnailClass(
 	OriginalTextureMipLevelCount(original_mip_level_count),
 	OriginalTextureFormat(original_format),
 	DateTime(date_time)
-#endif
+#endif // ZH
 {
 #ifdef OG
 	thumbnail_hash.Insert(Name,this);
-#endif
+#endif // OG
 #ifdef ZH
 	Manager->Insert_To_Hash(this);
-#endif
+#endif // ZH
 }
 
 // ----------------------------------------------------------------------------
@@ -135,14 +135,14 @@ ThumbnailClass::ThumbnailClass(
 
 #ifdef OG
 ThumbnailClass::ThumbnailClass(const StringClass& filename)
-#endif
+#endif // OG
 #ifdef ZH
 ThumbnailClass::ThumbnailClass(ThumbnailManagerClass* manager, const StringClass& filename)
-#endif
+#endif // ZH
 	:
 #ifdef ZH
 	Manager(manager),
-#endif
+#endif // ZH
 	Bitmap(0), 
 	Name(filename), 
 	Allocated(false),
@@ -150,7 +150,7 @@ ThumbnailClass::ThumbnailClass(ThumbnailManagerClass* manager, const StringClass
 #ifdef OG
 	Height(0)
 
-#endif
+#endif // OG
 #ifdef ZH
 	Height(0),
 	OriginalTextureWidth(0),
@@ -158,11 +158,11 @@ ThumbnailClass::ThumbnailClass(ThumbnailManagerClass* manager, const StringClass
 	OriginalTextureMipLevelCount(0),
 	OriginalTextureFormat(WW3D_FORMAT_UNKNOWN),
 	DateTime(0)
-#endif
+#endif // ZH
 {
 #ifdef ZH
 	WWPROFILE(("ThumbnailClass::ThumbnailClass"));
-#endif
+#endif // ZH
 	unsigned reduction_factor=3;
 
 	// First, try loading image from a DDS file
@@ -187,35 +187,35 @@ ThumbnailClass::ThumbnailClass(ThumbnailManagerClass* manager, const StringClass
 		OriginalTextureHeight=dds_file.Get_Full_Height();
 		OriginalTextureFormat=dds_file.Get_Format();
 		OriginalTextureMipLevelCount=dds_file.Get_Mip_Level_Count();
-#endif
+#endif // ZH
 		Width=dds_file.Get_Width(0);
 		Height=dds_file.Get_Height(0);
 #ifdef OG
 		Bitmap=W3DNEWARRAY unsigned char[Width*Height*4];
-#endif
+#endif // OG
 #ifdef ZH
 		Bitmap=W3DNEWARRAY unsigned char[Width*Height*2];
-#endif
+#endif // ZH
 		Allocated=true;
 		dds_file.Copy_Level_To_Surface(
 			0,			// Level
 #ifdef OG
 			WW3D_FORMAT_A8R8G8B8, 
-#endif
+#endif // OG
 #ifdef ZH
 			WW3D_FORMAT_A4R4G4B4,
-#endif
+#endif // ZH
 			Width, 
 			Height, 
 			Bitmap, 
 #ifdef OG
 			Width*4);
 
-#endif
+#endif // OG
 #ifdef ZH
 			Width*2,
 			Vector3(0.0f,0.0f,0.0f));// We don't want to HSV-shift here
-#endif
+#endif // ZH
 	}
 	// If DDS file can't be used try loading from TGA
 	else {
@@ -231,27 +231,27 @@ ThumbnailClass::ThumbnailClass(ThumbnailManagerClass* manager, const StringClass
 #ifdef OG
 		Get_WW3D_Format(dest_format,src_format,src_bpp,targa);
 
-#endif
+#endif // OG
 #ifdef ZH
 		Get_WW3D_Format(src_format,src_bpp,targa);
 		if (src_format==WW3D_FORMAT_UNKNOWN) {
 			WWDEBUG_SAY(("Unknown texture format for %s\n",filename));
 			return;
 		}
-#endif
+#endif // ZH
 
 		// Destination size will be the next power of two square from the larger width and height...
 #ifdef ZH
 		OriginalTextureWidth=targa.Header.Width;
 		OriginalTextureHeight=targa.Header.Height;
 		OriginalTextureFormat=src_format;
-#endif
+#endif // ZH
 		Width=targa.Header.Width>>reduction_factor;
 		Height=targa.Header.Height>>reduction_factor;
 #ifdef OG
 		TextureLoader::Validate_Texture_Size(Width,Height);
 
-#endif
+#endif // OG
 #ifdef ZH
 		OriginalTextureMipLevelCount=1;
 		unsigned iw=1;
@@ -281,7 +281,7 @@ ThumbnailClass::ThumbnailClass(ThumbnailManagerClass* manager, const StringClass
 		Width=poweroftwowidth;
 		Height=poweroftwoheight;
 
-#endif
+#endif // ZH
 		unsigned src_width=targa.Header.Width;
 		unsigned src_height=targa.Header.Height;
 
@@ -300,7 +300,7 @@ ThumbnailClass::ThumbnailClass(ThumbnailManagerClass* manager, const StringClass
 			my_tga_file->Close();
 		}
 
-#endif
+#endif // ZH
 		unsigned char* src_surface=(unsigned char*)targa.GetImage();
 #ifdef ZH
 
@@ -309,14 +309,14 @@ ThumbnailClass::ThumbnailClass(ThumbnailManagerClass* manager, const StringClass
 		Name[len-3]='t';
 		Name[len-2]='g';
 		Name[len-1]='a';
-#endif
+#endif // ZH
 
 #ifdef OG
 		Bitmap=W3DNEWARRAY unsigned char[Width*Height*4];
-#endif
+#endif // OG
 #ifdef ZH
 		Bitmap=W3DNEWARRAY unsigned char[Width*Height*2];
-#endif
+#endif // ZH
 		Allocated=true;
 
 		dest_format=WW3D_FORMAT_A8R8G8B8;
@@ -327,11 +327,11 @@ ThumbnailClass::ThumbnailClass(ThumbnailManagerClass* manager, const StringClass
 #ifdef OG
 			Width*4,
 			WW3D_FORMAT_A8R8G8B8,
-#endif
+#endif // OG
 #ifdef ZH
 			Width*2,
 			WW3D_FORMAT_A4R4G4B4,
-#endif
+#endif // ZH
 			src_surface,
 			src_width,
 			src_height,
@@ -345,11 +345,11 @@ ThumbnailClass::ThumbnailClass(ThumbnailManagerClass* manager, const StringClass
 #ifdef OG
 	_ThumbHashModified=true;
 	thumbnail_hash.Insert(Name,this);
-#endif
+#endif // OG
 #ifdef ZH
 	Manager->Insert_To_Hash(this);
 
-#endif
+#endif // ZH
 }
 
 ThumbnailClass::~ThumbnailClass()
@@ -357,23 +357,23 @@ ThumbnailClass::~ThumbnailClass()
 	if (Allocated) delete[] Bitmap;
 #ifdef OG
 	thumbnail_hash.Remove(Name);
-#endif
+#endif // OG
 #ifdef ZH
 	Manager->Remove_From_Hash(this);
-#endif
+#endif // ZH
 }
 
 #ifdef OG
 ThumbnailClass* ThumbnailClass::Peek_Instance(const StringClass& name)
-#endif
+#endif // OG
 #ifdef ZH
 void ThumbnailManagerClass::Create_Thumbnails()
-#endif
+#endif // ZH
 {
 #ifdef OG
 	return thumbnail_hash.Get(name);
 
-#endif
+#endif // OG
 #ifdef ZH
 	SimpleFileFactoryClass ff;
 //	ff.Set_Sub_Directory("Data\\");
@@ -404,55 +404,55 @@ void ThumbnailManagerClass::Create_Thumbnails()
 		}
 	}
 	_TheFileFactory=old_file_factory;
-#endif
+#endif // ZH
 }
 
 #ifdef OG
 void ThumbnailClass::Init()
-#endif
+#endif // OG
 #ifdef ZH
 void ThumbnailManagerClass::Load()
-#endif
+#endif // ZH
 {
 #ifdef OG
 	WWASSERT(!_ThumbnailMemory);
-#endif
+#endif // OG
 #ifdef ZH
 	WWASSERT(!ThumbnailMemory);
-#endif
+#endif // ZH
 
 	// If the thumbnail hash table file is available, init hash table
 #if 0 // don't do thumbnail file.
 #ifdef OG
 	file_auto_ptr thumb_file(_TheFileFactory, THUMBNAIL_FILENAME);
 
-#endif
+#endif // OG
 #ifdef ZH
 	DateTime=0;
 	SimpleFileFactoryClass ff;
 	ff.Set_Sub_Directory("..\\data\\client\\mixfiles\\");
 	FileClass* thumb_file=ff.Get_File(ThumbnailFileName);
 
-#endif
+#endif // ZH
 	if (thumb_file->Is_Available()) {
 		thumb_file->Open(FileClass::READ);
 
 #ifdef ZH
 		DateTime=thumb_file->Get_Date_Time();
 
-#endif
+#endif // ZH
 		char tmp[4];
 		thumb_file->Read(tmp,4);
 #ifdef OG
 		if (tmp[0]=='T' && tmp[1]=='M' && tmp[2]=='B' && tmp[3]=='1') {
 
-#endif
+#endif // OG
 #ifdef ZH
 		if (tmp[0]==ThumbFileHeader[0] &&
 			tmp[1]==ThumbFileHeader[1] &&
 			tmp[2]==ThumbFileHeader[2] &&
 			tmp[3]==ThumbFileHeader[3]) {
-#endif
+#endif // ZH
 
 			int total_thumb_count;
 			int total_header_length;
@@ -464,10 +464,10 @@ void ThumbnailManagerClass::Load()
 				WWASSERT(total_data_length && total_header_length);
 #ifdef OG
 				_ThumbnailMemory=W3DNEWARRAY unsigned char[total_data_length];
-#endif
+#endif // OG
 #ifdef ZH
 				ThumbnailMemory=W3DNEWARRAY unsigned char[total_data_length];
-#endif
+#endif // ZH
 				// Load thumbs
 				for (int i=0;i<total_thumb_count;++i) {
 					char name[256];
@@ -480,27 +480,27 @@ void ThumbnailManagerClass::Load()
 					int original_mip_level_count;
 					WW3DFormat original_format;
 					int name_len;
-#endif
+#endif // ZH
 					unsigned long date_time;
 #ifdef OG
 					int name_len;
-#endif
+#endif // OG
 #ifdef ZH
 					thumb_file->Read(&date_time,sizeof(unsigned long));
-#endif
+#endif // ZH
 					thumb_file->Read(&offset,sizeof(int));
 					thumb_file->Read(&width,sizeof(int));
 					thumb_file->Read(&height,sizeof(int));
 #ifdef OG
 					thumb_file->Read(&date_time,sizeof(unsigned long));
 
-#endif
+#endif // OG
 #ifdef ZH
 					thumb_file->Read(&original_width,sizeof(int));
 					thumb_file->Read(&original_height,sizeof(int));
 					thumb_file->Read(&original_mip_level_count,sizeof(int));
 					thumb_file->Read(&original_format,sizeof(int));
-#endif
+#endif // ZH
 					thumb_file->Read(&name_len,sizeof(int));
 					WWASSERT(name_len<255);
 					thumb_file->Read(name,name_len);
@@ -523,7 +523,7 @@ void ThumbnailManagerClass::Load()
 							valid=false;
 						}
 					}
-#endif
+#endif // ZH
 
 #ifdef OG
 					// Make sure the file is available and the timestamp matches
@@ -531,28 +531,28 @@ void ThumbnailManagerClass::Load()
 					if (myfile->Is_Available()) {
 						myfile->Open(FileClass::READ);
 						if (date_time==myfile->Get_Date_Time()) {
-#endif
+#endif // OG
 #ifdef ZH
 					if (valid) {
 
-#endif
+#endif // ZH
 							W3DNEW ThumbnailClass(
 #ifdef ZH
 							this,
-#endif
+#endif // ZH
 								name, 
 #ifdef OG
 								_ThumbnailMemory+offset-total_header_length, 
-#endif
+#endif // OG
 #ifdef ZH
 							ThumbnailMemory+offset-total_header_length,
-#endif
+#endif // ZH
 								width,
 								height,
 #ifdef OG
 								false);
 
-#endif
+#endif // OG
 #ifdef ZH
 							original_width,
 							original_height,
@@ -560,20 +560,20 @@ void ThumbnailManagerClass::Load()
 							original_format,
 							false,
 							date_time);
-#endif
+#endif // ZH
 						}
 #ifdef OG
 						myfile->Close();
-#endif
+#endif // OG
 					}
 #ifdef OG
 				}
 				thumb_file->Read(_ThumbnailMemory,total_data_length);
-#endif
+#endif // OG
 #ifdef ZH
 				thumb_file->Read(ThumbnailMemory,total_data_length);
 
-#endif
+#endif // ZH
 			}
 		}
 		thumb_file->Close();
@@ -581,42 +581,42 @@ void ThumbnailManagerClass::Load()
 #ifdef ZH
 	Changed=false;
 	ff.Return_File(thumb_file);
-#endif
+#endif // ZH
 #endif
 }
 
 #ifdef OG
 void ThumbnailClass::Deinit()
-#endif
+#endif // OG
 #ifdef ZH
 void ThumbnailManagerClass::Save(bool force)
-#endif
+#endif // ZH
 {
 #ifdef ZH
 	// Save only if changed
 	if (!Changed && !force) return;
 	Changed=false;
 
-#endif
+#endif // ZH
 	// If the thumbnail hash table was modified, save it to disk
 #ifdef OG
 	HashTemplateIterator<StringClass,ThumbnailClass*> ite(thumbnail_hash);
 	if (_ThumbHashModified) {
-#endif
+#endif // OG
 #if 0 // don't write thumbnails.  jba.
 #ifdef ZH
 
 	HashTemplateIterator<StringClass,ThumbnailClass*> ite(ThumbnailHash);
-#endif
+#endif // ZH
 		int total_header_length=0;
 		int total_data_length=0;
 		int total_thumb_count=0;
 #ifdef OG
 		total_header_length+=4;	// header 'TMB1'
-#endif
+#endif // OG
 #ifdef ZH
 	total_header_length+=4;	// header
-#endif
+#endif // ZH
 		total_header_length+=4;	// thumb count
 		total_header_length+=4;	// header size
 		total_header_length+=4;	// data length
@@ -625,31 +625,31 @@ void ThumbnailManagerClass::Save(bool force)
 #ifdef ZH
 		ThumbnailClass* thumb=ite.Peek_Value();
 		total_header_length+=4;	// per-thumb date-time
-#endif
+#endif // ZH
 			total_header_length+=4;	// int bitmap offset
 			total_header_length+=4;	// int bitmap width
 			total_header_length+=4;	// int bitmap height
 #ifdef OG
 			total_header_length+=4;	// unsigned long date_time
 
-#endif
+#endif // OG
 #ifdef ZH
 		total_header_length+=4;	// int original bitmap width
 		total_header_length+=4;	// int original bitmap height
 		total_header_length+=4;	// int original mip level count
 		total_header_length+=4;	// int original format
-#endif
+#endif // ZH
 			total_header_length+=4;	// int name string length
 #ifdef OG
 			ThumbnailClass* thumb=ite.Peek_Value();
-#endif
+#endif // OG
 			total_header_length+=strlen(thumb->Get_Name());
 #ifdef OG
 			total_data_length+=thumb->Get_Width()*thumb->Get_Height()*4;
-#endif
+#endif // OG
 #ifdef ZH
 		total_data_length+=thumb->Get_Width()*thumb->Get_Height()*2;
-#endif
+#endif // ZH
 			total_thumb_count++;
 		}
 		int offset=total_header_length;
@@ -657,14 +657,14 @@ void ThumbnailManagerClass::Save(bool force)
 #ifdef OG
 		file_auto_ptr thumb_file(_TheWritingFileFactory, THUMBNAIL_FILENAME);
 
-#endif
+#endif // OG
 #ifdef ZH
 	SimpleFileFactoryClass ff;
 	ff.Set_Sub_Directory("..\\data\\client\\mixfiles\\");
 	FileClass* thumb_file=ff.Get_File(ThumbnailFileName);
 //	file_auto_ptr thumb_file(_TheWritingFileFactory, ThumbnailFileName);
 
-#endif
+#endif // ZH
 		if (thumb_file->Is_Available()) {
 			thumb_file->Delete();
 		}
@@ -674,11 +674,11 @@ void ThumbnailManagerClass::Save(bool force)
 #ifdef OG
 		char* header="TMB1";
 		thumb_file->Write(header,4);
-#endif
+#endif // OG
 #ifdef ZH
 	thumb_file->Write(ThumbFileHeader,4);
 
-#endif
+#endif // ZH
 		thumb_file->Write(&total_thumb_count,sizeof(int));
 		thumb_file->Write(&total_header_length,sizeof(int));
 		thumb_file->Write(&total_data_length,sizeof(int));
@@ -698,7 +698,7 @@ void ThumbnailManagerClass::Save(bool force)
 				date_time=myfile->Get_Date_Time();
 				myfile->Close();
 			}
-#endif
+#endif // OG
 #ifdef ZH
 		int original_width=thumb->Get_Original_Texture_Width();
 		int original_height=thumb->Get_Original_Texture_Height();
@@ -707,28 +707,28 @@ void ThumbnailManagerClass::Save(bool force)
 		unsigned long date_time=thumb->Get_Date_Time();
 
 		thumb_file->Write(&date_time,sizeof(unsigned long));
-#endif
+#endif // ZH
 			thumb_file->Write(&offset,sizeof(int));
 			thumb_file->Write(&width,sizeof(int));
 			thumb_file->Write(&height,sizeof(int));
 #ifdef OG
 			thumb_file->Write(&date_time,sizeof(unsigned long));
 
-#endif
+#endif // OG
 #ifdef ZH
 		thumb_file->Write(&original_width,sizeof(int));
 		thumb_file->Write(&original_height,sizeof(int));
 		thumb_file->Write(&original_mip_level_count,sizeof(int));
 		thumb_file->Write(&original_format,sizeof(int));
-#endif
+#endif // ZH
 			thumb_file->Write(&name_len,sizeof(int));
 			thumb_file->Write(name,name_len);
 #ifdef OG
 			offset+=width*height*4;
-#endif
+#endif // OG
 #ifdef ZH
 		offset+=width*height*2;
-#endif
+#endif // ZH
 		}
 
 		// Save bitmaps
@@ -739,18 +739,18 @@ void ThumbnailManagerClass::Save(bool force)
 			int height=thumb->Get_Height();
 #ifdef OG
 			thumb_file->Write(thumb->Peek_Bitmap(),width*height*4);
-#endif
+#endif // OG
 #ifdef ZH
 		thumb_file->Write(thumb->Peek_Bitmap(),width*height*2);
-#endif
+#endif // ZH
 		}
 #ifdef ZH
 	if (DateTime) thumb_file->Set_Date_Time(DateTime);
-#endif
+#endif // ZH
 		thumb_file->Close();							
 #ifdef ZH
 	ff.Return_File(thumb_file);
-#endif
+#endif // ZH
 #endif
 	}
 
@@ -774,7 +774,7 @@ ThumbnailManagerClass::~ThumbnailManagerClass()
 {
 	Save();
 	HashTemplateIterator<StringClass,ThumbnailClass*> ite(ThumbnailHash);
-#endif
+#endif // ZH
 	ite.First();
 	while (!ite.Is_Done()) {
 		ThumbnailClass* thumb=ite.Peek_Value();
@@ -945,17 +945,17 @@ void ThumbnailManagerClass::Update_Thumbnail_File(const char* mix_file_name,bool
 			tmp[2]!=ThumbFileHeader[2] ||
 			tmp[3]!=ThumbFileHeader[3]) {
 			thumb_file->Delete();
-#endif
+#endif // ZH
 	}
 #ifdef ZH
 	}
-#endif
+#endif // ZH
 
 #ifdef OG
 	delete [] _ThumbnailMemory;
 	_ThumbnailMemory=NULL;
 
-#endif
+#endif // OG
 #ifdef ZH
 	if (thumb_file->Is_Available()) {
 		mix_file->Close();
@@ -1045,5 +1045,5 @@ void ThumbnailManagerClass::Deinit()
 		delete GlobalThumbnailManager;
 		GlobalThumbnailManager=NULL;
 	}
-#endif
+#endif // ZH
 }

@@ -43,7 +43,7 @@
 #ifdef ZH
 #include "GameLogic/Module/ContainModule.h"
 #include "GameLogic/Module/PhysicsUpdate.h"
-#endif
+#endif // ZH
 #include "GameLogic/Object.h"
 #include "GameClient/Drawable.h"
 #include "Common/KindOf.h"
@@ -182,10 +182,10 @@ void EMPUpdate::doDisableAttack( void )
 
 #ifdef OG
 	Real radius = 200.0f; ///@todo kluge
-#endif
+#endif // OG
 #ifdef ZH
 	Real radius = data->m_effectRadius;
-#endif
+#endif // ZH
 	Real curVictimDistSqr;
 	const Coord3D *pos = object->getPosition();
 
@@ -206,7 +206,7 @@ void EMPUpdate::doDisableAttack( void )
 		}
 	}
 
-#endif
+#endif // ZH
 	SimpleObjectIterator *iter;
 	Object *curVictim;
 
@@ -230,7 +230,7 @@ void EMPUpdate::doDisableAttack( void )
 			//If the EMP hits an airborne target, then don't allow the EMP
 			//blast to effect anything on the ground.
 			if( onlyEffectAirborne && !curVictim->isAirborneTarget() )
-#endif
+#endif // ZH
 		{
 #ifdef ZH
 				continue;
@@ -251,7 +251,7 @@ void EMPUpdate::doDisableAttack( void )
 
       
 
-#endif
+#endif // ZH
 			if ( !curVictim->isKindOf( KINDOF_VEHICLE ) && !curVictim->isKindOf(KINDOF_STRUCTURE) && !curVictim->isKindOf(KINDOF_SPAWNS_ARE_THE_WEAPONS) )
 			{
 				//DONT DISABLE PEOPLE, EXCEPT FOR STINGER SOLDIERS
@@ -259,16 +259,16 @@ void EMPUpdate::doDisableAttack( void )
 			}
 #ifdef OG
 			else if ( curVictim->isKindOf( KINDOF_AIRCRAFT ) && curVictim->isAirborneTarget() )
-#endif
+#endif // OG
 #ifdef ZH
 			else if ( curVictim->isKindOf( KINDOF_AIRCRAFT ) && curVictim->isAirborneTarget() )// is in the sky
-#endif
+#endif // ZH
 			{
 #ifdef OG
 				if ( curVictim->isKindOf( KINDOF_TRANSPORT ) && curVictim->getRelationship( object ) == ALLIES)
 					continue;//DONT DISABLE YOUR OWN TRANSPORT PLANES
 
-#endif
+#endif // OG
 #ifdef ZH
         // WITHIN THE SET OF ALL FLYING THINGS, WE WANT TO EXEMPT SUPERWEAPON TRANSPORTS
 //        if ( curVictim->isKindOf( KINDOF_TRANSPORT ) )                  // is transport kindof
@@ -279,7 +279,7 @@ void EMPUpdate::doDisableAttack( void )
 
         if ( curVictim->isKindOf( KINDOF_EMP_HARDENED ) ) // self-explanitory
           continue;
-#endif
+#endif // ZH
 
 				curVictim->kill();// @todo this should use some sort of DEADSTICK DIE or something...
 				Drawable *drw = curVictim->getDrawable();
@@ -298,7 +298,7 @@ void EMPUpdate::doDisableAttack( void )
 			// handle cases where we do not want allies to be hit by it's own EMP weapons
 			else if ( (data->m_rejectMask & WEAPON_AFFECTS_ALLIES) && curVictim->getRelationship( object ) == ALLIES) 
 			{
-#endif
+#endif // ZH
 					continue;
 			}
 		
@@ -313,7 +313,7 @@ void EMPUpdate::doDisableAttack( void )
 				//where the intended target is hit, but the range is off enough to not effect it.
 				intendedVictimProcessed = TRUE;
 			}
-#endif
+#endif // ZH
 
 			Drawable *drw = curVictim->getDrawable();
 			if ( drw )
@@ -375,7 +375,7 @@ void EMPUpdate::doDisableAttack( void )
 			coord.set( intendedVictim->getPosition() );
 			//Subtract this object (distance from missile to victim's previous position)
 			coord.sub( pos );
-#endif
+#endif // ZH
 
 #ifdef ZH
 			Real lengthSqr = coord.lengthSqr();
@@ -384,12 +384,12 @@ void EMPUpdate::doDisableAttack( void )
 				//Disable the target for a specified amount of time.
 				intendedVictim->setDisabledUntil( DISABLED_EMP, TheGameLogic->getFrame() + data->m_disabledDuration );
 			}
-#endif
+#endif // ZH
 }
 #ifdef ZH
 	}
 }
-#endif
+#endif // ZH
 
 // ------------------------------------------------------------------------------------------------
 /** CRC */
@@ -584,7 +584,7 @@ void LeafletDropBehavior::xfer( Xfer *xfer )
 /** Load post process */
 // ------------------------------------------------------------------------------------------------
 void LeafletDropBehavior::loadPostProcess( void )
-#endif
+#endif // ZH
 {
 
 }  // end loadPostProcess

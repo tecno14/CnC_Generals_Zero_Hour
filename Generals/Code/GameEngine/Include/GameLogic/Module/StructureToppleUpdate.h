@@ -117,11 +117,11 @@ public:
 #ifdef OG
 		m_damageFXTypes = DAMAGE_TYPE_FLAGS_ALL;
 
-#endif
+#endif // OG
 #ifdef ZH
 		m_damageFXTypes = DAMAGE_TYPE_FLAGS_NONE;
 		m_damageFXTypes.flip();
-#endif
+#endif // ZH
 		m_toppleStartFXList = NULL;
 		m_toppleDelayFXList = NULL;
 		m_toppleDoneFXList = NULL;

@@ -69,7 +69,7 @@ struct upgradePair
 	Int         amount;
 };
 
-#endif
+#endif // ZH
 //-----------------------------------------------------------------------------
 // TYPE DEFINES ///////////////////////////////////////////////////////////////
 //-----------------------------------------------------------------------------
@@ -82,7 +82,7 @@ public:
 #ifdef ZH
 	Bool m_isActualMoney;
 	std::list<upgradePair> m_upgradeBoost;
-#endif
+#endif // ZH
 
 	AutoDepositUpdateModuleData()
 	{
@@ -92,7 +92,7 @@ public:
 #ifdef ZH
 		m_isActualMoney = TRUE;
 		m_upgradeBoost.clear();
-#endif
+#endif // ZH
 	}
 
 	static void buildFieldParse(MultiIniFieldParse& p) 
@@ -106,7 +106,7 @@ public:
 #ifdef ZH
 			{ "ActualMoney",						INI::parseBool,		NULL, offsetof( AutoDepositUpdateModuleData, m_isActualMoney ) },
 			{ "UpgradedBoost",					parseUpgradePair,		NULL, offsetof( AutoDepositUpdateModuleData, m_upgradeBoost ) },
-#endif
+#endif // ZH
 			{ 0, 0, 0, 0 }
 		};
     p.add(dataFieldParse);
@@ -133,7 +133,7 @@ protected:
 #ifdef ZH
 
 	Int getUpgradedSupplyBoost() const;
-#endif
+#endif // ZH
 
 	UnsignedInt m_depositOnFrame;
 	Bool m_awardInitialCaptureBonus;

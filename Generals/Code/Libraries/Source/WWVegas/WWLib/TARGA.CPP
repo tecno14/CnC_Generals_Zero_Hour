@@ -175,7 +175,7 @@ long Targa::Open(const char* name, long mode)
 	long			error = 0;
 #ifdef ZH
 	memset(&footer, 0, sizeof(footer));
-#endif
+#endif // ZH
 
 	/* File already open? */
 	if (Is_File_Open() && (mAccess == mode)) {
@@ -198,7 +198,7 @@ long Targa::Open(const char* name, long mode)
 				if (File_Seek(-26, SEEK_END) == -1) {
 #ifdef OG
 //				if (File_Seek(26, SEEK_END) == -1) {
-#endif
+#endif // OG
 					error = TGAERR_READ;
 				}
 
@@ -872,13 +872,13 @@ static __forceinline void _swapBytes(char *p1, char *p2, unsigned count)
   done:
   }
 }
-#endif
+#endif // ZH
 
 void Targa::YFlip(void)
 	{
 #ifdef ZH
   /* old code left in for reference...
-#endif
+#endif // ZH
 	char *ptr,*ptr1;
 	long  x,y;
 	char  v,v1;
@@ -886,20 +886,20 @@ void Targa::YFlip(void)
 
 #ifdef OG
 	/* Pixel depth in bytes. */
-#endif
+#endif // OG
 #ifdef ZH
 	/ * Pixel depth in bytes. * /
-#endif
+#endif // ZH
 	depth = TGA_BytesPerPixel(Header.PixelDepth);
 
 	for (y = 0; y < (Header.Height >> 1); y++)
 		{
 #ifdef OG
 		/* Compute address of lines to exchange. */
-#endif
+#endif // OG
 #ifdef ZH
 		/ * Compute address of lines to exchange. * /
-#endif
+#endif // ZH
 		ptr = (mImage + ((Header.Width * y) * depth));
 		ptr1 = (mImage + ((Header.Width * (Header.Height - 1)) * depth));
 		ptr1 -= ((Header.Width * y) * depth);
@@ -907,11 +907,11 @@ void Targa::YFlip(void)
 #ifdef OG
 		/* Exchange all the pixels on this scan line. */
 
-#endif
+#endif // OG
 #ifdef ZH
 		/ * Exchange all the pixels on this scan line. * /
     
-#endif
+#endif // ZH
 		for (x = 0; x < (Header.Width * depth); x++)
 			{
 			v = *ptr;
@@ -930,7 +930,7 @@ void Targa::YFlip(void)
        *ptrBottom=mImage+stride*(Header.Height-1);
   for (unsigned y=Header.Height/2;y;--y,ptrTop+=stride,ptrBottom-=stride)
     _swapBytes(ptrTop,ptrBottom,stride);
-#endif
+#endif // ZH
 	}
 
 /****************************************************************************

@@ -40,7 +40,7 @@
 #include "Common/UserPreferences.h"
 #ifdef ZH
 #include "Common/PlayerTemplate.h"
-#endif
+#endif // ZH
 
 #include "GameClient/AnimateWindowManager.h"
 #include "GameClient/Display.h"
@@ -55,7 +55,7 @@
 #include "GameClient/GadgetStaticText.h"
 #ifdef ZH
 #include "GameClient/GadgetCheckBox.h"
-#endif
+#endif // ZH
 #include "GameClient/MessageBox.h"
 #include "GameClient/GameWindowTransitions.h"
 
@@ -187,7 +187,7 @@ static void enableControls( Bool state )
 {
 #ifdef OG
 #ifndef _PLAYTEST
-#endif
+#endif // OG
 	if (buttonQuickMatch)
 		buttonQuickMatch->winEnable(state);
 #ifdef OG
@@ -195,7 +195,7 @@ static void enableControls( Bool state )
 	if (buttonQuickMatch)
 		buttonQuickMatch->winEnable(FALSE);
 #endif
-#endif
+#endif // OG
 	if (buttonLobby)
 		buttonLobby->winEnable(state);
 }
@@ -260,13 +260,13 @@ static void updateNumPlayersOnline(void)
 #ifdef OG
 		headingStr.format(TheGameText->fetch("MOTD:NumPlayersHeading"), lastNumPlayersOnline);
 
-#endif
+#endif // OG
 #ifdef ZH
 		//Kris: Patch 1.01 - November 12, 2003
 		//Removed number of players from string, and removed the argument. The number is incorrect anyways...
 		//This was a Harvard initiated fix.
 		headingStr.format(TheGameText->fetch("MOTD:NumPlayersHeading"));
-#endif
+#endif // ZH
 
 		while (headingStr.nextToken(&line, UnicodeString(L"\n")))
 		{
@@ -345,27 +345,27 @@ static const char* FindNextNumber( const char* pStart )
 		++pNum;  //go to next number
 	return pNum;
 }
-#endif
+#endif // ZH
 
 #ifdef OG
 static OverallStats s_statsUSA, s_statsChina, s_statsGLA;
-#endif
+#endif // OG
 
 #ifdef OG
 OverallStats::OverallStats()
 
-#endif
+#endif // OG
 #ifdef ZH
 //parse win/loss stats received from GameSpy
 void HandleOverallStats( const char* szHTTPStats, unsigned len )
-#endif
+#endif // ZH
 {
 #ifdef OG
 	for (Int i=0; i<STATS_MAX; ++i)
 	{
 		wins[i] = losses[i] = 0;
 
-#endif
+#endif // OG
 #ifdef ZH
 //x	DEBUG_LOG(("Parsing win percent stats:\n%s\n", szHTTPStats));
 	//find today's stats
@@ -374,12 +374,12 @@ void HandleOverallStats( const char* szHTTPStats, unsigned len )
 	{	//error
 		DEBUG_LOG(( "Unable to parse win/loss stats.  Could not find 'Today' in:\n%s\n", szHTTPStats ));
 		return;
-#endif
+#endif // ZH
 	}
 #ifdef OG
 }
 
-#endif
+#endif // OG
 #ifdef ZH
 	s_winStats.clear();
 	s_totalWinPercent = 0;
@@ -390,7 +390,7 @@ void HandleOverallStats( const char* szHTTPStats, unsigned len )
 		const PlayerTemplate* pTemplate = ThePlayerTemplateStore->getNthPlayerTemplate(i);
 		if( !pTemplate->isPlayableSide()  ||  pTemplate->getSide().compare("Boss") == 0 )
 			continue;  //skip non-players
-#endif
+#endif // ZH
 
 #ifdef OG
 static UnicodeString calcPercent(const OverallStats& stats, Int n, UnicodeString sideStr)
@@ -401,18 +401,18 @@ static UnicodeString calcPercent(const OverallStats& stats, Int n, UnicodeString
 	Real winPercentGLA   = s_statsGLA.wins[n]*100/INT_TO_REAL(max(1, s_statsGLA.wins[n]+s_statsGLA.losses[n])); // 0.0f - 100.0f
 	Real thisWinPercent  = stats.wins[n]*100/INT_TO_REAL(max(1, stats.wins[n]+stats.losses[n])); // 0.0f - 100.0f
 	Real totalWinPercent = winPercentUSA + winPercentChina + winPercentGLA;
-#endif
+#endif // OG
 #ifdef ZH
 		AsciiString side = pTemplate->getSide();
 		if( side == "America" )
 			side = "USA";  //conform to GameSpy name
 
-#endif
+#endif // ZH
 
 #ifdef OG
 	Real val = thisWinPercent*100/max(1.0f,totalWinPercent);
 
-#endif
+#endif // OG
 #ifdef ZH
 		//find this side
 		const char* pSide = strstr( pToday, side.str() );
@@ -421,13 +421,13 @@ static UnicodeString calcPercent(const OverallStats& stats, Int n, UnicodeString
 			DEBUG_LOG(( "Unable to parse win/loss stats for %s in:\n%s\n", side.str(), szHTTPStats ));
 			continue;
 		}
-#endif
+#endif // ZH
 
 #ifdef OG
 	UnicodeString s;
 	s.format(TheGameText->fetch("GUI:PerSideWinPercentage"), REAL_TO_INT(val), sideStr.str());
 
-#endif
+#endif // OG
 #ifdef ZH
 		//Note: win% reported by GameSpy = team's wins / #games played by team
 		//      we want win% = team's wins / total # games played by all teams
@@ -435,20 +435,20 @@ static UnicodeString calcPercent(const OverallStats& stats, Int n, UnicodeString
 		const char* pWins = FindNextNumber(pTotal);
 		float percent = atof(pWins) / max(1,atof(pTotal));  //max prevents divide by zero
 		s_totalWinPercent += percent;
-#endif
+#endif // ZH
 
 #ifdef OG
 	/*
 	Int totalDenominator = s_statsUSA.wins[n] + s_statsChina.wins[n] + s_statsGLA.wins[n];
 	if (!totalDenominator)
 		totalDenominator = 1;
-#endif
+#endif // OG
 #ifdef ZH
 		s_winStats.insert(std::make_pair( side, percent ));
 //x		DEBUG_LOG(("Added win percent: %s, %d\n", side.str(), percent));
 	} //for i
 } //HandleOverallStats
-#endif
+#endif // ZH
 
 #ifdef OG
 	UnicodeString s;
@@ -456,23 +456,23 @@ static UnicodeString calcPercent(const OverallStats& stats, Int n, UnicodeString
 	*/
 	return s;
 }
-#endif
+#endif // OG
 
 #ifdef ZH
 //called only from WOLWelcomeMenuInit to set %win stats
-#endif
+#endif // ZH
 static void updateOverallStats(void)
 {
 #ifdef OG
 	UnicodeString usa, china, gla;
 	GameWindow *win;
 
-#endif
+#endif // OG
 #ifdef ZH
 	UnicodeString percStr;
 	AsciiString wndName;
 	GameWindow* pWin;
-#endif
+#endif // ZH
 
 #ifdef OG
 	usa = calcPercent(s_statsUSA, STATS_LASTWEEK, TheGameText->fetch("SIDE:America"));
@@ -485,12 +485,12 @@ static void updateOverallStats(void)
 	GadgetStaticTextSetText(win, china);
 	win = TheWindowManager->winGetWindowFromId( NULL, NAMEKEY("WOLWelcomeMenu.wnd:StaticTextGLALastWeek") );
 	GadgetStaticTextSetText(win, gla);
-#endif
+#endif // OG
 #ifdef ZH
 	if( s_totalWinPercent <= 0 )
 		s_totalWinPercent = 1;  //prevent divide by zero
 
-#endif
+#endif // ZH
 
 #ifdef OG
 	usa = calcPercent(s_statsUSA, STATS_TODAY, TheGameText->fetch("SIDE:America"));
@@ -504,7 +504,7 @@ static void updateOverallStats(void)
 	win = TheWindowManager->winGetWindowFromId( NULL, NAMEKEY("WOLWelcomeMenu.wnd:StaticTextGLAToday") );
 	GadgetStaticTextSetText(win, gla);
 }
-#endif
+#endif // OG
 #ifdef ZH
 	std::map<AsciiString,float>::iterator it;
 	for( it = s_winStats.begin();  it != s_winStats.end();  ++it )
@@ -517,7 +517,7 @@ static void updateOverallStats(void)
 //x		DEBUG_LOG(("Initialized win percent: %s -> %s %f=%s\n", wndName.str(), it->first.str(), it->second, percStr.str() ));
 	} //for
 } //updateOverallStats
-#endif
+#endif // ZH
 
 #ifdef OG
 void HandleOverallStats( const OverallStats& USA, const OverallStats& China, const OverallStats& GLA )
@@ -527,7 +527,7 @@ void HandleOverallStats( const OverallStats& USA, const OverallStats& China, con
 	s_statsGLA = GLA;
 	updateOverallStats();
 }
-#endif
+#endif // OG
 
 //-------------------------------------------------------------------------------------------------
 /** Handle player stats */

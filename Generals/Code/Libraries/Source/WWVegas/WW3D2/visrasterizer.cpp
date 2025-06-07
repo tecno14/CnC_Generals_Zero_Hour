@@ -28,24 +28,24 @@
  *                                                                                             *
 #ifdef OG
  *                      $Author:: Greg_h                                                      $*
-#endif
+#endif // OG
 #ifdef ZH
  *                      $Author:: Jani_p                                                      $*
-#endif
+#endif // ZH
  *                                                                                             *
 #ifdef OG
  *                     $Modtime:: 5/17/01 10:41a                                              $*
-#endif
+#endif // OG
 #ifdef ZH
  *                     $Modtime:: 11/24/01 5:42p                                              $*
-#endif
+#endif // ZH
  *                                                                                             *
 #ifdef OG
  *                    $Revision:: 9                                                           $*
-#endif
+#endif // OG
 #ifdef ZH
  *                    $Revision:: 11                                                          $*
-#endif
+#endif // ZH
  *                                                                                             *
  *---------------------------------------------------------------------------------------------*
  * Functions:                                                                                  *
@@ -240,10 +240,10 @@ bool VisRasterizerClass::Render_Triangles
 	int vcount,
 #ifdef OG
 	const Vector3i * tris, 
-#endif
+#endif // OG
 #ifdef ZH
 	const TriIndex * tris, 
-#endif
+#endif // ZH
 	int tcount,const 
 	AABoxClass & bounds
 )
@@ -270,10 +270,10 @@ bool VisRasterizerClass::Render_Triangles_No_Clip
 	int vcount,
 #ifdef OG
 	const Vector3i * tris, 
-#endif
+#endif // OG
 #ifdef ZH
 	const TriIndex * tris, 
-#endif
+#endif // ZH
 	int tcount
 )
 {
@@ -298,10 +298,10 @@ bool VisRasterizerClass::Render_Triangles_No_Clip
 		
 #ifdef OG
 		const Vector3i & tri = tris[tri_index];
-#endif
+#endif // OG
 #ifdef ZH
 		const TriIndex & tri = tris[tri_index];
-#endif
+#endif // ZH
 		pixel_passed |= IDBuffer.Render_Triangle(tverts[tri.I],tverts[tri.J],tverts[tri.K]);
 		if (pixel_passed && (IDBuffer.Get_Render_Mode() == IDBufferClass::NON_OCCLUDER_MODE)) {
 			return true;
@@ -317,10 +317,10 @@ bool VisRasterizerClass::Render_Triangles_Clip
 	int vcount,
 #ifdef OG
 	const Vector3i * tris, 
-#endif
+#endif // OG
 #ifdef ZH
 	const TriIndex * tris, 
-#endif
+#endif // ZH
 	int tcount
 )
 {
@@ -408,7 +408,7 @@ IDBufferClass::IDBufferClass(void) :
 	RenderMode(OCCLUDER_MODE),
 #ifdef ZH
 	TwoSidedRenderingEnabled(false),
-#endif
+#endif // ZH
 	PixelCounter(0),
 	ResWidth(0),
 	ResHeight(0),
@@ -559,10 +559,10 @@ bool IDBufferClass::Render_Triangle(const Vector3 & p0,const Vector3 & p1,const 
 
 #ifdef OG
 	if (is_backfacing) {
-#endif
+#endif // OG
 #ifdef ZH
 	if ((is_backfacing) && (TwoSidedRenderingEnabled == false)) {
-#endif
+#endif // ZH
 		if (RenderMode == NON_OCCLUDER_MODE) {
 			return false;
 		}

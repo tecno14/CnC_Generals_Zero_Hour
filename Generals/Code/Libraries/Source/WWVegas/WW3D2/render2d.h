@@ -28,17 +28,17 @@
  *                                                                                             *
 #ifdef OG
  *                     $Modtime:: 8/28/01 5:00p                                               $*
-#endif
+#endif // OG
 #ifdef ZH
  *                     $Modtime:: 12/17/01 11:47a                                             $*
-#endif
+#endif // ZH
  *                                                                                             *
 #ifdef OG
  *                    $Revision:: 21                                                          $*
-#endif
+#endif // OG
 #ifdef ZH
  *                    $Revision:: 26                                                          $*
-#endif
+#endif // ZH
  *                                                                                             *
  *---------------------------------------------------------------------------------------------*
  * Functions:                                                                                  *
@@ -56,11 +56,11 @@
 #ifdef OG
 #include "simplevec.h"
 
-#endif
+#endif // OG
 #ifdef ZH
 //#include "simplevec.h"
 #include "vector.h"
-#endif
+#endif // ZH
 #include "vector2.h"
 
 #include "shader.h"
@@ -97,7 +97,7 @@ class	Vector4;
 #define FRGBA_TO_INT32(r,g,b,a)	(unsigned(a*255.0f)<<24)|(unsigned(r*255.0f)<<16)|(unsigned(g*255.0f)<<8)|(unsigned(b*255.0f))
 
 //
-#endif
+#endif // ZH
 //	INT32 to Vector RGB methods
 //
 #define INT32_TO_VRGB(color, vrgb)							\
@@ -174,23 +174,23 @@ public:
 	// Force all alphas 
 	void	Force_Alpha( float alpha );
 	void	Force_Color( int color );
-#endif
+#endif // ZH
 
 	// Color access
 #ifdef OG
 	SimpleDynVecClass<unsigned long> &	Get_Color_Array (void)	{ return Colors; }
-#endif
+#endif // OG
 #ifdef ZH
 	DynamicVectorClass<unsigned long> &	Get_Color_Array (void)	{ return Colors; }
-#endif
+#endif // ZH
 
 	// statics to access the Screen Resolution in Pixels
 #ifdef OG
 	static void	Set_Screen_Resolution( const RectClass & screen )	{ ScreenResolution = screen; }
-#endif
+#endif // OG
 #ifdef ZH
 	static void	Set_Screen_Resolution( const RectClass & screen );
-#endif
+#endif // ZH
 	static const RectClass & Get_Screen_Resolution( void )			{ return ScreenResolution; }
 
 protected:
@@ -205,7 +205,7 @@ protected:
 	SimpleDynVecClass<Vector2>				UVCoordinates;
 	SimpleDynVecClass<unsigned long>		Colors;
 
-#endif
+#endif // OG
 #ifdef ZH
 	DynamicVectorClass<unsigned short>	Indices;
 	unsigned short								PreAllocatedIndices[60];
@@ -215,7 +215,7 @@ protected:
 	Vector2										PreAllocatedUVCoordinates[60];
 	DynamicVectorClass<unsigned long>		Colors;
 	unsigned long								PreAllocatedColors[60];
-#endif
+#endif // ZH
 	bool											IsHidden;
 	bool											IsGrayScale;
 	float											ZValue;

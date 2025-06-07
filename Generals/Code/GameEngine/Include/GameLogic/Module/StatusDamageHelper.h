@@ -70,4 +70,4 @@ protected:
 
 #endif  // end __StatusDamageHelper_H_
 
-#endif
+#endif // ZH

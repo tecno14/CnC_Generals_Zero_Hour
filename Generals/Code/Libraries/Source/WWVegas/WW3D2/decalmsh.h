@@ -28,24 +28,24 @@
  *                                                                                             *
 #ifdef OG
  *                      $Author:: Greg_h                                                      $*
-#endif
+#endif // OG
 #ifdef ZH
  *                      $Author:: Jani_p                                                      $*
-#endif
+#endif // ZH
  *                                                                                             *
 #ifdef OG
  *                     $Modtime:: 6/14/01 9:32a                                               $*
-#endif
+#endif // OG
 #ifdef ZH
  *                     $Modtime:: 11/24/01 6:18p                                              $*
-#endif
+#endif // ZH
  *                                                                                             *
 #ifdef OG
  *                    $Revision:: 6                                                           $*
-#endif
+#endif // OG
 #ifdef ZH
  *                    $Revision:: 7                                                           $*
-#endif
+#endif // ZH
  *                                                                                             *
  *---------------------------------------------------------------------------------------------*
  * Functions:                                                                                  *
@@ -70,7 +70,7 @@
 #include "vertmaterial.h"
 #ifdef ZH
 #include "meshgeometry.h"
-#endif
+#endif // ZH
 
 class MeshClass;
 class RenderInfoClass;
@@ -168,10 +168,10 @@ protected:
 	*/
 #ifdef OG
 	SimpleDynVecClass<Vector3i>						Polys;
-#endif
+#endif // OG
 #ifdef ZH
 	SimpleDynVecClass<TriIndex>						Polys;
-#endif
+#endif // ZH
 
 	/*
 	** Geometry
@@ -238,10 +238,10 @@ protected:
 	*/
 #ifdef OG
 	SimpleDynVecClass<Vector3i>						Polys;
-#endif
+#endif // OG
 #ifdef ZH
 	SimpleDynVecClass<TriIndex>						Polys;
-#endif
+#endif // ZH
 
 	/*
 	** Indirected vertex indices (for copying dynamically updated mesh geometry)

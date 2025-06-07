@@ -18,10 +18,10 @@
 
 #ifdef OG
 /* $Header: /Commando/Code/ww3d2/htreemgr.h 1     1/22/01 3:36p Greg_h $ */
-#endif
+#endif // OG
 #ifdef ZH
 /* $Header: /Commando/Code/ww3d2/htreemgr.h 2     9/19/01 6:17p Jani_p $ */
-#endif
+#endif // ZH
 /*********************************************************************************************** 
  ***                            Confidential - Westwood Studios                              *** 
  *********************************************************************************************** 
@@ -34,17 +34,17 @@
  *                                                                                             * 
 #ifdef OG
  *                     $Modtime:: 1/08/01 10:04a                                              $* 
-#endif
+#endif // OG
 #ifdef ZH
  *                     $Modtime:: 9/13/01 7:22p                                               $* 
-#endif
+#endif // ZH
  *                                                                                             * 
 #ifdef OG
  *                    $Revision:: 1                                                           $* 
-#endif
+#endif // OG
 #ifdef ZH
  *                    $Revision:: 2                                                           $* 
-#endif
+#endif // ZH
  *                                                                                             * 
  *---------------------------------------------------------------------------------------------* 
  * Functions:                                                                                  * 
@@ -62,7 +62,7 @@
 #include "bittype.h"
 #ifdef ZH
 #include "hashtemplate.h"
-#endif
+#endif // ZH
 
 class FileClass;
 class ChunkLoadClass;
@@ -70,7 +70,7 @@ class HTreeClass;
 class W3DExclusionListClass;
 #ifdef ZH
 class StringClass;
-#endif
+#endif // ZH
 
 /*
 
@@ -111,7 +111,7 @@ private:
 	HTreeClass *				TreePtr[MAX_TREES];		// TODO: no no! make this dynamic...
 #ifdef ZH
 	HashTemplateClass<StringClass,HTreeClass*> TreeHash;
-#endif
+#endif // ZH
 
 };
 

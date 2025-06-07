@@ -82,4 +82,4 @@ CriticalSectionClass::LockClass::~LockClass()
 {
 	crit.Exit();
 }
-#endif
+#endif // ZH

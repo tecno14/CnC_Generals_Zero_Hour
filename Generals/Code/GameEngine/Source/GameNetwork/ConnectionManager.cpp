@@ -564,10 +564,10 @@ void ConnectionManager::processWrapper(NetCommandRef *ref)
 	UnsignedShort commandID = wrapperMsg->getWrappedCommandID();
 #ifdef OG
 	DEBUG_LOG_LEVEL(DEBUG_LEVEL_NET, ("ConnectionManager::processWrapper() - wrapped commandID is %d, commandID is %d\n",
-#endif
+#endif // OG
 #ifdef ZH
 	DEBUG_LOG(("ConnectionManager::processWrapper() - wrapped commandID is %d, commandID is %d\n",
-#endif
+#endif // ZH
 		commandID, wrapperMsg->getID()));
 	Int origProgress = 0;
 	FileCommandMap::iterator fcIt = s_fileCommandMap.find(commandID);
@@ -577,10 +577,10 @@ void ConnectionManager::processWrapper(NetCommandRef *ref)
 	}
 #ifdef OG
 	DEBUG_LOG_LEVEL(DEBUG_LEVEL_NET, ("ConnectionManager::processWrapper() - origProgress[%d] == %d for command %d\n",
-#endif
+#endif // OG
 #ifdef ZH
 	DEBUG_LOG(("ConnectionManager::processWrapper() - origProgress[%d] == %d for command %d\n",
-#endif
+#endif // ZH
 		m_localSlot, origProgress, commandID));
 
 	m_netCommandWrapperList->processWrapper(ref);
@@ -590,19 +590,19 @@ void ConnectionManager::processWrapper(NetCommandRef *ref)
 		Int newProgress = m_netCommandWrapperList->getPercentComplete(commandID);
 #ifdef OG
 		DEBUG_LOG_LEVEL(DEBUG_LEVEL_NET, ("ConnectionManager::processWrapper() - newProgress[%d] == %d for command %d\n",
-#endif
+#endif // OG
 #ifdef ZH
 		DEBUG_LOG(("ConnectionManager::processWrapper() - newProgress[%d] == %d for command %d\n",
-#endif
+#endif // ZH
 			m_localSlot, newProgress, commandID));
 		if (newProgress > origProgress && newProgress < 100)
 		{
 #ifdef OG
 			DEBUG_LOG_LEVEL(DEBUG_LEVEL_NET, ("ConnectionManager::processWrapper() - sending a NetFileProgressCommandMsg\n"));
-#endif
+#endif // OG
 #ifdef ZH
 			DEBUG_LOG(("ConnectionManager::processWrapper() - sending a NetFileProgressCommandMsg\n"));
-#endif
+#endif // ZH
 			s_fileProgressMap[m_localSlot][commandID] = newProgress;
 
 			Int progressMask = 0xff ^ (1 << m_localSlot);
@@ -855,10 +855,10 @@ void ConnectionManager::processAckStage1(NetCommandMsg *msg) {
 	if (doDebug == TRUE) {
 #ifdef OG
 		DEBUG_LOG_LEVEL(DEBUG_LEVEL_NET, ("ConnectionManager::processAck - processing ack for command %d from player %d\n", ((NetAckStage1CommandMsg *)msg)->getCommandID(), playerID));
-#endif
+#endif // OG
 #ifdef ZH
 		DEBUG_LOG(("ConnectionManager::processAck - processing ack for command %d from player %d\n", ((NetAckStage1CommandMsg *)msg)->getCommandID(), playerID));
-#endif
+#endif // ZH
 	}
 #endif
 	
@@ -1071,10 +1071,10 @@ void ConnectionManager::ackCommand(NetCommandRef *ref, UnsignedInt localSlot) {
 		if (doDebug) {
 #ifdef OG
 			DEBUG_LOG_LEVEL(DEBUG_LEVEL_NET, ("ConnectionManager::ackCommand - doing ack both for command %d from player %d\n", bothmsg->getCommandID(), bothmsg->getOriginalPlayerID()));
-#endif
+#endif // OG
 #ifdef ZH
 			DEBUG_LOG(("ConnectionManager::ackCommand - doing ack both for command %d from player %d\n", bothmsg->getCommandID(), bothmsg->getOriginalPlayerID()));
-#endif
+#endif // ZH
 		}
 #endif
 	} else {
@@ -1086,10 +1086,10 @@ void ConnectionManager::ackCommand(NetCommandRef *ref, UnsignedInt localSlot) {
 		if (doDebug) {
 #ifdef OG
 			DEBUG_LOG_LEVEL(DEBUG_LEVEL_NET, ("ConnectionManager::ackCommand - doing ack stage 1 for command %d from player %d\n", stage1msg->getCommandID(), stage1msg->getOriginalPlayerID()));
-#endif
+#endif // OG
 #ifdef ZH
 			DEBUG_LOG(("ConnectionManager::ackCommand - doing ack stage 1 for command %d from player %d\n", stage1msg->getCommandID(), stage1msg->getOriginalPlayerID()));
-#endif
+#endif // ZH
 		}
 #endif
 	}
@@ -1144,10 +1144,10 @@ void ConnectionManager::sendRemoteCommand(NetCommandRef *msg) {
 
 #ifdef OG
 	DEBUG_LOG_LEVEL(DEBUG_LEVEL_NET, ("ConnectionManager::sendRemoteCommand - sending net command %d of type %s from player %d, relay is 0x%x\n",
-#endif
+#endif // OG
 #ifdef ZH
 	DEBUG_LOG(("ConnectionManager::sendRemoteCommand - sending net command %d of type %s from player %d, relay is 0x%x\n",
-#endif
+#endif // ZH
 		msg->getCommand()->getID(), GetAsciiNetCommandType(msg->getCommand()->getNetCommandType()).str(), msg->getCommand()->getPlayerID(), msg->getRelay()));
 
 	UnsignedByte relay = msg->getRelay();
@@ -1155,10 +1155,10 @@ void ConnectionManager::sendRemoteCommand(NetCommandRef *msg) {
 		if (IsCommandSynchronized(msg->getCommand()->getNetCommandType())) {
 #ifdef OG
 			DEBUG_LOG_LEVEL(DEBUG_LEVEL_NET, ("ConnectionManager::sendRemoteCommand - adding net command of type %s to player %d for frame %d\n", GetAsciiNetCommandType(msg->getCommand()->getNetCommandType()).str(), msg->getCommand()->getPlayerID(), msg->getCommand()->getExecutionFrame()));
-#endif
+#endif // OG
 #ifdef ZH
 			DEBUG_LOG(("ConnectionManager::sendRemoteCommand - adding net command of type %s to player %d for frame %d\n", GetAsciiNetCommandType(msg->getCommand()->getNetCommandType()).str(), msg->getCommand()->getPlayerID(), msg->getCommand()->getExecutionFrame()));
-#endif
+#endif // ZH
 			m_frameData[msg->getCommand()->getPlayerID()]->addNetCommandMsg(msg->getCommand());
 		}
 	}
@@ -1167,10 +1167,10 @@ void ConnectionManager::sendRemoteCommand(NetCommandRef *msg) {
 		if ((relay & (1 << i)) && ((m_connections[i] != NULL) && (m_connections[i]->isQuitting() == FALSE))) {
 #ifdef OG
 			DEBUG_LOG_LEVEL(DEBUG_LEVEL_NET, ("ConnectionManager::sendRemoteCommand - relaying command %d to player %d\n", msg->getCommand()->getID(), i));
-#endif
+#endif // OG
 #ifdef ZH
 			DEBUG_LOG(("ConnectionManager::sendRemoteCommand - relaying command %d to player %d\n", msg->getCommand()->getID(), i));
-#endif
+#endif // ZH
 			m_connections[i]->sendNetCommandMsg(msg->getCommand(), 1 << i);
 			actualRelay = actualRelay | (1 << i);
 		}
@@ -1286,10 +1286,10 @@ void ConnectionManager::updateRunAhead(Int oldRunAhead, Int frameRate, Bool didS
 			getMinimumFps(minFps, minFpsPlayer);
 #ifdef OG
 			DEBUG_LOG_LEVEL(DEBUG_LEVEL_NET, ("ConnectionManager::updateRunAhead - max latency = %f, min fps = %d, min fps player = %d old FPS = %d\n", getMaximumLatency(), minFps, minFpsPlayer, frameRate));
-#endif
+#endif // OG
 #ifdef ZH
 			DEBUG_LOG(("ConnectionManager::updateRunAhead - max latency = %f, min fps = %d, min fps player = %d old FPS = %d\n", getMaximumLatency(), minFps, minFpsPlayer, frameRate));
-#endif
+#endif // ZH
 			if ((minFps >= ((frameRate * 9) / 10)) && (minFps < frameRate)) {
 				// if the minimum fps is within 10% of the desired framerate, then keep the current minimum fps.
 				minFps = frameRate;
@@ -1302,10 +1302,10 @@ void ConnectionManager::updateRunAhead(Int oldRunAhead, Int frameRate, Bool didS
 			}
 #ifdef OG
 			DEBUG_LOG_LEVEL(DEBUG_LEVEL_NET, ("ConnectionManager::updateRunAhead - minFps after adjustment is %d\n", minFps));
-#endif
+#endif // OG
 #ifdef ZH
 			DEBUG_LOG(("ConnectionManager::updateRunAhead - minFps after adjustment is %d\n", minFps));
-#endif
+#endif // ZH
 			Int newRunAhead = (Int)((getMaximumLatency() / 2.0) * (Real)minFps);
 			newRunAhead += (newRunAhead * TheGlobalData->m_networkRunAheadSlack) / 100; // Add in 10% of slack to the run ahead in case of network hiccups.
 			if (newRunAhead < MIN_RUNAHEAD) {
@@ -1477,10 +1477,10 @@ void ConnectionManager::processFrameTick(UnsignedInt frame) {
 
 #ifdef OG
 	DEBUG_LOG_LEVEL(DEBUG_LEVEL_NET, ("ConnectionManager::processFrameTick - sending frame info for frame %d, ID %d, command count %d\n", frame, msg->getID(), commandCount));
-#endif
+#endif // OG
 #ifdef ZH
 	DEBUG_LOG(("ConnectionManager::processFrameTick - sending frame info for frame %d, ID %d, command count %d\n", frame, msg->getID(), commandCount));
-#endif
+#endif // ZH
 
 	sendLocalCommand(msg, 0xff & ~(1 << m_localSlot));
 
@@ -1545,19 +1545,19 @@ void ConnectionManager::sendLocalCommand(NetCommandMsg *msg, UnsignedByte relay 
 
 #ifdef OG
 	DEBUG_LOG_LEVEL(DEBUG_LEVEL_NET, ("ConnectionManager::sendLocalCommand - sending net command %d of type %s\n", msg->getID(),
-#endif
+#endif // OG
 #ifdef ZH
 	DEBUG_LOG(("ConnectionManager::sendLocalCommand - sending net command %d of type %s\n", msg->getID(),
-#endif
+#endif // ZH
 		GetAsciiNetCommandType(msg->getNetCommandType()).str()));
 
 	if (relay & (1 << m_localSlot)) {
 #ifdef OG
 		DEBUG_LOG_LEVEL(DEBUG_LEVEL_NET, ("ConnectionManager::sendLocalCommand - adding net command of type %s to player %d for frame %d\n", GetAsciiNetCommandType(msg->getNetCommandType()).str(), msg->getPlayerID(), msg->getExecutionFrame()));
-#endif
+#endif // OG
 #ifdef ZH
 		DEBUG_LOG(("ConnectionManager::sendLocalCommand - adding net command of type %s to player %d for frame %d\n", GetAsciiNetCommandType(msg->getNetCommandType()).str(), msg->getPlayerID(), msg->getExecutionFrame()));
-#endif
+#endif // ZH
 		m_frameData[m_localSlot]->addNetCommandMsg(msg);
 	}
 
@@ -1603,10 +1603,10 @@ void ConnectionManager::sendLocalCommandDirect(NetCommandMsg *msg, UnsignedByte 
 		if (IsCommandSynchronized(msg->getNetCommandType()) == TRUE) {
 #ifdef OG
 			DEBUG_LOG_LEVEL(DEBUG_LEVEL_NET, ("ConnectionManager::sendLocalCommandDirect - adding net command of type %s to player %d for frame %d\n", GetAsciiNetCommandType(msg->getNetCommandType()).str(), msg->getPlayerID(), msg->getExecutionFrame()));
-#endif
+#endif // OG
 #ifdef ZH
 			DEBUG_LOG(("ConnectionManager::sendLocalCommandDirect - adding net command of type %s to player %d for frame %d\n", GetAsciiNetCommandType(msg->getNetCommandType()).str(), msg->getPlayerID(), msg->getExecutionFrame()));
-#endif
+#endif // ZH
 			m_frameData[m_localSlot]->addNetCommandMsg(msg);
 		}
 	}
@@ -1618,10 +1618,10 @@ void ConnectionManager::sendLocalCommandDirect(NetCommandMsg *msg, UnsignedByte 
 				m_connections[i]->sendNetCommandMsg(msg, temprelay);
 #ifdef OG
 				DEBUG_LOG_LEVEL(DEBUG_LEVEL_NET, ("ConnectionManager::sendLocalCommandDirect - Sending direct command %d of type %s to player %d\n", msg->getID(), GetAsciiNetCommandType(msg->getNetCommandType()).str(), i));
-#endif
+#endif // OG
 #ifdef ZH
 				DEBUG_LOG(("ConnectionManager::sendLocalCommandDirect - Sending direct command %d of type %s to player %d\n", msg->getID(), GetAsciiNetCommandType(msg->getNetCommandType()).str(), i));
-#endif
+#endif // ZH
 			}
 		}
 	}
@@ -1709,10 +1709,10 @@ NetCommandList *ConnectionManager::getFrameCommandList(UnsignedInt frame)
 													// done with the messages for that frame.
 #ifdef OG
 				DEBUG_LOG_LEVEL(DEBUG_LEVEL_NET, ("getFrameCommandList - called reset frame on player %d for frame %d\n", i, frame - FRAMES_TO_KEEP));
-#endif
+#endif // OG
 #ifdef ZH
 				DEBUG_LOG(("getFrameCommandList - called reset frame on player %d for frame %d\n", i, frame - FRAMES_TO_KEEP));
-#endif
+#endif // ZH
 			}
 		}
 	}
@@ -1890,7 +1890,7 @@ void ConnectionManager::quitGame() {
 			}
 		}
 	}
-#endif
+#endif // OG
 
 	disconnectLocalPlayer();
 }
@@ -2190,10 +2190,10 @@ void ConnectionManager::sendChat(UnicodeString text, Int playerMask, UnsignedInt
 	}
 #ifdef OG
 	DEBUG_LOG_LEVEL(DEBUG_LEVEL_NET, ("Chat message has ID of %d, mask of %8.8X, text of %ls\n", msg->getID(), msg->getPlayerMask(), msg->getText().str()));
-#endif
+#endif // OG
 #ifdef ZH
 	DEBUG_LOG(("Chat message has ID of %d, mask of %8.8X, text of %ls\n", msg->getID(), msg->getPlayerMask(), msg->getText().str()));
-#endif
+#endif // ZH
 
 	sendLocalCommand(msg, 0xff ^ (1 << m_localSlot));
 	processChat(msg);
@@ -2222,10 +2222,10 @@ UnsignedShort ConnectionManager::sendFileAnnounce(AsciiString path, UnsignedByte
 		log.format(L"Not sending file '%hs' to %X\n", path.str(), playerMask);
 #ifdef OG
 		DEBUG_LOG_LEVEL(DEBUG_LEVEL_NET, ("%ls\n", log.str()));
-#endif
+#endif // OG
 #ifdef ZH
 		DEBUG_LOG(("%ls\n", log.str()));
-#endif
+#endif // ZH
 		if (TheLAN)
 			TheLAN->OnChat(UnicodeString(L"sendFile"), 0, log, LANAPI::LANCHAT_SYSTEM);
 		return 0;
@@ -2245,10 +2245,10 @@ UnsignedShort ConnectionManager::sendFileAnnounce(AsciiString path, UnsignedByte
 	announceMsg->setFileID(fileID);
 #ifdef OG
 	DEBUG_LOG_LEVEL(DEBUG_LEVEL_NET, ("ConnectionManager::sendFileAnnounce() - creating announce message with ID of %d from %d to mask %X for '%s' going to %X as command %d\n",
-#endif
+#endif // OG
 #ifdef ZH
 	DEBUG_LOG(("ConnectionManager::sendFileAnnounce() - creating announce message with ID of %d from %d to mask %X for '%s' going to %X as command %d\n",
-#endif
+#endif // ZH
 		announceMsg->getID(), announceMsg->getPlayerID(), announceMask, announceMsg->getRealFilename().str(),
 		announceMsg->getPlayerMask(), announceMsg->getFileID()));
 
@@ -2256,10 +2256,10 @@ UnsignedShort ConnectionManager::sendFileAnnounce(AsciiString path, UnsignedByte
 
 #ifdef OG
 	DEBUG_LOG_LEVEL(DEBUG_LEVEL_NET, ("Sending file announce to %X\n", announceMask));
-#endif
+#endif // OG
 #ifdef ZH
 	DEBUG_LOG(("Sending file announce to %X\n", announceMask));
-#endif
+#endif // ZH
 	sendLocalCommand(announceMsg, announceMask);
 	announceMsg->detach();
 
@@ -2275,10 +2275,10 @@ void ConnectionManager::sendFile(AsciiString path, UnsignedByte playerMask, Unsi
 		log.format(L"Not sending file '%hs' to %X\n", path.str(), playerMask);
 #ifdef OG
 		DEBUG_LOG_LEVEL(DEBUG_LEVEL_NET, ("%ls\n", log.str()));
-#endif
+#endif // OG
 #ifdef ZH
 		DEBUG_LOG(("%ls\n", log.str()));
-#endif
+#endif // ZH
 		if (TheLAN)
 			TheLAN->OnChat(UnicodeString(L"sendFile"), 0, log, LANAPI::LANCHAT_SYSTEM);
 		return;
@@ -2312,10 +2312,10 @@ void ConnectionManager::sendFile(AsciiString path, UnsignedByte playerMask, Unsi
 	{
 #ifdef OG
 		DEBUG_LOG_LEVEL(DEBUG_LEVEL_NET, ("Compressed '%s' from %d to %d (%g%%) before transfer\n", path.str(), len, compressedSize,
-#endif
+#endif // OG
 #ifdef ZH
 		DEBUG_LOG(("Compressed '%s' from %d to %d (%g%%) before transfer\n", path.str(), len, compressedSize,
-#endif
+#endif // ZH
 			(Real)compressedSize/(Real)len*100.0f));
 		fileMsg->setFileData((unsigned char *)compressedBuf, compressedSize);
 	}
@@ -2327,10 +2327,10 @@ void ConnectionManager::sendFile(AsciiString path, UnsignedByte playerMask, Unsi
 
 #ifdef OG
 	DEBUG_LOG_LEVEL(DEBUG_LEVEL_NET, ("ConnectionManager::sendFile() - creating file message with ID of %d for '%s' going to %X from %d, size of %d\n",
-#endif
+#endif // OG
 #ifdef ZH
 	DEBUG_LOG(("ConnectionManager::sendFile() - creating file message with ID of %d for '%s' going to %X from %d, size of %d\n",
-#endif
+#endif // ZH
 		fileMsg->getID(), fileMsg->getRealFilename().str(), playerMask, fileMsg->getPlayerID(), fileMsg->getFileLength()));
 
 	delete[] buf;
@@ -2345,10 +2345,10 @@ void ConnectionManager::sendFile(AsciiString path, UnsignedByte playerMask, Unsi
 
 #ifdef OG
 	DEBUG_LOG_LEVEL(DEBUG_LEVEL_NET, ("Sending file: '%s', len %d, to %X\n", path.str(), len, playerMask));
-#endif
+#endif // OG
 #ifdef ZH
 	DEBUG_LOG(("Sending file: '%s', len %d, to %X\n", path.str(), len, playerMask));
-#endif
+#endif // ZH
 
 	sendLocalCommand(fileMsg, playerMask);
 
@@ -2371,10 +2371,10 @@ Int ConnectionManager::getFileTransferProgress(Int playerID, AsciiString path)
 	//DEBUG_LOG(("Falling back to 0, since we couldn't find the map\n"));
 #ifdef OG
 	DEBUG_LOG_LEVEL(DEBUG_LEVEL_NET, ("ConnectionManager::getFileTransferProgress: path %s not found\n",path.str()));
-#endif
+#endif // OG
 #ifdef ZH
 	DEBUG_LOG(("ConnectionManager::getFileTransferProgress: path %s not found\n",path.str()));
-#endif
+#endif // ZH
 	return 0;
 }
 
@@ -2466,27 +2466,27 @@ Int ConnectionManager::getSlotAverageFPS(Int slot) {
 void ConnectionManager::debugPrintConnectionCommands() {
 #ifdef OG
 	DEBUG_LOG_LEVEL(DEBUG_LEVEL_NET, ("ConnectionManager::debugPrintConnectionCommands - begin commands\n"));
-#endif
+#endif // OG
 #ifdef ZH
 	DEBUG_LOG(("ConnectionManager::debugPrintConnectionCommands - begin commands\n"));
-#endif
+#endif // ZH
 	for (Int i = 0; i < MAX_SLOTS; ++i) {
 		if (m_connections[i] != NULL) {
 #ifdef OG
 			DEBUG_LOG_LEVEL(DEBUG_LEVEL_NET, ("ConnectionManager::debugPrintConnectionCommands - commands for connection %d\n", i));
-#endif
+#endif // OG
 #ifdef ZH
 			DEBUG_LOG(("ConnectionManager::debugPrintConnectionCommands - commands for connection %d\n", i));
-#endif
+#endif // ZH
 			m_connections[i]->debugPrintCommands();
 		}
 	}
 #ifdef OG
 	DEBUG_LOG_LEVEL(DEBUG_LEVEL_NET, ("ConnectionManager::debugPrintConnectionCommands - end commands\n"));
-#endif
+#endif // OG
 #ifdef ZH
 	DEBUG_LOG(("ConnectionManager::debugPrintConnectionCommands - end commands\n"));
-#endif
+#endif // ZH
 }
 #endif
 
@@ -2501,10 +2501,10 @@ void ConnectionManager::notifyOthersOfCurrentFrame(Int frame) {
 
 #ifdef OG
 	DEBUG_LOG_LEVEL(DEBUG_LEVEL_NET, ("ConnectionManager::notifyOthersOfCurrentFrame - sending disconnect frame of %d, command ID = %d\n", frame, msg->getID()));
-#endif
+#endif // OG
 #ifdef ZH
 	DEBUG_LOG(("ConnectionManager::notifyOthersOfCurrentFrame - sending disconnect frame of %d, command ID = %d\n", frame, msg->getID()));
-#endif
+#endif // ZH
 	sendLocalCommandDirect(msg, 0xff ^ (1 << m_localSlot));
 	NetCommandRef *ref = NEW_NETCOMMANDREF(msg);
 	ref->setRelay(1 << m_localSlot);
@@ -2515,10 +2515,10 @@ void ConnectionManager::notifyOthersOfCurrentFrame(Int frame) {
 
 #ifdef OG
 	DEBUG_LOG_LEVEL(DEBUG_LEVEL_NET, ("ConnectionManager::notifyOthersOfCurrentFrame - start screen on debug stuff\n"));
-#endif
+#endif // OG
 #ifdef ZH
 	DEBUG_LOG(("ConnectionManager::notifyOthersOfCurrentFrame - start screen on debug stuff\n"));
-#endif
+#endif // ZH
 #if defined(_DEBUG) || defined(_INTERNAL)
 	debugPrintConnectionCommands();
 #endif
@@ -2545,29 +2545,29 @@ void ConnectionManager::notifyOthersOfNewFrame(UnsignedInt frame) {
 void ConnectionManager::sendFrameDataToPlayer(UnsignedInt playerID, UnsignedInt startingFrame) {
 #ifdef OG
 	DEBUG_LOG_LEVEL(DEBUG_LEVEL_NET, ("ConnectionManager::sendFrameDataToPlayer - sending frame data to player %d starting with frame %d\n", playerID, startingFrame));
-#endif
+#endif // OG
 #ifdef ZH
 	DEBUG_LOG(("ConnectionManager::sendFrameDataToPlayer - sending frame data to player %d starting with frame %d\n", playerID, startingFrame));
-#endif
+#endif // ZH
 	for (UnsignedInt frame = startingFrame; frame < TheGameLogic->getFrame(); ++frame) {
 		sendSingleFrameToPlayer(playerID, frame);
 	}
 #ifdef OG
 	DEBUG_LOG_LEVEL(DEBUG_LEVEL_NET, ("ConnectionManager::sendFrameDataToPlayer - done sending commands to player %d\n", playerID));
-#endif
+#endif // OG
 #ifdef ZH
 	DEBUG_LOG(("ConnectionManager::sendFrameDataToPlayer - done sending commands to player %d\n", playerID));
-#endif
+#endif // ZH
 }
 
 void ConnectionManager::sendSingleFrameToPlayer(UnsignedInt playerID, UnsignedInt frame) {
 	if ((TheGameLogic->getFrame() - FRAMES_TO_KEEP) > frame) {
 #ifdef OG
 		DEBUG_LOG_LEVEL(DEBUG_LEVEL_NET, ("ConnectionManager::sendSingleFrameToPlayer - player %d requested frame %d when we are on frame %d, this is too far in the past.\n", playerID, frame, TheGameLogic->getFrame()));
-#endif
+#endif // OG
 #ifdef ZH
 		DEBUG_LOG(("ConnectionManager::sendSingleFrameToPlayer - player %d requested frame %d when we are on frame %d, this is too far in the past.\n", playerID, frame, TheGameLogic->getFrame()));
-#endif
+#endif // ZH
 		return;
 	}
 
@@ -2575,10 +2575,10 @@ void ConnectionManager::sendSingleFrameToPlayer(UnsignedInt playerID, UnsignedIn
 
 #ifdef OG
 	DEBUG_LOG_LEVEL(DEBUG_LEVEL_NET, ("ConnectionManager::sendFrameDataToPlayer - sending data for frame %d\n", frame));
-#endif
+#endif // OG
 #ifdef ZH
 	DEBUG_LOG(("ConnectionManager::sendFrameDataToPlayer - sending data for frame %d\n", frame));
-#endif
+#endif // ZH
 	for (Int i = 0; i < MAX_SLOTS; ++i) {
 		if ((m_frameData[i] != NULL) && (i != playerID)) { // no need to send his own commands to him.
 			NetCommandList *list = m_frameData[i]->getFrameCommandList(frame);
@@ -2587,10 +2587,10 @@ void ConnectionManager::sendSingleFrameToPlayer(UnsignedInt playerID, UnsignedIn
 				while (ref != NULL) {
 #ifdef OG
 					DEBUG_LOG_LEVEL(DEBUG_LEVEL_NET, ("ConnectionManager::sendFrameDataToPlayer - sending command %d from player %d to player %d using relay 0x%x\n", ref->getCommand()->getID(), i, playerID, relay));
-#endif
+#endif // OG
 #ifdef ZH
 					DEBUG_LOG(("ConnectionManager::sendFrameDataToPlayer - sending command %d from player %d to player %d using relay 0x%x\n", ref->getCommand()->getID(), i, playerID, relay));
-#endif
+#endif // ZH
 					sendLocalCommandDirect(ref->getCommand(), relay);
 					ref = ref->getNext();
 				}
@@ -2605,10 +2605,10 @@ void ConnectionManager::sendSingleFrameToPlayer(UnsignedInt playerID, UnsignedIn
 			msg->setPlayerID(i);
 #ifdef OG
 			DEBUG_LOG_LEVEL(DEBUG_LEVEL_NET, ("ConnectionManager::sendFrameDataToPlayer - sending frame info from player %d to player %d for frame %d with command count %d and ID %d and relay %d\n", i, playerID, msg->getExecutionFrame(), msg->getCommandCount(), msg->getID(), relay));
-#endif
+#endif // OG
 #ifdef ZH
 			DEBUG_LOG(("ConnectionManager::sendFrameDataToPlayer - sending frame info from player %d to player %d for frame %d with command count %d and ID %d and relay %d\n", i, playerID, msg->getExecutionFrame(), msg->getCommandCount(), msg->getID(), relay));
-#endif
+#endif // ZH
 			sendLocalCommandDirect(msg, relay);
 			msg->detach();
 		}

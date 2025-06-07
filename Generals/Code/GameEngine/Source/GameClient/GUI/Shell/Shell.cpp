@@ -45,7 +45,7 @@
 #ifdef ZH
 #include <rts/profile.h>
 
-#endif
+#endif // ZH
 // PUBLIC DATA ////////////////////////////////////////////////////////////////////////////////////
 Shell *TheShell = NULL;  ///< the shell singleton definition
 
@@ -466,12 +466,12 @@ void Shell::showShell( Bool runInit )
 #ifdef _PROFILE
     Profile::StopRange("init");
 #endif
-#endif
+#endif // ZH
 	//else
 		TheShell->push( AsciiString("Menus/MainMenu.wnd") );
 #ifdef ZH
   }
-#endif
+#endif // ZH
 	m_isShellActive = TRUE;
 }  // end showShell
 

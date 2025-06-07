@@ -204,7 +204,7 @@ ProductionUpdate::ProductionUpdate( Thing *thing, const ModuleData* moduleData )
 	m_flagsDirty = FALSE;
 #ifdef ZH
 	m_specialPowerConstructionCommandButton = NULL;
-#endif
+#endif // ZH
 
 }  // end ProductionUpdate
 
@@ -672,10 +672,10 @@ UpdateSleepTime ProductionUpdate::update( void )
 	//
 #ifdef OG
 	if( BitTest( us->getStatusBits(), OBJECT_STATUS_SOLD ) )
-#endif
+#endif // OG
 #ifdef ZH
 	if( us->getStatusBits().test( OBJECT_STATUS_SOLD ) )
-#endif
+#endif // ZH
 		return UPDATE_SLEEP_NONE;
 
 	// get the player that is building this thing
@@ -866,7 +866,7 @@ UpdateSleepTime ProductionUpdate::update( void )
 #ifdef ZH
 							creationBuilding->getControllingPlayer()->getAcademyStats()->recordProduction( newObj, creationBuilding );
 
-#endif
+#endif // ZH
 							//We created one guy, but we may want to do more so we should stay in this node of production.
 							// This is last so the voice check can easily check for "first" guy
 							production->oneProductionSuccessful();
@@ -920,11 +920,11 @@ UpdateSleepTime ProductionUpdate::update( void )
 #ifdef OG
 			// print a message to the local player
 			if( us->isLocallyControlled() )
-#endif
+#endif // OG
 #ifdef ZH
 			// print a message to the local player, if it wants one
 			if( us->isLocallyControlled() && !upgrade->getDisplayNameLabel().isEmpty() )
-#endif
+#endif // ZH
 			{
 				UnicodeString msg;
 				UnicodeString format = TheGameText->fetch( "UPGRADE:UpgradeComplete" );
@@ -969,7 +969,7 @@ UpdateSleepTime ProductionUpdate::update( void )
 #ifdef ZH
 
 			player->getAcademyStats()->recordUpgrade( upgrade, FALSE );
-#endif
+#endif // ZH
 			
 			//Also mark the UI dirty -- incase object with upgrade cameo is selected.
 			Drawable *draw = TheInGameUI->getFirstSelectedDrawable();
@@ -1177,11 +1177,11 @@ void ProductionUpdate::cancelAndRefundAllProduction( void )
 #ifdef OG
         DEBUG_CRASH(( "ProductionUpdate::cancelAndRefundAllProduction - Unknown production type '%d'\n",
                       m_productionQueue->getProductionType() ));
-#endif
+#endif // OG
 #ifdef ZH
 				DEBUG_CRASH(( "ProductionUpdate::cancelAndRefundAllProduction - Unknown production type '%d'\n", m_productionQueue->getProductionType() ));
 
-#endif
+#endif // ZH
         return;
       }  // end else
     }  // end if

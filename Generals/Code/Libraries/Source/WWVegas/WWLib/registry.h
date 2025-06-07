@@ -26,24 +26,24 @@
  *                                                                                             *
 #ifdef OG
  *                      $Author:: Patrick                                                     $*
-#endif
+#endif // OG
 #ifdef ZH
  *                      $Author:: Steve_t                                                     $*
-#endif
+#endif // ZH
  *                                                                                             *
 #ifdef OG
  *                     $Modtime:: 8/16/01 11:28a                                              $*
-#endif
+#endif // OG
 #ifdef ZH
  *                     $Modtime:: 11/21/01 3:42p                                              $*
-#endif
+#endif // ZH
  *                                                                                             *
 #ifdef OG
  *                    $Revision:: 8                                                           $*
-#endif
+#endif // OG
 #ifdef ZH
  *                    $Revision:: 12                                                          $*
-#endif
+#endif // ZH
  *                                                                                             *
  *---------------------------------------------------------------------------------------------*
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
@@ -65,7 +65,7 @@
 #ifdef ZH
 
 class INIClass;
-#endif
+#endif // ZH
 
 /*
 **
@@ -75,14 +75,14 @@ public:
 #ifdef ZH
 	static bool Exists(const char* sub_key);
 
-#endif
+#endif // ZH
 	// Constructor & Destructor
 #ifdef OG
 	RegistryClass( const char * sub_key );
-#endif
+#endif // OG
 #ifdef ZH
 	RegistryClass( const char * sub_key, bool create = true );
-#endif
+#endif // ZH
 	~RegistryClass( void );
 
 	bool	Is_Valid( void )		{ return IsValid; }
@@ -124,7 +124,7 @@ public:
 
 	// Read only.
 	static void Set_Read_Only(bool set) {IsLocked = set;}
-#endif
+#endif // ZH
 
 #ifdef ZH
 	//
@@ -134,7 +134,7 @@ public:
 	static void Load_Registry(const char *filename, char *old_path, char *new_path);
 	static void Save_Registry(const char *filename, char *path);
 
-#endif
+#endif // ZH
 private:
 #ifdef ZH
 
@@ -142,7 +142,7 @@ private:
 	static void Save_Registry_Tree(char *path, INIClass *ini);
 	static void Save_Registry_Values(HKEY key, char *path, INIClass *ini);
 
-#endif
+#endif // ZH
 	int	Key;
 	bool	IsValid;
 #ifdef ZH
@@ -151,7 +151,7 @@ private:
 	// Use this to make the registry 'read only'. Useful for running multiple copies of the app.
 	//
 	static bool IsLocked;
-#endif
+#endif // ZH
 };
 
 #endif // REGISTRY_H

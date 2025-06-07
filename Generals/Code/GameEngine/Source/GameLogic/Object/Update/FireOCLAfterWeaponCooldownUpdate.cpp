@@ -58,7 +58,7 @@
 //#pragma MESSAGE("************************************** WARNING, optimization disabled for debugging purposes")
 #endif
 
-#endif
+#endif // ZH
 //-------------------------------------------------------------------------------------------------
 FireOCLAfterWeaponCooldownUpdateModuleData::FireOCLAfterWeaponCooldownUpdateModuleData()
 {
@@ -106,10 +106,10 @@ UpdateSleepTime FireOCLAfterWeaponCooldownUpdate::update( void )
 	const FireOCLAfterWeaponCooldownUpdateModuleData* data = getFireOCLAfterWeaponCooldownUpdateModuleData();
 #ifdef OG
 	Int64 activation, conflicting;
-#endif
+#endif // OG
 #ifdef ZH
 	UpgradeMaskType activation, conflicting;
-#endif
+#endif // ZH
 	getUpgradeActivationMasks( activation, conflicting );
 	Bool validThisFrame = true;
 	Bool validToFireOCL = true;
@@ -138,13 +138,13 @@ UpdateSleepTime FireOCLAfterWeaponCooldownUpdate::update( void )
 	Int64 playerMask = obj->getControllingPlayer()->getCompletedUpgradeMask();
 	Int64 maskToCheck = playerMask | objectMask;
 
-#endif
+#endif // OG
 #ifdef ZH
 	UpgradeMaskType objectMask = obj->getObjectCompletedUpgradeMask();
 	UpgradeMaskType playerMask = obj->getControllingPlayer()->getCompletedUpgradeMask();
 	UpgradeMaskType maskToCheck = playerMask;
 	maskToCheck.set( objectMask );
-#endif
+#endif // ZH
 	if( validThisFrame && !testUpgradeConditions( maskToCheck ) )
 	{
 		//Can't use this period if this object doesn't have any of the upgrades

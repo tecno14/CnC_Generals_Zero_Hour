@@ -24,31 +24,31 @@
  *                                                                         * 
 #ifdef OG
  *                     $Archive:: /VSS_Sync/ww3d2/part_buf.cpp            $* 
-#endif
+#endif // OG
 #ifdef ZH
  *                     $Archive:: /Commando/Code/ww3d2/part_buf.cpp       $* 
-#endif
+#endif // ZH
  *                                                                         * 
 #ifdef OG
  *                      $Author:: Vss_sync                                $* 
-#endif
+#endif // OG
 #ifdef ZH
  *                      $Author:: Jani_p                                  $* 
-#endif
+#endif // ZH
  *                                                                         * 
 #ifdef OG
  *                     $Modtime:: 8/30/01 1:38a                           $* 
-#endif
+#endif // OG
 #ifdef ZH
  *                     $Modtime:: 9/07/01 12:57p                          $* 
-#endif
+#endif // ZH
  *                                                                         * 
 #ifdef OG
  *                    $Revision:: 19                                      $* 
-#endif
+#endif // OG
 #ifdef ZH
  *                    $Revision:: 20                                      $* 
-#endif
+#endif // ZH
  *                                                                         * 
  *-------------------------------------------------------------------------* 
  * Functions:                                                              * 
@@ -101,7 +101,7 @@ const float oo_intmax = 1.0f / (float)INT_MAX;
 // Default Line Emitter Properties
 static const W3dEmitterLinePropertiesStruct _DefaultLineEmitterProps=
 { 0,0,0.0f,1.5f,1.0f,0.0f,0.0f,0,0,0,0,0,0,0,0,0 };
-#endif
+#endif // ZH
 
 ParticleBufferClass::ParticleBufferClass
 (
@@ -115,12 +115,12 @@ ParticleBufferClass::ParticleBufferClass
 	ParticlePropertyStruct<float> &frame,
 #ifdef ZH
 	ParticlePropertyStruct<float> &blurtime,
-#endif
+#endif // ZH
 	Vector3 accel, 
 	float max_age, 
 #ifdef ZH
 	float future_start,
-#endif
+#endif // ZH
 	TextureClass *tex,
 	ShaderClass shader, 
 	bool pingpong,
@@ -137,7 +137,7 @@ ParticleBufferClass::ParticleBufferClass
 	MaxAge(1000.0f * max_age),
 #ifdef ZH
 	FutureStartTime(1000.0f * future_start),
-#endif
+#endif // ZH
 	LastUpdateTime(WW3D::Get_Sync_Time()),
 	IsEmitterDead(false),
 	MaxSize(0.0f),
@@ -175,7 +175,7 @@ ParticleBufferClass::ParticleBufferClass
 	BlurTimeKeyFrameTimes(NULL),
 	BlurTimeKeyFrameValues(NULL),
 	BlurTimeKeyFrameDeltas(NULL),
-#endif
+#endif // ZH
 	NumRandomColorEntriesMinus1(0),
 	RandomColorEntries(NULL),
 	NumRandomAlphaEntriesMinus1(0),
@@ -197,16 +197,16 @@ ParticleBufferClass::ParticleBufferClass
 #ifdef ZH
 	NumRandomBlurTimeEntriesMinus1(0),
 	RandomBlurTimeEntries(NULL),
-#endif
+#endif // ZH
 	PointGroup(NULL),
 	LineRenderer(NULL),
 #ifdef ZH
 	LineGroup(NULL),
-#endif
+#endif // ZH
 	Diffuse(NULL),
 #ifdef ZH
 	TailDiffuse(NULL),
-#endif
+#endif // ZH
 	Color(NULL),
 	Alpha(NULL),
 	Size(NULL),
@@ -215,11 +215,11 @@ ParticleBufferClass::ParticleBufferClass
 #ifdef ZH
 	UCoord(NULL),
 	TailPosition(NULL),
-#endif
+#endif // ZH
 	APT(NULL),
 #ifdef ZH
 	GroupID(NULL),
-#endif
+#endif // ZH
 	PingPongPosition(pingpong),
 	Velocity(NULL),
 	TimeStamp(NULL),
@@ -228,12 +228,12 @@ ParticleBufferClass::ParticleBufferClass
 #ifdef OG
 	ProjectedArea(0.0f)
 
-#endif
+#endif // OG
 #ifdef ZH
 	ProjectedArea(0.0f),
 	DefaultTailDiffuse(0,0,0,0),
 	CurrentGroupID(0)
-#endif
+#endif // ZH
 {
 	LodCount = 17;
 	LodBias = 1.0f;
@@ -259,7 +259,7 @@ ParticleBufferClass::ParticleBufferClass
 
 	// Create the blur time array, keyframes, and randomizer table if needed
 	Reset_Blur_Times(blurtime);
-#endif
+#endif // ZH
 
 	// We do not add a ref for the emitter (see DTor for detailed explanation)
 	// if (Emitter) Emitter->Add_Ref();
@@ -274,7 +274,7 @@ ParticleBufferClass::ParticleBufferClass
 #ifdef OG
 	// Set up worldspace point group:
 
-#endif
+#endif // OG
 #ifdef ZH
 	shader.Enable_Fog ("ParticleBufferClass");
 	switch (RenderMode)	
@@ -293,22 +293,22 @@ ParticleBufferClass::ParticleBufferClass
 	case W3D_EMITTER_RENDER_MODE_QUAD_PARTICLES:
 		{
 			// Set up worldspace point group
-#endif
+#endif // ZH
 	PointGroup = W3DNEW PointGroupClass();
 	PointGroup->Set_Flag(PointGroupClass::TRANSFORM, true);
 	PointGroup->Set_Texture(tex);
 #ifdef OG
 	shader.Enable_Fog ("ParticleBufferClass");
-#endif
+#endif // OG
 	PointGroup->Set_Shader(shader);
 #ifdef OG
 
 	if (RenderMode == W3D_EMITTER_RENDER_MODE_QUAD_PARTICLES) {
-#endif
+#endif // OG
 #ifdef ZH
 			PointGroup->Set_Frame_Row_Column_Count_Log2(frame_mode);
 
-#endif
+#endif // ZH
 		PointGroup->Set_Point_Mode(PointGroupClass::QUADS);
 #ifdef ZH
 		}
@@ -322,12 +322,12 @@ ParticleBufferClass::ParticleBufferClass
 			LineRenderer->Set_Width(Get_Particle_Size());
 			if (line_props != NULL) {				
 				LineRenderer->Init(*line_props);
-#endif
+#endif // ZH
 	} else {
 #ifdef OG
 		PointGroup->Set_Point_Mode(PointGroupClass::TRIS);
 
-#endif
+#endif // OG
 #ifdef ZH
 				// This code should not be run, but if it does,
 				// set line emitters to some reasonable value so
@@ -366,13 +366,13 @@ ParticleBufferClass::ParticleBufferClass
 	default:
 		WWASSERT(0);
 		break;
-#endif
+#endif // ZH
 	}
 
 #ifdef OG
 	PointGroup->Set_Frame_Row_Column_Count_Log2(frame_mode);
 
-#endif
+#endif // OG
 	// Set up circular buffer. Contents are not initialized because the
 	// start/end indices currently indicate the buffer is empty.
 	Position[0] = NEW_REF( ShareBufferClass<Vector3> , (MaxNum, "ParticleBufferClass::Position") );
@@ -382,7 +382,7 @@ ParticleBufferClass::ParticleBufferClass
 	APT = NEW_REF( ShareBufferClass<unsigned int> , (MaxNum, "ParticleBufferClass::APT") );
 #ifdef ZH
 	GroupID = NEW_REF( ShareBufferClass<unsigned char> , (MaxNum, "ParticleBufferClass::GroupID") );
-#endif
+#endif // ZH
 	Velocity = W3DNEWARRAY Vector3[MaxNum]; 
 	TimeStamp = W3DNEWARRAY unsigned int[MaxNum];
 
@@ -426,7 +426,7 @@ ParticleBufferClass::ParticleBufferClass(const ParticleBufferClass & src) :
 	MaxAge(src.MaxAge),
 #ifdef ZH
 	FutureStartTime(src.FutureStartTime),
-#endif
+#endif // ZH
 	LastUpdateTime(WW3D::Get_Sync_Time()),
 	IsEmitterDead(false),
 	MaxSize(src.MaxSize),
@@ -464,7 +464,7 @@ ParticleBufferClass::ParticleBufferClass(const ParticleBufferClass & src) :
 	BlurTimeKeyFrameTimes(NULL),
 	BlurTimeKeyFrameValues(NULL),
 	BlurTimeKeyFrameDeltas(NULL),
-#endif
+#endif // ZH
 	RandomColorEntries(NULL),
 	RandomAlphaEntries(NULL),
 	RandomSizeEntries(NULL),
@@ -483,16 +483,16 @@ ParticleBufferClass::ParticleBufferClass(const ParticleBufferClass & src) :
 #ifdef ZH
 	NumRandomBlurTimeEntriesMinus1(0),
 	RandomBlurTimeEntries(NULL),
-#endif
+#endif // ZH
 	PointGroup(NULL),
 	LineRenderer(NULL),
 #ifdef ZH
 	LineGroup(NULL),
-#endif
+#endif // ZH
 	Diffuse(NULL),	
 #ifdef ZH
 	TailDiffuse(NULL),
-#endif
+#endif // ZH
 	Color(NULL),
 	Alpha(NULL),
 	Size(NULL),
@@ -501,11 +501,11 @@ ParticleBufferClass::ParticleBufferClass(const ParticleBufferClass & src) :
 #ifdef ZH
 	UCoord(NULL),
 	TailPosition(NULL),
-#endif
+#endif // ZH
 	APT(NULL),
 #ifdef ZH
 	GroupID(NULL),
-#endif
+#endif // ZH
 	PingPongPosition(src.PingPongPosition),
 	Velocity(NULL),
 	TimeStamp(NULL),
@@ -514,11 +514,11 @@ ParticleBufferClass::ParticleBufferClass(const ParticleBufferClass & src) :
 #ifdef OG
 	ProjectedArea(0.0f)
 
-#endif
+#endif // OG
 #ifdef ZH
 	ProjectedArea(0.0f),
 	DefaultTailDiffuse(src.DefaultTailDiffuse)	
-#endif
+#endif // ZH
 {
 	Position[0] = NULL;
 	Position[1] = NULL;
@@ -657,22 +657,22 @@ ParticleBufferClass::ParticleBufferClass(const ParticleBufferClass & src) :
 	// Set up the frame keyframes
 #ifdef ZH
 	// Frame and UCoord both use Frame Key Frames for the source data
-#endif
+#endif // ZH
 	NumRandomFrameEntriesMinus1 = src.NumRandomFrameEntriesMinus1;
 #ifdef ZH
 	if (src.Frame || src.UCoord) {
 		// Create frame array
-#endif
+#endif // ZH
 	if (src.Frame) {
 #ifdef OG
 		// Create frame array
-#endif
+#endif // OG
 		Frame = NEW_REF( ShareBufferClass<uint8> , (MaxNum, "ParticleBufferClass::Frame") );
 #ifdef ZH
 		} else {
 			UCoord = NEW_REF( ShareBufferClass<float>, (MaxNum, "ParticleBufferClass::UCoord") );
 		}
-#endif
+#endif // ZH
 
 		// Copy frame keyframes
 		FrameKeyFrameTimes = W3DNEWARRAY unsigned int [NumFrameKeyFrames];
@@ -721,7 +721,7 @@ ParticleBufferClass::ParticleBufferClass(const ParticleBufferClass & src) :
 		BlurTimeKeyFrameValues = new float [1];
 		BlurTimeKeyFrameValues[0] = src.BlurTimeKeyFrameValues[0];
 	}
-#endif
+#endif // ZH
 
 	// We do not add a ref for the emitter (see DTor for detailed explanation)
 	// if (Emitter) Emitter->Add_Ref();
@@ -736,7 +736,7 @@ ParticleBufferClass::ParticleBufferClass(const ParticleBufferClass & src) :
 #ifdef OG
 	// Set up worldspace point group:
 
-#endif
+#endif // OG
 #ifdef ZH
 	switch (RenderMode)	
 	{
@@ -756,7 +756,7 @@ ParticleBufferClass::ParticleBufferClass(const ParticleBufferClass & src) :
 		{
 			// Set up worldspace point group
 			WWASSERT(src.PointGroup);
-#endif
+#endif // ZH
 	PointGroup = W3DNEW PointGroupClass();
 	PointGroup->Set_Flag(PointGroupClass::TRANSFORM, true);
 	PointGroup->Set_Texture(src.PointGroup->Peek_Texture());
@@ -765,13 +765,13 @@ ParticleBufferClass::ParticleBufferClass(const ParticleBufferClass & src) :
 
 	// Set up the point group render mode
 	if (RenderMode == W3D_EMITTER_RENDER_MODE_QUAD_PARTICLES) {
-#endif
+#endif // OG
 		PointGroup->Set_Point_Mode(PointGroupClass::QUADS);
 #ifdef OG
 	} else {
 		PointGroup->Set_Point_Mode(PointGroupClass::TRIS);
 
-#endif
+#endif // OG
 #ifdef ZH
 			PointGroup->Set_Frame_Row_Column_Count_Log2(src.PointGroup->Get_Frame_Row_Column_Count_Log2());
 		}
@@ -813,7 +813,7 @@ ParticleBufferClass::ParticleBufferClass(const ParticleBufferClass & src) :
 	default:
 		WWASSERT(0);
 		break;
-#endif
+#endif // ZH
 	}
 
 	// Set up circular buffer. Contents are not initialized because the
@@ -825,7 +825,7 @@ ParticleBufferClass::ParticleBufferClass(const ParticleBufferClass & src) :
 	APT = NEW_REF( ShareBufferClass<unsigned int> , (MaxNum, "ParticleBufferClass::APT") );
 #ifdef ZH
 	GroupID = NEW_REF( ShareBufferClass<unsigned char> , (MaxNum, "ParticleBufferClass::GroupID") );
-#endif
+#endif // ZH
 	Velocity = W3DNEWARRAY Vector3[MaxNum]; 
 	TimeStamp = W3DNEWARRAY unsigned int[MaxNum];
 
@@ -848,7 +848,7 @@ ParticleBufferClass::ParticleBufferClass(const ParticleBufferClass & src) :
 	} else {
 		assert(RenderMode != W3D_EMITTER_RENDER_MODE_LINE);
 	}
-#endif
+#endif // OG
 }
 
 
@@ -887,7 +887,7 @@ ParticleBufferClass::~ParticleBufferClass(void)
 	if (BlurTimeKeyFrameTimes)			delete [] BlurTimeKeyFrameTimes;
 	if (BlurTimeKeyFrameValues)		delete [] BlurTimeKeyFrameValues;
 	if (BlurTimeKeyFrameDeltas)		delete [] BlurTimeKeyFrameDeltas;
-#endif
+#endif // ZH
 	if (RandomColorEntries)				delete [] RandomColorEntries;
 	if (RandomAlphaEntries)				delete [] RandomAlphaEntries;
 	if (RandomSizeEntries)				delete [] RandomSizeEntries;
@@ -896,20 +896,20 @@ ParticleBufferClass::~ParticleBufferClass(void)
 	if (RandomFrameEntries)				delete [] RandomFrameEntries;
 #ifdef ZH
 	if (RandomBlurTimeEntries)			delete [] RandomBlurTimeEntries;
-#endif
+#endif // ZH
 	
 	if (PointGroup) delete PointGroup;
 #ifdef ZH
 	if (LineRenderer)						delete LineRenderer;
 	if (LineGroup)							delete LineGroup;
-#endif
+#endif // ZH
 
 	REF_PTR_RELEASE(Position[0]);
 	REF_PTR_RELEASE(Position[1]);
 	REF_PTR_RELEASE(Diffuse);
 #ifdef ZH
 	REF_PTR_RELEASE(TailDiffuse);
-#endif
+#endif // ZH
 	REF_PTR_RELEASE(Color);
 	REF_PTR_RELEASE(Alpha);
 	REF_PTR_RELEASE(Size);
@@ -918,11 +918,11 @@ ParticleBufferClass::~ParticleBufferClass(void)
 #ifdef ZH
 	REF_PTR_RELEASE(UCoord);
 	REF_PTR_RELEASE(TailPosition);
-#endif
+#endif // ZH
 	REF_PTR_RELEASE(APT);
 #ifdef ZH
 	REF_PTR_RELEASE(GroupID);
-#endif
+#endif // ZH
 
 	if (Velocity)	delete [] Velocity;
 	if (TimeStamp)	delete [] TimeStamp;
@@ -945,7 +945,7 @@ ParticleBufferClass::~ParticleBufferClass(void)
 		delete LineRenderer;
 	}
 
-#endif
+#endif // OG
 	// Update Global Count
 	TotalActiveCount--;
 }
@@ -992,7 +992,7 @@ void ParticleBufferClass::Render(RenderInfoClass & rinfo)
 		}
 #ifdef OG
 	}
-#endif
+#endif // OG
 
 	switch( RenderMode )
 	{
@@ -1007,20 +1007,20 @@ void ParticleBufferClass::Render(RenderInfoClass & rinfo)
 		case W3D_EMITTER_RENDER_MODE_LINEGRP_TETRA:
 		case W3D_EMITTER_RENDER_MODE_LINEGRP_PRISM:
 			Render_Line_Group(rinfo);
-#endif
+#endif // ZH
 		break;
 	}
 }
 #ifdef ZH
 }
-#endif
+#endif // ZH
 
 #ifdef OG
 void ParticleBufferClass::Render_Particles(RenderInfoClass & rinfo)
-#endif
+#endif // OG
 #ifdef ZH
 void ParticleBufferClass::Generate_APT(ShareBufferClass <unsigned int> **apt,unsigned int &active_point_count)
-#endif
+#endif // ZH
 {
 #ifdef OG
 	// If the number of active points is less than the maximum or we need to decimate particles
@@ -1028,7 +1028,7 @@ void ParticleBufferClass::Generate_APT(ShareBufferClass <unsigned int> **apt,uns
 	ShareBufferClass<unsigned int> *apt = NULL;
 
 	unsigned int active_point_count = 0;
-#endif
+#endif // OG
 	if (NonNewNum < (int)MaxNum || DecimationThreshold > 0) {
 		// In the general case, a range in a circular buffer can be composed of up
 		// to two subranges. Find the Start - End subranges.
@@ -1064,10 +1064,10 @@ void ParticleBufferClass::Generate_APT(ShareBufferClass <unsigned int> **apt,uns
 		}
 #ifdef OG
 		apt = APT;
-#endif
+#endif // OG
 #ifdef ZH
 		*apt = APT;
-#endif
+#endif // ZH
 	} else {
 		active_point_count = NonNewNum;
 #ifdef OG
@@ -1076,7 +1076,7 @@ void ParticleBufferClass::Generate_APT(ShareBufferClass <unsigned int> **apt,uns
 	// Set color, alpha, size defaults if array not present:
 	if (!Color) {
 		PointGroup->Set_Point_Color(ColorKeyFrameValues[0]);
-#endif
+#endif // OG
 	}
 #ifdef OG
 	if (!Alpha) {
@@ -1084,7 +1084,7 @@ void ParticleBufferClass::Generate_APT(ShareBufferClass <unsigned int> **apt,uns
 	}
 	if (!Size) {
 		PointGroup->Set_Point_Size(SizeKeyFrameValues[0]);
-#endif
+#endif // OG
 	}
 #ifdef OG
 	if (!Orientation) {
@@ -1096,7 +1096,7 @@ void ParticleBufferClass::Generate_APT(ShareBufferClass <unsigned int> **apt,uns
 	if (!Frame) {
 		PointGroup->Set_Point_Frame(((int)(FrameKeyFrameValues[0])) & 0xFF);
 	}
-#endif
+#endif // OG
 
 #ifdef OG
 
@@ -1107,12 +1107,12 @@ void ParticleBufferClass::Generate_APT(ShareBufferClass <unsigned int> **apt,uns
 		pingpong = WW3D::Get_Frame_Count() & 0x1;
 	}
 
-#endif
+#endif // OG
 #ifdef ZH
 void ParticleBufferClass::Combine_Color_And_Alpha()
 {
 
-#endif
+#endif // ZH
 	// Temporary array copying to combine diffuse and alpha to one array.
 	if (Color || Alpha) {
 		unsigned cnt=MaxNum;
@@ -1159,7 +1159,7 @@ void ParticleBufferClass::Render_Particles(RenderInfoClass & rinfo)
 	// If the number of active points is less than the maximum or we need to decimate particles
 	// (for LOD purposes), build the active point table:
 	ShareBufferClass<unsigned int> *apt = NULL;
-#endif
+#endif // ZH
 
 #ifdef ZH
 	unsigned int active_point_count = 0;
@@ -1195,7 +1195,7 @@ void ParticleBufferClass::Render_Particles(RenderInfoClass & rinfo)
 
 	Combine_Color_And_Alpha();
 
-#endif
+#endif // ZH
 	PointGroup->Set_Arrays(Position[pingpong], Diffuse, apt, Size, Orientation, Frame, active_point_count);
 	Update_Bounding_Box();	
 	PointGroup->Render(rinfo);	
@@ -1208,7 +1208,7 @@ void ParticleBufferClass::Render_Line(RenderInfoClass & rinfo)
 
 	LineRenderer->Set_Freeze_Random(Is_Freeze_Random());
 
-#endif
+#endif // ZH
 	// Look up the array to use
 	int pingpong = 0;
 	if (PingPongPosition) {
@@ -1221,7 +1221,7 @@ void ParticleBufferClass::Render_Line(RenderInfoClass & rinfo)
 	static SimpleDynVecClass<Vector4> tmp_diffuse;
 	static SimpleDynVecClass<unsigned char> tmp_id;
 
-#endif
+#endif // ZH
 	Vector3 * positions = Position[pingpong]->Get_Array();
 #ifdef ZH
 	Vector4 * diffuse = 0;
@@ -1234,7 +1234,7 @@ void ParticleBufferClass::Render_Line(RenderInfoClass & rinfo)
 		default_diffuse.Set(ColorKeyFrameValues[0].X, ColorKeyFrameValues[0].Y, ColorKeyFrameValues[0].Z,
 								  AlphaKeyFrameValues[0]);
 	}
-#endif
+#endif // ZH
 
 	unsigned int sub1_end;		// End of subrange 1.
 	unsigned int sub2_start;	// Start of subrange 2.
@@ -1255,7 +1255,7 @@ void ParticleBufferClass::Render_Line(RenderInfoClass & rinfo)
 
 	Vector4 *last_color = &default_diffuse;
 	unsigned char last_id = 0;
-#endif
+#endif // ZH
 	
 	for (i = Start; i < sub1_end; i++) {
 		if (PermutationArray[i & 0xF] >= DecimationThreshold) {
@@ -1265,7 +1265,7 @@ void ParticleBufferClass::Render_Line(RenderInfoClass & rinfo)
 			tmp_diffuse.Add(*last_color);
 			last_id = ids[i];
 			tmp_id.Add(last_id);
-#endif
+#endif // ZH
 		}
 	}
 	for (i = sub2_start; i < End; i++) {
@@ -1276,7 +1276,7 @@ void ParticleBufferClass::Render_Line(RenderInfoClass & rinfo)
 			tmp_diffuse.Add(*last_color);
 			last_id = ids[i];
 			tmp_id.Add(last_id);
-#endif
+#endif // ZH
 		}
 #ifdef ZH
 	}
@@ -1287,7 +1287,7 @@ void ParticleBufferClass::Render_Line(RenderInfoClass & rinfo)
 		// it has the color of the last point
 		tmp_diffuse.Add(*last_color);
 		tmp_id.Add(last_id);
-#endif
+#endif // ZH
 	}
 
 	// If we got any points, render them
@@ -1300,7 +1300,7 @@ void ParticleBufferClass::Render_Line(RenderInfoClass & rinfo)
 		int count = tmp_points.Count();
 		int start = 0;
 		int end = 0;		
-#endif
+#endif // ZH
 		
 #ifdef OG
 		TextureClass * tex = PointGroup->Get_Texture();
@@ -1308,19 +1308,19 @@ void ParticleBufferClass::Render_Line(RenderInfoClass & rinfo)
 		REF_PTR_RELEASE(tex);
 		LineRenderer->Set_Shader(PointGroup->Get_Shader());
 
-#endif
+#endif // OG
 #ifdef ZH
 		while (end < count) {
 			// detect contiguous runs of IDs
 			while ( (end < count) && (tmp_id[start] == tmp_id[end])) {
 				end++;
 			}
-#endif
+#endif // ZH
 
 #ifdef ZH
 			// render from start, excluding end
 			if (end - start > 1) {
-#endif
+#endif // ZH
 		LineRenderer->Render(rinfo,
 									Transform,
 #ifdef OG
@@ -1328,7 +1328,7 @@ void ParticleBufferClass::Render_Line(RenderInfoClass & rinfo)
 									&(tmp_points[0]),
 									bounding_sphere);
 
-#endif
+#endif // OG
 #ifdef ZH
 											end - start,
 											&(tmp_points[start]),
@@ -1362,7 +1362,7 @@ void ParticleBufferClass::Render_Line_Group(RenderInfoClass & rinfo)
 	}
 	if (!Frame) {
 		LineGroup->Set_Line_UCoord(FrameKeyFrameValues[0]);
-#endif
+#endif // ZH
 	}
 #ifdef ZH
 
@@ -1372,16 +1372,16 @@ void ParticleBufferClass::Render_Line_Group(RenderInfoClass & rinfo)
 	int pingpong = 0;
 	if (PingPongPosition) {
 		pingpong = WW3D::Get_Frame_Count() & 0x1;
-#endif
+#endif // ZH
 }
 #ifdef ZH
 
 	Combine_Color_And_Alpha();
-#endif
+#endif // ZH
 
 #ifdef ZH
 	TailDiffuseTypeEnum tailtype=Determine_Tail_Diffuse();
-#endif
+#endif // ZH
 
 #ifdef ZH
 	switch (tailtype)
@@ -1424,19 +1424,19 @@ void ParticleBufferClass::Render_Line_Group(RenderInfoClass & rinfo)
 		WWASSERT(0);
 		break;
 	}
-#endif
+#endif // ZH
 
 #ifdef ZH
 	if (!TailDiffuse)
 		LineGroup->Set_Tail_Diffuse(DefaultTailDiffuse);
-#endif
+#endif // ZH
 
 #ifdef ZH
 	LineGroup->Set_Arrays(Position[pingpong], TailPosition,Diffuse,TailDiffuse, apt, Size, UCoord, active_point_count);
 	Update_Bounding_Box();	
 	LineGroup->Render(rinfo);	
 }
-#endif
+#endif // ZH
 
 // Scales the size of the individual particles but doesn't affect their
 // position (and therefore the size of the particle system as a whole)
@@ -1447,7 +1447,7 @@ void ParticleBufferClass::Scale(float scale)
 	unsigned int i;
 #ifdef ZH
 	if (NumSizeKeyFrames) {
-#endif
+#endif // ZH
 	for (i = 0; i < NumSizeKeyFrames; i++) {
 		SizeKeyFrameValues[i] *= scale;
 		SizeKeyFrameDeltas[i] *= scale;
@@ -1455,25 +1455,25 @@ void ParticleBufferClass::Scale(float scale)
 		}
 	} else {
 		SizeKeyFrameValues[0] *= scale;		
-#endif
+#endif // ZH
 	}
 	if (RandomSizeEntries) {
 		for (i = 0; i <= NumRandomSizeEntriesMinus1; i++) {
 			RandomSizeEntries[i] *= scale;
 #ifdef ZH
 		}
-#endif
+#endif // ZH
 		}
 #ifdef ZH
 	if (LineRenderer) {
 		LineRenderer->Scale(scale);
-#endif
+#endif // ZH
 	}
 	MaxSize *= scale;
 	SizeRandom *= scale;
 #ifdef ZH
 	Accel *= scale;
-#endif
+#endif // ZH
 }
 
 
@@ -1490,7 +1490,7 @@ void ParticleBufferClass::On_Frame_Update(void)
 {
 #ifdef ZH
 	WWPROFILE("ParticleBufferClass::On_Frame_Update");
-#endif
+#endif // ZH
 	Invalidate_Cached_Bounding_Volumes();
 	if (Emitter) {
 		Emitter->Emit();
@@ -1642,7 +1642,7 @@ int ParticleBufferClass::Calculate_Cost_Value_Arrays(float screen_area, float *v
 	float tris_per_particle = PointGroup->Get_Point_Mode() == PointGroupClass::QUADS ? 2.0f : 1.0f;
 	float cost_factor = (float)MaxNum * tris_per_particle * 0.0625f;	// 1/16
 
-#endif
+#endif // OG
 #ifdef ZH
 	// The cost factor is later multiplied by the LOD level. The LOD level is the numerator of the
 	// fraction of particles rendered, where 16 is the denominator. For this reason the cost factor
@@ -1666,7 +1666,7 @@ int ParticleBufferClass::Calculate_Cost_Value_Arrays(float screen_area, float *v
 		cost_factor = (float)MaxNum * 8.0f * 0.0625f;
 		break;
 	}	
-#endif
+#endif // ZH
 	for (lod = 0; lod < LodCount; lod++) {
 		costs[lod] = cost_factor * (float)lod;
 		// If cost is zero set it to a small nonzero amount to avoid divisions by zero.
@@ -2194,7 +2194,7 @@ void ParticleBufferClass::Reset_Rotations(ParticlePropertyStruct<float> &new_pro
 	unsigned int i;	// Used in loops
 #ifdef OG
 	static Random3Class rand_gen;
-#endif
+#endif // OG
    float oo_intmax = 1.0f / (float)INT_MAX;
 	unsigned int ui_previous_key_time = 0;
 	unsigned int ui_current_key_time = 0;
@@ -2407,7 +2407,7 @@ void ParticleBufferClass::Reset_Frames(ParticlePropertyStruct<float> &new_props)
 	unsigned int i;	// Used in loops
 #ifdef OG
 	static Random3Class rand_gen;
-#endif
+#endif // OG
    float oo_intmax = 1.0f / (float)INT_MAX;
 	unsigned int ui_previous_key_time = 0;
 	unsigned int ui_current_key_time = 0;
@@ -2426,7 +2426,7 @@ void ParticleBufferClass::Reset_Frames(ParticlePropertyStruct<float> &new_props)
 		REF_PTR_RELEASE(Frame);
 #ifdef ZH
 		REF_PTR_RELEASE(UCoord);
-#endif
+#endif // ZH
 		if (FrameKeyFrameTimes) {
 			delete [] FrameKeyFrameTimes;
 			FrameKeyFrameTimes = NULL;
@@ -2458,12 +2458,12 @@ void ParticleBufferClass::Reset_Frames(ParticlePropertyStruct<float> &new_props)
 				UCoord = NEW_REF( ShareBufferClass<float>, (MaxNum, "ParticleBufferClass::UCoord") );
 			}
 		} else {
-#endif
+#endif // ZH
 		if (!Frame) {
 			Frame = NEW_REF( ShareBufferClass<uint8> , (MaxNum, "ParticleBufferClass::Frame") );
 #ifdef ZH
 			}
-#endif
+#endif // ZH
 		}
 
 		// Check times of the keyframes (each keytime must be larger than the
@@ -2712,7 +2712,7 @@ void ParticleBufferClass::Reset_Blur_Times(ParticlePropertyStruct<float> &new_bl
 			float scale = new_blur_times.Rand * oo_intmax;
 			for (unsigned int j = 0; j <= NumRandomBlurTimeEntriesMinus1; j++) {
 				RandomBlurTimeEntries[j] = rand_gen * scale;
-#endif
+#endif // ZH
 			}
 		}
 	}
@@ -2825,13 +2825,13 @@ void ParticleBufferClass::Update_Visual_Particle_State(void)
 #ifdef OG
 	if (!Color && !Alpha && !Size && !Orientation && !Frame) return;
 
-#endif
+#endif // OG
 #ifdef ZH
 	// Linegroup modes have a visual state that always have to be updated though
 	bool is_linegroup=( (RenderMode==W3D_EMITTER_RENDER_MODE_LINEGRP_TETRA) ||
 							  (RenderMode==W3D_EMITTER_RENDER_MODE_LINEGRP_PRISM));
 	if (!Color && !Alpha && !Size && !Orientation && !Frame && !UCoord && !is_linegroup) return;
-#endif
+#endif // ZH
 
 	// In the general case, a range in a circular buffer can be composed of up
 	// to two subranges. Find the Start - End subranges.
@@ -2856,7 +2856,7 @@ void ParticleBufferClass::Update_Visual_Particle_State(void)
 	unsigned int fkey = NumFrameKeyFrames - 1;
 #ifdef ZH
 	unsigned int bkey = NumBlurTimeKeyFrames -1;
-#endif
+#endif // ZH
 
 	unsigned int part;
 	Vector3 *color = Color ? Color->Get_Array(): NULL;
@@ -2867,11 +2867,11 @@ void ParticleBufferClass::Update_Visual_Particle_State(void)
 #ifdef ZH
 	float *ucoord = UCoord ? UCoord->Get_Array() : NULL;
 	Vector3 *tailposition = TailPosition ? TailPosition->Get_Array() : NULL;
-#endif
+#endif // ZH
 
 #ifdef ZH
 	Vector3 *position=NULL;
-#endif
+#endif // ZH
 
 #ifdef ZH
 	if (PingPongPosition) {
@@ -2881,7 +2881,7 @@ void ParticleBufferClass::Update_Visual_Particle_State(void)
 		position = Position[0]->Get_Array();
 	}
 
-#endif
+#endif // ZH
 	for (part = Start; part < sub1_end; part++) {
 
 		unsigned int part_age = current_time - TimeStamp[part];
@@ -2943,7 +2943,7 @@ void ParticleBufferClass::Update_Visual_Particle_State(void)
 #ifdef ZH
 			// Frame and ucoord are mutually exclusive
 			WWASSERT(ucoord==NULL);
-#endif
+#endif // ZH
 			// We go from older to younger particles, so we go backwards from the last keyframe until
 			// age >= keytime. This loop must terminate because the 0th keytime is 0.
 			for (; part_age < FrameKeyFrameTimes[fkey]; fkey--);
@@ -2968,7 +2968,7 @@ void ParticleBufferClass::Update_Visual_Particle_State(void)
 			ucoord[part] = FrameKeyFrameValues[fkey] +
 				FrameKeyFrameDeltas[fkey] * (float)(part_age - FrameKeyFrameTimes[fkey]) +
 				RandomFrameEntries[part & NumRandomFrameEntriesMinus1];		
-#endif
+#endif // ZH
 	}
 
 #ifdef ZH
@@ -2986,7 +2986,7 @@ void ParticleBufferClass::Update_Visual_Particle_State(void)
 		}		
 	}
 
-#endif
+#endif // ZH
 	for (part = sub2_start; part < End; part++) {
 
 		unsigned int part_age = current_time - TimeStamp[part];
@@ -3049,7 +3049,7 @@ void ParticleBufferClass::Update_Visual_Particle_State(void)
 #ifdef ZH
 			// Frame and ucoord are mutually exclusive
 			WWASSERT(ucoord==NULL);
-#endif
+#endif // ZH
 			// We go from older to younger particles, so we go backwards from the last keyframe until
 			// age >= keytime. This loop must terminate because the 0th keytime is 0.
 			for (; part_age < FrameKeyFrameTimes[fkey]; fkey--);
@@ -3074,7 +3074,7 @@ void ParticleBufferClass::Update_Visual_Particle_State(void)
 			ucoord[part] = FrameKeyFrameValues[fkey] +
 				FrameKeyFrameDeltas[fkey] * (float)(part_age - FrameKeyFrameTimes[fkey]) +
 				RandomFrameEntries[part & NumRandomFrameEntriesMinus1];			
-#endif
+#endif // ZH
 	}
 #ifdef ZH
 
@@ -3087,14 +3087,14 @@ void ParticleBufferClass::Update_Visual_Particle_State(void)
 				blur_time = BlurTimeKeyFrameValues[bkey] +
 					BlurTimeKeyFrameDeltas[bkey] * (float)(part_age - BlurTimeKeyFrameTimes[bkey]) +
 					RandomBlurTimeEntries[part & NumRandomBlurTimeEntriesMinus1];
-#endif
+#endif // ZH
 }
 #ifdef ZH
 			tailposition[part]=position[part]-Velocity[part]*blur_time*1000;
 		}
 	}
 }
-#endif
+#endif // ZH
 
 
 void ParticleBufferClass::Update_Bounding_Box(void)
@@ -3186,7 +3186,7 @@ void ParticleBufferClass::Get_New_Particles(void)
 
 #ifdef ZH
 	unsigned char * ids = GroupID->Get_Array();
-#endif
+#endif // ZH
 	for (; NewParticleQueueCount;) {
 
 		// Get particle off new particle queue:
@@ -3222,7 +3222,7 @@ void ParticleBufferClass::Get_New_Particles(void)
 
 		// upate the group id
 		ids[NewEnd] = new_particle.GroupID;
-#endif
+#endif // ZH
 
 		// Advance the 'end of new particles' index.
 		NewEnd++;
@@ -3619,10 +3619,10 @@ void ParticleBufferClass::Get_Frame_Key_Frames (ParticlePropertyStruct<float> &f
 	//	If we have more than just the start rotation, build
 #ifdef OG
 	// an array of key times and rotation values
-#endif
+#endif // OG
 #ifdef ZH
 	// an array of key times and frame values
-#endif
+#endif // ZH
 	//
 	if (real_keyframe_count > 0) {
 		frames.KeyTimes	= W3DNEWARRAY float[real_keyframe_count];
@@ -3669,7 +3669,7 @@ void ParticleBufferClass::Get_Blur_Time_Key_Frames (ParticlePropertyStruct<float
 		 (BlurTimeKeyFrameDeltas[NumBlurTimeKeyFrames - 1] != 0)) {
 		real_keyframe_count ++;
 		create_last_keyframe = true;
-#endif
+#endif // ZH
 		}
 #ifdef ZH
 
@@ -3710,7 +3710,7 @@ void ParticleBufferClass::Get_Blur_Time_Key_Frames (ParticlePropertyStruct<float
 			float time_delta			= MaxAge - BlurTimeKeyFrameTimes[index - 1];
 			blurtimes.Values[index - 1]	= start_blurtime + (delta * time_delta);
 		}
-#endif
+#endif // ZH
 	}
 
 	return ;
@@ -3858,7 +3858,7 @@ TextureClass * ParticleBufferClass::Get_Texture (void) const
 	else if (LineGroup) return LineGroup->Get_Texture();
 	else if (LineRenderer) return LineRenderer->Get_Texture();
 	return NULL;
-#endif
+#endif // ZH
 }
 
 #ifdef ZH
@@ -3878,5 +3878,5 @@ ShaderClass ParticleBufferClass::Get_Shader (void) const
 	WWASSERT(0);
 	return ShaderClass::_PresetOpaqueShader;
 }
-#endif
+#endif // ZH
 

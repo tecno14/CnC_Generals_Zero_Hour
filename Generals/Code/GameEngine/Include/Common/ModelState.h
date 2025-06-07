@@ -36,7 +36,7 @@
 #include "Common/BitFlags.h"
 #ifdef ZH
 #include "Common/BitFlagsIO.h"
-#endif
+#endif // ZH
 
 //-------------------------------------------------------------------------------------------------
 
@@ -88,7 +88,7 @@
 #ifdef ZH
 
 #define NUM_MODELCONDITION_DOOR_STATES 4
-#endif
+#endif // ZH
 
 //-------------------------------------------------------------------------------------------------
 // IMPORTANT NOTE: you should endeavor to set up states such that the most "normal"
@@ -230,7 +230,7 @@ enum ModelConditionFlagType
 	MODELCONDITION_RIDER6,
 	MODELCONDITION_RIDER7,
 	MODELCONDITION_RIDER8,
-#endif
+#endif // ZH
 
 #ifdef ZH
 	MODELCONDITION_STUNNED_FLAILING, // Daniel Teh's idea, added by Lorenzen, 5/28/03
@@ -244,7 +244,7 @@ enum ModelConditionFlagType
 	MODELCONDITION_USER_2,
 
 	MODELCONDITION_DISGUISED,
-#endif
+#endif // ZH
 //
 // Note: these values are saved in save files, so you MUST NOT REMOVE OR CHANGE
 // existing values!

@@ -24,31 +24,31 @@
  *                                                                                             * 
 #ifdef OG
  *                     $Archive:: /Commando/Library/RAMFILE.H                                 $* 
-#endif
+#endif // OG
 #ifdef ZH
  *                     $Archive:: /Commando/Code/wwlib/ramfile.h                              $* 
-#endif
+#endif // ZH
  *                                                                                             * 
 #ifdef OG
  *                      $Author:: Greg_h                                                      $*
-#endif
+#endif // OG
 #ifdef ZH
  *                      $Author:: Ian_l                                                       $*
-#endif
+#endif // ZH
  *                                                                                             * 
 #ifdef OG
  *                     $Modtime:: 7/22/97 11:37a                                              $*
-#endif
+#endif // OG
 #ifdef ZH
  *                     $Modtime:: 10/31/01 2:02p                                              $*
-#endif
+#endif // ZH
  *                                                                                             * 
 #ifdef OG
  *                    $Revision:: 1                                                           $*
-#endif
+#endif // OG
 #ifdef ZH
  *                    $Revision:: 2                                                           $*
-#endif
+#endif // ZH
  *                                                                                             *
  *---------------------------------------------------------------------------------------------* 
  * Functions:                                                                                  * 
@@ -84,7 +84,7 @@ class RAMFileClass : public FileClass
 		virtual void Error(int , int = false, char const * =NULL) {}
 #ifdef ZH
 		virtual void Bias(int start, int length=-1);
-#endif
+#endif // ZH
 
 		operator char const * () {return File_Name();}
 

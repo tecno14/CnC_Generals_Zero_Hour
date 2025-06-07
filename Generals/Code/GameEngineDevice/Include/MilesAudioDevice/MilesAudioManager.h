@@ -56,20 +56,20 @@ struct PlayingAudio
 #ifdef OG
 	union
 	{
-#endif
+#endif // OG
 #ifdef ZH
 //	union
 //	{
-#endif
+#endif // ZH
 		HSAMPLE m_sample;
 		H3DSAMPLE m_3DSample;
 		HSTREAM m_stream;
 #ifdef OG
 	};
-#endif
+#endif // OG
 #ifdef ZH
 //	};
-#endif
+#endif // ZH
 
 	PlayingAudioType m_type;
 	volatile PlayingStatus m_status;	// This member is adjusted by another running thread.
@@ -88,7 +88,7 @@ struct PlayingAudio
 		m_sample(0), 
 		m_3DSample(0),
 		m_stream(0),
-#endif
+#endif // ZH
 		m_framesFaded(0)
 	{ }
 };
@@ -187,7 +187,7 @@ class MilesAudioManager : public AudioManager
 		virtual void stopAllAmbientsBy( Object *objID );
 		virtual void stopAllAmbientsBy( Drawable *drawID );
 
-#endif
+#endif // OG
 		///< Return whether the current audio is playing or not. 
 		///< NOTE NOTE NOTE !!DO NOT USE THIS IN FOR GAMELOGIC PURPOSES!! NOTE NOTE NOTE
 		virtual Bool isCurrentlyPlaying( AudioHandle handle );
@@ -248,7 +248,7 @@ class MilesAudioManager : public AudioManager
     
     virtual Bool has3DSensitiveStreamsPlaying( void ) const; 
 
-#endif
+#endif // ZH
 
 	protected:	
 		// 3-D functions

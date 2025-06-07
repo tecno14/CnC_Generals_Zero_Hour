@@ -121,7 +121,7 @@ void ControlBar::populateStructureInventory( Object *building )
 		}
 	}
 	
-#endif
+#endif // ZH
 	// get the contain module of the object
 	ContainModuleInterface *contain = building->getContain();
 	DEBUG_ASSERTCRASH( contain, ("Object in structure inventory does not contain a Contain Module\n") );

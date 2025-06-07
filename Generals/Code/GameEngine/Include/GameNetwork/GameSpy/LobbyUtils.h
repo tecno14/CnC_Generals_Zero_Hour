@@ -47,7 +47,7 @@ void ToggleGameListType( void );
 void playerTemplateComboBoxTooltip(GameWindow *wndComboBox, WinInstanceData *instData, UnsignedInt mouse);
 void playerTemplateListBoxTooltip(GameWindow *wndListBox, WinInstanceData *instData, UnsignedInt mouse);
 
-#endif
+#endif // ZH
 enum GameSortType
 {
 	GAMESORT_ALPHA_ASCENDING = 0,

@@ -24,31 +24,31 @@
  *                                                                                             *
 #ifdef OG
  *                     $Archive:: /G/wwlib/listnode.h                                         $*
-#endif
+#endif // OG
 #ifdef ZH
  *                     $Archive:: /Commando/Code/wwlib/listnode.h                             $*
-#endif
+#endif // ZH
  *                                                                                             *
 #ifdef OG
  *                      $Author:: David_m                                                     $*
-#endif
+#endif // OG
 #ifdef ZH
  *                      $Author:: Ian_l                                                       $*
-#endif
+#endif // ZH
  *                                                                                             *
 #ifdef OG
  *                     $Modtime:: 4/05/00 12:34p                                              $*
-#endif
+#endif // OG
 #ifdef ZH
  *                     $Modtime:: 9/20/01 9:46p                                               $*
-#endif
+#endif // ZH
  *                                                                                             *
 #ifdef OG
  *                    $Revision:: 3                                                           $*
-#endif
+#endif // OG
 #ifdef ZH
  *                    $Revision:: 4                                                           $*
-#endif
+#endif // ZH
  *                                                                                             *
  *---------------------------------------------------------------------------------------------*
  * Functions:                                                                                  *

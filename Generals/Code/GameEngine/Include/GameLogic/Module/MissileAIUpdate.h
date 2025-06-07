@@ -61,13 +61,13 @@ public:
 	const FXList*		m_garrisonHitKillFX;
 #ifdef ZH
 	Real						m_distanceScatterWhenJammed;	///< How far I scatter when Jammed
-#endif
+#endif // ZH
 
 	Real						m_lockDistance;				///< If I get this close to my target, guaranteed hit.
 #ifdef ZH
 	Bool						m_detonateCallsKill;			///< if true, kill() will be called, instead of KILL_SELF state, which calls destroy.
   Int             m_killSelfDelay;      ///< If I have detonated and entered the KILL-SELF state, how ling do I wait before I Kill/destroy self?
-#endif
+#endif // ZH
 	MissileAIUpdateModuleData();
 
 	static void buildFieldParse(MultiIniFieldParse& p);
@@ -104,7 +104,7 @@ public:
 #ifdef ZH
 	virtual void setFramesTillCountermeasureDiversionOccurs( UnsignedInt frames ); ///< Number of frames till missile diverts to countermeasures.
 	virtual void projectileNowJammed();///< We lose our Object target and scatter to the ground
-#endif
+#endif // ZH
 
 	virtual Bool processCollision(PhysicsBehavior *physics, Object *other); ///< Returns true if the physics collide should apply the force.  Normally not.  jba.
 
@@ -123,11 +123,11 @@ private:
 #ifdef OG
 	ObjectID							m_launcherID;							///< ID of object that launched us (zero if not yet launched)
 	ObjectID							m_victimID;								///< ID of object that launched us (zero if not yet launched)
-#endif
+#endif // OG
 #ifdef ZH
 	ObjectID							m_launcherID;							///< ID of object that launched us (INVALID_ID if not yet launched)
 	ObjectID							m_victimID;								///< ID of object that I am rocketing towards (INVALID_ID if not yet launched)
-#endif
+#endif // ZH
 	UnsignedInt						m_fuelExpirationDate;			///< how long 'til we run out of fuel
 	Real									m_noTurnDistLeft;					///< when zero, ok to start turning
 	Real									m_maxAccel;
@@ -139,13 +139,13 @@ private:
 	ParticleSystemID			m_exhaustID;								///< our exhaust particle system (if any)
 #ifdef ZH
 	UnsignedInt						m_framesTillDecoyed;			///< Number of frames before missile will get distracted by decoy countermeasures.
-#endif
+#endif // ZH
 	Bool									m_isTrackingTarget;				///< Was I originally shot at a moving object?
 	Bool									m_isArmed;								///< if true, missile will explode on contact
 #ifdef ZH
 	Bool									m_noDamage;								///< if true, missile will not cause damage when it detonates. (Used for flares).
 	Bool									m_isJammed;								///< No target, just shooting at a scattered position
-#endif
+#endif // ZH
 
 	void doPrelaunchState();
 	void doLaunchState();

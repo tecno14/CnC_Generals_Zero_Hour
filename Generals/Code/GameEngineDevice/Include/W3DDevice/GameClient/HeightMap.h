@@ -53,11 +53,11 @@ class W3DCustomEdging;
 class W3DAssetManager;
 class SimpleSceneClass;
 class W3DShroud;
-#endif
+#endif // OG
 #ifdef ZH
 #include "BaseHeightMap.h"
 
-#endif
+#endif // ZH
 
 #ifdef OG
 #define no_TIMING_TESTS	1
@@ -71,7 +71,7 @@ typedef struct {
 	Int minY, maxY;
 } TBounds;
 
-#endif
+#endif // OG
 #define VERTEX_BUFFER_TILE_LENGTH	32		//tiles of side length 32 (grid of 33x33 vertices).
 
 #ifdef OG
@@ -94,7 +94,7 @@ class W3DDynamicLight;
 
 #define TEST_CUSTOM_EDGING	1
 
-#endif
+#endif // OG
 // Adjust the triangles to make cliff sides most attractive.  jba.
 #define FLIP_TRIANGLES 1
 
@@ -106,7 +106,7 @@ typedef struct {
 	Int			scorchType;
 } TScorch;
 #endif
-#endif
+#endif // OG
 
 /// Custom render object that draws the heightmap and handles intersection tests.
 /**
@@ -117,12 +117,12 @@ scorchmarks and intersection tests.
 #ifdef OG
 class HeightMapRenderObjClass : public RenderObjClass, public DX8_CleanupHook
 
-#endif
+#endif // OG
 #ifdef ZH
 
 
 class HeightMapRenderObjClass : public BaseHeightMapRenderObjClass
-#endif
+#endif // ZH
 {	
 
 public:
@@ -130,10 +130,10 @@ public:
 	HeightMapRenderObjClass(void);
 #ifdef OG
 	~HeightMapRenderObjClass(void);
-#endif
+#endif // OG
 #ifdef ZH
 	virtual ~HeightMapRenderObjClass(void);
-#endif
+#endif // ZH
 
 	// DX8_CleanupHook methods
 	virtual void ReleaseResources(void);	///< Release all dx8 resources so the device can be reset.
@@ -146,7 +146,7 @@ public:
 #ifdef OG
 	virtual RenderObjClass *	Clone(void) const;
 	virtual int						Class_ID(void) const;
-#endif
+#endif // OG
 	virtual void					Render(RenderInfoClass & rinfo);
 #ifdef OG
 	virtual bool					Cast_Ray(RayCollisionTestClass & raytest); // This CANNOT be Bool, as it will not inherit properly if you make Bool == Int
@@ -159,11 +159,11 @@ public:
 	virtual void					Get_Obj_Space_Bounding_Sphere(SphereClass & sphere) const;
 	virtual void					Get_Obj_Space_Bounding_Box(AABoxClass & aabox) const;
 
-#endif
+#endif // OG
 	virtual void					On_Frame_Update(void); 
 #ifdef OG
 	virtual void					Notify_Added(SceneClass * scene);
-#endif
+#endif // OG
 
 	///allocate resources needed to render heightmap
 #ifdef OG
@@ -187,13 +187,13 @@ public:
 		return m_map->getDataPtr()[x + y*m_map->getXExtent()];
 	}
 	void updateCenter(CameraClass *camera, RefRenderObjListIterator *pLightsIterator);
-#endif
+#endif // OG
 #ifdef ZH
 	virtual int initHeightData(Int width, Int height, WorldHeightMap *pMap, RefRenderObjListIterator *pLightsIterator, Bool updateExtraPassTiles=TRUE);
 	virtual Int freeMapResources(void);	///< free resources used to render heightmap
 	virtual void updateCenter(CameraClass *camera, RefRenderObjListIterator *pLightsIterator);
 
-#endif
+#endif // ZH
 
 #ifdef OG
 	/// Update the macro texture (pass 3).
@@ -219,7 +219,7 @@ public:
 
 	void renderTerrainPass(CameraClass *pCamera);	///< renders additional terrain pass.
 	W3DShroud *getShroud()	{return m_shroud;}
-#endif
+#endif // OG
 	void renderExtraBlendTiles(void);			///< render 3-way blend tiles that have blend of 3 textures.
 #ifdef OG
 	void updateShorelineTiles(Int minX, Int minY, Int maxX, Int maxY, WorldHeightMap *pMap);	///<figure out which tiles on this map cross water plane
@@ -233,7 +233,7 @@ public:
 	void adjustTerrainLOD(Int adj);
 	void reset(void);
 	void doPartialUpdate(const IRegion2D &partialRange, WorldHeightMap *htMap, RefRenderObjListIterator *pLightsIterator);
-#endif
+#endif // OG
 
 #ifdef OG
 	Int	getNumExtraBlendTiles(void) { return m_numExtraBlendTiles;}
@@ -247,26 +247,26 @@ public:
 	Real getMaxCellHeight(Real x, Real y) const;	///< returns maximum height of the 4 cell corners.
 	WorldHeightMap *getMap(void) {return m_map;}	///< returns object holding the heightmap samples - need this for fast access.
 	Bool isClearLineOfSight(const Coord3D& pos, const Coord3D& posOther) const;
-#endif
+#endif // OG
 
 #ifdef OG
 	Bool getShowImpassableAreas(void) {return m_showImpassableAreas;}
 	void setShowImpassableAreas(Bool show) {m_showImpassableAreas = show;}
 
-#endif
+#endif // OG
 #ifdef ZH
 	virtual void staticLightingChanged(void);
 	virtual	void adjustTerrainLOD(Int adj);
 	virtual void reset(void);
 	virtual void doPartialUpdate(const IRegion2D &partialRange, WorldHeightMap *htMap, RefRenderObjListIterator *pLightsIterator);
-#endif
+#endif // ZH
 
 #ifdef OG
 	Bool showAsVisibleCliff(Int xIndex, Int yIndex) const;
-#endif
+#endif // OG
 #ifdef ZH
 	virtual void oversizeTerrain(Int tilesToOversize);
-#endif
+#endif // ZH
 	
 #ifdef OG
 	Bool evaluateAsVisibleCliff(Int xIndex, Int yIndex, Real valuesGreaterThanRad);
@@ -277,11 +277,11 @@ public:
 	void setViewImpassableAreaSlope(Real viewSlope) { m_curImpassableSlope = viewSlope; }
 	
 	Bool doesNeedFullUpdate(void) {return m_needFullUpdate;}
-#endif
+#endif // OG
 #ifdef ZH
 	virtual int updateBlock(Int x0, Int y0, Int x1, Int y1, WorldHeightMap *pMap, RefRenderObjListIterator *pLightsIterator);
 
-#endif
+#endif // ZH
 
 protected:
 #ifdef OG
@@ -312,7 +312,7 @@ protected:
 	WorldHeightMap *m_map;
 	Int	m_x;	///< dimensions of heightmap 
 	Int	m_y;	///< dimensions of heightmap
-#endif
+#endif // OG
 #ifdef ZH
 	Int *m_extraBlendTilePositions;	///<array holding x,y tile positions of all extra blend tiles. (used for 3 textures per tile).
 	Int m_numExtraBlendTiles;		///<number of blend tiles in m_extraBlendTilePositions.
@@ -321,7 +321,7 @@ protected:
 	DX8VertexBufferClass	**m_vertexBufferTiles;	///<collection of smaller vertex buffers that make up 1 heightmap
 	char	**m_vertexBufferBackup;	///< In memory copy of the vertex buffer data for quick update of dynamic lighting.
 
-#endif
+#endif // ZH
 	Int m_originX; ///<  Origin point in the grid.  Slides around.
 	Int m_originY; ///< Origin point in the grid.  Slides around.
 #ifdef OG
@@ -334,11 +334,11 @@ protected:
 	Bool m_doXNextTime; ///< True if we updated y scroll, and need to do x scroll next frame.
 	Real	m_minHeight;	///<minimum value of height samples in heightmap
 	Real	m_maxHeight;	///<maximum value of height samples in heightmap
-#endif
+#endif // OG
 #ifdef ZH
 	DX8IndexBufferClass			*m_indexBuffer;	///<indices defining triangles in a VB tile.
 
-#endif
+#endif // ZH
 	Int	m_numVBTilesX;	///<dimensions of array containing all the vertex buffers 
 	Int	m_numVBTilesY;	///<dimensions of array containing all the vertex buffers
 	Int m_numVertexBufferTiles;	///<number of vertex buffers needed to store this heightmap
@@ -346,12 +346,12 @@ protected:
 	Int	m_numBlockRowsInLastVB;///<a VB tile may be partially filled, this indicates how many 2x2 vertex blocks are filled.
 #ifdef OG
 	Bool m_showImpassableAreas; ///< If true, shade impassable areas.
-#endif
+#endif // OG
 
 #ifdef OG
 	// STL is "smart." This is a variable sized bitset. Very memory efficient.
 	std::vector<bool> m_showAsVisibleCliff;
-#endif
+#endif // OG
 
 #ifdef OG
 
@@ -393,7 +393,7 @@ protected:
 	Int m_shoreLineTilePositionsSize;	///<total size of array including unused memory.
 	Real m_currentMinWaterOpacity;		///<current value inside the gradient lookup texture.
 	/// Update the diffuse value from dynamic light info for one vertex.
-#endif
+#endif // OG
 	UnsignedInt doTheDynamicLight(VERTEX_FORMAT *vb, VERTEX_FORMAT *vbMirror, Vector3*light, Vector3*normal, W3DDynamicLight *pLights[], Int numLights);
 	Int getXWithOrigin(Int x);
 	Int getYWithOrigin(Int x);
@@ -406,22 +406,22 @@ protected:
 #ifdef OG
 	int updateBlock(Int x0, Int y0, Int x1, Int y1, WorldHeightMap *pMap, RefRenderObjListIterator *pLightsIterator);
 	AABoxClass & getTileBoundingBox(AABoxClass *aabox, Int x, Int y);	///<Vertex buffer bounding box
-#endif
+#endif // OG
 	void initDestAlphaLUT(void);	///<initialize water depth LUT stored in m_destAlphaTexture
 #ifdef OG
 	void renderShoreLines(CameraClass *pCamera);	///<re-render parts of terrain that need custom blending into water edge
 
-#endif
+#endif // OG
 #ifdef ZH
 	void renderTerrainPass(CameraClass *pCamera);	///< renders additional terrain pass.
 	Int	getNumExtraBlendTiles(Bool visible) { return visible?m_numVisibleExtraBlendTiles:m_numExtraBlendTiles;}
 	void freeIndexVertexBuffers(void);
 
   
-#endif
+#endif // ZH
 };
 
 #ifdef OG
 extern HeightMapRenderObjClass *TheTerrainRenderObject;
-#endif
+#endif // OG
 #endif  // end __HEIGHTMAP_H_

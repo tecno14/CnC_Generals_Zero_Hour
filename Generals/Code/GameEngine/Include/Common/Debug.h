@@ -65,7 +65,7 @@ class AsciiString;
 	#define DISABLE_DEBUG_PROFILE 1
 #endif
 
-#endif
+#endif // ZH
 // These are stolen from the WW3D Debug file. REALLY useful. :-)
 #define STRING_IT(a) #a																				  
 #define TOKEN_IT(a) STRING_IT(,##a)
@@ -76,7 +76,7 @@ class AsciiString;
 // have any debugging of any kind.
 //#define DISABLE_DEBUG_LOGGING
 
-#endif
+#endif // OG
 // by default, turn on ALLOW_DEBUG_UTILS if _DEBUG is turned on.
 #if (defined(_DEBUG) || defined(_INTERNAL)) && !defined(ALLOW_DEBUG_UTILS) && !defined(DISABLE_ALLOW_DEBUG_UTILS)
 	#define ALLOW_DEBUG_UTILS 1
@@ -94,11 +94,11 @@ class AsciiString;
 
 // BGC - added the DEBUG_LOGGING term...doesn't make sense to do stack debugging without a debug log to print to.
 #if defined(ALLOW_DEBUG_UTILS) && !defined(DEBUG_STACKTRACE) && !defined(DISABLE_DEBUG_STACKTRACE) && defined(DEBUG_LOGGING)
-#endif
+#endif // OG
 #ifdef ZH
 #if defined(ALLOW_DEBUG_UTILS) && !defined(DEBUG_STACKTRACE) && !defined(DISABLE_DEBUG_STACKTRACE)
 
-#endif
+#endif // ZH
 	#define DEBUG_STACKTRACE 1
 #endif
 #if defined(ALLOW_DEBUG_UTILS) && !defined(DEBUG_PROFILE) && !defined(DISABLE_DEBUG_PROFILE)
@@ -177,11 +177,11 @@ class AsciiString;
 	};
 	extern const char *TheDebugLevels[DEBUG_LEVEL_MAX];
 
-#endif
+#endif // OG
 	#define DEBUG_LOG(m)						do { { DebugLog m ; } } while (0)
 #ifdef OG
 	#define DEBUG_LOG_LEVEL(l, m)		do { if (l & DebugLevelMask) { DebugLog m ; } } while (0)
-#endif
+#endif // OG
 	#define DEBUG_ASSERTLOG(c, m)		do { { if (!(c)) DebugLog m ; } } while (0)
 
 #else
@@ -189,7 +189,7 @@ class AsciiString;
 	#define DEBUG_LOG(m)						((void)0)
 #ifdef OG
 	#define DEBUG_LOG_LEVEL(l, m)		((void)0)
-#endif
+#endif // OG
 	#define DEBUG_ASSERTLOG(c, m)		((void)0)
 
 #endif

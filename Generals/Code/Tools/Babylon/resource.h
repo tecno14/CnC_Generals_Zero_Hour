@@ -17,15 +17,15 @@
 **	along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#endif
+#endif // ZH
 //{{NO_DEPENDENCIES}}
 // Microsoft Developer Studio generated include file.
 #ifdef OG
 // Used by noxstring.rc
-#endif
+#endif // OG
 #ifdef ZH
 // Used by Babylon.rc
-#endif
+#endif // ZH
 //
 #define IDM_ABOUTBOX                    0x0010
 #define IDM_PIC                         0x0010
@@ -34,10 +34,10 @@
 #define IDS_ABOUTBOX                    101
 #ifdef OG
 #define IDD_NOXSTRING_DIALOG            102
-#endif
+#endif // OG
 #ifdef ZH
 #define IDD_BABYLON_DIALOG            102
-#endif
+#endif // ZH
 #define IDR_MAINFRAME                   128
 #define IDD_VIEWDBS                     129
 #define IDD_EXPORT                      133
@@ -96,10 +96,10 @@
 #define IDC_RADIOUNSENT                 1037
 #ifdef OG
 #define IDC_NOXSTR                      1038
-#endif
+#endif // OG
 #ifdef ZH
 #define IDC_BABYLONSTR                      1038
-#endif
+#endif // ZH
 #define IDC_PREFIX                      1039
 #define IDC_LANGUAGE                    1040
 #define IDC_PERCENT                     1041

@@ -148,4 +148,4 @@ extern const Color GameSpyColor[GSCOLOR_MAX];
 
 #endif // __GameSpy_H__
 
-#endif
+#endif // OG

@@ -89,4 +89,4 @@ protected:
 
 #endif // __FIRE_WEAPON_POWER_H
 
-#endif
+#endif // ZH

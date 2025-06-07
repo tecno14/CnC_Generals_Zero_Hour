@@ -132,4 +132,4 @@ BEGIN_MESSAGE_MAP(RulerOptions, COptionsPanel)
 END_MESSAGE_MAP()
 
 
-#endif
+#endif // ZH

@@ -118,7 +118,7 @@ struct FileInfo {
 //===============================
 #ifdef ZH
 #include <map>
-#endif
+#endif // ZH
 
 class FileSystem : public SubsystemInterface
 {
@@ -126,7 +126,7 @@ class FileSystem : public SubsystemInterface
   FileSystem(const FileSystem&);
   FileSystem& operator=(const FileSystem&);
   
-#endif
+#endif // ZH
 public:
 	FileSystem();
 	virtual	~FileSystem();
@@ -149,7 +149,7 @@ protected:
 #ifdef ZH
   mutable std::map<unsigned,bool> m_fileExist;
 
-#endif
+#endif // ZH
 };
 
 extern FileSystem*	TheFileSystem;

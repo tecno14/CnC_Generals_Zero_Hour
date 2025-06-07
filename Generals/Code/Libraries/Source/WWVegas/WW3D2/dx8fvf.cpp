@@ -40,7 +40,7 @@
  * Functions:                                                                                  *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-#endif
+#endif // ZH
 #include "dx8fvf.h"
 #include "wwstring.h"
 #include <D3dx8core.h>
@@ -52,18 +52,18 @@ static unsigned Get_FVF_Vertex_Size(unsigned FVF)
 
 #ifdef OG
 FVFInfoClass::FVFInfoClass(unsigned FVF_) 
-#endif
+#endif // OG
 #ifdef ZH
 FVFInfoClass::FVFInfoClass(unsigned FVF_, unsigned vertex_size) 
-#endif
+#endif // ZH
 	:
 	FVF(FVF_),
 #ifdef OG
 	fvf_size(Get_FVF_Vertex_Size(FVF))
-#endif
+#endif // OG
 #ifdef ZH
 	fvf_size(FVF!=0 ? Get_FVF_Vertex_Size(FVF) : vertex_size)
-#endif
+#endif // ZH
 {
 	location_offset=0;
 	blend_offset=location_offset;
@@ -111,7 +111,7 @@ void FVFInfoClass::Get_FVF_Name(StringClass& fvfname) const
 	case DX8_FVF_XYZNDUV1TG3 : fvfname="(D3DFVF_XYZ|D3DFVF_NORMAL|D3DFVF_DIFFUSE|D3DFVF_TEX4|D3DFVF_TEXCOORDSIZE2(0)|D3DFVF_TEXCOORDSIZE3(1)|D3DFVF_TEXCOORDSIZE3(2)|D3DFVF_TEXCOORDSIZE3(3))"; break;
 	case DX8_FVF_XYZNUV2DMAP :	fvfname="(D3DFVF_XYZ|D3DFVF_NORMAL|D3DFVF_TEX3|D3DFVF_TEXCOORDSIZE1(0)|D3DFVF_TEXCOORDSIZE4(1)|D3DFVF_TEXCOORDSIZE2(2))"; break;
 	case DX8_FVF_XYZNDCUBEMAP : fvfname="(D3DFVF_XYZ|D3DFVF_NORMAL|D3DFVF_DIFFUSE|D3DFVF_TEX1|D3DFVFTEXCOORDSIZE3(0)"; break;
-#endif
+#endif // ZH
 	default: fvfname="Unknown!";
 	}
 }

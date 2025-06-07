@@ -51,7 +51,7 @@ m_isWaterArea(false),
 #ifdef ZH
 m_shouldRender(true),
 m_selected(false),
-#endif
+#endif // ZH
 //Added By Sadullah Nader
 //Initializations inserted
 m_isRiver(FALSE),
@@ -146,7 +146,7 @@ Bool PolygonTrigger::ParsePolygonTriggersDataChunk(DataChunkInput &file, DataChu
 	AsciiString triggerName;
 #ifdef ZH
 	AsciiString layerName;
-#endif
+#endif // ZH
 	// Remove any existing polygon triggers, if any.
 	PolygonTrigger::deleteTriggers(); // just in case.
 	PolygonTrigger *pPrevTrig = NULL;
@@ -159,7 +159,7 @@ Bool PolygonTrigger::ParsePolygonTriggersDataChunk(DataChunkInput &file, DataChu
 		if (info->version >= K_TRIGGERS_VERSION_4) {
 			layerName = file.readAsciiString();
 		}
-#endif
+#endif // ZH
 		triggerID = file.readInt();
 		isWater = false;
 		if (info->version >= K_TRIGGERS_VERSION_2) {
@@ -179,7 +179,7 @@ Bool PolygonTrigger::ParsePolygonTriggersDataChunk(DataChunkInput &file, DataChu
 		if (info->version >= K_TRIGGERS_VERSION_4) {
 			pTrig->setLayerName(layerName);
 		}
-#endif
+#endif // ZH
 		pTrig->setWaterArea(isWater);
 		pTrig->setRiver(isRiver);
 		pTrig->setRiverStart(riverStart);
@@ -200,7 +200,7 @@ Bool PolygonTrigger::ParsePolygonTriggersDataChunk(DataChunkInput &file, DataChu
 					pTrig->getTriggerName().str(), numPoints));
 			pTrig->deleteInstance();
 			continue;
-#endif
+#endif // ZH
 		}
 		if (pPrevTrig) {
 			pPrevTrig->setNextPoly(pTrig);
@@ -251,10 +251,10 @@ void PolygonTrigger::WritePolygonTriggersDataChunk(DataChunkOutput &chunkWriter)
 {
 #ifdef OG
 	chunkWriter.openDataChunk("PolygonTriggers", 	K_TRIGGERS_VERSION_3);
-#endif
+#endif // OG
 #ifdef ZH
 	chunkWriter.openDataChunk("PolygonTriggers", 	K_TRIGGERS_VERSION_4);
-#endif
+#endif // ZH
 		
 		PolygonTrigger *pTrig;
 		Int count = 0;
@@ -266,7 +266,7 @@ void PolygonTrigger::WritePolygonTriggersDataChunk(DataChunkOutput &chunkWriter)
 			chunkWriter.writeAsciiString(pTrig->getTriggerName());	
 #ifdef ZH
 			chunkWriter.writeAsciiString(pTrig->getLayerName());	
-#endif
+#endif // ZH
 			chunkWriter.writeInt(pTrig->getID()); 
 			chunkWriter.writeByte(pTrig->isWaterArea());
 			chunkWriter.writeByte(pTrig->isRiver());

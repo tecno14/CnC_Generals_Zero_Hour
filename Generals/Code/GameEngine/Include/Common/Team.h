@@ -476,10 +476,10 @@ public:
 		*/
 #ifdef OG
 	const Coord3D* getEstimateTeamPosition(void);
-#endif
+#endif // OG
 #ifdef ZH
 	const Coord3D* getEstimateTeamPosition(void) const;
-#endif
+#endif // ZH
 	
 	/**
 		a convenience routine to move a team's units to another team.

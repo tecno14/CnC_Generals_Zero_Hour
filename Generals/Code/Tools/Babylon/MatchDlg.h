@@ -70,12 +70,12 @@ protected:
 extern NoxText *MatchingNoxText;
 extern NoxText *MatchOriginalText;
 extern NoxLabel *MatchLabel;
-#endif
+#endif // OG
 #ifdef ZH
 extern BabylonText *MatchingBabylonText;
 extern BabylonText *MatchOriginalText;
 extern BabylonLabel *MatchLabel;
-#endif
+#endif // ZH
 
 //{{AFX_INSERT_LOCATION}}
 // Microsoft Visual C++ will insert additional declarations immediately before the previous line.

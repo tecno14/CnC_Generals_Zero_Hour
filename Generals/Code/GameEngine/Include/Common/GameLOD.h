@@ -115,7 +115,7 @@ struct StaticGameLODInfo
 	Bool m_useEmissiveNightMaterials; ///<perform second lighting pass on night buildings. 
 #ifdef ZH
 	Bool m_useHeatEffects;			///<draw heat distortion effects (i.e Microwave Tank).
-#endif
+#endif // ZH
 	Int m_textureReduction;	///<reduce texture resolution by dividing in half n times.
 	Bool m_useFpsLimit;	///<don't lock fps to 30hz
 	Bool m_enableDynamicLOD;	///<don't do dynamic lod based on current fps.
@@ -224,10 +224,10 @@ protected:
 	Real m_compositeBenchIndex;
 #ifdef OG
 	Real m_currentTextureReduction;
-#endif
+#endif // OG
 #ifdef ZH
 	Int m_currentTextureReduction;
-#endif
+#endif // ZH
 	Int m_reallyLowMHz;
 };
 

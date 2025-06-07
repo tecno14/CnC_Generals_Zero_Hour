@@ -1236,4 +1236,4 @@ const char *DebugGetDefaultCommands(void);
 
 #endif // DEBUG_DEBUG_H
 
-#endif
+#endif // ZH

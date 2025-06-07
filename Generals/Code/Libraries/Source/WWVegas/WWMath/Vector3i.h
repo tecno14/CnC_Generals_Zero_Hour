@@ -28,17 +28,17 @@
  *                                                                                             *
 #ifdef OG
  *                     $Modtime:: 5/10/01 11:37p                                              $*
-#endif
+#endif // OG
 #ifdef ZH
  *                     $Modtime:: 11/24/01 5:24p                                              $*
-#endif
+#endif // ZH
  *                                                                                             *
 #ifdef OG
  *                    $Revision:: 4                                                           $*
-#endif
+#endif // OG
 #ifdef ZH
  *                    $Revision:: 5                                                           $*
-#endif
+#endif // ZH
  *                                                                                             *
  *---------------------------------------------------------------------------------------------*
  * Functions:                                                                                  *
@@ -148,7 +148,7 @@ WWINLINE const unsigned short & Vector3i16::operator[] (int n) const
 WWINLINE unsigned short & Vector3i16::operator[] (int n)
 { 
 	return ((unsigned short *)this)[n]; 
-#endif
+#endif // ZH
 }
 
 #endif

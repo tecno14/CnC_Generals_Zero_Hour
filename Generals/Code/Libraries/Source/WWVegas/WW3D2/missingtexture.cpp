@@ -18,7 +18,7 @@
 
 #ifdef ZH
 // 08/05/02 KM Texture class redesign
-#endif
+#endif // ZH
 #include "missingtexture.h"
 #include "texture.h"
 #include "dx8wrapper.h"
@@ -66,22 +66,22 @@ void MissingTexture::_Init()
 #ifdef OG
 	IDirect3DTexture8* tex=DX8Wrapper::_Create_DX8_Texture(
 
-#endif
+#endif // OG
 #ifdef ZH
 	IDirect3DTexture8* tex=DX8Wrapper::_Create_DX8_Texture
 	(
-#endif
+#endif // ZH
 		missing_image_width,
 		missing_image_height,
 		WW3D_FORMAT_A8R8G8B8,
 #ifdef OG
 		TextureClass::MIP_LEVELS_ALL);
 
-#endif
+#endif // OG
 #ifdef ZH
 		MIP_LEVELS_ALL
 	);
-#endif
+#endif // ZH
 
 	D3DLOCKED_RECT locked_rect;
 	RECT rect;

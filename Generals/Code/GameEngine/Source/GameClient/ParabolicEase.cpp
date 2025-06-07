@@ -105,4 +105,4 @@ ParabolicEase::operator ()(Real param) const
 #endif
 }
 
-#endif
+#endif // ZH

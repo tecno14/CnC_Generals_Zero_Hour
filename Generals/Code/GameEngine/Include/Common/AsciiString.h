@@ -60,7 +60,7 @@ class UnicodeString;
 #ifdef ZH
 #include "windows.h"
 
-#endif
+#endif // ZH
 // -----------------------------------------------------
 /**
 	AsciiString is the fundamental single-byte string type used in the Generals
@@ -111,7 +111,7 @@ private:
 #ifdef ZH
 
   void freeBytes(void);
-#endif
+#endif // ZH
 
 protected:
 	AsciiStringData* m_data;   // pointer to ref counted string data
@@ -370,12 +370,12 @@ inline AsciiString::AsciiString(const char* s) : m_data(0)
 	//DEBUG_ASSERTCRASH(isMemoryManagerOfficiallyInited(), ("Initializing AsciiStrings prior to main (ie, as static vars) can cause memory leak reporting problems. Are you sure you want to do this?\n"));
 	int len = (s)?strlen(s):0;
 	if (len)
-#endif
+#endif // ZH
 {
 #ifdef ZH
 		ensureUniqueBufferOfSize(len + 1, false, s, NULL);
 	}
-#endif
+#endif // ZH
 	validate();
 }
 
@@ -409,7 +409,7 @@ inline void AsciiString::releaseBuffer()
 }
 
 // -----------------------------------------------------
-#endif
+#endif // ZH
 inline AsciiString::~AsciiString()
 {
 	validate();
@@ -496,7 +496,7 @@ inline void AsciiString::set(const char* s)
 		}
 	}
 	validate();
-#endif
+#endif // ZH
 }
 
 // -----------------------------------------------------
@@ -535,7 +535,7 @@ inline void AsciiString::concat(const char* s)
 		set(s);
 	}
 	validate();
-#endif
+#endif // ZH
 }
 
 // -----------------------------------------------------

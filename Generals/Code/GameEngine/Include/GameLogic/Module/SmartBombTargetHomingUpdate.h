@@ -88,4 +88,4 @@ protected:
 #endif // __SMARTBOMB_UPDATE_H_
 
 
-#endif
+#endif // ZH

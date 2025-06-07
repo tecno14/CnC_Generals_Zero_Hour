@@ -85,7 +85,7 @@ enum AudioControl
 #ifdef ZH
 class DynamicAudioEventInfo;
 
-#endif
+#endif // ZH
 struct AudioEventInfo : public MemoryPoolObject
 {
 	MEMORY_POOL_GLUE_WITH_USERLOOKUP_CREATE( AudioEventInfo, "AudioEventInfo" )
@@ -132,7 +132,7 @@ public:
   /// Is this a permenant sound? That is, if I start this sound up, will it ever end
   /// "on its own" or only if I explicitly kill it?
   Bool isPermanentSound() const { return BitTest( m_control, AC_LOOP ) && (m_loopCount == 0 );  }
-#endif
+#endif // ZH
 	
 	static const FieldParse m_audioEventInfo[];		///< the parse table for INI definition
 	const FieldParse *getFieldParse( void ) const { return m_audioEventInfo; }

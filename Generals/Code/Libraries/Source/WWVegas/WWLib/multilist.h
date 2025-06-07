@@ -185,7 +185,7 @@ public:
 	void				Last(GenericMultiListClass *list)		{ List = list; CurNode = List->Head.Prev; }
 	void				Last(void)										{ CurNode = List->Head.Prev; }
 
-#endif
+#endif // ZH
 	void				Next(void)										{ CurNode = CurNode->Next; }
 	void				Prev(void)										{ CurNode = CurNode->Prev; }
 	bool				Is_Done(void)									{ return (CurNode == &(List->Head)); }

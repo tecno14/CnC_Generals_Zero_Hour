@@ -68,7 +68,7 @@ static void doGameStart( void )
 {
 #ifdef OG
 #if !defined(_PLAYTEST)
-#endif
+#endif // OG
 	startGame = false;
 
 	if (TheGameLogic->isInGame())
@@ -92,7 +92,7 @@ static void doGameStart( void )
 	isShuttingDown = true;
 #ifdef OG
 #endif
-#endif
+#endif // OG
 }
 
 

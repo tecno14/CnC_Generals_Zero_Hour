@@ -44,7 +44,7 @@
 #include "Common/ThingTemplate.h"
 #ifdef ZH
 #include "Common/ThingSort.h"
-#endif
+#endif // ZH
 #include "Common/PerfTimer.h"
 #include "Common/PlayerList.h"
 #include "Common/Player.h"
@@ -75,7 +75,7 @@
 #include "GameLogic/TerrainLogic.h"									///< @todo This should be TerrainVisual (client side)
 #ifdef ZH
 #include "Common/AudioEventInfo.h"
-#endif
+#endif // ZH
 
 #include "W3DDevice/Common/W3DConvert.h"
 #include "W3DDevice/GameClient/HeightMap.h"
@@ -98,7 +98,7 @@
 #ifdef ZH
 #include "W3DDevice/GameClient/camerashakesystem.h"
 
-#endif
+#endif // ZH
 #include "WinMain.h"  /** @todo Remove this, it's only here because we
 													are using timeGetTime, but we can remove that
 													when we have our own timer */
@@ -175,11 +175,11 @@ W3DView::W3DView()
 #ifdef OG
 	m_viewFilterMode = FM_NULL_MODE;
 	m_viewFilter = FT_NULL_FILTER;
-#endif
+#endif // OG
 #ifdef ZH
 	m_viewFilterMode = FM_VIEW_DEFAULT;
 	m_viewFilter = FT_VIEW_DEFAULT;
-#endif
+#endif // ZH
 	m_isWireFrameEnabled = m_nextWireFrameEnabled = FALSE;
 	m_shakeOffset.x = 0.0f;
 	m_shakeOffset.y = 0.0f;
@@ -198,7 +198,7 @@ W3DView::W3DView()
 	m_shakerAngles.X =0.0f;							// Proper camera shake generator & sources
 	m_shakerAngles.Y =0.0f;
 	m_shakerAngles.Z =0.0f;
-#endif
+#endif // ZH
 
 }  // end W3DView
 
@@ -271,7 +271,7 @@ void W3DView::setOrigin( Int x, Int y)
 //-------------------------------------------------------------------------------------------------
 #ifdef ZH
 #define MIN_CAPPED_ZOOM (0.5f) //WST 10.19.2002. JSC integrated 5/20/03.
-#endif
+#endif // ZH
 void W3DView::buildCameraTransform( Matrix3D *transform )
 {
 	Vector3 sourcePos, targetPos;
@@ -315,13 +315,13 @@ void W3DView::buildCameraTransform( Matrix3D *transform )
 	}
 	else
 	{
-#endif
+#endif // ZH
 	sourcePos.X = m_cameraOffset.x*zoom;
 	sourcePos.Y = m_cameraOffset.y*zoom;
 	sourcePos.Z = m_cameraOffset.z*zoom;
 #ifdef ZH
 	}
-#endif
+#endif // ZH
 
 #ifdef NOT_IN_USE
 	if (TheGlobalData->m_isOffsetCameraZ && TheTerrainLogic)
@@ -412,7 +412,7 @@ void W3DView::buildCameraTransform( Matrix3D *transform )
 	{
 		if (m_FXPitch <= 1.0f)
 		{
-#endif
+#endif // ZH
 	Real height = sourcePos.Z - targetPos.Z;
 	height *= m_FXPitch;
 	targetPos.Z = sourcePos.Z - height;
@@ -428,7 +428,7 @@ void W3DView::buildCameraTransform( Matrix3D *transform )
 	//m_3DCamera->Set_View_Plane(DEG_TO_RADF(50.0f));
 	//DEBUG_LOG(("zoom %f, SourceZ %f, posZ %f, groundLevel %f CamOffZ %f\n",
 	//			zoom, sourcePos.Z, pos.z, groundLevel,m_cameraOffset.z));
-#endif
+#endif // ZH
 
 	// build new camera transform
 	transform->Make_Identity();
@@ -480,7 +480,7 @@ void W3DView::buildCameraTransform( Matrix3D *transform )
 
 						break;
 					}
-#endif
+#endif // ZH
 }
 
 #ifdef ZH
@@ -493,7 +493,7 @@ void W3DView::buildCameraTransform( Matrix3D *transform )
 	}
 }
 
-#endif
+#endif // ZH
 //-------------------------------------------------------------------------------------------------
 //-------------------------------------------------------------------------------------------------
 void W3DView::calcCameraConstraints()
@@ -592,10 +592,10 @@ void W3DView::setCameraTransform( void )
 	Real nearZ, farZ;
 #ifdef OG
 	m_3DCamera->Get_Clip_Planes(nearZ, farZ);
-#endif
+#endif // OG
 #ifdef ZH
 	// m_3DCamera->Get_Clip_Planes(nearZ, farZ);
-#endif
+#endif // ZH
 	// Set the near to MAP_XY_FACTOR.  Improves zbuffer resolution.
 	nearZ = MAP_XY_FACTOR; 
 	farZ = 1200.0f;
@@ -610,13 +610,13 @@ void W3DView::setCameraTransform( void )
 	}
 	else
 	{
-#endif
+#endif // ZH
 	if ((TheGlobalData && TheGlobalData->m_drawEntireTerrain) || (m_FXPitch<0.95f || m_zoom>1.05))
 	{	//need to extend far clip plane so entire terrain can be visible
 		farZ *= MAP_XY_FACTOR;
 #ifdef ZH
 		}
-#endif
+#endif // ZH
 	}
 
 	m_3DCamera->Set_Clip_Planes(nearZ, farZ);
@@ -724,17 +724,17 @@ void W3DView::reset( void )
 	// anyways.
 #ifdef OG
 	resetCamera(&arbitraryPos, 1);
-#endif
+#endif // OG
 #ifdef ZH
 	resetCamera(&arbitraryPos, 1, 0.0f, 0.0f);
-#endif
+#endif // ZH
 
 #ifdef OG
 	setViewFilter((enum FilterTypes)0);
-#endif
+#endif // OG
 #ifdef ZH
 	setViewFilter(FT_VIEW_DEFAULT);
-#endif
+#endif // ZH
 
 	Coord2D gb = { 0,0 };
 	setGuardBandBias( &gb );
@@ -805,7 +805,7 @@ void drawDebugCircle( const Coord3D & center, Real radius, Real width, Color col
   }
 }
 
-#endif
+#endif // ZH
 void drawDrawableExtents( Drawable *draw, void *userData );  // FORWARD DECLARATION
 // ------------------------------------------------------------------------------------------------
 // ------------------------------------------------------------------------------------------------
@@ -882,19 +882,19 @@ static void drawDrawableExtents( Drawable *draw, void *userData )
 			Coord3D pnt, lastPnt;
 			ICoord2D start, end;
 			Real z = draw->getPosition()->z;
-#endif
+#endif // OG
 #ifdef ZH
       Coord3D center = *draw->getPosition();
       const Real radius = draw->getDrawableGeometryInfo().getMajorRadius();
 
-#endif
+#endif // ZH
 
 			// draw cylinder
 			for( int i=0; i<2; i++ )
 			{
 #ifdef ZH
         drawDebugCircle( center, radius, 1.0f, color );
-#endif
+#endif // ZH
 
 #ifdef OG
 				angle = 0.0f;
@@ -916,16 +916,16 @@ static void drawDrawableExtents( Drawable *draw, void *userData )
 					end = start;
 				}
 
-#endif
+#endif // OG
 				// next time 'round, draw the top of the cylinder
 #ifdef OG
 				z += draw->getDrawableGeometryInfo().getMaxHeightAbovePosition();
 
-#endif
+#endif // OG
 #ifdef ZH
         center.z += draw->getDrawableGeometryInfo().getMaxHeightAbovePosition();
 
-#endif
+#endif // ZH
 			}	// end for i
 
 			// draw centerline
@@ -936,7 +936,7 @@ static void drawDrawableExtents( Drawable *draw, void *userData )
 			TheTacticalView->worldToScreen( &pnt, &start );
 			pnt.z = draw->getPosition()->z + draw->getDrawableGeometryInfo().getMaxHeightAbovePosition();
 			TheTacticalView->worldToScreen( &pnt, &end );
-#endif
+#endif // OG
 #ifdef ZH
       ICoord2D start, end;
       center = *draw->getPosition();
@@ -944,7 +944,7 @@ static void drawDrawableExtents( Drawable *draw, void *userData )
       center.z += draw->getDrawableGeometryInfo().getMaxHeightAbovePosition();
       TheTacticalView->worldToScreen( &center, &end );
 
-#endif
+#endif // ZH
 			TheDisplay->drawLine( start.x, start.y, end.x, end.y, 1.0f, color );
 
 			break;
@@ -1077,7 +1077,7 @@ static void drawAudioRadii( const Drawable * drawable )
   }
 }
 
-#endif
+#endif // ZH
 #endif
 
 //-------------------------------------------------------------------------------------------------
@@ -1117,7 +1117,7 @@ static void drawablePostDraw( Drawable *draw, void *userData )
 
   if ( TheGlobalData->m_showAudioLocations )
     drawAudioLocations( draw, userData );
-#endif
+#endif // ZH
 #endif
 
 	// debug terrain normals at object positions
@@ -1223,7 +1223,7 @@ void W3DView::update(void)
 #ifdef ZH
 		m_CameraArrivedAtWaypointOnPathFlag = false;
 
-#endif
+#endif // ZH
 		Object* cameraLockObj = TheGameLogic->findObjectByID(cameraLock);
 		Bool loseLock = false;
 
@@ -1426,7 +1426,7 @@ void W3DView::update(void)
 		recalcCamera = true;
 	}
 
-#endif
+#endif // ZH
 	/*
 	 * In order to have the camera follow the terrain in a non-dizzying way, we will have a
 	 * "desired height" value that the user sets.  While scrolling, the actual height (set by
@@ -1442,13 +1442,13 @@ void W3DView::update(void)
 		Real desiredZoom = desiredHeight / m_cameraOffset.z;
 #ifdef OG
 #if !defined(_PLAYTEST)
-#endif
+#endif // OG
   	if (didScriptedMovement || (TheGameLogic->isInReplayGame() && TheGlobalData->m_useCameraInReplay))
 #ifdef OG
 #else
   	if (didScriptedMovement)
 #endif
-#endif
+#endif // OG
   	{
   		// if we are in a scripted camera movement, take its height above ground as our desired height.
   		m_heightAboveGround = m_currentHeightAboveGround;
@@ -1487,17 +1487,17 @@ void W3DView::update(void)
 #ifdef OG
 	if (recalcCamera)
 
-#endif
+#endif // OG
 #ifdef ZH
 	
 	// (gth) C&C3 if m_isCameraSlaved then force the camera to update each frame
 	if ((recalcCamera) || (m_isCameraSlaved)) {
-#endif
+#endif // ZH
 		setCameraTransform();
 #ifdef ZH
 	}
 
-#endif
+#endif // ZH
 
 #ifdef ZH
 #ifdef DO_SEISMIC_SIMULATIONS
@@ -1505,7 +1505,7 @@ void W3DView::update(void)
   TheTerrainVisual->updateSeismicSimulations();
 #endif
   
-#endif
+#endif // ZH
 	Region3D axisAlignedRegion;
 	getAxisAlignedViewRegion(axisAlignedRegion);
 
@@ -1661,7 +1661,7 @@ void W3DView::draw( void )
 	CustomScenePassModes customScenePassMode  = SCENE_PASS_DEFAULT;
 #ifdef ZH
 	Bool preRenderResult = false;
-#endif
+#endif // ZH
 
 	if (m_viewFilterMode && 
 			m_viewFilter > FT_NULL_FILTER && 
@@ -1670,10 +1670,10 @@ void W3DView::draw( void )
 		// Most likely will redirect rendering to a texture.
 #ifdef OG
 		W3DShaderManager::filterPreRender(m_viewFilter, skipRender, customScenePassMode);
-#endif
+#endif // OG
 #ifdef ZH
 		preRenderResult=W3DShaderManager::filterPreRender(m_viewFilter, skipRender, customScenePassMode);
-#endif
+#endif // ZH
 		if (!skipRender && getCameraLock()) 
 		{
 			Object* cameraLockObj = TheGameLogic->findObjectByID(getCameraLock());
@@ -1705,11 +1705,11 @@ void W3DView::draw( void )
 #ifdef OG
 		Bool continueTheEffect;
 
-#endif
+#endif // OG
 #ifdef ZH
 		Bool continueTheEffect = false;
 		if (preRenderResult)	//if prerender passed, do the post render.
-#endif
+#endif // ZH
 		continueTheEffect = W3DShaderManager::filterPostRender(m_viewFilter, m_viewFilterMode, deltaScroll,doExtraRender);
 		if (!skipRender && getCameraLock()) 
 		{
@@ -1732,11 +1732,11 @@ void W3DView::draw( void )
 #ifdef OG
 			m_viewFilter = FT_NULL_FILTER;
 			m_viewFilterMode = FM_NULL_MODE;
-#endif
+#endif // OG
 #ifdef ZH
 			m_viewFilter = FT_VIEW_DEFAULT;
 			m_viewFilterMode = FM_VIEW_DEFAULT;
-#endif
+#endif // ZH
 		}
 	}
 
@@ -1890,7 +1890,7 @@ void W3DView::draw( void )
 #ifdef OG
 #endif
 
-#endif
+#endif // OG
 #ifdef ZH
 
   if ( TheGlobalData->m_showAudioLocations )
@@ -1905,7 +1905,7 @@ void W3DView::draw( void )
     }
   }
 #endif // DEBUG or INTERNAL
-#endif
+#endif // ZH
 
 	Region3D axisAlignedRegion;
 	getAxisAlignedViewRegion(axisAlignedRegion);
@@ -2018,7 +2018,7 @@ void W3DView::setAngle( Real angle )
 #ifdef ZH
 	m_CameraArrivedAtWaypointOnPathFlag = false;
 
-#endif
+#endif // ZH
 	m_doingRotateCamera = false;
 	m_doingPitchCamera = false;
 	m_doingZoomCamera = false;
@@ -2092,7 +2092,7 @@ void W3DView::setHeightAboveGround(Real z)
 	m_doingMoveCameraOnWaypointPath = false;
 #ifdef ZH
 	m_CameraArrivedAtWaypointOnPathFlag = false;
-#endif
+#endif // ZH
 	m_doingRotateCamera = false;
 	m_doingPitchCamera = false;
 	m_doingZoomCamera = false;
@@ -2116,7 +2116,7 @@ void W3DView::setZoom(Real z)
 	m_doingMoveCameraOnWaypointPath = false;
 #ifdef ZH
 	m_CameraArrivedAtWaypointOnPathFlag = false;
-#endif
+#endif // ZH
 	m_doingRotateCamera = false;
 	m_doingPitchCamera = false;
 	m_doingZoomCamera = false;
@@ -2141,11 +2141,11 @@ void W3DView::setZoomToDefault( void )
 #ifdef OG
 	m_mcwpInfo.cameraZoom[2] = desiredZoom;//m_maxZoom;
 	DEBUG_LOG(("W3DView::setZoomToDefault() Current zoom: %g  Desired zoom: %g\n", m_zoom, desiredZoom));
-#endif
+#endif // OG
 #ifdef ZH
 	//DEBUG_LOG(("W3DView::setZoomToDefault() Current zoom: %g  Desired zoom: %g\n", m_zoom, desiredZoom));
 
-#endif
+#endif // ZH
 
 	m_zoom = desiredZoom;
 	m_heightAboveGround = m_maxHeightAboveGround;
@@ -2153,7 +2153,7 @@ void W3DView::setZoomToDefault( void )
 	m_doingMoveCameraOnWaypointPath = false;
 #ifdef ZH
 	m_CameraArrivedAtWaypointOnPathFlag = false;
-#endif
+#endif // ZH
 	m_doingRotateCamera = false;
 	m_doingPitchCamera = false;
 	m_doingZoomCamera = false;
@@ -2181,27 +2181,27 @@ void W3DView::setFieldOfView( Real angle )
 #ifdef OG
 	Screen coordinates returned in absolute values relative to full display resolution.  */
 
-#endif
+#endif // OG
 #ifdef ZH
 	Screen coordinates returned in absolute values relative to full display resolution.  
   Returns if the point is on screen, off screen, or not transformable */
-#endif
+#endif // ZH
 //-------------------------------------------------------------------------------------------------
 #ifdef OG
 Bool W3DView::worldToScreen( const Coord3D *w, ICoord2D *s )
-#endif
+#endif // OG
 #ifdef ZH
 View::WorldToScreenReturn W3DView::worldToScreenTriReturn( const Coord3D *w, ICoord2D *s )
-#endif
+#endif // ZH
 {
 	// sanity
 	if( w == NULL || s == NULL )
 #ifdef OG
 		return FALSE;
-#endif
+#endif // OG
 #ifdef ZH
     return WTS_INVALID;
-#endif
+#endif // ZH
 
 	if( m_3DCamera )
 	{
@@ -2217,10 +2217,10 @@ View::WorldToScreenReturn W3DView::worldToScreenTriReturn( const Coord3D *w, ICo
 			s->y = 0;
 #ifdef OG
 			return FALSE;
-#endif
+#endif // OG
 #ifdef ZH
       return WTS_INVALID;
-#endif
+#endif // ZH
 		}
 
 		//
@@ -2241,29 +2241,29 @@ View::WorldToScreenReturn W3DView::worldToScreenTriReturn( const Coord3D *w, ICo
 		{
 #ifdef OG
 			return FALSE;
-#endif
+#endif // OG
 #ifdef ZH
       return WTS_OUTSIDE_FRUSTUM;
-#endif
+#endif // ZH
 		}
 
 #ifdef OG
 		return TRUE;
-#endif
+#endif // OG
 #ifdef ZH
     return WTS_INSIDE_FRUSTUM;
-#endif
+#endif // ZH
 
 	}  // end if
 
 #ifdef OG
 	return FALSE;
 }  // end worldToScreen
-#endif
+#endif // OG
 #ifdef ZH
   return WTS_INVALID;
 }  // end worldToScreenTriReturn
-#endif
+#endif // ZH
 
 //-------------------------------------------------------------------------------------------------
 /** Using the W3D camera translate the screen coord to world coord */
@@ -2442,10 +2442,10 @@ Drawable *W3DView::pickDrawable( const ICoord2D *screen, Bool forceAttack, PickT
 	//Don't check against translucent or hidden objects
 #ifdef OG
 	RayCollisionTestClass raytest(lineseg,&result,COLLISION_TYPE_ALL,false,false);
-#endif
+#endif // OG
 #ifdef ZH
 	RayCollisionTestClass raytest(lineseg,&result,COLL_TYPE_ALL,false,false);
-#endif
+#endif // ZH
 
 	if( W3DDisplay::m_3DScene->castRay( raytest, false, (Int)pickType ) )
 		renderObj = raytest.CollidedRenderObj;
@@ -2573,7 +2573,7 @@ void W3DView::lookAt( const Coord3D *o )
 	m_doingMoveCameraOnWaypointPath = false;
 #ifdef ZH
 	m_CameraArrivedAtWaypointOnPathFlag = false;
-#endif
+#endif // ZH
 	m_doingScriptedCameraLock = false;
 
 	setCameraTransform();
@@ -2604,10 +2604,10 @@ void W3DView::initHeightForMap( void )
 //-------------------------------------------------------------------------------------------------
 #ifdef OG
 void W3DView::moveCameraTo(const Coord3D *o, Int milliseconds, Int shutter, Bool orient)
-#endif
+#endif // OG
 #ifdef ZH
 void W3DView::moveCameraTo(const Coord3D *o, Int milliseconds, Int shutter, Bool orient, Real easeIn, Real easeOut)
-#endif
+#endif // ZH
 {
 	m_mcwpInfo.waypoints[0] = *getPosition();	
 	m_mcwpInfo.cameraAngle[0] = getAngle();	
@@ -2625,7 +2625,7 @@ void W3DView::moveCameraTo(const Coord3D *o, Int milliseconds, Int shutter, Bool
 	m_mcwpInfo.shutter = 1;
 #ifdef ZH
 	m_mcwpInfo.ease.setEaseTimes(easeIn/milliseconds, easeOut/milliseconds);
-#endif
+#endif // ZH
 	m_mcwpInfo.curSegment = 1;
 	m_mcwpInfo.curSegDistance = 0;
 	m_mcwpInfo.totalDistance = 0;
@@ -2637,7 +2637,7 @@ void W3DView::moveCameraTo(const Coord3D *o, Int milliseconds, Int shutter, Bool
 		m_doingMoveCameraOnWaypointPath = true;
 #ifdef ZH
 		m_CameraArrivedAtWaypointOnPathFlag = false;
-#endif
+#endif // ZH
 	}
 }
 
@@ -2646,10 +2646,10 @@ void W3DView::moveCameraTo(const Coord3D *o, Int milliseconds, Int shutter, Bool
 //-------------------------------------------------------------------------------------------------
 #ifdef OG
 void W3DView::rotateCamera(Real rotations, Int milliseconds)
-#endif
+#endif // OG
 #ifdef ZH
 void W3DView::rotateCamera(Real rotations, Int milliseconds, Real easeIn, Real easeOut)
-#endif
+#endif // ZH
 {
 	m_rcInfo.numHoldFrames = 0;
 	m_rcInfo.trackObject = FALSE;
@@ -2664,21 +2664,21 @@ void W3DView::rotateCamera(Real rotations, Int milliseconds, Real easeIn, Real e
 #ifdef OG
 	m_rcInfo.angle = 2*PI*rotations/m_rcInfo.numFrames;
 
-#endif
+#endif // OG
 #ifdef ZH
 	m_rcInfo.angle.startAngle = m_angle;
 	m_rcInfo.angle.endAngle = m_angle + 2*PI*rotations;
-#endif
+#endif // ZH
 	m_rcInfo.startTimeMultiplier = m_timeMultiplier;
 	m_rcInfo.endTimeMultiplier = m_timeMultiplier;
 #ifdef ZH
 	m_rcInfo.ease.setEaseTimes(easeIn/milliseconds, easeOut/milliseconds);
-#endif
+#endif // ZH
 
 	m_doingMoveCameraOnWaypointPath = false;
 #ifdef ZH
 	m_CameraArrivedAtWaypointOnPathFlag = false;
-#endif
+#endif // ZH
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -2686,10 +2686,10 @@ void W3DView::rotateCamera(Real rotations, Int milliseconds, Real easeIn, Real e
 //-------------------------------------------------------------------------------------------------
 #ifdef OG
 void W3DView::rotateCameraTowardObject(ObjectID id, Int milliseconds, Int holdMilliseconds)
-#endif
+#endif // OG
 #ifdef ZH
 void W3DView::rotateCameraTowardObject(ObjectID id, Int milliseconds, Int holdMilliseconds, Real easeIn, Real easeOut)
-#endif
+#endif // ZH
 {
 	m_rcInfo.trackObject = TRUE;
 	if (holdMilliseconds<1) holdMilliseconds = 0;
@@ -2708,21 +2708,21 @@ void W3DView::rotateCameraTowardObject(ObjectID id, Int milliseconds, Int holdMi
 #ifdef OG
 	m_rcInfo.angle = m_angle; // not used here
 	m_rcInfo.targetObjectID = id;
-#endif
+#endif // OG
 #ifdef ZH
 	m_rcInfo.target.targetObjectID = id;
 
-#endif
+#endif // ZH
 	m_rcInfo.startTimeMultiplier = m_timeMultiplier;
 	m_rcInfo.endTimeMultiplier = m_timeMultiplier;
 #ifdef ZH
 	m_rcInfo.ease.setEaseTimes(easeIn/milliseconds, easeOut/milliseconds);
-#endif
+#endif // ZH
 
 	m_doingMoveCameraOnWaypointPath = false;
 #ifdef ZH
 	m_CameraArrivedAtWaypointOnPathFlag = false;
-#endif
+#endif // ZH
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -2730,10 +2730,10 @@ void W3DView::rotateCameraTowardObject(ObjectID id, Int milliseconds, Int holdMi
 //-------------------------------------------------------------------------------------------------
 #ifdef OG
 void W3DView::rotateCameraTowardPosition(const Coord3D *pLoc, Int milliseconds)
-#endif
+#endif // OG
 #ifdef ZH
 void W3DView::rotateCameraTowardPosition(const Coord3D *pLoc, Int milliseconds, Real easeIn, Real easeOut, Bool reverseRotation)
-#endif
+#endif // ZH
 {
 	m_rcInfo.numHoldFrames = 0;
 	m_rcInfo.trackObject = FALSE;
@@ -2750,14 +2750,14 @@ void W3DView::rotateCameraTowardPosition(const Coord3D *pLoc, Int milliseconds, 
 	dir.Normalize();
 	Real angle = WWMath::Acos(dir.X);
 	if (dir.Y<0) {
-#endif
+#endif // OG
 #ifdef ZH
 	Vector2 dir(pLoc->x-curPos.x, pLoc->y-curPos.y);
 	const Real dirLength = dir.Length();
 	if (dirLength<0.1f) return;
 	Real angle = WWMath::Acos(dir.X/dirLength);
 	if (dir.Y<0.0f) {
-#endif
+#endif // ZH
 		angle = -angle;
 	}
 	// Default camera is rotated 90 degrees, so match.
@@ -2773,37 +2773,37 @@ void W3DView::rotateCameraTowardPosition(const Coord3D *pLoc, Int milliseconds, 
 		}
 	}
 
-#endif
+#endif // ZH
 	m_rcInfo.curFrame = 0;
 	m_doingRotateCamera = true;
 #ifdef OG
 	m_rcInfo.angle = angle/m_rcInfo.numFrames; // not used here
 	m_rcInfo.targetObjectID = INVALID_ID;
-#endif
+#endif // OG
 #ifdef ZH
 	m_rcInfo.angle.startAngle = m_angle;
 	m_rcInfo.angle.endAngle = angle;
-#endif
+#endif // ZH
 	m_rcInfo.startTimeMultiplier = m_timeMultiplier;
 	m_rcInfo.endTimeMultiplier = m_timeMultiplier;
 #ifdef ZH
 	m_rcInfo.ease.setEaseTimes(easeIn/milliseconds, easeOut/milliseconds);
-#endif
+#endif // ZH
 
 	m_doingMoveCameraOnWaypointPath = false;
 #ifdef ZH
 	m_CameraArrivedAtWaypointOnPathFlag = false;
-#endif
+#endif // ZH
 }
 
 //-------------------------------------------------------------------------------------------------
 //-------------------------------------------------------------------------------------------------
 #ifdef OG
 void W3DView::zoomCamera( Real finalZoom, Int milliseconds )
-#endif
+#endif // OG
 #ifdef ZH
 void W3DView::zoomCamera( Real finalZoom, Int milliseconds, Real easeIn, Real easeOut )
-#endif
+#endif // ZH
 {
 	if (milliseconds<1) milliseconds = 1;
 	m_zcInfo.numFrames = milliseconds/TheW3DFrameLengthInMsec;
@@ -2816,17 +2816,17 @@ void W3DView::zoomCamera( Real finalZoom, Int milliseconds, Real easeIn, Real ea
 	m_zcInfo.endZoom = finalZoom;
 #ifdef ZH
 	m_zcInfo.ease.setEaseTimes(easeIn/milliseconds, easeOut/milliseconds);
-#endif
+#endif // ZH
 }
 
 //-------------------------------------------------------------------------------------------------
 //-------------------------------------------------------------------------------------------------
 #ifdef OG
 void W3DView::pitchCamera( Real finalPitch, Int milliseconds )
-#endif
+#endif // OG
 #ifdef ZH
 void W3DView::pitchCamera( Real finalPitch, Int milliseconds, Real easeIn, Real easeOut )
-#endif
+#endif // ZH
 {
 	if (milliseconds<1) milliseconds = 1;
 	m_pcInfo.numFrames = milliseconds/TheW3DFrameLengthInMsec;
@@ -2839,7 +2839,7 @@ void W3DView::pitchCamera( Real finalPitch, Int milliseconds, Real easeIn, Real 
 	m_pcInfo.endPitch = finalPitch;
 #ifdef ZH
 	m_pcInfo.ease.setEaseTimes(easeIn/milliseconds, easeOut/milliseconds);
-#endif
+#endif // ZH
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -2847,10 +2847,10 @@ void W3DView::pitchCamera( Real finalPitch, Int milliseconds, Real easeIn, Real 
 //-------------------------------------------------------------------------------------------------
 #ifdef OG
 void W3DView::cameraModFinalZoom( Real finalZoom ) 
-#endif
+#endif // OG
 #ifdef ZH
 void W3DView::cameraModFinalZoom( Real finalZoom, Real easeIn, Real easeOut ) 
-#endif
+#endif // ZH
 {
 
 	if (m_doingRotateCamera) 
@@ -2862,11 +2862,11 @@ void W3DView::cameraModFinalZoom( Real finalZoom, Real easeIn, Real easeOut )
 #ifdef OG
 		zoomCamera( finalZoom*maxZoom, (m_rcInfo.numFrames + m_rcInfo.numHoldFrames - m_rcInfo.curFrame)*TheW3DFrameLengthInMsec );
 
-#endif
+#endif // OG
 #ifdef ZH
 		Real time = (m_rcInfo.numFrames + m_rcInfo.numHoldFrames - m_rcInfo.curFrame)*TheW3DFrameLengthInMsec;
 		zoomCamera( finalZoom*maxZoom, time, time*easeIn, time*easeOut );
-#endif
+#endif // ZH
 	}
 	if (m_doingMoveCameraOnWaypointPath) 
 	{
@@ -2878,11 +2878,11 @@ void W3DView::cameraModFinalZoom( Real finalZoom, Real easeIn, Real easeOut )
 #ifdef OG
 		zoomCamera( finalZoom*maxZoom, m_mcwpInfo.totalTimeMilliseconds - m_mcwpInfo.elapsedTimeMilliseconds );
 
-#endif
+#endif // OG
 #ifdef ZH
 		Real time = m_mcwpInfo.totalTimeMilliseconds - m_mcwpInfo.elapsedTimeMilliseconds;
 		zoomCamera( finalZoom*maxZoom, time, time*easeIn, time*easeOut );
-#endif
+#endif // ZH
 	}
 }
 
@@ -2896,14 +2896,14 @@ void W3DView::cameraModFreezeAngle(void)
 		m_rcInfo.angle = 0; // Silly, but consistent.
 		m_rcInfo.targetObjectID = INVALID_ID;
 
-#endif
+#endif // OG
 #ifdef ZH
 		if (m_rcInfo.trackObject) {
 			m_rcInfo.target.targetObjectID = INVALID_ID;
 		} else {
 			m_rcInfo.angle.startAngle = m_rcInfo.angle.endAngle = m_angle; // Silly, but consistent.
 		}
-#endif
+#endif // ZH
 	}
 	if (m_doingMoveCameraOnWaypointPath) {
 		Int i;
@@ -2951,14 +2951,14 @@ void W3DView::cameraModLookToward(Coord3D *pLoc)
 			dir.Normalize();
 			Real angle = WWMath::Acos(dir.X);
 			if (dir.Y<0) {
-#endif
+#endif // OG
 #ifdef ZH
 			Vector2 dir(pLoc->x-result.x, pLoc->y-result.y);
 			const Real dirLength = dir.Length();
 			if (dirLength<0.1f) continue;
 			Real angle = WWMath::Acos(dir.X/dirLength);
 			if (dir.Y<0.0f) {
-#endif
+#endif // ZH
 				angle = -angle;
 			}
 			// Default camera is rotated 90 degrees, so match.
@@ -2972,7 +2972,7 @@ void W3DView::cameraModLookToward(Coord3D *pLoc)
 			m_doingMoveCameraOnWaypointPath = true;
 #ifdef ZH
 			m_CameraArrivedAtWaypointOnPathFlag = false;
-#endif
+#endif // ZH
 		}
 	}
 }
@@ -3039,14 +3039,14 @@ void W3DView::cameraModFinalLookToward(Coord3D *pLoc)
 			dir.Normalize();
 			Real angle = WWMath::Acos(dir.X);
 			if (dir.Y<0) {
-#endif
+#endif // OG
 #ifdef ZH
 			Vector2 dir(pLoc->x-result.x, pLoc->y-result.y);
 			const Real dirLength = dir.Length();
 			if (dirLength<0.1f) continue;
 			Real angle = WWMath::Acos(dir.X/dirLength);
 			if (dir.Y<0.0f) {
-#endif
+#endif // ZH
 				angle = -angle;
 			}
 			// Default camera is rotated 90 degrees, so match.
@@ -3105,29 +3105,29 @@ void W3DView::cameraModRollingAverage(Int framesToAverage)
 // ------------------------------------------------------------------------------------------------
 #ifdef OG
 void W3DView::cameraModFinalPitch(Real finalPitch) {
-#endif
+#endif // OG
 #ifdef ZH
 void W3DView::cameraModFinalPitch(Real finalPitch, Real easeIn, Real easeOut) {
-#endif
+#endif // ZH
 	if (m_doingRotateCamera) {
 #ifdef OG
 		pitchCamera( finalPitch, ((m_rcInfo.numFrames + m_rcInfo.numHoldFrames) - m_rcInfo.curFrame) * TheW3DFrameLengthInMsec );
 
-#endif
+#endif // OG
 #ifdef ZH
 		Real time = (m_rcInfo.numFrames + m_rcInfo.numHoldFrames - m_rcInfo.curFrame)*TheW3DFrameLengthInMsec;
 		pitchCamera( finalPitch, time, time*easeIn, time*easeOut );
-#endif
+#endif // ZH
 	}
 	if (m_doingMoveCameraOnWaypointPath) {
 #ifdef OG
 		pitchCamera( finalPitch, m_mcwpInfo.totalTimeMilliseconds - m_mcwpInfo.elapsedTimeMilliseconds );
 
-#endif
+#endif // OG
 #ifdef ZH
 		Real time = m_mcwpInfo.totalTimeMilliseconds - m_mcwpInfo.elapsedTimeMilliseconds;
 		pitchCamera( finalPitch, time, time*easeIn, time*easeOut );
-#endif
+#endif // ZH
 	}
 }
 
@@ -3136,25 +3136,25 @@ void W3DView::cameraModFinalPitch(Real finalPitch, Real easeIn, Real easeOut) {
 // ------------------------------------------------------------------------------------------------
 #ifdef OG
 void W3DView::resetCamera(const Coord3D *location, Int milliseconds)
-#endif
+#endif // OG
 #ifdef ZH
 void W3DView::resetCamera(const Coord3D *location, Int milliseconds, Real easeIn, Real easeOut)
-#endif
+#endif // ZH
 {
 #ifdef OG
 	moveCameraTo(location, milliseconds, 0, false);
-#endif
+#endif // OG
 #ifdef ZH
 	moveCameraTo(location, milliseconds, 0, false, easeIn, easeOut);
-#endif
+#endif // ZH
 	m_mcwpInfo.cameraAngle[2] = 0.0; // default angle.
 #ifdef ZH
 	// m_mcwpInfo.cameraAngle[2] = m_defaultAngle;
-#endif
+#endif // ZH
 	m_angle = m_mcwpInfo.cameraAngle[0];
 #ifdef OG
 	m_mcwpInfo.cameraFXPitch[2] = 1.0;
-#endif
+#endif // OG
 
 	// terrain height + desired height offset == cameraOffset * actual zoom
 	// find best approximation of max terrain height we can see
@@ -3165,10 +3165,10 @@ void W3DView::resetCamera(const Coord3D *location, Int milliseconds, Real easeIn
 
 #ifdef OG
 	m_mcwpInfo.cameraZoom[2] = desiredZoom;//m_maxZoom;
-#endif
+#endif // OG
 #ifdef ZH
 	zoomCamera( desiredZoom, milliseconds, easeIn, easeOut );	// this isn't right... or is it?
-#endif
+#endif // ZH
 
 #ifdef OG
 	//Real terrainHeightMax = getHeightAroundPos(location->x, location->y);
@@ -3179,14 +3179,14 @@ void W3DView::resetCamera(const Coord3D *location, Int milliseconds, Real easeIn
 	pitchCamera( 1.0, milliseconds );
 	DEBUG_LOG(("W3DView::resetCamera() Current zoom: %g  Desired zoom: %g  Current pitch: %g  Desired pitch: %g\n",
 		m_zoom, desiredZoom, m_pitchAngle, m_defaultPitchAngle));
-#endif
+#endif // OG
 #ifdef ZH
 	pitchCamera( 1.0, milliseconds, easeIn, easeOut );
 	// pitchCamera( m_defaultPitchAngle, milliseconds, easeIn, easeOut );
 	//DEBUG_LOG(("W3DView::resetCamera() Current zoom: %g  Desired zoom: %g  Current pitch: %g  Desired pitch: %g\n",
 	//	m_zoom, desiredZoom, m_pitchAngle, m_defaultPitchAngle));
 
-#endif
+#endif // ZH
 }
 
 // ------------------------------------------------------------------------------------------------
@@ -3219,17 +3219,17 @@ Bool W3DView::isCameraMovementAtWaypointAlongPath(void)
 	return( return_value );
 }
 
-#endif
+#endif // ZH
 // ------------------------------------------------------------------------------------------------
 /** Move camera along a waypoint path in an interesting fashion.  Sets up parameters that get
  * evaluated in draw(). */
  // ------------------------------------------------------------------------------------------------
 #ifdef OG
 void W3DView::moveCameraAlongWaypointPath(Waypoint *pWay, Int milliseconds, Int shutter, Bool orient)
-#endif
+#endif // OG
 #ifdef ZH
 void W3DView::moveCameraAlongWaypointPath(Waypoint *pWay, Int milliseconds, Int shutter, Bool orient, Real easeIn, Real easeOut)
-#endif
+#endif // ZH
 {
 	const Real MIN_DELTA = MAP_XY_FACTOR;
 
@@ -3244,7 +3244,7 @@ void W3DView::moveCameraAlongWaypointPath(Waypoint *pWay, Int milliseconds, Int 
 	if (m_mcwpInfo.shutter<1) m_mcwpInfo.shutter = 1;
 #ifdef ZH
 	m_mcwpInfo.ease.setEaseTimes(easeIn/milliseconds, easeOut/milliseconds);
-#endif
+#endif // ZH
 
 	while (pWay && m_mcwpInfo.numWaypoints <MAX_WAYPOINTS) {
 		m_mcwpInfo.numWaypoints++;
@@ -3256,10 +3256,10 @@ void W3DView::moveCameraAlongWaypointPath(Waypoint *pWay, Int milliseconds, Int 
 		}	
 #ifdef OG
 		Vector3 dir(m_mcwpInfo.waypoints[m_mcwpInfo.numWaypoints].x-m_mcwpInfo.waypoints[m_mcwpInfo.numWaypoints-1].x, m_mcwpInfo.waypoints[m_mcwpInfo.numWaypoints].y-m_mcwpInfo.waypoints[m_mcwpInfo.numWaypoints-1].y, 0);
-#endif
+#endif // OG
 #ifdef ZH
 		Vector2 dir(m_mcwpInfo.waypoints[m_mcwpInfo.numWaypoints].x-m_mcwpInfo.waypoints[m_mcwpInfo.numWaypoints-1].x, m_mcwpInfo.waypoints[m_mcwpInfo.numWaypoints].y-m_mcwpInfo.waypoints[m_mcwpInfo.numWaypoints-1].y);
-#endif
+#endif // ZH
 		if (dir.Length()<MIN_DELTA) {
 			if (pWay) {
 				m_mcwpInfo.numWaypoints--; // drop this one.
@@ -3285,29 +3285,29 @@ void W3DView::setupWaypointPath(Bool orient)
 	Int i;
 #ifdef ZH
 	Real angle = getAngle();
-#endif
+#endif // ZH
 	for (i=1; i<m_mcwpInfo.numWaypoints; i++) {
 #ifdef OG
 		Vector3 dir(m_mcwpInfo.waypoints[i+1].x-m_mcwpInfo.waypoints[i].x, m_mcwpInfo.waypoints[i+1].y-m_mcwpInfo.waypoints[i].y, 0);
-#endif
+#endif // OG
 #ifdef ZH
 		Vector2 dir(m_mcwpInfo.waypoints[i+1].x-m_mcwpInfo.waypoints[i].x, m_mcwpInfo.waypoints[i+1].y-m_mcwpInfo.waypoints[i].y);
-#endif
+#endif // ZH
 		m_mcwpInfo.waySegLength[i] = dir.Length();
 		m_mcwpInfo.totalDistance += m_mcwpInfo.waySegLength[i];
 #ifdef OG
 		dir.Normalize();
 		Real angle = getAngle();
-#endif
+#endif // OG
 		if (orient) {
 #ifdef OG
 			angle = WWMath::Acos(dir.X);
 			if (dir.Y<0) {
-#endif
+#endif // OG
 #ifdef ZH
 			angle = WWMath::Acos(dir.X/m_mcwpInfo.waySegLength[i]);
 			if (dir.Y<0.0f) {
-#endif
+#endif // ZH
 				angle = -angle;
 			}
 
@@ -3326,12 +3326,12 @@ void W3DView::setupWaypointPath(Bool orient)
 #ifdef OG
 	m_mcwpInfo.waySegLength[m_mcwpInfo.numWaypoints+1] = m_mcwpInfo.waySegLength[m_mcwpInfo.numWaypoints+1];	
 
-#endif
+#endif // OG
 #ifdef ZH
 	m_mcwpInfo.waySegLength[m_mcwpInfo.numWaypoints+1] = m_mcwpInfo.waySegLength[m_mcwpInfo.numWaypoints];	
 
 	// Prevent a possible divide by zero.
-#endif
+#endif // ZH
 	if (m_mcwpInfo.totalDistance<1.0) {
 		m_mcwpInfo.waySegLength[m_mcwpInfo.numWaypoints-1] += 1.0-m_mcwpInfo.totalDistance;
 		m_mcwpInfo.totalDistance = 1.0;
@@ -3345,7 +3345,7 @@ void W3DView::setupWaypointPath(Bool orient)
 #ifdef OG
 		m_mcwpInfo.cameraFXPitch[i] = m_FXPitch;
 		m_mcwpInfo.cameraZoom[i] = m_zoom;
-#endif
+#endif // OG
 		m_mcwpInfo.timeMultiplier[i] = m_timeMultiplier;
 		m_mcwpInfo.groundHeight[i] = m_groundLevel*factor1 + newGround*factor2;
 		curDistance += m_mcwpInfo.waySegLength[i];
@@ -3370,7 +3370,7 @@ void W3DView::setupWaypointPath(Bool orient)
 	m_doingMoveCameraOnWaypointPath = m_mcwpInfo.numWaypoints>1;
 #ifdef ZH
 	m_CameraArrivedAtWaypointOnPathFlag = false;
-#endif
+#endif // ZH
 	m_doingRotateCamera = false;
 
 	m_mcwpInfo.elapsedTimeMilliseconds = 0;
@@ -3408,59 +3408,59 @@ void W3DView::rotateCameraOneFrame(void)
 
 #ifdef OG
 	if (m_rcInfo.curFrame <= m_rcInfo.numFrames)
-#endif
+#endif // OG
 #ifdef ZH
 	if (m_rcInfo.trackObject)
-#endif
+#endif // ZH
 	{
 #ifdef OG
 		// not just holding; do the camera adjustment
 		Real factor = ((Real)m_rcInfo.curFrame)/m_rcInfo.numFrames;
 		if (m_rcInfo.trackObject)
-#endif
+#endif // OG
 #ifdef ZH
 		if (m_rcInfo.curFrame <= m_rcInfo.numFrames + m_rcInfo.numHoldFrames)
 
-#endif
+#endif // ZH
 		{
 #ifdef OG
 			const Object *obj = TheGameLogic->findObjectByID(m_rcInfo.targetObjectID);
-#endif
+#endif // OG
 #ifdef ZH
 			const Object *obj = TheGameLogic->findObjectByID(m_rcInfo.target.targetObjectID);
-#endif
+#endif // ZH
 			if (obj)
 			{
 				// object has not been destroyed
 #ifdef OG
 				m_rcInfo.targetObjectPos = *obj->getPosition();
-#endif
+#endif // OG
 #ifdef ZH
 				m_rcInfo.target.targetObjectPos = *obj->getPosition();
-#endif
+#endif // ZH
 			}
 
 #ifdef OG
 			Vector3 dir(m_rcInfo.targetObjectPos.x - m_pos.x, m_rcInfo.targetObjectPos.y - m_pos.y, 0);
 			if (dir.Length()>=0.1)
 
-#endif
+#endif // OG
 #ifdef ZH
 			const Vector2 dir(m_rcInfo.target.targetObjectPos.x - m_pos.x, m_rcInfo.target.targetObjectPos.y - m_pos.y);
 			const Real dirLength = dir.Length();
 			if (dirLength>=0.1f)
-#endif
+#endif // ZH
 			{
 #ifdef OG
 				dir.Normalize();
 				Real angle = WWMath::Acos(dir.X);
 				if (dir.Y<0) {
-#endif
+#endif // OG
 #ifdef ZH
 				Real angle = WWMath::Acos(dir.X/dirLength);
 				if (dir.Y<0.0f) {
 
-#endif
+#endif // ZH
 					angle = -angle;
 				}
 				// Default camera is rotated 90 degrees, so match.
@@ -3471,33 +3471,33 @@ void W3DView::rotateCameraOneFrame(void)
 				factor = 1.0f / (m_rcInfo.numFrames - m_rcInfo.curFrame + 1);
 				Real angleDiff = (angle - m_angle);
 
-#endif
+#endif // OG
 #ifdef ZH
 				if (m_rcInfo.curFrame <= m_rcInfo.numFrames)
 				{
 					Real factor = m_rcInfo.ease(((Real)m_rcInfo.curFrame)/m_rcInfo.numFrames);
 					Real angleDiff = angle - m_angle;
-#endif
+#endif // ZH
 				normAngle(angleDiff);
 				angleDiff *= factor;
 				m_angle += angleDiff;
 #ifdef OG
 			}
 
-#endif
+#endif // OG
 #ifdef ZH
 					normAngle(m_angle);
 					m_timeMultiplier = m_rcInfo.startTimeMultiplier + REAL_TO_INT_FLOOR(0.5 + (m_rcInfo.endTimeMultiplier-m_rcInfo.startTimeMultiplier)*factor);
-#endif
+#endif // ZH
 		}
 		else
 		{
 #ifdef OG
 			m_angle += m_rcInfo.angle;
-#endif
+#endif // OG
 #ifdef ZH
 					m_angle = angle;
-#endif
+#endif // ZH
 		}
 #ifdef OG
 		//m_zoom = m_rcInfo.startZoom + (m_rcInfo.endZoom-m_rcInfo.startZoom)*factor;
@@ -3505,11 +3505,11 @@ void W3DView::rotateCameraOneFrame(void)
 		normAngle(m_angle);
 		//DEBUG_LOG(("\tm_angle:%g\n", m_angle));
 		m_timeMultiplier = m_rcInfo.startTimeMultiplier + REAL_TO_INT_FLOOR(0.5 + (m_rcInfo.endTimeMultiplier-m_rcInfo.startTimeMultiplier)*factor);
-#endif
+#endif // OG
 #ifdef ZH
 			}
 
-#endif
+#endif // ZH
 	}
 #ifdef OG
 	else if (m_rcInfo.curFrame <= m_rcInfo.numFrames + m_rcInfo.numHoldFrames && m_rcInfo.trackObject)
@@ -3519,17 +3519,17 @@ void W3DView::rotateCameraOneFrame(void)
 		{
 			// object has not been destroyed
 			m_rcInfo.targetObjectPos = *obj->getPosition();
-#endif
+#endif // OG
 		}
 #ifdef OG
 
 		Vector3 dir(m_rcInfo.targetObjectPos.x - m_pos.x, m_rcInfo.targetObjectPos.y - m_pos.y, 0);
 		if (dir.Length()>=0.1)
-#endif
+#endif // OG
 #ifdef ZH
 	else if (m_rcInfo.curFrame <= m_rcInfo.numFrames)
 
-#endif
+#endif // ZH
 		{
 #ifdef OG
 			dir.Normalize();
@@ -3542,14 +3542,14 @@ void W3DView::rotateCameraOneFrame(void)
 			normAngle(angle);
 			m_angle = angle;
 		}
-#endif
+#endif // OG
 #ifdef ZH
 		Real factor = m_rcInfo.ease(((Real)m_rcInfo.curFrame)/m_rcInfo.numFrames);
 		m_angle = WWMath::Lerp(m_rcInfo.angle.startAngle, m_rcInfo.angle.endAngle, factor);
 		normAngle(m_angle);
 		m_timeMultiplier = m_rcInfo.startTimeMultiplier + REAL_TO_INT_FLOOR(0.5 + (m_rcInfo.endTimeMultiplier-m_rcInfo.startTimeMultiplier)*factor);
 
-#endif
+#endif // ZH
 	}
 
 
@@ -3560,17 +3560,17 @@ void W3DView::rotateCameraOneFrame(void)
 		//m_zoom = m_rcInfo.endZoom;
 		//m_FXPitch = m_rcInfo.endPitch;
 
-#endif
+#endif // OG
 #ifdef ZH
 		if (! m_rcInfo.trackObject)
 		{
 			m_angle = m_rcInfo.angle.endAngle;
-#endif
+#endif // ZH
 	}
 }
 #ifdef ZH
 }
-#endif
+#endif // ZH
 
 // ------------------------------------------------------------------------------------------------
 // ------------------------------------------------------------------------------------------------
@@ -3589,11 +3589,11 @@ void W3DView::zoomCameraOneFrame(void)
 #ifdef OG
 		Real factor = ((Real)m_zcInfo.curFrame)/m_zcInfo.numFrames;
 		m_zoom = m_zcInfo.startZoom + (m_zcInfo.endZoom-m_zcInfo.startZoom)*factor;
-#endif
+#endif // OG
 #ifdef ZH
 		Real factor = m_zcInfo.ease(((Real)m_zcInfo.curFrame)/m_zcInfo.numFrames);
 		m_zoom = WWMath::Lerp(m_zcInfo.startZoom, m_zcInfo.endZoom, factor);
-#endif
+#endif // ZH
 	}
 
 	if (m_zcInfo.curFrame >= m_zcInfo.numFrames) {
@@ -3621,11 +3621,11 @@ void W3DView::pitchCameraOneFrame(void)
 #ifdef OG
 		Real factor = ((Real)m_pcInfo.curFrame)/m_pcInfo.numFrames;
 		m_FXPitch = m_pcInfo.startPitch + (m_pcInfo.endPitch-m_pcInfo.startPitch)*factor;
-#endif
+#endif // OG
 #ifdef ZH
 		Real factor = m_pcInfo.ease(((Real)m_pcInfo.curFrame)/m_pcInfo.numFrames);
 		m_FXPitch = WWMath::Lerp(m_pcInfo.startPitch, m_pcInfo.endPitch, factor);
-#endif
+#endif // ZH
 	}
 
 	if (m_pcInfo.curFrame >= m_pcInfo.numFrames) {
@@ -3651,13 +3651,13 @@ void W3DView::moveAlongWaypointPath(Int milliseconds)
 #ifdef ZH
 		m_CameraArrivedAtWaypointOnPathFlag = false;
 
-#endif
+#endif // ZH
 		m_freezeTimeForCameraMovement = false;
 		m_angle = m_mcwpInfo.cameraAngle[m_mcwpInfo.numWaypoints];
 #ifdef OG
 		//m_zoom = m_mcwpInfo.cameraZoom[m_mcwpInfo.numWaypoints];
 		//m_FXPitch = m_mcwpInfo.cameraFXPitch[m_mcwpInfo.numWaypoints];
-#endif
+#endif // OG
 
 		m_groundLevel = m_mcwpInfo.groundHeight[m_mcwpInfo.numWaypoints];
 		/////////////////////m_cameraOffset.z = m_groundLevel+TheGlobalData->m_cameraHeight;
@@ -3687,17 +3687,17 @@ void W3DView::moveAlongWaypointPath(Int milliseconds)
 		{
 			//WWDEBUG_SAY(( "MBL TEST: Camera waypoint along path reached!\n" ));
 			m_CameraArrivedAtWaypointOnPathFlag = true;
-#endif
+#endif // ZH
 	}
 #ifdef OG
 	Int deltaTime = milliseconds;
-#endif
+#endif // OG
 
 #ifdef OG
 	Real distance = m_mcwpInfo.totalDistance * deltaTime / m_mcwpInfo.totalTimeMilliseconds;
 	m_mcwpInfo.curSegDistance += distance;
 	while (m_mcwpInfo.curSegDistance > m_mcwpInfo.waySegLength[m_mcwpInfo.curSegment]) {
-#endif
+#endif // OG
 		m_mcwpInfo.curSegDistance -= m_mcwpInfo.waySegLength[m_mcwpInfo.curSegment];
 		m_mcwpInfo.curSegment++;
 		if (m_mcwpInfo.curSegment >= m_mcwpInfo.numWaypoints) { 
@@ -3717,7 +3717,7 @@ void W3DView::moveAlongWaypointPath(Int milliseconds)
 	}
 #ifdef OG
 	Real angle = getAngle();
-#endif
+#endif // OG
 	Real factor1;
 	Real factor2;
 	factor1 = 1.0-factor;
@@ -3729,10 +3729,10 @@ void W3DView::moveAlongWaypointPath(Int milliseconds)
 	if (angle2-angle1 < -PI) angle1 -= 2*PI;
 #ifdef OG
 	angle = angle1 * (factor1) + angle2 * (factor2); 
-#endif
+#endif // OG
 #ifdef ZH
 	Real angle = angle1 * (factor1) + angle2 * (factor2); 
-#endif
+#endif // ZH
 
 	normAngle(angle);
 	Real deltaAngle = angle-m_angle;
@@ -3748,7 +3748,7 @@ void W3DView::moveAlongWaypointPath(Int milliseconds)
 	Real pitchFX = m_mcwpInfo.cameraFXPitch[m_mcwpInfo.curSegment]*factor1 + 
 			m_mcwpInfo.cameraFXPitch[m_mcwpInfo.curSegment+1]*factor2;
 	m_FXPitch += avgFactor*(pitchFX-m_FXPitch);
-#endif
+#endif // OG
 
 #ifdef OG
 	Real cameraZoom = m_mcwpInfo.cameraZoom[m_mcwpInfo.curSegment]*factor1 + 
@@ -3756,7 +3756,7 @@ void W3DView::moveAlongWaypointPath(Int milliseconds)
 	m_zoom += avgFactor*(cameraZoom-m_zoom);
 	*/
 
-#endif
+#endif // OG
 	Real timeMultiplier = m_mcwpInfo.timeMultiplier[m_mcwpInfo.curSegment]*factor1 + 
 			m_mcwpInfo.timeMultiplier[m_mcwpInfo.curSegment+1]*factor2;
 	m_timeMultiplier = REAL_TO_INT_FLOOR(0.5 + timeMultiplier);
@@ -3940,5 +3940,5 @@ void W3DView::Add_Camera_Shake (const Coord3D & position,float radius,float dura
 
 	CameraShakerSystem.Add_Camera_Shake(vpos,radius,duration,power);
 }
-#endif
+#endif // ZH
 

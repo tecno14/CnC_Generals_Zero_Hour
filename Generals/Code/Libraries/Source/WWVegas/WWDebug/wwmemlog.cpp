@@ -24,33 +24,33 @@
  *                                                                                             *
 #ifdef OG
  *                     $Archive:: /VSS_Sync/wwdebug/wwmemlog.cpp                              $*
-#endif
+#endif // OG
 #ifdef ZH
  *                     $Archive:: /Commando/Code/wwdebug/wwmemlog.cpp                         $*
-#endif
+#endif // ZH
  *                                                                                             *
  *              Original Author:: Greg Hjelstrom                                               *
  *                                                                                             *
 #ifdef OG
  *                      $Author:: Vss_sync                                                    $*
-#endif
+#endif // OG
 #ifdef ZH
  *                      $Author:: Jani_p                                                      $*
-#endif
+#endif // ZH
  *                                                                                             *
 #ifdef OG
  *                     $Modtime:: 8/29/01 10:23p                                              $*
-#endif
+#endif // OG
 #ifdef ZH
  *                     $Modtime:: 11/21/01 2:03p                                              $*
-#endif
+#endif // ZH
  *                                                                                             *
 #ifdef OG
  *                    $Revision:: 21                                                          $*
-#endif
+#endif // OG
 #ifdef ZH
  *                    $Revision:: 27                                                          $*
-#endif
+#endif // ZH
  *                                                                                             *
  *---------------------------------------------------------------------------------------------*
  * Functions:                                                                                  *
@@ -60,19 +60,19 @@
 
 #ifdef ZH
 #include "always.h"
-#endif
+#endif // ZH
 #include "wwmemlog.h"
 #include "wwdebug.h"
 #include "vector.h"
 #ifdef ZH
 #include "fastallocator.h"
-#endif
+#endif // ZH
 #include <windows.h>
 
 #ifdef OG
 #if (STEVES_NEW_CATCHER || PARAM_EDITING_ON)
 
-#endif
+#endif // OG
 #ifdef ZH
 #define USE_FAST_ALLOCATOR
 
@@ -82,7 +82,7 @@
 #ifdef PARAM_EDITING_ON
 	#define DISABLE_MEMLOG	1
 #else //PARAM_EDITING_ON
-#endif
+#endif // ZH
 	#define DISABLE_MEMLOG	1
 #ifdef ZH
 #endif //PARAM_EDITING_ON
@@ -114,16 +114,16 @@
 
 #if (DISABLE_MEMLOG == 0)
 bool WWMemoryLogClass::IsMemoryLogEnabled=true;
-#endif
+#endif // ZH
 #else
 #ifdef OG
 #define DISABLE_MEMLOG	1
 #endif //STEVES_NEW_CATCHER
-#endif
+#endif // OG
 #ifdef ZH
 bool WWMemoryLogClass::IsMemoryLogEnabled=false;
 #endif
-#endif
+#endif // ZH
 
 static unsigned AllocateCount;
 static unsigned FreeCount;
@@ -152,7 +152,7 @@ static char * _MemoryCategoryNames[] =
 	"Renderer",
 	"Network",
 	"BINK",
-#endif
+#endif // ZH
 	"<undefined>",
 	"<undefined>",
 	"<undefined>",
@@ -160,7 +160,7 @@ static char * _MemoryCategoryNames[] =
 #ifdef OG
 	"<undefined>",
 	"<undefined>",
-#endif
+#endif // OG
 };
 
 
@@ -206,12 +206,12 @@ public:
 #ifdef OG
 	~ActiveCategoryStackClass(void)									{ WWASSERT(Count == 1); }
 
-#endif
+#endif // OG
 #ifdef ZH
 																				// If object was created but not Init'd, ThreadID will be -1 and Count == 0
 																				// If object was created and Init'd, ThreadID will not be -1.  We expect Count to return to 1 after all Pop's
 	~ActiveCategoryStackClass(void)									{ WWASSERT((ThreadID == -1 && Count == 0) || (ThreadID != -1 && Count == 1)); }
-#endif
+#endif // ZH
 	
 	ActiveCategoryStackClass & operator = (const ActiveCategoryStackClass & that);
 
@@ -221,22 +221,22 @@ public:
 	void		Init(int thread_id)										{ ThreadID = thread_id; Count = 0; Push(MEM_UNKNOWN); }
 #ifdef OG
 	void		Set_Thread_ID(int id)									{ ThreadID = id; }
-#endif
+#endif // OG
 #ifdef ZH
 	void		Set_Thread_ID(int id)									{ WWASSERT(ThreadID != -1); ThreadID = id; }
-#endif
+#endif // ZH
 	int		Get_Thread_ID(void)										{ return ThreadID; }
 
 #ifdef OG
 	void		Push(int active_category)								{ (*this)[Count] = active_category; Count++; }
 	void		Pop(void)													{ Count--; }
 	int		Current(void)												{ return (*this)[Count-1]; }
-#endif
+#endif // OG
 #ifdef ZH
 	void		Push(int active_category)								{ WWASSERT(ThreadID != -1); (*this)[Count] = active_category; Count++; }
 	void		Pop(void)													{ WWASSERT(ThreadID != -1) ; Count--; }
 	int		Current(void)												{ WWASSERT(ThreadID != -1); return (*this)[Count-1]; }
-#endif
+#endif // ZH
 
 protected:
 
@@ -260,10 +260,10 @@ public:
 
 #ifdef OG
 	ActiveCategoryClass(void) : VectorClass<ActiveCategoryStackClass>(MAX_CATEGORY_STACKS), Count(0) { }
-#endif
+#endif // OG
 #ifdef ZH
 	ActiveCategoryClass(void) : VectorClass<ActiveCategoryStackClass>(MAX_CATEGORY_STACKS), Count(0) { Get_Active_Stack().Push(MEM_STATICALLOCATION); }
-#endif
+#endif // ZH
 
 	void		Push(int active_category)	{ Get_Active_Stack().Push(active_category); }
 	void		Pop(void)						{ Get_Active_Stack().Pop(); }
@@ -300,7 +300,7 @@ public:
 #ifdef ZH
 
 	void				Init();
-#endif
+#endif // ZH
 
 private:
 
@@ -321,13 +321,13 @@ static MemLogClass *				_TheMemLog = NULL;
 static bool							_MemLogAllocated = false;
 
 #if MEMLOG_USE_MUTEX
-#endif
+#endif // ZH
 static void *						_MemLogMutex = NULL;
 static int							_MemLogLockCounter = 0;
 #ifdef OG
 static bool							_MemLogAllocated = false;
 
-#endif
+#endif // OG
 #ifdef ZH
 #endif
 
@@ -335,28 +335,28 @@ static bool							_MemLogAllocated = false;
 static bool							_MemLogCriticalSectionAllocated = false;
 static char							_MemLogCriticalSectionHandle[sizeof(CRITICAL_SECTION)];
 #endif
-#endif
+#endif // ZH
 
 #ifdef ZH
 #if MEMLOG_USE_FASTCRITICALSECTION
 volatile unsigned					_MemLogSemaphore = 0;
 #endif
-#endif
+#endif // ZH
 
 /*
 ** Use this code to get access to the mutex...
 */
 #ifdef OG
 void * Get_Mem_Log_Mutex(void)
-#endif
+#endif // OG
 #ifdef ZH
 WWINLINE void * Get_Mem_Log_Mutex(void)
-#endif
+#endif // ZH
 {
 #ifdef ZH
 #if MEMLOG_USE_MUTEX
 
-#endif
+#endif // ZH
 	if (_MemLogMutex == NULL) {
 		_MemLogMutex=CreateMutex(NULL,false,NULL);
 		WWASSERT(_MemLogMutex);
@@ -375,20 +375,20 @@ WWINLINE void * Get_Mem_Log_Mutex(void)
 	return _MemLogCriticalSectionHandle;
 
 #endif
-#endif
+#endif // ZH
 }
 
 #ifdef OG
 void Lock_Mem_Log_Mutex(void)
-#endif
+#endif // OG
 #ifdef ZH
 WWINLINE void Lock_Mem_Log_Mutex(void)
-#endif
+#endif // ZH
 {
 #ifdef ZH
 #if MEMLOG_USE_MUTEX
 
-#endif
+#endif // ZH
 	void * mutex = Get_Mem_Log_Mutex();
 #ifdef DEBUG_CRASHING
 	int res =
@@ -427,20 +427,20 @@ WWINLINE void Lock_Mem_Log_Mutex(void)
 	__asm jc  The_Bit_Was_Previously_Set_So_Try_Again
 
 #endif
-#endif
+#endif // ZH
 }
 
 #ifdef OG
 void Unlock_Mem_Log_Mutex(void)
-#endif
+#endif // OG
 #ifdef ZH
 WWINLINE void Unlock_Mem_Log_Mutex(void)
-#endif
+#endif // ZH
 {
 #ifdef ZH
 #if MEMLOG_USE_MUTEX
 
-#endif
+#endif // ZH
 	void * mutex = Get_Mem_Log_Mutex();
 	_MemLogLockCounter--;
 #ifdef DEBUG_CRASHING
@@ -461,7 +461,7 @@ WWINLINE void Unlock_Mem_Log_Mutex(void)
 #if MEMLOG_USE_FASTCRITICALSECTION
 	_MemLogSemaphore = 0;
 #endif
-#endif
+#endif // ZH
 }
 
 class MemLogMutexLockClass
@@ -547,7 +547,7 @@ void MemLogClass::Init()
 	Pop_Active_Category();	// Remove staticallocation state forever
 }
 
-#endif
+#endif // ZH
 int MemLogClass::Register_Memory_Allocated(int size)
 {
 	MemLogMutexLockClass lock;
@@ -633,10 +633,10 @@ void WWMemoryLogClass::Register_Memory_Released(int category,int size)
 
 #ifdef OG
 static void __cdecl _MemLogCleanup(void)
-#endif
+#endif // OG
 #ifdef ZH
 static void _MemLogCleanup(void)
-#endif
+#endif // ZH
 {
 	delete _TheMemLog;
 }
@@ -685,10 +685,10 @@ MemLogClass * WWMemoryLogClass::Get_Log(void)
  *=============================================================================================*/
 #ifdef OG
 void __cdecl WWMemoryLogClass::Release_Log(void)
-#endif
+#endif // OG
 #ifdef ZH
 void WWMemoryLogClass::Release_Log(void)
-#endif
+#endif // ZH
 {
 	MemLogMutexLockClass lock;
 	if (_TheMemLog) {
@@ -760,16 +760,16 @@ void * WWMemoryLogClass::Allocate_Memory(size_t size)
 {
 #ifdef ZH
 	AllocateCount++;
-#endif
+#endif // ZH
 #if DISABLE_MEMLOG
 #ifdef OG
 	AllocateCount++;
 	return ::malloc(size);
-#endif
+#endif // OG
 #ifdef ZH
 	return ALLOC_MEMORY(size);
 
-#endif
+#endif // ZH
 #else
 
 	__declspec( thread ) static bool reentrancy_test = false;
@@ -778,10 +778,10 @@ void * WWMemoryLogClass::Allocate_Memory(size_t size)
 	if (reentrancy_test) {
 #ifdef OG
 		return ::malloc(size);
-#endif
+#endif // OG
 #ifdef ZH
 		return ALLOC_MEMORY(size);
-#endif
+#endif // ZH
 	} else {
 		reentrancy_test = true;
 
@@ -790,10 +790,10 @@ void * WWMemoryLogClass::Allocate_Memory(size_t size)
 		*/
 #ifdef OG
 		void * ptr = ::malloc (size + sizeof(MemoryLogStruct));
-#endif
+#endif // OG
 #ifdef ZH
 		void * ptr = ALLOC_MEMORY(size + sizeof(MemoryLogStruct));
-#endif
+#endif // ZH
 
 		if (ptr != NULL) {
 			/*
@@ -842,16 +842,16 @@ void WWMemoryLogClass::Release_Memory(void *ptr)
 {
 #ifdef ZH
 	FreeCount++;
-#endif
+#endif // ZH
 #if DISABLE_MEMLOG
 #ifdef OG
 	free(ptr);
 	FreeCount++;
-#endif
+#endif // OG
 #ifdef ZH
 	FREE_MEMORY(ptr);
 
-#endif
+#endif // ZH
 #else
 
 	MemLogMutexLockClass lock;
@@ -870,10 +870,10 @@ void WWMemoryLogClass::Release_Memory(void *ptr)
 			WWMemoryLogClass::Register_Memory_Released(memlog->Category,memlog->Size);
 #ifdef OG
 			free((void*)memlog);
-#endif
+#endif // OG
 #ifdef ZH
 			FREE_MEMORY((void*)memlog);
-#endif
+#endif // ZH
 
 		} else {
 
@@ -882,10 +882,10 @@ void WWMemoryLogClass::Release_Memory(void *ptr)
 			*/
 #ifdef OG
 			free(ptr);
-#endif
+#endif // OG
 #ifdef ZH
 			FREE_MEMORY(ptr);
-#endif
+#endif // ZH
 		}
 	}
 
@@ -917,5 +917,5 @@ void WWMemoryLogClass::Init()
 {
 	Get_Log()->Init();
 }
-#endif
+#endif // ZH
 

@@ -28,17 +28,17 @@
  *                                                                                             *
 #ifdef OG
  *                     $Modtime:: 8/28/01 10:49a                                              $*
-#endif
+#endif // OG
 #ifdef ZH
  *                     $Modtime:: 2/06/02 4:59p                                               $*
-#endif
+#endif // ZH
  *                                                                                             *
 #ifdef OG
  *                    $Revision:: 11                                                          $*
-#endif
+#endif // OG
 #ifdef ZH
  *                    $Revision:: 22                                                          $*
-#endif
+#endif // ZH
  *                                                                                             *
  *---------------------------------------------------------------------------------------------*
  * Functions:                                                                                  *
@@ -59,7 +59,7 @@
 #include "wwstring.h"
 #ifdef ZH
 #include "trim.h"
-#endif
+#endif // ZH
 #include <wchar.h>
 #ifdef _UNIX
 #include "osdep.h"
@@ -114,7 +114,7 @@ public:
 	WCHAR operator[] (int index) const;
 #ifdef ZH
 	WCHAR& operator[] (int index);
-#endif
+#endif // ZH
 	operator const WCHAR * (void) const;
 
 	////////////////////////////////////////////////////////////
@@ -134,7 +134,7 @@ public:
 	void			Convert_To (StringClass &string);
 	void			Convert_To (StringClass &string) const;
 
-#endif
+#endif // OG
 #ifdef ZH
 	bool			Convert_From (const char *text);
 	bool			Convert_To (StringClass &string);
@@ -145,7 +145,7 @@ public:
 
 	// Check if the string is composed of ANSI range characters. (0-255)
 	bool Is_ANSI(void);
-#endif
+#endif // ZH
 
 	WCHAR *		Get_Buffer (int new_length);
 	WCHAR *		Peek_Buffer (void);
@@ -210,10 +210,10 @@ private:
 	static int		m_UsedTempStringCount;
 #ifdef OG
 	static CriticalSectionClass m_TempMutex;
-#endif
+#endif // OG
 #ifdef ZH
 	static FastCriticalSectionClass m_TempMutex;
-#endif
+#endif // ZH
 
 	static WCHAR	m_NullChar;
 	static WCHAR *	m_EmptyString;
@@ -319,13 +319,13 @@ WideStringClass::Compare (const WCHAR *string) const
 {
 #ifdef ZH
 	if (string) {
-#endif
+#endif // ZH
 	return wcscmp (m_Buffer, string);
 #ifdef ZH
 	}
 
 	return -1;
-#endif
+#endif // ZH
 }
 
 ///////////////////////////////////////////////////////////////////
@@ -336,13 +336,13 @@ WideStringClass::Compare_No_Case (const WCHAR *string) const
 {
 #ifdef ZH
 	if (string) {
-#endif
+#endif // ZH
 	return _wcsicmp (m_Buffer, string);
 #ifdef ZH
 	}
 
 	return -1;
-#endif
+#endif // ZH
 }
 
 ///////////////////////////////////////////////////////////////////
@@ -358,7 +358,7 @@ WideStringClass::operator[] (int index) const
 
 inline WCHAR&
 WideStringClass::operator[] (int index)
-#endif
+#endif // ZH
 {
 	WWASSERT (index >= 0 && index < Get_Length ());
 	return m_Buffer[index];
@@ -408,13 +408,13 @@ WideStringClass::operator < (const WCHAR *string) const
 {
 #ifdef ZH
 	if (string) {
-#endif
+#endif // ZH
 	return (wcscmp (m_Buffer, string) < 0);
 #ifdef ZH
 	}
 
 	return false;
-#endif
+#endif // ZH
 }
 
 ///////////////////////////////////////////////////////////////////
@@ -425,13 +425,13 @@ WideStringClass::operator <= (const WCHAR *string) const
 {
 #ifdef ZH
 	if (string) {
-#endif
+#endif // ZH
 	return (wcscmp (m_Buffer, string) <= 0);
 #ifdef ZH
 	}
 
 	return false;
-#endif
+#endif // ZH
 }
 
 ///////////////////////////////////////////////////////////////////
@@ -442,7 +442,7 @@ WideStringClass::operator > (const WCHAR *string) const
 {
 #ifdef ZH
 	if (string) {
-#endif
+#endif // ZH
 	return (wcscmp (m_Buffer, string) > 0);
 }
 
@@ -450,7 +450,7 @@ WideStringClass::operator > (const WCHAR *string) const
 	return true;
 }
 
-#endif
+#endif // ZH
 ///////////////////////////////////////////////////////////////////
 //	operator >=
 ///////////////////////////////////////////////////////////////////
@@ -459,13 +459,13 @@ WideStringClass::operator >= (const WCHAR *string) const
 {
 #ifdef ZH
 	if (string) {
-#endif
+#endif // ZH
 	return (wcscmp (m_Buffer, string) >= 0);
 #ifdef ZH
 	}
 
 	return true;
-#endif
+#endif // ZH
 }
 
 
@@ -505,7 +505,7 @@ inline void WideStringClass::Trim(void)
 }
 
 ///////////////////////////////////////////////////////////////////
-#endif
+#endif // ZH
 //	operator=
 ///////////////////////////////////////////////////////////////////
 inline const WideStringClass &
@@ -514,11 +514,11 @@ WideStringClass::operator= (const WCHAR *string)
 #ifdef OG
 	if (string != 0) {
 
-#endif
+#endif // OG
 #ifdef ZH
 	if (string) {
 
-#endif
+#endif // ZH
 		int len = wcslen (string);
 		Uninitialised_Grow (len + 1);
 		Store_Length (len);
@@ -537,12 +537,12 @@ WideStringClass::operator= (const char *string)
 {
 #ifdef OG
 	if (string != 0) {
-#endif
+#endif // OG
 		Convert_From(string);
 #ifdef OG
 	}
 
-#endif
+#endif // OG
 	return (*this);
 }
 
@@ -570,11 +570,11 @@ WideStringClass::operator+= (const WCHAR *string)
 #ifdef OG
 	WWASSERT (string != NULL);
 
-#endif
+#endif // OG
 #ifdef ZH
 	if (string) {
 
-#endif
+#endif // ZH
 	int cur_len = Get_Length ();
 	int src_len = wcslen (string);
 	int new_len = cur_len + src_len;
@@ -592,7 +592,7 @@ WideStringClass::operator+= (const WCHAR *string)
 #ifdef ZH
 	}
 
-#endif
+#endif // ZH
 	return (*this);
 }
 
@@ -864,15 +864,15 @@ WideStringClass::Convert_From(const char * text)
 }
 
 ///////////////////////////////////////////////////////////////////
-#endif
+#endif // OG
 // Convert_To
 ///////////////////////////////////////////////////////////////////
 #ifdef OG
 inline void	
-#endif
+#endif // OG
 #ifdef ZH
 inline bool	
-#endif
+#endif // ZH
 WideStringClass::Convert_To (StringClass &string)
 {
 #ifdef OG
@@ -891,25 +891,25 @@ WideStringClass::Convert_To (StringClass &string)
 			*dest_buffer++ = *ptr++;
 		}
 		*dest_buffer++ = 0;
-#endif
+#endif // OG
 #ifdef ZH
 	return (string.Copy_Wide (m_Buffer));
 
-#endif
+#endif // ZH
 	}
 
 #ifdef OG
 	return ;
 }
 
-#endif
+#endif // OG
 
 #ifdef OG
 inline void	
-#endif
+#endif // OG
 #ifdef ZH
 inline bool	
-#endif
+#endif // ZH
 WideStringClass::Convert_To (StringClass &string) const
 {
 #ifdef OG
@@ -931,11 +931,11 @@ WideStringClass::Convert_To (StringClass &string) const
 	}
 
 	return ;
-#endif
+#endif // OG
 #ifdef ZH
 	return (string.Copy_Wide (m_Buffer));
 
-#endif
+#endif // ZH
 }
 
 #endif //__WIDESTRING_H

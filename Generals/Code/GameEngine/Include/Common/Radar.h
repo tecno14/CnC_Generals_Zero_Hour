@@ -171,7 +171,7 @@ public:
 	Bool radarToWorld( const ICoord2D *radar, Coord3D *world );		///< radar point to world point on terrain
 #ifdef ZH
 	Bool radarToWorld2D( const ICoord2D *radar, Coord3D *world );		///< radar point to world point (x,y only!)
-#endif
+#endif // ZH
 	Bool worldToRadar( const Coord3D *world, ICoord2D *radar );		///< translate world point to radar (x,y)
 	Bool localPixelToRadar( const ICoord2D *pixel, ICoord2D *radar );	///< translate pixel (with UL of radar being (0,0)) to logical radar coords
 	Bool screenPixelToWorld( const ICoord2D *pixel, Coord3D *world ); ///< translate pixel (with UL of the screen being (0,0)) to world position in the world
@@ -255,7 +255,7 @@ protected:
 #ifdef ZH
 //	typedef std::list<Object*> HeroList;
 //	HeroList m_heroList;		//< list of pointers to objects with radar icon representations
-#endif
+#endif // ZH
 
 	Real m_terrainAverageZ;								///< average Z for terrain samples
 	Real m_waterAverageZ;									///< average Z for water samples

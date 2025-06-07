@@ -78,10 +78,10 @@ public:
 	*/
 #ifdef OG
 	const ThingTemplate *findTemplate( const AsciiString& name ) { return findTemplateInternal(name); }
-#endif
+#endif // OG
 #ifdef ZH
 	const ThingTemplate *findTemplate( const AsciiString& name, Bool check = TRUE ) { return findTemplateInternal( name, check ); }
-#endif
+#endif // ZH
 
 	/** 
 		get a template given ID. return null if not found.
@@ -94,10 +94,10 @@ public:
 	*/
 #ifdef OG
 	Object *newObject( const ThingTemplate *tmplate, Team *team, ObjectStatusBits statusBits = OBJECT_STATUS_NONE );
-#endif
+#endif // OG
 #ifdef ZH
 	Object *newObject( const ThingTemplate *tmplate, Team *team, ObjectStatusMaskType statusMask = OBJECT_STATUS_MASK_NONE );
-#endif
+#endif // ZH
 
 	/** request a new drawable using the given template. 
 		this will throw an exception on failure; it will never return null.
@@ -135,10 +135,10 @@ private:
 	*/
 #ifdef OG
 	ThingTemplate *findTemplateInternal( const AsciiString& name );
-#endif
+#endif // OG
 #ifdef ZH
 	ThingTemplate *findTemplateInternal( const AsciiString& name, Bool check = TRUE );
-#endif
+#endif // ZH
 
 	ThingTemplate					*m_firstTemplate;			///< head of linked list
 	UnsignedShort					m_nextTemplateID;			///< next available ID for templates 

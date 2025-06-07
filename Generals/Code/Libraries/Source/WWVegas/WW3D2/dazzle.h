@@ -48,14 +48,14 @@ public:
 #ifdef OG
 	float halo_size_pow;
 	float halo_intensity_pow;
-#endif
+#endif // OG
 	float halo_intensity;
 #ifdef OG
 	float halo_area;
-#endif
+#endif // OG
 #ifdef ZH
 	float halo_intensity_pow;
-#endif
+#endif // ZH
 	float halo_scale_x;
 	float halo_scale_y;
 	float dazzle_size_pow;
@@ -164,7 +164,7 @@ public:
 		const Vector3& dazzle_dir,
 #ifdef ZH
 		const Vector3& dir_to_dazzle,
-#endif
+#endif // ZH
 		float distance) const;
 
 	void Set_Dazzle_Shader(const ShaderClass& s);	// Set shader for the dazzle type
@@ -263,7 +263,7 @@ class DazzleRenderObjClass : public RenderObjClass
 	float	  lensflare_intensity;
 #ifdef ZH
 	float	current_scale;
-#endif
+#endif // ZH
 	float visibility;
 	bool on_list;	// This is used to avoid insterting a dazzle into a list twice.
 	float radius;	// Used to cast rays against
@@ -271,7 +271,7 @@ class DazzleRenderObjClass : public RenderObjClass
 #ifdef ZH
 	
 	static bool	_dazzle_rendering_enabled;
-#endif
+#endif // ZH
 
 //	static void Draw_Debug_Dazzle(int idx);
 	void vis_render_dazzle(SpecialRenderInfoClass & rinfo);
@@ -301,10 +301,10 @@ public:
    virtual void					Get_Obj_Space_Bounding_Box(AABoxClass & box) const;
 #ifdef OG
 	virtual void					Scale(float scale) 															{ radius*=scale; };	
-#endif
+#endif // OG
 #ifdef ZH
 	virtual void					Scale(float scale) 															{ current_scale*=scale; };	
-#endif
+#endif // ZH
 
 	void Set_Dazzle_Color(const Vector3& col) { dazzle_color=col; }
 	void Set_Halo_Color(const Vector3& col) { halo_color=col; }
@@ -355,7 +355,7 @@ public:
 	// Globally disable/enable dazzle rendering
 	static void Enable_Dazzle_Rendering(bool onoff) { _dazzle_rendering_enabled = onoff; }
 	static bool Is_Dazzle_Rendering_Enabled(void) { return _dazzle_rendering_enabled; }
-#endif
+#endif // ZH
 };
 
 

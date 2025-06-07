@@ -98,13 +98,13 @@ public:
 	NameKeyType nameToKey(const AsciiString& name) { return nameToKey(name.str()); }
 #ifdef ZH
 	NameKeyType nameToLowercaseKey(const AsciiString& name) { return nameToLowercaseKey(name.str()); }
-#endif
+#endif // ZH
 
 	/// Given a string, convert into a unique integer key.
 	NameKeyType nameToKey(const char* name);
 #ifdef ZH
 	NameKeyType nameToLowercaseKey(const char *name);
-#endif
+#endif // ZH
 
 	/** 
 		given a key, return the name. this is almost never needed,
@@ -118,7 +118,7 @@ public:
   // Get a string out of the INI. Store it into a NameKeyType
   static void parseStringAsNameKeyType( INI *ini, void *instance, void *store, const void* userData );
 
-#endif
+#endif // ZH
 private:
 
 	enum
@@ -128,11 +128,11 @@ private:
 		// if this one isn't large enough, try this website:
 		// http://www.utm.edu/research/primes/lists/small/1000.txt
 		SOCKET_COUNT = 6473
-#endif
+#endif // OG
 #ifdef ZH
 		SOCKET_COUNT = 45007
 
-#endif
+#endif // ZH
 	};
 
 	void freeSockets();

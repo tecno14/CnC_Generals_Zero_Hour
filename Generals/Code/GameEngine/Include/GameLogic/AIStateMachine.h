@@ -43,7 +43,7 @@
 class AIGuardMachine;
 #ifdef ZH
 class AIGuardRetaliateMachine;
-#endif
+#endif // ZH
 class AITNGuardMachine;
 class Weapon;
 class Team;
@@ -110,7 +110,7 @@ enum AIStateType
 	AI_EXIT_INSTANTLY,												///< exit this obj, without waiting -- do it in the onEnter! This frame!
 	AI_GUARD_RETALIATE,												///< attacks attacker but with restrictions (hybrid of attack and guard).
 
-#endif
+#endif // ZH
 	NUM_AI_STATES
 };
 
@@ -467,7 +467,7 @@ public:
 	}
 #ifdef ZH
 	virtual Bool isAttack() const { return TRUE; }
-#endif
+#endif // ZH
 	virtual StateReturnType onEnter();
 	virtual void onExit( StateExitType status );
 	virtual StateReturnType update();
@@ -518,7 +518,7 @@ public:
 	}
 #ifdef ZH
 	virtual Bool isAttack() const { return TRUE; }
-#endif
+#endif // ZH
 	virtual StateReturnType onEnter();
 	virtual void onExit( StateExitType status );
 	virtual StateReturnType update();
@@ -590,7 +590,7 @@ public:
 
 #ifdef ZH
 	virtual Bool isAttack() const { return m_attackMoveMachine ? m_attackMoveMachine->isInAttackState() : FALSE; }
-#endif
+#endif // ZH
 	virtual StateReturnType onEnter();
 	virtual void onExit( StateExitType status );
 	virtual StateReturnType update();
@@ -703,7 +703,7 @@ public:
 	
 	virtual Bool isAttack() const { return m_attackFollowMachine ? m_attackFollowMachine->isInAttackState() : FALSE; }
 
-#endif
+#endif // ZH
 	virtual StateReturnType onEnter();
 	virtual void onExit( StateExitType status );
 	virtual StateReturnType update();
@@ -920,7 +920,7 @@ public:
 	}
 #ifdef ZH
 	virtual Bool isAttack() const { return TRUE; }
-#endif
+#endif // ZH
 	virtual StateReturnType onEnter();
 	virtual void onExit( StateExitType status );
 	virtual StateReturnType update();
@@ -975,7 +975,7 @@ public:
 	}
 #ifdef ZH
 	virtual Bool isAttack() const { return TRUE; }
-#endif
+#endif // ZH
 	virtual StateReturnType update();
 	virtual void onExit( StateExitType status );
 	virtual StateReturnType onEnter();
@@ -1007,7 +1007,7 @@ public:
 
 #ifdef ZH
 	virtual Bool isAttack() const { return TRUE; }
-#endif
+#endif // ZH
 	virtual StateReturnType onEnter();
 	virtual void onExit( StateExitType status );
 	virtual StateReturnType update();
@@ -1024,7 +1024,7 @@ public:
 #ifdef OG
 
 	virtual Bool isAttack() const { return TRUE; }
-#endif
+#endif // OG
 
 protected:
 	// snapshot interface
@@ -1036,10 +1036,10 @@ private:
 
 #ifdef OG
 	void chooseWeapon();
-#endif
+#endif // OG
 #ifdef ZH
 	Bool chooseWeapon();
-#endif
+#endif // ZH
 
 	AttackStateMachine*							m_attackMachine;						///< state sub-machine for attack behavior
 	AttackExitConditionsInterface*	m_attackParameters;					///< these are not owned by this, and will not be deleted on destruction
@@ -1062,7 +1062,7 @@ public:
 
 #ifdef ZH
 	virtual Bool isAttack() const { return m_attackSquadMachine ? m_attackSquadMachine->isInAttackState() : FALSE; }
-#endif
+#endif // ZH
 	virtual StateReturnType onEnter( void );
 	virtual void onExit( StateExitType status );
 	virtual StateReturnType update( void );
@@ -1108,7 +1108,7 @@ public:
 	//~AIDockState();
 #ifdef ZH
 	virtual Bool isAttack() const { return m_dockMachine ? m_dockMachine->isInAttackState() : FALSE; }
-#endif
+#endif // ZH
 	virtual StateReturnType onEnter();
 	virtual void onExit( StateExitType status );
 	virtual StateReturnType update();
@@ -1188,7 +1188,7 @@ public:
 EMPTY_DTOR(AIExitInstantlyState)
 
 //-----------------------------------------------------------------------------------------------------------
-#endif
+#endif // ZH
 /**
  * Guard location
  */
@@ -1204,7 +1204,7 @@ public:
 #ifdef ZH
 	virtual Bool isAttack() const;
 	virtual Bool isGuardIdle() const;
-#endif
+#endif // ZH
 	virtual StateReturnType onEnter();
 	virtual void onExit( StateExitType status );
 	virtual StateReturnType update();
@@ -1251,7 +1251,7 @@ private:
 
 //-----------------------------------------------------------------------------------------------------------
 /**
-#endif
+#endif // ZH
  * Guard from inside a tunnel network.
  */
 class AITunnelNetworkGuardState : public State
@@ -1265,7 +1265,7 @@ public:
 	//~AIGuardState();
 #ifdef ZH
 	virtual Bool isAttack() const;
-#endif
+#endif // ZH
 	virtual StateReturnType onEnter();
 	virtual void onExit( StateExitType status );
 	virtual StateReturnType update();
@@ -1297,7 +1297,7 @@ public:
 	//~AIHuntState();
 #ifdef ZH
 	virtual Bool isAttack() const;
-#endif
+#endif // ZH
 	virtual StateReturnType onEnter();
 	virtual void onExit( StateExitType status );
 	virtual StateReturnType update();
@@ -1330,7 +1330,7 @@ public:
 	//~AIAttackAreaState();
 #ifdef ZH
 	virtual Bool isAttack() const { return m_attackMachine ? m_attackMachine->isInAttackState() : FALSE; }
-#endif
+#endif // ZH
 	virtual StateReturnType onEnter();
 	virtual void onExit( StateExitType status );
 	virtual StateReturnType update();

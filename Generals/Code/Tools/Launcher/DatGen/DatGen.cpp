@@ -43,18 +43,18 @@ static void doIt(void)
 	bool usesHKeycurrentUser = false;
 #ifdef OG
 	LONG result = RegOpenKeyEx(HKEY_LOCAL_MACHINE, "Software\\Electronic Arts\\EA Games\\Generals", 0, KEY_READ, &hKey);
-#endif
+#endif // OG
 #ifdef ZH
 	LONG result = RegOpenKeyEx(HKEY_LOCAL_MACHINE, "Software\\Electronic Arts\\EA Games\\Command and Conquer Generals Zero Hour", 0, KEY_READ, &hKey);
-#endif
+#endif // ZH
 	if (result != ERROR_SUCCESS)
 	{
 #ifdef OG
 		result = RegOpenKeyEx(HKEY_CURRENT_USER, "Software\\Electronic Arts\\EA Games\\Generals", 0, KEY_READ, &hKey);
-#endif
+#endif // OG
 #ifdef ZH
 		result = RegOpenKeyEx(HKEY_CURRENT_USER, "Software\\Electronic Arts\\EA Games\\Command and Conquer Generals Zero Hour", 0, KEY_READ, &hKey);
-#endif
+#endif // ZH
 		usesHKeycurrentUser = true;
 	}
 	assert((result == ERROR_SUCCESS) && "Failed to open game registry key");
@@ -104,19 +104,19 @@ static void doIt(void)
 	{
 #ifdef OG
 		result = RegOpenKeyEx(HKEY_CURRENT_USER, "Software\\Electronic Arts\\EA Games\\Generals\\ergc", 0, KEY_READ, &hKey);
-#endif
+#endif // OG
 #ifdef ZH
 		result = RegOpenKeyEx(HKEY_CURRENT_USER, "Software\\Electronic Arts\\EA Games\\Command and Conquer Generals Zero Hour\\ergc", 0, KEY_READ, &hKey);
-#endif
+#endif // ZH
 	}
 	else
 	{
 #ifdef OG
 		result = RegOpenKeyEx(HKEY_LOCAL_MACHINE, "Software\\Electronic Arts\\EA Games\\Generals\\ergc", 0, KEY_READ, &hKey);
-#endif
+#endif // OG
 #ifdef ZH
 		result = RegOpenKeyEx(HKEY_LOCAL_MACHINE, "Software\\Electronic Arts\\EA Games\\Command and Conquer Generals Zero Hour\\ergc", 0, KEY_READ, &hKey);
-#endif
+#endif // ZH
 	}
 	assert((result == ERROR_SUCCESS) && "Failed to open game serial registry key");
 

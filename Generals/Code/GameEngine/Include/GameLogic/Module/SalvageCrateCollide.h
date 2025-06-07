@@ -104,7 +104,7 @@ private:
 	Bool eligibleForWeaponSet( Object *other );
 #ifdef ZH
 	Bool eligibleForArmorSet( Object *other );
-#endif
+#endif // ZH
 	Bool eligibleForLevel( Object *other );
 	Bool testWeaponChance();
 	Bool testLevelChance();
@@ -112,7 +112,7 @@ private:
 	void doWeaponSet( Object *other );
 #ifdef ZH
 	void doArmorSet( Object *other );
-#endif
+#endif // ZH
 	void doLevelGain( Object *other );
 	void doMoney( Object *other );
 

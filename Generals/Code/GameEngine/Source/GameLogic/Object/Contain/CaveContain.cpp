@@ -138,17 +138,17 @@ void CaveContain::iterateContained( ContainIterateFunc func, void *userData, Boo
 //-------------------------------------------------------------------------------------------------
 #ifdef OG
 void CaveContain::onContaining( Object *obj )
-#endif
+#endif // OG
 #ifdef ZH
 void CaveContain::onContaining( Object *obj, Bool wasSelected )
-#endif
+#endif // ZH
 {
 #ifdef OG
 	OpenContain::onContaining(obj);
-#endif
+#endif // OG
 #ifdef ZH
 	OpenContain::onContaining( obj, wasSelected );
-#endif
+#endif // ZH
 	// objects inside a building are held
 	obj->setDisabled( DISABLED_HELD );
 
@@ -236,10 +236,10 @@ void CaveContain::onDie( const DamageInfo * damageInfo )
 
 #ifdef OG
 	if( BitTest( getObject()->getStatusBits(), OBJECT_STATUS_UNDER_CONSTRUCTION ) )
-#endif
+#endif // OG
 #ifdef ZH
 	if( getObject()->getStatusBits().test( OBJECT_STATUS_UNDER_CONSTRUCTION ) )
-#endif
+#endif // ZH
 		return;//it never registered itself as a tunnel
 
 	TunnelTracker *myTracker = TheCaveSystem->getTunnelTrackerForCaveIndex( m_caveIndex );

@@ -479,7 +479,7 @@ void MilesAudioManager::reset()
   // This must come after stopAllAudioImmediately() and removeAllAudioRequests(), to ensure that
   // sounds pointing to the temporary AudioEventInfo handles are deleted before their info is deleted
   removeLevelSpecificAudioEventInfos();
-#endif
+#endif // ZH
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -667,7 +667,7 @@ void MilesAudioManager::stopAllAmbientsBy( Object *obj )
 
 //-------------------------------------------------------------------------------------------------
 void MilesAudioManager::stopAllAmbientsBy( Drawable *draw )
-#endif
+#endif // OG
 {
 
 }
@@ -1192,7 +1192,7 @@ void MilesAudioManager::stopAllAudioImmediately( void )
     it = m_fadingAudio.erase(it);
   }
   
-#endif
+#endif // ZH
 	std::list<HAUDIO>::iterator hit;
 	for (hit = m_audioForcePlayed.begin(); hit != m_audioForcePlayed.end(); ++hit) {
 		if (*hit) {
@@ -2447,7 +2447,7 @@ Bool MilesAudioManager::has3DSensitiveStreamsPlaying( void ) const
 
 }
 
-#endif
+#endif // ZH
 //-------------------------------------------------------------------------------------------------
 void MilesAudioManager::processFadingList( void )
 {
@@ -2552,17 +2552,17 @@ Bool MilesAudioManager::checkForSample( AudioRequest *req )
   {
     // Fill in event info
     getInfoForAudioEvent( req->m_pendingEvent );
-#endif
+#endif // ZH
 	}
 
 #ifdef OG
 	if (req->m_pendingEvent->getAudioEventInfo()->m_type != AT_SoundEffect) {
 
-#endif
+#endif // OG
 #ifdef ZH
 	if (req->m_pendingEvent->getAudioEventInfo()->m_type != AT_SoundEffect) 
   {
-#endif
+#endif // ZH
 		return true;
 	}
 

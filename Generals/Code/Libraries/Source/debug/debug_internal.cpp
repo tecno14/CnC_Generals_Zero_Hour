@@ -86,4 +86,4 @@ void DebugFreeMemory(void *ptr)
     GlobalFree((HGLOBAL)ptr);
 }
 
-#endif
+#endif // ZH

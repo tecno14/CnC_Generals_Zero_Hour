@@ -152,4 +152,4 @@ protected:
 
 #endif //SHDGLOSSMASK_H
 
-#endif
+#endif // ZH

@@ -121,59 +121,59 @@ static void drawStaticTextText( GameWindow *window, WinInstanceData *instData,
 	
 #ifdef ZH
 	// horizontal centering?
-#endif
+#endif // ZH
 	if( tData->centered )
 #ifdef ZH
 	{
 		textPos.x = origin.x + (size.x / 2) - (textWidth / 2);
 	}
 	else
-#endif
+#endif // ZH
 	{
 #ifdef ZH
 		textPos.x = origin.x + tData->leftMargin;
 	}
-#endif
+#endif // ZH
 
 #ifdef OG
 		textPos.x = origin.x + (size.x / 2) - (textWidth / 2);
 
-#endif
+#endif // OG
 #ifdef ZH
 	// vertical centering?
 	if ( tData->centeredVertically ) 
 	{
-#endif
+#endif // ZH
 		textPos.y = origin.y + (size.y / 2) - (textHeight / 2);
 #ifdef OG
 		text->setClipRegion(&clipRegion);
 		text->draw( textPos.x, textPos.y, textColor, textDropColor );
 
 	}  // end if
-#endif
+#endif // OG
 #ifdef ZH
 	}
 
-#endif
+#endif // ZH
 	else
 	{
 #ifdef ZH
 		textPos.y = origin.y + tData->topMargin;
 	}
-#endif
+#endif // ZH
 
 		// draw the text
 #ifdef OG
 		textPos.x = origin.x + 7;
 		textPos.y = origin.y + (size.y / 2) - (textHeight / 2);
-#endif
+#endif // OG
 		text->setClipRegion(&clipRegion);
 		text->draw( textPos.x, textPos.y, textColor, textDropColor );
 #ifdef OG
 
 	}  // end else
 
-#endif
+#endif // OG
 
 }  // end drawStaticTextText
 

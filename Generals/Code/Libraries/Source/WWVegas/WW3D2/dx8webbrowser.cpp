@@ -178,10 +178,10 @@ void	DX8WebBrowser::CreateBrowser(const char* browsername, const char* url, int 
 {
 #ifdef OG
 	DEBUG_LOG(("DX8WebBrowser::CreateBrowser - Creating browser with the name %s, url = %s, (x, y, w, h) = (%d, %d, %d, %d), update ticks = %d\n", browsername, url, x, y, h, w, updateticks));
-#endif
+#endif // OG
 #ifdef ZH
 	WWDEBUG_SAY(("DX8WebBrowser::CreateBrowser - Creating browser with the name %s, url = %s, (x, y, w, h) = (%d, %d, %d, %d), update ticks = %d\n", browsername, url, x, y, h, w, updateticks));
-#endif
+#endif // ZH
 	if(pBrowser)
 	{
 		_bstr_t brsname(browsername);
@@ -206,10 +206,10 @@ void	DX8WebBrowser::DestroyBrowser(const char* browsername)
 {
 #ifdef OG
 	DEBUG_LOG(("DX8WebBrowser::DestroyBrowser - destroying browser %s\n", browsername));
-#endif
+#endif // OG
 #ifdef ZH
 	WWDEBUG_SAY(("DX8WebBrowser::DestroyBrowser - destroying browser %s\n", browsername));
-#endif
+#endif // ZH
 	if(pBrowser)
 		pBrowser->DestroyBrowser(_bstr_t(browsername));
 }

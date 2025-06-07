@@ -59,7 +59,7 @@ public:
 	UnsignedInt m_subdualDamageHealRate;		///< Every this often, we drop subdual damage...
 	Real m_subdualDamageHealAmount;					///< by this much.
 
-#endif
+#endif // ZH
 	ActiveBodyModuleData();
 
 	static void buildFieldParse(MultiIniFieldParse& p);
@@ -91,7 +91,7 @@ public:
 	virtual Real getSubdualDamageHealAmount() const;
 	virtual Bool hasAnySubdualDamage() const;
 	virtual Real getCurrentSubdualDamageAmount() const { return m_currentSubdualDamage; }
-#endif
+#endif // ZH
 
 	virtual const DamageInfo *getLastDamageInfo() const { return &m_lastDamageInfo; }	///< return info on last damage dealt to this object
 	virtual UnsignedInt getLastDamageTimestamp() const { return m_lastDamageTimestamp; }	///< return frame of last damage dealt
@@ -101,16 +101,16 @@ public:
 
 #ifdef OG
 	void onVeterancyLevelChanged( VeterancyLevel oldLevel, VeterancyLevel newLevel );
-#endif
+#endif // OG
 #ifdef ZH
 	void onVeterancyLevelChanged( VeterancyLevel oldLevel, VeterancyLevel newLevel, Bool provideFeedback = TRUE );
-#endif
+#endif // ZH
 
 	virtual void setArmorSetFlag(ArmorSetType ast) { m_curArmorSetFlags.set(ast, 1); }
 	virtual void clearArmorSetFlag(ArmorSetType ast) { m_curArmorSetFlags.set(ast, 0); }
 #ifdef ZH
 	virtual Bool testArmorSetFlag(ArmorSetType ast) { return m_curArmorSetFlags.test(ast); }
-#endif
+#endif // ZH
 
 	virtual void setInitialHealth(Int initialPercent); ///< Sets the inital load health %.
 	virtual void setMaxHealth( Real maxHealth, MaxHealthChangeType healthChangeType = SAME_CURRENTHEALTH ); ///< Sets the inital max health
@@ -126,7 +126,7 @@ public:
 #ifdef ZH
 
 	virtual Real getPreviousHealth() const { return m_prevHealth; }
-#endif
+#endif // ZH
 
 	virtual void setIndestructible( Bool indestructible );
 	virtual Bool isIndestructible( void ) const { return m_indestructible; }
@@ -142,7 +142,7 @@ public:
 	virtual Bool canBeSubdued() const; 
 	virtual void onSubdualChange( Bool isNowSubdued );///< Override this if you want a totally different effect than DISABLED_SUBDUED
 
-#endif
+#endif // ZH
 protected:
 
 	void validateArmorAndDamageFX() const;
@@ -160,7 +160,7 @@ protected:
 
 	virtual void internalAddSubdualDamage( Real delta );								///< change health
 
-#endif
+#endif // ZH
 private:
 
 	Real									m_currentHealth;				///< health of the object
@@ -169,7 +169,7 @@ private:
   Real									m_initialHealth;				///< starting health for this object
 #ifdef ZH
 	Real									m_currentSubdualDamage;	///< Starts at zero and goes up.  Inherited modules will do something when "subdued".
-#endif
+#endif // ZH
 
 	BodyDamageType				m_curDamageState;				///< last known damage state
 	UnsignedInt						m_nextDamageFXTime;

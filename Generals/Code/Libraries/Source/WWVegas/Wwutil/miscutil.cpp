@@ -177,10 +177,10 @@ void cMiscUtil::Get_File_Id_String(LPCSTR filename, StringClass & str)
 			filename, filesize));
 #ifdef OG
 		W3D_DIE;
-#endif
+#endif // OG
 #ifdef ZH
 		//W3D_DIE;
-#endif
+#endif // ZH
 	}
    file.Close();
 

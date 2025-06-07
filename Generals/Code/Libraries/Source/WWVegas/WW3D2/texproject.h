@@ -28,28 +28,28 @@
  *                                                                                             *
 #ifdef OG
  *                      $Author:: Greg_h                                                      $*
-#endif
+#endif // OG
 #ifdef ZH
  *                      $Author:: Kenny Mitchell                                               * 
-#endif
+#endif // ZH
  *                                                                                             *
 #ifdef OG
  *                     $Modtime:: 4/23/01 7:29p                                               $*
-#endif
+#endif // OG
 #ifdef ZH
  *                     $Modtime:: 06/26/02 4:04p                                             $*
-#endif
+#endif // ZH
  *                                                                                             *
 #ifdef OG
  *                    $Revision:: 6                                                           $*
-#endif
+#endif // OG
 #ifdef ZH
  *                    $Revision:: 8                                                           $*
-#endif
+#endif // ZH
  *                                                                                             *
 #ifdef ZH
  * 06/27/02 KM Render to shadow buffer texture support														*
-#endif
+#endif // ZH
  *---------------------------------------------------------------------------------------------*
  * Functions:                                                                                  *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
@@ -80,7 +80,7 @@ class SurfaceClass;
 #ifdef ZH
 class TextureClass;
 class ZTextureClass;
-#endif
+#endif // ZH
 
 
 /**
@@ -171,7 +171,7 @@ public:
 	ZTextureClass*			Get_DepthStencilBuffer() const;
 	ZTextureClass*			Peek_DepthStencilBuffer() const;
 
-#endif
+#endif // ZH
 	/*
 	** Automatic initialization of a TexProjectClass.
 	** First set up your projection parameters, give the projector a render target, then call Compute_Texture
@@ -186,11 +186,11 @@ public:
 #ifdef OG
 	void						Set_Render_Target(TextureClass * render_target);
 	TextureClass *			Peek_Render_Target(void);
-#endif
+#endif // OG
 #ifdef ZH
 	void						Set_Render_Target(TextureClass* render_target, ZTextureClass* ztarget=NULL);
 	TextureClass*			Peek_Render_Target(TextureClass** rtarget=NULL, ZTextureClass** ztarget=NULL);
-#endif
+#endif // ZH
 
 	bool						Compute_Texture(RenderObjClass * model,SpecialRenderInfoClass * context);
 
@@ -231,10 +231,10 @@ protected:
 
 #ifdef OG
 		DEFAULT_FLAGS			= ATTENUATE | AFFECT_DYNAMIC_OBJS | AFFECT_STATIC_OBJS | (64<<SIZE_SHIFT)
-#endif
+#endif // OG
 #ifdef ZH
 		DEFAULT_FLAGS			= ATTENUATE | AFFECT_DYNAMIC_OBJS | AFFECT_STATIC_OBJS
-#endif
+#endif // ZH
 	};
 	
 	uint32						Flags;
@@ -254,7 +254,7 @@ protected:
 	TextureClass *				RenderTarget;
 #ifdef ZH
 	ZTextureClass*				DepthStencilTarget;
-#endif
+#endif // ZH
 	
 	/*
 	** I have to remember all of these values so that I can properly initialize a CameraClass

@@ -67,7 +67,7 @@ class AIUpdateInterface;
 class ExitInterface;
 #ifdef OG
 class DelayedUpgradeUpdateInterface;
-#endif
+#endif // OG
 class DockUpdateInterface;
 class RailedTransportDockUpdateInterface;
 class SpecialPowerUpdateInterface;
@@ -75,7 +75,7 @@ class SlavedUpdateInterface;
 class SpawnBehaviorInterface;
 #ifdef ZH
 class CountermeasuresBehaviorInterface;
-#endif
+#endif // ZH
 class SlowDeathBehaviorInterface;
 class PowerPlantUpdateInterface;
 class ProductionUpdateInterface;
@@ -87,7 +87,7 @@ class ParticleSystemTemplate;
 #ifdef ZH
 class StealthUpdate;
 class SpyVisionUpdate;
-#endif
+#endif // ZH
 
 
 //-------------------------------------------------------------------------------------------------
@@ -137,7 +137,7 @@ public:
 	virtual ExitInterface* getUpdateExitInterface() = 0;
 #ifdef OG
 	virtual DelayedUpgradeUpdateInterface* getDelayedUpgradeUpdateInterface() = 0;
-#endif
+#endif // OG
 	virtual DockUpdateInterface* getDockUpdateInterface() = 0;
 	virtual RailedTransportDockUpdateInterface *getRailedTransportDockUpdateInterface( void ) = 0;
 	virtual SlowDeathBehaviorInterface* getSlowDeathBehaviorInterface() = 0;
@@ -150,7 +150,7 @@ public:
 #ifdef ZH
 	virtual CountermeasuresBehaviorInterface* getCountermeasuresBehaviorInterface() = 0;
 	virtual const CountermeasuresBehaviorInterface* getCountermeasuresBehaviorInterface() const = 0;
-#endif
+#endif // ZH
 
 };
 
@@ -181,7 +181,7 @@ public:
 #ifdef ZH
   virtual StealthUpdate* getStealth() { return NULL; }
 	virtual SpyVisionUpdate* getSpyVisionUpdate() { return NULL; }
-#endif
+#endif // ZH
 
 	virtual ParkingPlaceBehaviorInterface* getParkingPlaceBehaviorInterface() { return NULL; }
 	virtual RebuildHoleBehaviorInterface* getRebuildHoleBehaviorInterface() { return NULL; }
@@ -199,7 +199,7 @@ public:
 	virtual ExitInterface* getUpdateExitInterface() { return NULL; }
 #ifdef OG
 	virtual DelayedUpgradeUpdateInterface* getDelayedUpgradeUpdateInterface() { return NULL; }
-#endif
+#endif // OG
 	virtual DockUpdateInterface* getDockUpdateInterface() { return NULL; }
 	virtual RailedTransportDockUpdateInterface *getRailedTransportDockUpdateInterface( void ) { return NULL; }
 	virtual SlowDeathBehaviorInterface* getSlowDeathBehaviorInterface() { return NULL; }
@@ -212,7 +212,7 @@ public:
 #ifdef ZH
 	virtual CountermeasuresBehaviorInterface* getCountermeasuresBehaviorInterface() { return NULL; }
 	virtual const CountermeasuresBehaviorInterface* getCountermeasuresBehaviorInterface() const { return NULL; }
-#endif
+#endif // ZH
 
 protected:
 
@@ -232,7 +232,7 @@ enum RunwayReservationType
 	RESERVATION_TAKEOFF,
 	RESERVATION_LANDING,
 };
-#endif
+#endif // ZH
 
 //-------------------------------------------------------------------------------------------------
 class ParkingPlaceBehaviorInterface
@@ -249,12 +249,12 @@ public:
 		Coord3D		runwayExit;
 		Coord3D	  runwayLandingStart;
 		Coord3D	  runwayLandingEnd;
-#endif
+#endif // ZH
 		Coord3D		runwayApproach;
 		Coord3D		hangarInternal;
 #ifdef ZH
 		Real			runwayTakeoffDist;
-#endif
+#endif // ZH
 		Real			hangarInternalOrient;
 	};
 	virtual Bool shouldReserveDoorWhenQueued(const ThingTemplate* thing) const = 0; 
@@ -262,26 +262,26 @@ public:
 	virtual Bool hasReservedSpace(ObjectID id) const = 0; 
 #ifdef ZH
 	virtual Int  getSpaceIndex( ObjectID id ) const = 0;
-#endif
+#endif // ZH
 	virtual Bool reserveSpace(ObjectID id, Real parkingOffset, PPInfo* info) = 0;
 	virtual void releaseSpace(ObjectID id) = 0; 
 	virtual Bool reserveRunway(ObjectID id, Bool forLanding) = 0;
 #ifdef ZH
 	virtual void calcPPInfo( ObjectID id, PPInfo *info ) = 0;
-#endif
+#endif // ZH
 	virtual void releaseRunway(ObjectID id) = 0; 
 	virtual Int getRunwayCount() const = 0;
 #ifdef OG
 	virtual ObjectID getRunwayReservation(Int r) = 0;
-#endif
+#endif // OG
 #ifdef ZH
 	virtual ObjectID getRunwayReservation( Int r, RunwayReservationType type = RESERVATION_TAKEOFF ) = 0;
-#endif
+#endif // ZH
 	virtual void transferRunwayReservationToNextInLineForTakeoff(ObjectID id) = 0;
 	virtual Real getApproachHeight() const = 0;
 #ifdef ZH
 	virtual Real getLandingDeckHeightOffset() const = 0;
-#endif
+#endif // ZH
 	virtual void setHealee(Object* healee, Bool add) = 0;
 	virtual void killAllParkedUnits() = 0;
 	virtual void defectAllParkedUnits(Team* newTeam, UnsignedInt detectionTime) = 0;
@@ -290,7 +290,7 @@ public:
 
 	virtual const std::vector<Coord3D>* getTaxiLocations( ObjectID id ) const = 0;
 	virtual const std::vector<Coord3D>* getCreationLocations( ObjectID id ) const = 0;
-#endif
+#endif // ZH
 };
 
 //-------------------------------------------------------------------------------------------------

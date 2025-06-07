@@ -28,28 +28,28 @@
  *                                                                                             *
 #ifdef OG
  *                      $Author:: Jani_p                                                      $*
-#endif
+#endif // OG
 #ifdef ZH
  *                      $Author:: Kenny Mitchell                                               * 
-#endif
+#endif // ZH
  *                                                                                             *
 #ifdef OG
  *                     $Modtime:: 7/09/01 8:15p                                               $*
-#endif
+#endif // OG
 #ifdef ZH
  *                     $Modtime:: 06/26/02 5:06p                                             $*
-#endif
+#endif // ZH
  *                                                                                             *
 #ifdef OG
  *                    $Revision:: 25                                                          $*
-#endif
+#endif // OG
 #ifdef ZH
  *                    $Revision:: 26                                                          $*
-#endif
+#endif // ZH
  *                                                                                             *
 #ifdef ZH
  * 06/26/02 KM VB Vertex format size update for shaders                                       *
-#endif
+#endif // ZH
  *---------------------------------------------------------------------------------------------*
  * Functions:                                                                                  *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
@@ -104,10 +104,10 @@ class VertexBufferClass : public W3DMPO, public RefCountClass
 protected:
 #ifdef OG
 	VertexBufferClass(unsigned type, unsigned FVF, unsigned short VertexCount);
-#endif
+#endif // OG
 #ifdef ZH
 	VertexBufferClass(unsigned type, unsigned FVF, unsigned short VertexCount, unsigned vertex_size=0);
-#endif
+#endif // ZH
 	virtual ~VertexBufferClass();
 public:
 
@@ -124,10 +124,10 @@ public:
 	public:
 #ifdef OG
 		WriteLockClass(VertexBufferClass* vertex_buffer);
-#endif
+#endif // OG
 #ifdef ZH
 		WriteLockClass(VertexBufferClass* vertex_buffer, int flags=0);
-#endif
+#endif // ZH
 		~WriteLockClass();
 	};
 
@@ -246,10 +246,10 @@ public:
 
 #ifdef OG
 	DX8VertexBufferClass(unsigned FVF, unsigned short VertexCount, UsageType usage=USAGE_DEFAULT);
-#endif
+#endif // OG
 #ifdef ZH
 	DX8VertexBufferClass(unsigned FVF, unsigned short VertexCount, UsageType usage=USAGE_DEFAULT, unsigned vertex_size=0); // Vertex size not used with FVF formats
-#endif
+#endif // ZH
 	DX8VertexBufferClass(const Vector3* vertices, const Vector3* normals, const Vector2* tex_coords, unsigned short VertexCount,UsageType usage=USAGE_DEFAULT);
 	DX8VertexBufferClass(const Vector3* vertices, const Vector3* normals, const Vector4* diffuse, const Vector2* tex_coords, unsigned short VertexCount,UsageType usage=USAGE_DEFAULT);
 	DX8VertexBufferClass(const Vector3* vertices, const Vector4* diffuse, const Vector2* tex_coords, unsigned short VertexCount,UsageType usage=USAGE_DEFAULT);

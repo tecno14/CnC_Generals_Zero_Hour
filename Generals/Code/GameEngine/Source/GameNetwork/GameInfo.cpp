@@ -311,11 +311,11 @@ void GameInfo::reset( void )
 	m_seed = GetTickCount(); //GameClientRandomValue(0, INT_MAX - 1);
 #ifdef ZH
 	m_useStats = TRUE;
-#endif
+#endif // ZH
 	m_surrendered = FALSE;
 #ifdef ZH
   m_oldFactionsOnly = FALSE;
-#endif
+#endif // ZH
 	// Added By Sadullah Nader
 	// Initializations missing and needed
 //	m_localIP = 0; // BGC - actually we don't want this to be reset since the m_localIP is 
@@ -326,7 +326,7 @@ void GameInfo::reset( void )
   m_superweaponRestriction = 0; 
   m_startingCash = TheGlobalData->m_defaultStartingCash;
   
-#endif
+#endif // ZH
 	//
 
 	for (Int i=0; i<MAX_SLOTS; ++i)
@@ -714,7 +714,7 @@ void GameInfo::setSuperweaponRestriction( UnsignedShort restriction )
 void GameInfo::setStartingCash( const Money & startingCash )
 {
   m_startingCash = startingCash;
-#endif
+#endif // ZH
 }
 
 Bool GameInfo::isColorTaken(Int colorIdx, Int slotToIgnore ) const
@@ -938,14 +938,14 @@ AsciiString GameInfoToAsciiString( const GameInfo *game )
 	optionsString.format("M=%2.2x%s;MC=%X;MS=%d;SD=%d;C=%d;", game->getMapContentsMask(), newMapName.str(),
 		game->getMapCRC(), game->getMapSize(), game->getSeed(), game->getCRCInterval());
 
-#endif
+#endif // OG
 #ifdef ZH
 	optionsString.format("US=%d;M=%2.2x%s;MC=%X;MS=%d;SD=%d;C=%d;SR=%u;SC=%u;O=%c;", game->getUseStats(), game->getMapContentsMask(), newMapName.str(),
 		game->getMapCRC(), game->getMapSize(), game->getSeed(), game->getCRCInterval(), game->getSuperweaponRestriction(),
 		game->getStartingCash().countMoney(), game->oldFactionsOnly() ? 'Y' : 'N' );
 
 	//add player info for each slot
-#endif
+#endif // ZH
 	optionsString.concat(slotListID);
 	optionsString.concat('=');
 	for (Int i=0; i<MAX_SLOTS; ++i)
@@ -959,13 +959,13 @@ AsciiString GameInfoToAsciiString( const GameInfo *game )
 			
 			str.format( "H%s,%X,%d,%c%c,%d,%d,%d,%d,%d:",
 				name.str(), slot->getIP(), slot->getPort(),
-#endif
+#endif // OG
 #ifdef ZH
 			AsciiString tmp;  //all this data goes after name
 			tmp.format( ",%X,%d,%c%c,%d,%d,%d,%d,%d:",
 				slot->getIP(), slot->getPort(),
 
-#endif
+#endif // ZH
 				(slot->isAccepted()?'T':'F'),
 				(slot->hasMap()?'T':'F'),
 				slot->getColor(), slot->getPlayerTemplate(),
@@ -981,7 +981,7 @@ AsciiString GameInfoToAsciiString( const GameInfo *game )
 				name.removeLastChar();  //what a horrible way to truncate.  I hate AsciiString.
 			
 			str.format( "H%s%s", name.str(), tmp.str() );
-#endif
+#endif // ZH
 		}
 		else if (slot && slot->isAI())
 		{
@@ -1047,16 +1047,16 @@ Bool ParseAsciiStringToGameInfo(GameInfo *game, AsciiString options)
 	Int useStats = TRUE;
   Money startingCash = TheGlobalData->m_defaultStartingCash;
   UnsignedShort restriction = 0; // Always the default
-#endif
+#endif // ZH
 
 #ifdef OG
 	Bool sawMap, sawMapCRC, sawMapSize, sawSeed, sawSlotlist;
 	sawMap = sawMapCRC = sawMapSize = sawSeed = sawSlotlist = FALSE;
-#endif
+#endif // OG
 #ifdef ZH
 	Bool sawMap, sawMapCRC, sawMapSize, sawSeed, sawSlotlist, sawUseStats, sawSuperweaponRestriction, sawStartingCash, sawOldFactions;
 	sawMap = sawMapCRC = sawMapSize = sawSeed = sawSlotlist = sawUseStats = sawSuperweaponRestriction = sawStartingCash = sawOldFactions = FALSE;
-#endif
+#endif // ZH
 
 	//DEBUG_LOG(("Saw options of %s\n", options.str()));
 	DEBUG_LOG(("ParseAsciiStringToGameInfo - parsing [%s]\n", options.str()));
@@ -1090,7 +1090,7 @@ Bool ParseAsciiStringToGameInfo(GameInfo *game, AsciiString options)
 			sawUseStats = true;
 		}
 		else
-#endif
+#endif // ZH
 		if (key.compare("M") == 0)
 		{
 			if (val.getLength() < 3)
@@ -1159,7 +1159,7 @@ Bool ParseAsciiStringToGameInfo(GameInfo *game, AsciiString options)
       oldFactionsOnly = ( val.compareNoCase( "Y" ) == 0 );
       sawOldFactions = TRUE;
     }
-#endif
+#endif // ZH
 		else if (key.getLength() == 1 && *key.str() == slotListID)
 		{
 			sawSlotlist = true;
@@ -1501,10 +1501,10 @@ Bool ParseAsciiStringToGameInfo(GameInfo *game, AsciiString options)
 	//DEBUG_LOG(("Options were ok == %d\n", optionsOk));
 #ifdef OG
 	if (optionsOk && sawMap && sawMapCRC && sawMapSize && sawSeed && sawSlotlist && sawCRC)
-#endif
+#endif // OG
 #ifdef ZH
 	if (optionsOk && sawMap && sawMapCRC && sawMapSize && sawSeed && sawSlotlist && sawCRC && sawUseStats && sawSuperweaponRestriction && sawStartingCash && sawOldFactions )
-#endif
+#endif // ZH
 	{
 		// We were setting the Global Data directly here, but Instead, I'm now 
 		// first setting the data in game.  We'll set the global data when
@@ -1528,7 +1528,7 @@ Bool ParseAsciiStringToGameInfo(GameInfo *game, AsciiString options)
     game->setSuperweaponRestriction(restriction);
     game->setStartingCash( startingCash );
     game->setOldFactionsOnly( oldFactionsOnly );
-#endif
+#endif // ZH
 
 		return true;
 	}
@@ -1557,10 +1557,10 @@ void SkirmishGameInfo::xfer( Xfer *xfer )
 {
 #ifdef OG
 	const XferVersion currentVersion = 2;	
-#endif
+#endif // OG
 #ifdef ZH
 	const XferVersion currentVersion = 4;	
-#endif
+#endif // ZH
 	XferVersion version = currentVersion; 
 	xfer->xferVersion( &version, currentVersion );
 
@@ -1658,7 +1658,7 @@ void SkirmishGameInfo::xfer( Xfer *xfer )
     m_superweaponRestriction = 0;
     m_startingCash = TheGlobalData->m_defaultStartingCash;
   }
-#endif
+#endif // ZH
 
 }  // end xfer
 

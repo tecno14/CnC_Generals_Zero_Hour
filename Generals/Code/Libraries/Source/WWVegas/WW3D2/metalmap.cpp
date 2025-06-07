@@ -27,30 +27,30 @@
 #ifdef OG
  *                      $Author:: Hector_y                                                    $*
 
-#endif
+#endif // OG
 #ifdef ZH
  *                  $Org Author:: Hector_y                                  $* 
  *                                                                         * 
  *                      $Author:: Kenny_m                                  $* 
  *                                                                         * 
  *                     $Modtime:: 08/05/02 10:44a                          $* 
-#endif
+#endif // ZH
  *                                                                                             *
 #ifdef OG
  *                     $Modtime:: 6/27/01 4:59p                                               $*
-#endif
+#endif // OG
 #ifdef ZH
  *                    $Revision:: 4                                                           $*
-#endif
+#endif // ZH
  *                                                                                             *
 #ifdef OG
  *                    $Revision:: 3                                                           $*
  *                                                                                             *
-#endif
+#endif // OG
 #ifdef ZH
  * 08/05/02 KM Texture class redesign
 
-#endif
+#endif // ZH
  *---------------------------------------------------------------------------------------------*
  * Functions:                                                                                  *
  *   MMMC::MetalMapManagerClass -- Create metal map manager according to given metal parameters*
@@ -69,7 +69,7 @@
 #include "ww3dformat.h"
 #ifdef ZH
 #include "ww3d.h"
-#endif
+#endif // ZH
 #include <vp.h>
 #include <ini.h>
 #include <point.h>
@@ -78,7 +78,7 @@
 #include <wwstring.h>
 #ifdef ZH
 #include <wwmath.h>
-#endif
+#endif // ZH
 
 /*
 ** Class static members:
@@ -108,11 +108,11 @@ MetalMapManagerClass::MetalMapManagerClass(INIClass &ini) :
 #ifdef OG
 	CurrentCameraDir(1.0f,0.0f,0.0f)
 
-#endif
+#endif // OG
 #ifdef ZH
 	CurrentCameraDir(1.0f,0.0f,0.0f),
 	Use16Bit(false)
-#endif
+#endif // ZH
 {
 
 	// If the static normal table has not been initialized yet, initialize it
@@ -165,7 +165,7 @@ MetalMapManagerClass::MetalMapManagerClass(INIClass &ini) :
 
 	int w,h,bits;
 	bool windowed;
-#endif
+#endif // ZH
 
 #ifdef ZH
 	WW3D::Get_Device_Resolution(w,h,bits,windowed);
@@ -173,20 +173,20 @@ MetalMapManagerClass::MetalMapManagerClass(INIClass &ini) :
 
 	WW3DFormat format=(Use16Bit?WW3D_FORMAT_A4R4G4B4:WW3D_FORMAT_A8R8G8B8);
 
-#endif
+#endif // ZH
 	for (int i = 0; i < lp; i++) {		
 #ifdef OG
 		// Create texture. NOTE: we should add code here to ensure we use a native texture format
 		Textures[i]=NEW_REF(TextureClass,(METALMAP_SIZE,METALMAP_SIZE,WW3D_FORMAT_A8R8G8B8,TextureClass::MIP_LEVELS_1));
 		Textures[i]->Set_U_Addr_Mode(TextureClass::TEXTURE_ADDRESS_CLAMP);
 		Textures[i]->Set_V_Addr_Mode(TextureClass::TEXTURE_ADDRESS_CLAMP);
-#endif
+#endif // OG
 #ifdef ZH
 		Textures[i]=NEW_REF(TextureClass,(METALMAP_SIZE,METALMAP_SIZE,format,MIP_LEVELS_1));
 		Textures[i]->Get_Filter().Set_U_Addr_Mode(TextureFilterClass::TEXTURE_ADDRESS_CLAMP);
 		Textures[i]->Get_Filter().Set_V_Addr_Mode(TextureFilterClass::TEXTURE_ADDRESS_CLAMP);
 
-#endif
+#endif // ZH
 		StringClass tex_name;
 		tex_name.Format("!m%02d.tga", i);		
 		Textures[i]->Set_Texture_Name(tex_name);		
@@ -362,7 +362,7 @@ void MetalMapManagerClass::Update_Textures(void)
 				map[4*x+2] = (unsigned char)floor(result.X * 255.99f);	// R
 				map[4*x+3] = 0xFF;													// A
 
-#endif
+#endif // OG
 #ifdef ZH
 				unsigned char b,g,r,a;
 				b= (unsigned char)WWMath::Floor(result.Z * 255.99f);	// B
@@ -383,7 +383,7 @@ void MetalMapManagerClass::Update_Textures(void)
 					map[4*x+2]=r;
 					map[4*x+3]=a;
 				}
-#endif
+#endif // ZH
 				idx++;
 			}
 			map+=pitch;

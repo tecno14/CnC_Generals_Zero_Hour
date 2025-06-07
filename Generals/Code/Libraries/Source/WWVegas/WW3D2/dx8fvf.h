@@ -28,30 +28,30 @@
  *                                                                                             *
 #ifdef OG
  *                      $Author:: Jani_p                                                      $*
-#endif
+#endif // OG
 #ifdef ZH
  *                      $Author:: Kenny Mitchell                                               * 
-#endif
+#endif // ZH
  *                                                                                             *
 #ifdef OG
  *                     $Modtime:: 3/29/01 12:44a                                              $*
-#endif
+#endif // OG
 #ifdef ZH
  *                     $Modtime:: 06/26/02 5:06p                                             $*
-#endif
+#endif // ZH
  *                                                                                             *
 #ifdef OG
  *                    $Revision:: 5                                                           $*
-#endif
+#endif // OG
 #ifdef ZH
  *                    $Revision:: 7                                                          $*
-#endif
+#endif // ZH
  *                                                                                             *
 #ifdef ZH
  * 06/26/02 KM VB Vertex format update for shaders                                       *
  * 07/17/02 KM VB Vertex format update for displacement mapping                               *
  * 08/01/02 KM VB Vertex format update for cube mapping                               *
-#endif
+#endif // ZH
  *---------------------------------------------------------------------------------------------*
  * Functions:                                                                                  *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
@@ -85,13 +85,13 @@ enum {
 #ifdef OG
 	DX8_FVF_XYZUV2			= D3DFVF_XYZ|D3DFVF_TEX2
 
-#endif
+#endif // OG
 #ifdef ZH
 	DX8_FVF_XYZUV2			= D3DFVF_XYZ|D3DFVF_TEX2,
  	DX8_FVF_XYZNDUV1TG3	= (D3DFVF_XYZ|D3DFVF_NORMAL|D3DFVF_DIFFUSE|D3DFVF_TEX4|D3DFVF_TEXCOORDSIZE2(0)|D3DFVF_TEXCOORDSIZE3(1)|D3DFVF_TEXCOORDSIZE3(2)|D3DFVF_TEXCOORDSIZE3(3)),
  	DX8_FVF_XYZNUV2DMAP	= (D3DFVF_XYZ|D3DFVF_NORMAL|D3DFVF_TEX3 | D3DFVF_TEXCOORDSIZE1(0) | D3DFVF_TEXCOORDSIZE4(1) | D3DFVF_TEXCOORDSIZE2(2) ),
 	DX8_FVF_XYZNDCUBEMAP	= D3DFVF_XYZ|D3DFVF_NORMAL|D3DFVF_DIFFUSE //|D3DFVF_TEX1|D3DFVF_TEXCOORDSIZE3(0)
-#endif
+#endif // ZH
 };
 
 // ----------------------------------------------------------------------------
@@ -253,7 +253,7 @@ struct VertexFormatXYZNUV2DMAP
 	float T1w;
 	float T2x;
 	float T2y;
-#endif
+#endif // ZH
 };
 
 #ifdef ZH
@@ -272,7 +272,7 @@ struct VertexFormatXYZNDCUBEMAP
 //	float w1;
 };
 
-#endif
+#endif // ZH
 // FVF info class can be created for any legal FVF. It constructs information
 // of offsets to various elements in the vertex buffer.
 
@@ -283,11 +283,11 @@ class FVFInfoClass : public W3DMPO
 #ifdef OG
 	unsigned							FVF;
 	unsigned							fvf_size;
-#endif
+#endif // OG
 #ifdef ZH
 	mutable unsigned						FVF;
 	mutable unsigned						fvf_size;
-#endif
+#endif // ZH
 
 	unsigned							location_offset;
 	unsigned							normal_offset;
@@ -298,10 +298,10 @@ class FVFInfoClass : public W3DMPO
 public:
 #ifdef OG
 	FVFInfoClass(unsigned FVF);
-#endif
+#endif // OG
 #ifdef ZH
 	FVFInfoClass(unsigned FVF, unsigned vertex_size=0);
-#endif
+#endif // ZH
 
 	inline unsigned Get_Location_Offset() const { return location_offset; }
 	inline unsigned Get_Normal_Offset() const { return normal_offset; }
@@ -322,7 +322,7 @@ public:
 	// for enabling vertex shaders
 	inline void Set_FVF(unsigned fvf) const { FVF=fvf; }
 	inline void Set_FVF_Size(unsigned size) const { fvf_size=size; }
-#endif
+#endif // ZH
 };
 
 

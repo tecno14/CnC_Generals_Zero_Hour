@@ -107,7 +107,7 @@ static GameWindow *		checkRetaliation		= NULL;
 static NameKeyType		checkDoubleClickAttackMoveID	= NAMEKEY_INVALID;
 static GameWindow *		checkDoubleClickAttackMove		= NULL;
 
-#endif
+#endif // ZH
 static NameKeyType		sliderScrollSpeedID	= NAMEKEY_INVALID;
 static GameWindow *		sliderScrollSpeed		= NULL;
 
@@ -201,7 +201,7 @@ static GameWindow *   checkUnlockFps   = NULL;
 static NameKeyType    checkHeatEffectsID = NAMEKEY_INVALID;
 static GameWindow *   checkHeatEffects   = NULL;
 
-#endif
+#endif // ZH
 /*
 
 static NameKeyType    radioHighID = NAMEKEY_INVALID;
@@ -341,7 +341,7 @@ Bool OptionPreferences::getRetaliationModeEnabled(void)
 	OptionPreferences::const_iterator it = find("Retaliation");
 	if (it == end())
 		return TheGlobalData->m_clientRetaliationModeEnabled;
-#endif
+#endif // ZH
 
 #ifdef ZH
 	if (stricmp(it->second.str(), "yes") == 0) {
@@ -349,7 +349,7 @@ Bool OptionPreferences::getRetaliationModeEnabled(void)
 	}
 	return FALSE;
 }
-#endif
+#endif // ZH
 
 #ifdef ZH
 Bool OptionPreferences::getDoubleClickAttackMoveEnabled(void)
@@ -364,7 +364,7 @@ Bool OptionPreferences::getDoubleClickAttackMoveEnabled(void)
 	return FALSE;
 }
 
-#endif
+#endif // ZH
 Real OptionPreferences::getScrollFactor(void)
 {
 	OptionPreferences::const_iterator it = find("ScrollFactor");
@@ -641,13 +641,13 @@ Bool OptionPreferences::getUseHeatEffects(void)
 		return TheGlobalData->m_useHeatEffects;
 
 	if (stricmp(it->second.str(), "yes") == 0) {
-#endif
+#endif // ZH
 	return TRUE;
 }
 #ifdef ZH
 	return FALSE;
 }
-#endif
+#endif // ZH
 
 Bool OptionPreferences::getDynamicLODEnabled(void)
 {
@@ -801,11 +801,11 @@ static void setDefaults( void )
 #ifdef OG
 		TheGameLODManager->setStaticLODLevel(TheGameLODManager->findStaticLODLevel());
 		switch (TheGameLODManager->getStaticLODLevel())
-#endif
+#endif // OG
 #ifdef ZH
 		StaticGameLODLevel level=TheGameLODManager->findStaticLODLevel();
 		switch (level)
-#endif
+#endif // ZH
 		{
 		case STATIC_GAME_LOD_LOW:
 			GadgetComboBoxSetSelectedPos(comboBoxDetail, LOWDETAIL);
@@ -847,7 +847,7 @@ static void setDefaults( void )
 #ifdef ZH
 	GadgetCheckBoxSetChecked(checkRetaliation, TRUE );
 	GadgetCheckBoxSetChecked( checkDoubleClickAttackMove, FALSE );
-#endif
+#endif // ZH
 
 	//-------------------------------------------------------------------------------------------------
 //	// scroll speed val
@@ -934,7 +934,7 @@ static void setDefaults( void )
  		// Heat Effects
 		//
 		GadgetCheckBoxSetChecked( checkHeatEffects, TheGlobalData->m_useHeatEffects);
-#endif
+#endif // ZH
 
 		//-------------------------------------------------------------------------------------------------
  		// Building Occlusion checkbox
@@ -1041,7 +1041,7 @@ static void saveOptions( void )
 		TheWritableGlobalData->m_useHeatEffects = GadgetCheckBoxIsChecked( checkHeatEffects );
 		(*pref)["HeatEffects"] = TheGlobalData->m_useHeatEffects ? AsciiString("yes") : AsciiString("no");
 
-#endif
+#endif // ZH
 		// Never write this out
 		//TheWritableGlobalData->m_useFpsLimit = !GadgetCheckBoxIsChecked( checkUnlockFps );
 		//(*pref)["FPSLimit"] = TheGlobalData->m_useFpsLimit ? AsciiString("yes") : AsciiString("no");
@@ -1209,13 +1209,13 @@ static void saveOptions( void )
 
 	TheWritableGlobalData->m_clientRetaliationModeEnabled = GadgetCheckBoxIsChecked(checkRetaliation);
 	(*pref)["Retaliation"] = TheWritableGlobalData->m_clientRetaliationModeEnabled? AsciiString("yes") : AsciiString("no");
-#endif
+#endif // ZH
 
 #ifdef ZH
 	TheWritableGlobalData->m_doubleClickAttackMove = GadgetCheckBoxIsChecked( checkDoubleClickAttackMove );
 	(*pref)["UseDoubleClickAttackMove"] = TheWritableGlobalData->m_doubleClickAttackMove ? AsciiString("yes") : AsciiString("no");
 
-#endif
+#endif // ZH
 	//-------------------------------------------------------------------------------------------------
 	// scroll speed val
 	val = GadgetSliderGetPosition(sliderScrollSpeed);
@@ -1385,7 +1385,7 @@ void OptionsMenuInit( WindowLayout *layout, void *userData )
 	checkRetaliation	     = TheWindowManager->winGetWindowFromId( NULL, checkRetaliationID);
 	checkDoubleClickAttackMoveID = TheNameKeyGenerator->nameToKey( AsciiString( "OptionsMenu.wnd:CheckDoubleClickAttackMove" ) );
 	checkDoubleClickAttackMove   = TheWindowManager->winGetWindowFromId( NULL, checkDoubleClickAttackMoveID );
-#endif
+#endif // ZH
 	sliderScrollSpeedID	   = TheNameKeyGenerator->nameToKey( AsciiString( "OptionsMenu.wnd:SliderScrollSpeed" ) );
 	sliderScrollSpeed		   = TheWindowManager->winGetWindowFromId( NULL,  sliderScrollSpeedID);
 	comboBoxAntiAliasingID = TheNameKeyGenerator->nameToKey( AsciiString( "OptionsMenu.wnd:ComboBoxAntiAliasing" ) );
@@ -1397,7 +1397,7 @@ void OptionsMenuInit( WindowLayout *layout, void *userData )
 	if (comboBoxResolution)
 		comboBoxResolution->winEnable(FALSE);
 #endif _PLAYTEST
-#endif
+#endif // OG
 	comboBoxDetailID			 = TheNameKeyGenerator->nameToKey( AsciiString( "OptionsMenu.wnd:ComboBoxDetail" ) );
 	comboBoxDetail		   = TheWindowManager->winGetWindowFromId( NULL, comboBoxDetailID );
 
@@ -1474,7 +1474,7 @@ void OptionsMenuInit( WindowLayout *layout, void *userData )
 	checkHeatEffectsID = TheNameKeyGenerator->nameToKey( AsciiString( "OptionsMenu.wnd:CheckHeatEffects" ) );
 	checkHeatEffects   = TheWindowManager->winGetWindowFromId( NULL, checkHeatEffectsID);
 
-#endif
+#endif // ZH
 	checkUnlockFpsID = TheNameKeyGenerator->nameToKey( AsciiString( "OptionsMenu.wnd:CheckUnlockFPS" ) );
 	checkUnlockFps   = TheWindowManager->winGetWindowFromId( NULL, checkUnlockFpsID);
 
@@ -1724,7 +1724,7 @@ void OptionsMenuInit( WindowLayout *layout, void *userData )
 #ifdef ZH
 	GadgetCheckBoxSetChecked( checkHeatEffects, TheGlobalData->m_useHeatEffects);
 
-#endif
+#endif // ZH
 	GadgetCheckBoxSetChecked( checkUnlockFps, !TheGlobalData->m_useFpsLimit);
 
 	GadgetCheckBoxSetChecked( checkBuildingOcclusion, TheGlobalData->m_enableBehindBuildingMarkers);
@@ -1804,7 +1804,7 @@ void OptionsMenuInit( WindowLayout *layout, void *userData )
 #ifdef ZH
 	GadgetCheckBoxSetChecked(checkRetaliation, TheGlobalData->m_clientRetaliationModeEnabled);
 	GadgetCheckBoxSetChecked( checkDoubleClickAttackMove, TheGlobalData->m_doubleClickAttackMove );
-#endif
+#endif // ZH
 
 	// set scroll speed slider
 	Int scrollPos = (Int)(TheGlobalData->m_keyboardScrollFactor*100.0f);

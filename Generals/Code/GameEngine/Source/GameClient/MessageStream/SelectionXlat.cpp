@@ -72,12 +72,12 @@
 //static Bool TheHandOfGodSelectionMode = false;
 //#endif
 
-#endif
+#endif // ZH
 #if defined(_DEBUG) || defined(_INTERNAL)
 static Bool TheHurtSelectionMode = false;
 #ifdef OG
 static Bool TheHandOfGodSelectionMode = false;
-#endif
+#endif // OG
 static Bool TheDebugSelectionMode = false;
 #endif
 
@@ -200,10 +200,10 @@ Bool CanSelectDrawable( const Drawable *draw, Bool dragSelecting )
 	// You cannot select something that has a logic override of unselectability or masked
 #ifdef OG
 	if( BitTest( obj->getStatusBits(), OBJECT_STATUS_UNSELECTABLE | OBJECT_STATUS_MASKED ) )
-#endif
+#endif // OG
 #ifdef ZH
 	if( obj->getStatusBits().testForAny( MAKE_OBJECT_STATUS_MASK2( OBJECT_STATUS_UNSELECTABLE, OBJECT_STATUS_MASKED ) ) )
-#endif
+#endif // ZH
 	{
 		return FALSE;
 	}
@@ -298,7 +298,7 @@ SelectionTranslator::SelectionTranslator()
 #if defined(_DEBUG) || defined(_INTERNAL) || defined(_ALLOW_DEBUG_CHEATS_IN_RELEASE)
   m_HandOfGodSelectionMode = FALSE;
 #endif
-#endif
+#endif // ZH
 }
 
 //-----------------------------------------------------------------------------
@@ -534,17 +534,17 @@ GameMessageDisposition SelectionTranslator::translateGameMessage(const GameMessa
 				if (selectAcrossMap)
 #ifdef OG
 					TheInGameUI->selectAcrossMap();
-#endif
+#endif // OG
 #ifdef ZH
 					TheInGameUI->selectMatchingAcrossMap();
-#endif
+#endif // ZH
 				else 
 #ifdef OG
 					TheInGameUI->selectAcrossScreen();
-#endif
+#endif // OG
 #ifdef ZH
 					TheInGameUI->selectMatchingAcrossScreen();
-#endif
+#endif // ZH
 
 				// emit "picked" message
 				GameMessage *pickMsg = TheMessageStream->appendMessage( GameMessage::MSG_AREA_SELECTION );
@@ -678,7 +678,7 @@ GameMessageDisposition SelectionTranslator::translateGameMessage(const GameMessa
 #ifdef OG
 				if (si.newCountMine == 1 && si.newCountMineBuildings == 1) 
 
-#endif
+#endif // OG
 #ifdef ZH
 
         // EXACTLY ONE CLICKED OR DRAGGED BUILDING
@@ -715,7 +715,7 @@ GameMessageDisposition SelectionTranslator::translateGameMessage(const GameMessa
               break;
           }
           if ( onlyTheOneBuildingIsSelectableAnyway )
-#endif
+#endif // ZH
 				{
 					addToGroup = FALSE;
 					si.selectMineBuildings = TRUE;
@@ -723,7 +723,7 @@ GameMessageDisposition SelectionTranslator::translateGameMessage(const GameMessa
 #ifdef ZH
 				}
 
-#endif
+#endif // ZH
 			}
 			else if (si.newCountEnemies > 0 && si.newCountCivilians > 0 && si.newCountFriends > 0) 
 			{
@@ -855,14 +855,14 @@ GameMessageDisposition SelectionTranslator::translateGameMessage(const GameMessa
 						++newDrawablesSelected;
 #ifdef ZH
 					}
-#endif
+#endif // ZH
 					}
 #ifdef ZH
 
 				if( newDrawablesSelected > 1 )
 				{
 					localPlayer->getAcademyStats()->recordDragSelection();
-#endif
+#endif // ZH
 				}
 
 				if (newDrawablesSelected == 1 && draw) 
@@ -871,12 +871,12 @@ GameMessageDisposition SelectionTranslator::translateGameMessage(const GameMessa
 #ifdef OG
 					if (TheHandOfGodSelectionMode && draw)
 
-#endif
+#endif // OG
 #ifdef ZH
 
 
           if (m_HandOfGodSelectionMode && draw)
-#endif
+#endif // ZH
 					{
 						Object* obj = draw->getObject();
 						if (obj)
@@ -891,12 +891,12 @@ GameMessageDisposition SelectionTranslator::translateGameMessage(const GameMessa
 #ifdef OG
 					else if (TheHurtSelectionMode && draw)
 
-#endif
+#endif // OG
 #ifdef ZH
 					else
 
           if (TheHurtSelectionMode && draw)
-#endif
+#endif // ZH
 					{
 						Object* obj = draw->getObject();
 						if (obj)
@@ -942,7 +942,7 @@ GameMessageDisposition SelectionTranslator::translateGameMessage(const GameMessa
 						disp = DESTROY_MESSAGE;
 						break;
 					}
-#endif
+#endif // ZH
 #endif
 				}
 			}
@@ -1010,12 +1010,12 @@ GameMessageDisposition SelectionTranslator::translateGameMessage(const GameMessa
 							//initiating construction of a new structure.
 							TheInGameUI->setPreventLeftClickDeselectionInAlternateMouseModeForOneClick( FALSE );
 						}
-#endif
+#endif // ZH
 			}
 #ifdef ZH
 				}
 			}
-#endif
+#endif // ZH
 
 			break;
 		}
@@ -1261,7 +1261,7 @@ GameMessageDisposition SelectionTranslator::translateGameMessage(const GameMessa
 						TheInGameUI->deselectAllDrawables();
 					}
 
-#endif
+#endif // ZH
 					// no need to send two messages for selecting the same group.
 					TheMessageStream->appendMessage((GameMessage::Type)(GameMessage::MSG_ADD_TEAM0 + group));
 					Player *player = ThePlayerList->getLocalPlayer();
@@ -1338,13 +1338,13 @@ GameMessageDisposition SelectionTranslator::translateGameMessage(const GameMessa
 #ifdef ZH
 		{
 			if ( !TheGameLogic->isInMultiplayerGame() )
-#endif
+#endif // ZH
 		{
 #ifdef OG
 			TheHandOfGodSelectionMode = !TheHandOfGodSelectionMode;
 			TheInGameUI->message( UnicodeString( L"Hand-Of-God Mode is %s" ), TheHandOfGodSelectionMode ? L"ON" : L"OFF" );
 
-#endif
+#endif // OG
 #ifdef ZH
 				m_HandOfGodSelectionMode = !m_HandOfGodSelectionMode;
 				TheInGameUI->message( UnicodeString( L"Meta Hand-Of-God Mode is %s" ), m_HandOfGodSelectionMode ? L"ON" : L"OFF" );
@@ -1362,11 +1362,11 @@ GameMessageDisposition SelectionTranslator::translateGameMessage(const GameMessa
 			{
 				m_HandOfGodSelectionMode = !m_HandOfGodSelectionMode;
 				TheInGameUI->message( UnicodeString( L"Hand-Of-God Mode is %s" ), m_HandOfGodSelectionMode ? L"ON" : L"OFF" );
-#endif
+#endif // ZH
 			disp = DESTROY_MESSAGE;
 #ifdef ZH
 			}
-#endif
+#endif // ZH
 			break;
 		}
 #endif
@@ -1378,13 +1378,13 @@ GameMessageDisposition SelectionTranslator::translateGameMessage(const GameMessa
 #ifdef ZH
 			if ( !TheGameLogic->isInMultiplayerGame() )
 			{
-#endif
+#endif // ZH
 			TheHurtSelectionMode = !TheHurtSelectionMode;
 			TheInGameUI->message( UnicodeString( L"Hurt-Me Mode is %s" ), TheHurtSelectionMode ? L"ON" : L"OFF" );
 			disp = DESTROY_MESSAGE;
 #ifdef ZH
 			}
-#endif
+#endif // ZH
 			break;
 		}
 #endif

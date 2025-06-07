@@ -312,7 +312,7 @@ public:
 	const BreezeInfo& getBreezeInfo() const {return m_breezeInfo;}
 #ifdef ZH
 	void turnBreezeOff(void) {m_breezeInfo.m_intensity = 0.0f;}
-#endif
+#endif // ZH
 	
 	Bool isTimeFrozenScript( void );		///< Ask whether a script has frozen time or not
 	void doFreezeTime( void );
@@ -367,7 +367,7 @@ public:
 	static void parseScriptAction( INI* ini );
 	static void parseScriptCondition( INI* ini );
 
-#endif
+#endif // ZH
 protected:
 
 	// snapshot methods
@@ -378,7 +378,7 @@ protected:
 
 	void addActionTemplateInfo(Template *actionTemplate);
 	void addConditionTemplateInfo(Template *conditionTemplate);
-#endif
+#endif // ZH
 
 	Int allocateCounter( const AsciiString& name);
 	Int allocateFlag( const AsciiString& name);

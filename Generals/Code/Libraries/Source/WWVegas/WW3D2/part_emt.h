@@ -118,11 +118,11 @@ class ParticleEmitterClass : public RenderObjClass
 #ifdef OG
 			Vector3 accel, float max_age, TextureClass *tex,
 
-#endif
+#endif // OG
 #ifdef ZH
 			ParticlePropertyStruct<float> &blur_times,
 			Vector3 accel, float max_age, float future_start, TextureClass *tex,
-#endif
+#endif // ZH
 			ShaderClass shader = ShaderClass::_PresetAdditiveSpriteShader, 
 			int max_particles = 0, int max_buffer_size = -1, bool pingpong = false,
 			int render_mode = W3D_EMITTER_RENDER_MODE_TRI_PARTICLES,
@@ -183,7 +183,7 @@ class ParticleEmitterClass : public RenderObjClass
 		// to set, for example, when setting RINFO_OVERRIDE_ADDITIONAL_PASSES_ONLY on the container.
 		void						Set_Invisible(bool onoff)	{ IsInvisible = onoff; }
 		bool						Is_Invisible(void)			{ return IsInvisible; }
-#endif
+#endif // ZH
 		
 		// Change starting position/velocity/acceleration parameters:
 		void Set_Position_Randomizer(Vector3Randomizer *rand);
@@ -201,7 +201,7 @@ class ParticleEmitterClass : public RenderObjClass
 		void Reset_Frames(ParticlePropertyStruct<float> &new_props)								{ if (Buffer) Buffer->Reset_Frames(new_props); }
 #ifdef ZH
 		void Reset_Blur_Times(ParticlePropertyStruct<float> &new_props)								{ if (Buffer) Buffer->Reset_Blur_Times(new_props); }
-#endif
+#endif // ZH
 
 		// Change emission/burst rate, or tell the emitter to emit a one-time burst.
 		// NOTE: default buffer size fits the emission/burst rate that the emitter was created with.
@@ -247,7 +247,7 @@ class ParticleEmitterClass : public RenderObjClass
 		float						Get_Lifetime (void) const			{ return Buffer->Get_Lifetime (); }
 #ifdef ZH
 		float						Get_Future_Start_Time (void) const { return Buffer->Get_Future_Start_Time(); }
-#endif
+#endif // ZH
 		Vector3					Get_End_Color (void) const			{ return Buffer->Get_End_Color (); }
 		float						Get_End_Opacity (void) const		{ return Buffer->Get_End_Opacity (); }
 		TextureClass *			Get_Texture (void) const			{ return Buffer->Get_Texture (); }
@@ -275,7 +275,7 @@ class ParticleEmitterClass : public RenderObjClass
 		void						Get_Frame_Key_Frames (ParticlePropertyStruct<float> &frames) const			{ Buffer->Get_Frame_Key_Frames (frames); }
 #ifdef ZH
 		void						Get_Blur_Time_Key_Frames (ParticlePropertyStruct<float> &blurtimes) const	{ Buffer->Get_Blur_Time_Key_Frames (blurtimes); }
-#endif
+#endif // ZH
 		float						Get_Initial_Orientation_Random (void) const											{ return Buffer->Get_Initial_Orientation_Random(); }
 
 		// Line rendering accessors
@@ -348,7 +348,7 @@ class ParticleEmitterClass : public RenderObjClass
 		bool							IsInScene;
 #ifdef ZH
 		unsigned char				GroupID;				// The group ID of a particle. A start causes the group ID to increment.		
-#endif
+#endif // ZH
 
 		// This pointer is used only for sending new particles to the particle
 		// buffer and for informing the buffer when the emitter is destroyed.
@@ -357,7 +357,7 @@ class ParticleEmitterClass : public RenderObjClass
 
 		// See comments on Set/Is_Invisible
 		bool							IsInvisible;
-#endif
+#endif // ZH
 
 		// This is used to set the global behavior of emitters...
 		// Should they be removed from the scene when they complete their

@@ -74,7 +74,7 @@
 #ifdef ZH
 #if 1 // (gth) killing the Generals Memory Manager!
 
-#endif
+#endif // ZH
 #ifndef _OPERATOR_NEW_DEFINED_
 
 	#define _OPERATOR_NEW_DEFINED_
@@ -159,7 +159,7 @@ public:
 
 #ifdef ZH
 #else
-#endif
+#endif // ZH
 
 #ifdef OG
 // Jani: Intel's C++ compiler issues too many warnings in WW libraries when using warning level 4
@@ -172,7 +172,7 @@ public:
 #pragma warning ( disable: 1 ) // last line of file ends without a newline
 #endif
 
-#endif
+#endif // OG
 #ifdef ZH
 	#define MSGW3DNEW(MSG)					new
 	#define MSGW3DNEWARRAY(MSG)			new
@@ -185,7 +185,7 @@ public:
 
 #endif // (gth) removing the generals memory stuff from W3D
 
-#endif
+#endif // ZH
 
 // Jani: MSVC doesn't necessarily inline code with inline keyword. Using __forceinline results better inlining
 // and also prints out a warning if inlining wasn't possible. __forceinline is MSVC specific.

@@ -28,28 +28,28 @@
  *                                                                                             *
 #ifdef OG
  *                      $Author:: Jani_p                                                      $*
-#endif
+#endif // OG
 #ifdef ZH
  *                       Author : Kenny Mitchell                                               * 
-#endif
+#endif // ZH
  *                                                                                             *
 #ifdef OG
  *                     $Modtime:: 7/10/01 5:49p                                               $*
-#endif
+#endif // OG
 #ifdef ZH
  *                     $Modtime:: 06/27/02 1:27p                                              $*
-#endif
+#endif // ZH
  *                                                                                             *
 #ifdef OG
  *                    $Revision:: 28                                                          $*
-#endif
+#endif // OG
 #ifdef ZH
  *                    $Revision:: 29                                                          $*
-#endif
+#endif // ZH
  *                                                                                             *
 #ifdef ZH
  * 06/27/02 KM Changes to max texture stage caps																*
-#endif
+#endif // ZH
  *---------------------------------------------------------------------------------------------*
  * Functions:                                                                                  *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
@@ -72,7 +72,7 @@
 #include "dx8wrapper.h"
 #ifdef ZH
 #include "meshmatdesc.h"
-#endif
+#endif // ZH
 
 class IndexBufferClass;
 class VertexBufferClass;
@@ -104,10 +104,10 @@ class DX8TextureCategoryClass : public MultiListObjectClass
 	int												pass;
 #ifdef OG
 	TextureClass *									textures[MAX_TEXTURE_STAGES];
-#endif
+#endif // OG
 #ifdef ZH
 	TextureClass *									textures[MeshMatDescClass::MAX_TEX_STAGES];
-#endif
+#endif // ZH
 	ShaderClass										shader;
 	VertexMaterialClass *						material;					
 	DX8PolygonRendererList						PolygonRendererList;
@@ -181,7 +181,7 @@ protected:
 	bool														AnythingToRender;
 #ifdef ZH
 	bool														AnyDelayedPassesToRender;
-#endif
+#endif // ZH
 	
 	void Generate_Texture_Categories(Vertex_Split_Table& split_table,unsigned vertex_offset);
 	void DX8FVFCategoryContainer::Insert_To_Texture_Category(
@@ -194,13 +194,13 @@ protected:
 #ifdef OG
 	inline bool Anything_To_Render();
 
-#endif
+#endif // OG
 #ifdef ZH
 
 	inline bool Anything_To_Render()					{ return AnythingToRender; }
 	inline bool Any_Delayed_Passes_To_Render()	{ return AnyDelayedPassesToRender; }
 
-#endif
+#endif // ZH
 	void Render_Procedural_Material_Passes(void);
 
 	DX8TextureCategoryClass* Find_Matching_Texture_Category(
@@ -261,12 +261,12 @@ public:
 	** be rendering errors unless these procedural passes are rendered after all of the meshes in 
 	** the scene.  The virtual method Add_Delayed_Material_Pass is used in this case.  
 	*/
-#endif
+#endif // ZH
 	void Add_Visible_Material_Pass(MaterialPassClass * pass,MeshClass * mesh);
 #ifdef ZH
 	virtual void Add_Delayed_Visible_Material_Pass(MaterialPassClass * pass, MeshClass * mesh) = 0;
 	virtual void Render_Delayed_Procedural_Material_Passes(void) = 0;
-#endif
+#endif // ZH
 };
 #ifdef OG
 
@@ -283,7 +283,7 @@ bool DX8FVFCategoryContainer::Anything_To_Render()
 */
 	return AnythingToRender;
 }
-#endif
+#endif // OG
 
 
 /**
@@ -309,7 +309,7 @@ public:
 	*/
 	virtual void Add_Delayed_Visible_Material_Pass(MaterialPassClass * pass, MeshClass * mesh);
 	virtual void Render_Delayed_Procedural_Material_Passes(void);
-#endif
+#endif // ZH
 
 protected:
 
@@ -319,7 +319,7 @@ protected:
 
 	MatPassTaskClass *	delayed_matpass_head;
 	MatPassTaskClass *	delayed_matpass_tail;
-#endif
+#endif // ZH
 
 };
 
@@ -348,7 +348,7 @@ public:
 	*/
 	virtual void Add_Delayed_Visible_Material_Pass(MaterialPassClass * pass, MeshClass * mesh) { Add_Visible_Material_Pass(pass,mesh); }
 	virtual void Render_Delayed_Procedural_Material_Passes(void) { }
-#endif
+#endif // ZH
 
 private:
 

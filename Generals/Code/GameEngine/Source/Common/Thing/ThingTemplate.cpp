@@ -73,7 +73,7 @@
 #ifdef ZH
 #include "Common/UnitTimings.h" //Contains the DO_UNIT_TIMINGS define jba.	
 
-#endif
+#endif // ZH
 #ifdef _INTERNAL
 // for occasional debugging...
 //#pragma optimize("", off)
@@ -127,7 +127,7 @@ const FieldParse ThingTemplate::s_objectFieldParseTable[] =
 	{ "ShroudClearingRange",	INI::parseReal,												NULL,		offsetof( ThingTemplate, m_shroudClearingRange ) },
 #ifdef ZH
 	{ "ShroudRevealToAllRange",	INI::parseReal,											NULL,		offsetof( ThingTemplate, m_shroudRevealToAllRange ) },
-#endif
+#endif // ZH
 
 	{ "PlacementViewAngle",		INI::parseAngleReal,									NULL,		offsetof( ThingTemplate, m_placementViewAngle ) },
 
@@ -141,7 +141,7 @@ const FieldParse ThingTemplate::s_objectFieldParseTable[] =
 #ifdef ZH
 	{ "EnterGuard",						INI::parseBool,												NULL,									offsetof( ThingTemplate, m_enterGuard ) },
 	{ "HijackGuard",					INI::parseBool,												NULL,									offsetof( ThingTemplate, m_hijackGuard ) },
-#endif
+#endif // ZH
 
 	{ "Side",									INI::parseAsciiString,								NULL,	offsetof( ThingTemplate, m_defaultOwningSide ) },
 
@@ -212,7 +212,7 @@ const FieldParse ThingTemplate::s_objectFieldParseTable[] =
 #ifdef OG
 	{ "SoundDie",							INI::parseDynamicAudioEventRTS,	NULL,		offsetof( ThingTemplate, m_audioarray.m_audio[TTAUDIO_soundDie]) },
 	{ "SoundCrush",						INI::parseDynamicAudioEventRTS,	NULL,		offsetof( ThingTemplate, m_audioarray.m_audio[TTAUDIO_soundCrush ]) },
-#endif
+#endif // OG
 	{ "SoundAmbient",					INI::parseDynamicAudioEventRTS,	NULL,		offsetof( ThingTemplate, m_audioarray.m_audio[TTAUDIO_soundAmbient ]) },
 	{ "SoundAmbientDamaged",	INI::parseDynamicAudioEventRTS,	NULL,		offsetof( ThingTemplate, m_audioarray.m_audio[TTAUDIO_soundAmbientDamaged ]) },
 	{ "SoundAmbientReallyDamaged",INI::parseDynamicAudioEventRTS,	NULL,offsetof( ThingTemplate, m_audioarray.m_audio[TTAUDIO_soundAmbientReallyDamaged ]) },
@@ -225,7 +225,7 @@ const FieldParse ThingTemplate::s_objectFieldParseTable[] =
 #ifdef OG
 	{ "SoundDieFire",					INI::parseDynamicAudioEventRTS,	NULL,		offsetof( ThingTemplate, m_audioarray.m_audio[TTAUDIO_soundDieFire ]) },
 	{ "SoundDieToxin",				INI::parseDynamicAudioEventRTS,	NULL,		offsetof( ThingTemplate, m_audioarray.m_audio[TTAUDIO_soundDieToxin ]) },
-#endif
+#endif // OG
 	{ "SoundEnter",						INI::parseDynamicAudioEventRTS,	NULL,		offsetof( ThingTemplate, m_audioarray.m_audio[TTAUDIO_soundEnter ]) },
 	{ "SoundExit",						INI::parseDynamicAudioEventRTS,	NULL,		offsetof( ThingTemplate, m_audioarray.m_audio[TTAUDIO_soundExit ]) },
 	{ "SoundPromotedVeteran",	INI::parseDynamicAudioEventRTS,	NULL,		offsetof( ThingTemplate, m_audioarray.m_audio[TTAUDIO_soundPromotedVeteran ]) },
@@ -256,7 +256,7 @@ const FieldParse ThingTemplate::s_objectFieldParseTable[] =
 
   { "OverrideableByLikeKind",		ThingTemplate::OverrideableByLikeKind,	NULL, 0 },
 
-#endif
+#endif // ZH
 	{ "Locomotor",						AIUpdateModuleData::parseLocomotorSet, NULL, 0 },
 	{ "InstanceScaleFuzziness",	INI::parseReal,					NULL, offsetof(ThingTemplate, m_instanceScaleFuzziness ) },
 	{ "StructureRubbleHeight",	INI::parseUnsignedByte,					NULL, offsetof(ThingTemplate, m_structureRubbleHeight ) },
@@ -264,11 +264,11 @@ const FieldParse ThingTemplate::s_objectFieldParseTable[] =
 #ifdef OG
 	{ "MaxSimultaneousOfType",	INI::parseUnsignedShort,		NULL, offsetof(ThingTemplate, m_maxSimultaneousOfType ) }, 
 
-#endif
+#endif // OG
 #ifdef ZH
   { "MaxSimultaneousOfType",	ThingTemplate::parseMaxSimultaneous,		NULL, offsetof(ThingTemplate, m_maxSimultaneousOfType ) }, 
   { "MaxSimultaneousLinkKey",	NameKeyGenerator::parseStringAsNameKeyType,		NULL, offsetof(ThingTemplate, m_maxSimultaneousLinkKey ) }, 
-#endif
+#endif // ZH
 	{ "CrusherLevel",					INI::parseUnsignedByte,			NULL, offsetof( ThingTemplate, m_crusherLevel ) },
 	{ "CrushableLevel",				INI::parseUnsignedByte,			NULL, offsetof( ThingTemplate, m_crushableLevel ) },
 
@@ -294,7 +294,7 @@ const FieldParse ThingTemplate::s_objectReskinFieldParseTable[] =
   // Needed to avoid some cheats with the scud storm rebuild hole
   { "MaxSimultaneousOfType",	ThingTemplate::parseMaxSimultaneous,		NULL, offsetof(ThingTemplate, m_maxSimultaneousOfType ) }, 
   { "MaxSimultaneousLinkKey",	NameKeyGenerator::parseStringAsNameKeyType,		NULL, offsetof(ThingTemplate, m_maxSimultaneousLinkKey ) }, 
-#endif
+#endif // ZH
 
 	{ 0, 0, 0, 0 }  // keep this last
 
@@ -328,11 +328,11 @@ void ModuleInfo::addModuleInfo(ThingTemplate *thingTemplate,
 #ifdef OG
 															 Bool inheritable)
 
-#endif
+#endif // OG
 #ifdef ZH
 															 Bool inheritable,
                                Bool overrideableByLikeKind)
-#endif
+#endif // ZH
 {
 
 	//
@@ -400,10 +400,10 @@ void ModuleInfo::addModuleInfo(ThingTemplate *thingTemplate,
 
 #ifdef OG
 	m_info.push_back(Nugget(name, moduleTag, data, interfaceMask, inheritable));
-#endif
+#endif // OG
 #ifdef ZH
 	m_info.push_back(Nugget(name, moduleTag, data, interfaceMask, inheritable, overrideableByLikeKind));
-#endif
+#endif // ZH
 
 }
 
@@ -436,10 +436,10 @@ Bool ModuleInfo::clearModuleDataWithTag(const AsciiString& tagToClear, AsciiStri
 //-------------------------------------------------------------------------------------------------
 #ifdef OG
 Bool ModuleInfo::clearCopiedFromDefaultEntries(Int interfaceMask) 
-#endif
+#endif // OG
 #ifdef ZH
 Bool ModuleInfo::clearCopiedFromDefaultEntries(Int interfaceMask, const AsciiString &newName, const ThingTemplate *fullTemplate ) 
-#endif
+#endif // ZH
 { 
 #ifdef ZH
   static KindOfMaskType ImmuneToGPSScramblerMask;
@@ -469,7 +469,7 @@ Bool ModuleInfo::clearCopiedFromDefaultEntries(Int interfaceMask, const AsciiStr
   CandidateForGPSScramblerMask.set(KINDOF_PORTABLE_STRUCTURE);
   Bool candidate =  fullTemplate->isAnyKindOf( CandidateForGPSScramblerMask );
 
-#endif
+#endif // ZH
 	Bool ret = false;
 
 	std::vector<Nugget>::iterator it = m_info.begin();
@@ -492,19 +492,19 @@ Bool ModuleInfo::clearCopiedFromDefaultEntries(Int interfaceMask, const AsciiStr
 				}
 			}
       else if ( it->overrideableByLikeKind)
-#endif
+#endif // ZH
 	{
 #ifdef OG
 		if( (it->interfaceMask & interfaceMask) != 0 && it->copiedFromDefault && !it->inheritable )
 
-#endif
+#endif // OG
 #ifdef ZH
         
         AsciiString oldName = it->first;
         if ( oldName == newName  //we will dump this instance, since the INI author requested a specific one of the same class
              || disallowed  // or, we just do not Add these special overrideables to these kinds of templates, so just dump it
              || candidate == FALSE )
-#endif
+#endif // ZH
 		{
 			it = m_info.erase( it );
 			ret = true;
@@ -514,7 +514,7 @@ Bool ModuleInfo::clearCopiedFromDefaultEntries(Int interfaceMask, const AsciiStr
 			    ++it;//no match, preserve the default instnace of this Module for now
       }
       else // just dump this instance of this Module, since one of the same interface mask has been added by caller
-#endif
+#endif // ZH
 		{
 #ifdef ZH
         it = m_info.erase( it );
@@ -522,11 +522,11 @@ Bool ModuleInfo::clearCopiedFromDefaultEntries(Int interfaceMask, const AsciiStr
       }
     }
     else
-#endif
+#endif // ZH
 			++it;
 #ifdef OG
 		}
-#endif
+#endif // OG
 	}
 	return ret;
 }
@@ -622,7 +622,7 @@ void ThingTemplate::parseModuleName(INI* ini, void *instance, void* store, const
 		self->m_drawModuleInfo.clearCopiedFromDefaultEntries(interfaceMask);
 		self->m_clientUpdateModuleInfo.clearCopiedFromDefaultEntries(interfaceMask);
 
-#endif
+#endif // OG
 #ifdef ZH
 
 //    if (self->getName().compare("GLAVehicleQuadCannon"))
@@ -631,7 +631,7 @@ void ThingTemplate::parseModuleName(INI* ini, void *instance, void* store, const
 		self->m_behaviorModuleInfo.clearCopiedFromDefaultEntries(interfaceMask, tokenStr, self );
 		self->m_drawModuleInfo.clearCopiedFromDefaultEntries(interfaceMask, tokenStr, self );
 		self->m_clientUpdateModuleInfo.clearCopiedFromDefaultEntries(interfaceMask, tokenStr, self );
-#endif
+#endif // ZH
 	}
 
 	if (self->m_moduleParsingMode == MODULEPARSE_ADD_REMOVE_REPLACE 
@@ -662,11 +662,11 @@ void ThingTemplate::parseModuleName(INI* ini, void *instance, void* store, const
 #ifdef OG
 			DEBUG_LOG(("replaced an AI for %s!\n",self->getName().str()));
 
-#endif
+#endif // OG
 #ifdef ZH
 			//Kris: Commented this out for SPAM reasons. Do we really need this?
 			//DEBUG_LOG(("replaced an AI for %s!\n",self->getName().str()));
-#endif
+#endif // ZH
 		}
 	}
 
@@ -674,11 +674,11 @@ void ThingTemplate::parseModuleName(INI* ini, void *instance, void* store, const
 #ifdef OG
 	mi->addModuleInfo(self, tokenStr, moduleTagStr, data, interfaceMask, inheritable);
 
-#endif
+#endif // OG
 #ifdef ZH
   Bool overrideableByLikeKind = (self->m_moduleParsingMode == MODULEPARSE_OVERRIDEABLE_BY_LIKE_KIND);
 	mi->addModuleInfo(self, tokenStr, moduleTagStr, data, interfaceMask, inheritable, overrideableByLikeKind);
-#endif
+#endif // ZH
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -838,10 +838,10 @@ void ThingTemplate::parseRemoveModule(INI *ini, void *instance, void *store, con
 	{
 #ifdef OG
 		DEBUG_ASSERTCRASH(removed, ("RemoveModule %s was not found for %s.\n",modToRemove, self->getName().str()));
-#endif
+#endif // OG
 #ifdef ZH
 		DEBUG_ASSERTCRASH(removed, ("RemoveModule %s was not found for %s. The game will crash now!\n",modToRemove, self->getName().str()));
-#endif
+#endif // ZH
 		throw INI_INVALID_DATA;
 	}
 
@@ -911,7 +911,7 @@ void ThingTemplate::OverrideableByLikeKind(INI *ini, void *instance, void *store
 		throw INI_INVALID_DATA;
 
 	self->m_moduleParsingMode = MODULEPARSE_OVERRIDEABLE_BY_LIKE_KIND;
-#endif
+#endif // ZH
 
 	ini->initFromINI(self, self->getFieldParse());
 
@@ -1052,7 +1052,7 @@ void ThingTemplate::parseMaxSimultaneous(INI *ini, void *instance, void *store, 
 }
 
 //-------------------------------------------------------------------------------------------------
-#endif
+#endif // ZH
 //-------------------------------------------------------------------------------------------------
 ThingTemplate::ThingTemplate() :
 	m_geometryInfo(GEOMETRY_SPHERE, FALSE, 1, 1, 1)
@@ -1069,7 +1069,7 @@ ThingTemplate::ThingTemplate() :
 	m_shroudClearingRange = -1.0f;
 #ifdef ZH
 	m_shroudRevealToAllRange = -1.0f;
-#endif
+#endif // ZH
 
 	m_buildCost = 0;
 	m_buildTime = 1;
@@ -1089,7 +1089,7 @@ ThingTemplate::ThingTemplate() :
 #ifdef ZH
 	m_enterGuard = FALSE;
 	m_hijackGuard = FALSE;
-#endif
+#endif // ZH
 
 	m_templateID = 0;
 	m_kindof = KINDOFMASK_NONE;
@@ -1117,7 +1117,7 @@ ThingTemplate::ThingTemplate() :
 #ifdef ZH
   m_maxSimultaneousLinkKey = NAMEKEY_INVALID; // Not linked
   m_maxSimultaneousDeterminedBySuperweaponRestriction = false;
-#endif
+#endif // ZH
 	m_crusherLevel = 0;			//Unspecified, this object is unable to crush anything!
 	m_crushableLevel = 255; //Unspecified, this object is unable to be crushed by anything!
 
@@ -1177,7 +1177,7 @@ void ThingTemplate::validateAudio()
 #ifdef OG
 	AUDIO_TEST(SoundDie)
 	AUDIO_TEST(SoundCrush)
-#endif
+#endif // OG
 	AUDIO_TEST(SoundAmbient)
 	AUDIO_TEST(SoundAmbientDamaged)
 	AUDIO_TEST(SoundAmbientReallyDamaged)
@@ -1191,7 +1191,7 @@ void ThingTemplate::validateAudio()
 #ifdef OG
 	AUDIO_TEST(SoundDieFire)
 	AUDIO_TEST(SoundDieToxin)
-#endif
+#endif // OG
 	AUDIO_TEST(SoundEnter)
 	AUDIO_TEST(SoundExit)
 	AUDIO_TEST(SoundPromotedVeteran)
@@ -1351,7 +1351,7 @@ void ThingTemplate::resolveNames()
 	//      names didn't used to check for empty strings so they would NULL out all the previous prereqs
 	//      the object had. So be sure to make sure all string lookups don't blindly lookup things -- check
 	//      if the string isNotEmpty first!
-#endif
+#endif // ZH
 
 	for (i = 0; i < m_prereqInfo.size(); i++)
 	{
@@ -1537,11 +1537,11 @@ const AudioEventRTS *ThingTemplate::getPerUnitSound(const AsciiString& soundName
 	{
 #ifdef ZH
 #ifndef DO_UNIT_TIMINGS
-#endif
+#endif // ZH
 		DEBUG_LOG(("Unknown Audio name (%s) asked for in ThingTemplate (%s).\n", soundName.str(), m_nameString.str()));
 #ifdef ZH
 #endif
-#endif
+#endif // ZH
 		return &s_audioEventNoSound;
 	}
 
@@ -1561,7 +1561,7 @@ UnsignedInt ThingTemplate::getMaxSimultaneousOfType() const
 }
 
 //-------------------------------------------------------------------------------------------------
-#endif
+#endif // ZH
 Bool ThingTemplate::isEquivalentTo(const ThingTemplate* tt) const
 {
 	// sanity
@@ -1642,10 +1642,10 @@ Int ThingTemplate::calcTimeToBuild( const Player* player) const
 
 #ifdef OG
 #if defined (_DEBUG) || defined (_INTERNAL)
-#endif
+#endif // OG
 #ifdef ZH
 #if defined (_DEBUG) || defined (_INTERNAL) || defined(_ALLOW_DEBUG_CHEATS_IN_RELEASE)
-#endif
+#endif // ZH
 	if( player->buildsInstantly() )
 	{
 		buildTime = 1;

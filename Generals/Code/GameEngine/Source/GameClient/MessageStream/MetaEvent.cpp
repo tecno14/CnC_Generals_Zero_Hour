@@ -49,7 +49,7 @@
 #include "GameClient/DebugDisplay.h"	// for AudioDebugDisplay
 #ifdef ZH
 #include "GameClient/GameText.h"
-#endif
+#endif // ZH
 #include "GameClient/MetaEvent.h"
 
 #include "GameLogic/GameLogic.h" // for TheGameLogic->getFrame()
@@ -61,7 +61,7 @@
 #ifdef DUMP_ALL_KEYS_TO_LOG
 #include "GameClient\Keyboard.h"
 #endif
-#endif
+#endif // ZH
 
 MetaMap *TheMetaMap = NULL;
 
@@ -70,11 +70,11 @@ MetaMap *TheMetaMap = NULL;
 #ifdef OG
 ///#pragma optimize("", off)
 ///#pragma MESSAGE("************************************** WARNING, optimization disabled for debugging purposes")
-#endif
+#endif // OG
 #ifdef ZH
 //#pragma optimize("", off)
 //#pragma MESSAGE("************************************** WARNING, optimization disabled for debugging purposes")
-#endif
+#endif // ZH
 #endif
 
 
@@ -151,7 +151,7 @@ static const LookupListRec GameMessageMetaTypeNames[] =
 	{ "SELECT_ALL",																GameMessage::MSG_META_SELECT_ALL },
 #ifdef ZH
 	{ "SELECT_ALL_AIRCRAFT",											GameMessage::MSG_META_SELECT_ALL_AIRCRAFT },
-#endif
+#endif // ZH
 	{ "VIEW_COMMAND_CENTER",											GameMessage::MSG_META_VIEW_COMMAND_CENTER },
 	{ "VIEW_LAST_RADAR_EVENT",										GameMessage::MSG_META_VIEW_LAST_RADAR_EVENT },
 	{ "SCATTER",																	GameMessage::MSG_META_SCATTER },
@@ -219,13 +219,13 @@ static const LookupListRec GameMessageMetaTypeNames[] =
   { "CHEAT_TOGGLE_MESSAGE_TEXT",                GameMessage::MSG_CHEAT_TOGGLE_MESSAGE_TEXT },
 
 #endif
-#endif
+#endif // ZH
 
 #if defined(_DEBUG) || defined(_INTERNAL)
 	{ "HELP",																			GameMessage::MSG_META_HELP },
 #ifdef OG
 	{ "DEMO_INSTANT_QUIT",												GameMessage::MSG_META_DEMO_INSTANT_QUIT },
-#endif
+#endif // OG
 
 	{ "DEMO_TOGGLE_BEHIND_BUILDINGS",							GameMessage::MSG_META_DEMO_TOGGLE_BEHIND_BUILDINGS },
 	{ "DEMO_LOD_DECREASE",												GameMessage::MSG_META_DEMO_LOD_DECREASE },
@@ -294,7 +294,7 @@ static const LookupListRec GameMessageMetaTypeNames[] =
 	{ "DEMO_SHOW_EXTENTS",												GameMessage::MSG_META_DEBUG_SHOW_EXTENTS },
 #ifdef ZH
   { "DEMO_SHOW_AUDIO_LOCATIONS",								GameMessage::MSG_META_DEBUG_SHOW_AUDIO_LOCATIONS },
-#endif
+#endif // ZH
 	{ "DEMO_SHOW_HEALTH",													GameMessage::MSG_META_DEBUG_SHOW_HEALTH },
 	{ "DEMO_GIVE_VETERANCY",											GameMessage::MSG_META_DEBUG_GIVE_VETERANCY },
 	{ "DEMO_TAKE_VETERANCY",											GameMessage::MSG_META_DEBUG_TAKE_VETERANCY },
@@ -313,7 +313,7 @@ static const LookupListRec GameMessageMetaTypeNames[] =
 	{ "DEMO_TOGGLE_AI_DEBUG",											GameMessage::MSG_META_DEMO_TOGGLE_AI_DEBUG },
 #ifdef ZH
 	{ "DEMO_TOGGLE_SUPPLY_CENTER_PLACEMENT",			GameMessage::MSG_META_DEMO_TOGGLE_SUPPLY_CENTER_PLACEMENT },
-#endif
+#endif // ZH
 	{ "DEMO_TOGGLE_NO_DRAW",											GameMessage::MSG_NO_DRAW },
 	{ "DEMO_CYCLE_LOD_LEVEL",											GameMessage::MSG_META_DEMO_CYCLE_LOD_LEVEL },
 	{ "DEMO_DUMP_ASSETS",													GameMessage::MSG_META_DEBUG_DUMP_ASSETS},
@@ -354,23 +354,23 @@ static const LookupListRec GameMessageMetaTypeNames[] =
 	{ "DEBUG_OBJECT_ID_PERFORMANCE",							GameMessage::MSG_META_DEBUG_OBJECT_ID_PERFORMANCE },
 	{ "DEBUG_DRAWABLE_ID_PERFORMANCE",						GameMessage::MSG_META_DEBUG_DRAWABLE_ID_PERFORMANCE },
 	{ "DEBUG_SLEEPY_UPDATE_PERFORMANCE",					GameMessage::MSG_META_DEBUG_SLEEPY_UPDATE_PERFORMANCE },
-#endif
+#endif // ZH
 #endif // defined(_DEBUG) || defined(_INTERNAL)
 
 
 #ifdef OG
 #if defined(_INTERNAL) || defined(_DEBUG) || defined(_PLAYTEST)
-#endif
+#endif // OG
 #ifdef ZH
 #if defined(_INTERNAL) || defined(_DEBUG) 
-#endif
+#endif // ZH
 	{ "DEMO_TOGGLE_AUDIODEBUG",										GameMessage::MSG_META_DEMO_TOGGLE_AUDIODEBUG },
 #ifdef OG
 #endif//defined(_INTERNAL) || defined(_DEBUG) || defined(_PLAYTEST)
-#endif
+#endif // OG
 #ifdef ZH
 #endif//defined(_INTERNAL) || defined(_DEBUG)
-#endif
+#endif // ZH
 #ifdef DUMP_PERF_STATS
 	{ "DEMO_PERFORM_STATISTICAL_DUMP",						GameMessage::MSG_META_DEMO_PERFORM_STATISTICAL_DUMP },
 #endif//DUMP_PERF_STATS
@@ -530,7 +530,7 @@ GameMessageDisposition MetaEventTranslator::translateGameMessage(const GameMessa
 				#else
 				  if( TheGlobalData && TheGameLogic->isInReplayGame())
 				#endif
-#endif
+#endif // ZH
 				{
 #ifdef ZH
 	            if ( TheWritableGlobalData )
@@ -543,7 +543,7 @@ GameMessageDisposition MetaEventTranslator::translateGameMessage(const GameMessa
 			      break;
 		      }  
 
-#endif
+#endif // ZH
 					/*GameMessage *metaMsg =*/ TheMessageStream->appendMessage(map->m_meta);
 					//DEBUG_LOG(("Frame %d: MetaEventTranslator::translateGameMessage() normal: %s\n", TheGameLogic->getFrame(), findGameMessageNameByType(map->m_meta)));
 				}
@@ -555,7 +555,7 @@ GameMessageDisposition MetaEventTranslator::translateGameMessage(const GameMessa
 		if (t == GameMessage::MSG_RAW_KEY_DOWN)
 #ifdef ZH
     {
-#endif
+#endif // ZH
 			m_lastKeyDown = key;
 #ifdef ZH
 
@@ -572,7 +572,7 @@ GameMessageDisposition MetaEventTranslator::translateGameMessage(const GameMessa
 
     }
 
-#endif
+#endif // ZH
 		m_lastModState = newModState;
 	}
 

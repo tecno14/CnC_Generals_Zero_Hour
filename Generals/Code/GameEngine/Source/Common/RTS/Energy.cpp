@@ -52,7 +52,7 @@
 #ifdef ZH
 
 #include "GameLogic/GameLogic.h"
-#endif
+#endif // ZH
 #include "GameLogic/Object.h"
 
 #ifdef ZH
@@ -62,7 +62,7 @@
 //#pragma MESSAGE("************************************** WARNING, optimization disabled for debugging purposes")
 #endif
 
-#endif
+#endif // ZH
 //-----------------------------------------------------------------------------
 #ifdef ZH
 Energy::Energy()
@@ -85,7 +85,7 @@ Int Energy::getProduction() const
 }
 
 //-----------------------------------------------------------------------------
-#endif
+#endif // ZH
 Real Energy::getEnergySupplyRatio() const 
 { 
 	DEBUG_ASSERTCRASH(m_energyProduction >= 0 && m_energyConsumption >= 0, ("neg Energy numbers\n"));
@@ -97,7 +97,7 @@ Real Energy::getEnergySupplyRatio() const
 		return 0.0f;
 	}
 
-#endif
+#endif // ZH
 	if (m_energyConsumption == 0)
 		return (Real)m_energyProduction;
 
@@ -113,7 +113,7 @@ Bool Energy::hasSufficientPower(void) const
 		//Power sabotaged, therefore no power.
 		return FALSE;
 	}
-#endif
+#endif // ZH
 	return m_energyProduction >= m_energyConsumption;
 }
 
@@ -277,10 +277,10 @@ void Energy::xfer( Xfer *xfer )
 	// version
 #ifdef OG
 	XferVersion currentVersion = 2;
-#endif
+#endif // OG
 #ifdef ZH
 	XferVersion currentVersion = 3;
-#endif
+#endif // ZH
 	XferVersion version = currentVersion;
 	xfer->xferVersion( &version, currentVersion );
 
@@ -308,7 +308,7 @@ void Energy::xfer( Xfer *xfer )
 	{
 		xfer->xferUnsignedInt( &m_powerSabotagedTillFrame );
 	}
-#endif
+#endif // ZH
 
 }  // end xfer
 

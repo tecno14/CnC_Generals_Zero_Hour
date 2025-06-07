@@ -93,4 +93,4 @@ long CRCStraw::Result(void) const
 	return(CRC());
 }
 
-#endif
+#endif // ZH

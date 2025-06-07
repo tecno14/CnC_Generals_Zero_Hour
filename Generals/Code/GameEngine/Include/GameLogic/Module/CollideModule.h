@@ -52,7 +52,7 @@ public:
 	virtual Bool isHijackedVehicleCrateCollide() const = 0;
 #ifdef ZH
 	virtual Bool isSabotageBuildingCrateCollide() const = 0;
-#endif
+#endif // ZH
 	virtual Bool isCarBombCrateCollide() const = 0;
 	virtual Bool isRailroad() const = 0;
 	virtual Bool isSalvageCrateCollide() const = 0;
@@ -97,7 +97,7 @@ public:
 	virtual Bool isHijackedVehicleCrateCollide() const { return false; }
 #ifdef ZH
 	virtual Bool isSabotageBuildingCrateCollide() const { return false; }
-#endif
+#endif // ZH
 	virtual Bool isCarBombCrateCollide() const { return false; }
 	virtual Bool isRailroad() const { return false;}
 	virtual Bool isSalvageCrateCollide() const { return false; }

@@ -51,7 +51,7 @@
 //#pragma MESSAGE("************************************** WARNING, optimization disabled for debugging purposes")
 #endif
 
-#endif
+#endif // ZH
 //-------------------------------------------------------------------------------------------------
 //-------------------------------------------------------------------------------------------------
 struct AutoHealPlayerScanHelper
@@ -59,12 +59,12 @@ struct AutoHealPlayerScanHelper
 	KindOfMaskType m_kindOfToTest;
 #ifdef ZH
 	KindOfMaskType m_forbiddenKindOf;
-#endif
+#endif // ZH
 	Object *m_theHealer;
 	ObjectPointerList *m_objectList;	
 #ifdef ZH
 	Bool m_skipSelfForHealing;
-#endif
+#endif // ZH
 };
 
 static void checkForAutoHeal( Object *testObj, void *userData )
@@ -83,7 +83,7 @@ static void checkForAutoHeal( Object *testObj, void *userData )
 		return;
 
 	if( helper->m_skipSelfForHealing && testObj == helper->m_theHealer )
-#endif
+#endif // ZH
 		return;
 
 	if( !testObj->isAnyKindOf(helper->m_kindOfToTest) )
@@ -93,7 +93,7 @@ static void checkForAutoHeal( Object *testObj, void *userData )
 	if( testObj->isAnyKindOf( helper->m_forbiddenKindOf ) )
 		return;
 
-#endif
+#endif // ZH
 	if( testObj->getBodyModule()->getHealth() >= testObj->getBodyModule()->getMaxHealth() )
 		return;
 
@@ -222,16 +222,16 @@ UpdateSleepTime AutoHealBehavior::update( void )
 #ifdef OG
 			helper.m_kindOfToTest = getAutoHealBehaviorModuleData()->m_kindOf;
 
-#endif
+#endif // OG
 #ifdef ZH
 			helper.m_kindOfToTest = d->m_kindOf;
 			helper.m_forbiddenKindOf = d->m_forbiddenKindOf;
-#endif
+#endif // ZH
 			helper.m_objectList = &objectsToHeal;
 			helper.m_theHealer = getObject();
 #ifdef ZH
 			helper.m_skipSelfForHealing = d->m_skipSelfForHealing;
-#endif
+#endif // ZH
 
 			// Smack all objects with this function, and we will end up with a list of Objects deserving of pulseHealObject
 			owningPlayer->iterateObjects( checkForAutoHeal, &helper );
@@ -280,14 +280,14 @@ UpdateSleepTime AutoHealBehavior::update( void )
 #ifdef OG
 			if( body->getHealth() < body->getMaxHealth() && obj->isAnyKindOf( d->m_kindOf ) )
 
-#endif
+#endif // OG
 #ifdef ZH
 			if( body->getHealth() < body->getMaxHealth() )
 			{
 				if( obj->isAnyKindOf( d->m_kindOf ) && !obj->isAnyKindOf( d->m_forbiddenKindOf ) )
 				{
 					if( !d->m_skipSelfForHealing || obj != getObject() )
-#endif
+#endif // ZH
 			{
 				pulseHealObject( obj );
 
@@ -308,13 +308,13 @@ UpdateSleepTime AutoHealBehavior::update( void )
 																							TheGlobalData->m_getHealedAnimationZRisePerSecond);
 #ifdef ZH
 								}
-#endif
+#endif // ZH
 						}
 					}
 				}
 #ifdef ZH
 				}
-#endif
+#endif // ZH
 			}
 		}  // end for obj
 

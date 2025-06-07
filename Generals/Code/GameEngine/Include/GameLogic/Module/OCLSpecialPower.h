@@ -75,7 +75,7 @@ public:
 	//We need to know what the final product is going to be for script placement calculations 
 	//for construction sites like the sneak attack.
 	AsciiString				m_referenceThingName;
-#endif
+#endif // ZH
 
 	OCLSpecialPowerModuleData( void );
 	static void buildFieldParse(MultiIniFieldParse& p);
@@ -100,13 +100,13 @@ public:
 #ifdef OG
 	virtual void doSpecialPowerAtLocation( const Coord3D *loc, UnsignedInt commandOptions );
 
-#endif
+#endif // OG
 #ifdef ZH
 	virtual void doSpecialPowerAtLocation( const Coord3D *loc, Real angle, UnsignedInt commandOptions );
 
 	//If the special power launches a construction site, we need to know the final product for placement purposes.
 	virtual const ThingTemplate* getReferenceThingTemplate() const;
-#endif
+#endif // ZH
 
 protected:
 

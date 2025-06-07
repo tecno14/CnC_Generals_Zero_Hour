@@ -30,7 +30,7 @@
 
 #ifdef ZH
 #ifdef _DEBUG
-#endif
+#endif // ZH
 
 void CRC::addCRC( UnsignedByte val )
 {
@@ -84,5 +84,5 @@ UnsignedInt CRC::get( void )
 
 #ifdef ZH
 #endif
-#endif
+#endif // ZH
 

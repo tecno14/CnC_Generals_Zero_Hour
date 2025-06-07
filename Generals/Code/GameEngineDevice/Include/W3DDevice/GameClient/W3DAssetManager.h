@@ -69,30 +69,30 @@ public:
 #ifdef OG
 	virtual TextureClass *			Get_Texture(
 
-#endif
+#endif // OG
 #ifdef ZH
 
 	virtual TextureClass *	Get_Texture
 	(
-#endif
+#endif // ZH
 		const char * filename, 
 #ifdef OG
 		TextureClass::MipCountType mip_level_count=TextureClass::MIP_LEVELS_ALL,
-#endif
+#endif // OG
 #ifdef ZH
 		MipCountType mip_level_count=MIP_LEVELS_ALL,
-#endif
+#endif // ZH
 		WW3DFormat texture_format=WW3D_FORMAT_UNKNOWN,
 #ifdef OG
 		bool allow_compression=true);
 
-#endif
+#endif // OG
 #ifdef ZH
 		bool allow_compression=true,
 		TextureBaseClass::TexAssetType type=TextureBaseClass::TEX_REGULAR,
 		bool allow_reduction=true
 	);
-#endif
+#endif // ZH
 
 	//'Generals' customizations
 	void Report_Used_Assets(void);

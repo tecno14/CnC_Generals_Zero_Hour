@@ -91,7 +91,7 @@ public:
     return m_money == that.m_money;
   }
 
-#endif
+#endif // ZH
 protected:
 	// snapshot methods
 	virtual void crc( Xfer *xfer );

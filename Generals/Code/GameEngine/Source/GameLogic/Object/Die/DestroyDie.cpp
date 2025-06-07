@@ -42,7 +42,7 @@
 //#pragma MESSAGE("************************************** WARNING, optimization disabled for debugging purposes")
 #endif
 
-#endif
+#endif // ZH
 //-------------------------------------------------------------------------------------------------
 //-------------------------------------------------------------------------------------------------
 DestroyDie::DestroyDie( Thing *thing, const ModuleData* moduleData ) : DieModule( thing, moduleData )
@@ -62,15 +62,15 @@ void DestroyDie::onDie( const DamageInfo *damageInfo )
 {
 #ifdef ZH
 	Object *obj = getObject();
-#endif
+#endif // ZH
 	if (!isDieApplicable(damageInfo))
 		return;
 #ifdef OG
 	TheGameLogic->destroyObject(getObject());
-#endif
+#endif // OG
 #ifdef ZH
 	TheGameLogic->destroyObject( obj );
-#endif
+#endif // ZH
 }
 
 // ------------------------------------------------------------------------------------------------

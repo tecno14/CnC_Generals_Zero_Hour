@@ -50,7 +50,7 @@ public:
 
 };
 
-#endif
+#endif // ZH
 /** MapObject class 
 Not ref counted.  Do not store pointers to this class.  */
 class WorldHeightMap;

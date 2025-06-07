@@ -72,7 +72,7 @@ enum AIDebugOptions
 	AI_DEBUG_GROUND_PATHS,
 #ifdef ZH
 	AI_DEBUG_ZONES,
-#endif
+#endif // ZH
 	AI_DEBUG_END
 };
 
@@ -197,7 +197,7 @@ public:
 	Real m_maxRecruitDistance; // Maximum distance away that units can be recruited.
 #ifdef ZH
 	Real m_skirmishBaseDefenseExtraDistance; ///< instead of building base defenses right on the template bounding circle, push them out this much.
-#endif
+#endif // ZH
 	Real m_repulsedDistance; // How far a repulsed unit will run past vision range before stopping.
 	Bool m_enableRepulsors; // Is repulsion enabled?
 
@@ -229,7 +229,7 @@ public:
 	// Retaliate params. [8/25/2003]
 	Real	m_maxRetaliateDistance; // If attacker is > this distance, don't retaliate. [8/25/2003]
 	Real	m_retaliateFriendsRadius; // If we have friends within this radius, get them to help retaliate. [8/25/2003]
-#endif
+#endif // ZH
 
 	AISideInfo *m_sideInfo;
 
@@ -332,7 +332,7 @@ static const char *TheCommandSourceMaskNames[] =
 #ifdef ZH
 	"FROM_DOZER", //don't use this
 	"DEFAULT_SWITCH_WEAPON", //unit will pick this weapon when normal logic fails.
-#endif
+#endif // ZH
 
 	NULL
 };
@@ -344,7 +344,7 @@ enum AICommandType	// Stored in save file, do not reorder/renumber.  jba.
 {
 #ifdef ZH
 	AICMD_NO_COMMAND = -1,
-#endif
+#endif // ZH
 	AICMD_MOVE_TO_POSITION = 0,
 	AICMD_MOVE_TO_OBJECT,
 	AICMD_TIGHTEN_TO_POSITION,
@@ -405,7 +405,7 @@ enum AICommandType	// Stored in save file, do not reorder/renumber.  jba.
 	AICMD_EVACUATE_INSTANTLY,
 	AICMD_EXIT_INSTANTLY,
 	AICMD_GUARD_RETALIATE,
-#endif
+#endif // ZH
 
 	AICMD_NUM_COMMANDS	// keep last
 };
@@ -452,7 +452,7 @@ public:
 	void doXfer(Xfer *xfer);
 #ifdef ZH
 	AICommandType getCommandType() const { return m_cmd; }
-#endif
+#endif // ZH
 };
 
 /**
@@ -599,7 +599,7 @@ public:
 		aiDoCommand(&parms);
 	}
 
-#endif
+#endif // ZH
 	inline void aiAttackTeam( const Team *team, Int maxShotsToFire, CommandSourceType cmdSource )
 	{
 		AICommandParms parms(AICMD_ATTACK_TEAM, cmdSource);
@@ -724,7 +724,7 @@ public:
 	inline void aiExitInstantly( Object *objectToExit, CommandSourceType cmdSource )
 	{
 		AICommandParms parms(AICMD_EXIT_INSTANTLY, cmdSource);
-#endif
+#endif // ZH
 		parms.m_obj = objectToExit;
 		aiDoCommand(&parms);
 	}
@@ -750,7 +750,7 @@ public:
 		aiDoCommand(&parms);
 	}
 
-#endif
+#endif // ZH
 	inline void aiExecuteRailedTransport( CommandSourceType cmdSource )
 	{
 		AICommandParms parms( AICMD_EXECUTE_RAILED_TRANSPORT, cmdSource );
@@ -944,10 +944,10 @@ public:
 	void groupDoSpecialPowerAtObject( UnsignedInt specialPowerID, Object *object, UnsignedInt commandOptions ); 
 #ifdef OG
 	void groupDoSpecialPowerAtLocation( UnsignedInt specialPowerID, const Coord3D *location, const Object *object, UnsignedInt commandOptions );
-#endif
+#endif // OG
 #ifdef ZH
 	void groupDoSpecialPowerAtLocation( UnsignedInt specialPowerID, const Coord3D *location, Real angle, const Object *object, UnsignedInt commandOptions );
-#endif
+#endif // ZH
 #ifdef ALLOW_SURRENDER
 	void groupSurrender( const Object *objWeSurrenderedTo, Bool surrender, CommandSourceType cmdSource );
 #endif
@@ -963,7 +963,7 @@ public:
 	void groupDoCommandButtonAtPosition( const CommandButton *commandButton, const Coord3D *pos, CommandSourceType cmdSource );
 #ifdef ZH
 	void groupDoCommandButtonUsingWaypoints( const CommandButton *commandButton, const Waypoint *way, CommandSourceType cmdSource );
-#endif
+#endif // ZH
 	void groupDoCommandButtonAtObject( const CommandButton *commandButton, Object *obj, CommandSourceType cmdSource );
 	void groupSetEmoticon( const AsciiString &name, Int duration );
 	void groupOverrideSpecialPowerDestination( SpecialPowerType spType, const Coord3D *loc, CommandSourceType cmdSource );

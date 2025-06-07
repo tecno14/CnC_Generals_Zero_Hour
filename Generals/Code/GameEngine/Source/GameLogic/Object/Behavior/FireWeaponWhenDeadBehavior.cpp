@@ -38,7 +38,7 @@
 #include "Common/Xfer.h"
 #ifdef ZH
 #include "Common/Player.h"
-#endif
+#endif // ZH
 #include "GameClient/Drawable.h"
 #include "GameClient/FXList.h"
 #include "GameClient/InGameUI.h"
@@ -53,7 +53,7 @@
 #ifdef OG
 #include "Common/Player.h"
 
-#endif
+#endif // OG
 #ifdef ZH
 
 #ifdef _INTERNAL
@@ -61,7 +61,7 @@
 //#pragma optimize("", off)
 //#pragma MESSAGE("************************************** WARNING, optimization disabled for debugging purposes")
 #endif
-#endif
+#endif // ZH
 
 const Int MAX_IDX = 32;
 
@@ -94,7 +94,7 @@ void FireWeaponWhenDeadBehavior::onDie( const DamageInfo *damageInfo )
 	const FireWeaponWhenDeadBehaviorModuleData* d = getFireWeaponWhenDeadBehaviorModuleData();
 #ifdef ZH
 	Object *obj = getObject();
-#endif
+#endif // ZH
 
 	if (!isUpgradeActive())
 		return;
@@ -107,36 +107,36 @@ void FireWeaponWhenDeadBehavior::onDie( const DamageInfo *damageInfo )
 	// a one hitpoint one percent building will too.
 #ifdef OG
 	if( BitTest( getObject()->getStatusBits(), OBJECT_STATUS_UNDER_CONSTRUCTION ) == TRUE )
-#endif
+#endif // OG
 #ifdef ZH
 	if( obj->getStatusBits().test( OBJECT_STATUS_UNDER_CONSTRUCTION ) )
-#endif
+#endif // ZH
 		return;
 
 	
 #ifdef OG
 	Int64 activation, conflicting;
-#endif
+#endif // OG
 #ifdef ZH
 	UpgradeMaskType activation, conflicting;
-#endif
+#endif // ZH
 	getUpgradeActivationMasks( activation, conflicting );
 	
 #ifdef OG
 	if( getObject()->getObjectCompletedUpgradeMask() & conflicting )
-#endif
+#endif // OG
 #ifdef ZH
 	if( obj->getObjectCompletedUpgradeMask().testForAny( conflicting ) )
-#endif
+#endif // ZH
 	{
 		return;
 	}
 #ifdef OG
 	if( getObject()->getControllingPlayer()->getCompletedUpgradeMask() & conflicting )
-#endif
+#endif // OG
 #ifdef ZH
 	if( obj->getControllingPlayer() && obj->getControllingPlayer()->getCompletedUpgradeMask().testForAny( conflicting ) )
-#endif
+#endif // ZH
 	{
 		return;
 	}
@@ -146,10 +146,10 @@ void FireWeaponWhenDeadBehavior::onDie( const DamageInfo *damageInfo )
 		// fire the default weapon
 #ifdef OG
 	  TheWeaponStore->createAndFireTempWeapon(d->m_deathWeapon, getObject(), getObject()->getPosition());
-#endif
+#endif // OG
 #ifdef ZH
 	  TheWeaponStore->createAndFireTempWeapon(d->m_deathWeapon, obj, obj->getPosition());
-#endif
+#endif // ZH
 	}
 }
 

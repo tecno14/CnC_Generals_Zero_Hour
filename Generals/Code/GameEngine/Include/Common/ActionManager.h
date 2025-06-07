@@ -83,7 +83,7 @@ public:
 	Bool canHijackVehicle( const Object *obj, const Object *ObjectToHijack, CommandSourceType commandSource ); // LORENZEN
 #ifdef ZH
 	Bool canSabotageBuilding( const Object *obj, const Object *objectToSabotage, CommandSourceType commandSource );
-#endif
+#endif // ZH
 	Bool canCaptureBuilding( const Object *obj, const Object *objectToCapture, CommandSourceType commandSource );
 	Bool canDisableVehicleViaHacking( const Object *obj, const Object *objectToHack, CommandSourceType commandSource, Bool checkSourceRequirements = true );
 #ifdef ALLOW_SURRENDER

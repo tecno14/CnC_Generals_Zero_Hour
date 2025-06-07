@@ -72,7 +72,7 @@ struct MiscAudio
 #ifdef ZH
 	AudioEventRTS m_sabotageShutDownBuilding;											///< When Saboteur hits a building 
 	AudioEventRTS m_sabotageResetTimerBuilding;											///< When Saboteur hits a building 
-#endif
+#endif // ZH
 	AudioEventRTS m_aircraftWheelScreech;									///< When a jet lands on a runway.
 };
 

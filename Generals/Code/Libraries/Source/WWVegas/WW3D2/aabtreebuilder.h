@@ -28,24 +28,24 @@
  *                                                                                             *
 #ifdef OG
  *                      $Author:: Greg_h                                                      $*
-#endif
+#endif // OG
 #ifdef ZH
  *                      $Author:: Jani_p                                                      $*
-#endif
+#endif // ZH
  *                                                                                             *
 #ifdef OG
  *                     $Modtime:: 1/08/01 10:04a                                              $*
-#endif
+#endif // OG
 #ifdef ZH
  *                     $Modtime:: 11/24/01 5:49p                                              $*
-#endif
+#endif // ZH
  *                                                                                             *
 #ifdef OG
  *                    $Revision:: 1                                                           $*
-#endif
+#endif // OG
 #ifdef ZH
  *                    $Revision:: 2                                                           $*
-#endif
+#endif // ZH
  *                                                                                             *
  *---------------------------------------------------------------------------------------------*
  * Functions:                                                                                  *
@@ -66,7 +66,7 @@
 #include "bittype.h"
 #ifdef ZH
 #include "meshgeometry.h"
-#endif
+#endif // ZH
 #include <float.h>
 
 class AABTreeClass;
@@ -89,11 +89,11 @@ public:
 #ifdef OG
 	void					Build_AABTree(int polycount,Vector3i * polys,int vertcount,Vector3 * verts);
 
-#endif
+#endif // OG
 #ifdef ZH
 	void					Build_AABTree(int polycount,TriIndex * polys,int vertcount,Vector3 * verts);
 	void					Build_AABTree(int polycount,Vector3i* polys,int vertcount,Vector3 * verts);
-#endif
+#endif // ZH
 	void					Export(ChunkSaveClass & csave);
 	
 	int					Node_Count(void);
@@ -222,10 +222,10 @@ private:
 	int								PolyCount;
 #ifdef OG
 	Vector3i *						Polys;
-#endif
+#endif // OG
 #ifdef ZH
 	TriIndex *						Polys;
-#endif
+#endif // ZH
 	int								VertCount;
 	Vector3 *						Verts;
 

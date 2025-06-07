@@ -46,7 +46,7 @@
 #include "GameLogic/Object.h"
 #ifdef ZH
 #include "GameLogic/Weapon.h"
-#endif
+#endif // ZH
 
 #ifdef _INTERNAL
 // for occasional debugging...
@@ -66,7 +66,7 @@ TransportContainModuleData::TransportContainModuleData()
 	m_goAggressiveOnExit = FALSE;
 #ifdef ZH
   m_armedRidersUpgradeWeaponSet = FALSE;
-#endif
+#endif // ZH
 	m_resetMoodCheckTimeOnExit = true;
 	m_destroyRidersWhoAreNotFreeToExit = false;
 	m_exitPitchRate = 0.0f;
@@ -75,7 +75,7 @@ TransportContainModuleData::TransportContainModuleData()
 	m_exitDelay = 0;
 #ifdef ZH
 	m_isDelayExitInAir = FALSE;
-#endif
+#endif // ZH
 
 	//
 	// by default we say that transports can have infantry inside them, this will be totally
@@ -122,7 +122,7 @@ void TransportContainModuleData::buildFieldParse(MultiIniFieldParse& p)
 		{ "ArmedRidersUpgradeMyWeaponSet",	INI::parseBool,		NULL, offsetof( TransportContainModuleData, m_armedRidersUpgradeWeaponSet ) },
 		{ "DelayExitInAir",	INI::parseBool,		NULL, offsetof( TransportContainModuleData, m_isDelayExitInAir ) },
 	
-#endif
+#endif // ZH
 		{ 0, 0, 0, 0 }
 	};
   p.add(dataFieldParse);
@@ -215,14 +215,14 @@ Bool TransportContain::isValidContainerFor(const Object* rider, Bool checkCapaci
 #ifdef OG
 		return (m_extraSlotsInUse + getContainCount() + transportSlotCount <= getContainMax());
 
-#endif
+#endif // OG
 #ifdef ZH
     Int containMax = getContainMax();
     Int containCount = getContainCount();
     
 		return (m_extraSlotsInUse + containCount + transportSlotCount <= containMax);
 
-#endif
+#endif // ZH
 	}
 	else
 	{
@@ -235,7 +235,7 @@ Bool TransportContain::isValidContainerFor(const Object* rider, Bool checkCapaci
 #ifdef OG
 void TransportContain::onContaining( Object *rider )
 
-#endif
+#endif // OG
 #ifdef ZH
 void TransportContain::letRidersUpgradeWeaponSet( void )
 {
@@ -296,14 +296,14 @@ void TransportContain::letRidersUpgradeWeaponSet( void )
 //-------------------------------------------------------------------------------------------------
 //-------------------------------------------------------------------------------------------------
 void TransportContain::onContaining( Object *rider, Bool wasSelected )
-#endif
+#endif // ZH
 {
 #ifdef OG
 	OpenContain::onContaining(rider);
-#endif
+#endif // OG
 #ifdef ZH
 	OpenContain::onContaining( rider, wasSelected );
-#endif
+#endif // ZH
 	
 	// objects inside a transport are held
 	rider->setDisabled( DISABLED_HELD );
@@ -330,7 +330,7 @@ void TransportContain::onContaining( Object *rider, Bool wasSelected )
 
   if ( getTransportContainModuleData()->m_armedRidersUpgradeWeaponSet )
     letRidersUpgradeWeaponSet();
-#endif
+#endif // ZH
 
 #ifdef ZH
 	//Kris: October 20, 2003 - Patch 1.01
@@ -345,13 +345,13 @@ void TransportContain::onContaining( Object *rider, Bool wasSelected )
 			//Transfer the reload time from the rider to the bike
 			bikeWeapon->transferNextShotStatsFrom( *riderWeapon );
 		}
-#endif
+#endif // ZH
 }
 
 #ifdef ZH
 }
 
-#endif
+#endif // ZH
 //-------------------------------------------------------------------------------------------------
 //-------------------------------------------------------------------------------------------------
 void TransportContain::onRemoving( Object *rider )
@@ -406,7 +406,7 @@ void TransportContain::onRemoving( Object *rider )
 #ifdef OG
 	DEBUG_ASSERTCRASH(m_extraSlotsInUse >= 0 && m_extraSlotsInUse + getContainCount() <= getContainMax(), ("Hmm, bad slot count"));
 
-#endif
+#endif // OG
 #ifdef ZH
 
 #if (defined(_DEBUG) || defined(_INTERNAL))
@@ -414,7 +414,7 @@ void TransportContain::onRemoving( Object *rider )
 	UnsignedInt containMax = getContainMax();
 	DEBUG_ASSERTCRASH(m_extraSlotsInUse >= 0 && m_extraSlotsInUse + containCount <= containMax, ("Hmm, bad slot count"));
 #endif
-#endif
+#endif // ZH
 
 	// when we are empty again, clear the model condition for loaded
 	if( getContainCount() == 0 )
@@ -470,7 +470,7 @@ void TransportContain::onRemoving( Object *rider )
 			riderWeapon->transferNextShotStatsFrom( *bikeWeapon );
 		}
 	}
-#endif
+#endif // ZH
 
 }
 
@@ -654,7 +654,7 @@ Bool TransportContain::isPassengerAllowedToFire( ObjectID id ) const
   }
 
 	return OpenContain::isPassengerAllowedToFire();
-#endif
+#endif // ZH
 }
 
 // ------------------------------------------------------------------------------------------------
@@ -673,7 +673,7 @@ Bool TransportContain::isExitBusy() const	///< Contain style exiters are getting
 	if( data->m_isDelayExitInAir && getObject()->isAboveTerrain() )
 		return TRUE;
 
-#endif
+#endif // ZH
 	return TheGameLogic->getFrame() < m_frameExitNotBusy;
 }
 
@@ -693,10 +693,10 @@ void TransportContain::onCapture( Player *oldOwner, Player *newOwner )
 			//Use standard
 #ifdef OG
 			orderAllPassengersToExit( CMD_FROM_AI );
-#endif
+#endif // OG
 #ifdef ZH
 			orderAllPassengersToExit( CMD_FROM_AI, FALSE );
-#endif
+#endif // ZH
 		}
 	}
 }

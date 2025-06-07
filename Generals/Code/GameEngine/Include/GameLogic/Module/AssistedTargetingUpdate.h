@@ -45,12 +45,12 @@ public:
 	ThingTemplate *m_laserFromAssisted;
 	ThingTemplate *m_laserToTarget;
 
-#endif
+#endif // OG
 #ifdef ZH
 
   AsciiString m_laserFromAssistedName;
   AsciiString m_laserToTargetName;
-#endif
+#endif // ZH
 
 	AssistedTargetingUpdateModuleData()
 	{
@@ -59,11 +59,11 @@ public:
 #ifdef OG
 		m_laserFromAssisted = NULL;
 		m_laserToTarget = NULL;
-#endif
+#endif // OG
 #ifdef ZH
     m_laserFromAssistedName.clear();
     m_laserToTargetName.clear();
-#endif
+#endif // ZH
 	}
 
 	static void buildFieldParse(MultiIniFieldParse& p);
@@ -94,7 +94,7 @@ private:
 	const ThingTemplate *m_laserFromAssisted;
 	const ThingTemplate *m_laserToTarget;
 
-#endif
+#endif // ZH
 };
 
 #endif 

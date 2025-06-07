@@ -45,7 +45,7 @@
 #include "GameLogic/ExperienceTracker.h" //veterancy logic
 #ifdef ZH
 #include "GameLogic/Module/StealthUpdate.h"
-#endif
+#endif // ZH
 
 
 #define NONE_SPAWNED_YET (0xffffffff)
@@ -390,11 +390,11 @@ void SpawnBehavior::orderSlavesDisabledUntil( DisabledType type, UnsignedInt fra
 			if( ai )
 			{
 				ai->aiIdle( CMD_FROM_AI );
-#endif
+#endif // ZH
 			}
 #ifdef ZH
 			obj->setDisabledUntil( type, frame );
-#endif
+#endif // ZH
 		}
 	}
 }
@@ -414,7 +414,7 @@ void SpawnBehavior::orderSlavesToClearDisabled( DisabledType type )
 }
 
 // ------------------------------------------------------------------------------------------------
-#endif
+#endif // ZH
 CanAttackResult SpawnBehavior::getCanAnySlavesAttackSpecificTarget( AbleToAttackType attackType, const Object *target, CommandSourceType cmdSource )
 {
 	Bool invalidShot = FALSE;
@@ -503,7 +503,7 @@ void SpawnBehavior::giveSlavesStealthUpgrade( Bool grantStealth )
 		}
 	}
 }
-#endif
+#endif // ZH
 
 // ------------------------------------------------------------------------------------------------
 Bool SpawnBehavior::canAnySlavesAttack()
@@ -843,11 +843,11 @@ Bool SpawnBehavior::shouldTryToSpawn()
 #ifdef OG
 	if( BitTest( getObject()-> getStatusBits(), OBJECT_STATUS_RECONSTRUCTING ) &&
 			modData->m_isOneShotData == TRUE )
-#endif
+#endif // OG
 #ifdef ZH
 	if( getObject()->getStatusBits().test( OBJECT_STATUS_RECONSTRUCTING ) && modData->m_isOneShotData )
 
-#endif
+#endif // ZH
 	{
 		// If we are a Hole rebuild, not only should we not, but we should never ask again.
 		stopSpawning();
@@ -1036,7 +1036,7 @@ void SpawnBehavior::computeAggregateStates(void)
 #ifdef OG
 	obj->setStatus(OBJECT_STATUS_MASKED);
 
-#endif
+#endif // OG
 #ifdef ZH
 	obj->setStatus( MAKE_OBJECT_STATUS_MASK( OBJECT_STATUS_MASKED ) );
 
@@ -1067,7 +1067,7 @@ Bool SpawnBehavior::areAllSlavesStealthed() const
 void SpawnBehavior::revealSlaves()
 {
 	Object *currentSpawn;
-#endif
+#endif // ZH
 
 #ifdef ZH
 	for( objectIDListIterator iter = m_spawnIDs.begin(); iter != m_spawnIDs.end(); iter++)
@@ -1079,14 +1079,14 @@ void SpawnBehavior::revealSlaves()
 			if( stealthUpdate )
 			{
 				stealthUpdate->markAsDetected();
-#endif
+#endif // ZH
 }
 #ifdef ZH
 		}
 	}
 }
 
-#endif
+#endif // ZH
 
 // ------------------------------------------------------------------------------------------------
 /** CRC */

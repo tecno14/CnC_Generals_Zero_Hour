@@ -22,10 +22,10 @@
 #include "stdafx.h"
 #ifdef OG
 #include "noxstring.h"
-#endif
+#endif // OG
 #ifdef ZH
 #include "Babylon.h"
-#endif
+#endif // ZH
 #include "GenerateDlg.h"
 #include "direct.h"
 
@@ -68,10 +68,10 @@ BEGIN_MESSAGE_MAP(CGenerateDlg, CDialog)
 	ON_EN_CHANGE(IDC_PREFIX, OnChangePrefix)
 #ifdef OG
 	ON_BN_CLICKED(IDC_NOXSTR, OnNoxstr)
-#endif
+#endif // OG
 #ifdef ZH
 	ON_BN_CLICKED(IDC_BABYLONSTR, OnBabylonstr)
-#endif
+#endif // ZH
 	ON_BN_CLICKED(IDC_UNICODE, OnUnicode)
 	ON_BN_CLICKED(IDC_IDS, OnIds)
 	ON_BN_CLICKED(IDC_ORIGINAL, OnOriginal)
@@ -90,10 +90,10 @@ BOOL CGenerateDlg::OnInitDialog()
 	unicode = (CButton *) GetDlgItem ( IDC_UNICODE );
 #ifdef OG
 	strfile = (CButton *) GetDlgItem ( IDC_NOXSTR );
-#endif
+#endif // OG
 #ifdef ZH
 	strfile = (CButton *) GetDlgItem ( IDC_BABYLONSTR );
-#endif
+#endif // ZH
 	useids = (CButton *) GetDlgItem ( IDC_IDS );
 	usetext = (CButton *) GetDlgItem ( IDC_ORIGINAL );
 	list = (CListBox *) GetDlgItem ( IDC_LANGUAGE );
@@ -158,10 +158,10 @@ void CGenerateDlg::OnChangePrefix()
 
 #ifdef OG
 	if ( options.format == GN_NOXSTR )
-#endif
+#endif // OG
 #ifdef ZH
 	if ( options.format == GN_BABYLONSTR )
-#endif
+#endif // ZH
 	{
 		strcat ( buffer, "_{xx}.str" );
 	}
@@ -176,18 +176,18 @@ void CGenerateDlg::OnChangePrefix()
 
 #ifdef OG
 void CGenerateDlg::OnNoxstr() 
-#endif
+#endif // OG
 #ifdef ZH
 void CGenerateDlg::OnBabylonstr() 
-#endif
+#endif // ZH
 {
 	// TODO: Add your control notification handler code here
 #ifdef OG
 	options.format = GN_NOXSTR;
-#endif
+#endif // OG
 #ifdef ZH
 	options.format = GN_BABYLONSTR;
-#endif
+#endif // ZH
 	OnChangePrefix ();
 	unicode->SetCheck ( 0 );
 

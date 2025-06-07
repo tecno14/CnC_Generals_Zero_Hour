@@ -26,24 +26,24 @@
  *                                                                                             * 
 #ifdef OG
  *                      $Author:: Byon_g                                                      $*
-#endif
+#endif // OG
 #ifdef ZH
  *                      $Author:: Jani_p                                                      $*
-#endif
+#endif // ZH
  *                                                                                             * 
 #ifdef OG
  *                     $Modtime:: 2/08/00 10:59a                                              $*
-#endif
+#endif // OG
 #ifdef ZH
  *                     $Modtime:: 9/01/01 11:05a                                              $*
-#endif
+#endif // ZH
  *                                                                                             * 
 #ifdef OG
  *                    $Revision:: 3                                                           $*
-#endif
+#endif // OG
 #ifdef ZH
  *                    $Revision:: 4                                                           $*
-#endif
+#endif // ZH
  *                                                                                             *
  *---------------------------------------------------------------------------------------------* 
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
@@ -66,18 +66,18 @@ RandomStringClass::~RandomStringClass( void )
 		Strings.Delete( 0 );
 	}
 }
-#endif
+#endif // OG
 
 void RandomStringClass::Add_String( const char * str )
 {
 #ifdef OG
 	StringClass	 * string = W3DNEW StringClass( str );
 	Strings.Add( string );
-#endif
+#endif // OG
 #ifdef ZH
 	Strings.Add( str );
 
-#endif
+#endif // ZH
 }
 
 const char * RandomStringClass::Get_String( void )
@@ -89,9 +89,9 @@ const char * RandomStringClass::Get_String( void )
 	index %= Strings.Count();
 #ifdef OG
 	return *Strings[index];
-#endif
+#endif // OG
 #ifdef ZH
 	return Strings[index];
-#endif
+#endif // ZH
 }
 

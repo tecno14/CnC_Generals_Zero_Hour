@@ -24,37 +24,37 @@
  *                                                                                             *
 #ifdef OG
  *                     $Archive:: /VSS_Sync/ww3d2/dx8caps.h                                   $*
-#endif
+#endif // OG
 #ifdef ZH
  *                     $Archive:: /Commando/Code/ww3d2/dx8caps.h                              $*
-#endif
+#endif // ZH
  *                                                                                             *
  *              Original Author:: Hector Yee                                                   *
  *                                                                                             *
 #ifdef OG
  *                      $Author:: Vss_sync                                                    $*
-#endif
+#endif // OG
 #ifdef ZH
  *                       Author : Kenny Mitchell                                               * 
-#endif
+#endif // ZH
  *                                                                                             *
 #ifdef OG
  *                     $Modtime:: 8/29/01 8:16p                                               $*
-#endif
+#endif // OG
 #ifdef ZH
  *                     $Modtime:: 06/27/02 1:27p                                              $*
-#endif
+#endif // ZH
  *                                                                                             *
 #ifdef OG
  *                    $Revision:: 8                                                           $*
-#endif
+#endif // OG
 #ifdef ZH
  *                    $Revision:: 24                                                          $*
-#endif
+#endif // ZH
  *                                                                                             *
 #ifdef ZH
  * 06/27/02 KM Z Format support																						*
-#endif
+#endif // ZH
  *---------------------------------------------------------------------------------------------*
  * Functions:                                                                                  *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
@@ -83,7 +83,7 @@ public:
 	static bool	Support_Bump_Envmap() { return SupportBumpEnvmap; }
 	static bool	Support_Bump_Envmap_Luminance() { return SupportBumpEnvmapLuminance; }
 
-#endif
+#endif // OG
 #ifdef ZH
 	enum DriverVersionStatusType {
 		DRIVER_STATUS_UNKNOWN,
@@ -263,7 +263,7 @@ public:
 	bool Is_Valid_Display_Format(int width, int height, WW3DFormat format);
 
 	int Get_Max_Textures_Per_Pass() const { return MaxTexturesPerPass; }
-#endif
+#endif // ZH
 
 	// -------------------------------------------------------------------------
 	//
@@ -284,7 +284,7 @@ public:
 	bool Support_Depth_Stencil_Format(WW3DZFormat format) const { return SupportDepthStencilFormat[format]; }
 
 	D3DCAPS8 const & Get_DX8_Caps() const { return Caps; }
-#endif
+#endif // ZH
 
 #ifdef OG
 	static int Get_Vertex_Shader_Majon_Version() { return 0xff&(VertexShaderVersion>>8); }
@@ -292,34 +292,34 @@ public:
 	static int Get_Pixel_Shader_Majon_Version() { return 0xff&(PixelShaderVersion>>8); }
 	static int Get_Pixel_Shader_Minor_Version() { return 0xff&(PixelShaderVersion); }
 	static int Get_Max_Simultaneous_Textures()	{ return MaxSimultaneousTextures;}
-#endif
+#endif // OG
 #ifdef ZH
 	const StringClass& Get_Log() const { return CapsLog; }
 	const StringClass& Get_Compact_Log() const { return CompactLog; }
 
-#endif
+#endif // ZH
 
 #ifdef OG
 	static bool Support_Texture_Format(WW3DFormat format) { return SupportTextureFormat[format]; }
 
-#endif
+#endif // OG
 #ifdef ZH
 	unsigned Get_Vendor() const { return VendorId; }
 	unsigned Get_Device() const { return DeviceId; }
 	const StringClass& Get_Driver_Name() const { return DriverDLL; }
 	unsigned Get_Driver_Build_Version() const { return DriverBuildVersion; }
-#endif
+#endif // ZH
 
 #ifdef OG
 	static D3DCAPS8 const & Get_HW_VP_Caps() { return hwVPCaps; };
 	static D3DCAPS8 const & Get_SW_VP_Caps() { return swVPCaps; };
 	static D3DCAPS8 const & Get_Default_Caps() { return (UseTnL?hwVPCaps:swVPCaps); };
-#endif
+#endif // OG
 #ifdef ZH
 	// This will return false if the driver version is known to have problems.
 	DriverVersionStatusType Get_Driver_Version_Status() { return DriverVersionStatus; }
 
-#endif
+#endif // ZH
 
 private:
 #ifdef OG
@@ -331,7 +331,7 @@ private:
 	static void Check_Maximum_Texture_Support(const D3DCAPS8& caps);
 	static void Vendor_Specific_Hacks(const D3DADAPTER_IDENTIFIER8& adapter_id);
 
-#endif
+#endif // OG
 #ifdef ZH
 	static VendorIdType Define_Vendor(unsigned vendor_id);
 	static DeviceTypeATI Get_ATI_Device(unsigned device_id);
@@ -356,7 +356,7 @@ private:
 
 	int MaxDisplayWidth;
 	int MaxDisplayHeight;
-#endif
+#endif // ZH
 
 #ifdef OG
 	static D3DCAPS8 hwVPCaps;
@@ -373,7 +373,7 @@ private:
 	static int PixelShaderVersion;
 	static int MaxSimultaneousTextures;
 
-#endif
+#endif // OG
 #ifdef ZH
 	D3DCAPS8 Caps;
 	bool SupportTnL;	
@@ -405,7 +405,7 @@ private:
 	IDirect3D8* Direct3D; // warning XDK name conflict KJM
 	StringClass CapsLog;
 	StringClass CompactLog;
-#endif
+#endif // ZH
 };
 
 #endif

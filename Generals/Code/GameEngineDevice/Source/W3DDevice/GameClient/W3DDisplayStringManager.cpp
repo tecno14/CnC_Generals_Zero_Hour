@@ -46,10 +46,10 @@ W3DDisplayStringManager::W3DDisplayStringManager( void )
 {
 #ifdef OG
 	for (Int i = 0; i < 10; ++i) 
-#endif
+#endif // OG
 #ifdef ZH
 	for (Int i = 0; i < MAX_GROUPS; ++i) 
-#endif
+#endif // ZH
 	{
 		m_groupNumeralStrings[i] = NULL;
 	}
@@ -63,10 +63,10 @@ W3DDisplayStringManager::~W3DDisplayStringManager( void )
 {
 #ifdef OG
 	for (Int i = 0; i < 10; ++i) 
-#endif
+#endif // OG
 #ifdef ZH
 	for (Int i = 0; i < MAX_GROUPS; ++i) 
-#endif
+#endif // ZH
 	{
 		if (m_groupNumeralStrings[i])
 			freeDisplayString(m_groupNumeralStrings[i]);
@@ -91,10 +91,10 @@ void W3DDisplayStringManager::postProcessLoad( void )
 	
 #ifdef OG
 	for (Int i = 0; i < 10; ++i) 
-#endif
+#endif // OG
 #ifdef ZH
 	for (Int i = 0; i < MAX_GROUPS; ++i) 
-#endif
+#endif // ZH
 	{
 		m_groupNumeralStrings[i] = newDisplayString();
 		m_groupNumeralStrings[i]->setFont(font);
@@ -105,13 +105,13 @@ void W3DDisplayStringManager::postProcessLoad( void )
 		displayNumber.format( L"%d", i);
 		m_groupNumeralStrings[i]->setText( displayNumber );
 #else
-#endif
+#endif // ZH
 		AsciiString displayNumber;
 		displayNumber.format("NUMBER:%d", i);
 		m_groupNumeralStrings[i]->setText(TheGameText->fetch(displayNumber));
 #ifdef ZH
 #endif
-#endif
+#endif // ZH
 	}
 
 	m_formationLetterDisplayString = newDisplayString();
@@ -253,11 +253,11 @@ DisplayString *W3DDisplayStringManager::getGroupNumeralString( Int numeral )
 #ifdef OG
 	if (numeral < 0 || numeral > 9) {
 
-#endif
+#endif // OG
 #ifdef ZH
 	if (numeral < 0 || numeral > MAX_GROUPS - 1 ) 
 	{
-#endif
+#endif // ZH
 		DEBUG_CRASH(("Numeral '%d' out of range.\n", numeral));
 		return m_groupNumeralStrings[0];
 	}

@@ -79,7 +79,7 @@
 //#pragma MESSAGE("************************************** WARNING, optimization disabled for debugging purposes")
 #endif
 
-#endif
+#endif // ZH
 //-----------------------------------------------------------------------------
 //         Private Data                                                     
 //-----------------------------------------------------------------------------
@@ -140,10 +140,10 @@ void W3DBridge::renderBridge(Bool wireframe)
 {
 #ifdef OG
 	if (m_visible) {
-#endif
+#endif // OG
 #ifdef ZH
 	if (m_visible && m_numPolygons && m_numVertex) {
-#endif
+#endif // ZH
 		if (!wireframe) DX8Wrapper::Set_Texture(0,m_bridgeTexture);
 		// Draw all the bridges.
 		DX8Wrapper::Draw_Triangles(	m_firstIndex, m_numPolygons, m_firstVertex,	m_numVertex);
@@ -257,10 +257,10 @@ Bool W3DBridge::load(enum BodyDamageType curDamageState)
 
 #ifdef OG
 	m_bridgeTexture = pMgr->Get_Texture(textureFile,  TextureClass::MIP_LEVELS_3); 
-#endif
+#endif // OG
 #ifdef ZH
 	m_bridgeTexture = pMgr->Get_Texture(textureFile,  MIP_LEVELS_3); 
-#endif
+#endif // ZH
 	m_leftMtx.Make_Identity();
 	m_rightMtx.Make_Identity();
 	m_sectionMtx.Make_Identity();
@@ -453,7 +453,7 @@ Int W3DBridge::getModelVertices(VertexFormatXYZNDUV1 *destination_vb, Int curVer
 #ifdef OG
 		curVb->u1 = uvs[i].U;
 		curVb->v1 = uvs[i].V;
-#endif
+#endif // OG
 		Vector3 vLoc;
 		Vector3 vertex;
 		Matrix3D::Transform_Vector(mtx, pVert[i], &vertex);
@@ -476,14 +476,14 @@ Int W3DBridge::getModelVertices(VertexFormatXYZNDUV1 *destination_vb, Int curVer
 		Matrix3D::Rotate_Vector(mtx, pNormal[i], &normal);
 #ifdef OG
 		curVb->diffuse = 0xFF000000;
-#endif
+#endif // OG
 #ifdef USE_BRIDGE_NORMALS
 		curVb->nx = normal.X;
 		curVb->ny = normal.Y;
 		curVb->nz = normal.Z;
 #ifdef ZH
 		curVb->diffuse = 0xFF000000;
-#endif
+#endif // ZH
 #else
 		normal = (normal.X) * vec + normal.Y*vecNormal + normal.Z*vecZ;
 		normal.Normalize();	
@@ -492,13 +492,13 @@ Int W3DBridge::getModelVertices(VertexFormatXYZNDUV1 *destination_vb, Int curVer
 		curVb->nx = 0;	//will these to keep AGP write buffer happy.
 		curVb->ny = 0;
 		curVb->nz = 1;
-#endif
+#endif // ZH
 		curVb->diffuse = vb.diffuse | 0xFF000000;
 #endif
 #ifdef ZH
 		curVb->u1 = uvs[i].U;
 		curVb->v1 = uvs[i].V;
-#endif
+#endif // ZH
 		curVb++;
 	}
 	return(numVertex);
@@ -554,7 +554,7 @@ void W3DBridge::getIndicesNVertices(UnsignedShort *destination_ib, VertexFormatX
 			DEBUG_ASSERTCRASH( numV, ("W3DBridge::GetIndicesNVertices(). Vertex overflow.\n") );
 			return;
 		}
-#endif
+#endif // ZH
 		numI = getModelIndices( destination_ib, *curIndexP, *curVertexP, m_leftMesh);
 #ifdef ZH
 		if (!numI)
@@ -562,7 +562,7 @@ void W3DBridge::getIndicesNVertices(UnsignedShort *destination_ib, VertexFormatX
 			DEBUG_ASSERTCRASH( numI, ("W3DBridge::GetIndicesNVertices(). Index overflow.\n") );
 			return;
 		}
-#endif
+#endif // ZH
 		*curIndexP += numI;
 		*curVertexP += numV;
 		m_numVertex += numV;
@@ -608,7 +608,7 @@ void W3DBridge::getIndicesNVertices(UnsignedShort *destination_ib, VertexFormatX
 		DEBUG_ASSERTCRASH( numV, ("W3DBridge::GetIndicesNVertices(). Vertex overflow.\n") );
 		return;
 	}
-#endif
+#endif // ZH
 	numI = getModelIndices( destination_ib, *curIndexP, *curVertexP, m_leftMesh);
 #ifdef ZH
 	if (!numI)
@@ -616,7 +616,7 @@ void W3DBridge::getIndicesNVertices(UnsignedShort *destination_ib, VertexFormatX
 		DEBUG_ASSERTCRASH( numI, ("W3DBridge::GetIndicesNVertices(). Index overflow.\n") );
 		return;
 	}
-#endif
+#endif // ZH
 	*curIndexP += numI;
 	*curVertexP += numV;
 	m_numVertex += numV;
@@ -633,7 +633,7 @@ void W3DBridge::getIndicesNVertices(UnsignedShort *destination_ib, VertexFormatX
 			DEBUG_ASSERTCRASH( numV, ("W3DBridge::GetIndicesNVertices(). Vertex overflow.\n") );
 			return;
 		}
-#endif
+#endif // ZH
 		numI = getModelIndices( destination_ib, *curIndexP, *curVertexP, m_sectionMesh);
 #ifdef ZH
 		if (!numI)
@@ -641,7 +641,7 @@ void W3DBridge::getIndicesNVertices(UnsignedShort *destination_ib, VertexFormatX
 			DEBUG_ASSERTCRASH( numI, ("W3DBridge::GetIndicesNVertices(). Index overflow.\n") );
 			return;
 		}
-#endif
+#endif // ZH
 		*curIndexP += numI;
 		*curVertexP += numV;
 		m_numVertex += numV;
@@ -657,7 +657,7 @@ void W3DBridge::getIndicesNVertices(UnsignedShort *destination_ib, VertexFormatX
 		DEBUG_ASSERTCRASH( numV, ("W3DBridge::GetIndicesNVertices(). Vertex overflow.\n") );
 		return;
 	}
-#endif
+#endif // ZH
 	numI = getModelIndices( destination_ib, *curIndexP, *curVertexP, m_rightMesh);
 #ifdef ZH
 	if (!numI)
@@ -665,7 +665,7 @@ void W3DBridge::getIndicesNVertices(UnsignedShort *destination_ib, VertexFormatX
 		DEBUG_ASSERTCRASH( numI, ("W3DBridge::GetIndicesNVertices(). Index overflow.\n") );
 		return;
 	}
-#endif
+#endif // ZH
 	*curIndexP += numI;
 	*curVertexP += numV;
 	m_numVertex += numV;
@@ -685,10 +685,10 @@ Int W3DBridge::getModelIndices(UnsignedShort *destination_ib, Int curIndex, Int 
 	Int numPoly = pMesh->Peek_Model()->Get_Polygon_Count();
 #ifdef OG
 	const Vector3i *pPoly =pMesh->Peek_Model()->Get_Polygon_Array();
-#endif
+#endif // OG
 #ifdef ZH
 	const TriIndex *pPoly =pMesh->Peek_Model()->Get_Polygon_Array();
-#endif
+#endif // ZH
 	if (curIndex+3*numPoly+6 >= W3DBridgeBuffer::MAX_BRIDGE_INDEX) {
 		return(0);
 	}
@@ -746,11 +746,11 @@ void W3DBridgeBuffer::loadBridgesInVertexAndIndexBuffers(RefRenderObjListIterato
 #ifdef OG
 	DX8IndexBufferClass::WriteLockClass lockIdxBuffer(m_indexBridge);
 	DX8VertexBufferClass::WriteLockClass lockVtxBuffer(m_vertexBridge);
-#endif
+#endif // OG
 #ifdef ZH
 	DX8IndexBufferClass::WriteLockClass lockIdxBuffer(m_indexBridge, D3DLOCK_DISCARD);
 	DX8VertexBufferClass::WriteLockClass lockVtxBuffer(m_vertexBridge, D3DLOCK_DISCARD);
-#endif
+#endif // ZH
 	vb=(VertexFormatXYZNDUV1*)lockVtxBuffer.Get_Vertex_Array();
 	ib = lockIdxBuffer.Get_Index_Array();
 
@@ -762,7 +762,7 @@ void W3DBridgeBuffer::loadBridgesInVertexAndIndexBuffers(RefRenderObjListIterato
 
 #ifdef ZH
 	try {
-#endif
+#endif // ZH
 	for (curBridge=0; curBridge<m_numBridges; curBridge++) {
 		m_bridges[curBridge].getIndicesNVertices(ib, vb, &m_curNumBridgeIndices, 
 			&m_curNumBridgeVertices, pLightsIterator);
@@ -771,7 +771,7 @@ void W3DBridgeBuffer::loadBridgesInVertexAndIndexBuffers(RefRenderObjListIterato
 	IndexBufferExceptionFunc();
 	} catch(...) {
 		IndexBufferExceptionFunc();
-#endif
+#endif // ZH
 	}
 }
 

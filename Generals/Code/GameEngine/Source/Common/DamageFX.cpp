@@ -34,7 +34,7 @@
 #ifdef OG
 #define DEFINE_DAMAGE_NAMES						// for DamageNames[]
 
-#endif
+#endif // OG
 #include "Common/INI.h"
 #include "Common/ThingFactory.h"
 #include "Common/ThingTemplate.h"
@@ -170,10 +170,10 @@ static void parseCommonStuff(
 	{
 #ifdef OG
 		damageFirst = (DamageType)INI::scanIndexList(damageName, TheDamageNames);
-#endif
+#endif // OG
 #ifdef ZH
 		damageFirst = (DamageType)DamageTypeFlags::getSingleBitFromName(damageName);
-#endif
+#endif // ZH
 		damageLast = damageFirst;
 	}
 }

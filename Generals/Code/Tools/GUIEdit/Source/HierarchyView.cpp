@@ -617,7 +617,7 @@ HTREEITEM HierarchyView::findItemEntry( HTREEITEM node, GameWindow *window )
 	return m_treeHash[window];
 #else
 
-#endif
+#endif // ZH
 	// is it in this node
 	TVITEM item;
 	item.hItem = node;
@@ -646,7 +646,7 @@ HTREEITEM HierarchyView::findItemEntry( HTREEITEM node, GameWindow *window )
 												window );
 #ifdef ZH
 #endif
-#endif
+#endif // ZH
 
 }  // end findItemEntry
 
@@ -719,7 +719,7 @@ void HierarchyView::addWindowToTree( GameWindow *window,
 #if USE_FAST_FIND_ITEM
 		m_treeHash[window] = newItem;
 #endif
-#endif
+#endif // ZH
 
 	}  // end if, not in already
 
@@ -831,7 +831,7 @@ void HierarchyView::reset( void )
 #if USE_FAST_FIND_ITEM
  	m_treeHash.clear();
 #endif
-#endif
+#endif // ZH
 
 }  // end reset
 
@@ -976,7 +976,7 @@ void HierarchyView::removeWindow( GameWindow *window )
  	if (find != m_treeHash.end())
  		m_treeHash.erase(find);
  	#endif
-#endif
+#endif // ZH
 
 }  // end removeWindow
 

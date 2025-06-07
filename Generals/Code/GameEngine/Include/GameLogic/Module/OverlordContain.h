@@ -39,7 +39,7 @@
 
 typedef std::vector<AsciiString> TemplateNameList;
 typedef std::vector<AsciiString>::const_iterator TemplateNameIterator;
-#endif
+#endif // ZH
 
 //-------------------------------------------------------------------------------------------------
 class OverlordContainModuleData : public TransportContainModuleData
@@ -52,12 +52,12 @@ public:
 	TemplateNameList m_payloadTemplateNameData;
 	Bool m_experienceSinkForRider;
 
-#endif
+#endif // ZH
 
 	static void buildFieldParse(MultiIniFieldParse& p);
 #ifdef ZH
 	static void parseInitialPayload( INI* ini, void *instance, void *store, const void* /*userData*/ );
-#endif
+#endif // ZH
 };
 
 //-------------------------------------------------------------------------------------------------
@@ -79,31 +79,31 @@ public:
 	virtual Bool isGarrisonable() const;	///< can this unit be Garrisoned? (ick)
 #ifdef ZH
   virtual Bool isBustable() { return false;};	///< can this container get busted by bunkerbuster? (ick)
-#endif
+#endif // ZH
 	virtual Bool isHealContain() const { return false; } ///< true when container only contains units while healing (not a transport!)
 #ifdef ZH
 	virtual Bool isTunnelContain() const { return FALSE; }
-#endif
+#endif // ZH
 	virtual Bool isImmuneToClearBuildingAttacks() const { return true; }
 #ifdef ZH
   virtual Bool isSpecialOverlordStyleContainer() const {return TRUE;}
 	virtual Bool isPassengerAllowedToFire( ObjectID id = INVALID_ID ) const;	///< Hey, can I shoot out of this container?
-#endif
+#endif // ZH
 
 	virtual void onDie( const DamageInfo *damageInfo );  ///< the die callback
 	virtual void onDelete( void );	///< Last possible moment cleanup
 	virtual void onCapture( Player *oldOwner, Player *newOwner ); // Our main guy goes with us, but our redirected contain needs to do his thing too
 #ifdef ZH
 	virtual void onObjectCreated();
-#endif
+#endif // ZH
 
 	// Contain stuff we need to override to redirect on a condition
 #ifdef OG
 	virtual void onContaining( Object *obj );		///< object now contains 'obj'
-#endif
+#endif // OG
 #ifdef ZH
 	virtual void onContaining( Object *obj, Bool wasSelected );		///< object now contains 'obj'
-#endif
+#endif // ZH
 	virtual void onRemoving( Object *obj );			///< object no longer contains 'obj'
 
 	virtual Bool isValidContainerFor(const Object* obj, Bool checkCapacity) const;
@@ -116,7 +116,7 @@ public:
 	virtual Bool isKickOutOnCapture();// The bunker may want to, but we certainly don't
 #ifdef ZH
 	virtual void killAllContained( void );				///< kill all objects inside.  For us, this does not mean our rider
-#endif
+#endif // ZH
 
 	// contain list access
 	virtual void iterateContained( ContainIterateFunc func, void *userData, Bool reverse );
@@ -134,7 +134,7 @@ public:
 	virtual Bool getContainerPipsToShow(Int& numTotal, Int& numFull);
 #ifdef ZH
 	virtual void createPayload();
-#endif
+#endif // ZH
 
 private:
 	/**< An empty overlord is a conatiner, but a full one redirects calls to its passengers.  If this returns NULL, 
@@ -145,7 +145,7 @@ private:
 	void deactivateRedirectedContain();
 #ifdef ZH
   void parseInitialPayload( INI* ini, void *instance, void *store, const void* /*userData*/ );
-#endif
+#endif // ZH
 
 	Bool m_redirectionActivated;
 

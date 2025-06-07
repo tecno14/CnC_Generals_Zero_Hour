@@ -75,10 +75,10 @@ public:
 
 #ifdef OG
 	virtual void doSpecialPowerAtLocation( const Coord3D *loc, UnsignedInt commandOptions );
-#endif
+#endif // OG
 #ifdef ZH
 	virtual void doSpecialPowerAtLocation( const Coord3D *loc, Real angle, UnsignedInt commandOptions );
-#endif
+#endif // ZH
 };
 
 #endif 

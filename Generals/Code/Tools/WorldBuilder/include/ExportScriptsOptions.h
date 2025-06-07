@@ -56,7 +56,7 @@ protected:
 	static Bool m_allScripts;
 #ifdef ZH
 	static Bool m_sides;
-#endif
+#endif // ZH
 
 public:
 	Bool getDoUnits(void) {return m_units;}
@@ -65,7 +65,7 @@ public:
 	Bool getDoAllScripts(void) {return m_allScripts;}
 #ifdef ZH
 	Bool getDoSides(void) {return m_sides;}
-#endif
+#endif // ZH
 	
 protected:
 

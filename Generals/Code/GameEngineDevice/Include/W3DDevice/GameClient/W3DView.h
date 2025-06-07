@@ -43,7 +43,7 @@
 #include "Common/STLTypedefs.h"
 #ifdef ZH
 #include "GameClient/ParabolicEase.h"
-#endif
+#endif // ZH
 #include "GameClient/View.h"
 #include "WW3D2/Camera.h"
 
@@ -64,7 +64,7 @@ typedef struct
 #ifdef OG
 	Real		cameraFXPitch[MAX_WAYPOINTS+2];	// Camera Pitch;
 	Real		cameraZoom[MAX_WAYPOINTS+2];	// Camera Zoom;
-#endif
+#endif // OG
 	Int			timeMultiplier[MAX_WAYPOINTS+2];	// Time speedup factor.
 	Real		groundHeight[MAX_WAYPOINTS+1];	// Ground height.
 	Int			totalTimeMilliseconds;					// Num of ms to do this movement.
@@ -77,7 +77,7 @@ typedef struct
 	Int			rollingAverageFrames;					// Number of frames to roll.
 #ifdef ZH
 	ParabolicEase ease;										// Ease in/out function.
-#endif
+#endif // ZH
 } TMoveAlongWaypointPathInfo;
 
 // ------------------------------------------------------------------------------------------------
@@ -92,7 +92,7 @@ typedef struct
 	Real		endZoom;
 	Real		startPitch;
 	Real		endPitch;
-#endif
+#endif // OG
 	Int			startTimeMultiplier;
 	Int			endTimeMultiplier;
 #ifdef ZH
@@ -100,14 +100,14 @@ typedef struct
 	ParabolicEase ease;
 	Bool		trackObject;					///< Are we tracking an object or just rotating?
 	struct Target {
-#endif
+#endif // ZH
 	ObjectID targetObjectID;			///< Target if we are tracking an object instead of just rotating
 	Coord3D	targetObjectPos;			///< Target's position (so we can stay looking at that spot if he dies)
 #ifdef OG
 	Bool		trackObject;					///< Are we tracking an object or just rotating?
 	Int			numHoldFrames;				///< Number of frames to hold the camera before finishing the movement
 
-#endif
+#endif // OG
 #ifdef ZH
 	};
 	struct Angle {
@@ -118,7 +118,7 @@ typedef struct
 		Target target;
 		Angle angle;
 	};
-#endif
+#endif // ZH
 } TRotateCameraInfo;
 
 // ------------------------------------------------------------------------------------------------
@@ -134,7 +134,7 @@ typedef struct
 	Int			endTimeMultiplier;
 #ifdef ZH
 	ParabolicEase ease;
-#endif
+#endif // ZH
 } TPitchCameraInfo;
 
 // ------------------------------------------------------------------------------------------------
@@ -149,7 +149,7 @@ typedef struct
 	Int			endTimeMultiplier;
 #ifdef ZH
 	ParabolicEase ease;
-#endif
+#endif // ZH
 } TZoomCameraInfo;
 
 // ------------------------------------------------------------------------------------------------
@@ -196,11 +196,11 @@ public:
 #ifdef OG
 	virtual void moveCameraTo(const Coord3D *o, Int miliseconds,  Int shutter, Bool orient);
 	virtual void moveCameraAlongWaypointPath(Waypoint *pWay, Int frames, Int shutter, Bool orient);
-#endif
+#endif // OG
 #ifdef ZH
 	virtual void moveCameraTo(const Coord3D *o, Int miliseconds,  Int shutter, Bool orient, Real easeIn, Real easeOut);
 	virtual void moveCameraAlongWaypointPath(Waypoint *pWay, Int frames, Int shutter, Bool orient, Real easeIn, Real easeOut);
-#endif
+#endif // ZH
 	virtual Bool isCameraMovementFinished(void);
 #ifdef OG
  	virtual void resetCamera(const Coord3D *location, Int frames);	///< Move camera to location, and reset to default angle & zoom.
@@ -208,31 +208,31 @@ public:
 	virtual void rotateCameraTowardObject(ObjectID id, Int milliseconds, Int holdMilliseconds);	///< Rotate camera to face an object, and hold on it
 	virtual void rotateCameraTowardPosition(const Coord3D *pLoc, Int milliseconds);	///< Rotate camera to face a location.
 
-#endif
+#endif // OG
 #ifdef ZH
 	virtual Bool isCameraMovementAtWaypointAlongPath(void);
  	virtual void resetCamera(const Coord3D *location, Int frames, Real easeIn, Real easeOut);	///< Move camera to location, and reset to default angle & zoom.
  	virtual void rotateCamera(Real rotations, Int frames, Real easeIn, Real easeOut);					///< Rotate camera about current viewpoint.
 	virtual void rotateCameraTowardObject(ObjectID id, Int milliseconds, Int holdMilliseconds, Real easeIn, Real easeOut);	///< Rotate camera to face an object, and hold on it
 	virtual void rotateCameraTowardPosition(const Coord3D *pLoc, Int milliseconds, Real easeIn, Real easeOut, Bool reverseRotation);	///< Rotate camera to face a location.
-#endif
+#endif // ZH
 	virtual void cameraModFreezeTime(void){ m_freezeTimeForCameraMovement = true;}					///< Freezes time during the next camera movement.
 	virtual void cameraModFreezeAngle(void);												///< Freezes time during the next camera movement.
 	virtual Bool isTimeFrozen(void){ return m_freezeTimeForCameraMovement;}					///< Freezes time during the next camera movement.
 #ifdef OG
 	virtual void cameraModFinalZoom(Real finalZoom);								///< Final zoom for current camera movement.
-#endif
+#endif // OG
 #ifdef ZH
 	virtual void cameraModFinalZoom(Real finalZoom, Real easeIn, Real easeOut);	///< Final zoom for current camera movement.
-#endif
+#endif // ZH
 	virtual void cameraModRollingAverage(Int framesToAverage);			///< Number of frames to average movement for current camera movement.
 	virtual void cameraModFinalTimeMultiplier(Int finalMultiplier); ///< Final time multiplier for current camera movement.
 #ifdef OG
 	virtual void cameraModFinalPitch(Real finalPitch);							///< Final pitch for current camera movement.
-#endif
+#endif // OG
 #ifdef ZH
 	virtual void cameraModFinalPitch(Real finalPitch, Real easeIn, Real easeOut);	///< Final pitch for current camera movement.
-#endif
+#endif // ZH
 	virtual void cameraModLookToward(Coord3D *pLoc);								///< Sets a look at point during camera movement.
 	virtual void cameraModFinalLookToward(Coord3D *pLoc);						///< Sets a look at point during camera movement.
 	virtual void cameraModFinalMoveTo(Coord3D *pLoc);			///< Sets a final move to.
@@ -244,18 +244,18 @@ public:
 	virtual void cameraDisableRealZoomMode(void);
 
 	virtual	void Add_Camera_Shake(const Coord3D & position,float radius, float duration, float power); //WST 10.18.2002
-#endif
+#endif // ZH
 	virtual Int	 getTimeMultiplier(void) {return m_timeMultiplier;};///< Get the time multiplier.
 	virtual void setTimeMultiplier(Int multiple) {m_timeMultiplier = multiple;}; ///< Set the time multiplier.
 	virtual void setDefaultView(Real pitch, Real angle, Real maxHeight);
 #ifdef OG
 	virtual void zoomCamera( Real finalZoom, Int milliseconds );
 	virtual void pitchCamera( Real finalPitch, Int milliseconds );
-#endif
+#endif // OG
 #ifdef ZH
 	virtual void zoomCamera( Real finalZoom, Int milliseconds, Real easeIn, Real easeOut );
 	virtual void pitchCamera( Real finalPitch, Int milliseconds, Real easeIn, Real easeOut );
-#endif
+#endif // ZH
 
 	virtual void setHeightAboveGround(Real z);
 	virtual void setZoom(Real z);
@@ -265,10 +265,10 @@ public:
 
 #ifdef OG
 	virtual Bool worldToScreen( const Coord3D *w, ICoord2D *s );	///< Transform world coordinate "w" into screen coordinate "s"
-#endif
+#endif // OG
 #ifdef ZH
   virtual WorldToScreenReturn worldToScreenTriReturn( const Coord3D *w, ICoord2D *s );	///< Transform world coordinate "w" into screen coordinate "s"
-#endif
+#endif // ZH
 	virtual void screenToWorld( const ICoord2D *s, Coord3D *w );	///< Transform screen coordinate "s" into world coordinate "w"
 	virtual void screenToTerrain( const ICoord2D *screen, Coord3D *world );  ///< transform screen coord to a point on the 3D terrain
 	virtual void screenToWorldAtZ( const ICoord2D *s, Coord3D *w, Real z );  ///< transform screen point to world point at the specified world Z value
@@ -315,7 +315,7 @@ private:
 	Real m_shakeIntensity;													///< the intensity of the oscillation
 #ifdef ZH
 	Vector3 m_shakerAngles;													//WST 11/12/2002 new multiple instance camera shaker system
-#endif
+#endif // ZH
 
 	TRotateCameraInfo	m_rcInfo;
 	Bool		m_doingRotateCamera;										///< True if we are doing a camera rotate.
@@ -333,7 +333,7 @@ private:
 	Bool		m_doingMoveCameraOnWaypointPath;				///< If true, moving camera along waypoint path.
 #ifdef ZH
 	Bool	m_CameraArrivedAtWaypointOnPathFlag;
-#endif
+#endif // ZH
 
 	Bool		m_freezeTimeForCameraMovement;
 	Int			m_timeMultiplier;												///< Time speedup multiplier.
@@ -369,7 +369,7 @@ private:
 	Bool				m_useRealZoomCam;
 	AsciiString		m_cameraSlaveObjectName;
 	AsciiString		m_cameraSlaveObjectBoneName;
-#endif
+#endif // ZH
 };  // end class W3DView
 
 // EXTERNALS //////////////////////////////////////////////////////////////////////////////////////

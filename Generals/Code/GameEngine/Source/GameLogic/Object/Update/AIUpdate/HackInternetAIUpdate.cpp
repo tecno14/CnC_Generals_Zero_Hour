@@ -197,7 +197,7 @@ UnsignedInt HackInternetAIUpdate::getCashUpdateDelay() const
 }
 
 // ------------------------------------------------------------------------------------------------
-#endif
+#endif // ZH
 /** CRC */
 // ------------------------------------------------------------------------------------------------
 void HackInternetAIUpdate::crc( Xfer *xfer )
@@ -484,7 +484,7 @@ StateReturnType HackInternetState::update()
 		return STATE_CONTINUE;
 	}
 
-#endif
+#endif // ZH
 	if( m_framesRemaining > 0 )
 	{
 		//Decrement frame counter.
@@ -564,7 +564,7 @@ StateReturnType HackInternetState::update()
 				if( displayMoney )
 				{
 					// OY LOOK!  I AM USING LOCAL PLAYER.  Do not put anything other than TheInGameUI->addFloatingText in the block this controls!!!
-#endif
+#endif // ZH
 				//Display cash income floating over the hacker.
 				UnicodeString moneyString;
 				moneyString.format( TheGameText->fetch( "GUI:AddCash" ), amount );
@@ -584,11 +584,11 @@ StateReturnType HackInternetState::update()
             pos.y += GameClientRandomValue(-depth,depth);
           }
 
-#endif
+#endif // ZH
 				TheInGameUI->addFloatingText( moneyString, &pos, GameMakeColor( 0, 255, 0, 255 ) );
 #ifdef ZH
 				}
-#endif
+#endif // ZH
 
 				AudioEventRTS sound = *(owner->getTemplate()->getPerUnitSound( "UnitCashPing" ));
 				sound.setObjectID( owner->getID() );

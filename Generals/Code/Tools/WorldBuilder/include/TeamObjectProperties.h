@@ -113,4 +113,4 @@ protected:
 // Microsoft Visual C++ will insert additional declarations immediately before the previous line.
 #endif //TEAM_OBJECT_PROPERTIES_H
 
-#endif
+#endif // ZH

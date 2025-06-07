@@ -55,7 +55,7 @@
 #include "w3d_file.h"
 #ifdef ZH
 #include "Texture.h"
-#endif
+#endif // ZH
 #include "dx8vertexbuffer.h"
 #include "dx8indexbuffer.h"
 #include "shader.h"
@@ -65,7 +65,7 @@
 #include "Common/AsciiString.h"
 #ifdef ZH
 #include "common/GlobalData.h"
-#endif
+#endif // ZH
 
 //-----------------------------------------------------------------------------
 //           Forward References
@@ -78,7 +78,7 @@ class W3DTreeDrawModuleData;
 struct BreezeInfo;
 class GeometryInfo;
 class W3DProjectedShadow;
-#endif
+#endif // ZH
 
 //-----------------------------------------------------------------------------
 //           Type Defines
@@ -92,7 +92,7 @@ typedef enum {
 	FENCE = 3
 } TTreeType;
 
-#endif
+#endif // OG
 #ifdef ZH
 enum W3DToppleState
 {
@@ -102,7 +102,7 @@ enum W3DToppleState
 	TOPPPLE_SHROUDED,
 	TOPPLE_DOWN
 };
-#endif
+#endif // ZH
 /// The individual data for a tree.
 typedef struct {
 	Vector3 location;					///< Drawing location
@@ -112,16 +112,16 @@ typedef struct {
 #ifdef OG
 	Int			panelStart;				///< Index of the "panel" lod.
 	TTreeType			treeType;		///< Type of tree.  Currently only 3 supported.
-#endif
+#endif // OG
 #ifdef ZH
 	Int			treeType;					///< Type of tree.  
 
-#endif
+#endif // ZH
 	Bool		visible;					///< Visible flag, updated each frame.
 #ifdef OG
 	Bool		mirrorVisible;		///< Possibly visible in mirror.
 	Bool		rotates;					///< Trees rotate to follow the camera in single panel mode, fences don't
-#endif
+#endif // OG
 	SphereClass bounds;				///< Bounding sphere for culling to set the visible flag.
 	Real		sortKey;					///< Sort key, essentially the distance along the look at vector.
 #ifdef ZH
@@ -152,7 +152,7 @@ typedef struct {
 	Matrix3D			m_mtx;
 	UnsignedInt		m_sinkFramesLeft;					///< Toppled trees sink into the terrain & disappear, how many frames left.
 
-#endif
+#endif // ZH
 } TTree;
 
 #ifdef ZH
@@ -172,7 +172,7 @@ typedef struct {
 
 } TTreeType;
 
-#endif
+#endif // ZH
 //
 // W3DTreeBuffer: Draw buffer for the trees.
 //
@@ -180,7 +180,7 @@ typedef struct {
 #ifdef OG
 class W3DTreeBuffer 
 
-#endif
+#endif // OG
 #ifdef ZH
 class W3DTreeBuffer : public Snapshot 
 {	
@@ -190,12 +190,12 @@ class W3DTreeBuffer : public Snapshot
 //                             W3DTreeTextureClass
 //-----------------------------------------------------------------------------
 class W3DTreeTextureClass : public TextureClass
-#endif
+#endif // ZH
 {	
 #ifdef OG
 friend class HeightMapRenderObjClass;
 
-#endif
+#endif // OG
 #ifdef ZH
 	W3DMPO_GLUE(W3DTreeTextureClass)
 protected:
@@ -211,7 +211,7 @@ public:
 	void setLOD(Int LOD) const;
 };
 
-#endif
+#endif // ZH
 public:
 
 	W3DTreeBuffer(void);
@@ -220,7 +220,7 @@ public:
 #ifdef OG
 	void addTree(Coord3D location, Real scale, Real angle, AsciiString name, Bool visibleInMirror);
 
-#endif
+#endif // OG
 #ifdef ZH
 	void addTree(DrawableID id, Coord3D location, Real scale, Real angle,
 								Real randomScaleAmount, const W3DTreeDrawModuleData *data);
@@ -242,13 +242,13 @@ public:
 	);
 
 	void setTextureLOD(Int lod);	///<used to adjust maximum mip level sent to hardware.
-#endif
+#endif // ZH
 	/// Empties the tree buffer.
 	void clearAllTrees(void);
 #ifdef ZH
 	/// Empties the tree buffer.
 	void setBounds(const Region2D &bounds) {m_bounds = bounds;}
-#endif
+#endif // ZH
 	/// Draws the trees.  Uses camera for culling.
 	void drawTrees(CameraClass * camera, RefRenderObjListIterator *pDynamicLightsIterator);
 	/// Called when the view changes, and sort key needs to be recalculated.
@@ -263,7 +263,7 @@ protected:
 					MAX_TREES=2000};
 	enum {MAX_TYPES = 4,
 
-#endif
+#endif // OG
 #ifdef ZH
 
 	Int getNumTiles(void) {return m_numTiles;}
@@ -280,13 +280,13 @@ private:
 				NUM_SWAY_ENTRIES = 100,
 				MAX_SWAY_TYPES = 10,
 				MAX_BUFFERS = 1,
-#endif
+#endif // ZH
 				SORT_ITERATIONS_PER_FRAME=10};
 #ifdef OG
 	DX8VertexBufferClass	*m_vertexTree;	///<Tree vertex buffer.
 	DX8IndexBufferClass			*m_indexTree;	///<indices defining a triangles for the tree drawing.
 
-#endif
+#endif // OG
 #ifdef ZH
 	enum {PARTITION_WIDTH_HEIGHT = 100};
 	DX8VertexBufferClass	*m_vertexTree[MAX_BUFFERS];	///<Tree vertex buffer.
@@ -297,26 +297,26 @@ private:
 	Short		m_areaPartition[PARTITION_WIDTH_HEIGHT*PARTITION_WIDTH_HEIGHT];
 	Region2D m_bounds;
 	
-#endif
+#endif // ZH
 	TextureClass *m_treeTexture;	///<Trees texture
 #ifdef OG
 	Int			m_curNumTreeVertices; ///<Number of vertices used in m_vertexTree.
 	Int			m_curNumTreeIndices;	///<Number of indices used in b_indexTree;
 	Int			m_curTreeIndexOffset;	///<First index to draw at.  We draw the trees backwards by filling up the index buffer backwards, 
 																// so any trees that don't fit are far away from the camera.
-#endif
+#endif // OG
 #ifdef ZH
 	Int			m_textureWidth;				///<Width in pixels m_treeTexture;
 	Int			m_textureHeight;				///<Width in pixels m_treeTexture;
 	Int			m_curNumTreeVertices[MAX_BUFFERS]; ///<Number of vertices used in m_vertexTree.
 	Int			m_curNumTreeIndices[MAX_BUFFERS];	///<Number of indices used in b_indexTree;
-#endif
+#endif // ZH
 	TTree	m_trees[MAX_TREES];			///< The tree buffer.  All trees are stored here.
 	Int			m_numTrees;						///< Number of trees in m_trees.
 	Bool		m_anythingChanged;	///< Set to true if visibility or sorting changed.
 #ifdef ZH
 	Bool		m_anyPushChanged;		///< Set to true if push aside is active.
-#endif
+#endif // ZH
 	Bool		m_updateAllKeys;  ///< Set to true when the view changes.
 	Bool		m_initialized;		///< True if the subsystem initialized.
 	Bool		m_isTerrainPass;  ///< True if the terrain was drawn in this W3D scene render pass.
@@ -324,16 +324,16 @@ private:
 	Bool		m_needToUpdateTexture; ///< True if we need to update the texture.
 	TTreeType m_treeTypes[MAX_TYPES];	///< Info about a kind of tree.
 	Int			m_numTreeTypes;						///< Number of entries in m_treeTypes.
-#endif
+#endif // ZH
 
 #ifdef OG
 	SphereClass m_typeBounds[MAX_TYPES];	///< Bounding boxes for the base tree models.
 	MeshClass *m_typeMesh[MAX_TYPES];			///< W3D mesh models for the trees.
-#endif
+#endif // OG
 #ifdef ZH
 	Int			m_numTiles;
 	TileData			*m_sourceTiles[MAX_TILES];	///< Tiles for m_textureClasses
-#endif
+#endif // ZH
 	Vector3 m_cameraLookAtVector;
 #ifdef ZH
 	Vector3 m_swayOffsets[NUM_SWAY_ENTRIES];
@@ -354,7 +354,7 @@ protected:
 protected:
 	/// Updates the sway offsets.
 	void updateSway(const BreezeInfo& info);
-#endif
+#endif // ZH
 	void loadTreesInVertexAndIndexBuffers(RefRenderObjListIterator *pDynamicLightsIterator); ///< Fills the index and vertex buffers for drawing.
 #ifdef OG
 	void allocateTreeBuffers(void);							 ///< Allocates the buffers.
@@ -363,7 +363,7 @@ protected:
 	Int  doLighting(Vector3 *loc, Real r, Real g, Real b, SphereClass &bounds, RefRenderObjListIterator *pDynamicLightsIterator);
 	void freeTreeBuffers(void);									 ///< Frees the index and vertex buffers.
 
-#endif
+#endif // OG
 #ifdef ZH
 	void updateVertexBuffer(void); ///< Fills the index and vertex buffers for drawing.
 	void cull(const CameraClass * camera);						 ///< Culls the trees.
@@ -371,7 +371,7 @@ protected:
 		const GlobalData::TerrainLighting	*objectLighting, 
 		const Vector3 *emissive, UnsignedInt vertexDiffuse, Real scale) const;
 #if 0 // sort is no longer used and messes up the order. jba [6/6/2003]
-#endif
+#endif // ZH
 	void sort( Int iterations );								 ///< Performs partial bubble sort.
 #ifdef ZH
 #endif 
@@ -383,7 +383,7 @@ protected:
 	void applyTopplingForce( TTree *tree, const Coord3D* toppleDirection, Real toppleSpeed,
 																			 UnsignedInt options );
 
-#endif
+#endif // ZH
 };
 
 #endif  // end __W3DTREE_BUFFER_H_

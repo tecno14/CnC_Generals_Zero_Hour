@@ -89,7 +89,7 @@ const char* SpecialPowerMaskType::s_bitNameList[] =
 	"SPECIAL_TIMED_CHARGES", 
 #ifdef ZH
 	"SPECIAL_HELIX_NAPALM_BOMB", 
-#endif
+#endif // ZH
 	"SPECIAL_HACKER_DISABLE_BUILDING", 
 	"SPECIAL_TANKHUNTER_TNT_ATTACK", 
 	"SPECIAL_BLACKLOTUS_CAPTURE_BUILDING",
@@ -101,7 +101,7 @@ const char* SpecialPowerMaskType::s_bitNameList[] =
 	"SPECIAL_DISGUISE_AS_VEHICLE",
 #ifdef ZH
 	"SPECIAL_BOOBY_TRAP",
-#endif
+#endif // ZH
 	"SPECIAL_REPAIR_VEHICLES",
 	"SPECIAL_PARTICLE_UPLINK_CANNON",
 	"SPECIAL_CASH_BOUNTY",
@@ -135,12 +135,12 @@ const char* SpecialPowerMaskType::s_bitNameList[] =
 	"SUPR_SPECIAL_CRUISE_MISSILE",
 	"LAZR_SPECIAL_PARTICLE_UPLINK_CANNON",
 	"SUPW_SPECIAL_NEUTRON_MISSILE",
-#endif
+#endif // ZH
 	
 #ifdef ZH
 	"SPECIAL_BATTLESHIP_BOMBARDMENT",
 
-#endif
+#endif // ZH
 	NULL
 };
 
@@ -216,7 +216,7 @@ void SpecialPowerStore::parseSpecialPowerDefinition( INI *ini )
 #ifdef ZH
 	{ "ShortcutPower",						INI::parseBool,										NULL, offsetof( SpecialPowerTemplate, m_shortcutPower ) },
 	{ "AcademyClassify",					INI::parseIndexList,			TheAcademyClassificationTypeNames, offsetof( SpecialPowerTemplate, m_academyClassificationType ) },
-#endif
+#endif // ZH
 	{ NULL,	NULL, NULL,	0 }  // keep this last
 
 };
@@ -237,7 +237,7 @@ SpecialPowerTemplate::SpecialPowerTemplate()
 	m_radiusCursorRadius = 0;
 #ifdef ZH
 	m_shortcutPower = FALSE;
-#endif
+#endif // ZH
 
 }  // end SpecialPowerTemplate
 

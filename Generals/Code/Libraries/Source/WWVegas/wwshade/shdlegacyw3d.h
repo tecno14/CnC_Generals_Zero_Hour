@@ -160,4 +160,4 @@ protected:
 
 #endif //SHDLEGACYW3D_H
 
-#endif
+#endif // ZH

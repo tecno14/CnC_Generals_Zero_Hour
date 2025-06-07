@@ -38,7 +38,7 @@
 #include "Win32Device/Common/Win32BIGFileSystem.h"
 #ifdef ZH
 #include "Common/registry.h"
-#endif
+#endif // ZH
 
 #ifdef _INTERNAL
 // for occasional debugging...
@@ -74,7 +74,7 @@ void Win32BIGFileSystem::init() {
 #endif
     if (installPath!="")
       loadBigFilesFromDirectory(installPath, "*.big");
-#endif
+#endif // ZH
 }
 
 void Win32BIGFileSystem::reset() {

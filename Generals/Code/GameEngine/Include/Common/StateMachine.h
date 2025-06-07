@@ -47,10 +47,10 @@ class Object;
 
 #ifdef OG
 #undef STATE_MACHINE_DEBUG
-#endif
+#endif // OG
 #ifdef ZH
 //#undef STATE_MACHINE_DEBUG
-#endif
+#endif // ZH
 #if defined(_DEBUG)
 	#define STATE_MACHINE_DEBUG
 #endif
@@ -162,7 +162,7 @@ public:
 	virtual Bool isAttack() const { return false; }
 #ifdef ZH
 	virtual Bool isGuardIdle() const { return FALSE; }
-#endif
+#endif // ZH
 	//Definition of busy -- when explicitly in the busy state. Moving or attacking is not considered busy!
 	virtual Bool isBusy() const { return false; }
 
@@ -179,7 +179,7 @@ public:
 	virtual AsciiString getName() const {return m_name;}
 #ifdef ZH
 	std::vector<StateID> *getTransitions(void);
-#endif
+#endif // ZH
 #endif
 
 	// for internal use by the StateMachine class ---------------------------------------------------------
@@ -278,7 +278,7 @@ public:
 	Bool isInForceAttackState() const { return m_currentState ? m_currentState->isIdle() : true; }	// stateless things are considered 'idle'
 #ifdef ZH
 	Bool isInGuardIdleState() const { return m_currentState ? m_currentState->isGuardIdle() : FALSE; } // stateless things aren't guard idle.
-#endif
+#endif // ZH
 
 	//Definition of busy -- when explicitly in the busy state. Moving or attacking is not considered busy!
 	Bool isInBusyState() const { return m_currentState ? m_currentState->isBusy() : false; }	// stateless things are not considered 'busy'

@@ -170,7 +170,7 @@ class INI
 #ifdef ZH
   INI(const INI&);
   INI& operator=(const INI&);
-#endif
+#endif // ZH
 
 public:
 
@@ -206,7 +206,7 @@ public:
 	static void parseWaterTransparencyDefinition( INI *ini );
 #ifdef ZH
 	static void parseWeatherDefinition( INI *ini );
-#endif
+#endif // ZH
 	static void parseMappedImageDefinition( INI *ini );
 	static void parseArmorDefinition( INI *ini );
 	static void parseDamageFXDefinition( INI *ini );
@@ -221,7 +221,7 @@ public:
 	static void parseMultiplayerColorDefinition( INI* ini );
 #ifdef ZH
   static void parseMultiplayerStartingMoneyChoiceDefinition( INI* ini );
-#endif
+#endif // ZH
 	static void parseOnlineChatColorDefinition( INI* ini );
 	static void parseMapCacheDefinition( INI* ini );
 	static void parseVideoDefinition( INI* ini );
@@ -250,7 +250,7 @@ public:
 	static void parseWindowTransitions( INI* ini );
 #ifdef ZH
 	static void parseChallengeModeDefinition( INI* ini );
-#endif
+#endif // ZH
 
 	inline AsciiString getFilename( void ) const { return m_filename; }
 	inline INILoadType getLoadType( void ) const { return m_loadType; }
@@ -401,7 +401,7 @@ protected:
 
 #ifdef OG
 //	FILE *m_file;															///< file pointer of file currently loading
-#endif
+#endif // OG
 	File *m_file;															///< file pointer of file currently loading
 #ifdef ZH
 
@@ -413,16 +413,16 @@ protected:
   unsigned m_readBufferNext;                ///< next char in read buffer
   unsigned m_readBufferUsed;                ///< number of bytes in read buffer
 
-#endif
+#endif // ZH
 	AsciiString m_filename;										///< filename of file currently loading
 	INILoadType m_loadType;										///< load time for current file
 	UnsignedInt m_lineNum;										///< current line number that's been read
 #ifdef OG
 	char m_buffer[ INI_MAX_CHARS_PER_LINE ];	///< buffer to read file contents into
-#endif
+#endif // OG
 #ifdef ZH
 	char m_buffer[ INI_MAX_CHARS_PER_LINE+1 ];///< buffer to read file contents into
-#endif
+#endif // ZH
 	const char *m_seps;												///< for strtok parsing
 	const char *m_sepsPercent;								///< m_seps with percent delimiter as well
 	const char *m_sepsColon;									///< m_seps with colon delimiter as well

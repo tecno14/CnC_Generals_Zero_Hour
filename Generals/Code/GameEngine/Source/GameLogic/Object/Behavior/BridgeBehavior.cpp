@@ -600,10 +600,10 @@ void BridgeBehavior::doAreaEffects( TerrainRoadType *bridgeTemplate,
 			getRandomSurfacePosition( bridgeTemplate, bridgeInfo, &pos );
 #ifdef OG
 			ObjectCreationList::create( ocl, getObject(), &pos, NULL );
-#endif
+#endif // OG
 #ifdef ZH
 			ObjectCreationList::create( ocl, getObject(), &pos, NULL, INVALID_ANGLE );
-#endif
+#endif // ZH
 
 		}  // end if
 
@@ -819,10 +819,10 @@ UpdateSleepTime BridgeBehavior::update( void )
 						// launch the fx list
 #ifdef OG
 						ObjectCreationList::create( (*oclIt).ocl, us, &pos, NULL );
-#endif
+#endif // OG
 #ifdef ZH
 						ObjectCreationList::create( (*oclIt).ocl, us, &pos, NULL, INVALID_ANGLE );
-#endif
+#endif // ZH
 					
 					}  // end else
 
@@ -839,10 +839,10 @@ UpdateSleepTime BridgeBehavior::update( void )
 					// launch the fx list
 #ifdef OG
 					ObjectCreationList::create( (*oclIt).ocl, us, &pos, NULL );
-#endif
+#endif // OG
 #ifdef ZH
 					ObjectCreationList::create( (*oclIt).ocl, us, &pos, NULL, INVALID_ANGLE );
-#endif
+#endif // ZH
 
 				}  // end else
 

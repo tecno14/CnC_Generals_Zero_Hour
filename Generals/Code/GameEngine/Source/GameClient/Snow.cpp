@@ -155,4 +155,4 @@ void INI::parseWeatherDefinition( INI *ini )
 	}
 }
 
-#endif
+#endif // ZH

@@ -24,31 +24,31 @@
  *                                                                                             * 
 #ifdef OG
  *                     $Archive:: /VSS_Sync/wwlib/rawfile.cpp                                 $* 
-#endif
+#endif // OG
 #ifdef ZH
  *                     $Archive:: /Commando/Code/wwlib/rawfile.cpp                            $* 
-#endif
+#endif // ZH
  *                                                                                             * 
 #ifdef OG
  *                      $Author:: Vss_sync                                                    $*
-#endif
+#endif // OG
 #ifdef ZH
  *                      $Author:: Jani_p                                                      $*
-#endif
+#endif // ZH
  *                                                                                             * 
 #ifdef OG
  *                     $Modtime:: 8/29/01 10:24p                                              $*
-#endif
+#endif // OG
 #ifdef ZH
  *                     $Modtime:: 11/25/01 1:26p                                              $*
-#endif
+#endif // ZH
  *                                                                                             * 
 #ifdef OG
  *                    $Revision:: 12                                                          $*
-#endif
+#endif // OG
 #ifdef ZH
  *                    $Revision:: 13                                                          $*
-#endif
+#endif // ZH
  *                                                                                             *
  *---------------------------------------------------------------------------------------------* 
  * Functions:                                                                                  * 
@@ -172,19 +172,19 @@ RawFileClass::RawFileClass(void) :
 	Handle(NULL_HANDLE),
 #ifdef OG
 	Filename(0),
-#endif
+#endif // OG
 #ifdef ZH
 	Filename(""),
-#endif
+#endif // ZH
 	Date(0),
 #ifdef OG
 	Time(0),
 	Allocated(false)
-#endif
+#endif // OG
 #ifdef ZH
 	Time(0)
 
-#endif
+#endif // ZH
 {
 }
 
@@ -285,11 +285,11 @@ RawFileClass::RawFileClass(char const * filename) :
 #ifdef OG
 	Time(0),
 	Allocated(false)
-#endif
+#endif // OG
 #ifdef ZH
 	Time(0)
 
-#endif
+#endif // ZH
 {
 }
 
@@ -335,11 +335,11 @@ void RawFileClass::Reset(void)
 		Filename = NULL;
 		Allocated = false;
 	}
-#endif
+#endif // OG
 #ifdef ZH
 	Filename = "";
 
-#endif
+#endif // ZH
 }
 
 /***********************************************************************************************
@@ -349,12 +349,12 @@ void RawFileClass::Reset(void)
  *    This routine will set the name for the file object to the name specified. This name is   *
  *    duplicated in free store. This allows the supplied name to be a temporarily constructed  *
  *    text string. Setting the name in this fashion doesn't affect the closed or opened state  *
-#endif
+#endif // OG
 #ifdef ZH
  *    This routine will set the name for the file object to the name specified. Setting the	  *
  *		name in this fashion doesn't affect the closed or opened state									  *
 
-#endif
+#endif // ZH
  *    of the file.                                                                             *
  *                                                                                             *
  * INPUT:   filename -- The filename to assign to this file object.                            *
@@ -363,23 +363,23 @@ void RawFileClass::Reset(void)
  * OUTPUT:  Returns with a pointer to the allocated copy of this filename. This pointer is     *
  *          guaranteed to remain valid for the duration of this file object or until the name  *
  *          is changed -- whichever is sooner.                                                 *
-#endif
+#endif // OG
 #ifdef ZH
  * OUTPUT:  pointer to filename.																					  *
 
-#endif
+#endif // ZH
  *                                                                                             *
 #ifdef OG
  * WARNINGS:   Because of the allocation this routine must perform, memory could become        *
  *             fragmented.                                                                     *
-#endif
+#endif // OG
  *                                                                                             *
  * HISTORY:                                                                                    *
  *   10/17/1994 JLB : Created.                                                                 *
 #ifdef ZH
  *	  11/25/2001 Jani : Changed the name storage from strdup to StringClass to benefit from our *
  *							  Fast memory allocation system.
-#endif
+#endif // ZH
  *=============================================================================================*/
 char const * RawFileClass::Set_Name(char const * filename)
 {
@@ -392,7 +392,7 @@ char const * RawFileClass::Set_Name(char const * filename)
 
 	if (filename == NULL) return(NULL);
 
-#endif
+#endif // OG
 	Bias(0);
 
 #ifdef OG
@@ -400,11 +400,11 @@ char const * RawFileClass::Set_Name(char const * filename)
 	if (nameptr == NULL) {
 		Error(ENOMEM, false, filename);
 	}
-#endif
+#endif // OG
 #ifdef ZH
 	Filename=filename;
 
-#endif
+#endif // ZH
 
 	/*
 	** If this is a UNIX build, fix the filename from the DOS-like name passed in
@@ -412,28 +412,28 @@ char const * RawFileClass::Set_Name(char const * filename)
 	#ifdef _UNIX
 #ifdef OG
 		for (int i=0; i<strlen(nameptr); i++)
-#endif
+#endif // OG
 #ifdef ZH
 		for (int i=0; i<Filename.Get_Length(); i++)
-#endif
+#endif // ZH
 		{
 #ifdef OG
 			if (nameptr[i]=='\\')
 				nameptr[i]='/';
 			nameptr[i]=tolower(nameptr[i]);  // don't preserve case
-#endif
+#endif // OG
 #ifdef ZH
 			if (Filename[i]=='\\')
 				Filename[i]='/';
 			Filename[i]=tolower(Filename[i]);  // don't preserve case
-#endif
+#endif // ZH
 		}
 	#endif
 #ifdef OG
 
 	Filename = nameptr;
 	Allocated = true;
-#endif
+#endif // OG
 
 	return(Filename);
 }
@@ -495,10 +495,10 @@ int RawFileClass::Open(int rights)
 	*/
 #ifdef OG
 	if (Filename == NULL) {
-#endif
+#endif // OG
 #ifdef ZH
 	if (Filename.Get_Length()==0) {
-#endif
+#endif // ZH
 		Error(ENOENT, false);
 	}
 
@@ -602,10 +602,10 @@ bool RawFileClass::Is_Available(int forced)
 {
 #ifdef OG
 	if (Filename == NULL) return(false);
-#endif
+#endif // OG
 #ifdef ZH
 	if (Filename.Get_Length()==0) return(false);
-#endif
+#endif // ZH
 
 	/*
 	**	If the file is already open, then is must have already passed the availability check.
@@ -1165,16 +1165,16 @@ unsigned long RawFileClass::Get_Date_Time(void)
 		// If file not open open it, if open succeeded proceed normally and then close to put
 		// everything back the way we found it.
 		if (Open()) {
-#endif
+#endif // ZH
 #ifdef _UNIX
 	struct stat statbuf;
 	lstat(Filename, &statbuf);
 #ifdef OG
 	return(statbuf.st_mtime);
-#endif
+#endif // OG
 #ifdef ZH
 			retval = statbuf.st_mtime;
-#endif
+#endif // ZH
 #else
 	BY_HANDLE_FILE_INFORMATION info;
 
@@ -1184,28 +1184,28 @@ unsigned long RawFileClass::Get_Date_Time(void)
 		FileTimeToDosDateTime(&info.ftLastWriteTime, &dosdate, &dostime);
 #ifdef OG
 		return((dosdate << 16) | dostime);
-#endif
+#endif // OG
 #ifdef ZH
 				retval = (dosdate << 16) | dostime;
-#endif
+#endif // ZH
 	}
 #ifdef OG
 	return(0);
-#endif
+#endif // OG
 #endif
 #ifdef ZH
 			Close();
 
-#endif
+#endif // ZH
 }
 #ifdef ZH
 	}
-#endif
+#endif // ZH
 
 #ifdef ZH
 	return retval;
 }
-#endif
+#endif // ZH
 
 /***********************************************************************************************
  * RawFileClass::Set_Date_Time -- Sets the date and time the file was last modified.           *
@@ -1372,7 +1372,7 @@ void RawFileClass::Attach (void *handle, int rights)
 	Time = 0;
 #ifdef OG
 	Allocated = false;
-#endif
+#endif // OG
 
 	#ifdef _UNIX
 	  Handle = (FILE *)handle;
@@ -1402,7 +1402,7 @@ void RawFileClass::Detach (void)
 	Time = 0;
 #ifdef OG
 	Allocated = false;
-#endif
+#endif // OG
 	Handle = NULL_HANDLE;	
 }
 

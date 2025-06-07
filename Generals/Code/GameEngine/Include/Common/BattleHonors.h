@@ -97,7 +97,7 @@ enum
 	BATTLE_HONOR_SOLO_GLA_G			= 0x1000000,
 	BATTLE_HONOR_CHALLENGE			= 0x2000000, // not set in battle honors field in persistent storage
 	BATTLE_HONOR_NOT_GAINED			= 0x8000000  // This is set in tooltip item data to indicate that the honor isn't actually gained.
-#endif
+#endif // OG
 #ifdef ZH
   BATTLE_HONOR_LADDER_CHAMP				= 0x00000001,
 	BATTLE_HONOR_STREAK							= 0x00000002,
@@ -128,7 +128,7 @@ enum
 //BATTLE_HONOR_FREE								= 0x04000000,
 	BATTLE_HONOR_NOT_GAINED					= 0x08000000  // This is set in tooltip item data to indicate that the honor isn't actually gained.
 
-#endif
+#endif // ZH
 };
 
 enum
@@ -148,11 +148,11 @@ enum
 #ifdef OG
 	MAX_BATTLE_HONOR_IMAGE_WIDTH = 50,
 	MAX_BATTLE_HONOR_IMAGE_HEIGHT = 51,
-#endif
+#endif // OG
 #ifdef ZH
 	MAX_BATTLE_HONOR_IMAGE_WIDTH = 40,
 	MAX_BATTLE_HONOR_IMAGE_HEIGHT = 41,
-#endif
+#endif // ZH
 };
 
 //-----------------------------------------------------------------------------

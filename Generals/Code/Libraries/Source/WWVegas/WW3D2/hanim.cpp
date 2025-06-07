@@ -18,10 +18,10 @@
 
 #ifdef OG
 /* $Header: /Commando/Code/ww3d2/hanim.cpp 2     1/23/01 2:12p Greg_h $ */
-#endif
+#endif // OG
 #ifdef ZH
 /* $Header: /Commando/Code/ww3d2/hanim.cpp 3     12/13/01 7:01p Patrick $ */
-#endif
+#endif // ZH
 /*********************************************************************************************** 
  ***                            Confidential - Westwood Studios                              *** 
  *********************************************************************************************** 
@@ -34,17 +34,17 @@
  *                                                                                             * 
 #ifdef OG
  *                     $Modtime:: 1/22/01 6:23p                                               $* 
-#endif
+#endif // OG
 #ifdef ZH
  *                     $Modtime:: 12/13/01 6:54p                                              $* 
-#endif
+#endif // ZH
  *                                                                                             * 
 #ifdef OG
  *                    $Revision:: 2                                                           $* 
-#endif
+#endif // OG
 #ifdef ZH
  *                    $Revision:: 3                                                           $* 
-#endif
+#endif // ZH
  *                                                                                             * 
  *---------------------------------------------------------------------------------------------* 
  * Functions:                                                                                  * 
@@ -127,10 +127,10 @@ DEFINE_AUTO_POOL(HAnimComboDataClass,256);
 HAnimComboDataClass::HAnimComboDataClass(bool shared) 
 #ifdef OG
 : Shared(shared), HAnim(0), PivotMap(0), Frame(0), Weight(1) 
-#endif
+#endif // OG
 #ifdef ZH
 : Shared(shared), HAnim(0), PivotMap(0), Frame(0), PrevFrame(0), Weight(1) 
-#endif
+#endif // ZH
 {}
 
 
@@ -142,7 +142,7 @@ HAnimComboDataClass::HAnimComboDataClass(const HAnimComboDataClass &src)
 	Frame = src.Get_Frame();
 #ifdef ZH
 	PrevFrame = src.Get_Prev_Frame();
-#endif
+#endif // ZH
 	Weight = src.Get_Weight();
 }
 
@@ -154,7 +154,7 @@ void HAnimComboDataClass::Copy(const HAnimComboDataClass *src)
 		Frame = src->Get_Frame();
 #ifdef ZH
 		PrevFrame = src->Get_Prev_Frame();
-#endif
+#endif // ZH
 		Weight = src->Get_Weight();
 	} else {
 		HAnim = 0;
@@ -162,7 +162,7 @@ void HAnimComboDataClass::Copy(const HAnimComboDataClass *src)
 		Frame = 0;
 #ifdef ZH
 		PrevFrame = 0;
-#endif
+#endif // ZH
 		Weight = 1;
 	}
 }
@@ -192,7 +192,7 @@ void HAnimComboDataClass::Clear(void)
 	Frame = 0.0f;
 #ifdef ZH
 	PrevFrame = 0.0f;
-#endif
+#endif // ZH
 	Weight = 1.0;
 	PivotMap = NULL;
 }
@@ -442,7 +442,7 @@ float	HAnimComboClass::Get_Prev_Frame( int index )
 	WWASSERT(data);
 
 	return data->Get_Prev_Frame();
-#endif
+#endif // ZH
 }
 
 void	HAnimComboClass::Set_Weight( int index, float weight )

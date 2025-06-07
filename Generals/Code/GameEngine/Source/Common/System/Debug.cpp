@@ -54,7 +54,7 @@
 #include "Common/Debug.h"
 #ifdef OG
 #include "Common/registry.h"
-#endif
+#endif // OG
 #include "Common/SystemInfo.h"
 #include "Common/UnicodeString.h"
 #include "GameClient/GameText.h"
@@ -62,11 +62,11 @@
 #include "GameClient/Mouse.h"
 #ifdef ZH
 #if defined(DEBUG_STACKTRACE) || defined(IG_DEBUG_STACKTRACE)
-#endif
+#endif // ZH
 #include "Common/StackDump.h"
 #ifdef ZH
 #endif
-#endif
+#endif // ZH
 
 // Horrible reference, but we really, really need to know if we are windowed.
 extern bool DX8Wrapper_IsWindowed;
@@ -124,7 +124,7 @@ const char *TheDebugLevels[DEBUG_LEVEL_MAX] = {
 	"NET"
 };
 #endif
-#endif
+#endif // OG
 
 // ----------------------------------------------------------------------------
 // PRIVATE PROTOTYPES 
@@ -151,10 +151,10 @@ inline Bool ignoringAsserts()
 #if defined(_DEBUG) || defined(_INTERNAL)
 #ifdef OG
 	return !DX8Wrapper_IsWindowed || TheGlobalData->m_debugIgnoreAsserts;
-#endif
+#endif // OG
 #ifdef ZH
 	return !DX8Wrapper_IsWindowed || (TheGlobalData&&TheGlobalData->m_debugIgnoreAsserts);
-#endif
+#endif // ZH
 #else
 	return !DX8Wrapper_IsWindowed;
 #endif
@@ -267,11 +267,11 @@ static int doCrashBox(const char *buffer, Bool logResult)
 #ifdef OG
 		//result = MessageBoxWrapper(buffer, "Assertion Failure", MB_ABORTRETRYIGNORE|MB_TASKMODAL|MB_ICONWARNING|MB_DEFBUTTON3);
 		result = MessageBoxWrapper(buffer, "Assertion Failure", MB_ABORTRETRYIGNORE|MB_TASKMODAL|MB_ICONWARNING);
-#endif
+#endif // OG
 #ifdef ZH
 		result = MessageBoxWrapper(buffer, "Assertion Failure", MB_ABORTRETRYIGNORE|MB_TASKMODAL|MB_ICONWARNING|MB_DEFBUTTON3);
 		//result = MessageBoxWrapper(buffer, "Assertion Failure", MB_ABORTRETRYIGNORE|MB_TASKMODAL|MB_ICONWARNING);
-#endif
+#endif // ZH
 	}	else {
 		result = IDIGNORE;
 	}
@@ -358,10 +358,10 @@ void DebugInit(int flags)
 	// just quietly allow multiple calls to this, so that static ctors can call it.
 #ifdef OG
 	if (theDebugFlags == 0 && strcmp(gAppPrefix, "wb_") != 0) 
-#endif
+#endif // OG
 #ifdef ZH
 	if (theDebugFlags == 0) 
-#endif
+#endif // ZH
 	{
 		theDebugFlags = flags;
 
@@ -492,10 +492,10 @@ void DebugCrash(const char *format, ...)
 #ifdef DEBUG_STACKTRACE
 #ifdef OG
 	if (!TheGlobalData->m_debugIgnoreStackTrace)
-#endif
+#endif // OG
 #ifdef ZH
 	if (!(TheGlobalData && TheGlobalData->m_debugIgnoreStackTrace))
-#endif
+#endif // ZH
 	{
 		doStackDump();
 	}
@@ -579,10 +579,10 @@ void DebugSetFlags(int flags)
 
 #ifdef OG
 #ifdef ALLOW_DEBUG_UTILS
-#endif
+#endif // OG
 #ifdef ZH
 #ifdef DEBUG_PROFILE
-#endif
+#endif // ZH
 // ----------------------------------------------------------------------------
 SimpleProfiler::SimpleProfiler()
 {
@@ -705,7 +705,7 @@ void ReleaseCrash(const char *reason)
 //#else
 //	::MessageBox(NULL, "Sorry, a serious error occurred.", "Technical Difficulties...", MB_OK|MB_TASKMODAL|MB_ICONERROR);
 //#endif
-#endif
+#endif // ZH
 
 	char prevbuf[ _MAX_PATH ];
 	char curbuf[ _MAX_PATH ];
@@ -715,7 +715,7 @@ void ReleaseCrash(const char *reason)
 		return; // We are shutting down, and TheGlobalData has been freed.  jba. [4/15/2003]
 	}
 
-#endif
+#endif // ZH
 	strcpy(prevbuf, TheGlobalData->getPath_UserData().str());
 	strcat(prevbuf, RELEASECRASH_FILE_NAME_PREV);
 	strcpy(curbuf, TheGlobalData->getPath_UserData().str());
@@ -760,7 +760,7 @@ void ReleaseCrash(const char *reason)
   ::MessageBox(NULL, "You have encountered a serious error.  Serious errors can be caused by many things including viruses, overheated hardware and hardware that does not meet the minimum specifications for the game. Please visit the forums at www.generals.ea.com for suggested courses of action or consult your manual for Technical Support contact information.", 
    "Technical Difficulties...", 
    MB_OK|MB_SYSTEMMODAL|MB_ICONERROR);
-#endif
+#endif // ZH
 
 #ifdef OG
 	if (!GetRegistryLanguage().compareNoCase("german2") || !GetRegistryLanguage().compareNoCase("german") )
@@ -771,7 +771,7 @@ void ReleaseCrash(const char *reason)
 	{
 		::MessageBox(NULL, "You have encountered a serious error.  Serious errors can be caused by many things including viruses, overheated hardware and hardware that does not meet the minimum specifications for the game. Please visit the forums at www.generals.ea.com for suggested courses of action or consult your manual for Technical Support contact information.", "Technical Difficulties...", MB_OK|MB_TASKMODAL|MB_ICONERROR);
 	}
-#endif
+#endif // OG
 
 #endif
 

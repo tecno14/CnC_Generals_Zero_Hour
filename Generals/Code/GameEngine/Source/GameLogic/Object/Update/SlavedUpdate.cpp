@@ -162,7 +162,7 @@ UpdateSleepTime SlavedUpdate::update( void )
 #ifdef ZH
     if ( me->getAI() )
       me->getAI()->aiIdle( CMD_FROM_AI);
-#endif
+#endif // ZH
 
 		return UPDATE_SLEEP_NONE;
 	}
@@ -724,7 +724,7 @@ void SlavedUpdate::startSlavedEffects( const Object *slaver )
 #ifdef OG
 	getObject()->setStatus( OBJECT_STATUS_UNSELECTABLE );
 
-#endif
+#endif // OG
 #ifdef ZH
 	getObject()->setStatus( MAKE_OBJECT_STATUS_MASK( OBJECT_STATUS_UNSELECTABLE ) );
 
@@ -739,7 +739,7 @@ void SlavedUpdate::startSlavedEffects( const Object *slaver )
     }
   }
 
-#endif
+#endif // ZH
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -751,10 +751,10 @@ void SlavedUpdate::stopSlavedEffects()
 	/// @todo Just a thought.  Our Status bits on objects really need to be reference counts so you don't clear someone else's flag
 #ifdef OG
 	getObject()->clearStatus( OBJECT_STATUS_UNSELECTABLE );
-#endif
+#endif // OG
 #ifdef ZH
 	getObject()->clearStatus( MAKE_OBJECT_STATUS_MASK( OBJECT_STATUS_UNSELECTABLE ) );
-#endif
+#endif // ZH
 	getObject()->clearDisabled( DISABLED_HELD );
 }
 

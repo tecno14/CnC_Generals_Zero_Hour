@@ -27,30 +27,30 @@
 #ifdef OG
  *                      $Author:: Naty_h                                  $* 
 
-#endif
+#endif // OG
 #ifdef ZH
  *                  $Org Author:: Jani_p                                  $* 
  *                                                                         * 
  *                      $Author:: Kenny_m                                  $* 
-#endif
+#endif // ZH
  *                                                                         * 
 #ifdef OG
  *                     $Modtime:: 4/13/01 1:37p                           $* 
-#endif
+#endif // OG
 #ifdef ZH
  *                     $Modtime:: 08/05/02 10:44a                          $* 
-#endif
+#endif // ZH
  *                                                                         * 
 #ifdef OG
  *                    $Revision:: 10                                      $* 
-#endif
+#endif // OG
 #ifdef ZH
  *                    $Revision:: 12                                      $* 
-#endif
+#endif // ZH
  *                                                                         * 
 #ifdef ZH
  * 08/05/02 KM Texture class redesign
-#endif
+#endif // ZH
  *-------------------------------------------------------------------------* 
  * Functions:                                                              * 
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
@@ -64,7 +64,7 @@
 #include "assetmgr.h"
 #include "textureloader.h"
 #include "ww3dformat.h"
-#endif
+#endif // ZH
 
 Bitmap2DObjClass::Bitmap2DObjClass
 (
@@ -96,7 +96,7 @@ Bitmap2DObjClass::Bitmap2DObjClass
 #ifdef OG
 	SurfaceClass *surface=NEW_REF(SurfaceClass,(filename));	
 
-#endif
+#endif // OG
 #ifdef ZH
 	TextureClass *tex = WW3DAssetManager::Get_Instance()->Get_Texture(filename, MIP_LEVELS_1);
 	if (!tex->Is_Initialized())	
@@ -107,7 +107,7 @@ Bitmap2DObjClass::Bitmap2DObjClass
 	if (!surface) {
 		surface = NEW_REF(SurfaceClass, (32, 32, Get_Valid_Texture_Format(WW3D_FORMAT_R8G8B8,true)));
 	}
-#endif
+#endif // ZH
 
 	SurfaceClass::SurfaceDescription sd;
 	surface->Get_Description(sd);
@@ -198,12 +198,12 @@ Bitmap2DObjClass::Bitmap2DObjClass
 			TextureClass *piece_texture =NEW_REF(TextureClass,(piece_surface,TextureClass::MIP_LEVELS_1));			
 			piece_texture->Set_U_Addr_Mode(TextureClass::TEXTURE_ADDRESS_CLAMP);
 			piece_texture->Set_V_Addr_Mode(TextureClass::TEXTURE_ADDRESS_CLAMP);
-#endif
+#endif // OG
 #ifdef ZH
 			TextureClass *piece_texture =NEW_REF(TextureClass,(piece_surface,MIP_LEVELS_1));			
 			piece_texture->Get_Filter().Set_U_Addr_Mode(TextureFilterClass::TEXTURE_ADDRESS_CLAMP);
 			piece_texture->Get_Filter().Set_V_Addr_Mode(TextureFilterClass::TEXTURE_ADDRESS_CLAMP);
-#endif
+#endif // ZH
 			REF_PTR_RELEASE(piece_surface);			
 
 			// calculate our actual texture coordinates based on the difference between
@@ -234,7 +234,7 @@ Bitmap2DObjClass::Bitmap2DObjClass
 	}
 #ifdef ZH
 	REF_PTR_RELEASE(tex);
-#endif
+#endif // ZH
 	REF_PTR_RELEASE(surface);	
 
 	Set_Dirty();
@@ -267,24 +267,24 @@ Bitmap2DObjClass::Bitmap2DObjClass
 	SurfaceClass::SurfaceDescription sd;
 	texture->Get_Level_Description(sd);
 
-#endif
+#endif // OG
 #ifdef ZH
 //	SurfaceClass::SurfaceDescription sd;
 //	texture->Get_Level_Description(sd);
 
 	if (!texture->Is_Initialized())	
 		TextureLoader::Request_Foreground_Loading(texture);
-#endif
+#endif // ZH
 		
 	// convert image width and image height to normalized values
 #ifdef OG
 	float vw = (float) sd.Width / (float)resw;
 	float vh = (float) sd.Height / (float)resh;
-#endif
+#endif // OG
 #ifdef ZH
 	float vw = (float) texture->Get_Width() / (float)resw;
 	float vh = (float) texture->Get_Height() / (float)resh;
-#endif
+#endif // ZH
 
 	// if we requested the image to be centered around a point adjust the
 	// coordinates accordingly.
@@ -304,10 +304,10 @@ Bitmap2DObjClass::Bitmap2DObjClass
 	} else {
 #ifdef OG
 		if (ignore_alpha == false && Has_Alpha(sd.Format)) {
-#endif
+#endif // OG
 #ifdef ZH
 		if (ignore_alpha == false && Has_Alpha(texture->Get_Texture_Format())) {
-#endif
+#endif // ZH
 			shader = ShaderClass::_PresetAlpha2DShader;
 		} else {
 			shader = ShaderClass::_PresetOpaque2DShader;

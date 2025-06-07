@@ -102,4 +102,4 @@ class LZOPipe : public Pipe
 
 #endif
 
-#endif
+#endif // ZH

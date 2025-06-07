@@ -65,4 +65,4 @@ void main(void)
   divByNull/=divByNull;
 }
 
-#endif
+#endif // ZH

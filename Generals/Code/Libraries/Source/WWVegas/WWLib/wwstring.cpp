@@ -28,17 +28,17 @@
  *                                                                                             *
 #ifdef OG
  *                     $Modtime:: 8/27/01 1:42p                                               $*
-#endif
+#endif // OG
 #ifdef ZH
  *                     $Modtime:: 12/13/01 10:48p                                             $*
-#endif
+#endif // ZH
  *                                                                                             *
 #ifdef OG
  *                    $Revision:: 10                                                          $*
-#endif
+#endif // OG
 #ifdef ZH
  *                    $Revision:: 17                                                          $*
-#endif
+#endif // ZH
  *                                                                                             *
  *---------------------------------------------------------------------------------------------*
  * Functions:                                                                                  *
@@ -57,10 +57,10 @@
 
 #ifdef OG
 CriticalSectionClass StringClass::m_Mutex;
-#endif
+#endif // OG
 #ifdef ZH
 FastCriticalSectionClass StringClass::m_Mutex;
-#endif
+#endif // ZH
 
 TCHAR		StringClass::m_NullChar					= 0;
 TCHAR *	StringClass::m_EmptyString				= &m_NullChar;
@@ -104,10 +104,10 @@ StringClass::Get_String (int length, bool is_temp)
 		//
 #ifdef OG
 		CriticalSectionClass::LockClass m(m_Mutex);
-#endif
+#endif // OG
 #ifdef ZH
 		FastCriticalSectionClass::LockClass m(m_Mutex);
-#endif
+#endif // ZH
 
 		//
 		//	Try to find an available temporary buffer
@@ -142,17 +142,17 @@ StringClass::Get_String (int length, bool is_temp)
 		//	Allocate a new string as necessary
 		//
 		if (length > 0) {
-#endif
+#endif // ZH
 		Set_Buffer_And_Allocated_Length (Allocate_Buffer (length), length);
 #ifdef ZH
 		} else {
 			Free_String ();
-#endif
+#endif // ZH
 	}
 }
 #ifdef ZH
 }
-#endif
+#endif // ZH
 
 
 ///////////////////////////////////////////////////////////////////
@@ -210,7 +210,7 @@ StringClass::Uninitialised_Grow (int new_len)
 	// Whenever this function is called, clear the cached length 
 	//
 	Store_Length (0);
-#endif
+#endif // ZH
 	return ;
 }
 
@@ -232,17 +232,17 @@ StringClass::Free_String (void)
 #ifdef ZH
 			m_Buffer[0] = 0;
 
-#endif
+#endif // ZH
 			//
 			//	Make sure no one else is changing the reserved mask
 			// at the same time we are.
 			//
 #ifdef OG
 			CriticalSectionClass::LockClass m(m_Mutex);
-#endif
+#endif // OG
 #ifdef ZH
 			FastCriticalSectionClass::LockClass m(m_Mutex);
-#endif
+#endif // ZH
 
 			unsigned index=(buffer_base/MAX_TEMP_BYTES)&(MAX_TEMP_STRING-1);
 			unsigned mask=1<<index;
@@ -376,4 +376,4 @@ bool StringClass::Copy_Wide (const WCHAR *source)
 	// Failure.
 	return (false);
 }
-#endif
+#endif // ZH

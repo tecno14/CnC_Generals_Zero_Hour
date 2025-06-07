@@ -90,4 +90,4 @@ int SHAPipe::Result(void * result) const
 
 
 
-#endif
+#endif // ZH

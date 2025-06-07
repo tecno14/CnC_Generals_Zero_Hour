@@ -88,7 +88,7 @@ static NameKeyType textEntryGamePasswordID = NAMEKEY_INVALID;
 #ifdef ZH
 static NameKeyType checkBoxLimitArmiesID = NAMEKEY_INVALID;
 static NameKeyType checkBoxUseStatsID = NAMEKEY_INVALID;
-#endif
+#endif // ZH
 
 static GameWindow *parentPopup = NULL;
 static GameWindow *textEntryGameName = NULL;
@@ -102,7 +102,7 @@ static GameWindow *textEntryGamePassword = NULL;
 #ifdef ZH
 static GameWindow *checkBoxLimitArmies = NULL;
 static GameWindow *checkBoxUseStats = NULL;
-#endif
+#endif // ZH
 
 #ifdef _INTERNAL
 // for occasional debugging...
@@ -352,7 +352,7 @@ void PopupHostGameInit( WindowLayout *layout, void *userData )
 #ifdef OG
 	// disabling observers for Multiplayer test
 #ifndef _PLAYTEST
-#endif
+#endif // OG
 	GadgetCheckBoxSetChecked(checkBoxAllowObservers, customPref.allowsObservers());
 #ifdef OG
 #else
@@ -362,7 +362,7 @@ void PopupHostGameInit( WindowLayout *layout, void *userData )
 		checkBoxAllowObservers->winEnable(FALSE);
 	}
 #endif
-#endif
+#endif // OG
 
 	comboBoxLadderNameID = TheNameKeyGenerator->nameToKey(AsciiString("PopupHostGame.wnd:ComboBoxLadderName"));
 	comboBoxLadderName = TheWindowManager->winGetWindowFromId(parentPopup, comboBoxLadderNameID);
@@ -381,7 +381,7 @@ void PopupHostGameInit( WindowLayout *layout, void *userData )
   checkBoxLimitArmies = TheWindowManager->winGetWindowFromId(parentPopup, checkBoxLimitArmiesID);
 	checkBoxLimitArmies->winEnable(! usingStats );
   GadgetCheckBoxSetChecked( checkBoxLimitArmies, usingStats? FALSE : customPref.getFactionsLimited() );
-#endif
+#endif // ZH
 
 	TheWindowManager->winSetFocus( parentPopup );
 	TheWindowManager->winSetModal( parentPopup );
@@ -406,7 +406,7 @@ void PopupHostGameUpdate( WindowLayout * layout, void *userData)
 }
 
 //-------------------------------------------------------------------------------------------------
-#endif
+#endif // ZH
 /** PopupHostGameInput callback */
 //-------------------------------------------------------------------------------------------------
 WindowMsgHandledType PopupHostGameInput( GameWindow *window, UnsignedInt msg, WindowMsgData mData1, WindowMsgData mData2 )
@@ -602,22 +602,22 @@ void createGame( void )
 #ifdef ZH
   Bool limitArmies = GadgetCheckBoxIsChecked( checkBoxLimitArmies );
   Bool useStats = GadgetCheckBoxIsChecked( checkBoxUseStats );
-#endif
+#endif // ZH
 	customPref.setAllowsObserver(aO);
 #ifdef ZH
   customPref.setFactionsLimited( limitArmies );
   customPref.setUseStats( useStats );
-#endif
+#endif // ZH
 	customPref.write();
 	req.stagingRoomCreation.allowObservers = aO;
 #ifdef ZH
   req.stagingRoomCreation.useStats = useStats;
-#endif
+#endif // ZH
 	TheGameSpyGame->setAllowObservers(aO);
 #ifdef ZH
   TheGameSpyGame->setOldFactionsOnly( limitArmies );
   TheGameSpyGame->setUseStats( useStats );
-#endif
+#endif // ZH
 	req.stagingRoomCreation.exeCRC = TheGlobalData->m_exeCRC;
 	req.stagingRoomCreation.iniCRC = TheGlobalData->m_iniCRC;
 	req.stagingRoomCreation.gameVersion = TheGameSpyInfo->getInternalIP();

@@ -52,7 +52,7 @@
 //#pragma optimize("", off)
 //#pragma MESSAGE("************************************** WARNING, optimization disabled for debugging purposes")
 #endif
-#endif
+#endif // ZH
 
 // ------------------------------------------------------------------------------------------------
 // ------------------------------------------------------------------------------------------------
@@ -121,7 +121,7 @@ void RebuildHoleExposeDie::onDie( const DamageInfo *damageInfo )
   }
 #endif
 
-#endif
+#endif // ZH
 	const RebuildHoleExposeDieModuleData *modData = getRebuildHoleExposeDieModuleData();
 	Object *us = getObject();
 
@@ -133,12 +133,12 @@ void RebuildHoleExposeDie::onDie( const DamageInfo *damageInfo )
 	if( us->getControllingPlayer() != ThePlayerList->getNeutralPlayer() && (us->getControllingPlayer()->isPlayerActive()) && 
 		(BitTest( us->getStatusBits(), OBJECT_STATUS_UNDER_CONSTRUCTION ) == FALSE ))
 
-#endif
+#endif // OG
 #ifdef ZH
 	if( us->getControllingPlayer() != ThePlayerList->getNeutralPlayer() 
 		  && us->getControllingPlayer()->isPlayerActive() 
 			&& !us->getStatusBits().test( OBJECT_STATUS_UNDER_CONSTRUCTION ) )
-#endif
+#endif // ZH
 	{
 		Object *hole;
 

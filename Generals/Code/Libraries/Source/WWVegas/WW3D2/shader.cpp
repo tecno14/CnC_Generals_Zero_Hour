@@ -24,26 +24,26 @@
  *                                                                                             *
 #ifdef OG
  *                     $Archive:: /VSS_Sync/ww3d2/shader.cpp                                  $*
-#endif
+#endif // OG
 #ifdef ZH
  *                     $Archive:: /Commando/Code/ww3d2/shader.cpp                             $*
-#endif
+#endif // ZH
  *                                                                                             *
  *                       Author:: Greg Hjelstrom                                               *
  *                                                                                             *
 #ifdef OG
  *                     $Modtime:: 8/29/01 7:29p                                               $*
-#endif
+#endif // OG
 #ifdef ZH
  *                     $Modtime:: 12/11/01 5:15p                                              $*
-#endif
+#endif // ZH
  *                                                                                             *
 #ifdef OG
  *                    $Revision:: 18                                                          $*
-#endif
+#endif // OG
 #ifdef ZH
  *                    $Revision:: 21                                                          $*
-#endif
+#endif // ZH
  *                                                                                             *
  *---------------------------------------------------------------------------------------------*
  * Functions:                                                                                  *
@@ -124,7 +124,7 @@ ShaderClass ShaderClass::_PresetOpaque2DShader(SC_OP_2D);
 	DETAILCOLOR_DISABLE, DETAILALPHA_DISABLE) )
 ShaderClass ShaderClass::_PresetOpaqueSpriteShader(SC_OP_SPRITE);
 
-#endif
+#endif // ZH
 
 // Texturing, no zbuffer reading/writing, no gradients, additive blending,
 // no fogging - mostly for additive 2D objects.
@@ -429,10 +429,10 @@ void ShaderClass::Apply()
 
 #ifdef OG
 	unsigned int TextureOpCaps=DX8Caps::Get_Default_Caps().TextureOpCaps;
-#endif
+#endif // OG
 #ifdef ZH
 	unsigned int TextureOpCaps=DX8Wrapper::Get_Current_Caps()->Get_DX8_Caps().TextureOpCaps;
-#endif
+#endif // ZH
 
 	if (ShaderDirty)
 	{
@@ -516,10 +516,10 @@ void ShaderClass::Apply()
 		// can defer the "fog enabled" check inside the "fog settings changed" check.
 #ifdef OG
 		if (DX8Wrapper::Get_Fog_Enable()) {
-#endif
+#endif // OG
 #ifdef ZH
 		if (DX8Wrapper::Get_Current_Caps()->Is_Fog_Allowed() && DX8Wrapper::Get_Fog_Enable()) {
-#endif
+#endif // ZH
 
 			BOOL fm = FALSE;
 			D3DCOLOR fogColor = DX8Wrapper::Get_Fog_Color();
@@ -576,12 +576,12 @@ void ShaderClass::Apply()
 	D3DTEXTUREOP	SecaOp	 = D3DTOP_DISABLE;
 	DWORD			SecaArg1 = D3DTA_TEXTURE;
 	DWORD			SecaArg2 = D3DTA_CURRENT;
-#endif
+#endif // ZH
 
 #ifdef OG
 	if(diff & (ShaderClass::MASK_PRIGRADIENT|ShaderClass::MASK_TEXTURING))
 
-#endif
+#endif // OG
 #ifdef ZH
 	bool voodoo3=(DX8Wrapper::Get_Current_Caps()->Get_Vendor()==DX8Caps::VENDOR_3DFX) &&
 					 (DX8Wrapper::Get_Current_Caps()->Get_Device()==DX8Caps::DEVICE_3DFX_VOODOO_3);
@@ -596,7 +596,7 @@ void ShaderClass::Apply()
 	}
 
 	if(diff & pri_mask)
-#endif
+#endif // ZH
 	{
 #ifdef OG
 		D3DTEXTUREOP	cOp = D3DTOP_SELECTARG1;
@@ -604,7 +604,7 @@ void ShaderClass::Apply()
 		DWORD	cArg1 = D3DTA_DIFFUSE, cArg2 = D3DTA_DIFFUSE;
 		DWORD	aArg1 = D3DTA_DIFFUSE, aArg2 = D3DTA_DIFFUSE;
 
-#endif
+#endif // OG
 		if(Get_Texturing() == ShaderClass::TEXTURING_ENABLE)
 		{
 			switch(Get_Primary_Gradient())
@@ -618,7 +618,7 @@ void ShaderClass::Apply()
 				aOp = D3DTOP_SELECTARG1;
 				aArg1 = D3DTA_TEXTURE;
 				aArg2 = D3DTA_CURRENT;
-#endif
+#endif // OG
 #ifdef ZH
 				PricOp = D3DTOP_SELECTARG1;
 				PricArg1 = D3DTA_TEXTURE;
@@ -626,7 +626,7 @@ void ShaderClass::Apply()
 				PriaOp = D3DTOP_SELECTARG1;
 				PriaArg1 = D3DTA_TEXTURE;
 				PriaArg2 = D3DTA_CURRENT;
-#endif
+#endif // ZH
 				break;
 			default:
 			case ShaderClass::GRADIENT_MODULATE:
@@ -638,7 +638,7 @@ void ShaderClass::Apply()
 				aOp = D3DTOP_MODULATE;
 				aArg1 = D3DTA_TEXTURE;
 				aArg2 = D3DTA_DIFFUSE;
-#endif
+#endif // OG
 #ifdef ZH
 				PricOp = D3DTOP_MODULATE;
 				PricArg1 = D3DTA_TEXTURE;
@@ -647,19 +647,19 @@ void ShaderClass::Apply()
 				PriaArg1 = D3DTA_TEXTURE;
 				PriaArg2 = D3DTA_DIFFUSE;
 
-#endif
+#endif // ZH
 				break;
 			case ShaderClass::GRADIENT_ADD:
 #ifdef ZH
 				//Modulate Alpha
-#endif
+#endif // ZH
 				if(!(TextureOpCaps & D3DTEXOPCAPS_ADD))	
 #ifdef OG
 					cOp = D3DTOP_MODULATE;
-#endif
+#endif // OG
 #ifdef ZH
 					PricOp = D3DTOP_MODULATE;
-#endif
+#endif // ZH
 				else
 #ifdef OG
 					cOp = D3DTOP_ADD;
@@ -668,7 +668,7 @@ void ShaderClass::Apply()
 				aOp = D3DTOP_MODULATE;
 				aArg1 = D3DTA_TEXTURE;
 				aArg2 = D3DTA_DIFFUSE;
-#endif
+#endif // OG
 #ifdef ZH
 					PricOp = D3DTOP_ADD;
 				PricArg1 = D3DTA_TEXTURE;
@@ -676,7 +676,7 @@ void ShaderClass::Apply()
 				PriaOp = D3DTOP_MODULATE;
 				PriaArg1 = D3DTA_TEXTURE;
 				PriaArg2 = D3DTA_DIFFUSE;
-#endif
+#endif // ZH
 				break;
 			// Bump map is a hack currently as we only have two stages in use!
 			case ShaderClass::GRADIENT_BUMPENVMAP:
@@ -690,7 +690,7 @@ void ShaderClass::Apply()
 					aArg1 = D3DTA_TEXTURE;
 					aArg2 = D3DTA_CURRENT;
 
-#endif
+#endif // OG
 #ifdef ZH
 					PricOp=D3DTOP_BUMPENVMAP;
 					PricArg1=D3DTA_TEXTURE;
@@ -705,7 +705,7 @@ void ShaderClass::Apply()
 					PriaOp = D3DTOP_SELECTARG1;
 					PriaArg1 = D3DTA_DIFFUSE;
 					PriaArg2 = D3DTA_DIFFUSE;
-#endif
+#endif // ZH
 				}
 				break;
 
@@ -721,7 +721,7 @@ void ShaderClass::Apply()
 					aArg1 = D3DTA_TEXTURE;
 					aArg2 = D3DTA_CURRENT;
 
-#endif
+#endif // OG
 #ifdef ZH
 					PricOp=D3DTOP_BUMPENVMAPLUMINANCE;
 					PricArg1=D3DTA_TEXTURE;
@@ -736,7 +736,7 @@ void ShaderClass::Apply()
 					PriaOp = D3DTOP_SELECTARG1;
 					PriaArg1 = D3DTA_DIFFUSE;
 					PriaArg2 = D3DTA_DIFFUSE;
-#endif
+#endif // ZH
 				}
 				break;
 
@@ -752,7 +752,7 @@ void ShaderClass::Apply()
 					aArg1 = D3DTA_TEXTURE;
 					aArg2 = D3DTA_CURRENT;
 				}
-#endif
+#endif // OG
 #ifdef ZH
 			case ShaderClass::GRADIENT_MODULATE2X:
 				//Modulate Alpha
@@ -765,7 +765,7 @@ void ShaderClass::Apply()
 				PriaOp = D3DTOP_MODULATE;
 				PriaArg1 = D3DTA_TEXTURE;
 				PriaArg2 = D3DTA_DIFFUSE;
-#endif
+#endif // ZH
 				break;
 			}
 		}
@@ -781,7 +781,7 @@ void ShaderClass::Apply()
 				aOp = D3DTOP_DISABLE;
 				aArg1 = D3DTA_TEXTURE;
 				aArg2 = D3DTA_CURRENT;
-#endif
+#endif // OG
 #ifdef ZH
 				PricOp = D3DTOP_DISABLE;
 				PricArg1 = D3DTA_TEXTURE;
@@ -789,7 +789,7 @@ void ShaderClass::Apply()
 				PriaOp = D3DTOP_DISABLE;
 				PriaArg1 = D3DTA_TEXTURE;
 				PriaArg2 = D3DTA_CURRENT;
-#endif
+#endif // ZH
 				break;
 			default:
 			case ShaderClass::GRADIENT_MODULATE:
@@ -800,7 +800,7 @@ void ShaderClass::Apply()
 				aOp = D3DTOP_SELECTARG2;
 				aArg1 = D3DTA_TEXTURE;
 				aArg2 = D3DTA_DIFFUSE;
-#endif
+#endif // OG
 #ifdef ZH
 				PricOp = D3DTOP_SELECTARG2;
 				PricArg1 = D3DTA_TEXTURE;
@@ -808,7 +808,7 @@ void ShaderClass::Apply()
 				PriaOp = D3DTOP_SELECTARG2;
 				PriaArg1 = D3DTA_TEXTURE;
 				PriaArg2 = D3DTA_DIFFUSE;
-#endif
+#endif // ZH
 				break;
 			case ShaderClass::GRADIENT_ADD:
 #ifdef OG
@@ -818,7 +818,7 @@ void ShaderClass::Apply()
 				aOp = D3DTOP_SELECTARG2;
 				aArg1 = D3DTA_TEXTURE;
 				aArg2 = D3DTA_DIFFUSE;
-#endif
+#endif // OG
 #ifdef ZH
 				PricOp = D3DTOP_SELECTARG2;
 				PricArg1 = D3DTA_TEXTURE;
@@ -826,7 +826,7 @@ void ShaderClass::Apply()
 				PriaOp = D3DTOP_SELECTARG2;
 				PriaArg1 = D3DTA_TEXTURE;
 				PriaArg2 = D3DTA_DIFFUSE;
-#endif
+#endif // ZH
 				break;
 			}
 #ifdef OG
@@ -836,7 +836,7 @@ void ShaderClass::Apply()
 		{
 			cArg2=aArg2=D3DTA_TFACTOR;
 			cOp=aOp=D3DTOP_SELECTARG2;
-#endif
+#endif // OG
 		}
 #ifdef OG
 
@@ -847,22 +847,22 @@ void ShaderClass::Apply()
 		DX8Wrapper::Set_DX8_Texture_Stage_State(0,D3DTSS_ALPHAARG1,aArg1);
 		DX8Wrapper::Set_DX8_Texture_Stage_State(0,D3DTSS_ALPHAARG2,aArg2);
 		diff &= ~(ShaderClass::MASK_PRIGRADIENT);
-#endif
+#endif // OG
 	}
 
 #ifdef OG
 	if(diff & (ShaderClass::MASK_POSTDETAILCOLORFUNC|ShaderClass::MASK_TEXTURING))
-#endif
+#endif // OG
 #ifdef ZH
 	if(diff & sec_mask)
-#endif
+#endif // ZH
 	{
 #ifdef OG
 		D3DTEXTUREOP	cOp	= D3DTOP_DISABLE;
 		DWORD			cArg1 = D3DTA_TEXTURE;
 		DWORD			cArg2 = D3DTA_CURRENT;
 
-#endif
+#endif // OG
 		if(Get_Texturing()== ShaderClass::TEXTURING_ENABLE)
 		{
 			switch(Get_Post_Detail_Color_Func())
@@ -874,17 +874,17 @@ void ShaderClass::Apply()
 			case ShaderClass::DETAILCOLOR_DETAIL:
 #ifdef OG
 				if(TextureOpCaps & D3DTEXOPCAPS_MODULATE)
-#endif
+#endif // OG
 #ifdef ZH
 				if(TextureOpCaps & D3DTEXOPCAPS_SELECTARG1)
-#endif
+#endif // ZH
 				{
 #ifdef OG
 					cOp = D3DTOP_SELECTARG1;
 					cArg1 = D3DTA_TEXTURE;
 					cArg2 = D3DTA_CURRENT;
 
-#endif
+#endif // OG
 #ifdef ZH
 					SeccOp = D3DTOP_SELECTARG1;
 					SeccArg1 = D3DTA_TEXTURE;
@@ -892,7 +892,7 @@ void ShaderClass::Apply()
 				}
 				else {
 					SNAPSHOT_SAY(("Warning: Using unsupported texture op: SELECTARG1\n"));
-#endif
+#endif // ZH
 				}
 				break;
 
@@ -904,7 +904,7 @@ void ShaderClass::Apply()
 					cArg1 = D3DTA_TEXTURE;
 					cArg2 = D3DTA_CURRENT;
 
-#endif
+#endif // OG
 #ifdef ZH
 					SeccOp = D3DTOP_MODULATE;
 					SeccArg1 = D3DTA_TEXTURE;
@@ -912,7 +912,7 @@ void ShaderClass::Apply()
 				}
 				else {
 					SNAPSHOT_SAY(("Warning: Using unsupported texture op: MODULATE\n"));
-#endif
+#endif // ZH
 				}
 				break;
 
@@ -924,7 +924,7 @@ void ShaderClass::Apply()
 					cArg1 = D3DTA_TEXTURE;
 					cArg2 = D3DTA_CURRENT;
 
-#endif
+#endif // OG
 #ifdef ZH
 					SeccOp = D3DTOP_ADDSMOOTH;
 					SeccArg1 = D3DTA_TEXTURE;
@@ -933,13 +933,13 @@ void ShaderClass::Apply()
 					SeccOp = D3DTOP_ADD;
 					SeccArg1 = D3DTA_TEXTURE;
 					SeccArg2 = D3DTA_CURRENT;
-#endif
+#endif // ZH
 				}
 #ifdef ZH
 				else {
 					SNAPSHOT_SAY(("Warning: Using unsupported texture op: ADDSMOOTH\n"));
 				}
-#endif
+#endif // ZH
 				break;
 
 			case ShaderClass::DETAILCOLOR_ADD:
@@ -950,7 +950,7 @@ void ShaderClass::Apply()
 					cArg1 = D3DTA_TEXTURE;
 					cArg2 = D3DTA_CURRENT;
 
-#endif
+#endif // OG
 #ifdef ZH
 					SeccOp = D3DTOP_ADD;
 					SeccArg1 = D3DTA_TEXTURE;
@@ -958,7 +958,7 @@ void ShaderClass::Apply()
 				}
 				else {
 					SNAPSHOT_SAY(("Warning: Using unsupported texture op: ADD\n"));
-#endif
+#endif // ZH
 				}
 				break;
 
@@ -970,7 +970,7 @@ void ShaderClass::Apply()
 					cArg1 = D3DTA_TEXTURE;
 					cArg2 = D3DTA_CURRENT;
 
-#endif
+#endif // OG
 #ifdef ZH
 					SeccOp = D3DTOP_SUBTRACT;
 					SeccArg1 = D3DTA_TEXTURE;
@@ -978,7 +978,7 @@ void ShaderClass::Apply()
 				}
 				else {
 					SNAPSHOT_SAY(("Warning: Using unsupported texture op: SUBTRACT\n"));
-#endif
+#endif // ZH
 				}
 				break;
 
@@ -990,7 +990,7 @@ void ShaderClass::Apply()
 					cArg1 = D3DTA_CURRENT;
 					cArg2 = D3DTA_TEXTURE;
 
-#endif
+#endif // OG
 #ifdef ZH
 					SeccOp = D3DTOP_SUBTRACT;
 					SeccArg1 = D3DTA_CURRENT;
@@ -998,7 +998,7 @@ void ShaderClass::Apply()
 				}
 				else {
 					SNAPSHOT_SAY(("Warning: Using unsupported texture op: SUBTRACT\n"));
-#endif
+#endif // ZH
 				}
 				break;
 
@@ -1010,7 +1010,7 @@ void ShaderClass::Apply()
 					cArg1 = D3DTA_TEXTURE;
 					cArg2 = D3DTA_CURRENT;
 
-#endif
+#endif // OG
 #ifdef ZH
 					SeccOp = D3DTOP_BLENDTEXTUREALPHA;
 					SeccArg1 = D3DTA_TEXTURE;
@@ -1018,7 +1018,7 @@ void ShaderClass::Apply()
 				}
 				else {
 					SNAPSHOT_SAY(("Warning: Using unsupported texture op: BLENDTEXTUREALPHA\n"));
-#endif
+#endif // ZH
 				}
 				break;
 
@@ -1030,7 +1030,7 @@ void ShaderClass::Apply()
 					cArg1 = D3DTA_TEXTURE;
 					cArg2 = D3DTA_CURRENT;
 
-#endif
+#endif // OG
 #ifdef ZH
 					SeccOp = D3DTOP_BLENDCURRENTALPHA;
 					SeccArg1 = D3DTA_TEXTURE;
@@ -1052,7 +1052,7 @@ void ShaderClass::Apply()
 					SeccArg2 = D3DTA_CURRENT;
 				} else {
 					SNAPSHOT_SAY(("Warning: Using unsupported texture op: ADDSIGNED\n"));
-#endif
+#endif // ZH
 				}
 				break;
 #ifdef ZH
@@ -1072,7 +1072,7 @@ void ShaderClass::Apply()
 					SeccArg2 = D3DTA_CURRENT;
 				} else {
 					SNAPSHOT_SAY(("Warning: Using unsupported texture op: ADDSIGNED2X\n"));
-#endif
+#endif // ZH
 			}
 #ifdef ZH
 				break;
@@ -1086,25 +1086,25 @@ void ShaderClass::Apply()
 					SeccOp = D3DTOP_MODULATE;
 					SeccArg1 = D3DTA_TEXTURE;
 					SeccArg2 = D3DTA_CURRENT;
-#endif
+#endif // ZH
 		}
 #ifdef OG
 		DX8Wrapper::Set_DX8_Texture_Stage_State(1,D3DTSS_COLOROP,cOp);
 		DX8Wrapper::Set_DX8_Texture_Stage_State(1,D3DTSS_COLORARG1,cArg1);
 		DX8Wrapper::Set_DX8_Texture_Stage_State(1,D3DTSS_COLORARG2,cArg2);
-#endif
+#endif // OG
 #ifdef ZH
 				else {
 					SNAPSHOT_SAY(("Warning: Using unsupported texture op: MODULATE2X\n"));
 
-#endif
+#endif // ZH
 	}
 #ifdef OG
 	diff &= ~(ShaderClass::MASK_POSTDETAILCOLORFUNC);
-#endif
+#endif // OG
 #ifdef ZH
 				break;
-#endif
+#endif // ZH
 
 #ifdef OG
 	if(diff & (ShaderClass::MASK_POSTDETAILALPHAFUNC|ShaderClass::MASK_TEXTURING))
@@ -1113,7 +1113,7 @@ void ShaderClass::Apply()
 		DWORD			aArg1 = D3DTA_TEXTURE;
 		DWORD			aArg2 = D3DTA_CURRENT;
 
-#endif
+#endif // OG
 #ifdef ZH
 			case ShaderClass::DETAILCOLOR_MODALPHAADDCOLOR:
 				if (DX8Wrapper::Get_Current_Caps()->Support_ModAlphaAddClr()) {
@@ -1129,12 +1129,12 @@ void ShaderClass::Apply()
 				}
 				break;
 			} // color operations
-#endif
+#endif // ZH
 
 #ifdef OG
 		if(Get_Texturing() == ShaderClass::TEXTURING_ENABLE)
 		{
-#endif
+#endif // OG
 			switch(Get_Post_Detail_Alpha_Func())
 			{
 			default:
@@ -1144,17 +1144,17 @@ void ShaderClass::Apply()
 			case ShaderClass::DETAILALPHA_DETAIL:
 #ifdef OG
 				if(TextureOpCaps & D3DTEXOPCAPS_MODULATE)
-#endif
+#endif // OG
 #ifdef ZH
 				if(TextureOpCaps & D3DTEXOPCAPS_SELECTARG1)
-#endif
+#endif // ZH
 				{
 #ifdef OG
 					aOp = D3DTOP_SELECTARG1;
 					aArg1 = D3DTA_TEXTURE;
 					aArg2 = D3DTA_CURRENT;
 
-#endif
+#endif // OG
 #ifdef ZH
 					SecaOp = D3DTOP_SELECTARG1;
 					SecaArg1 = D3DTA_TEXTURE;
@@ -1162,7 +1162,7 @@ void ShaderClass::Apply()
 				}
 				else {
 					SNAPSHOT_SAY(("Warning: Using unsupported texture op: SELECTARG1\n"));
-#endif
+#endif // ZH
 				}
 				break;
 
@@ -1174,7 +1174,7 @@ void ShaderClass::Apply()
 					aArg1 = D3DTA_TEXTURE;
 					aArg2 = D3DTA_CURRENT;
 
-#endif
+#endif // OG
 #ifdef ZH
 					SecaOp = D3DTOP_MODULATE;
 					SecaArg1 = D3DTA_TEXTURE;
@@ -1182,7 +1182,7 @@ void ShaderClass::Apply()
 				}
 				else {
 					SNAPSHOT_SAY(("Warning: Using unsupported texture op: MODULATE\n"));
-#endif
+#endif // ZH
 				}
 				break;
 
@@ -1194,7 +1194,7 @@ void ShaderClass::Apply()
 					aArg1 = D3DTA_TEXTURE;
 					aArg2 = D3DTA_CURRENT;
 
-#endif
+#endif // OG
 #ifdef ZH
 					SecaOp = D3DTOP_ADDSMOOTH;
 					SecaArg1 = D3DTA_TEXTURE;
@@ -1202,7 +1202,7 @@ void ShaderClass::Apply()
 				}
 				else {
 					SNAPSHOT_SAY(("Warning: Using unsupported texture op: ADDSMOOTH\n"));
-#endif
+#endif // ZH
 				}
 				break;
 #ifdef ZH
@@ -1277,7 +1277,7 @@ void ShaderClass::Apply()
 			{
 				cArg2=aArg2=D3DTA_TFACTOR;
 				cOp=aOp=D3DTOP_SELECTARG2;
-#endif
+#endif // ZH
 			}
 #ifdef ZH
 #endif
@@ -1288,17 +1288,17 @@ void ShaderClass::Apply()
 			DX8Wrapper::Set_DX8_Texture_Stage_State(0,D3DTSS_ALPHAARG1,PriaArg1);
 			DX8Wrapper::Set_DX8_Texture_Stage_State(0,D3DTSS_ALPHAARG2,PriaArg2);
 			kill_stage_2=true;
-#endif
+#endif // ZH
 		}
 #ifdef OG
 		DX8Wrapper::Set_DX8_Texture_Stage_State(1,D3DTSS_ALPHAOP,aOp);
 		DX8Wrapper::Set_DX8_Texture_Stage_State(1,D3DTSS_ALPHAARG1,aArg1);
 		DX8Wrapper::Set_DX8_Texture_Stage_State(1,D3DTSS_ALPHAARG2,aArg2);
-#endif
+#endif // OG
 #ifdef ZH
 		diff &= ~(ShaderClass::MASK_PRIGRADIENT);
 
-#endif
+#endif // ZH
 	}
 #ifdef ZH
 
@@ -1310,12 +1310,12 @@ void ShaderClass::Apply()
 		DX8Wrapper::Set_DX8_Texture_Stage_State(1,D3DTSS_ALPHAARG1,SecaArg1);
 		DX8Wrapper::Set_DX8_Texture_Stage_State(1,D3DTSS_ALPHAARG2,SecaArg2);
 		diff &= ~(ShaderClass::MASK_POSTDETAILCOLORFUNC);
-#endif
+#endif // ZH
 	diff &= ~(ShaderClass::MASK_POSTDETAILALPHAFUNC);
 	diff &= ~(ShaderClass::MASK_TEXTURING);
 #ifdef ZH
 	}
-#endif
+#endif // ZH
 
 #ifdef ZH
 	// Make sure to disable stage 2 for voodoos since we don't have state tracking for
@@ -1335,7 +1335,7 @@ void ShaderClass::Apply()
 		DX8CALL(SetTexture(2,0));
 	}
 
-#endif
+#endif // ZH
 	if(!diff)
 		return;
 
@@ -1425,7 +1425,7 @@ ShaderClass::StaticSortCategoryType ShaderClass::Get_SS_Category(void) const
 	// category: Screen
 	if ( (SRCBLEND_ONE==Get_Src_Blend_Func()) && (DSTBLEND_ONE_MINUS_SRC_COLOR==Get_Dst_Blend_Func()) )
 		return SSCAT_SCREEN;
-#endif
+#endif // ZH
 	// category: Everything else
 	return SSCAT_OTHER;
 }
@@ -1460,7 +1460,7 @@ int ShaderClass::Guess_Sort_Level(void) const
 		break;
 	case ShaderClass::SSCAT_SCREEN:
 		sort_level=SORT_LEVEL_BIN2;
-#endif
+#endif // ZH
 		break;
 	case ShaderClass::SSCAT_ADDITIVE:
 		sort_level=SORT_LEVEL_BIN3;
@@ -1585,10 +1585,10 @@ const StringClass& ShaderClass::Get_Description(StringClass& str) const
 	case DETAILCOLOR_ADDSIGNED2X: str+="DETAILCOLOR_ADDSIGNED2X"; break;
 	case DETAILCOLOR_SCALE2X: str+="DETAILCOLOR_SCALE2X"; break;
 	case DETAILCOLOR_MODALPHAADDCOLOR: str+="DETAILCOLOR_MODALPHAADDCOLOR"; break;
-#endif
+#endif // ZH
 }
 #ifdef ZH
 	return str;
 }
 
-#endif
+#endif // ZH

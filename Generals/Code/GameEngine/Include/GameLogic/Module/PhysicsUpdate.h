@@ -56,7 +56,7 @@ public:
 	Real	m_shockMaxYaw;
 	Real	m_shockMaxPitch;
 	Real	m_shockMaxRoll;
-#endif
+#endif // ZH
 	Real	m_forwardFriction;
 	Real	m_lateralFriction;
 	Real	m_ZFriction;
@@ -106,7 +106,7 @@ public:
 	virtual Bool isSalvageCrateCollide() const { return false; }
 #ifdef ZH
 	virtual Bool isSabotageBuildingCrateCollide() const { return FALSE; }
-#endif
+#endif // ZH
 
 	// UpdateModuleInterface
 	virtual UpdateSleepTime update();
@@ -117,7 +117,7 @@ public:
 #ifdef ZH
 	void applyShock( const Coord3D *force );					///< apply a shockwave force against the object's CG
 	void applyRandomRotation();											  ///< apply a random rotation at the object's CG
-#endif
+#endif // ZH
 	void addVelocityTo(const Coord3D* vel) ;
 
 	/**
@@ -188,7 +188,7 @@ public:
 	void setImmuneToFallingDamage(Bool allow) { setFlag(IMMUNE_TO_FALLING_DAMAGE, allow); }
 #ifdef ZH
 	void setStunned(Bool allow) { setFlag(IS_STUNNED, allow); }
-#endif
+#endif // ZH
 
 	Bool getAllowToFall() const { return getFlag(ALLOW_TO_FALL); }
 
@@ -197,7 +197,7 @@ public:
 #ifdef ZH
 
 	Bool getIsStunned() const { return getFlag(IS_STUNNED); }
-#endif
+#endif // ZH
 
 	void setExtraBounciness(Real b) { m_extraBounciness = b; }
 	void setExtraFriction(Real b) { m_extraFriction = b; }
@@ -248,7 +248,7 @@ protected:
 #ifdef ZH
 
 	void testStunnedUnitForDestruction(void);
-#endif
+#endif // ZH
 
 private:
 
@@ -268,11 +268,11 @@ private:
 #ifdef OG
 		IS_IN_UPDATE										= 0x0400
 
-#endif
+#endif // OG
 #ifdef ZH
 		IS_IN_UPDATE										= 0x0400,
 		IS_STUNNED											= 0x0800,
-#endif
+#endif // ZH
 	};
 
 	/*
@@ -302,7 +302,7 @@ private:
 #ifdef ZH
 
 	Bool												m_originalAllowBounce;		///< orignal state of allow bounce
-#endif
+#endif // ZH
 
 	inline void setFlag(PhysicsFlagsType f, Bool set) { if (set) m_flags |= f; else m_flags &= ~f; }
 	inline Bool getFlag(PhysicsFlagsType f) const { return (m_flags & f) != 0; }

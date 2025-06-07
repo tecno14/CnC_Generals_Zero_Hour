@@ -28,17 +28,17 @@
  *                                                                                             *
 #ifdef OG
  *                     $Modtime:: 5/14/01 10:57a                                              $*
-#endif
+#endif // OG
 #ifdef ZH
  *                     $Modtime:: 1/16/02 10:21a                                              $*
-#endif
+#endif // ZH
  *                                                                                             *
 #ifdef OG
  *                    $Revision:: 3                                                           $*
-#endif
+#endif // OG
 #ifdef ZH
  *                    $Revision:: 4                                                           $*
-#endif
+#endif // ZH
  *                                                                                             *
  *---------------------------------------------------------------------------------------------*
  * Functions:                                                                                  *
@@ -46,7 +46,7 @@
 
 #ifdef ZH
 #if noWWAUDIO //(gth) removing dependency on wwaudio
-#endif
+#endif // ZH
 
 #include "soundrobj.h"
 #include "audiblesound.h"
@@ -768,11 +768,11 @@ SoundRenderObjLoaderClass::Load_W3D (ChunkLoadClass &cload)
 		if (definition->Load_W3D (cload) != WW3D_ERROR_OK) {			
 			REF_PTR_RELEASE (definition);
 		} else {
-#endif
+#endif // OG
 #ifdef ZH
 		if (definition->Load_W3D (cload) == WW3D_ERROR_OK) {
 
-#endif
+#endif // ZH
 
 			//
 			// Success!  Create a prototype from the definition
@@ -782,7 +782,7 @@ SoundRenderObjLoaderClass::Load_W3D (ChunkLoadClass &cload)
 #ifdef ZH
 
 		REF_PTR_RELEASE (definition);
-#endif
+#endif // ZH
 	}
 
 	return prototype;
@@ -790,6 +790,6 @@ SoundRenderObjLoaderClass::Load_W3D (ChunkLoadClass &cload)
 #ifdef ZH
 
 #endif // noWWAUDIO
-#endif
+#endif // ZH
 
 

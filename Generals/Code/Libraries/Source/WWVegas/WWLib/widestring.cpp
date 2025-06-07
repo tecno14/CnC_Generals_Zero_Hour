@@ -28,17 +28,17 @@
  *                                                                                             *
 #ifdef OG
  *                     $Modtime:: 8/28/01 10:26a                                              $*
-#endif
+#endif // OG
 #ifdef ZH
  *                     $Modtime:: 2/06/02 5:27p                                               $*
-#endif
+#endif // ZH
  *                                                                                             *
 #ifdef OG
  *                    $Revision:: 5                                                           $*
-#endif
+#endif // OG
 #ifdef ZH
  *                    $Revision:: 13                                                          $*
-#endif
+#endif // ZH
  *                                                                                             *
  *---------------------------------------------------------------------------------------------*
  * Functions:                                                                                  *
@@ -59,10 +59,10 @@ int		WideStringClass::m_UsedTempStringCount	= 0;
 
 #ifdef OG
 CriticalSectionClass WideStringClass::m_TempMutex;
-#endif
+#endif // OG
 #ifdef ZH
 FastCriticalSectionClass WideStringClass::m_TempMutex;
-#endif
+#endif // ZH
 
 WCHAR		WideStringClass::m_NullChar				= 0;
 WCHAR *	WideStringClass::m_EmptyString			= &m_NullChar;
@@ -115,10 +115,10 @@ WideStringClass::Get_String (int length, bool is_temp)
 			//
 #ifdef OG
 			CriticalSectionClass::LockClass lock(m_TempMutex);
-#endif
+#endif // OG
 #ifdef ZH
 			FastCriticalSectionClass::LockClass lock(m_TempMutex);
-#endif
+#endif // ZH
 
 			//
 			//	Try to find an available temporary buffer
@@ -192,7 +192,7 @@ WideStringClass::Uninitialised_Grow (int new_len)
 //	if ( new_len <= 1 ) {
 //		Set_Buffer_And_Allocated_Length (m_EmptyString, 0);
 //	} else {
-#endif
+#endif // OG
 		int allocated_len = Get_Allocated_Length ();
 		if (new_len > allocated_len) {
 			
@@ -206,13 +206,13 @@ WideStringClass::Uninitialised_Grow (int new_len)
 #ifdef OG
 //	}
 
-#endif
+#endif // OG
 #ifdef ZH
 	//
 	// Whenever this function is called, clear the cached length 
 	//
 	Store_Length (0);
-#endif
+#endif // ZH
 	return ;
 }
 
@@ -239,17 +239,17 @@ WideStringClass::Free_String (void)
 				//
 #ifdef OG
 				CriticalSectionClass::LockClass lock(m_TempMutex);
-#endif
+#endif // OG
 #ifdef ZH
 				FastCriticalSectionClass::LockClass lock(m_TempMutex);
-#endif
+#endif // ZH
 				
 				//
 				//	Release our hold on this temporary buffer
 				//
 #ifdef ZH
 				m_Buffer[0]				= 0;
-#endif
+#endif // ZH
 				m_FreeTempPtr[index]	= m_Buffer;
 				m_ResTempPtr[index]	= 0;
 				m_UsedTempStringCount --;
@@ -289,7 +289,7 @@ WideStringClass::Format_Args (const WCHAR *format, const va_list & arg_list )
 		return 0;
 	}
 
-#endif
+#endif // ZH
 	//
 	// Make a guess at the maximum length of the resulting string
 	//
@@ -322,7 +322,7 @@ WideStringClass::Format (const WCHAR *format, ...)
 		return 0;
 	}
 
-#endif
+#endif // ZH
 	va_list arg_list;
 	va_start (arg_list, format);
 
@@ -403,4 +403,4 @@ bool WideStringClass::Is_ANSI(void)
 	return true;
 	}
 
-#endif
+#endif // ZH

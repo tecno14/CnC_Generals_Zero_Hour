@@ -66,7 +66,7 @@
 // Add slight improvement to load times -- was 2:30, now 0:02 for test case.
 #define USE_FAST_FIND_ITEM 1
 
-#endif
+#endif // ZH
 // HierarchyOption ------------------------------------------------------------
 //-----------------------------------------------------------------------------
 typedef enum
@@ -159,7 +159,7 @@ protected:
  	TreeHash 		m_treeHash;	///< Speed up the search with a nice hash.
 #endif
 
-#endif
+#endif // ZH
 
 };  // end HierarchyView
 

@@ -138,10 +138,10 @@ void SwayClientUpdate::clientUpdate( void )
 	Object* obj = draw->getObject();
 #ifdef OG
 	if (obj && (obj->getStatusBits() & OBJECT_STATUS_BURNED) != 0)
-#endif
+#endif // OG
 #ifdef ZH
 	if( obj && obj->getStatusBits().test( OBJECT_STATUS_BURNED ) )
-#endif
+#endif // ZH
 		stopSway();
 
 }

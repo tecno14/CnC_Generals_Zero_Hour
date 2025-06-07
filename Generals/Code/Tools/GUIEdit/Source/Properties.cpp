@@ -1181,11 +1181,11 @@ void LoadImageListComboBox( HWND comboBox )
 	for( image = TheMappedImageCollection->firstImage();
 			 image;
 			 image = TheMappedImageCollection->nextImage( image ) )
-#endif
+#endif // OG
 #ifdef ZH
   for (unsigned index=0;(image=TheMappedImageCollection->Enum(index))!=NULL;index++)
 
-#endif
+#endif // ZH
 	{
 
 		SendMessage( comboBox, CB_ADDSTRING, 0, (LPARAM)image->getName().str() );

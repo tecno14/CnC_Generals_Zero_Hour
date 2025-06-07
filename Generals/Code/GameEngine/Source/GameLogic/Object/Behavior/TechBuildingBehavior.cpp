@@ -128,7 +128,7 @@ void TechBuildingBehavior::onDie( const DamageInfo *damageInfo )
 	Object *us = getObject();
 #ifdef ZH
 	us->clearModelConditionState( MODELCONDITION_CAPTURED );
-#endif
+#endif // ZH
 	us->setTeam( ThePlayerList->getNeutralPlayer()->getDefaultTeam() );
 
 }  // end onDie

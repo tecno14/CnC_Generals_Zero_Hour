@@ -156,4 +156,4 @@ extern CNoxstringDlg *MainDLG;
 
 #endif // !defined(AFX_NOXSTRINGDLG_H__2BF3124D_3BA1_11D3_B9DA_006097B90D93__INCLUDED_)
 
-#endif
+#endif // OG

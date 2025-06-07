@@ -84,11 +84,11 @@ UpdateSleepTime ObjectDefectionHelper::update()
 #ifdef OG
 	if (obj->isEffectivelyDead() || 
 			(obj->getStatusBits() & OBJECT_STATUS_IS_FIRING_WEAPON)!= 0)
-#endif
+#endif // OG
 #ifdef ZH
 	if( obj->isEffectivelyDead() || obj->getStatusBits().test( OBJECT_STATUS_IS_FIRING_WEAPON ) )
 
-#endif
+#endif // ZH
 	{
 		// PLEASE NOTE:
 		// checking the is_attacking statusbit above, only handles weapon related attacks...

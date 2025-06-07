@@ -34,7 +34,7 @@
 
 #ifdef ZH
 #include "ScriptDialog.h"
-#endif
+#endif // ZH
 
 /////////////////////////////////////////////////////////////////////////////
 // CMainFrame
@@ -76,7 +76,7 @@ CMainFrame::CMainFrame()
 	m_layersList = NULL;
 #ifdef ZH
 	m_scriptDialog = NULL;
-#endif
+#endif // ZH
 }
 
 CMainFrame::~CMainFrame()
@@ -89,7 +89,7 @@ CMainFrame::~CMainFrame()
 	if (m_scriptDialog) {
 		delete m_scriptDialog;
 		m_scriptDialog = NULL;
-#endif
+#endif // ZH
 	}
 
 	SaveBarState("MainFrame");
@@ -197,7 +197,7 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	m_rulerOptions.Create(IDD_RULER_OPTIONS, this);
 	m_rulerOptions.SetWindowPos(NULL, frameRect.left, frameRect.top,	0, 0, SWP_NOZORDER|SWP_NOSIZE);
 	m_rulerOptions.GetWindowRect(&frameRect);
-#endif
+#endif // ZH
 	if (m_optionsPanelWidth < frameRect.Width()) m_optionsPanelWidth = frameRect.Width();
 	if (m_optionsPanelHeight < frameRect.Height()) m_optionsPanelHeight = frameRect.Height();
 
@@ -398,7 +398,7 @@ void CMainFrame::showOptionsDialog(Int dialogID)
 		case IDD_MOUND_OPTIONS:newOptions  = &m_moundOptions; break;
 #ifdef ZH
 		case IDD_RULER_OPTIONS:newOptions  = &m_rulerOptions; break;
-#endif
+#endif // ZH
 		case IDD_FEATHER_OPTIONS:newOptions  = &m_featherOptions; break;
 		case IDD_MESHMOLD_OPTIONS:newOptions  = &m_meshMoldOptions; break;
 		case IDD_WAYPOINT_OPTIONS:newOptions  = &m_waypointOptions; break;
@@ -453,7 +453,7 @@ void CMainFrame::onEditScripts()
 	m_scriptDialog->SetWindowPos(NULL, frameRect.left, frameRect.top, 0, 0, SWP_NOZORDER|SWP_NOSIZE);
  	m_scriptDialog->GetWindowRect(&frameRect);
 	m_scriptDialog->ShowWindow(SW_SHOWNA);
-#endif
+#endif // ZH
 }
 
 /////////////////////////////////////////////////////////////////////////////

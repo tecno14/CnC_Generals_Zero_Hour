@@ -88,7 +88,7 @@ protected:
 	AsciiString			m_layerName;  ///< Used to specify the layer in the World Builder.
 	Bool				m_shouldRender;
 	Bool				m_selected;
-#endif
+#endif // ZH
 
 	static PolygonTrigger* ThePolygonTriggerListPtr;
 	static Int s_currentID; ///< Current id for new triggers.
@@ -133,7 +133,7 @@ public:
 
 	void setSelected(Bool toggle) {m_selected = toggle;}
 	Bool getSelected() {return m_selected;}
-#endif
+#endif // ZH
 
 	void getCenterPoint(Coord3D* pOutCoord) const;
 	Real getRadius(void) const;

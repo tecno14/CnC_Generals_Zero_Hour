@@ -40,7 +40,7 @@
 //#pragma MESSAGE("************************************** WARNING, optimization disabled for debugging purposes")
 #endif
 
-#endif
+#endif // ZH
 Bool TheDebugIgnoreSyncErrors = FALSE;
 extern Int DX8Wrapper_PreserveFPU;
 
@@ -640,7 +640,7 @@ Int parsePreload( char *args[], int num )
 }
 #endif
 
-#endif
+#endif // ZH
 
 #if defined(_DEBUG) || defined(_INTERNAL)
 Int parseDisplayDebug(char *args[], int)
@@ -669,7 +669,7 @@ Int parsePreload( char *args[], int num )
 		TheWritableGlobalData->m_preloadAssets = TRUE;
 	return 1;
 }
-#endif
+#endif // OG
 
 Int parsePreloadEverything( char *args[], int num )
 {
@@ -780,7 +780,7 @@ Int parseNoShellMap(char *args[], int)
 #ifdef OG
 #if !defined(_PLAYTEST) || (defined(_DEBUG) || defined(_INTERNAL))
 
-#endif
+#endif // OG
 #ifdef ZH
 Int parseNoShaders(char *args[], int)
 {
@@ -792,7 +792,7 @@ Int parseNoShaders(char *args[], int)
 }
 
 #if (defined(_DEBUG) || defined(_INTERNAL))
-#endif
+#endif // ZH
 Int parseNoLogo(char *args[], int)
 {
 	if (TheWritableGlobalData)
@@ -801,7 +801,7 @@ Int parseNoLogo(char *args[], int)
 		TheWritableGlobalData->m_afterIntro = TRUE;
 #ifdef ZH
 		TheWritableGlobalData->m_playSizzle = FALSE;
-#endif
+#endif // ZH
 	}
 	return 1;
 }
@@ -817,7 +817,7 @@ Int parseNoSizzle( char *args[], int )
 	return 1;
 }
 
-#endif
+#endif // ZH
 Int parseShellMap(char *args[], int num)
 {
 	if (TheWritableGlobalData && num > 1)
@@ -849,7 +849,7 @@ Int parseQuickStart( char *args[], int num )
 {
 #ifdef ZH
 #if (defined(_DEBUG) || defined(_INTERNAL))
-#endif
+#endif // ZH
   parseNoLogo( args, num );
 #ifdef ZH
 #else
@@ -857,7 +857,7 @@ Int parseQuickStart( char *args[], int num )
 	//This is for legal reasons.
 	parseNoSizzle( args, num );
 #endif
-#endif
+#endif // ZH
 	parseNoShellMap( args, num );
 	parseNoWindowAnimation( args, num );
 	return 1;
@@ -896,7 +896,7 @@ Int parseAllAdvice( char *args[], int num )
 }
 */
 
-#endif
+#endif // ZH
 Int parseShowTeamDot( char *args[], int num )
 {
 	if( TheWritableGlobalData )
@@ -1051,7 +1051,7 @@ Int parseStats(char *args[], int num)
 #endif
 
 #if defined(_DEBUG) || defined(_INTERNAL)
-#endif
+#endif // ZH
 Int parseIgnoreAsserts(char *args[], int num)
 {
 	if (TheWritableGlobalData && num > 0)
@@ -1137,11 +1137,11 @@ Int parseMod(char *args[], Int num)
 #ifdef OG
 		struct stat statBuf;
 		if (stat(modPath.str(), &statBuf) != 0)
-#endif
+#endif // OG
 #ifdef ZH
 		struct _stat statBuf;
 		if (_stat(modPath.str(), &statBuf) != 0)
-#endif
+#endif // ZH
 		{
 			DEBUG_LOG(("Could not _stat() mod.\n"));
 			return 2; // could not stat the file/dir.
@@ -1149,10 +1149,10 @@ Int parseMod(char *args[], Int num)
 
 #ifdef OG
 		if (statBuf.st_mode & S_IFDIR)
-#endif
+#endif // OG
 #ifdef ZH
 		if (statBuf.st_mode & _S_IFDIR)
-#endif
+#endif // ZH
 		{
 			if (!modPath.endsWith("\\") && !modPath.endsWith("/"))
 				modPath.concat('\\');
@@ -1207,7 +1207,7 @@ Int parseClearDebugLevel(char *args[], int num)
 }
 #endif
 
-#endif
+#endif // OG
 static CommandLineParam params[] =
 {
 	{ "-noshellmap", parseNoShellMap },
@@ -1223,13 +1223,13 @@ static CommandLineParam params[] =
 #ifdef OG
 #if !defined(_PLAYTEST) || (defined(_DEBUG) || defined(_INTERNAL))
 
-#endif
+#endif // OG
 #ifdef ZH
 	{ "-noshaders", parseNoShaders },
 	{ "-quickstart", parseQuickStart },
 
 #if (defined(_DEBUG) || defined(_INTERNAL))
-#endif
+#endif // ZH
 	{ "-noaudio", parseNoAudio },
 	{ "-map", parseMapName },
 	{ "-nomusic", parseNoMusic },
@@ -1238,13 +1238,13 @@ static CommandLineParam params[] =
 	{ "-FPUPreserve", parseFPUPreserve },
 #ifdef OG
 #if defined(_DEBUG) || defined(_INTERNAL)
-#endif
+#endif // OG
 	{ "-benchmark", parseBenchmark },
 #ifdef ZH
 #ifdef DUMP_PERF_STATS
 	{ "-stats", parseStats }, 
 #endif
-#endif
+#endif // ZH
 	{ "-saveStats", parseSaveStats },
 	{ "-localMOTD", parseLocalMOTD },
 	{ "-UseCSF", parseUseCSF },
@@ -1288,12 +1288,12 @@ static CommandLineParam params[] =
 #ifdef OG
 	{ "-preload", parsePreload },
 
-#endif
+#endif // OG
 #ifdef ZH
   
 //	{ "-preload", parsePreload },
 	
-#endif
+#endif // ZH
 	{ "-preloadEverything", parsePreloadEverything },
 	{ "-logAssets", parseLogAssets },
 	{ "-netMinPlayers", parseNetMinPlayers },
@@ -1310,7 +1310,7 @@ static CommandLineParam params[] =
 	{ "-setDebugLevel", parseSetDebugLevel },
 	{ "-clearDebugLevel", parseClearDebugLevel },
 #endif
-#endif
+#endif // OG
 	{ "-forceBenchmark", parseForceBenchmark },
 	{ "-buildmapcache", parseBuildMapCache },
 	{ "-noshadowvolumes", parseNoShadows },
@@ -1323,7 +1323,7 @@ static CommandLineParam params[] =
 	{ "-constantDebug", parseConstantDebug },
 #ifdef OG
 	{ "-quickstart", parseQuickStart },
-#endif
+#endif // OG
 	{ "-seed", parseSeed },
 	{ "-noagpfix", parseIncrAGPBuf },
 	{ "-noFPSLimit", parseNoFPSLimit },
@@ -1334,7 +1334,7 @@ static CommandLineParam params[] =
 #ifdef ZH
 	{ "-extraLogging", parseExtraLogging },
 
-#endif
+#endif // ZH
 #endif
 #ifdef ZH
 
@@ -1345,7 +1345,7 @@ static CommandLineParam params[] =
   { "-preload", parsePreload },
 #endif
 
-#endif
+#endif // ZH
 };
 
 // parseCommandLine ===========================================================

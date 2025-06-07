@@ -27,19 +27,19 @@
 #ifdef OG
  *                       Author:: Patrick Smith                                                *
 
-#endif
+#endif // OG
 #ifdef ZH
  *                   Org Author:: Patrick Smith                                                *
  *                                                                                             *
  *                       Author:: Kenny Mitchell                                                *
-#endif
+#endif // ZH
  *                                                                                             *
 #ifdef OG
  *                     $Modtime:: 8/26/01 10:38a                                              $*
-#endif
+#endif // OG
 #ifdef ZH
  *                     $Modtime:: 5/29/02 11:00a                                              $*
-#endif
+#endif // ZH
  *                                                                                             *
  *                    $Revision:: 38                                                          $*
  *                                                                                             *
@@ -112,7 +112,7 @@ public:
 		TYPE_RECT,
 #ifdef ZH
 		TYPE_TEXTURE_FILENAME,
-#endif
+#endif // ZH
 		TYPE_STRINGSDB_ID
 
 	}	Type;
@@ -399,7 +399,7 @@ protected:
 
 	bool						Show_Alpha;
 	bool						Show_Texture;
-#endif
+#endif // ZH
 };
 
 

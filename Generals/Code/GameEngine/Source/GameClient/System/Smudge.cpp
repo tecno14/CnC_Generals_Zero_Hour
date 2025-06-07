@@ -143,4 +143,4 @@ void SmudgeSet::removeSmudgeFromSet(Smudge &mySmudge)
 	m_usedSmudgeCount--;
 }
 
-#endif
+#endif // ZH

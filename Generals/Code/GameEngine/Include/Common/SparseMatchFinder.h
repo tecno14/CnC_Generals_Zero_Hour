@@ -93,16 +93,16 @@ private:
 		}
 	};
 
-#endif
+#endif // ZH
 	//-------------------------------------------------------------------------------------------------
 #ifdef OG
 	typedef std::hash_map< BITSET, const MATCHABLE*, HashMapHelper, HashMapHelper > MatchMap;
 
-#endif
+#endif // OG
 #ifdef ZH
 	//typedef std::hash_map< BITSET, const MATCHABLE*, HashMapHelper, HashMapHelper > HashMatchMap;
 	typedef std::map< const BITSET, const MATCHABLE*, MapHelper> MatchMap;
-#endif
+#endif // ZH
 
 	//-------------------------------------------------------------------------------------------------
 	// MEMBER VARS
@@ -111,7 +111,7 @@ private:
 	mutable MatchMap m_bestMatches;
 #ifdef ZH
 	//mutable HashMatchMap m_bestHashMatches;
-#endif
+#endif // ZH
 
 	//-------------------------------------------------------------------------------------------------
 	// METHODS
@@ -211,35 +211,35 @@ public:
 #ifdef ZH
 
 		const MATCHABLE *first = NULL;
-#endif
+#endif // ZH
 		if (it != m_bestMatches.end())
 		{
 #ifdef OG
 			return (*it).second;
-#endif
+#endif // OG
 #ifdef ZH
 			first = (*it).second;
-#endif
+#endif // ZH
 		}
 #ifdef ZH
 		if (first != NULL) {
 			return first;
 		}
-#endif
+#endif // ZH
 
 		const MATCHABLE* info = findBestInfoSlow(v, bits);
 
 		DEBUG_ASSERTCRASH(info != NULL, ("no suitable match for criteria was found!\n"));
 #ifdef OG
 		if (info != NULL)
-#endif
+#endif // OG
 #ifdef ZH
 		if (info != NULL) {
-#endif
+#endif // ZH
 			m_bestMatches[bits] = info;
 #ifdef ZH
 		}
-#endif
+#endif // ZH
 
 		return info;
 	}

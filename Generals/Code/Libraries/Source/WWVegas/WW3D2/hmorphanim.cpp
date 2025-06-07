@@ -28,24 +28,24 @@
  *                                                                                             *
 #ifdef OG
  *                      $Author:: Jani_p                                                      $*
-#endif
+#endif // OG
 #ifdef ZH
  *                      $Author:: Byon_g                                                      $*
-#endif
+#endif // ZH
  *                                                                                             *
 #ifdef OG
  *                     $Modtime:: 6/27/01 7:50p                                               $*
-#endif
+#endif // OG
 #ifdef ZH
  *                     $Modtime:: 1/16/02 6:39p                                               $*
-#endif
+#endif // ZH
  *                                                                                             *
 #ifdef OG
  *                    $Revision:: 5                                                           $*
-#endif
+#endif // OG
 #ifdef ZH
  *                    $Revision:: 7                                                           $*
-#endif
+#endif // ZH
  *                                                                                             *
  *---------------------------------------------------------------------------------------------*
  * Functions:                                                                                  *
@@ -217,7 +217,7 @@ HMorphAnimClass::HMorphAnimClass(void) :
 	memset(Name,0,sizeof(Name));
 #ifdef ZH
 	memset(AnimName,0,sizeof(AnimName));	
-#endif
+#endif // ZH
 	memset(HierarchyName,0,sizeof(HierarchyName));
 }
 
@@ -250,10 +250,10 @@ void HMorphAnimClass::Free(void)
 
 #ifdef OG
 int Build_List_From_String
-#endif
+#endif // OG
 #ifdef ZH
 static int Build_List_From_String
-#endif
+#endif // ZH
 (
 	const char *	buffer,
 	const char *	delimiter,
@@ -548,14 +548,14 @@ int HMorphAnimClass::Create_New_Morph(const int channels, HAnimClass *anim[])
 	//	FrameCount = anim[0]->Get_Num_Frames();
 #ifdef OG
 	//	FrameRate = anim[0]->Get_Frame_Rate();
-#endif
+#endif // OG
 	FrameCount = 0;
 #ifdef OG
 	FrameRate = 30.0f;
-#endif
+#endif // OG
 #ifdef ZH
 	FrameRate = anim[0]->Get_Frame_Rate();
-#endif
+#endif // ZH
 	NumNodes = anim[0]->Get_Num_Pivots();
 
 	// Set up the anim data for all the channels

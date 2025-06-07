@@ -39,12 +39,12 @@
 #ifdef ZH
 #include "Common/ThingTemplate.h"
 #include "Common/ThingFactory.h"
-#endif
+#endif // ZH
 #include "GameClient/ControlBar.h"
 #include "GameClient/Drawable.h"
 #ifdef ZH
 #include "GameLogic/ExperienceTracker.h"
-#endif
+#endif // ZH
 #include "GameLogic/Module/BodyModule.h"
 #include "GameLogic/Module/OverlordContain.h"
 #include "GameLogic/Object.h"
@@ -57,7 +57,7 @@
 //#pragma optimize("", off)
 //#pragma MESSAGE("************************************** WARNING, optimization disabled for debugging purposes")
 #endif
-#endif
+#endif // ZH
 
 // ------------------------------------------------------------------------------------------------
 // ------------------------------------------------------------------------------------------------
@@ -66,7 +66,7 @@ OverlordContainModuleData::OverlordContainModuleData()
 #ifdef ZH
 //	m_initialPayload.count = 0;
 	m_experienceSinkForRider = TRUE;
-#endif
+#endif // ZH
 }
 
 // ------------------------------------------------------------------------------------------------
@@ -81,7 +81,7 @@ void OverlordContainModuleData::buildFieldParse(MultiIniFieldParse& p)
     { "PayloadTemplateName",  INI::parseAsciiStringVectorAppend, NULL, offsetof(OverlordContainModuleData, m_payloadTemplateNameData) },
     { "ExperienceSinkForRider",  INI::parseBool, NULL, offsetof(OverlordContainModuleData, m_experienceSinkForRider) },
 
-#endif
+#endif // ZH
 		{ 0, 0, 0, 0 }
 	};
   p.add(dataFieldParse);
@@ -99,7 +99,7 @@ void OverlordContainModuleData::buildFieldParse(MultiIniFieldParse& p)
 //	self->m_initialPayload.name.set(name);
 //	self->m_initialPayload.count = count;
 //}
-#endif
+#endif // ZH
 
 // ------------------------------------------------------------------------------------------------
 // ------------------------------------------------------------------------------------------------
@@ -111,7 +111,7 @@ OverlordContain::OverlordContain( Thing *thing, const ModuleData *moduleData ) :
 
   m_payloadCreated = FALSE;
 
-#endif
+#endif // ZH
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -122,13 +122,13 @@ OverlordContain::~OverlordContain( void )
 
 }
 
-#endif
+#endif // ZH
 
 #ifdef ZH
 void OverlordContain::onObjectCreated( void )
 {
   OverlordContain::createPayload();
-#endif
+#endif // ZH
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -177,7 +177,7 @@ void OverlordContain::createPayload()
 }
 
 // ------------------------------------------------------------------------------------------------
-#endif
+#endif // ZH
 //-------------------------------------------------------------------------------------------------
 void OverlordContain::onBodyDamageStateChange( const DamageInfo* damageInfo, 
 																				BodyDamageType oldState, 
@@ -382,10 +382,10 @@ void OverlordContain::iterateContained( ContainIterateFunc func, void *userData,
 //-------------------------------------------------------------------------------------------------
 #ifdef OG
 void OverlordContain::onContaining( Object *obj )
-#endif
+#endif // OG
 #ifdef ZH
 void OverlordContain::onContaining( Object *obj, Bool wasSelected )
-#endif
+#endif // ZH
 {
 	// Do you mean me the Overlord, or my behavior of passing stuff on to my passengers?
 	if( getRedirectedContain() == NULL )
@@ -394,11 +394,11 @@ void OverlordContain::onContaining( Object *obj, Bool wasSelected )
 		TransportContain::onContaining( obj, wasSelected );
 
     if ( obj->isKindOf( KINDOF_PORTABLE_STRUCTURE ) )
-#endif
+#endif // ZH
 	{
 #ifdef OG
 		TransportContain::onContaining( obj );
-#endif
+#endif // OG
 		activateRedirectedContain();//Am now carrying something
 #ifdef ZH
 
@@ -422,27 +422,27 @@ void OverlordContain::onContaining( Object *obj, Bool wasSelected )
     }	
     
     
-#endif
+#endif // ZH
 		return;
 	}
 #ifdef ZH
 
 	OpenContain::onContaining( obj, wasSelected );
-#endif
+#endif // ZH
 
 #ifdef OG
 	OpenContain::onContaining(obj);
-#endif
+#endif // OG
 #ifdef ZH
 	getRedirectedContain()->onContaining( obj, wasSelected );
-#endif
+#endif // ZH
 
 #ifdef OG
 	getRedirectedContain()->onContaining( obj );
-#endif
+#endif // OG
 #ifdef ZH
 }
-#endif
+#endif // ZH
 
 #ifdef ZH
 //-------------------------------------------------------------------------------------------------
@@ -452,11 +452,11 @@ void OverlordContain::killAllContained( void )
 	if( getRedirectedContain() )
 	{
 		getRedirectedContain()->killAllContained();
-#endif
+#endif // ZH
 }
 #ifdef ZH
 }
-#endif
+#endif // ZH
 
 //-------------------------------------------------------------------------------------------------
 void OverlordContain::onRemoving( Object *obj ) 
@@ -614,7 +614,7 @@ void OverlordContain::clientVisibleContainedFlashAsSelected()
 		}
 	}
 
-#endif
+#endif // ZH
 		}
 #ifdef ZH
 
@@ -628,18 +628,18 @@ Bool OverlordContain::isPassengerAllowedToFire( ObjectID id ) const
 		//only allow infantry, and turrets and such.  no vehicles.
 		if(passenger->isKindOf(KINDOF_INFANTRY) == FALSE && passenger->isKindOf(KINDOF_PORTABLE_STRUCTURE) == FALSE)
 			return FALSE;
-#endif
+#endif // ZH
 	}
 #ifdef ZH
 	
   
   if ( getObject() && getObject()->getContainedBy() ) // nested containment voids firing, always
     return FALSE;
-#endif
+#endif // ZH
 
 #ifdef ZH
   return TransportContain::isPassengerAllowedToFire();
-#endif
+#endif // ZH
 }
 
 

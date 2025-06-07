@@ -27,11 +27,11 @@
 //#define DISABLE_DEBUG_LOGGING
 
 #if defined(NDEBUG) || defined(DISABLE_DEBUG_LOGGING)
-#endif
+#endif // OG
 #ifdef ZH
 #ifdef  NDEBUG
 
-#endif
+#endif // ZH
 #define DEBUG_LOG(exp) ((void)0)
 #else
 

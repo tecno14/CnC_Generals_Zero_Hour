@@ -30,17 +30,17 @@
  *                                                                                             *
 #ifdef OG
  *                     $Modtime:: 7/10/01 1:30p                                               $*
-#endif
+#endif // OG
 #ifdef ZH
  *                     $Modtime:: 11/09/01 3:12p                                              $*
-#endif
+#endif // ZH
  *                                                                                             *
 #ifdef OG
  *                    $Revision:: 22                                                          $*
-#endif
+#endif // OG
 #ifdef ZH
  *                    $Revision:: 26                                                          $*
-#endif
+#endif // ZH
  *                                                                                             *
  *---------------------------------------------------------------------------------------------*
  * Functions:                                                                                  *
@@ -55,7 +55,7 @@
 #include "thread.h"
 #ifdef ZH
 #include "wwmemlog.h"
-#endif
+#endif // ZH
 
 #define DEFAULT_IB_SIZE 5000
 
@@ -196,11 +196,11 @@ void IndexBufferClass::Copy(unsigned short* indices,unsigned first_index,unsigne
 #ifdef OG
 IndexBufferClass::WriteLockClass::WriteLockClass(IndexBufferClass* index_buffer_) : index_buffer(index_buffer_)
 
-#endif
+#endif // OG
 #ifdef ZH
 
 IndexBufferClass::WriteLockClass::WriteLockClass(IndexBufferClass* index_buffer_, int flags) : index_buffer(index_buffer_)
-#endif
+#endif // ZH
 {
 	DX8_THREAD_ASSERT();
 	WWASSERT(index_buffer);
@@ -215,10 +215,10 @@ IndexBufferClass::WriteLockClass::WriteLockClass(IndexBufferClass* index_buffer_
 			(unsigned char**)&indices,
 #ifdef OG
 			0));
-#endif
+#endif // OG
 #ifdef ZH
 			flags));
-#endif
+#endif // ZH
 		break;
 	case BUFFER_TYPE_SORTING:
 		indices=static_cast<SortingIndexBufferClass*>(index_buffer)->index_buffer;
@@ -271,10 +271,10 @@ IndexBufferClass::AppendLockClass::AppendLockClass(IndexBufferClass* index_buffe
 			(unsigned char**)&indices,
 #ifdef OG
 			NULL));	// Optional pointer to receive the buffer size
-#endif
+#endif // OG
 #ifdef ZH
 			0));
-#endif
+#endif // ZH
 		break;
 	case BUFFER_TYPE_SORTING:
 		indices=static_cast<SortingIndexBufferClass*>(index_buffer)->index_buffer+start_index;
@@ -325,12 +325,12 @@ DX8IndexBufferClass::DX8IndexBufferClass(unsigned short index_count_,UsageType u
 	if (!DX8Wrapper::Get_Current_Caps()->Support_TnL()) {
 		usage_flags|=D3DUSAGE_SOFTWAREPROCESSING;
 	}
-#endif
+#endif // ZH
 
 #ifdef OG
 	DX8CALL(CreateIndexBuffer(
 
-#endif
+#endif // OG
 #ifdef ZH
 	HRESULT ret=DX8Wrapper::_Get_D3D_Device8()->CreateIndexBuffer(
 		sizeof(WORD)*index_count,
@@ -355,7 +355,7 @@ DX8IndexBufferClass::DX8IndexBufferClass(unsigned short index_count_,UsageType u
 
 	// Try again...
 	ret=DX8Wrapper::_Get_D3D_Device8()->CreateIndexBuffer(
-#endif
+#endif // ZH
 		sizeof(WORD)*index_count,
 		usage_flags,
 		D3DFMT_INDEX16,
@@ -363,13 +363,13 @@ DX8IndexBufferClass::DX8IndexBufferClass(unsigned short index_count_,UsageType u
 #ifdef OG
 		&index_buffer));
 
-#endif
+#endif // OG
 #ifdef ZH
 		&index_buffer);
 
 	if (SUCCEEDED(ret)) {
 		WWDEBUG_SAY(("...Index buffer creation succesful\n"));
-#endif
+#endif // ZH
 }
 
 #ifdef ZH
@@ -377,7 +377,7 @@ DX8IndexBufferClass::DX8IndexBufferClass(unsigned short index_count_,UsageType u
 	DX8_ErrorCode(ret);
 }
 
-#endif
+#endif // ZH
 // ----------------------------------------------------------------------------
 
 DX8IndexBufferClass::~DX8IndexBufferClass()
@@ -397,7 +397,7 @@ SortingIndexBufferClass::SortingIndexBufferClass(unsigned short index_count_)
 {
 #ifdef ZH
 	WWMEMLOG(MEM_RENDERER);
-#endif
+#endif // ZH
 	WWASSERT(index_count);
 
 	index_buffer=W3DNEWARRAY unsigned short[index_count];
@@ -520,7 +520,7 @@ void DynamicIBAccessClass::Allocate_DX8_Dynamic_Buffer()
 {
 #ifdef ZH
 	WWMEMLOG(MEM_RENDERER);
-#endif
+#endif // ZH
 	WWASSERT(!_DynamicDX8IndexBufferInUse);
 	_DynamicDX8IndexBufferInUse=true;
 
@@ -537,10 +537,10 @@ void DynamicIBAccessClass::Allocate_DX8_Dynamic_Buffer()
 		unsigned usage=DX8IndexBufferClass::USAGE_DYNAMIC;
 #ifdef OG
 		if (DX8Caps::Support_NPatches()) {
-#endif
+#endif // OG
 #ifdef ZH
 		if (DX8Wrapper::Get_Current_Caps()->Support_NPatches()) {
-#endif
+#endif // ZH
 			usage|=DX8IndexBufferClass::USAGE_NPATCHES;
 		}
 
@@ -563,7 +563,7 @@ void DynamicIBAccessClass::Allocate_Sorting_Dynamic_Buffer()
 {
 #ifdef ZH
 	WWMEMLOG(MEM_RENDERER);
-#endif
+#endif // ZH
 	WWASSERT(!_DynamicSortingIndexArrayInUse);
 	_DynamicSortingIndexArrayInUse=true;
 
@@ -604,5 +604,5 @@ int IndexBufferExceptionFunc(void)
 
 	b += _IndexBufferTotalIndices;
 	return b;
-#endif
+#endif // ZH
 }

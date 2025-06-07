@@ -116,7 +116,7 @@ static void mapListTooltipFunc(GameWindow *window,
 		case 4:
 			tooltip = TheGameText->fetch("TOOLTIP:MapMaxBrutalSuccess");
 			break;
-#endif
+#endif // ZH
 	}
 
 	TheMouse->setCursorTooltip( tooltip );

@@ -37,7 +37,7 @@
 #include "Common/BitFlags.h"
 #ifdef ZH
 #include "Common/BitFlagsIO.h"
-#endif
+#endif // ZH
 
 //-------------------------------------------------------------------------------------------------
 /** Kind of flags for determining groups of things that belong together
@@ -50,10 +50,10 @@ enum KindOfType
 	KINDOF_OBSTACLE = KINDOF_FIRST,	///< an obstacle to land-based pathfinders
 #ifdef OG
 	KINDOF_SELECTABLE,							///< Selectable
-#endif
+#endif // OG
 #ifdef ZH
 	KINDOF_SELECTABLE,							///< Actually means MOUSE-INTERACTABLE (doesn't mean you can select it!)
-#endif
+#endif // ZH
 	KINDOF_IMMOBILE,								///< fixed in location
 	KINDOF_CAN_ATTACK,							///< can attack
 	KINDOF_STICK_TO_TERRAIN_SLOPE,	///< should be stuck at ground level, aligned to terrain slope. requires that IMMOBILE bit is also set.
@@ -92,7 +92,7 @@ enum KindOfType
 	KINDOF_CASH_GENERATOR,					///< used to check if the unit generates cash... checked by cash hackers and whatever else comes up
 #ifdef OG
 	KINDOF_AIRFIELD,								///< unit has a runway that planes can takeoff/land on
-#endif
+#endif // OG
 	KINDOF_DRAWABLE_ONLY,						///< template is used only to create drawables (not Objects)
 	KINDOF_MP_COUNT_FOR_VICTORY,		///< If a player loses all his buildings that have this kindof in a multiplayer game, he loses.
 	KINDOF_REBUILD_HOLE,						///< a GLA rebuild hole
@@ -134,10 +134,10 @@ enum KindOfType
 	KINDOF_PRODUCED_AT_HELIPAD,			///< ugh... hacky fix for comanche. (srj)
 #ifdef OG
 	KINDOF_DRONE,										///< Object drone type -- used for filtering them out of battle plan bonuses and whatever else may come up.
-#endif
+#endif // OG
 #ifdef ZH
 	KINDOF_DRONE,										///< Object drone type -- used for filtering them out of battle plan bonuses, making un-snipable, and whatever else may come up.
-#endif
+#endif // ZH
 	KINDOF_CAN_SEE_THROUGH_STRUCTURE,///< Structure does not block line of sight.
 	KINDOF_BALLISTIC_MISSILE,				///< Large ballistic missiles that are specifically large enough to be targetted by base defenses.
 	KINDOF_CLICK_THROUGH,						///< Objects with this will never be picked by mouse interactions!
@@ -186,7 +186,7 @@ enum KindOfType
 	KINDOF_DEMOTRAP,								///< Added strictly only for disarming purposes. They don't act like mines which have rendering and selection implications!
 	KINDOF_CONSERVATIVE_BUILDING,		///< Conservative structures aren't considered part of your base for sneak attack boundary calculations...
 	KINDOF_IGNORE_DOCKING_BONES,		///< Structure will not look up docking bones. Patch 1.03 hack.
-#endif
+#endif // ZH
 
 	KINDOF_COUNT										// total number of kindofs
 
@@ -237,7 +237,7 @@ extern KindOfMaskType KINDOFMASK_NONE;	// inits to all zeroes
 #ifdef ZH
 extern KindOfMaskType KINDOFMASK_FS;		// Initializes all FS types for faction structures.
 void initKindOfMasks();
-#endif
+#endif // ZH
 
 #endif	// __KINDOF_H_
 

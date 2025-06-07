@@ -63,7 +63,7 @@ public:
 	virtual int Create(void) { assert(0); return 1; }
 	virtual int Delete(void) { assert(0); return 1; }
 
-#endif
+#endif // ZH
 	virtual bool Is_Available(int forced=false);
 	virtual bool Is_Open(void) const;
 	virtual int Open(char const *filename, int rights=READ);

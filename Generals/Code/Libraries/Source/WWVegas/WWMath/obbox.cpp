@@ -26,31 +26,31 @@
  *                                                                                             *
 #ifdef OG
  *                       Author:: Greg_h                                                       *
-#endif
+#endif // OG
 #ifdef ZH
  *                    Org Author:: Greg_h                                                       *
-#endif
+#endif // ZH
  *                                                                                             *
 #ifdef OG
  *                     $Modtime:: 8/23/99 2:10p                                               $*
-#endif
+#endif // OG
 #ifdef ZH
  *                       Author : Kenny Mitchell                                               * 
-#endif
+#endif // ZH
  *                                                                                             *
 #ifdef OG
  *                    $Revision:: 23                                                          $*
 
-#endif
+#endif // OG
 #ifdef ZH
  *                     $Modtime:: 06/26/02 4:04p                                             $*
  *                                                                                             *
  *                    $Revision:: 24                                                          $*
-#endif
+#endif // ZH
  *                                                                                             *
 #ifdef ZH
  * 06/26/02 KM Matrix name change to avoid MAX conflicts                                       *
-#endif
+#endif // ZH
  *---------------------------------------------------------------------------------------------*
  * Functions:                                                                                  *
  *   OBBoxClass::OBBoxClass -- Constructor that computes the box for a set of point            *
@@ -259,10 +259,10 @@ void OBBoxClass::Init_From_Box_Points(Vector3 * points,int num)
 
 #ifdef OG
 	Basis = Matrix3(axis0,axis1,axis2);
-#endif
+#endif // OG
 #ifdef ZH
 	Basis = Matrix3x3(axis0,axis1,axis2);
-#endif
+#endif // ZH
 
 	/*
 	** Center is the average of all of the points

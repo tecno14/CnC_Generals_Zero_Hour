@@ -68,10 +68,10 @@ public:
 	
 #ifdef OG
 	inline Energy() : m_energyProduction(0), m_energyConsumption(0), m_owner(NULL) { }
-#endif
+#endif // OG
 #ifdef ZH
 	Energy();
-#endif
+#endif // ZH
 
 	// reset energy information to base values.
 	void init( Player *owner)
@@ -84,10 +84,10 @@ public:
 	/// return current energy production in kilowatts
 #ifdef OG
 	Int getProduction() const { return m_energyProduction; }
-#endif
+#endif // OG
 #ifdef ZH
 	Int getProduction() const;
-#endif
+#endif // ZH
 
 	/// return current energy consumption in kilowatts
 	Int getConsumption() const { return m_energyConsumption; }
@@ -110,7 +110,7 @@ public:
 
 	void setPowerSabotagedTillFrame( UnsignedInt frame ) { m_powerSabotagedTillFrame = frame; }
 	UnsignedInt getPowerSabotagedTillFrame() const { return m_powerSabotagedTillFrame; }
-#endif
+#endif // ZH
 
 	/**
 		return the percentage of energy needed that we actually produce, as a 0.0 ... 1.0 fraction.
@@ -133,7 +133,7 @@ private:
 	Int		m_energyConsumption;	///< level of energy consumption, in kw
 #ifdef ZH
 	UnsignedInt m_powerSabotagedTillFrame; ///< If power is sabotaged, the frame will be greater than now.
-#endif
+#endif // ZH
 	Player *m_owner;						///< Tight pointer to the Player I am intrinsic to.
 };
 

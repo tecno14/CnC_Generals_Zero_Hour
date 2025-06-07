@@ -35,13 +35,13 @@
 #ifdef ZH
 #include "Common/GameAudio.h"
 #include "Common/MiscAudio.h"
-#endif
+#endif // ZH
 #include "GameClient/Anim2D.h"
 #include "GameClient/FXList.h"
 #include "GameClient/InGameUI.h"
 #ifdef ZH
 #include "GameClient/Drawable.h"
-#endif
+#endif // ZH
 #include "GameLogic/GameLogic.h"
 #include "GameLogic/Object.h"
 #include "GameLogic/Module/CrateCollide.h"
@@ -52,7 +52,7 @@
 //#pragma optimize("", off)
 //#pragma MESSAGE("************************************** WARNING, optimization disabled for debugging purposes")
 #endif
-#endif
+#endif // ZH
 
 //-------------------------------------------------------------------------------------------------
 //-------------------------------------------------------------------------------------------------
@@ -195,7 +195,7 @@ Bool CrateCollide::isValidToExecute( const Object *other ) const
 	if( other->isKindOf( KINDOF_PARACHUTE ) )
 		return FALSE;
 
-#endif
+#endif // ZH
 	return TRUE;
 #ifdef ZH
 }
@@ -220,7 +220,7 @@ void CrateCollide::doSabotageFeedbackFX( const Object *other, SabotageVictimType
     {
       soundToPlay = TheAudio->getMiscAudio()->m_sabotageResetTimerBuilding;
       break;
-#endif
+#endif // ZH
 }
 #ifdef ZH
     case 	CrateCollide::SAB_VICTIM_DROP_ZONE:
@@ -248,7 +248,7 @@ void CrateCollide::doSabotageFeedbackFX( const Object *other, SabotageVictimType
 
 }
 
-#endif
+#endif // ZH
 
 // ------------------------------------------------------------------------------------------------
 /** CRC */

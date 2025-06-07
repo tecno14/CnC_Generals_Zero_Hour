@@ -50,7 +50,7 @@ __forceinline void ProfileGetTime(__int64 &t)
     pop eax
   };
 }
-#endif
+#endif // ZH
 
 #ifdef _INTERNAL
 // for occasional debugging...
@@ -78,7 +78,7 @@ void GetPrecisionTimerTicksPerSec(Int64* t)
 
 //Kris: Plugged in Martin's code to optimize timer setup.
 #define HOFFESOMMER_REPLACEMENT_CODE
-#endif
+#endif // ZH
 
 //-------------------------------------------------------------------------------------------------
 void InitPrecisionTimer()
@@ -140,7 +140,7 @@ void InitPrecisionTimer()
     avg = d01 < d12 ? n[ 0 ] + n[ 1 ] : n[ 1 ] + n[ 2 ];
   }
   else
-#endif
+#endif // ZH
 {
 #ifdef ZH
     avg = d02 < d12 ? n[ 0 ] + n[ 2 ] : n[ 1 ] + n[ 2 ];
@@ -157,7 +157,7 @@ void InitPrecisionTimer()
 	//Kris: With total disrespect, this code costs 5 real seconds of init time
 	//whenever we fire up the game.
 
-#endif
+#endif // ZH
 #ifdef USE_QPF
 	QueryPerformanceFrequency((LARGE_INTEGER*)&s_ticksPerSec);
 #else
@@ -215,7 +215,7 @@ void InitPrecisionTimer()
 #ifdef ZH
 	#endif
 		
-#endif
+#endif // ZH
 #endif
 
 }

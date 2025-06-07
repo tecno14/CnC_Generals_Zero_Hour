@@ -114,10 +114,10 @@ void FlammableUpdate::onDamage( DamageInfo *damageInfo )
 		Object *me = getObject();
 #ifdef OG
 		if( ((me->getStatusBits() & OBJECT_STATUS_AFLAME) == 0) && ((me->getStatusBits() & OBJECT_STATUS_BURNED) == 0) )
-#endif
+#endif // OG
 #ifdef ZH
 		if( !me->getStatusBits().test( OBJECT_STATUS_AFLAME ) && !me->getStatusBits().test( OBJECT_STATUS_BURNED ) )
-#endif
+#endif // ZH
 		{
 			// If I'm not on fire, and I haven't burned up, see if I should try to catch fire.
 			m_flameDamageLimit -= damageInfo->out.m_actualDamageDealt;
@@ -150,10 +150,10 @@ UpdateSleepTime FlammableUpdate::update( void )
 		// So this status is set, but I am still aflame on an independent timer.
 #ifdef OG
 		me->setStatus( OBJECT_STATUS_BURNED );
-#endif
+#endif // OG
 #ifdef ZH
 		me->setStatus( MAKE_OBJECT_STATUS_MASK( OBJECT_STATUS_BURNED ) );
-#endif
+#endif // ZH
 		me->setModelConditionState( MODELCONDITION_SMOLDERING );
 	}
 
@@ -162,10 +162,10 @@ UpdateSleepTime FlammableUpdate::update( void )
 		// This is the important one.  I am no longer on fire.
 #ifdef OG
 		if( (me->getStatusBits() & OBJECT_STATUS_BURNED) != 0 )
-#endif
+#endif // OG
 #ifdef ZH
 		if( me->getStatusBits().test( OBJECT_STATUS_BURNED ) )
-#endif
+#endif // ZH
 		{
 			// If I am burned, then I will never catch fire again.
 			m_status = FS_BURNED;
@@ -178,10 +178,10 @@ UpdateSleepTime FlammableUpdate::update( void )
 		stopBurningSound();
 #ifdef OG
 		me->clearStatus( OBJECT_STATUS_AFLAME );
-#endif
+#endif // OG
 #ifdef ZH
 		me->clearStatus( MAKE_OBJECT_STATUS_MASK( OBJECT_STATUS_AFLAME ) );
-#endif
+#endif // ZH
 		me->getBodyModule()->setAflame( FALSE );
 		me->clearModelConditionState( MODELCONDITION_AFLAME );
 	}
@@ -218,10 +218,10 @@ void FlammableUpdate::tryToIgnite()
 		Object *me = getObject();
 #ifdef OG
 		me->setStatus( OBJECT_STATUS_AFLAME );
-#endif
+#endif // OG
 #ifdef ZH
 		me->setStatus( MAKE_OBJECT_STATUS_MASK( OBJECT_STATUS_AFLAME ) );
-#endif
+#endif // ZH
 		me->getBodyModule()->setAflame( TRUE );
 		me->setModelConditionState( MODELCONDITION_AFLAME );
 		startBurningSound();

@@ -28,28 +28,28 @@
  *                                                                                             *
 #ifdef OG
  *                      $Author:: Greg_h                                                      $*
-#endif
+#endif // OG
 #ifdef ZH
  *                      $Author:: Kenny Mitchell                                               * 
-#endif
+#endif // ZH
  *                                                                                             *
 #ifdef OG
  *                     $Modtime:: 6/21/01 10:22a                                              $*
-#endif
+#endif // OG
 #ifdef ZH
  *                     $Modtime:: 06/26/02 4:04p                                             $*
-#endif
+#endif // ZH
  *                                                                                             *
 #ifdef OG
  *                    $Revision:: 7                                                           $*
-#endif
+#endif // OG
 #ifdef ZH
  *                    $Revision:: 8                                                           $*
-#endif
+#endif // ZH
  *                                                                                             *
 #ifdef ZH
  * 06/26/02 KM Matrix name change to avoid MAX conflicts                                       *
-#endif
+#endif // ZH
  *---------------------------------------------------------------------------------------------*
  * Functions:                                                                                  *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
@@ -108,11 +108,11 @@ public:
 #ifdef OG
 	void						Set_Texture_Transform(const Matrix4 & view_to_texture,float texsize);
 	const Matrix4 &		Get_Texture_Transform(void) const;
-#endif
+#endif // OG
 #ifdef ZH
 	void						Set_Texture_Transform(const Matrix4x4 & view_to_texture,float texsize);
 	const Matrix4x4 &		Get_Texture_Transform(void) const;
-#endif
+#endif // ZH
 
 	void						Set_Gradient_U_Coord(float coord) { GradientUCoord = coord; }
 	float						Get_Gradient_U_Coord(void) { return GradientUCoord; }
@@ -124,7 +124,7 @@ public:
 	virtual void			Apply(int uv_array_index);
 #ifdef ZH
 	virtual void			Calculate_Texture_Matrix(Matrix4x4 &tex_matrix);
-#endif
+#endif // ZH
 
 protected:
 	
@@ -135,11 +135,11 @@ protected:
 #ifdef OG
 	Matrix4					ViewToTexture;
 	Matrix4					ViewToPixel;
-#endif
+#endif // OG
 #ifdef ZH
 	Matrix4x4				ViewToTexture;
 	Matrix4x4					ViewToPixel;
-#endif
+#endif // ZH
 	Vector3					ViewSpaceProjectionNormal;
 	float						GradientUCoord;
 };
@@ -172,7 +172,7 @@ protected:
 	TextureMapperClass *InternalMapper;
 };
 
-#endif
+#endif // ZH
 inline void MatrixMapperClass::Set_Flag(uint32 flag,bool onoff)	
 { 
 	if (onoff) { 
@@ -199,10 +199,10 @@ inline MatrixMapperClass::MappingType MatrixMapperClass::Get_Type(void)
 
 #ifdef OG
 inline const Matrix4 & MatrixMapperClass::Get_Texture_Transform(void) const	
-#endif
+#endif // OG
 #ifdef ZH
 inline const Matrix4x4 & MatrixMapperClass::Get_Texture_Transform(void) const	
-#endif
+#endif // ZH
 { 
 	return ViewToTexture; 
 }

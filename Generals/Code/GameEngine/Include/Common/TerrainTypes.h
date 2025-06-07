@@ -62,11 +62,11 @@ typedef enum
 #ifdef OG
 	TERRAIN_ASPHALT,
 	TERRAIN_CONCRETE,
-#endif
+#endif // OG
 #ifdef ZH
 	//TERRAIN_ASPHALT,
 	//TERRAIN_CONCRETE,
-#endif
+#endif // ZH
 	TERRAIN_DIRT,
 	TERRAIN_GRASS,
 	TERRAIN_TRANSITION,
@@ -95,7 +95,7 @@ typedef enum
 	TERRAIN_CHINA,
 	TERRAIN_ACCENT_ROCK,
 	TERRAIN_URBAN,
-#endif
+#endif // ZH
 
 	TERRAIN_NUM_CLASSES  // keep this last
 
@@ -121,11 +121,11 @@ static char *terrainTypeNames[] =
 #ifdef OG
 	"ASPHALT",
 	"CONCRETE",
-#endif
+#endif // OG
 #ifdef ZH
 	//"ASPHALT",
 	//"CONCRETE",
-#endif
+#endif // ZH
 	"DIRT",
 	"GRASS",
 	"TRANSITION",
@@ -154,7 +154,7 @@ static char *terrainTypeNames[] =
 	"CHINA",
 	"ROCK_ACCENT",
 	"URBAN",
-#endif
+#endif // ZH
 
 	NULL
 };

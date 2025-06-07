@@ -49,7 +49,7 @@ public:
 	const ObjectCreationList* m_ocl;			///< object creaton list to make
 #ifdef ZH
 	Bool m_transferPreviousHealth; ///< Transfers previous health before death to the new object created.
-#endif
+#endif // ZH
 
 	CreateObjectDieModuleData();
 

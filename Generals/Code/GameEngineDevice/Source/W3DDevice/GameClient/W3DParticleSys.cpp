@@ -28,7 +28,7 @@
 
 #ifdef ZH
 #include "common/GlobalData.h"
-#endif
+#endif // ZH
 #include "GameClient/Color.h"
 #include "W3DDevice/GameClient/W3DParticleSys.h"
 #include "W3DDevice/GameClient/W3DAssetManager.h"
@@ -37,7 +37,7 @@
 #ifdef ZH
 #include "W3DDevice/GameClient/W3DSmudge.h"
 #include "W3DDevice/GameClient/W3DSnow.h"
-#endif
+#endif // ZH
 #include "WW3D2/Camera.h"
 #ifdef ZH
 
@@ -46,7 +46,7 @@
 //#pragma optimize("", off)
 //#pragma MESSAGE("************************************** WARNING, optimization disabled for debugging purposes")
 #endif
-#endif
+#endif // ZH
 
 //------------------------------------------------------------------------------ Performance Timers 
 //#include "Common/PerfMetrics.h"
@@ -131,7 +131,7 @@ void W3DParticleSystemManager::doParticles(RenderInfoClass &rinfo)
 	Int visibleSmudgeCount = 0;
 	if (TheSmudgeManager)
 		TheSmudgeManager->setSmudgeCountLastFrame(0);	//keep track of visible smudges
-#endif
+#endif // ZH
 
  	const FrustumClass & frustum = rinfo.Camera.Get_Frustum();
 	AABoxClass bbox;
@@ -159,7 +159,7 @@ void W3DParticleSystemManager::doParticles(RenderInfoClass &rinfo)
 	SmudgeSet *set=NULL;
 	if (TheSmudgeManager)
 		set=TheSmudgeManager->addSmudgeSet();	//global smudge set through which all smudges are rendered.
-#endif
+#endif // ZH
 
 	ParticleSystemManager::ParticleSystemList &particleSysList = TheParticleSystemManager->getAllParticleSystems();
 	for( ParticleSystemManager::ParticleSystemListIt it = particleSysList.begin(); it != particleSysList.end(); ++it)
@@ -190,7 +190,7 @@ void W3DParticleSystemManager::doParticles(RenderInfoClass &rinfo)
 						continue;
 
 					if (WWMath::Fabs( pos->y - bcY ) > ( beY + psize ) )
-#endif
+#endif // ZH
 			continue;
 
 #ifdef ZH
@@ -208,7 +208,7 @@ void W3DParticleSystemManager::doParticles(RenderInfoClass &rinfo)
 			}
 			continue;
 		}
-#endif
+#endif // ZH
 
 		/// @todo lorenzen sez: declare these outside the sys loop, and put some in registers
 		// initialize them here still, of course
@@ -232,7 +232,7 @@ void W3DParticleSystemManager::doParticles(RenderInfoClass &rinfo)
 			if (p->isInvisible())
 				continue;
 
-#endif
+#endif // OG
 			pos = p->getPosition();
 			psize = p->getSize();
 
@@ -406,5 +406,5 @@ void W3DParticleSystemManager::doParticles(RenderInfoClass &rinfo)
 		TheSmudgeManager->reset();	//clear all the smudges after rendering since we fill again each frame.
 		TheSmudgeManager->setSmudgeCountLastFrame(visibleSmudgeCount);
 	}
-#endif
+#endif // ZH
 }

@@ -40,7 +40,7 @@ class Thing;
 enum StealthLookType;
 #ifdef ZH
 enum EvaMessage;
-#endif
+#endif // ZH
 class FXList;
 
 enum
@@ -54,11 +54,11 @@ enum
 #ifdef ZH
 	STEALTH_ONLY_WITH_BLACK_MARKET			= 0x00000040,
 	STEALTH_NOT_WHILE_TAKING_DAMAGE			= 0x00000080,
-#endif
+#endif // ZH
 	STEALTH_NOT_WHILE_FIRING_WEAPON			= (STEALTH_NOT_WHILE_FIRING_PRIMARY | STEALTH_NOT_WHILE_FIRING_SECONDARY | STEALTH_NOT_WHILE_FIRING_TERTIARY),
 #ifdef ZH
   STEALTH_NOT_WHILE_RIDERS_ATTACKING  = 0x00000100,
-#endif
+#endif // ZH
 };
 
 #ifdef DEFINE_STEALTHLEVEL_NAMES
@@ -74,7 +74,7 @@ static const char *TheStealthLevelNames[] =
 	"NO_BLACK_MARKET",
 	"TAKING_DAMAGE",
   "RIDERS_ATTACKING",
-#endif
+#endif // ZH
 	NULL
 };
 #endif
@@ -90,28 +90,28 @@ public:
 	UnsignedInt		m_stealthLevel;
 	UnsignedInt   m_hintDetectableStates;
 
-#endif
+#endif // OG
 #ifdef ZH
 	ObjectStatusMaskType m_hintDetectableStates;
 	ObjectStatusMaskType m_requiredStatus;
 	ObjectStatusMaskType m_forbiddenStatus;
 	FXList				*m_disguiseRevealFX;
 	FXList				*m_disguiseFX;
-#endif
+#endif // ZH
 	Real					m_stealthSpeed;
 	Real					m_friendlyOpacityMin;
 	Real					m_friendlyOpacityMax;
 #ifdef OG
 	UnsignedInt		m_pulseFrames;
 	Bool					m_teamDisguised;
-#endif
+#endif // OG
 	Real					m_revealDistanceFromTarget;
 #ifdef OG
 	Bool					m_orderIdleEnemiesToAttackMeUponReveal;
 	FXList				*m_disguiseRevealFX;
 	FXList				*m_disguiseFX;
 	Bool					m_innateStealth;
-#endif
+#endif // OG
 	UnsignedInt		m_disguiseTransitionFrames;
 	UnsignedInt		m_disguiseRevealTransitionFrames;
 #ifdef ZH
@@ -126,7 +126,7 @@ public:
 	Bool					m_teamDisguised;
 	Bool					m_useRiderStealth;
   Bool          m_grantedBySpecialPower;
-#endif
+#endif // ZH
 
 #ifdef OG
 	StealthUpdateModuleData()
@@ -151,11 +151,11 @@ public:
 		m_disguiseRevealTransitionFrames = 0;
 	}
 
-#endif
+#endif // OG
 #ifdef ZH
   StealthUpdateModuleData();
 
-#endif
+#endif // ZH
 	static void buildFieldParse(MultiIniFieldParse& p);
 
 };
@@ -175,7 +175,7 @@ public:
 #ifdef ZH
   virtual StealthUpdate* getStealth() { return this; }
 
-#endif
+#endif // ZH
 	virtual UpdateSleepTime update();
 
 	//Still gets called, even if held -ML
@@ -200,7 +200,7 @@ public:
 
   Bool isGrantedBySpecialPower( void ) { return getStealthUpdateModuleData()->m_grantedBySpecialPower; }
 	Bool isTemporaryGrant() { return m_framesGranted > 0; }
-#endif
+#endif // ZH
 
 protected:
 
@@ -209,7 +209,7 @@ protected:
 	Real getRevealDistanceFromTarget() const { return getStealthUpdateModuleData()->m_revealDistanceFromTarget; }
 #ifdef OG
 	Bool allowedToStealth() const;
-#endif
+#endif // OG
 	void hintDetectableWhileUnstealthed( void ) ;
 
 	void changeVisualDisguise();
@@ -221,7 +221,7 @@ private:
 	UnsignedInt						m_detectionExpiresFrame;
 #ifdef ZH
 	mutable UnsignedInt		m_nextBlackMarketCheckFrame;
-#endif
+#endif // ZH
 	Bool									m_enabled;
 	
 	Real                  m_pulsePhaseRate;
@@ -236,13 +236,13 @@ private:
 	Bool									m_disguised;								//We're disguised as far as other players are concerned.
 #ifdef ZH
 	UnsignedInt						m_framesGranted;						//0 means forever... everything else is number of frames before stealth lost.
-#endif
+#endif // ZH
 
 	// runtime xfer members (does not need saving)
 	Bool									m_xferRestoreDisguise;			//Tells us we need to restore our disguise
 #ifdef ZH
 	WeaponSetType					m_requiresWeaponSetType;
-#endif
+#endif // ZH
 
 };
 

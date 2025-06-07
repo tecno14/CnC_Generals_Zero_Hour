@@ -26,31 +26,31 @@
  *                                                                                             *
 #ifdef OG
  *                       Author:: Greg_h                                                       *
-#endif
+#endif // OG
 #ifdef ZH
  *                   Org Author:: Greg_h                                                       *
-#endif
+#endif // ZH
  *                                                                                             *
 #ifdef OG
  *                     $Modtime:: 1/08/01 10:04a                                              $*
-#endif
+#endif // OG
 #ifdef ZH
  *                       Author : Kenny Mitchell                                               * 
-#endif
+#endif // ZH
  *                                                                                             *
 #ifdef OG
  *                    $Revision:: 1                                                           $*
-#endif
+#endif // OG
 #ifdef ZH
  *                     $Modtime:: 06/27/02 9:23a                                              $*
-#endif
+#endif // ZH
  *                                                                                             *
 #ifdef ZH
  *                    $Revision:: 2                                                           $*
  *                                                                                             *
  * 
  * 06/27/02 KM Shader system MAX plugin updates                                       *
-#endif
+#endif // ZH
  *---------------------------------------------------------------------------------------------*
  * Functions:                                                                                  *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
@@ -119,10 +119,10 @@ public:
 		MAX_PASSES = 4,					// maximum number of material passes supported
 #ifdef OG
 		MAX_STAGES = 2,					// maximum number of texture stages supported in a single pass
-#endif
+#endif // OG
 #ifdef ZH
 		MAX_STAGES = 8,					// maximum number of texture stages supported in a single pass
-#endif
+#endif // ZH
 	};
 
 	/*
@@ -253,7 +253,7 @@ public:
 
 	// For per-pixel lighting KM
 	void							Compute_Tangent_Basis();
-#endif
+#endif // ZH
 
 	/*
 	** World information managment.  Used to give the mesh builder information

@@ -46,10 +46,10 @@ void __cdecl Print_Win32Error(unsigned long win32Error)
 
 #ifdef OG
 	WWDEBUG_SAY(((const char*)lpMsgBuf));
-#endif
+#endif // OG
 #ifdef ZH
 	WWDEBUG_SAY(("Win32 Error: %s\n", (const char*)lpMsgBuf));
-#endif
+#endif // ZH
 	LocalFree(lpMsgBuf);
 }
 #endif

@@ -66,4 +66,4 @@ protected:
 
 #endif // PROFILE_RESULT_H
 
-#endif
+#endif // ZH

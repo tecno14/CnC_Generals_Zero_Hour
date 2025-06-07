@@ -18,10 +18,10 @@
 
 #ifdef OG
 /* $Header: /Commando/Code/ww3d2/htreemgr.cpp 1     1/22/01 3:36p Greg_h $ */
-#endif
+#endif // OG
 #ifdef ZH
 /* $Header: /Commando/Code/ww3d2/htreemgr.cpp 2     9/19/01 6:17p Jani_p $ */
-#endif
+#endif // ZH
 /*********************************************************************************************** 
  ***                            Confidential - Westwood Studios                              *** 
  *********************************************************************************************** 
@@ -34,17 +34,17 @@
  *                                                                                             * 
 #ifdef OG
  *                     $Modtime:: 1/08/01 10:04a                                              $* 
-#endif
+#endif // OG
 #ifdef ZH
  *                     $Modtime:: 9/14/01 12:01p                                              $* 
-#endif
+#endif // ZH
  *                                                                                             * 
 #ifdef OG
  *                    $Revision:: 1                                                           $* 
-#endif
+#endif // OG
 #ifdef ZH
  *                    $Revision:: 2                                                           $* 
-#endif
+#endif // ZH
  *                                                                                             * 
  *---------------------------------------------------------------------------------------------* 
  * Functions:                                                                                  * 
@@ -139,7 +139,7 @@ void HTreeManagerClass::Free_All_Trees(void)
 	// Clear the hash table
 	TreeHash.Remove_All();
 
-#endif
+#endif // ZH
 	for (int treeidx=0; treeidx < MAX_TREES; treeidx++) {
 		if (TreePtr[treeidx] != NULL) {
 			delete TreePtr[treeidx];
@@ -196,11 +196,11 @@ void HTreeManagerClass::Free_All_Trees_With_Exclusion_List(const W3DExclusionLis
 		StringClass lower_case_name(TreePtr[treeidx]->Get_Name(),true);
 		_strlwr(lower_case_name.Peek_Buffer());
 		TreeHash.Insert(lower_case_name,TreePtr[treeidx]);
-#endif
+#endif // ZH
 }
 #ifdef ZH
 }
-#endif
+#endif // ZH
 
 /*********************************************************************************************** 
  * HTreeManagerClass::Load_Tree -- load a hierarchy tree from a file                           * 
@@ -246,7 +246,7 @@ int HTreeManagerClass::Load_Tree(ChunkLoadClass & cload)
 		StringClass lower_case_name(newtree->Get_Name(),true);
 		_strlwr(lower_case_name.Peek_Buffer());
 		TreeHash.Insert(lower_case_name,newtree);
-#endif
+#endif // ZH
 	}
 
 	return 0;
@@ -322,12 +322,12 @@ HTreeClass * HTreeManagerClass::Get_Tree(const char * name)
 	for (int i=0; i<NumTrees; i++) {
 		if (TreePtr[i] && (stricmp(name,TreePtr[i]->Get_Name()) == 0)) {
 
-#endif
+#endif // OG
 #ifdef ZH
 	StringClass lower_case_name(name,true);
 	_strlwr(lower_case_name.Peek_Buffer());
 	return TreeHash.Get(lower_case_name);
-#endif
+#endif // ZH
 
 #ifdef OG
 			return TreePtr[i];
@@ -335,7 +335,7 @@ HTreeClass * HTreeManagerClass::Get_Tree(const char * name)
 	}
 	return NULL;
 
-#endif
+#endif // OG
 #ifdef ZH
 //	for (int i=0; i<NumTrees; i++) {
 //		if (TreePtr[i] && (stricmp(name,TreePtr[i]->Get_Name()) == 0)) {
@@ -344,7 +344,7 @@ HTreeClass * HTreeManagerClass::Get_Tree(const char * name)
 //		}
 //	}
 //	return NULL;
-#endif
+#endif // ZH
 }
 
 

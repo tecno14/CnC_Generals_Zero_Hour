@@ -17,7 +17,7 @@
 **	along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#endif
+#endif // ZH
 //{{NO_DEPENDENCIES}}
 // Microsoft Developer Studio generated include file.
 // Used by WorldBuilder.rc
@@ -143,7 +143,7 @@
 #define IDD_MAPOBJECT_PROPPAGE_VISUAL   237
 #define IDD_MAPOBJECT_PROPPAGE_UPGRADES 238
 #define IDD_MAPOBJECT_PROPPAGE_SOUND    239
-#endif
+#endif // ZH
 #define IDC_HEIGHT_COMBO                1000
 #define IDC_CELL_WIDTH                  1001
 #define IDC_INITIAL_HEIGHT              1002
@@ -292,17 +292,17 @@
 #define IDC_SCRIPT_NAME                 1127
 #ifdef ZH
 #define IDC_VERIFY                      1127
-#endif
+#endif // ZH
 #define IDC_RICH_EDIT_HERE              1128
 #ifdef OG
 #define IDC_CONDITION_LIST              1129
 
-#endif
+#endif // OG
 #ifdef ZH
 #define IDC_PATCH_GC                    1129
 #define IDC_CONDITION_TREE              1130
 #define IDC_CONDITION_LIST              1130
-#endif
+#endif // ZH
 #define IDC_EDIT_CONDITION              1131
 #define IDC_CONDITION_TYPE              1132
 #define IDC_CAPTION                     1133
@@ -363,7 +363,7 @@
 #define IDC_PASSABLE_CHECK              1166
 #ifdef ZH
 #define IDC_AUTO_VERIFY                 1166
-#endif
+#endif // ZH
 #define IDC_EASY                        1167
 #define IDC_CHECK2                      1167
 #define IDC_LR_POPUP2                   1167
@@ -377,7 +377,7 @@
 #define IDC_GROUP_ACTIVE                1169
 #ifdef ZH
 #define IDC_MAPOBJECT_Selectable2       1169
-#endif
+#endif // ZH
 #define IDC_PLAYERDISPLAYNAME           1170
 #define IDC_CHECK4                      1170
 #define IDC_TRANSPORTS_RETURN           1170
@@ -431,7 +431,7 @@
 #define IDC_EVERY_FRAME                 1199
 #ifdef ZH
 #define IDC_SCALE_OFF                   1199
-#endif
+#endif // ZH
 #define IDC_MIN_UNIT7                   1200
 #define IDC_RADIO2                      1200
 #define IDC_USERMAPS                    1200
@@ -440,7 +440,7 @@
 #define IDC_EVERY_SECOND                1200
 #ifdef ZH
 #define IDC_SCALE_ON                    1200
-#endif
+#endif // ZH
 #define IDC_MAX_UNIT7                   1201
 #define IDC_RADIO3                      1201
 #define IDC_TeamGeneric_Script4         1201
@@ -596,7 +596,7 @@
 #define IDC_STATIC_MAPOBJECT_SOUND      1381
 #define IDC_STATIC_MAPOBJECT_VISUAL     1382
 #define IDC_MAPOBJECT_DISTANCE          1383
-#endif
+#endif // ZH
 #define ID_BRUSH_TOOL                   32771
 #define IDM_ShowGrid                    32772
 #define ID_FEATHERTOOL                  32791
@@ -660,13 +660,13 @@
 #define ID_LOOK_SOUTH                   32959
 #define ID_LOOK_WEST                    32960
 #define ID_LOOK_EAST                    32961
-#endif
+#endif // OG
 #ifdef ZH
 #define ID_RULER_TOOL                   32958
 #define ID_SCRIPT_EDIT                  32959
 #define ID_TEAM_EDIT                    32960
 
-#endif
+#endif // ZH
 #define ID_LOCK_HORIZONTAL              32962
 #define ID_LOCK_VERTICAL                32963
 #define ID_WAYPOINT_TOOL                32964
@@ -716,7 +716,7 @@
 #define ID_VIEW_WEAPONRANGES            33010
 #define ID_HIGHLIGHT_TESTART            33011
 #define ID_SHOW_LETTERBOX               33012
-#endif
+#endif // ZH
 #define ID_TEXTURESIZING_REMOVECLIFFTEXMAPPING 33014
 #define ID_VIEW_LAYERS_LIST             33015
 #define ID_INSERTNEWLAYER               33017
@@ -752,7 +752,7 @@
 #define ID_SELECTLAYEROBJECT            33344
 #define ID_SELECTACTIVELAYER            33345
 #define ID_VIEW_SHOW_SOUND_CIRCLES      33346
-#endif
+#endif // ZH
 #define IDS_NEW                         61446
 #define IDS_RESIZE                      61447
 #define IDS_REMOVING_INUSE_TEAM         61448
@@ -795,7 +795,7 @@
 #define IDS_DUPLICATE_TEAM_REMOVED      61483
 #define IDS_PLAYERLESS_TEAM_REMOVED     61484
 #define IDS_NEED_TO_FIX_TEAMS           61485
-#endif
+#endif // ZH
 
 // Next default values for new objects
 // 
@@ -806,12 +806,12 @@
 #define _APS_NEXT_RESOURCE_VALUE        232
 #define _APS_NEXT_COMMAND_VALUE         33344
 #define _APS_NEXT_CONTROL_VALUE         1326
-#endif
+#endif // OG
 #ifdef ZH
 #define _APS_NEXT_RESOURCE_VALUE        242
 #define _APS_NEXT_COMMAND_VALUE         33347
 #define _APS_NEXT_CONTROL_VALUE         1354
-#endif
+#endif // ZH
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif

@@ -27,28 +27,28 @@
 #ifdef OG
  *                       Author:: Patrick Smith                                                *
 
-#endif
+#endif // OG
 #ifdef ZH
  *                                                                                             *
  *                   Org Author:: Patrick Smith                                                *
-#endif
+#endif // ZH
  *                                                                                             *
 #ifdef OG
  *                     $Modtime:: 11/02/00 3:34p                                              $*
 
-#endif
+#endif // OG
 #ifdef ZH
  *                       Author:: Kenny Mitchell                                                *
  *                                                                                             *
  *                     $Modtime:: 5/29/02 11:00a                                              $*
-#endif
+#endif // ZH
  *                                                                                             *
 #ifdef OG
  *                    $Revision:: 27                                                          $*
-#endif
+#endif // OG
 #ifdef ZH
  *                    $Revision:: 29                                                          $*
-#endif
+#endif // ZH
  *                                                                                             *
  *---------------------------------------------------------------------------------------------*
  * Functions:                                                                                  *
@@ -57,7 +57,7 @@
  * 5/29/02 KM Added specific texture filename parameter support
  *---------------------------------------------------------------------------------------------*
  * Functions:                                                                                  *
-#endif
+#endif // ZH
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
 
@@ -84,10 +84,10 @@
 //////////////////////////////////////////////////////////////////////////////////
 #ifdef OG
 class EditableClass : public PersistClass
-#endif
+#endif // OG
 #ifdef ZH
 class EditableClass
-#endif
+#endif // ZH
 {
 public:
 
@@ -296,7 +296,7 @@ EditableClass::Unlock_Parameter (int i)
 		param->Set_Extension (extension);												\
 		plist_##_class.Add (param); }														\
 
-#endif
+#endif // ZH
 	#define DEFIDLIST_PARAM(_class, data, root_class_id) {							\
 		DefIDListParameterClass *param = W3DNEW DefIDListParameterClass (&data);	\
 		param->Set_Name (#data);																\
@@ -351,7 +351,7 @@ EditableClass::Unlock_Parameter (int i)
 	#define NAMED_FILENAME_PARAM(_class, data, name, desc, extension)
 	#define TEXTURE_FILENAME_PARAM(_class, data, desc, extension)
 	#define NAMED_TEXTURE_FILENAME_PARAM(_class, data, name, desc, extension)
-#endif
+#endif // ZH
 	#define DEFIDLIST_PARAM(_class, data, root_class_id) 							
 	#define CLASSID_DEFIDLIST_PARAM(_class, data, root_class_id, class_id, name) 	
 	#define ZONE_PARAM(_class, data, name) 											

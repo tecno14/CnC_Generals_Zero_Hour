@@ -66,7 +66,7 @@
 
 #ifdef ZH
 #include "WW3D2/shdlib.h"
-#endif
+#endif // ZH
 #ifdef _INTERNAL
 // for occasional debugging...
 //#pragma optimize("", off)
@@ -151,7 +151,7 @@ RTS3DScene::RTS3DScene()
 //	frenzyShader.Set_Depth_Mask(ShaderClass::DEPTH_WRITE_DISABLE);
 //	m_frenzyMaterialPass->Set_Shader(frenzyShader);
 
-#endif
+#endif // ZH
 
 	//Allocate memory to hold queue of visible renderobjects that need to be drawn last
 	//because they are forced translucent.
@@ -264,11 +264,11 @@ void RTS3DScene::flagOccludedObjects(CameraClass * camera)
 #ifdef OG
 	RayCollisionTestClass raytest(lineseg,&result,COLLISION_TYPE_ALL,false,false);
 	raytest.CollisionType=COLLISION_TYPE_ALL;
-#endif
+#endif // OG
 #ifdef ZH
 	RayCollisionTestClass raytest(lineseg,&result,COLL_TYPE_ALL,false,false);
 	raytest.CollisionType=COLL_TYPE_ALL;
-#endif
+#endif // ZH
 
 	m_occludedObjectsCount=0;
 
@@ -343,10 +343,10 @@ Bool RTS3DScene::castRay(RayCollisionTestClass & raytest, Bool testAll, Int coll
 
 #ifdef OG
 	tempRayTest.CollisionType = COLLISION_TYPE_ALL;
-#endif
+#endif // OG
 #ifdef ZH
 	tempRayTest.CollisionType = COLL_TYPE_ALL;
-#endif
+#endif // ZH
 	//check if a mesh is translucent before colliding with it. Skips headlights, etc.
 	tempRayTest.CheckTranslucent = true;
 
@@ -487,12 +487,12 @@ void RTS3DScene::Visibility_Check(CameraClass * camera)
 						{	robj->Set_Visible(false);
 							continue;
 
-#endif
+#endif // OG
 #ifdef ZH
 						{	
 							isVisible = FALSE;
 						  robj->Set_Visible(isVisible);
-#endif
+#endif // ZH
 						}
 						//assume normal rendering.
 						drawInfo->m_flags = DrawableInfo::ERF_IS_NORMAL;	//clear any rendering flags that may be in effect.
@@ -501,19 +501,19 @@ void RTS3DScene::Visibility_Check(CameraClass * camera)
             if ( ! isVisible )
               continue;
 
-#endif
+#endif // ZH
 						if (draw->getEffectiveOpacity() != 1.0f && m_translucentObjectsCount < TheGlobalData->m_maxVisibleTranslucentObjects)
 #ifdef OG
 						{	drawInfo->m_flags = DrawableInfo::ERF_IS_TRANSLUCENT;	//object is translucent
-#endif
+#endif // OG
 #ifdef ZH
 						{	drawInfo->m_flags |= DrawableInfo::ERF_IS_TRANSLUCENT;	//object is translucent
-#endif
+#endif // ZH
 							m_translucentObjectsBuffer[m_translucentObjectsCount++] = robj;
 						}
 #ifdef OG
 						else
-#endif
+#endif // OG
 						if (TheGlobalData->m_enableBehindBuildingMarkers && TheGameLogic->getShowBehindBuildingMarkers())
 						{
 							//visible drawable. Check if it's either an occluder or occludee
@@ -522,7 +522,7 @@ void RTS3DScene::Visibility_Check(CameraClass * camera)
 #ifdef ZH
 								//Make sure this object is not translucent so it's not rendered twice (from m_potentialOccluders and m_translucentObjectsBuffer)
 								if (drawInfo->m_flags ^ DrawableInfo::ERF_IS_TRANSLUCENT)
-#endif
+#endif // ZH
 								m_potentialOccluders[m_numPotentialOccluders++]=robj;
 								drawInfo->m_flags |= DrawableInfo::ERF_POTENTIAL_OCCLUDER;
 							}
@@ -533,7 +533,7 @@ void RTS3DScene::Visibility_Check(CameraClass * camera)
 							{	//object which could be occluded but still needs to be visible.
 #ifdef ZH
 								//We process transucent units twice (also in m_translucentObjectsBuffer) because we need to see them when occluded.
-#endif
+#endif // ZH
 								m_potentialOccludees[m_numPotentialOccludees++]=robj;
 								drawInfo->m_flags |= DrawableInfo::ERF_POTENTIAL_OCCLUDEE;
 							}
@@ -543,7 +543,7 @@ void RTS3DScene::Visibility_Check(CameraClass * camera)
 #ifdef ZH
 								//Make sure this object is not translucent so it's not rendered twice (from m_potentialOccluders and m_translucentObjectsBuffer)
 								if (drawInfo->m_flags ^ DrawableInfo::ERF_IS_TRANSLUCENT)	//make sure not translucent
-#endif
+#endif // ZH
 								m_nonOccludersOrOccludees[m_numNonOccluderOrOccludee++]=robj;
 								drawInfo->m_flags |= DrawableInfo::ERF_IS_NON_OCCLUDER_OR_OCCLUDEE;
 							}
@@ -687,10 +687,10 @@ void RTS3DScene::renderOneObject(RenderInfoClass &rinfo, RenderObjClass *robj, I
 		if (draw->isKindOf(KINDOF_INFANTRY))
 #ifdef OG
 		{	ambient = m_infantryAmbient;
-#endif
+#endif // OG
 #ifdef ZH
 		{	//ambient = m_infantryAmbient;  //has no effect - see comment on m_infantryAmbient
-#endif
+#endif // ZH
 			sceneLights = m_infantryLight;
 		}
 
@@ -746,15 +746,15 @@ void RTS3DScene::renderOneObject(RenderInfoClass &rinfo, RenderObjClass *robj, I
 		//Apply custom render pass for any drawables with heatvision enabled
 #ifdef OG
 		if (draw->getHeatVisionOpacity() != 0 ) 
-#endif
+#endif // OG
 #ifdef ZH
 		if (draw->getSecondMaterialPassOpacity() != 0 ) 
-#endif
+#endif // ZH
 		{
 #ifdef OG
 			rinfo.materialPassEmissiveOverride = draw->getHeatVisionOpacity();
 
-#endif
+#endif // OG
 #ifdef ZH
 			rinfo.materialPassEmissiveOverride = draw->getSecondMaterialPassOpacity();
 
@@ -763,38 +763,38 @@ void RTS3DScene::renderOneObject(RenderInfoClass &rinfo, RenderObjClass *robj, I
 			//	rinfo.Push_Material_Pass(m_heatVisionMaterialPass);
       //}
 			//else 
-#endif
+#endif // ZH
 			if (draw->getStealthLook() == STEALTHLOOK_VISIBLE_DETECTED )
 			{
 #ifdef ZH
 			  rinfo.materialPassEmissiveOverride = draw->getSecondMaterialPassOpacity();
-#endif
+#endif // ZH
 				// THIS WILL EXPLICITLY SKIP THE FIRST PASS SO THAT HEATVISION ONLY WILL RENDER
 				rinfo.Push_Override_Flags(RenderInfoClass::RINFO_OVERRIDE_ADDITIONAL_PASSES_ONLY);
 				rinfo.Push_Material_Pass(m_heatVisionOnlyPass);
 #ifdef OG
 				doExtraFlagsPop=TRUE;
-#endif
+#endif // OG
 #ifdef ZH
         doExtraFlagsPop = TRUE;
-#endif
+#endif // ZH
 			}
 			else
 			{
 				//THIS CALLS FOR THE HEATVISION TO RENDER
 #ifdef ZH
 			  rinfo.materialPassEmissiveOverride = draw->getSecondMaterialPassOpacity();
-#endif
+#endif // ZH
 				rinfo.Push_Material_Pass(m_heatVisionMaterialPass);
 			}
 #ifdef OG
 			doExtraMaterialPop=TRUE;
 
-#endif
+#endif // OG
 #ifdef ZH
 
 			doExtraMaterialPop = TRUE;
-#endif
+#endif // ZH
 		}
 	}
 	else
@@ -835,7 +835,7 @@ void RTS3DScene::renderOneObject(RenderInfoClass &rinfo, RenderObjClass *robj, I
 #ifdef ZH
     if( draw && draw->getReceivesDynamicLights() )
     {
-#endif
+#endif // ZH
 		// dynamic lights
 		RefRenderObjListIterator dynaLightIt(&m_dynamicLightList);	
 		for (dynaLightIt.First(); !dynaLightIt.Is_Done(); dynaLightIt.Next())
@@ -852,7 +852,7 @@ void RTS3DScene::renderOneObject(RenderInfoClass &rinfo, RenderObjClass *robj, I
 		}
 #ifdef ZH
     }
-#endif
+#endif // ZH
 		
 		lightEnv.Pre_Render_Update(rinfo.Camera.Get_Transform());
 		rinfo.light_environment = &lightEnv;
@@ -893,10 +893,10 @@ void RTS3DScene::renderOneObject(RenderInfoClass &rinfo, RenderObjClass *robj, I
 	rinfo.light_environment = NULL;
 #ifdef OG
 	if (doExtraMaterialPop)	//check if there is an extra material on the stack from the heatvision effect.
-#endif
+#endif // OG
 #ifdef ZH
 	if (doExtraMaterialPop)	//check if there is an extra material on the stack from the add'l material effect.
-#endif
+#endif // ZH
 		rinfo.Pop_Material_Pass();
 	if (doExtraFlagsPop)
 		rinfo.Pop_Override_Flags();	//flags used to disable base pass and only render custom heat vision pass.
@@ -924,7 +924,7 @@ void RTS3DScene::Flush(RenderInfoClass & rinfo)
 	// (gth) CNC3 Flush the shader meshes	
 	SHD_FLUSH;
 
-#endif
+#endif // ZH
 	// Draw the trees last so they alpha blend onto everything correctly.
 	DoTrees(rinfo);
 
@@ -956,7 +956,7 @@ void RTS3DScene::updateFixedLightEnvironments(RenderInfoClass & rinfo)
 	Real foggedLightFrac = (Real)TheGlobalData->m_fogAlpha/(Real)TheGlobalData->m_clearAlpha;
 #ifdef OG
 	Vector3 oldDiffuse;
-#endif
+#endif // OG
 	Real infantryLightScale;
 	if( TheGlobalData->m_scriptOverrideInfantryLightScale != -1.0f )
 		infantryLightScale = TheGlobalData->m_scriptOverrideInfantryLightScale;
@@ -969,7 +969,7 @@ void RTS3DScene::updateFixedLightEnvironments(RenderInfoClass & rinfo)
 
 #ifdef ZH
 	Vector3 oldDiffuse, oldAmbient;
-#endif
+#endif // ZH
 	for (Int globalLightIndex = 0; globalLightIndex < m_numGlobalLights; globalLightIndex++)
 	{	m_defaultLightEnv.Add_Light(*m_globalLight[globalLightIndex]);
 		//copy default lighting for infantry so we can tweak it.
@@ -977,7 +977,7 @@ void RTS3DScene::updateFixedLightEnvironments(RenderInfoClass & rinfo)
 #ifdef ZH
 		m_infantryLight[globalLightIndex]->Set_Transform(m_globalLight[globalLightIndex]->Get_Transform());
 
-#endif
+#endif // ZH
 		m_globalLight[globalLightIndex]->Get_Diffuse(&oldDiffuse);
 #ifdef OG
 		m_infantryLight[globalLightIndex]->Set_Diffuse(oldDiffuse*infantryLightScale);
@@ -985,7 +985,7 @@ void RTS3DScene::updateFixedLightEnvironments(RenderInfoClass & rinfo)
 		m_infantryLight[globalLightIndex]->Set_Ambient(oldDiffuse*infantryLightScale);
 		m_infantryLight[globalLightIndex]->Set_Transform(m_globalLight[globalLightIndex]->Get_Transform());
 
-#endif
+#endif // OG
 #ifdef ZH
 		m_globalLight[globalLightIndex]->Get_Ambient(&oldAmbient);
     oldDiffuse *= infantryLightScale; 
@@ -995,7 +995,7 @@ void RTS3DScene::updateFixedLightEnvironments(RenderInfoClass & rinfo)
     oldAmbient.Cap_Absolute_To(id);
 		m_infantryLight[globalLightIndex]->Set_Ambient(oldAmbient);//CLAMPED
 		m_infantryLight[globalLightIndex]->Set_Diffuse(oldDiffuse);//CLAMPED
-#endif
+#endif // ZH
 
 		//copy the normal light for fog so we can modify it
 		m_scratchLight->Set_Transform(m_globalLight[globalLightIndex]->Get_Transform());
@@ -1005,11 +1005,11 @@ void RTS3DScene::updateFixedLightEnvironments(RenderInfoClass & rinfo)
 #ifdef OG
 		m_globalLight[globalLightIndex]->Get_Ambient(&oldDiffuse);
 		m_scratchLight->Set_Ambient(oldDiffuse*foggedLightFrac);
-#endif
+#endif // OG
 #ifdef ZH
 		m_globalLight[globalLightIndex]->Get_Ambient(&oldAmbient);
 		m_scratchLight->Set_Ambient(oldAmbient*foggedLightFrac);
-#endif
+#endif // ZH
 		m_foggedLightEnv.Add_Light(*m_scratchLight);
 	}
 
@@ -1382,10 +1382,10 @@ void renderStenciledPlayerColor( UnsignedInt color, UnsignedInt stencilRef, Bool
 		//disable writes to color buffer
 #ifdef OG
 		if (DX8Caps::Get_Default_Caps().PrimitiveMiscCaps & D3DPMISCCAPS_COLORWRITEENABLE)
-#endif
+#endif // OG
 #ifdef ZH
 		if (DX8Wrapper::Get_Current_Caps()->Get_DX8_Caps().PrimitiveMiscCaps & D3DPMISCCAPS_COLORWRITEENABLE)
-#endif
+#endif // ZH
 		{	DX8Wrapper::_Get_D3D_Device8()->GetRenderState(D3DRS_COLORWRITEENABLE, &oldColorWriteEnable);
 			DX8Wrapper::Set_DX8_Render_State(D3DRS_COLORWRITEENABLE,0);
 		}
@@ -1529,7 +1529,7 @@ void RTS3DScene::flushOccludedObjectsIntoStencil(RenderInfoClass & rinfo)
 						//Disable writing to color buffer since translucent objects are rendered at end of frame.
 						DX8Wrapper::Set_DX8_Render_State(D3DRS_STENCILFUNC,  D3DCMP_NEVER );	//never allow frame buffer writes.
 						DX8Wrapper::Set_DX8_Render_State(D3DRS_STENCILFAIL,  D3DSTENCILOP_REPLACE );	//always replace existing stencil value
-#endif
+#endif // ZH
 					renderOneObject(rinfo, (*renderList), localPlayerIndex);
 #ifdef ZH
 						TheDX8MeshRenderer.Flush();	//render all the submitted meshes using current stencil function
@@ -1539,7 +1539,7 @@ void RTS3DScene::flushOccludedObjectsIntoStencil(RenderInfoClass & rinfo)
 					}
 					else
 						renderOneObject(rinfo, (*renderList), localPlayerIndex);
-#endif
+#endif // ZH
 					renderList++;	//advance to next object
 				}
 
@@ -2101,5 +2101,5 @@ void RTS3DScene::Visibility_Check(CameraClass * camera)
 
  *
  */
-#endif
+#endif // ZH
 

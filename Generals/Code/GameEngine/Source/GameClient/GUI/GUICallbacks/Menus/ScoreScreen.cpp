@@ -56,7 +56,7 @@
 #include "Common/AudioAffect.h"
 #include "Common/AudioEventRTS.h"
 #include "Common/AudioHandleSpecialValues.h"
-#endif
+#endif // ZH
 #include "Common/BattleHonors.h"
 #include "Common/CopyProtection.h"
 #include "Common/GameEngine.h"
@@ -101,15 +101,15 @@
 #include "GameNetwork/GameSpy/BuddyThread.h"
 #ifdef OG
 #include "GameNetwork/GameSpy/GameResultsThread.h"
-#endif
+#endif // OG
 #include "GameNetwork/GameSpy/PersistentStorageThread.h"
 #ifdef OG
 //Added By Saad
-#endif
+#endif // OG
 #include "GameClient/InGameUI.h"
 #ifdef ZH
 #include "GameClient/ChallengeGenerals.h"
-#endif
+#endif // ZH
 
 #ifdef _INTERNAL
 // for occasional debugging...
@@ -131,7 +131,7 @@ static NameKeyType buttonBuddiesID = NAMEKEY_INVALID;
 static NameKeyType buttonSaveReplayID = NAMEKEY_INVALID;
 #ifdef ZH
 static NameKeyType backdropID = NAMEKEY_INVALID;
-#endif
+#endif // ZH
 
 static GameWindow *parent = NULL;
 static GameWindow *buttonOk = NULL;
@@ -148,16 +148,16 @@ static GameWindow *challengePortrait = NULL;
 static GameWindow *challengeRemarks = NULL;
 static GameWindow *challengeWinLossText = NULL;
 static GameWindow *gadgetParent = NULL;
-#endif
+#endif // ZH
 
 static Bool overidePlayerDisplayName = FALSE;
 
 #ifdef OG
 //Extrenal declarations
-#endif
+#endif // OG
 #ifdef ZH
 //External declarations
-#endif
+#endif // ZH
 NameKeyType listboxChatWindowScoreScreenID = NAMEKEY_INVALID;
 GameWindow *listboxChatWindowScoreScreen = NULL;
 #ifdef ZH
@@ -167,7 +167,7 @@ GameWindow *listboxAcademyWindowScoreScreen = NULL;
 NameKeyType staticTextAcademyTitleID = NAMEKEY_INVALID;
 GameWindow *staticTextAcademyTitle = NULL;
 
-#endif
+#endif // ZH
 std::string LastReplayFileName;
 static Bool canSaveReplay = FALSE;
 extern void PopupReplayUpdate(WindowLayout *layout, void *userData);
@@ -190,7 +190,7 @@ void ScoreScreenEnableControls(Bool enable);
 void setObserverWindows( Player *player, Int i );
 #ifdef ZH
 void displayChallengewinLoss( Image *imageGeneral, AsciiString strGeneral );
-#endif
+#endif // ZH
 enum {
 	SCORESCREEN_SINGLEPLAYER = 0,
 	SCORESCREEN_SKIRMISH,
@@ -243,7 +243,7 @@ void startNextCampaignGame(void)
 			TheGameLogic->clearGameData();
 	}
 
-#endif
+#endif // ZH
 	// send a message to the logic for a new game
 	GameMessage *msg = TheMessageStream->appendMessage( GameMessage::MSG_NEW_GAME );
 	msg->appendIntegerArgument(GAME_SINGLE_PLAYER);
@@ -280,7 +280,7 @@ void ScoreScreenEnableControls(Bool enable)
 extern Bool DontShowMainMenu; //KRIS
 #ifdef ZH
 Bool g_playMusic = FALSE;
-#endif
+#endif // ZH
 Bool ReplayWasPressed = FALSE;
 /** Initialize the ScoreScreen */
 //-------------------------------------------------------------------------------------------------
@@ -290,7 +290,7 @@ void ScoreScreenInit( WindowLayout *layout, void *userData )
 	//Play music after subsystems get reset including the audio...
 	g_playMusic = TRUE;
 	
-#endif
+#endif // ZH
 	if (TheGameSpyInfo)
 	{
 		DEBUG_LOG(("ScoreScreenInit(): TheGameSpyInfo->stuff(%s/%s/%s)\n", TheGameSpyInfo->getLocalBaseName().str(), TheGameSpyInfo->getLocalEmail().str(), TheGameSpyInfo->getLocalPassword().str()));
@@ -308,7 +308,7 @@ void ScoreScreenInit( WindowLayout *layout, void *userData )
 #ifdef ZH
 	listboxAcademyWindowScoreScreenID = TheNameKeyGenerator->nameToKey( AsciiString( "ScoreScreen.wnd:ListboxWarschoolAdvice" ) );
 	staticTextAcademyTitleID = TheNameKeyGenerator->nameToKey( AsciiString( "ScoreScreen.wnd:StaticTextWarSchool" ) );
-#endif
+#endif // ZH
 //	buttonRehostID = TheNameKeyGenerator->nameToKey( AsciiString( "ScoreScreen.wnd:ButtonRehost" ) );
 	chatBoxBorderID = TheNameKeyGenerator->nameToKey( AsciiString( "ScoreScreen.wnd:ChatBoxBorder" ) );
 	buttonBuddiesID = TheNameKeyGenerator->nameToKey( AsciiString( "ScoreScreen.wnd:ButtonBuddy" ) );
@@ -316,7 +316,7 @@ void ScoreScreenInit( WindowLayout *layout, void *userData )
 	buttonSaveReplayID = TheNameKeyGenerator->nameToKey( AsciiString( "ScoreScreen.wnd:ButtonSaveReplay" ) );
 #ifdef ZH
 	backdropID = TheNameKeyGenerator->nameToKey( AsciiString( "ScoreScreen.wnd:MainBackdrop" ) );
-#endif
+#endif // ZH
 
 	parent = TheWindowManager->winGetWindowFromId( NULL, parentID );
 	buttonOk = TheWindowManager->winGetWindowFromId( parent, buttonOkID );
@@ -327,7 +327,7 @@ void ScoreScreenInit( WindowLayout *layout, void *userData )
 	listboxAcademyWindowScoreScreen = TheWindowManager->winGetWindowFromId( parent, listboxAcademyWindowScoreScreenID );
 	staticTextAcademyTitle = TheWindowManager->winGetWindowFromId( parent, staticTextAcademyTitleID );
 
-#endif
+#endif // ZH
 //	buttonRehost = TheWindowManager->winGetWindowFromId( parent, buttonRehostID );
 	chatBoxBorder = TheWindowManager->winGetWindowFromId( parent, chatBoxBorderID );
 	buttonContinue = TheWindowManager->winGetWindowFromId( parent, buttonContinueID );
@@ -339,7 +339,7 @@ void ScoreScreenInit( WindowLayout *layout, void *userData )
 	challengeWinLossText = TheWindowManager->winGetWindowFromId( parent, TheNameKeyGenerator->nameToKey("ScoreScreen.wnd:ChallengeWinLossText") );
 	challengeRemarks = TheWindowManager->winGetWindowFromId( parent, TheNameKeyGenerator->nameToKey("ScoreScreen.wnd:GeneralRemarks") );
 	gadgetParent = TheWindowManager->winGetWindowFromId( parent, TheNameKeyGenerator->nameToKey("ScoreScreen.wnd:GadgetParent") );
-#endif
+#endif // ZH
 	// get the replay filename for later (not full path)
 	LastReplayFileName = TheRecorder->getLastReplayFileName().str();
 	staticTextGameSaved->winHide(TRUE);
@@ -358,7 +358,7 @@ void ScoreScreenInit( WindowLayout *layout, void *userData )
 	s_needToFinishSinglePlayerInit = FALSE;
 #ifdef OG
 #if !defined(_PLAYTEST)
-#endif
+#endif // OG
 	if (TheGameLogic->isInReplayGame())
 	{
 		if (buttonSaveReplay)
@@ -379,7 +379,7 @@ void ScoreScreenInit( WindowLayout *layout, void *userData )
 	else
 #ifdef OG
 #endif
-#endif
+#endif // OG
 	{
 		if(TheGameLogic->isInInternetGame())
 		{
@@ -388,7 +388,7 @@ void ScoreScreenInit( WindowLayout *layout, void *userData )
 		}
 #ifdef OG
 #if !defined(_PLAYTEST)
-#endif
+#endif // OG
 		else if( TheGameLogic->isInLanGame())
 		{
 			initLANMultiPlayer();
@@ -405,12 +405,12 @@ void ScoreScreenInit( WindowLayout *layout, void *userData )
 			initSinglePlayer();
 #ifdef ZH
 			buttonSaveReplay->winHide(TRUE);
-#endif
+#endif // ZH
 		}
 #ifdef OG
 #endif
 
-#endif
+#endif // OG
 #ifdef ZH
 	}
 
@@ -420,7 +420,7 @@ void ScoreScreenInit( WindowLayout *layout, void *userData )
 	{
 		buttonSaveReplay->winEnable(FALSE);
 		buttonSaveReplay->winHide(TRUE);
-#endif
+#endif // ZH
 	}
 
 	// Make Sure the layout is visible
@@ -460,7 +460,7 @@ void ScoreScreenShutdown( WindowLayout *layout, void *userData )
 
 	TheAudio->removeAudioEvent( AHSV_StopTheMusicFade );
 
-#endif
+#endif // ZH
 }
 
 /** Update the ScoreScreen */
@@ -505,7 +505,7 @@ void ScoreScreenUpdate( WindowLayout * layout, void *userData)
 			TheAudio->update();//Since GameEngine::update() is suspended until after I am gone... 
 		}
 
-#endif
+#endif // ZH
 	}
 }
 
@@ -603,7 +603,7 @@ WindowMsgHandledType ScoreScreenSystem( GameWindow *window, UnsignedInt msg,
 					ReplayWasPressed = TRUE;
 #ifdef OG
 #if !defined(_PLAYTEST)
-#endif
+#endif // OG
 				if( screenType == SCORESCREEN_SINGLEPLAYER)	
 				{
 					AsciiString mapName = TheCampaignManager->getCurrentMap();
@@ -620,7 +620,7 @@ WindowMsgHandledType ScoreScreenSystem( GameWindow *window, UnsignedInt msg,
 				}
 #ifdef OG
 #endif
-#endif
+#endif // OG
 			}
 			else if ( controlID == buttonBuddiesID )	
 			{
@@ -721,7 +721,7 @@ WindowMsgHandledType ScoreScreenSystem( GameWindow *window, UnsignedInt msg,
 #ifdef OG
 #if !defined(_PLAYTEST)
 
-#endif
+#endif // OG
 /** Special Init path for making this a single player Score Screen */
 //-------------------------------------------------------------------------------------------------
 void initSkirmish( void )
@@ -848,7 +848,7 @@ void displayChallengeWinLoss( const Image *imageGeneral, const UnicodeString str
 	GadgetStaticTextSetText(challengeRemarks, strRemarks);
 }
 
-#endif
+#endif // ZH
 void finishSinglePlayerInit( void )
 {
 	Bool copyProtectOK = TRUE;
@@ -860,7 +860,7 @@ void finishSinglePlayerInit( void )
 	{
 		if (TheCampaignManager->getCurrentCampaign()
 		 && TheCampaignManager->getCurrentCampaign()->isChallengeCampaign())
-#endif
+#endif // ZH
 	{
 #ifdef ZH
 			// display challenge style win/loss
@@ -877,7 +877,7 @@ void finishSinglePlayerInit( void )
 			TheAudio->update();
 		}
 
-#endif
+#endif // ZH
 		TheCampaignManager->gotoNextMission();
 
 		if(TheCampaignManager->getCurrentMap().isEmpty())
@@ -890,23 +890,23 @@ void finishSinglePlayerInit( void )
 			{
 #ifdef ZH
 				GameDifficulty difficulty = TheCampaignManager->getGameDifficulty();
-#endif
+#endif // ZH
 				SkirmishBattleHonors stats;
 				if (campaign->m_name.compareNoCase("USA") == 0)
 #ifdef ZH
 				{
 					stats.setUSACampaignComplete(difficulty);
-#endif
+#endif // ZH
 					stats.setHonors(BATTLE_HONOR_CAMPAIGN_USA);
 #ifdef ZH
 				}
 
-#endif
+#endif // ZH
 				if (campaign->m_name.compareNoCase("China") == 0)
 #ifdef ZH
 				{
 					stats.setCHINACampaignComplete(difficulty);
-#endif
+#endif // ZH
 					stats.setHonors(BATTLE_HONOR_CAMPAIGN_CHINA);
 #ifdef ZH
 				}
@@ -917,12 +917,12 @@ void finishSinglePlayerInit( void )
 					stats.setHonors(BATTLE_HONOR_CAMPAIGN_GLA);
 				}
 
-#endif
+#endif // ZH
 				if (campaign->m_name.compareNoCase("GLA") == 0)
 #ifdef ZH
 				{
 					stats.setGLACampaignComplete(difficulty);
-#endif
+#endif // ZH
 					stats.setHonors(BATTLE_HONOR_CAMPAIGN_GLA);
 #ifdef ZH
 				}
@@ -938,7 +938,7 @@ void finishSinglePlayerInit( void )
 					}
 				}
 
-#endif
+#endif // ZH
 				stats.write();
 
 				if (buttonOk)
@@ -956,7 +956,7 @@ void finishSinglePlayerInit( void )
 					listboxAcademyWindowScoreScreen->winHide( TRUE );
 				if( staticTextAcademyTitle )
 					staticTextAcademyTitle->winHide( TRUE );
-#endif
+#endif // ZH
 				if (chatBoxBorder)
 					chatBoxBorder->winHide(TRUE);
 				if (buttonBuddies)
@@ -1012,7 +1012,7 @@ void finishSinglePlayerInit( void )
 			TheAudio->update();
 		}
 
-#endif
+#endif // ZH
 		GadgetButtonSetText(buttonContinue, TheGameText->fetch("GUI:Retry"));
 
 	}
@@ -1046,7 +1046,7 @@ void finishSinglePlayerInit( void )
 	if( staticTextAcademyTitle )
 		staticTextAcademyTitle->winHide( TRUE );
 
-#endif
+#endif // ZH
 	if (chatBoxBorder)
 		chatBoxBorder->winHide(TRUE);
 	if (buttonBuddies)
@@ -1058,12 +1058,12 @@ void finishSinglePlayerInit( void )
 #ifdef ZH
 	if ( TheCampaignManager->getCurrentCampaign()
 	 && !TheCampaignManager->getCurrentCampaign()->isChallengeCampaign())
-#endif
+#endif // ZH
 	TheTransitionHandler->setGroup("ScoreScreenShow");
 }
 #ifdef OG
 #endif
-#endif
+#endif // OG
 
 /** Special Init path for making this a single player replay Score Screen */
 //-------------------------------------------------------------------------------------------------
@@ -1091,7 +1091,7 @@ void initReplaySinglePlayer( void )
 	if( staticTextAcademyTitle )
 		staticTextAcademyTitle->winHide( TRUE );
 
-#endif
+#endif // ZH
 //	if (buttonRehost)
 //		buttonRehost->winHide(TRUE);
 }
@@ -1120,7 +1120,7 @@ void initLANMultiPlayer(void)
 		listboxAcademyWindowScoreScreen->winHide( TRUE );
 	if( staticTextAcademyTitle )
 		staticTextAcademyTitle->winHide( TRUE );
-#endif
+#endif // ZH
 	if (chatBoxBorder)
 		chatBoxBorder->winHide(FALSE);
 	if (buttonBuddies)
@@ -1153,7 +1153,7 @@ void initInternetMultiPlayer(void)
 	if( staticTextAcademyTitle )
 		staticTextAcademyTitle->winHide( FALSE );
 
-#endif
+#endif // ZH
 	if (chatBoxBorder)
 		chatBoxBorder->winHide(FALSE);
 
@@ -1191,7 +1191,7 @@ void initReplayMultiPlayer(void)
 		listboxAcademyWindowScoreScreen->winHide( TRUE );
 	if( staticTextAcademyTitle )
 		staticTextAcademyTitle->winHide( TRUE );
-#endif
+#endif // ZH
 	if (chatBoxBorder)
 		chatBoxBorder->winHide(TRUE);
 	if (buttonContinue)
@@ -1230,16 +1230,16 @@ static void updateSkirmishBattleHonors(SkirmishBattleHonors& stats)
 		stats.setHonors(BATTLE_HONOR_STREAK_10);
 	if (stats.getWinStreak() >= 25)
 		stats.setHonors(BATTLE_HONOR_STREAK_25);
-#endif
+#endif // OG
 #ifdef ZH
 	if (stats.getWinStreak() >= 5)
 		stats.setHonors(BATTLE_HONOR_STREAK);
 
-#endif
+#endif // ZH
 
 #ifdef ZH
 	// For Apocalypse Honor, see if the player has used each category of super weapon.
-#endif
+#endif // ZH
 	const ThingTemplate *pTemplate = TheThingFactory->findTemplate("GLAScudStorm");
 #ifdef ZH
 	if (s->getTotalObjectsBuilt(pTemplate) > 0)
@@ -1251,14 +1251,14 @@ static void updateSkirmishBattleHonors(SkirmishBattleHonors& stats)
 	if (s->getTotalObjectsBuilt(pTemplate) > 0)
 		stats.setBuiltSCUD();
 	pTemplate = TheThingFactory->findTemplate("Slth_GLAScudStorm");
-#endif
+#endif // ZH
 	if (s->getTotalObjectsBuilt(pTemplate) > 0)
 		stats.setBuiltSCUD();
 #ifdef ZH
 	pTemplate = TheThingFactory->findTemplate("Demo_GLAScudStorm");
 	if (s->getTotalObjectsBuilt(pTemplate) > 0)
 		stats.setBuiltSCUD();
-#endif
+#endif // ZH
 
 	pTemplate = TheThingFactory->findTemplate("AmericaParticleCannonUplink");
 #ifdef ZH
@@ -1271,14 +1271,14 @@ static void updateSkirmishBattleHonors(SkirmishBattleHonors& stats)
 	if (s->getTotalObjectsBuilt(pTemplate) > 0)
 		stats.setBuiltParticleCannon();
 	pTemplate = TheThingFactory->findTemplate("SupW_AmericaParticleCannonUplink");
-#endif
+#endif // ZH
 	if (s->getTotalObjectsBuilt(pTemplate) > 0)
 		stats.setBuiltParticleCannon();
 #ifdef ZH
 	pTemplate = TheThingFactory->findTemplate("Boss_ParticleCannonUplink");
 	if (s->getTotalObjectsBuilt(pTemplate) > 0)
 		stats.setBuiltParticleCannon();
-#endif
+#endif // ZH
 
 	pTemplate = TheThingFactory->findTemplate("ChinaNuclearMissileLauncher");
 #ifdef ZH
@@ -1288,7 +1288,7 @@ static void updateSkirmishBattleHonors(SkirmishBattleHonors& stats)
 	if (s->getTotalObjectsBuilt(pTemplate) > 0)
 		stats.setBuiltNuke();
 	pTemplate = TheThingFactory->findTemplate("Infa_ChinaNuclearMissileLauncher");
-#endif
+#endif // ZH
 	if (s->getTotalObjectsBuilt(pTemplate) > 0)
 		stats.setBuiltNuke();
 #ifdef ZH
@@ -1298,7 +1298,7 @@ static void updateSkirmishBattleHonors(SkirmishBattleHonors& stats)
 	pTemplate = TheThingFactory->findTemplate("Tank_ChinaNuclearMissileLauncher");
 	if (s->getTotalObjectsBuilt(pTemplate) > 0)
 		stats.setBuiltNuke();
-#endif
+#endif // ZH
 	if (stats.builtNuke() && stats.builtParticleCannon() && stats.builtSCUD())
 		stats.setHonors(BATTLE_HONOR_APOCALYPSE);
 
@@ -1392,20 +1392,20 @@ static void updateMPBattleHonors(Int& honors, PSPlayerStats& stats)
 	//	BATTLE_HONOR_STREAK_10			= 0x0000008,
 	if (stats.winsInARow >= 10)
 		honors |= BATTLE_HONOR_STREAK_10;
-#endif
+#endif // OG
 #ifdef ZH
 	//	BATTLE_HONOR_STREAK 				= 0x0000002,
 	if (stats.winsInARow >= 5)
 		honors |= BATTLE_HONOR_STREAK;
 
-#endif
+#endif // ZH
 
 #ifdef OG
 	//	BATTLE_HONOR_STREAK_25			= 0x0000010,
 	if (stats.winsInARow >= 25)
 		honors |= BATTLE_HONOR_STREAK_25;
 
-#endif
+#endif // OG
 	//	BATTLE_HONOR_LOYALTY_USA		= 0x0000020,
 	if (stats.gamesInRowWithLastGeneral >= 20 && 	localPlayer->getSide() == "America")
 		honors |= BATTLE_HONOR_LOYALTY_USA;
@@ -1445,7 +1445,7 @@ static void updateMPBattleHonors(Int& honors, PSPlayerStats& stats)
 	//	BATTLE_HONOR_CAMPAIGN_CHINA	= 0x0001000,
 
 	//	BATTLE_HONOR_CAMPAIGN_GLA  	= 0x0002000,
-#endif
+#endif // OG
 
 	//	BATTLE_HONOR_BLITZ5					= 0x0008000,
 	if (/*TheGameInfo->isSkirmish() &&*/ (TheGameLogic->getFrame() / LOGICFRAMES_PER_SECOND / 60) < 5)
@@ -1462,7 +1462,7 @@ static void updateMPBattleHonors(Int& honors, PSPlayerStats& stats)
 #ifdef OG
 	//	BATTLE_HONOR_SOLO_USA_B			= 0x0010000,
 
-#endif
+#endif // OG
 #ifdef ZH
 	//	BATTLE_HONOR_GLOBAL_GENERAL
 	Int numGlobalChallengeWins = 0;
@@ -1477,18 +1477,18 @@ static void updateMPBattleHonors(Int& honors, PSPlayerStats& stats)
 			}
 		}
 	}
-#endif
+#endif // ZH
 
 #ifdef OG
 	//	BATTLE_HONOR_SOLO_USA_S			= 0x0020000,
 
-#endif
+#endif // OG
 #ifdef ZH
 	if (numGlobalChallengeWins >= MAX_GLOBAL_GENERAL_TYPES)
 	{
 		honors |= BATTLE_HONOR_GLOBAL_GENERAL;
 	}
-#endif
+#endif // ZH
 
 #ifdef OG
 	//	BATTLE_HONOR_SOLO_USA_G			= 0x0040000,
@@ -1505,7 +1505,7 @@ static void updateMPBattleHonors(Int& honors, PSPlayerStats& stats)
 
 	//	BATTLE_HONOR_SOLO_GLA_G			= 0x1000000,
 
-#endif
+#endif // OG
 #ifdef ZH
 	/*  NOT IMPLEMENTED YET */
 	//	BATTLE_HONOR_LADDER_CHAMP		= 0x0000001, (IGNORED HERE)
@@ -1515,7 +1515,7 @@ static void updateMPBattleHonors(Int& honors, PSPlayerStats& stats)
 	//	BATTLE_HONOR_CAMPAIGN_CHINA	= 0x0001000,
 	//	BATTLE_HONOR_CAMPAIGN_GLA  	= 0x0002000,
 
-#endif
+#endif // ZH
 }
 
 // challenge medals are beating 1-7 Brutal AIs
@@ -1578,7 +1578,7 @@ static inline int CheckForApocalypse( ScoreKeeper *s, const char* szWeapon )
 	if( s->getTotalObjectsBuilt(pTemplate) > 0 )
 		return 1;
 	return 0;
-#endif
+#endif // ZH
 }
 
 /** Populate the various windows with the information about the game based on each player's score
@@ -1711,7 +1711,7 @@ void populatePlayerInfo( Player *player, Int pos)
 			}
 		}
 	}
-#endif
+#endif // ZH
 
 	// set the Score
 	/*
@@ -1833,7 +1833,7 @@ winName.format("ScoreScreen.wnd:StaticTextScore%d", pos);
 		 && !TheGameSpyGame->isQMGame() )  //QuickMatch games always record stats
 			return;	//the host has requested not to record stats for this game.
 
-#endif
+#endif // ZH
 		Int localID = TheGameSpyInfo->getLocalProfileID();
 		if (localID)
 		{
@@ -1862,16 +1862,16 @@ winName.format("ScoreScreen.wnd:StaticTextScore%d", pos);
 						const GameSlot *slot = TheGameInfo->getConstSlot(i);
 #ifdef OG
 						if (slot->isOccupied() && i != localSlotNum && !slot->isAI())
-#endif
+#endif // OG
 #ifdef ZH
 						if (slot->isOccupied() && i != localSlotNum )
-#endif
+#endif // ZH
 						{
 #ifdef ZH
 							if( slot->isAI() )
 								anyAI = TRUE;
 							else
-#endif
+#endif // ZH
 							anyNonAI = TRUE;
 						}
 						if (slot->isOccupied())
@@ -1889,11 +1889,11 @@ winName.format("ScoreScreen.wnd:StaticTextScore%d", pos);
 						if (slot->isAI())
 						{
 							anyAI = TRUE;
-#endif
+#endif // OG
 						}
 #ifdef OG
 					}
-#endif
+#endif // OG
 					DEBUG_LOG(("Game ended on frame %d - TheGameLogic->getFrame()=%d\n", lastFrameOfGame-1, TheGameLogic->getFrame()-1));
 					for (i=0; i<MAX_SLOTS; ++i)
 					{
@@ -1946,7 +1946,7 @@ winName.format("ScoreScreen.wnd:StaticTextScore%d", pos);
 					{
 						// play against all ai players -- no stats to gather.
 						return;
-#endif
+#endif // ZH
 					}
 					
 					if (anyAI)
@@ -1954,11 +1954,11 @@ winName.format("ScoreScreen.wnd:StaticTextScore%d", pos);
 #ifdef OG
 						// no stats if any computer controlled forces were in play.
 
-#endif
+#endif // OG
 #ifdef ZH
 						// Holy mis-implemented, Batman, You get no stats for _any_ AI, not _all_ AI.  
 						// No wonder we fired the whole department.
-#endif
+#endif // ZH
 						return;
 					}
 
@@ -1984,10 +1984,10 @@ winName.format("ScoreScreen.wnd:StaticTextScore%d", pos);
 					{
 #ifdef OG
 						DEBUG_LOG(("Not sending results - we didn't finish a game\n"));
-#endif
+#endif // OG
 #ifdef ZH
 						DEBUG_LOG(("Not sending results - we didn't finish a game. %d\n", TheVictoryConditions->getEndFrame() ));
-#endif
+#endif // ZH
 						return;
 					}
 
@@ -2008,7 +2008,7 @@ winName.format("ScoreScreen.wnd:StaticTextScore%d", pos);
 					{
 #ifdef OG
 						DEBUG_LOG(("populatePlayerInfo() - not tracking stats for short game\n"));
-#endif
+#endif // OG
 						return;
 					}
 					// generate and send a gameres packet
@@ -2199,7 +2199,7 @@ winName.format("ScoreScreen.wnd:StaticTextScore%d", pos);
 					if (s->getTotalObjectsBuilt(pTemplate) > 0)
 						stats.builtSCUD = 1;
 
-#endif
+#endif // OG
 #ifdef ZH
 					DEBUG_LOG(("Before game built scud:%d, cannon:%d, nuke:%d\n", stats.builtSCUD, stats.builtParticleCannon, stats.builtNuke ));
 					stats.builtSCUD += CheckForApocalypse( s, "GLAScudStorm" );
@@ -2215,7 +2215,7 @@ winName.format("ScoreScreen.wnd:StaticTextScore%d", pos);
 					stats.builtNuke += CheckForApocalypse( s, "Infa_ChinaNuclearMissileLauncher" );
 					stats.builtNuke += CheckForApocalypse( s, "Tank_ChinaNuclearMissileLauncher" );
 					DEBUG_LOG(("After game built scud:%d, cannon:%d, nuke:%d\n", stats.builtSCUD, stats.builtParticleCannon, stats.builtNuke ));
-#endif
+#endif // ZH
 
 #ifdef OG
 					pTemplate = TheThingFactory->findTemplate("AmericaParticleCannonUplink");
@@ -2226,7 +2226,7 @@ winName.format("ScoreScreen.wnd:StaticTextScore%d", pos);
 					if (s->getTotalObjectsBuilt(pTemplate) > 0)
 						stats.builtNuke = 1;
 
-#endif
+#endif // OG
 					if (TheGameSpyGame->getLadderPort() && TheGameSpyGame->getLadderIP().isNotEmpty())
 					{
 						stats.lastLadderPort = TheGameSpyGame->getLadderPort();
@@ -2396,10 +2396,10 @@ void grabSinglePlayerInfo( void )
 		case USA_FRIEND:
 #ifdef OG
 			side.set("America");
-#endif
+#endif // OG
 #ifdef ZH
 			side.set("USA");
-#endif
+#endif // ZH
 			break;
 		case CHINA_ENEMY:
 			isFriend = FALSE;
@@ -2430,10 +2430,10 @@ void grabSinglePlayerInfo( void )
 			if(player && player != localPlayer &&	
 #ifdef OG
 				 player->getSide().compare(side) == 0)
-#endif
+#endif // OG
 #ifdef ZH
 				 side.compare(player->getBaseSide()) == 0)
-#endif
+#endif // ZH
 			{
 				if ((TheGameLogic->isInSinglePlayerGame() == FALSE) || (player->getListInScoreScreen() == TRUE))
 				{

@@ -37,7 +37,7 @@
 #include "GameLogic/Module/BehaviorModule.h"
 #ifdef ZH
 #include "Common/ObjectStatusTypes.h"
-#endif
+#endif // ZH
 
 //-------------------------------------------------------------------------------------------------
 /** OBJECT DIE MODULE base class */
@@ -60,11 +60,11 @@ public:
 #ifdef OG
 	UnsignedInt						m_exemptStatus;						///< die module is ignored if any of these status bits are set
 	UnsignedInt						m_requiredStatus;					///< die module is ignored if any of these status bits are clear
-#endif
+#endif // OG
 #ifdef ZH
 	ObjectStatusMaskType	m_exemptStatus;						///< die module is ignored if any of these status bits are set
 	ObjectStatusMaskType	m_requiredStatus;					///< die module is ignored if any of these status bits are clear
-#endif
+#endif // ZH
 
 	DieMuxData();
 	static const FieldParse* getFieldParse();

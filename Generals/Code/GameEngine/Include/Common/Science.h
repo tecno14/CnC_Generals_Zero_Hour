@@ -84,7 +84,7 @@ public:
 #ifdef ZH
 	virtual ~ScienceStore();
 
-#endif
+#endif // ZH
 	void init();
 	void reset();
 	void update() { }

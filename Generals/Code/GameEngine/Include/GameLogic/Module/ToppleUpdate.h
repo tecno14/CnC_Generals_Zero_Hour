@@ -107,7 +107,7 @@ public:
 	virtual Bool isSalvageCrateCollide() const { return false; }
 #ifdef ZH
 	virtual Bool isSabotageBuildingCrateCollide() const { return FALSE; }
-#endif
+#endif // ZH
 
 protected:
 

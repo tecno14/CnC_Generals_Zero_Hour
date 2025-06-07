@@ -90,7 +90,7 @@ void ControlBar::populateOCLTimer( Object *creatorObject )
 /// @todo srj -- remove hard-coding here, please
 #ifdef OG
 	const CommandButton *commandButton = findCommandButton( "Command_Sell" );
-#endif
+#endif // OG
 	NameKeyType id;
 	id = TheNameKeyGenerator->nameToKey( "ControlBar.wnd:OCLTimerSellButton" );
 	GameWindow *win = TheWindowManager->winGetWindowFromId( parent, id );
@@ -108,7 +108,7 @@ void ControlBar::populateOCLTimer( Object *creatorObject )
 	{
 		// This time we want a rally point button to show up instead of a sell button
 		const CommandButton *commandButton = findCommandButton( "Command_SetRallyPoint" );
-#endif
+#endif // ZH
 	setControlCommand( win, commandButton );
 	win->winSetStatus( WIN_STATUS_USE_OVERLAY_STATES );
 
@@ -132,7 +132,7 @@ void ControlBar::populateOCLTimer( Object *creatorObject )
 	{
 		win->winHide(TRUE);
 	}
-#endif
+#endif // ZH
 	
 	// set the text percent and bar of our timer we are displaying
 	updateContextOCLTimer( );

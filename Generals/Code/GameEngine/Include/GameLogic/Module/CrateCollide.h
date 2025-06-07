@@ -86,7 +86,7 @@ enum SabotageVictimType
 	SAB_VICTIM_DROP_ZONE,
 };
 
-#endif
+#endif // ZH
 	CrateCollide( Thing *thing, const ModuleData* moduleData );
 	// virtual destructor prototype provided by memory pool declaration
 
@@ -102,7 +102,7 @@ enum SabotageVictimType
 	virtual Bool isSabotageBuildingCrateCollide() const { return FALSE; }
 
   void doSabotageFeedbackFX( const Object *other, SabotageVictimType type = SAB_VICTIM_GENERIC );
-#endif
+#endif // ZH
 
 protected:
 

@@ -33,27 +33,27 @@
 #ifdef ZH
 #include "GameLogic/Module/StickyBombUpdate.h"
 
-#endif
+#endif // ZH
 #include "Common/ThingTemplate.h"
 #ifdef ZH
 #include "Common/Player.h"
-#endif
+#endif // ZH
 #include "Common/Xfer.h"
 #include "GameClient/Drawable.h"
 #ifdef ZH
 #include "GameClient/FXList.h"
-#endif
+#endif // ZH
 #include "GameClient/InGameUI.h"
 #include "GameLogic/Object.h"
 #ifdef OG
 #include "GameLogic/Module/StickyBombUpdate.h"
 
-#endif
+#endif // OG
 #ifdef ZH
 #include "GameLogic/ObjectIter.h"
 #include "GameLogic/PartitionManager.h"
 #include "GameLogic/Weapon.h"
-#endif
+#endif // ZH
 #include "GameLogic/Module/LifetimeUpdate.h"
 #include "GameLogic/Module/AIUpdate.h"
 #include "GameLogic/Module/BodyModule.h"
@@ -101,10 +101,10 @@ void StickyBombUpdate::onObjectCreated()
 			{
 #ifdef OG
 				init( target, NULL);
-#endif
+#endif // OG
 #ifdef ZH
 				initStickyBomb( target, NULL);
-#endif
+#endif // ZH
 			}
 		}
 	}
@@ -113,10 +113,10 @@ void StickyBombUpdate::onObjectCreated()
 //-------------------------------------------------------------------------------------------------
 #ifdef OG
 void StickyBombUpdate::init( const Object *target, const Object *bomber)
-#endif
+#endif // OG
 #ifdef ZH
 void StickyBombUpdate::initStickyBomb( Object *target, const Object *bomber, const Coord3D *specificPos )
-#endif
+#endif // ZH
 {
 	//Store the target.
 	m_targetID = target ? target->getID() : INVALID_ID;
@@ -161,13 +161,13 @@ void StickyBombUpdate::initStickyBomb( Object *target, const Object *bomber, con
 		}
 		else if(target->isKindOf( KINDOF_IMMOBILE ) && bomber )
 		{
-#endif
+#endif // ZH
 		// make this exception, if bomber has placed bomb on a structure
 		// let the bomb just stay where it was first put, so a mine clearing unit can get to it later
 #ifdef OG
 		if(target->isKindOf( KINDOF_IMMOBILE ) && bomber )
 		{
-#endif
+#endif // OG
 			pos = *bomber->getPosition();
 			pos.z = TheTerrainLogic->getGroundHeight(pos.x, pos.y);
 			//keep it at ground height for mine clearing units to reach
@@ -188,7 +188,7 @@ void StickyBombUpdate::initStickyBomb( Object *target, const Object *bomber, con
 		soundCreateBomb.setPosition( getObject()->getPosition() );
 		TheAudio->addAudioEvent(&soundCreateBomb);
 		
-#endif
+#endif // ZH
 	}
 }
 
@@ -294,12 +294,12 @@ void StickyBombUpdate::detonate()
 			damageInfo.in.m_damageStatusType = data->m_geometryBasedDamageWeaponTemplate->getDamageStatusType();
 			
 			for (; curVictim != NULL; curVictim = iter ? iter->nextWithNumeric(&curVictimDistSqr) : NULL)
-#endif
+#endif // ZH
 {
 #ifdef OG
 	getObject()->kill();
 
-#endif
+#endif // OG
 #ifdef ZH
 				damageInfo.in.m_amount = (curVictimDistSqr <= primaryDamageRangeSqr) ? primaryDamage : secondaryDamage;
 				curVictim->attemptDamage(&damageInfo);
@@ -320,7 +320,7 @@ void StickyBombUpdate::detonate()
 	}
 
 	getObject()->kill();// Most things just fire weapons in their death modules
-#endif
+#endif // ZH
 }
 
 // ------------------------------------------------------------------------------------------------

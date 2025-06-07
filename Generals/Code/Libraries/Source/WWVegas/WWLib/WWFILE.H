@@ -26,24 +26,24 @@
  *                                                                                             * 
 #ifdef OG
  *                      $Author:: Jani_p                                                      $*
-#endif
+#endif // OG
 #ifdef ZH
  *                      $Author:: Ian_l                                                       $*
-#endif
+#endif // ZH
  *                                                                                             * 
 #ifdef OG
  *                     $Modtime:: 5/04/01 7:43p                                               $*
-#endif
+#endif // OG
 #ifdef ZH
  *                     $Modtime:: 10/31/01 2:00p                                              $*
-#endif
+#endif // ZH
  *                                                                                             * 
 #ifdef OG
  *                    $Revision:: 8                                                           $*
-#endif
+#endif // OG
 #ifdef ZH
  *                    $Revision:: 9                                                           $*
-#endif
+#endif // ZH
  *                                                                                             *
  *---------------------------------------------------------------------------------------------* 
  * Functions:                                                                                  * 
@@ -94,11 +94,11 @@ class FileClass
 #ifdef OG
 		//virtual int Create(void) = 0;
 		//virtual int Delete(void) = 0;
-#endif
+#endif // OG
 #ifdef ZH
 		virtual int Create(void) = 0;
 		virtual int Delete(void) = 0;
-#endif
+#endif // ZH
 		virtual bool Is_Available(int forced=false) = 0;
 		virtual bool Is_Open(void) const = 0;
 		virtual int Open(char const *filename, int rights=READ) = 0;
@@ -115,14 +115,14 @@ class FileClass
 		//virtual void Error(int error, int canretry = false, char const * filename=NULL) = 0;
 		// virtual void * Get_File_Handle(void) { return reinterpret_cast<void *>(-1); } 
 
-#endif
+#endif // OG
 #ifdef ZH
 		virtual unsigned long Get_Date_Time(void) {return(0);}
 		virtual bool Set_Date_Time(unsigned long ) {return(false);}
 //		virtual void Error(int error, int canretry = false, char const * filename=NULL) = 0;
 		virtual void * Get_File_Handle(void) { return reinterpret_cast<void *>(-1); } 
 //		virtual void Bias(int start, int length=-1) = 0;
-#endif
+#endif // ZH
 
 		operator char const * ()
 		{

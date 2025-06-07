@@ -54,7 +54,7 @@
 #include "GameClient/GameWindowTransitions.h"
 #ifdef ZH
 #include "GameClient/ChallengeGenerals.h"
-#endif
+#endif // ZH
 
 #include "GameLogic/GameLogic.h"
 
@@ -159,7 +159,7 @@ static const LadderInfo * getLadderInfo( void );
 typedef std::vector<Int> MapListboxIndex;
 static MapListboxIndex mapListboxIndex;
 #endif
-#endif
+#endif // OG
 
 static Bool isInfoShown(void)
 {
@@ -348,7 +348,7 @@ static void populateQMSideComboBox(Int favSide, const LadderInfo *li = NULL)
 		if (disallowLockedGenerals && startsLocked)
 			continue;
 
-#endif
+#endif // ZH
 		seenSides.insert(side);
 
 		newIndex = GadgetComboBoxAddEntry(comboBoxSide, TheGameText->fetch(side), def->getColor());
@@ -608,7 +608,7 @@ static void populateQuickMatchMapSelectListbox( QuickMatchPreferences& pref )
 	#if VARIABLE_NUMBER_OF_MAPS
 	mapListboxIndex.clear();
 	#endif
-#endif
+#endif // OG
 
 	GadgetListBoxReset(listboxMapSelect);
 	for (std::list<AsciiString>::const_iterator it = maps.begin(); it != maps.end(); ++it)
@@ -648,7 +648,7 @@ static void populateQuickMatchMapSelectListbox( QuickMatchPreferences& pref )
 			// they are added to the information sent to the QMBot.
 			mapListboxIndex.push_back(-1);
 			#endif
-#endif
+#endif // OG
 		}
 	}
 }
@@ -1322,7 +1322,7 @@ void WOLQuickMatchMenuUpdate( WindowLayout * layout, void *userData)
 					TheGameSpyInfo->addText(str, GameSpyColor[GSCOLOR_DEFAULT], quickmatchTextWindow);
 				}
 				break;
-#endif
+#endif // ZH
 			case PeerResponse::PEERRESPONSE_QUICKMATCHSTATUS:
 				{
 					sawImportantMessage = TRUE;
@@ -1401,7 +1401,7 @@ void WOLQuickMatchMenuUpdate( WindowLayout * layout, void *userData)
 							TheGameSpyGame->setMap(theMap);
 
 							#else
-#endif
+#endif // OG
 							for (std::list<AsciiString>::const_iterator it = maps.begin(); it != maps.end(); ++it)
 							{
 								AsciiString theMap = *it;
@@ -1416,7 +1416,7 @@ void WOLQuickMatchMenuUpdate( WindowLayout * layout, void *userData)
 							}
 #ifdef OG
 							#endif
-#endif
+#endif // OG
 
 							Int numPlayersPerTeam = numPlayers/2;
 							DEBUG_ASSERTCRASH(numPlayersPerTeam, ("0 players per team???"));
@@ -1715,7 +1715,7 @@ WindowMsgHandledType WOLQuickMatchMenuSystem( GameWindow *window, UnsignedInt ms
 						}
 					}
 					#else 
-#endif
+#endif // OG
 					Int numMaps = GadgetListBoxGetNumEntries(listboxMapSelect);
 					for ( Int i=0; i<numMaps; ++i )
 					{
@@ -1724,7 +1724,7 @@ WindowMsgHandledType WOLQuickMatchMenuSystem( GameWindow *window, UnsignedInt ms
 #ifdef OG
 					#endif
 					
-#endif
+#endif // OG
 					UnicodeString u;
 					AsciiString a;
 //					u = GadgetTextEntryGetText(textEntryMaxDisconnects);
@@ -1827,7 +1827,7 @@ WindowMsgHandledType WOLQuickMatchMenuSystem( GameWindow *window, UnsignedInt ms
 							req.QM.side = index;
 
 							randomTries++;
-#endif
+#endif // ZH
 						}
 					}
 

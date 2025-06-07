@@ -24,31 +24,31 @@
  *                                                                         * 
 #ifdef OG
  *                     $Archive:: /VSS_Sync/ww3d2/dynamesh.cpp            $* 
-#endif
+#endif // OG
 #ifdef ZH
  *                     $Archive:: /Commando/Code/ww3d2/dynamesh.cpp       $* 
-#endif
+#endif // ZH
  *                                                                         * 
 #ifdef OG
  *                      $Author:: Vss_sync                                $* 
-#endif
+#endif // OG
 #ifdef ZH
  *                      $Author:: Greg_h                                  $* 
-#endif
+#endif // ZH
  *                                                                         * 
 #ifdef OG
  *                     $Modtime:: 8/29/01 7:29p                           $* 
-#endif
+#endif // OG
 #ifdef ZH
  *                     $Modtime:: 12/03/01 4:50p                          $* 
-#endif
+#endif // ZH
  *                                                                         * 
 #ifdef OG
  *                    $Revision:: 23                                      $* 
-#endif
+#endif // OG
 #ifdef ZH
  *                    $Revision:: 25                                      $* 
-#endif
+#endif // ZH
  *                                                                         * 
  *-------------------------------------------------------------------------* 
  * Functions:                                                              * 
@@ -118,14 +118,14 @@ DynamicMeshModel::DynamicMeshModel(const DynamicMeshModel &src) :
 	// Moved before the remapping cause I don't like referencing null.
 	MatDesc = W3DNEW MeshMatDescClass;
 
-#endif
+#endif // ZH
 	// remap!
 	MaterialRemapperClass remapper(src.MatInfo, MatInfo);
 	remapper.Remap_Mesh(src.MatDesc, MatDesc);
 #ifdef OG
 
 	MatDesc = W3DNEW MeshMatDescClass;
-#endif
+#endif // OG
 }
 
 DynamicMeshModel::~DynamicMeshModel(void)
@@ -225,7 +225,7 @@ void DynamicMeshModel::Render(RenderInfoClass & rinfo)
 		const Vector2 *uvs = MatDesc->Get_UV_Array_By_Index(0, false);
 #ifdef ZH
 		const Vector2 *uv1s = MatDesc->Get_UV_Array_By_Index(1, false);
-#endif
+#endif // ZH
 		const unsigned *colors = MatDesc->Get_Color_Array(0, false);
 		const static Vector3 default_normal(0.0f, 0.0f, 0.0f);
 		const static Vector2 default_uv(0.0f, 0.0f);
@@ -244,7 +244,7 @@ void DynamicMeshModel::Render(RenderInfoClass & rinfo)
 				*(Vector2 *)(vertices + fvf_info.Get_Tex_Offset(1)) = uv1s[i];
 			} else {
 				*(Vector2 *)(vertices + fvf_info.Get_Tex_Offset(1)) = default_uv;
-#endif
+#endif // ZH
 			}
 			if (colors) {
 				*(unsigned int *)(vertices + fvf_info.Get_Diffuse_Offset()) = colors[i];
@@ -262,10 +262,10 @@ void DynamicMeshModel::Render(RenderInfoClass & rinfo)
 	DynamicIBAccessClass dynamic_ib(buffer_type,DynamicMeshPNum * 3);
 #ifdef OG
 	const Vector3i *tris = Get_Polygon_Array();
-#endif
+#endif // OG
 #ifdef ZH
 	const TriIndex *tris = Get_Polygon_Array();
-#endif
+#endif // ZH
 
 	{ // scope for lock
 
@@ -307,22 +307,22 @@ void DynamicMeshModel::Render(RenderInfoClass & rinfo)
 		bool texture_changed = false;
 #ifdef ZH
 		bool texture1_changed = false;
-#endif
+#endif // ZH
 		bool material_changed = false;
 		bool shader_changed = false;
 
 #ifdef OG
 		TextureClass **texture_array = NULL;
-#endif
+#endif // OG
 #ifdef ZH
 		TextureClass **texture_array0 = NULL;
-#endif
+#endif // ZH
 		TexBufferClass * tex_buf = MatDesc->Get_Texture_Array(pass, 0, false);
 		if (tex_buf) {
 #ifdef OG
 			texture_array = tex_buf->Get_Array();
 
-#endif
+#endif // OG
 #ifdef ZH
 			texture_array0 = tex_buf->Get_Array();
 		} else {
@@ -333,14 +333,14 @@ void DynamicMeshModel::Render(RenderInfoClass & rinfo)
 		TexBufferClass * tex_buf1 = MatDesc->Get_Texture_Array(pass, 1, false);
 		if (tex_buf1) {
 			texture_array1 = tex_buf1->Get_Array();
-#endif
+#endif // ZH
 		} else {
 #ifdef OG
 			texture_array = NULL;
-#endif
+#endif // OG
 #ifdef ZH
 			texture_array1 = NULL;
-#endif
+#endif // ZH
 		}
 		VertexMaterialClass **material_array = NULL;
 		MatBufferClass * mat_buf = MatDesc->Get_Material_Array(pass, false);
@@ -355,11 +355,11 @@ void DynamicMeshModel::Render(RenderInfoClass & rinfo)
 #ifdef OG
 		if (texture_array) {
 			DX8Wrapper::Set_Texture(0,texture_array[0]);
-#endif
+#endif // OG
 #ifdef ZH
 		if (texture_array0) {
 			DX8Wrapper::Set_Texture(0,texture_array0[0]);
-#endif
+#endif // ZH
 		} else {
 			DX8Wrapper::Set_Texture(0,MatDesc->Peek_Single_Texture(pass, 0));
 		}
@@ -371,7 +371,7 @@ void DynamicMeshModel::Render(RenderInfoClass & rinfo)
 			DX8Wrapper::Set_Texture(1,MatDesc->Peek_Single_Texture(pass, 1));
 		}
 
-#endif
+#endif // ZH
 		if (material_array) {
 			DX8Wrapper::Set_Material(material_array[tris[0].I]);
 		} else {
@@ -389,10 +389,10 @@ void DynamicMeshModel::Render(RenderInfoClass & rinfo)
 		// If no texture, shader or material arrays for this pass just draw and go to next pass
 #ifdef OG
 		if (!texture_array && !material_array && !shader_array) {
-#endif
+#endif // OG
 #ifdef ZH
 		if (!texture_array0 && !texture_array1 && !material_array && !shader_array) {
-#endif
+#endif // ZH
 			if (buffer_type==BUFFER_TYPE_DYNAMIC_SORTING) {
 				SortingRendererClass::Insert_Triangles(sphere,0, DynamicMeshPNum, 0, DynamicMeshVNum);
 			}
@@ -409,12 +409,12 @@ void DynamicMeshModel::Render(RenderInfoClass & rinfo)
 			const Vector3i &tri = tris[cur_tri_idx];
 			unsigned short min_idx = (short)MIN(MIN(tri.I, tri.J), tri.K);
 			unsigned short max_idx = (short)MAX(MAX(tri.I, tri.J), tri.K);
-#endif
+#endif // OG
 #ifdef ZH
 			const TriIndex &tri = tris[cur_tri_idx];
 			unsigned short min_idx = (unsigned short)MIN(MIN(tri.I, tri.J), tri.K);
 			unsigned short max_idx = (unsigned short)MAX(MAX(tri.I, tri.J), tri.K);
-#endif
+#endif // ZH
 			min_vert_idx = MIN(min_vert_idx, min_idx);
 			max_vert_idx = MAX(max_vert_idx, max_idx);
 
@@ -425,18 +425,18 @@ void DynamicMeshModel::Render(RenderInfoClass & rinfo)
 				texture_changed = false;
 #ifdef ZH
 				texture1_changed = false;
-#endif
+#endif // ZH
 				material_changed = false;
 				shader_changed = false;
 			} else {
 #ifdef OG
 				texture_changed = texture_array && texture_array[cur_tri_idx] != texture_array[next_tri_idx];
 
-#endif
+#endif // OG
 #ifdef ZH
 				texture_changed = texture_array0 && texture_array0[cur_tri_idx] != texture_array0[next_tri_idx];
 				texture1_changed = texture_array1 && texture_array1[cur_tri_idx] != texture_array1[next_tri_idx];
-#endif
+#endif // ZH
 				material_changed = material_array && material_array[tris[cur_tri_idx].I] != material_array[tris[next_tri_idx].I];
 				shader_changed = shader_array && shader_array[cur_tri_idx] != shader_array[next_tri_idx];
 			}
@@ -464,11 +464,11 @@ void DynamicMeshModel::Render(RenderInfoClass & rinfo)
 #ifdef OG
 				if (texture_changed) DX8Wrapper::Set_Texture(0,texture_array[next_tri_idx]);
 
-#endif
+#endif // OG
 #ifdef ZH
 				if (texture_changed) DX8Wrapper::Set_Texture(0,texture_array0[next_tri_idx]);
 				if (texture1_changed) DX8Wrapper::Set_Texture(1,texture_array1[next_tri_idx]);
-#endif
+#endif // ZH
 				if (material_changed) DX8Wrapper::Set_Material(material_array[tris[next_tri_idx].I]);
 				if (shader_changed) DX8Wrapper::Set_Shader(shader_array[next_tri_idx]);
 			}
@@ -564,10 +564,10 @@ bool DynamicMeshClass::End_Vertex()
 		// set vertex indices
 #ifdef OG
 		Vector3i	*poly = &(Model->Get_Non_Const_Polygon_Array())[PolyCount];
-#endif
+#endif // OG
 #ifdef ZH
 		TriIndex *poly = &(Model->Get_Non_Const_Polygon_Array())[PolyCount];
-#endif
+#endif // ZH
 		if (TriMode == TRI_MODE_STRIPS) {
 			(*poly)[0] = VertCount-3;
 			(*poly)[1] = VertCount-2;

@@ -25,37 +25,37 @@
 #ifdef OG
  *                     $Archive:: /VSS_Sync/ww3d2/meshmdl.cpp                                 $*
 
-#endif
+#endif // OG
 #ifdef ZH
  *                     $Archive:: /Commando/Code/ww3d2/meshmdl.cpp                            $*
  *                                                                                             *
  *                    Org Author:: Greg Hjelstrom                                               *
-#endif
+#endif // ZH
  *                                                                                             *
 #ifdef OG
  *                       Author:: Greg Hjelstrom                                               *
-#endif
+#endif // OG
 #ifdef ZH
  *                      $Author:: Kenny Mitchell                                               * 
-#endif
+#endif // ZH
  *                                                                                             *
 #ifdef OG
  *                     $Modtime:: 8/29/01 7:29p                                               $*
-#endif
+#endif // OG
 #ifdef ZH
  *                     $Modtime:: 06/26/02 4:04p                                             $*
-#endif
+#endif // ZH
  *                                                                                             *
 #ifdef OG
  *                    $Revision:: 46                                                          $*
-#endif
+#endif // OG
 #ifdef ZH
  *                    $Revision:: 48                                                          $*
-#endif
+#endif // ZH
  *                                                                                             *
 #ifdef ZH
  * 06/26/02 KM Matrix name change to avoid MAX conflicts                                       *
-#endif
+#endif // ZH
  *---------------------------------------------------------------------------------------------*
  * Functions:                                                                                  *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
@@ -117,11 +117,11 @@ MeshModelClass::MeshModelClass(const MeshModelClass & that) :
 #ifdef OG
 	GapFiller(NULL)
 
-#endif
+#endif // OG
 #ifdef ZH
 	GapFiller(NULL),
 	HasBeenInUse(false)
-#endif
+#endif // ZH
 {
 	DefMatDesc = W3DNEW MeshMatDescClass(*(that.DefMatDesc));
 	if (that.AlternateMatDesc != NULL) {
@@ -137,7 +137,7 @@ MeshModelClass::~MeshModelClass(void)
 {
 #ifdef ZH
 //	WWDEBUG_SAY(("Note: Mesh %s was never used\n",Get_Name()));
-#endif
+#endif // ZH
 	TheDX8MeshRenderer.Unregister_Mesh_Type(this);
 
 	Reset(0,0,0);
@@ -179,11 +179,11 @@ MeshModelClass & MeshModelClass::operator = (const MeshModelClass & that)
 #ifdef OG
 			delete[] GapFiller;
 
-#endif
+#endif // OG
 #ifdef ZH
 			// DMS - using approriate deallocation method
 			delete GapFiller;
-#endif
+#endif // ZH
 				GapFiller=NULL;
 		}
 		if (that.GapFiller) GapFiller=W3DNEW GapFillerClass(*that.GapFiller);
@@ -199,7 +199,7 @@ void MeshModelClass::Reset(int polycount,int vertcount,int passcount)
 	delete GapFiller;
 	GapFiller=NULL;
 
-#endif
+#endif // ZH
 	Reset_Geometry(polycount,vertcount);
 
 	// Release everything we have and reset to initial state
@@ -217,7 +217,7 @@ void MeshModelClass::Reset(int polycount,int vertcount,int passcount)
 
 	delete GapFiller;
 	GapFiller=NULL;
-#endif
+#endif // OG
 
 	return ;
 }
@@ -226,7 +226,7 @@ void MeshModelClass::Register_For_Rendering()
 {
 #ifdef ZH
 	HasBeenInUse=true;
-#endif
+#endif // ZH
 //WW3D::Set_NPatches_Level(1);
 	if (WW3D::Get_NPatches_Level()>1) {
 		if (WW3D::Get_NPatches_Gap_Filling_Mode()!=WW3D::NPATCHES_GAP_FILLING_DISABLED) {
@@ -471,7 +471,7 @@ void MeshModelClass::get_deformed_screenspace_vertices(Vector4 *dst_vert,const R
 	}
 }
 
-#endif
+#endif // OG
 void MeshModelClass::Make_Geometry_Unique()
 {
 	WWASSERT(Vertex);
@@ -513,7 +513,7 @@ void MeshModelClass::Enable_Alternate_Material_Description(bool onoff)
 
 			if (WW3D::Is_Overbright_Modify_On_Load_Enabled())
 				modify_for_overbright();
-#endif
+#endif // ZH
 			
 			// TODO: Invalidate just this meshes DX8 data!!!
 			TheDX8MeshRenderer.Invalidate();
@@ -529,7 +529,7 @@ void MeshModelClass::Enable_Alternate_Material_Description(bool onoff)
 			if (WW3D::Is_Overbright_Modify_On_Load_Enabled())
 				modify_for_overbright();
 
-#endif
+#endif // ZH
 			// TODO: Invalidate this meshes DX8 data!!!
 			TheDX8MeshRenderer.Invalidate();
 		}
@@ -563,7 +563,7 @@ void Whatever(
 	const Vector3i* polygon_indices,
 	unsigned polygon_count);
 
-#endif
+#endif // OG
 
 struct TriangleSide
 {
@@ -652,7 +652,7 @@ GapFillerClass::GapFillerClass(MeshModelClass* mmc_) : mmc(NULL), PolygonCount(0
 #ifdef OG
 	REF_PTR_SET(mmc,mmc_);
 
-#endif
+#endif // OG
 #ifdef ZH
 	//DMS - We cannot take a reference to the mesh model here!  This is because the mesh model
 	// class OWNS the GapFiller class (allocated via NEW).  If we take a reference here, there
@@ -661,15 +661,15 @@ GapFillerClass::GapFillerClass(MeshModelClass* mmc_) : mmc(NULL), PolygonCount(0
 	//
 //	REF_PTR_SET(mmc,mmc_);
 	mmc = mmc_;
-#endif
+#endif // ZH
 
 	ArraySize=mmc->Get_Polygon_Count()*6;	// Each side of each triangle can have 2 polygons added, in the worst case
 #ifdef OG
 	PolygonArray=W3DNEWARRAY Vector3i[ArraySize];
-#endif
+#endif // OG
 #ifdef ZH
 	PolygonArray=W3DNEWARRAY TriIndex[ArraySize];
-#endif
+#endif // ZH
 	for (int pass=0;pass<mmc->Get_Pass_Count();++pass) {
 		for (int stage=0;stage<MeshMatDescClass::MAX_TEX_STAGES;++stage) {
 			if (mmc->Has_Texture_Array(pass,stage)) {
@@ -695,7 +695,7 @@ GapFillerClass::GapFillerClass(const GapFillerClass& that) : mmc(NULL), PolygonC
 #ifdef OG
 	REF_PTR_SET(mmc,that.mmc);
 
-#endif
+#endif // OG
 #ifdef ZH
 	//DMS - We cannot take a reference to the mesh model here!  This is because the mesh model
 	// class OWNS the GapFiller class (allocated via NEW).  If we take a reference here, there
@@ -704,15 +704,15 @@ GapFillerClass::GapFillerClass(const GapFillerClass& that) : mmc(NULL), PolygonC
 	//
 //	REF_PTR_SET(mmc,that.mmc);
 	mmc = that.mmc;
-#endif
+#endif // ZH
 
 	ArraySize=that.ArraySize;
 #ifdef OG
 	PolygonArray=W3DNEWARRAY Vector3i[ArraySize];
-#endif
+#endif // OG
 #ifdef ZH
 	PolygonArray=W3DNEWARRAY TriIndex[ArraySize];
-#endif
+#endif // ZH
 	for (int pass=0;pass<mmc->Get_Pass_Count();++pass) {
 		for (int stage=0;stage<MeshMatDescClass::MAX_TEX_STAGES;++stage) {
 			if (that.TextureArray[pass][stage]) {
@@ -778,11 +778,11 @@ GapFillerClass::~GapFillerClass()
 #ifdef OG
 	REF_PTR_RELEASE(mmc);
 
-#endif
+#endif // OG
 #ifdef ZH
 	// DMS - Removed - See constructor for details.
 //	REF_PTR_RELEASE(mmc);
-#endif
+#endif // ZH
 }
 
 // ----------------------------------------------------------------------------
@@ -806,10 +806,10 @@ WWASSERT(loc1==loc2 || loc1==loc3 || loc2==loc3);
 
 #ifdef OG
 	PolygonArray[PolygonCount]=Vector3i(vidx1,vidx2,vidx3);
-#endif
+#endif // OG
 #ifdef ZH
 	PolygonArray[PolygonCount]=TriIndex(vidx1,vidx2,vidx3);
-#endif
+#endif // ZH
 	for (int pass=0;pass<mmc->Get_Pass_Count();++pass) {
 		if (mmc->Has_Shader_Array(pass)) {
 			ShaderArray[pass][PolygonCount]=mmc->Get_Shader(polygon_index,pass);
@@ -842,11 +842,11 @@ void GapFillerClass::Shrink_Buffers()
 #ifdef OG
 	Vector3i* new_polygon_array=W3DNEWARRAY Vector3i[PolygonCount];
 	memcpy(new_polygon_array,PolygonArray,PolygonCount*sizeof(Vector3i));
-#endif
+#endif // OG
 #ifdef ZH
 	TriIndex* new_polygon_array=W3DNEWARRAY TriIndex[PolygonCount];
 	memcpy(new_polygon_array,PolygonArray,PolygonCount*sizeof(TriIndex));
-#endif
+#endif // ZH
 	delete[] PolygonArray;
 	PolygonArray=new_polygon_array;
 
@@ -892,17 +892,17 @@ void MeshModelClass::Init_For_NPatch_Rendering()
 #ifdef ZH
 	if (!DX8Wrapper::Get_Current_Caps()->Support_NPatches()) return;
 	if (!Get_Flag(MeshGeometryClass::ALLOW_NPATCHES)) return;
-#endif
+#endif // ZH
 	if (GapFiller) return;
 
 	const Vector3* locations=Get_Vertex_Array();
 	unsigned vertex_count=Get_Vertex_Count();
 #ifdef OG
 	const Vector3i* polygon_indices=Get_Polygon_Array();
-#endif
+#endif // OG
 #ifdef ZH
 	const TriIndex* polygon_indices=Get_Polygon_Array();
-#endif
+#endif // ZH
 	unsigned polygon_count=Get_Polygon_Count();
 
 	LocationHash.Remove_All();

@@ -50,7 +50,7 @@
 #include "GameClient/MapUtil.h"
 #ifdef ZH
 #include "GameClient/ChallengeGenerals.h"
-#endif
+#endif // ZH
 #include "GameNetwork/GameSpy/PeerDefs.h"
 
 #ifdef _INTERNAL
@@ -539,7 +539,7 @@ Int CustomMatchPreferences::getPreferredFaction(void)
 #ifdef ZH
 			ret = PLAYERTEMPLATE_RANDOM;
 		else if (TheGameInfo && TheGameInfo->oldFactionsOnly() && !fac->isOldFaction())
-#endif
+#endif // ZH
 			ret = PLAYERTEMPLATE_RANDOM;
 #ifdef ZH
 		else {
@@ -552,7 +552,7 @@ Int CustomMatchPreferences::getPreferredFaction(void)
 			if (disallowLockedGenerals && startsLocked)
 				ret = PLAYERTEMPLATE_RANDOM;
 		}
-#endif
+#endif // ZH
 	}
 
 	return ret;
@@ -677,11 +677,11 @@ AsciiString CustomMatchPreferences::getPreferredMap(void)
 #ifdef OG
 	{
 		ret = getDefaultMap(TRUE);
-#endif
+#endif // OG
 #ifdef ZH
 	{	//found find map, use default instead
 		ret = getDefaultOfficialMap();
-#endif
+#endif // ZH
 		return ret;
 	}
 
@@ -691,11 +691,11 @@ AsciiString CustomMatchPreferences::getPreferredMap(void)
 #ifdef OG
 	{
 		ret = getDefaultMap(TRUE);
-#endif
+#endif // OG
 #ifdef ZH
 	{	//map is invalid, use default instead
 		ret = getDefaultOfficialMap();
-#endif
+#endif // ZH
 		return ret;
 	}
 	
@@ -703,7 +703,7 @@ AsciiString CustomMatchPreferences::getPreferredMap(void)
 	//can only use official maps if recording stats
 	if( getUseStats() && !isOfficialMap(ret) )
 		ret = getDefaultOfficialMap();
-#endif
+#endif // ZH
 	return ret;
 }
 
@@ -793,7 +793,7 @@ void CustomMatchPreferences::setUseStats( Bool useStats )
   (*this)[useStatsKey] = useStats ? "Yes" : "No";
 }
 
-#endif
+#endif // ZH
 //-----------------------------------------------------------------------------
 // GameSpyMiscPreferences base class 
 //-----------------------------------------------------------------------------

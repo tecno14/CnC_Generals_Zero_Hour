@@ -42,7 +42,7 @@ public:
 #ifdef ZH
 	AsciiString m_newCommandSetAlt;
 	AsciiString m_triggerAlt;
-#endif
+#endif // ZH
 
 	CommandSetUpgradeModuleData()
 	{
@@ -50,7 +50,7 @@ public:
 #ifdef ZH
 		m_newCommandSetAlt	= AsciiString::TheEmptyString;
 		m_triggerAlt				= "none";
-#endif
+#endif // ZH
 	}
 
 	static void buildFieldParse(MultiIniFieldParse& p);

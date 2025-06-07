@@ -120,4 +120,4 @@ extern SnowManager *TheSnowManager;  ///< the ray effects singleton external
 #endif // _SNOW_H_
 
 
-#endif
+#endif // ZH

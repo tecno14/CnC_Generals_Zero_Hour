@@ -80,4 +80,4 @@ protected:
 #endif // __W3DPropDraw_H_
 
 
-#endif
+#endif // ZH

@@ -82,7 +82,7 @@ public:
 private:
 #ifdef ZH
   void setDefaultLineStyle();
-#endif
+#endif // ZH
 
 	RenderObjClass *m_waypointNodeRobj;
 	SegmentedLineClass *m_line;

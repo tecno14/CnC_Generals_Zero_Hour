@@ -130,7 +130,7 @@ public:
 	virtual Bool isLetterBoxFading(void);	///<returns true while letterbox fades in/out
 #ifdef ZH
 	virtual Bool isLetterBoxed(void);
-#endif
+#endif // ZH
 
 	virtual void clearShroud();
 	virtual void setShroudLevel(Int x, Int y, CellShroudStatus setting);

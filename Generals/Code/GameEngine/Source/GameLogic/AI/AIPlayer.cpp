@@ -36,7 +36,7 @@
 #include "Common/Player.h"
 #ifdef ZH
 #include "Common/SpecialPower.h"
-#endif
+#endif // ZH
 #include "Common/Team.h" 
 #include "Common/ThingFactory.h"
 #include "Common/PlayerList.h"
@@ -66,7 +66,7 @@
 #ifdef OG
 
 #if !defined(_PLAYTEST)
-#endif
+#endif // OG
 
 #ifdef _INTERNAL
 // for occasional debugging...
@@ -143,14 +143,14 @@ void AIPlayer::onStructureProduced( Object *factory, Object *bldg )
 		bldg->clearStatus( OBJECT_STATUS_UNDER_CONSTRUCTION );
 		bldg->clearStatus( OBJECT_STATUS_RECONSTRUCTING );
 
-#endif
+#endif // OG
 #ifdef ZH
 		bldg->clearStatus( MAKE_OBJECT_STATUS_MASK2( OBJECT_STATUS_UNDER_CONSTRUCTION, OBJECT_STATUS_RECONSTRUCTING ) );
 
 		// UnderConstruction just cleared, so update our upgrades
 		bldg->updateUpgradeModules();
 
-#endif
+#endif // ZH
 		TheScriptEngine->addObjectToCache(bldg);
 		TheScriptEngine->runObjectScript(info->getScript(), bldg);
 		if (TheGlobalData->m_debugAI) {
@@ -493,13 +493,13 @@ Object *AIPlayer::buildStructureNow(const ThingTemplate *bldgPlan, BuildListInfo
 		bldg->clearStatus( OBJECT_STATUS_UNDER_CONSTRUCTION );
 		bldg->clearStatus( OBJECT_STATUS_RECONSTRUCTING );
 
-#endif
+#endif // OG
 #ifdef ZH
 		bldg->clearStatus( MAKE_OBJECT_STATUS_MASK2( OBJECT_STATUS_UNDER_CONSTRUCTION, OBJECT_STATUS_RECONSTRUCTING ) );
 
 		// UnderConstruction just cleared, so update our upgrades
 		bldg->updateUpgradeModules();
-#endif
+#endif // ZH
 
 		if (TheGlobalData->m_debugAI) {
 			AsciiString bldgName = bldgPlan->getName();
@@ -639,10 +639,10 @@ Object *AIPlayer::buildStructureWithDozer(const ThingTemplate *bldgPlan, BuildLi
 	TheTerrainVisual->removeAllBibs();	// isLocationLegalToBuild adds bib feedback, turn it off.  jba.
 #ifdef OG
 	if (!TheAI->pathfinder()->quickDoesPathExist(dozer->getAI()->getLocomotorSet(),
-#endif
+#endif // OG
 #ifdef ZH
 	if (!TheAI->pathfinder()->clientSafeQuickDoesPathExist(dozer->getAI()->getLocomotorSet(),
-#endif
+#endif // ZH
 		dozer->getPosition(), &pos)) {
 		AsciiString bldgName = bldgPlan->getName();
 		bldgName.concat(" - Dozer unable to reach building.  Teleporting.");
@@ -775,11 +775,11 @@ void AIPlayer::processBaseBuilding( void )
 #ifdef OG
 						if( BitTest( bldg->getStatusBits(), OBJECT_STATUS_UNDER_CONSTRUCTION ) == TRUE) {
 
-#endif
+#endif // OG
 #ifdef ZH
 						if( bldg->getStatusBits().test( OBJECT_STATUS_UNDER_CONSTRUCTION ) ) 
 						{
-#endif
+#endif // ZH
 							// make sure dozer is working on him.
 							ObjectID builder = bldg->getBuilderID();
 							Object* myDozer = TheGameLogic->findObjectByID(builder);
@@ -1045,11 +1045,11 @@ Bool AIPlayer::isLocationSafe(const Coord3D *pos, const ThingTemplate *tthing )
 #ifdef OG
 	PartitionFilterRejectByObjectStatus filterStealth(OBJECT_STATUS_STEALTHED, OBJECT_STATUS_DETECTED);
 
-#endif
+#endif // OG
 #ifdef ZH
 	PartitionFilterRejectByObjectStatus filterStealth( MAKE_OBJECT_STATUS_MASK( OBJECT_STATUS_STEALTHED ), 
 																										 MAKE_OBJECT_STATUS_MASK2( OBJECT_STATUS_DETECTED, OBJECT_STATUS_DISGUISED ) );
-#endif
+#endif // ZH
 
 	// (optional) only stuff that is significant
 	PartitionFilterInsignificantBuildings filterInsignificant(true, false);
@@ -1180,15 +1180,15 @@ void AIPlayer::onUnitProduced( Object *factory, Object *unit )
  */
 #ifdef OG
 void AIPlayer::computeSuperweaponTarget(const SpecialPowerTemplate *power, Coord3D *retPos, Int playerNdx, Real weaponRadius)
-#endif
+#endif // OG
 #ifdef ZH
 Bool AIPlayer::computeSuperweaponTarget(const SpecialPowerTemplate *power, Coord3D *retPos, Int playerNdx, Real weaponRadius)
-#endif
+#endif // ZH
 {
 #ifdef ZH
 
   Bool success = FALSE;
-#endif
+#endif // ZH
 
 	Region2D bounds;
 	getPlayerStructureBounds(&bounds, playerNdx);
@@ -1209,7 +1209,7 @@ Bool AIPlayer::computeSuperweaponTarget(const SpecialPowerTemplate *power, Coord
 		bounds.lo.y = bounds3D.lo.y;
 	}
 
-#endif
+#endif // ZH
 	if (weaponRadius<1.0f) {
 		weaponRadius = 1.0f; // sanity to avoid divide by 0.
 	}
@@ -1236,7 +1236,7 @@ Bool AIPlayer::computeSuperweaponTarget(const SpecialPowerTemplate *power, Coord
 #ifdef OG
 	Int i, j;
 
-#endif
+#endif // OG
 #ifdef ZH
 	Int x, y, xDelta, yDelta, xIndex, yIndex, xStart, yStart;
 
@@ -1274,7 +1274,7 @@ Bool AIPlayer::computeSuperweaponTarget(const SpecialPowerTemplate *power, Coord
 			xStart = xCount, yStart = yCount;
 			break;
 	}
-#endif
+#endif // ZH
 
 #ifdef OG
 	for (i=0; i<xCount; i++) {
@@ -1282,7 +1282,7 @@ Bool AIPlayer::computeSuperweaponTarget(const SpecialPowerTemplate *power, Coord
 			pos.x = bounds.lo.x + (bounds.width()*i)/xCount;
 			pos.y = bounds.lo.y + (bounds.height()*j)/yCount;
 
-#endif
+#endif // OG
 #ifdef ZH
 	//Calculate the generally best position
 	xIndex = xStart;
@@ -1293,18 +1293,18 @@ Bool AIPlayer::computeSuperweaponTarget(const SpecialPowerTemplate *power, Coord
 		{
 			pos.x = bounds.lo.x + ( bounds.width() * xIndex ) / xCount;
 			pos.y = bounds.lo.y + ( bounds.height() * yIndex ) / yCount;
-#endif
+#endif // ZH
 			pos.z = 0;
 #ifdef OG
 			Int curCash = getPlayerSuperweaponValue(&pos, playerNdx, 2*weaponRadius);
 			if ( curCash > cash) {
 
-#endif
+#endif // OG
 #ifdef ZH
 			Int curCash = getPlayerSuperweaponValue( &pos, playerNdx, 2*weaponRadius, targetMilitaryUnits );
 			if ( curCash > cash) 
 			{
-#endif
+#endif // ZH
 				cash = curCash;
 				bestPos = pos;
 			}
@@ -1313,7 +1313,7 @@ Bool AIPlayer::computeSuperweaponTarget(const SpecialPowerTemplate *power, Coord
 
 #ifdef ZH
 	//Fine tune that position by looking at a even smaller radius.
-#endif
+#endif // ZH
 	Coord3D veryBestPos;
 	xCount = 11;
 	yCount = 11;
@@ -1325,7 +1325,7 @@ Bool AIPlayer::computeSuperweaponTarget(const SpecialPowerTemplate *power, Coord
 			pos.x = bestPos.x + (i-5)*(weaponRadius/10);
 			pos.y = bestPos.y+ (j-5)*(weaponRadius/10);
 
-#endif
+#endif // OG
 #ifdef ZH
 	for( x = 0; x < xCount; x++ ) 
 	{
@@ -1333,30 +1333,30 @@ Bool AIPlayer::computeSuperweaponTarget(const SpecialPowerTemplate *power, Coord
 		{
 			pos.x = bestPos.x + (x-5)*(weaponRadius/10);
 			pos.y = bestPos.y + (x-5)*(weaponRadius/10);
-#endif
+#endif // ZH
 			pos.z = 0;
 #ifdef OG
 			Int curCash = getPlayerSuperweaponValue(&pos, playerNdx, weaponRadius);
 			if ( curCash > cash) {
 
-#endif
+#endif // OG
 #ifdef ZH
 			Int curCash = getPlayerSuperweaponValue( &pos, playerNdx, weaponRadius, targetMilitaryUnits );
 			if ( curCash > cash) 
 			{
-#endif
+#endif // ZH
 				cash = curCash;
 				veryBestPos = pos;
 				count = 1;
 #ifdef OG
 			}	else if (curCash==cash) {
 
-#endif
+#endif // OG
 #ifdef ZH
 			}	
 			else if (curCash==cash) 
 			{
-#endif
+#endif // ZH
 				veryBestPos.x += pos.x;
 				veryBestPos.y += pos.y;
 				count++;
@@ -1375,7 +1375,7 @@ Bool AIPlayer::computeSuperweaponTarget(const SpecialPowerTemplate *power, Coord
 
   return success;
 
-#endif
+#endif // ZH
 }
 
 //----------------------------------------------------------------------------------------------------------
@@ -1385,16 +1385,16 @@ Bool AIPlayer::computeSuperweaponTarget(const SpecialPowerTemplate *power, Coord
 #ifdef OG
 Int AIPlayer::getPlayerSuperweaponValue(Coord3D *center, Int playerNdx, Real radius )
 
-#endif
+#endif // OG
 #ifdef ZH
 Int AIPlayer::getPlayerSuperweaponValue(Coord3D *center, Int playerNdx, Real radius, Bool includeMilitaryUnits )
 {
 	if (radius < 4*PATHFIND_CELL_SIZE_F) 
-#endif
+#endif // ZH
 {
 #ifdef OG
 	if (radius < 4*PATHFIND_CELL_SIZE_F) {
-#endif
+#endif // OG
 		radius = 4*PATHFIND_CELL_SIZE_F;
 	}
 	Player::PlayerTeamList::const_iterator it;
@@ -1407,7 +1407,7 @@ Int AIPlayer::getPlayerSuperweaponValue(Coord3D *center, Int playerNdx, Real rad
 	for (it = pPlayer->getPlayerTeams()->begin(); it != pPlayer->getPlayerTeams()->end(); ++it) {
 		for (DLINK_ITERATOR<Team> iter = (*it)->iterate_TeamInstanceList(); !iter.done(); iter.advance()) {
 
-#endif
+#endif // OG
 #ifdef ZH
 	if (pPlayer == NULL) 
 		return 0;
@@ -1415,24 +1415,24 @@ Int AIPlayer::getPlayerSuperweaponValue(Coord3D *center, Int playerNdx, Real rad
 	{
 		for (DLINK_ITERATOR<Team> iter = (*it)->iterate_TeamInstanceList(); !iter.done(); iter.advance()) 
 		{
-#endif
+#endif // ZH
 			Team *team = iter.cur();
 			if (!team) continue;
 #ifdef OG
 			for (DLINK_ITERATOR<Object> iter = team->iterate_TeamMemberList(); !iter.done(); iter.advance()) {
 
-#endif
+#endif // OG
 #ifdef ZH
 			for (DLINK_ITERATOR<Object> iter = team->iterate_TeamMemberList(); !iter.done(); iter.advance()) 
 			{
-#endif
+#endif // ZH
 				Object *pObj = iter.cur();
 #ifdef OG
 				if (!pObj) continue;
 				if (pObj->isKindOf(KINDOF_AIRCRAFT)) {
 					if (pObj->isSignificantlyAboveTerrain()) {
 
-#endif
+#endif // OG
 #ifdef ZH
 				if (!pObj) 
 					continue;
@@ -1458,7 +1458,7 @@ Int AIPlayer::getPlayerSuperweaponValue(Coord3D *center, Int playerNdx, Real rad
 				{
 					if (pObj->isSignificantlyAboveTerrain()) 
 					{
-#endif
+#endif // ZH
 						continue; // Don't target flying aircraft.  OK if in the airstrip.
 					}
 				}
@@ -1468,11 +1468,11 @@ Int AIPlayer::getPlayerSuperweaponValue(Coord3D *center, Int playerNdx, Real rad
 #ifdef OG
 				if (dx*dx+dy*dy<radSqr) {
 
-#endif
+#endif // OG
 #ifdef ZH
 				if (dx*dx+dy*dy<radSqr) 
 				{
-#endif
+#endif // ZH
 					Real dist = sqrt(dx*dx+dy*dy);
 					Real factor = 1.0f - (dist/(2*radius)); // 1.0 in center, 0.5 on edges.
 					Real value = pObj->getTemplate()->calcCostToBuild(pPlayer);
@@ -1480,7 +1480,7 @@ Int AIPlayer::getPlayerSuperweaponValue(Coord3D *center, Int playerNdx, Real rad
 					if (pObj->isKindOf(KINDOF_COMMANDCENTER)) {
 						value = value/10; // Command centers cannot be killed by any superweapon, so we don't want to target them as highly. jba.
 
-#endif
+#endif // OG
 #ifdef ZH
 					if (pObj->isKindOf(KINDOF_COMMANDCENTER)) 
 					{
@@ -1495,27 +1495,27 @@ Int AIPlayer::getPlayerSuperweaponValue(Coord3D *center, Int playerNdx, Real rad
 							value = value * 5.0f; //Superweapons are prime targets for sneak attacks.
 						else
 							value = value / 10; // Superweapons cannot be killed by any superweapon, so we don't want to target them as highly. jba.
-#endif
+#endif // ZH
 					}
 #ifdef OG
 					if (value > 3000) {
 						value = value/10; // Superweapons can't be killed by superweapons, so we don't want to value them highly.
 
-#endif
+#endif // OG
 #ifdef ZH
 					if( applyNegValue )
 					{
 						cash -= factor * value * 5.0f; //Extremely undesired 
-#endif
+#endif // ZH
 					}
 #ifdef ZH
 					else
 					{
-#endif
+#endif // ZH
 					cash += factor * value;
 #ifdef ZH
 					}
-#endif
+#endif // ZH
 				}
 			}
 		}
@@ -1950,17 +1950,17 @@ void AIPlayer::buildUpgrade(const AsciiString &upgrade)
 		{
 #ifdef OG
 			if( BitTest( factory->getStatusBits(), OBJECT_STATUS_UNDER_CONSTRUCTION ) == TRUE )
-#endif
+#endif // OG
 #ifdef ZH
 			if( factory->getStatusBits().test( OBJECT_STATUS_UNDER_CONSTRUCTION ) )
-#endif
+#endif // ZH
 				continue;
 #ifdef OG
 			if( BitTest( factory->getStatusBits(), OBJECT_STATUS_SOLD ) == TRUE )
-#endif
+#endif // OG
 #ifdef ZH
 			if( factory->getStatusBits().test( OBJECT_STATUS_SOLD ) )
-#endif
+#endif // ZH
 				continue;
 			Bool canUpgradeHere = false;
 			const CommandSet *commandSet = TheControlBar->findCommandSet( factory->getCommandSetString() );
@@ -2052,7 +2052,7 @@ void AIPlayer::buildBySupplies(Int minimumCash, const AsciiString& thingName)
 			bldgName.concat(" - buildAISupplyCenter unable to place.  Attempting to adjust position.");
 			TheScriptEngine->AppendDebugMessage(bldgName, false);
 
-#endif
+#endif // OG
 #ifdef ZH
 			const Coord3D *warehouseLocation = bestSupplyWarehouse->getPosition();
 			AsciiString debugMessage;
@@ -2064,7 +2064,7 @@ void AIPlayer::buildBySupplies(Int minimumCash, const AsciiString& thingName)
 			TheScriptEngine->AppendDebugMessage(debugMessage, false);
 			if( TheGlobalData->m_debugSupplyCenterPlacement )
 				DEBUG_LOG(("%s", debugMessage.str()));
-#endif
+#endif // ZH
 			// try to fix.
 			Real posOffset;
 			// Wiggle it a little :)
@@ -2084,7 +2084,7 @@ void AIPlayer::buildBySupplies(Int minimumCash, const AsciiString& thingName)
 #ifdef ZH
 					if( TheGlobalData->m_debugSupplyCenterPlacement )
 						DEBUG_LOG(("buildBySupplies -- Fail at (%.2f,%.2f)\n", newPos.x, newPos.y));
-#endif
+#endif // ZH
 					newPos.y = yPos+posOffset;
 					valid = TheBuildAssistant->isLocationLegalToBuild( &newPos, tTemplate, angle,
 																							 BuildAssistant::CLEAR_PATH |
@@ -2095,7 +2095,7 @@ void AIPlayer::buildBySupplies(Int minimumCash, const AsciiString& thingName)
 					if (valid) break;
 					if( TheGlobalData->m_debugSupplyCenterPlacement )
 						DEBUG_LOG(("buildBySupplies -- Fail at (%.2f,%.2f)\n", newPos.x, newPos.y));
-#endif
+#endif // ZH
 				}
 				if (valid) break;
 				xPos = location.x-offset;
@@ -2111,7 +2111,7 @@ void AIPlayer::buildBySupplies(Int minimumCash, const AsciiString& thingName)
 #ifdef ZH
 					if( TheGlobalData->m_debugSupplyCenterPlacement )
 						DEBUG_LOG(("buildBySupplies -- Fail at (%.2f,%.2f)\n", newPos.x, newPos.y));
-#endif
+#endif // ZH
 					newPos.x = xPos+posOffset;
 					valid = TheBuildAssistant->isLocationLegalToBuild( &newPos, tTemplate, angle,
 																							 BuildAssistant::CLEAR_PATH |
@@ -2122,12 +2122,12 @@ void AIPlayer::buildBySupplies(Int minimumCash, const AsciiString& thingName)
 					if (valid) break;
 					if( TheGlobalData->m_debugSupplyCenterPlacement )
 						DEBUG_LOG(("buildBySupplies -- Fail at (%.2f,%.2f)\n", newPos.x, newPos.y));
-#endif
+#endif // ZH
 				}
 				if (valid) break;
 #ifdef ZH
 			}
-#endif
+#endif // ZH
 			}
 #ifdef ZH
 		if (valid) 
@@ -2135,11 +2135,11 @@ void AIPlayer::buildBySupplies(Int minimumCash, const AsciiString& thingName)
 			if( TheGlobalData->m_debugSupplyCenterPlacement )
 				DEBUG_LOG(("buildAISupplyCenter -- SUCCESS at (%.2f,%.2f)\n", newPos.x, newPos.y));
 			location = newPos;
-#endif
+#endif // ZH
 		}
 #ifdef OG
 		if (valid) location = newPos;
-#endif
+#endif // OG
 		TheTerrainVisual->removeAllBibs();	// isLocationLegalToBuild adds bib feedback, turn it off.  jba.
 		location.z = 0; // All build list locations are ground relative.
 		m_player->addToPriorityBuildList(thingName, &location, angle);
@@ -2203,7 +2203,7 @@ Bool AIPlayer::calcClosestConstructionZoneLocation( const ThingTemplate *constru
 																						 BuildAssistant::TERRAIN_RESTRICTIONS |
 																						 BuildAssistant::NO_OBJECT_OVERLAP,
 																						 NULL, m_player ) == LBC_OK;
-#endif
+#endif // ZH
 	}
 #ifdef ZH
 			
@@ -2252,13 +2252,13 @@ Bool AIPlayer::calcClosestConstructionZoneLocation( const ThingTemplate *constru
 
   return success;
 
-#endif
+#endif // ZH
 }
 
 #ifdef ZH
 // ------------------------------------------------------------------------------------------------
 /** Build a specific building nearest specified team. */
-#endif
+#endif // ZH
 // ------------------------------------------------------------------------------------------------
 #ifdef ZH
 void AIPlayer::buildSpecificBuildingNearestTeam( const AsciiString &thingName, const Team *team )
@@ -2362,7 +2362,7 @@ void AIPlayer::buildSpecificBuildingNearestTeam( const AsciiString &thingName, c
 }
 
 // ------------------------------------------------------------------------------------------------
-#endif
+#endif // ZH
 /** Find a supply center we haven't built a supply depot near yet. */
 // ------------------------------------------------------------------------------------------------
 Object *AIPlayer::findSupplyCenter(Int minimumCash)
@@ -2788,10 +2788,10 @@ void AIPlayer::recruitSpecificAITeam(TeamPrototype *teamProto, Real recruitRadiu
 						{
 #ifdef OG
 #ifdef DEBUG_LOGGING
-#endif
+#endif // OG
 #ifdef ZH
 #if defined(_DEBUG) || defined(_INTERNAL)
-#endif
+#endif // ZH
 							Coord3D pos = *unit->getPosition();
 							Coord3D to = teamProto->getTemplateInfo()->m_homeLocation;
 							DEBUG_LOG(("Moving unit from %f,%f to %f,%f\n", pos.x, pos.y , to.x, to.y ));
@@ -3670,7 +3670,7 @@ void AIPlayer::loadPostProcess( void )
 #ifdef OG
 #endif
 
-#endif
+#endif // OG
 // ------------------------------------------------------------------------------------------------
 // ------------------------------------------------------------------------------------------------
 TeamInQueue::~TeamInQueue()
@@ -3981,27 +3981,27 @@ void WorkOrder::loadPostProcess( void )
  */
 #ifdef OG
 void AIPlayer::getPlayerStructureBounds(Region2D *bounds, Int playerNdx )
-#endif
+#endif // OG
 #ifdef ZH
 void AIPlayer::getPlayerStructureBounds( Region2D *bounds, Int playerNdx, Bool conservative )
-#endif
+#endif // ZH
 {
 	Player::PlayerTeamList::const_iterator it;
 	Bool firstObject = true;
 	Bool firstStructure = true;
 #ifdef OG
 	bounds->hi.x = bounds->lo.x = bounds->hi.y = bounds->lo.x = 0;
-#endif
+#endif // OG
 #ifdef ZH
 	bounds->hi.x = bounds->lo.x = bounds->hi.y = bounds->lo.y = 0;
-#endif
+#endif // ZH
 	Region2D objBounds;
 #ifdef OG
 	objBounds.hi.x = objBounds.lo.x = objBounds.hi.y = objBounds.lo.x = 0;
-#endif
+#endif // OG
 #ifdef ZH
 	objBounds.hi.x = objBounds.lo.x = objBounds.hi.y = objBounds.lo.y = 0;
-#endif
+#endif // ZH
 
 	Player* pPlayer = ThePlayerList->getNthPlayer(playerNdx);
 #ifdef OG
@@ -4009,7 +4009,7 @@ void AIPlayer::getPlayerStructureBounds( Region2D *bounds, Int playerNdx, Bool c
 	for (it = pPlayer->getPlayerTeams()->begin(); it != pPlayer->getPlayerTeams()->end(); ++it) {
 		for (DLINK_ITERATOR<Team> iter = (*it)->iterate_TeamInstanceList(); !iter.done(); iter.advance()) {
 
-#endif
+#endif // OG
 #ifdef ZH
 	if (pPlayer == NULL) 
 		return;
@@ -4017,25 +4017,25 @@ void AIPlayer::getPlayerStructureBounds( Region2D *bounds, Int playerNdx, Bool c
 	{
 		for (DLINK_ITERATOR<Team> iter = (*it)->iterate_TeamInstanceList(); !iter.done(); iter.advance()) 
 		{
-#endif
+#endif // ZH
 			Team *team = iter.cur();
 #ifdef OG
 			if (!team) continue;
 			for (DLINK_ITERATOR<Object> iter = team->iterate_TeamMemberList(); !iter.done(); iter.advance()) {
 
-#endif
+#endif // OG
 #ifdef ZH
 			if (!team) 
 				continue;
 			for (DLINK_ITERATOR<Object> iter = team->iterate_TeamMemberList(); !iter.done(); iter.advance()) 
 			{
-#endif
+#endif // ZH
 				Object *pObj = iter.cur();
 #ifdef OG
 				if (!pObj) continue;
 				if (pObj->isKindOf(KINDOF_STRUCTURE)) {
 
-#endif
+#endif // OG
 #ifdef ZH
 				if (!pObj) 
 					continue;
@@ -4051,7 +4051,7 @@ void AIPlayer::getPlayerStructureBounds( Region2D *bounds, Int playerNdx, Bool c
 						continue;
 					}
 					
-#endif
+#endif // ZH
 					Coord3D pos = *pObj->getPosition();
 					if (firstObject) {
 						objBounds.lo.x = objBounds.hi.x = pos.x;
@@ -4060,12 +4060,12 @@ void AIPlayer::getPlayerStructureBounds( Region2D *bounds, Int playerNdx, Bool c
 #ifdef OG
 					}	else {
 
-#endif
+#endif // OG
 #ifdef ZH
 					}	
 					else 
 					{
-#endif
+#endif // ZH
 						if (objBounds.lo.x>pos.x) objBounds.lo.x = pos.x;
 						if (objBounds.lo.y>pos.y) objBounds.lo.y = pos.y;
 						if (objBounds.hi.x<pos.x) objBounds.hi.x = pos.x;
@@ -4074,23 +4074,23 @@ void AIPlayer::getPlayerStructureBounds( Region2D *bounds, Int playerNdx, Bool c
 #ifdef OG
 					if (firstStructure) {
 
-#endif
+#endif // OG
 #ifdef ZH
 					if (firstStructure) 
 					{
-#endif
+#endif // ZH
 						bounds->lo.x = bounds->hi.x = pos.x;
 						bounds->lo.y = bounds->hi.y = pos.y;
 						firstStructure = false;
 #ifdef OG
 					}	else {
 
-#endif
+#endif // OG
 #ifdef ZH
 					}	
 					else 
 					{
-#endif
+#endif // ZH
 						if (bounds->lo.x>pos.x) bounds->lo.x = pos.x;
 						if (bounds->lo.y>pos.y) bounds->lo.y = pos.y;
 						if (bounds->hi.x<pos.x) bounds->hi.x = pos.x;

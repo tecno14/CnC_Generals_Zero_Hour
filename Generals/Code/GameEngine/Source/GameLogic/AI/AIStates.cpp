@@ -52,7 +52,7 @@
 #include "GameLogic/AIGuard.h"
 #ifdef ZH
 #include "GameLogic/AIGuardRetaliate.h"
-#endif
+#endif // ZH
 #include "GameLogic/AITNGuard.h"
 #include "GameLogic/AIStateMachine.h"
 #include "GameLogic/AIPathfind.h"
@@ -63,7 +63,7 @@
 #include "GameLogic/Module/ContainModule.h"
 #include "GameLogic/Module/PhysicsUpdate.h"
 #include "GameLogic/Module/StealthUpdate.h"
-#endif
+#endif // OG
 #include "GameLogic/PartitionManager.h"
 #include "GameLogic/PolygonTrigger.h"
 #include "GameLogic/ScriptEngine.h"
@@ -79,7 +79,7 @@
 #include "GameLogic/Module/PhysicsUpdate.h"
 #include "GameLogic/Module/StealthUpdate.h"
 
-#endif
+#endif // ZH
 #ifdef _INTERNAL
 // for occasional debugging...
 //#pragma optimize("", off)
@@ -732,12 +732,12 @@ AIStateMachine::AIStateMachine( Object *obj, AsciiString name ) : StateMachine( 
 	defineState( AI_EXIT,												newInstance(AIExitState)( this ), AI_IDLE, AI_IDLE );
 #ifdef ZH
 	defineState( AI_EXIT_INSTANTLY,							newInstance(AIExitInstantlyState)( this ), AI_IDLE, AI_IDLE );
-#endif
+#endif // ZH
 	defineState( AI_GUARD,											newInstance(AIGuardState)( this ), AI_IDLE, AI_IDLE );
 	defineState( AI_GUARD_TUNNEL_NETWORK,				newInstance(AITunnelNetworkGuardState)( this ), AI_IDLE, AI_IDLE );
 #ifdef ZH
 	defineState( AI_GUARD_RETALIATE,						newInstance(AIGuardRetaliateState)( this ), AI_IDLE, AI_IDLE );
-#endif
+#endif // ZH
 	defineState( AI_HUNT,												newInstance(AIHuntState)( this ), AI_IDLE, AI_IDLE );
 	defineState( AI_ATTACK_AREA,								newInstance(AIAttackAreaState)( this ), AI_IDLE, AI_IDLE );
 	defineState( AI_FACE_OBJECT,								newInstance(AIFaceState)( this, true ), AI_IDLE, AI_IDLE );
@@ -881,7 +881,7 @@ StateReturnType AIStateMachine::updateStateMachine()
 	#endif
 	//end -extraLogging 
 
-#endif
+#endif // ZH
 	if (m_temporaryState)
 	{
 		// execute this state
@@ -895,7 +895,7 @@ StateReturnType AIStateMachine::updateStateMachine()
 #ifdef OG
 		if (status==STATE_CONTINUE)	{
 
-#endif
+#endif // OG
 #ifdef ZH
 		if (status==STATE_CONTINUE)	
 		{
@@ -906,7 +906,7 @@ StateReturnType AIStateMachine::updateStateMachine()
 			#endif
 			//end -extraLogging 
 
-#endif
+#endif // ZH
 			return status;
 		}
 		m_temporaryState->onExit(EXIT_NORMAL);
@@ -937,18 +937,18 @@ StateReturnType AIStateMachine::updateStateMachine()
 			}	
 			if( !idle )
 				DEBUG_LOG( (" - RETURNING %s\n", result.str() ) );
-#endif
+#endif // ZH
 	}
 #ifdef OG
 	return StateMachine::updateStateMachine();
 
-#endif
+#endif // OG
 #ifdef ZH
 	#endif
 	//end -extraLogging 
 
 	return retType;
-#endif
+#endif // ZH
 }
 
 //----------------------------------------------------------------------------------------------------------
@@ -1466,7 +1466,7 @@ StateReturnType AIIdleState::update()
 				! obj->isDisabledByType( DISABLED_EMP ) &&
 #ifdef ZH
 				! obj->isDisabledByType( DISABLED_SUBDUED ) &&
-#endif
+#endif // ZH
 				! obj->isDisabledByType( DISABLED_HACKED ) )
 		{
 			// mood targeting
@@ -1659,7 +1659,7 @@ StateReturnType AIInternalMoveToState::onEnter()
 		return STATE_FAILURE;
 	}
 
-#endif
+#endif // ZH
 	if (ai->getCurLocomotor()) {
 		ai->getCurLocomotor()->startMove();
 		if (ai->getCurLocomotor()->isUltraAccurate()) 
@@ -1696,10 +1696,10 @@ StateReturnType AIInternalMoveToState::onEnter()
 
 #ifdef OG
 	if (getAdjustsDestination()) 
-#endif
+#endif // OG
 #ifdef ZH
 	if( getAdjustsDestination() && !obj->testStatus( OBJECT_STATUS_RIDER8 ) ) 
-#endif
+#endif // ZH
 	{
 		if (!TheAI->pathfinder()->adjustDestination(obj, ai->getLocomotorSet(), &m_goalPosition)) 
 		{
@@ -1823,7 +1823,7 @@ StateReturnType AIInternalMoveToState::update()
 	//{
 	//	return STATE_CONTINUE;
 	//}
-#endif
+#endif // ZH
 
 	Path *thePath = ai->getPath();
 	if (m_waitingForPath) 
@@ -1841,11 +1841,11 @@ StateReturnType AIInternalMoveToState::update()
 			if( blah )
 			{
 				blah = blah;
-#endif
+#endif // ZH
 		}
 #ifdef OG
 		if (thePath==NULL) {
-#endif
+#endif // OG
 			return STATE_FAILURE;
 		}
 		m_waitingForPath = false;
@@ -1937,11 +1937,11 @@ StateReturnType AIInternalMoveToState::update()
 				{
 					blah = blah;
 				}
-#endif
+#endif // ZH
 				return STATE_FAILURE;
 #ifdef ZH
 			}
-#endif
+#endif // ZH
 
 			// srj sez: must re-set setLocoGoal after computePath, since computePath
 			// can set the loco goal to NONE...
@@ -1950,13 +1950,13 @@ StateReturnType AIInternalMoveToState::update()
 			else
 #ifdef ZH
 			{
-#endif
+#endif // ZH
 				return STATE_CONTINUE;
 		}
 	}
 #ifdef ZH
 	}
-#endif
+#endif // ZH
 
 	//
 	// Check if we have reached our destination
@@ -1993,7 +1993,7 @@ StateReturnType AIInternalMoveToState::update()
 		{
 			blah = blah;
 		}
-#endif
+#endif // ZH
 		return STATE_SUCCESS;
 	}
 
@@ -2087,7 +2087,7 @@ StateReturnType AIMoveToState::onEnter()
 		int blah = 0;
 		blah++;
 	}
-#endif
+#endif // ZH
 	setAdjustsDestination(true);
 
 	//If we have a goal object and are trying to ignore it as an obstacle...
@@ -2143,7 +2143,7 @@ StateReturnType AIMoveToState::update()
 		Int blah = 0;
 		blah++;
 	}
-#endif
+#endif // ZH
 
 	UnsignedInt adjustment = ai->getMoodMatrixActionAdjustment(MM_Action_Move);
 	if (m_isMoveTo && (adjustment & MAA_Action_To_AttackMove))
@@ -2241,7 +2241,7 @@ StateReturnType AIMoveOutOfTheWayState::update()
 	if (getMachineOwner()->isEffectivelyDead()) {
 		return STATE_SUCCESS;
 	}
-#endif
+#endif // ZH
 	return AIInternalMoveToState::update();
 }
 
@@ -2544,7 +2544,7 @@ Bool AIAttackApproachTargetState::computePath()
 		if (ai->isBlockedAndStuck()) 
 		{
 			m_waitingForPath = true;
-#endif
+#endif // OG
 			m_goalPosition = m_prevVictimPos;
 #ifdef OG
 			CRCDEBUG_LOG(("AIAttackApproachTargetState::computePath - requestPath() for object %d\n", getMachineOwner()->getID()));
@@ -2553,7 +2553,7 @@ Bool AIAttackApproachTargetState::computePath()
 		else 
 		{
 			m_goalPosition = m_prevVictimPos;
-#endif
+#endif // OG
 			m_waitingForPath = true;
 
 			Coord3D pos;
@@ -2564,7 +2564,7 @@ Bool AIAttackApproachTargetState::computePath()
 			m_stopIfInRange = false; // we have calculated a position to shoot from, so go there.
 #ifdef OG
 		}
-#endif
+#endif // OG
 		CRCDEBUG_LOG(("AIAttackApproachTargetState::computePath - bailing after repathing for object %d\n", getMachineOwner()->getID()));
 		return true;
 	} 
@@ -2654,7 +2654,7 @@ StateReturnType AIAttackApproachTargetState::onEnter()
 //	{
 //		return STATE_SUCCESS;
 //	}
-#endif
+#endif // ZH
 
 	m_prevVictimPos.x = 0.0f;
 	m_prevVictimPos.y = 0.0f;
@@ -2692,7 +2692,7 @@ StateReturnType AIAttackApproachTargetState::onEnter()
 			if (ai->getLastCommandSource() == CMD_FROM_AI && !ai->isAllowedToChase() ) {
 				if (!weapon->isContactWeapon()) {
 
-#endif
+#endif // OG
 #ifdef ZH
 		// Kris (July 2003): If we are retaliating... don't fail out!
 		if( ai->getCurrentStateID() != AI_GUARD_RETALIATE )
@@ -2711,7 +2711,7 @@ StateReturnType AIAttackApproachTargetState::onEnter()
 				Bool hunt = ai->getCurrentStateID() == AI_HUNT;
 				if (!hunt && victim->isKindOf(KINDOF_AIRCRAFT) && victim->isAirborneTarget()) 
 				{
-#endif
+#endif // ZH
 					return STATE_FAILURE; 
 				}
 			}
@@ -2724,7 +2724,7 @@ StateReturnType AIAttackApproachTargetState::onEnter()
 	} else {
 		// Attacking a position.  For a varitey of reasons, we need to destroy any existing path or we spin. jba. [8/25/2003]
 		ai->destroyPath();
-#endif
+#endif // ZH
 	}
 	// If we have a turret, start aiming.
 	WhichTurretType tur = ai->getWhichTurretForCurWeapon();
@@ -2748,13 +2748,13 @@ StateReturnType AIAttackApproachTargetState::onEnter()
 #ifdef OG
 	return AIInternalMoveToState::onEnter();
 
-#endif
+#endif // OG
 #ifdef ZH
 	setAdjustsDestination(false);
 	StateReturnType ret =  AIInternalMoveToState::onEnter();
 	setAdjustsDestination(true);
 	return ret;
-#endif
+#endif // ZH
 }
 
 //----------------------------------------------------------------------------------------------------------
@@ -2779,7 +2779,7 @@ StateReturnType AIAttackApproachTargetState::updateInternal()
 #ifdef OG
 		if( victim->testStatus( OBJECT_STATUS_STEALTHED ) && !victim->testStatus( OBJECT_STATUS_DETECTED ) ) {
 
-#endif
+#endif // OG
 #ifdef ZH
  		if (source->getControllingPlayer()->getPlayerType() == PLAYER_COMPUTER) 
 		{
@@ -2792,7 +2792,7 @@ StateReturnType AIAttackApproachTargetState::updateInternal()
 		}	
 		if( victim->testStatus( OBJECT_STATUS_STEALTHED ) && !victim->testStatus( OBJECT_STATUS_DETECTED ) && !victim->testStatus( OBJECT_STATUS_DISGUISED ) ) 
 		{
-#endif
+#endif // ZH
 			return STATE_FAILURE;	// If obj is stealthed, can no longer approach.
 		}
 		ai->setCurrentVictim(victim);
@@ -3074,7 +3074,7 @@ StateReturnType AIAttackPursueTargetState::onEnter()
 	if (source->getControllingPlayer()->getPlayerType() == PLAYER_HUMAN) {
 		if (ai->getLastCommandSource() == CMD_FROM_AI) {
 
-#endif
+#endif // OG
 #ifdef ZH
 	// Kris (July 2003): If we are retaliating... don't succeed out!
 	if( ai->getCurrentStateID() != AI_GUARD_RETALIATE )
@@ -3083,13 +3083,13 @@ StateReturnType AIAttackPursueTargetState::onEnter()
 		{
 			if (ai->getLastCommandSource() == CMD_FROM_AI) 
 			{
-#endif
+#endif // ZH
 			return STATE_SUCCESS;
 		}
 	}
 #ifdef ZH
 	}
-#endif
+#endif // ZH
 
 	m_prevVictimPos.x = 0.0f;
 	m_prevVictimPos.y = 0.0f;
@@ -3150,11 +3150,11 @@ StateReturnType AIAttackPursueTargetState::updateInternal()
 #ifdef ZH
 	{ 
 		if( victim->testStatus( OBJECT_STATUS_STEALTHED ) && !victim->testStatus( OBJECT_STATUS_DETECTED ) && !victim->testStatus( OBJECT_STATUS_DISGUISED ) )
-#endif
+#endif // ZH
 	{ 
 #ifdef OG
 		if( victim->testStatus( OBJECT_STATUS_STEALTHED ) && !victim->testStatus( OBJECT_STATUS_DETECTED ) ){
-#endif
+#endif // OG
 			return STATE_FAILURE;	// If obj is stealthed, can no longer pursue.
 		}
 		ai->setCurrentVictim(victim);
@@ -3725,7 +3725,7 @@ StateReturnType AIAttackMoveToState::update()
 		return STATE_SUCCESS;
 	}
 
-#endif
+#endif // ZH
 	if (!m_attackMoveMachine->isInIdleState()) 
 	{
 		ai->setLocomotorGoalNone();
@@ -4050,7 +4050,7 @@ void AIFollowWaypointPathState::computeGoal(Bool useGroupOffsets)
 
 	if (extent.isInRegionNoZ(&dest)) {
 		// The waypoint is on the map.  Check & see if the adjusted position is off map [8/28/2003]
-#endif
+#endif // ZH
 	if (!extent.isInRegionNoZ(&m_goalPosition)) {
 #ifdef ZH
 			// clamp to in region. [8/28/2003]	
@@ -4070,7 +4070,7 @@ void AIFollowWaypointPathState::computeGoal(Bool useGroupOffsets)
 	}
 
 	if (!extent.isInRegionNoZ(&m_goalPosition)) {
-#endif
+#endif // ZH
 		setAdjustsDestination(false); // moving off the map.
 		ai->getCurLocomotor()->setAllowInvalidPosition(true); // allow it to move off the map.
 		m_appendGoalPosition = true; // Moving off the map.
@@ -5051,13 +5051,13 @@ StateReturnType AIAttackAimAtTargetState::onEnter()
 	{
 		ContainModuleInterface *contain = containedBy->getContain();
 
-#endif
+#endif // OG
 #ifdef ZH
 	ContainModuleInterface *contain = containedBy ? containedBy->getContain() : NULL;
   
 	if( containedBy && weapon && contain && contain->isEnclosingContainerFor( source ) )
 	{                                          // non enclosing garrison containers do not use firepoints. Lorenzen, 6/11/03
-#endif
+#endif // ZH
 		if (victim)
 		{
 			inFiringRange = contain->attemptBestFirePointPosition( source, weapon, victim );
@@ -5096,13 +5096,13 @@ StateReturnType AIAttackAimAtTargetState::onEnter()
 	}
 	else
 	{
-#endif
+#endif // ZH
 	WhichTurretType tur = sourceAI->getWhichTurretForCurWeapon();
 	if (tur != TURRET_INVALID)
 	{
 #ifdef ZH
 			//Order specific turret to attack.
-#endif
+#endif // ZH
 		if (m_isAttackingObject)
 		{
 			sourceAI->setTurretTargetObject(tur, victim, m_isForceAttacking);
@@ -5124,16 +5124,16 @@ StateReturnType AIAttackAimAtTargetState::onEnter()
 			return STATE_SUCCESS;
 #ifdef ZH
 		}
-#endif
+#endif // ZH
 	}
 	m_setLocomotor = false;
 
 #ifdef OG
 	source->setStatus( OBJECT_STATUS_IS_AIMING_WEAPON, true );
-#endif
+#endif // OG
 #ifdef ZH
 	source->setStatus( MAKE_OBJECT_STATUS_MASK( OBJECT_STATUS_IS_AIMING_WEAPON ) );
-#endif
+#endif // ZH
 	return STATE_CONTINUE;
 }
 
@@ -5200,13 +5200,13 @@ StateReturnType AIAttackAimAtTargetState::update()
 #ifdef OG
 		if (aimDelta < REL_THRESH) aimDelta = REL_THRESH;
 
-#endif
+#endif // OG
 #ifdef ZH
 		if (aimDelta < REL_THRESH) 
 		{
 			aimDelta = REL_THRESH;
 		}
-#endif
+#endif // ZH
 
 		//DEBUG_LOG(("AIM: desired %f, actual %f, delta %f, aimDelta %f, goalpos %f %f\n",rad2deg(obj->getOrientation() + relAngle),rad2deg(obj->getOrientation()),rad2deg(relAngle),rad2deg(aimDelta),victim->getPosition()->x,victim->getPosition()->y));
 		if (m_canTurnInPlace)
@@ -5256,7 +5256,7 @@ StateReturnType AIAttackAimAtTargetState::update()
 		const Coord3D *pos = m_isAttackingObject ? victim->getPosition() : getMachineGoalPosition();
 		if( !weapon || !weapon->isWithinAttackRange( source, pos ) )
 
-#endif
+#endif // OG
 #ifdef ZH
 
 		// NO BAD WRONG!!! How can this be the one spot to convert an Object to a center pos?  We have
@@ -5270,7 +5270,7 @@ StateReturnType AIAttackAimAtTargetState::update()
 			inRange = weapon ? weapon->isWithinAttackRange(source, getMachineGoalPosition()) : FALSE;
 
 		if( !weapon || !inRange )
-#endif
+#endif // ZH
 		{
 			// We're no longer in range, so exit with failure so we can automatically 
 			// reacquire a closer target if possible.
@@ -5299,10 +5299,10 @@ void AIAttackAimAtTargetState::onExit( StateExitType status )
 
 #ifdef OG
 	getMachineOwner()->setStatus( OBJECT_STATUS_IS_AIMING_WEAPON, false );
-#endif
+#endif // OG
 #ifdef ZH
 	getMachineOwner()->clearStatus( MAKE_OBJECT_STATUS_MASK( OBJECT_STATUS_IS_AIMING_WEAPON ) );
-#endif
+#endif // ZH
 
 	//getMachineOwner()->clearModelConditionState( MODELCONDITION_PREATTACK );
 }
@@ -5339,10 +5339,10 @@ StateReturnType AIAttackFireWeaponState::onEnter()
 
 #ifdef OG
 	obj->setStatus( OBJECT_STATUS_IS_FIRING_WEAPON, true );
-#endif
+#endif // OG
 #ifdef ZH
 	obj->setStatus( MAKE_OBJECT_STATUS_MASK( OBJECT_STATUS_IS_FIRING_WEAPON ) );
-#endif
+#endif // ZH
 	obj->preFireCurrentWeapon( getMachineGoalObject() );
 	return STATE_CONTINUE;	
 }
@@ -5404,7 +5404,7 @@ StateReturnType AIAttackFireWeaponState::update()
     // If the concept of linked turrets is further developed then God help you, and put more code right here
     // that lookl like the //LINKED TURRETS// block, below
 
-#endif
+#endif // ZH
 		obj->fireCurrentWeapon(victim);
 #ifdef ZH
 
@@ -5419,14 +5419,14 @@ StateReturnType AIAttackFireWeaponState::update()
 			getMachine()->setGoalObject( obj->getAI()->getCurrentVictim() );
 		}
 
-#endif
+#endif // ZH
 		// clear this, just in case.
 #ifdef OG
 		obj->setStatus( OBJECT_STATUS_IGNORING_STEALTH, false );
-#endif
+#endif // OG
 #ifdef ZH
 		obj->clearStatus( MAKE_OBJECT_STATUS_MASK( OBJECT_STATUS_IGNORING_STEALTH ) );
-#endif
+#endif // ZH
 		Real continueRange = weapon->getContinueAttackRange();
 		if (
 			continueRange > 0.0f &&
@@ -5466,7 +5466,7 @@ StateReturnType AIAttackFireWeaponState::update()
       {// were firing with all barrels
         Weapon *weapon = obj->getWeaponInWeaponSlot( (WeaponSlotType)slot );
         if ( weapon )
-#endif
+#endif // ZH
 	{
 #ifdef ZH
           if ( weapon->fireWeapon(obj, getMachineGoalPosition()) ) //fire() returns 'reloaded'
@@ -5477,15 +5477,15 @@ StateReturnType AIAttackFireWeaponState::update()
       }
     }
     else
-#endif
+#endif // ZH
 		obj->fireCurrentWeapon(getMachineGoalPosition());
 		// clear this, just in case.
 #ifdef OG
 		obj->setStatus( OBJECT_STATUS_IGNORING_STEALTH, false );
-#endif
+#endif // OG
 #ifdef ZH
 		obj->clearStatus( MAKE_OBJECT_STATUS_MASK( OBJECT_STATUS_IGNORING_STEALTH ) );
-#endif
+#endif // ZH
 	}
 		
 	m_att->notifyFired();
@@ -5505,11 +5505,11 @@ void AIAttackFireWeaponState::onExit( StateExitType status )
 	obj->setStatus( OBJECT_STATUS_IS_FIRING_WEAPON, false );
 	// clear this, just in case.
 	obj->setStatus( OBJECT_STATUS_IGNORING_STEALTH, false );
-#endif
+#endif // OG
 #ifdef ZH
 	obj->clearStatus( MAKE_OBJECT_STATUS_MASK2( OBJECT_STATUS_IS_FIRING_WEAPON, OBJECT_STATUS_IGNORING_STEALTH ) );
 
-#endif
+#endif // ZH
 
 	// this can occur if we start a preattack (eg, bayonet)
 	// and the target moves out range before we can actually "fire"...
@@ -5560,7 +5560,7 @@ AIAttackState::AIAttackState( StateMachine *machine, Bool follow, Bool attacking
 			follow, attackingObject, forceAttacking));
 	}
 #endif
-#endif
+#endif // ZH
 }
 
 //----------------------------------------------------------------------------------------------------------
@@ -5644,19 +5644,19 @@ AsciiString AIAttackState::getName(  ) const
 //----------------------------------------------------------------------------------------------------------
 #ifdef OG
 void AIAttackState::chooseWeapon()
-#endif
+#endif // OG
 #ifdef ZH
 Bool AIAttackState::chooseWeapon()
-#endif
+#endif // ZH
 {
 	Object* victim = getMachineGoalObject();
 	if (m_isAttackingObject && !victim)
 #ifdef OG
 		return;
-#endif
+#endif // OG
 #ifdef ZH
 		return FALSE;
-#endif
+#endif // ZH
 
 	Object* source = getMachineOwner();
 	AIUpdateInterface *ai = source->getAI();
@@ -5666,27 +5666,27 @@ Bool AIAttackState::chooseWeapon()
 	{
 		/*bool found =*/ source->chooseBestWeaponForTarget(victim, PREFER_MOST_DAMAGE, ai->getLastCommandSource());
 
-#endif
+#endif // OG
 #ifdef ZH
 	Bool found = FALSE;
 //	if (victim) // Pardon?  We still need to pick a weapon if we are attacking the ground.
 //	{
 		found = source->chooseBestWeaponForTarget(victim, PREFER_MOST_DAMAGE, ai->getLastCommandSource());
-#endif
+#endif // ZH
 		//DEBUG_ASSERTLOG(found, ("unable to autochoose any weapon for %s\n",source->getTemplate()->getName().str()));
 #ifdef OG
 	}
-#endif
+#endif // OG
 #ifdef ZH
 //	}
-#endif
+#endif // ZH
 
 	// Check if we need to update because of the weapon choice switch.
 	source->adjustModelConditionForWeaponStatus();
 #ifdef ZH
 
 	return found;
-#endif
+#endif // ZH
 }
 
 //----------------------------------------------------------------------------------------------------------
@@ -5728,7 +5728,7 @@ StateReturnType AIAttackState::onEnter()
 		return STATE_FAILURE;
 	}
 
-#endif
+#endif // ZH
 	// if all of our weapons are out of ammo, can't attack.
 	// (this can happen for units which never auto-reload, like the Raptor)
 	if (source->isOutOfAmmo() && !source->isKindOf(KINDOF_PROJECTILE))
@@ -5742,7 +5742,7 @@ StateReturnType AIAttackState::onEnter()
 #ifdef STATE_MACHINE_DEBUG
 	m_attackMachine->setDebugOutput(getMachine()->getWantsDebugOutput());
 #endif
-#endif
+#endif // ZH
 	// tell the attack machine who the victim of the attack is
 	if (m_isAttackingObject)
 	{
@@ -5768,11 +5768,11 @@ StateReturnType AIAttackState::onEnter()
 	Bool weaponPicked = chooseWeapon();
 	if( !weaponPicked )
 		return STATE_FAILURE;
-#endif
+#endif // ZH
 
 #ifdef OG
 	chooseWeapon();
-#endif
+#endif // OG
 	Weapon* curWeapon = source->getCurrentWeapon();
 	if (curWeapon)
 	{
@@ -5781,10 +5781,10 @@ StateReturnType AIAttackState::onEnter()
 		if (curWeapon->getContinueAttackRange() > 0.0f)
 #ifdef OG
 			source->setStatus(OBJECT_STATUS_IGNORING_STEALTH, true);
-#endif
+#endif // OG
 #ifdef ZH
 			source->setStatus( MAKE_OBJECT_STATUS_MASK( OBJECT_STATUS_IGNORING_STEALTH ) );
-#endif
+#endif // ZH
 	}
 
 	m_lockedWeaponOnEnter = source->isCurWeaponLocked() ? curWeapon : NULL;
@@ -5794,10 +5794,10 @@ StateReturnType AIAttackState::onEnter()
 	{
 #ifdef OG
 		source->setStatus( OBJECT_STATUS_IS_ATTACKING, true );
-#endif
+#endif // OG
 #ifdef ZH
 		source->setStatus( MAKE_OBJECT_STATUS_MASK( OBJECT_STATUS_IS_ATTACKING ) );
-#endif
+#endif // ZH
 		source->setModelConditionState( MODELCONDITION_ATTACKING );
 	}
 	return retType;
@@ -5852,10 +5852,10 @@ StateReturnType AIAttackState::update()
 			{
 #ifdef OG
 				if ( (victim->getStatusBits() & OBJECT_STATUS_CAN_ATTACK) == 0 )
-#endif
+#endif // OG
 #ifdef ZH
 				if( !victim->getStatusBits().test( OBJECT_STATUS_CAN_ATTACK ) )
-#endif
+#endif // ZH
 				{
 					if ( victim->getContain() != NULL )
 					{
@@ -5899,7 +5899,7 @@ StateReturnType AIAttackState::update()
 #ifdef OG
 	chooseWeapon();
 
-#endif
+#endif // OG
 #ifdef ZH
 
 	// Something can happen to make none of our weapons work.  Return failure, or we will start shooting
@@ -5908,7 +5908,7 @@ StateReturnType AIAttackState::update()
 	if( !weaponPicked )
 		return STATE_FAILURE;
 
-#endif
+#endif // ZH
 	Weapon* curWeapon = source->getCurrentWeapon();
 
 	// if we entered with a locked weapon (ie, a special weapon), then we will
@@ -5954,13 +5954,13 @@ void AIAttackState::onExit( StateExitType status )
 	obj->setStatus( OBJECT_STATUS_IS_AIMING_WEAPON, false );
 	obj->setStatus( OBJECT_STATUS_IS_ATTACKING, false );
 	obj->setStatus( OBJECT_STATUS_IGNORING_STEALTH, false );
-#endif
+#endif // OG
 #ifdef ZH
 	obj->clearStatus( MAKE_OBJECT_STATUS_MASK4( OBJECT_STATUS_IS_FIRING_WEAPON, 
 																							OBJECT_STATUS_IS_AIMING_WEAPON, 
 																							OBJECT_STATUS_IS_ATTACKING, 
 																							OBJECT_STATUS_IGNORING_STEALTH ) );
-#endif
+#endif // ZH
 	obj->clearModelConditionState( MODELCONDITION_ATTACKING );
 
 	obj->clearLeechRangeModeForAllWeapons();
@@ -5973,10 +5973,10 @@ void AIAttackState::onExit( StateExitType status )
 		for (int i = 0; i < MAX_TURRETS; ++i)
 #ifdef OG
 			ai->setTurretTargetObject((WhichTurretType)i, NULL, 0);
-#endif
+#endif // OG
 #ifdef ZH
 			ai->setTurretTargetObject((WhichTurretType)i, NULL, NULL);
-#endif
+#endif // ZH
 		ai->friend_setGoalObject(NULL);
 	}
 }
@@ -6797,12 +6797,12 @@ void AIExitInstantlyState::loadPostProcess( void )
 
 //----------------------------------------------------------------------------------------------------------
 StateReturnType AIExitInstantlyState::onEnter()
-#endif
+#endif // ZH
 {
 #ifdef ZH
 	m_entryToClear = INVALID_ID;
 
-#endif
+#endif // ZH
 	Object* obj = getMachineOwner();
 #ifdef ZH
 	Object* goal = getMachineGoalObject();
@@ -6832,7 +6832,7 @@ StateReturnType AIExitInstantlyState::onEnter()
 		return STATE_FAILURE;
 	}
 }
-#endif
+#endif // ZH
 
 #ifdef ZH
 //----------------------------------------------------------------------------------------------------------
@@ -6850,7 +6850,7 @@ void AIExitInstantlyState::onExit( StateExitType status )
 {
 	Object* obj = getMachineOwner();
 
-#endif
+#endif // ZH
 	// use this, rather than getMachineGoalObject, in case the goal
 	// is killed while we were waiting...
 	if (m_entryToClear != INVALID_ID)
@@ -6954,7 +6954,7 @@ Bool AIGuardState::isGuardIdle() const
 }
 
 //----------------------------------------------------------------------------------------------------------
-#endif
+#endif // ZH
 /**
  * Guard location.
  */
@@ -6983,7 +6983,7 @@ StateReturnType AIGuardState::onEnter()
 #ifdef ZH
 	
 	obj->getControllingPlayer()->getAcademyStats()->recordGuardAbilityUsed();
-#endif
+#endif // ZH
 }
 
 //----------------------------------------------------------------------------------------------------------
@@ -7011,10 +7011,10 @@ StateReturnType AIGuardState::update()
 	Object* owner = getMachineOwner();
 #ifdef OG
 	if (owner->isOutOfAmmo() && !owner->isKindOf(KINDOF_PROJECTILE))
-#endif
+#endif // OG
 #ifdef ZH
 	if( owner->getAI()->getJetAIUpdate() && owner->isOutOfAmmo() && !owner->isKindOf(KINDOF_PROJECTILE) && !owner->getTemplate()->isEnterGuard())
-#endif
+#endif // ZH
 	{
 		DEBUG_CRASH(("Hmm, this should probably never happen, since this case should be intercepted by JetAIUpdate\n"));
 		return STATE_FAILURE;
@@ -7166,7 +7166,7 @@ StateReturnType AIGuardRetaliateState::update()
 	}
 
 	StateReturnType ret = m_guardRetaliateMachine->updateStateMachine();
-#endif
+#endif // ZH
 	return ret;
 }
 
@@ -7246,7 +7246,7 @@ Bool AITunnelNetworkGuardState::isAttack() const
 }
 
 //----------------------------------------------------------------------------------------------------------
-#endif
+#endif // ZH
 /**
  * Guard location.
  */
@@ -7372,7 +7372,7 @@ Bool AIHuntState::isAttack() const
 	}
 	return FALSE;
 }
-#endif
+#endif // ZH
 
 //----------------------------------------------------------------------------------------------------------
 /**

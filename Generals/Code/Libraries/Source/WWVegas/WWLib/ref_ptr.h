@@ -49,7 +49,7 @@
 #ifdef ZH
 #include "wwdebug.h"
 
-#endif
+#endif // ZH
 /*
 	RefCountPtr<T> is a smart pointer for reference counted objects.
 	
@@ -260,10 +260,10 @@ class RefCountPtr
 		{
 #ifdef OG
 			G_ASSERT(dummy == 0);
-#endif
+#endif // OG
 #ifdef ZH
 			WWASSERT(dummy == 0);
-#endif
+#endif // ZH
 		}
 #endif
 
@@ -369,7 +369,7 @@ class RefCountPtr
 				Referent->Release_Ref();
 #ifdef ZH
 				Referent = 0;
-#endif
+#endif // ZH
 			}
 		}
 
@@ -450,6 +450,6 @@ RefCountPtr<Derived> Static_Cast(const RefCountPtr<Base> & base)
 {
 	return Create_Peek((Derived *)base.Peek());
 }
-#endif
+#endif // ZH
 
 #endif

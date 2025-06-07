@@ -90,4 +90,4 @@ private:
 
 
 #endif SHDDEFMANAGER_H
-#endif
+#endif // ZH

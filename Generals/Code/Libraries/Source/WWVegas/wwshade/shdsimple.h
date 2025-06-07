@@ -146,4 +146,4 @@ protected:
 
 #endif //SHDSIMPLE_H
 
-#endif
+#endif // ZH

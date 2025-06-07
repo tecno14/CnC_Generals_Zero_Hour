@@ -43,7 +43,7 @@
 #ifdef ZH
 #include "GameClient/ChallengeGenerals.h"
 
-#endif
+#endif // ZH
 // FORWARD REFERENCES /////////////////////////////////////////////////////////
 
 // TYPE DEFINES ///////////////////////////////////////////////////////////////
@@ -51,7 +51,7 @@ class VideoBuffer;
 class VideoStreamInterface;
 #ifdef ZH
 class WindowVideoManager;
-#endif
+#endif // ZH
 
 
 
@@ -131,7 +131,7 @@ private:
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 // class ChallengeLoadScreen is to be used only when we're loading a Generals' Challenge mission
-#endif
+#endif // ZH
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 #ifdef ZH
 class ChallengeLoadScreen : public LoadScreen
@@ -202,7 +202,7 @@ private:
 };
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-#endif
+#endif // ZH
 // class ShellGameLoadScreen is to be used for the Shell Game loadscreen
 ////	///////////////////////////////////////////////////////////////////////////////////////////////
 class ShellGameLoadScreen : public LoadScreen
@@ -259,7 +259,7 @@ private:
 	GameWindow *m_portraitLocalGeneral;
 	GameWindow *m_featuresLocalGeneral;
 	GameWindow *m_nameLocalGeneral;
-#endif
+#endif // ZH
 
 };
 
@@ -300,7 +300,7 @@ private:
 	GameWindow *m_portraitLocalGeneral;
 	GameWindow *m_featuresLocalGeneral;
 	GameWindow *m_nameLocalGeneral;
-#endif
+#endif // ZH
 };
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////

@@ -88,10 +88,10 @@ class W3DBibBuffer
 {	
 #ifdef OG
 friend class HeightMapRenderObjClass;
-#endif
+#endif // OG
 #ifdef ZH
 friend class BaseHeightMapRenderObjClass;
-#endif
+#endif // ZH
 public:
 
 	W3DBibBuffer(void);

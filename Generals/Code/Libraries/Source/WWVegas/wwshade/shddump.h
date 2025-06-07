@@ -70,4 +70,4 @@ struct ShdDef_ChunkStruct
 
 #endif //SHDDUMP_H
 
-#endif
+#endif // ZH

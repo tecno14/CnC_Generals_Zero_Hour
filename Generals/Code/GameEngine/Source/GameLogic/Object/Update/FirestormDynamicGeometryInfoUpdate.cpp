@@ -32,7 +32,7 @@
 
 #ifdef ZH
 #include "Common/Player.h"
-#endif
+#endif // ZH
 #include "Common/Xfer.h"
 
 #include "GameClient/GameClient.h"
@@ -169,7 +169,7 @@ UpdateSleepTime FirestormDynamicGeometryInfoUpdate::update( void )
 #ifdef ZH
 
 		getObject()->getControllingPlayer()->getAcademyStats()->recordFirestormCreated();
-#endif
+#endif // ZH
 
 	}
 

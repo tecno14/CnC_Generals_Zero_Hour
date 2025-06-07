@@ -44,7 +44,7 @@ enum ChipsetType;
 enum CpuType;
 #ifdef ZH
 enum GraphicsVenderID;
-#endif
+#endif // ZH
 
 class TextureClass;	///forward reference
 /** System for managing complex rendering settings which are either not handled by
@@ -76,7 +76,7 @@ public:
 		ST_FLAT_TERRAIN_BASE_NOISE2,	//shader to apply base texture and cloud/noise 2.
 		ST_FLAT_TERRAIN_BASE_NOISE12,//shader to apply base texture and both cloud/noise
 		ST_FLAT_SHROUD_TEXTURE,		//shader to apply shroud texture projection.
-#endif
+#endif // ZH
 		ST_MAX
 	};
 
@@ -88,12 +88,12 @@ public:
 #ifdef ZH
 	static GraphicsVenderID getCurrentVendor(void) {return m_currentVendor;}	///<return current card vendor.
 	static getCurrentDriverVersion(void) {return m_driverVersion; }	///<return current driver version.
-#endif
+#endif // ZH
 	static Int getShaderPasses(ShaderTypes shader);	///<rendering passes required for shader
 	static Int setShader(ShaderTypes shader, Int pass);	///<enable specific shader pass.
 #ifdef ZH
 	static Int setShroudTex(Int stage);	///<Set shroud in a texture stage.
-#endif
+#endif // ZH
 	static void resetShader(ShaderTypes shader);	///<make sure W3D2 gets restored to normal
 	///Specify all textures (up to 8) which can be accessed by the shaders.
 	static void setTexture(Int stage,TextureClass* texture) {m_Textures[stage]=texture;}
@@ -120,7 +120,7 @@ public:
 	static IDirect3DTexture8 * getRenderTexture(void);	///< returns last used render target texture
 #ifdef ZH
 	static Bool isRenderingToTexture(void) {return m_renderingToTexture; }
-#endif
+#endif // ZH
 	static void drawViewport(Int color);	///<draws 2 triangles covering the current tactical viewport
 
 
@@ -130,7 +130,7 @@ protected:
 #ifdef ZH
 	static GraphicsVenderID m_currentVendor;	///<last video card vendor
 	static __int64 m_driverVersion;			///<driver version of last chipset.
-#endif
+#endif // ZH
 	static ShaderTypes m_currentShader;	///<last shader that was set.
 	static Int m_currentShaderPass;		///<pass of last shader that was set.
 

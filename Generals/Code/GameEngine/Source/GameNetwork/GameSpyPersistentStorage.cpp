@@ -392,4 +392,4 @@ static Bool gameSpyInitPersistentStorageConnection( void )
 }
 
 
-#endif
+#endif // OG

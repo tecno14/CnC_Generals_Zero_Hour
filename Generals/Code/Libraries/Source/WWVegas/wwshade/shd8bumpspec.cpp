@@ -408,4 +408,4 @@ void Shd8BumpSpecClass::Setup_Self_Shadow_Info(ShdMeshClass& mesh, RenderInfoCla
 	Matrix4x4::Multiply(view2tex,vw_mat,&Self_Shadow_Transform);
 }
 
-#endif
+#endif // ZH

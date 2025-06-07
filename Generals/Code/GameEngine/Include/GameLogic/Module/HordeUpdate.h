@@ -73,7 +73,7 @@ public:
 	HordeActionType						m_action;				///< what to do if we get horde-ness
 #ifdef ZH
 	Bool											m_allowedNationalism; ///< Nationalism is hard ocded.  Yeah!  Add to the goodness with this flag instead of rewriting after Alpha.
-#endif
+#endif // ZH
 	std::vector<AsciiString>	m_flagSubObjNames;		///< name(s) of the flag subobj
 
 	HordeUpdateModuleData();
@@ -92,7 +92,7 @@ public:
 	virtual Bool isTrueHordeMember() const = 0; 
 #ifdef ZH
 	virtual Bool isAllowedNationalism() const = 0;
-#endif
+#endif // ZH
 
 };
 
@@ -114,7 +114,7 @@ public:
 	virtual Bool isTrueHordeMember() const { return m_trueHordeMember && m_inHorde; } 
 #ifdef ZH
 	virtual Bool isAllowedNationalism() const;
-#endif
+#endif // ZH
 	virtual Bool hasFlag() const { return m_hasFlag; }
 	virtual UpdateSleepTime update();	///< update this object's AI
 

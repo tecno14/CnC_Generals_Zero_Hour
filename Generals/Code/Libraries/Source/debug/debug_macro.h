@@ -394,4 +394,4 @@ sourcefname.cpp (123) : Hello world
 
 #endif // DEBUG_MACRO_H
 
-#endif
+#endif // ZH

@@ -90,7 +90,7 @@ public:
   
   Bool getUseStats( void ) const;
   void setUseStats( Bool useStats );
-#endif
+#endif // ZH
 };
 
 #endif // __CUSTOMMATCHPREFERENCES_H__

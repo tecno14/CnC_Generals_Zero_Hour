@@ -87,7 +87,7 @@ public:
 	Int m_voiceLength;
 #ifdef ZH
 	AsciiString m_generalName;
-#endif
+#endif // ZH
 };
 
 class Campaign : public MemoryPoolObject
@@ -103,7 +103,7 @@ public:
 	AsciiString getFinalVictoryMovie( void );
 #ifdef ZH
 	Bool isChallengeCampaign( void ) { return m_isChallengeCampaign; }
-#endif
+#endif // ZH
 
 public:
 	typedef std::list< Mission* > MissionList;			///< list of Shell Menu schemes
@@ -117,7 +117,7 @@ public:
 #ifdef ZH
 	Bool m_isChallengeCampaign;
 	AsciiString m_playerFactionName;
-#endif
+#endif // ZH
 };
 
 class CampaignManager : public Snapshot
@@ -131,10 +131,10 @@ public:
 	virtual void xfer( Xfer *xfer );
 #ifdef OG
 	virtual void loadPostProcess( void ) { }
-#endif
+#endif // OG
 #ifdef ZH
 	virtual void loadPostProcess( void );
-#endif
+#endif // ZH
 
 	void init( void );
 	Campaign *getCurrentCampaign( void );		///< Returns a point to the current Campaign
@@ -158,7 +158,7 @@ public:
 #ifdef OG
 	Int getRankPoints() const { return m_currentRankPoints; }
 
-#endif
+#endif // OG
 #ifdef ZH
 	Int getRankPoints() const { 
 		// All campaign missions, regular and generals' challenge now start each map at rank 0.
@@ -168,7 +168,7 @@ public:
 		// other than setting initial starting rank on map load, as it is currently.  08/09/03
 		return 0;
 	}
-#endif
+#endif // ZH
 
 	GameDifficulty getGameDifficulty() const { return m_difficulty; }
 	void setGameDifficulty(GameDifficulty d) { m_difficulty = d; }
@@ -184,7 +184,7 @@ private:
 	GameDifficulty m_difficulty;
 #ifdef ZH
 	Int m_xferChallengeGeneralsPlayerTemplateNum;			///< Need a place to stick this naughty singleton's important bit.
-#endif
+#endif // ZH
 
 };
 //-----------------------------------------------------------------------------

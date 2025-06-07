@@ -136,7 +136,7 @@ public:
 	UnsignedInt		m_cashUpdateDelay;
 #ifdef ZH
 	UnsignedInt		m_cashUpdateDelayFast;
-#endif
+#endif // ZH
 	UnsignedInt		m_regularCashAmount;
 	UnsignedInt		m_veteranCashAmount;
 	UnsignedInt		m_eliteCashAmount;
@@ -151,7 +151,7 @@ public:
 		m_cashUpdateDelay = 0;
 #ifdef ZH
 		m_cashUpdateDelayFast = 0;
-#endif
+#endif // ZH
 		m_regularCashAmount = 0;
 		m_veteranCashAmount = 0;
 		m_eliteCashAmount = 0;
@@ -172,7 +172,7 @@ public:
 			{ "CashUpdateDelay",		INI::parseDurationUnsignedInt,	NULL, offsetof( HackInternetAIUpdateModuleData, m_cashUpdateDelay ) },
 #ifdef ZH
 			{ "CashUpdateDelayFast",INI::parseDurationUnsignedInt,	NULL, offsetof( HackInternetAIUpdateModuleData, m_cashUpdateDelayFast ) },
-#endif
+#endif // ZH
 			{ "RegularCashAmount",	INI::parseUnsignedInt,	NULL, offsetof( HackInternetAIUpdateModuleData, m_regularCashAmount ) },
 			{ "VeteranCashAmount",	INI::parseUnsignedInt,	NULL, offsetof( HackInternetAIUpdateModuleData, m_veteranCashAmount ) },
 			{ "EliteCashAmount",		INI::parseUnsignedInt,	NULL, offsetof( HackInternetAIUpdateModuleData, m_eliteCashAmount ) },
@@ -209,17 +209,17 @@ public:
 #ifdef OG
 	UnsignedInt getUnpackTime()					const { return getHackInternetAIUpdateModuleData()->m_unpackTime; }
 	UnsignedInt getPackTime()						const { return getHackInternetAIUpdateModuleData()->m_packTime; }
-#endif
+#endif // OG
 	Real getPackUnpackVariationFactor() const { return getHackInternetAIUpdateModuleData()->m_packUnpackVariationFactor; }
 #ifdef OG
 	UnsignedInt getCashUpdateDelay()		const { return getHackInternetAIUpdateModuleData()->m_cashUpdateDelay; }
 
-#endif
+#endif // OG
 #ifdef ZH
 	UnsignedInt getUnpackTime()					const;
 	UnsignedInt getPackTime()						const;
 	UnsignedInt getCashUpdateDelay()		const;
-#endif
+#endif // ZH
 	UnsignedInt getRegularCashAmount()	const { return getHackInternetAIUpdateModuleData()->m_regularCashAmount; }
 	UnsignedInt getVeteranCashAmount()	const { return getHackInternetAIUpdateModuleData()->m_veteranCashAmount; }
 	UnsignedInt getEliteCashAmount()		const { return getHackInternetAIUpdateModuleData()->m_eliteCashAmount; }

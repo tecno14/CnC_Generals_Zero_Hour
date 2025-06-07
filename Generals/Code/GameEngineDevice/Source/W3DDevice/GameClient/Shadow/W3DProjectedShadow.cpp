@@ -146,7 +146,7 @@ class W3DProjectedShadow	: public Shadow
 		#if defined(_DEBUG) || defined(_INTERNAL)	
 		virtual void getRenderCost(RenderCost & rc) const;
 		#endif
-#endif
+#endif // OG
 
 #ifdef OG
 	protected:
@@ -162,7 +162,7 @@ class W3DProjectedShadow	: public Shadow
 		virtual void release(void)	{TheW3DProjectedShadowManager->removeShadow(this);}	///<release shadow from manager
 };
 
-#endif
+#endif // OG
 /** This class will manage shadow textures for each render object.  Shadow textures may
 be based on render geometry but don't need to be.  This allows lower detail 'blob' textures
 to be substituted to improve performance.*/
@@ -219,11 +219,11 @@ class W3DShadowTexture : public RefCountClass, public	HashableClass
 #ifdef OG
 		void					 setObjectOrientationHistory(Matrix3 &mat) {m_lastObjectOrientation=mat;}	///<updates the last position of light
 		Matrix3&			 getObjectOrientationHistory(void) {return m_lastObjectOrientation;}
-#endif
+#endif // OG
 #ifdef ZH
 		void					 setObjectOrientationHistory(Matrix3x3 &mat) {m_lastObjectOrientation=mat;}	///<updates the last position of light
 		Matrix3x3&			 getObjectOrientationHistory(void) {return m_lastObjectOrientation;}
-#endif
+#endif // ZH
 		SphereClass&	 getBoundingSphere(void)	{return m_areaEffectSphere;}
 		AABoxClass&		 getBoundingBox(void)		{return m_areaEffectBox;}
 		void	 setBoundingSphere(SphereClass &sphere)	{m_areaEffectSphere=sphere;}
@@ -240,10 +240,10 @@ class W3DShadowTexture : public RefCountClass, public	HashableClass
 		Vector3		m_lastLightPosition;		///<position of light source at time of last texture update.
 #ifdef OG
 		Matrix3		m_lastObjectOrientation;	///<orientation of shadow casting object when texture was generated.
-#endif
+#endif // OG
 #ifdef ZH
 		Matrix3x3	m_lastObjectOrientation;	///<orientation of shadow casting object when texture was generated.
-#endif
+#endif // ZH
 		AABoxClass	m_areaEffectBox;			///<boundary defining object-space volume affected by shadow.
 		SphereClass	m_areaEffectSphere;			///<boundary defining object-space volume affected by shadow.
 		Vector3		m_shadowUV[2];		///world-space vectors defining the u and v texture coordinate axis.
@@ -320,10 +320,10 @@ Bool W3DProjectedShadowManager::ReAcquireResources(void)
 	m_renderTargetHasAlpha=TRUE;
 #ifdef OG
 	if ((m_dynamicRenderTarget=DX8Wrapper::Create_Render_Target (DEFAULT_RENDER_TARGET_WIDTH, DEFAULT_RENDER_TARGET_HEIGHT, true)) == NULL)
-#endif
+#endif // OG
 #ifdef ZH
 	if ((m_dynamicRenderTarget=DX8Wrapper::Create_Render_Target (DEFAULT_RENDER_TARGET_WIDTH, DEFAULT_RENDER_TARGET_HEIGHT, WW3D_FORMAT_A8R8G8B8)) == NULL)
-#endif
+#endif // ZH
 	{
 			m_renderTargetHasAlpha=FALSE;
 
@@ -406,10 +406,10 @@ Int W3DProjectedShadowManager::renderProjectedTerrainShadow(W3DProjectedShadow *
 {
 #ifdef OG
 	static	Matrix4 mWorld(true);	//initialize to identity matrix
-#endif
+#endif // OG
 #ifdef ZH
 	static	Matrix4x4 mWorld(true);	//initialize to identity matrix
-#endif
+#endif // ZH
 	struct SHADOW_VOLUME_VERTEX	//vertex structure passed to D3D
 	{
 		float x,y,z;
@@ -744,10 +744,10 @@ void W3DProjectedShadowManager::flushDecals(W3DShadowTexture *texture, ShadowTyp
 {
 #ifdef OG
 	static	Matrix4 mWorld(true);	//initialize to identity matrix
-#endif
+#endif // OG
 #ifdef ZH
 	static	Matrix4x4 mWorld(true);	//initialize to identity matrix
-#endif
+#endif // ZH
 
 	if (nShadowDecalVertsInBatch == 0 && nShadowDecalPolysInBatch == 0)
 	{	//nothing to render
@@ -895,10 +895,10 @@ void W3DProjectedShadowManager::queueDecal(W3DProjectedShadow *shadow)
 		WorldHeightMap *hmap=TheTerrainRenderObject->getMap();
 #ifdef OG
 		borderSize=hmap->getBorderSize();
-#endif
+#endif // OG
 #ifdef ZH
 		borderSize=hmap->getBorderSizeInline();
-#endif
+#endif // ZH
 		if (robj)
 		{
 			objPos=robj->Get_Position();
@@ -1167,7 +1167,7 @@ void W3DProjectedShadowManager::queueDecal(W3DProjectedShadow *shadow)
 
 #ifdef ZH
 		try {
-#endif
+#endif // ZH
 		if(pvIndices)
 		{	//fill each cell's vertex indices
 			Int rowStart;
@@ -1201,7 +1201,7 @@ void W3DProjectedShadowManager::queueDecal(W3DProjectedShadow *shadow)
 		} catch(...) {
 			IndexBufferExceptionFunc();
 		}
-#endif
+#endif // ZH
 		shadowDecalIndexBufferD3D->Unlock();
 
 		Int numPolys = (endX - startX)*(endY - startY)*2;	//2 triangles per cell
@@ -1336,7 +1336,7 @@ void W3DProjectedShadowManager::queueSimpleDecal(W3DProjectedShadow *shadow)
 
 #ifdef ZH
 		try {
-#endif
+#endif // ZH
 		if(pvIndices)
 		{	pvIndices[0]=nShadowDecalVertsInBatch;
 			pvIndices[1]=nShadowDecalVertsInBatch+1;
@@ -1350,7 +1350,7 @@ void W3DProjectedShadowManager::queueSimpleDecal(W3DProjectedShadow *shadow)
 		IndexBufferExceptionFunc();
 		} catch(...) {
 			IndexBufferExceptionFunc();
-#endif
+#endif // ZH
 		}
 
 		shadowDecalIndexBufferD3D->Unlock();
@@ -1480,10 +1480,10 @@ Int W3DProjectedShadowManager::renderShadows(RenderInfoClass & rinfo)
 
 #ifdef OG
 					AABoxIntersectionTestClass boxtest(aaBox,COLLISION_TYPE_ALL);
-#endif
+#endif // OG
 #ifdef ZH
 					AABoxIntersectionTestClass boxtest(aaBox,COLL_TYPE_ALL);
-#endif
+#endif // ZH
 
 					for( obj = iter->first(); obj; obj = iter->next() )
 					{
@@ -1591,12 +1591,12 @@ Shadow* W3DProjectedShadowManager::addDecal(Shadow::ShadowTypeInfo *shadowInfo)
 		w3dTexture->Set_U_Addr_Mode(TextureClass::TEXTURE_ADDRESS_CLAMP);
 		w3dTexture->Set_V_Addr_Mode(TextureClass::TEXTURE_ADDRESS_CLAMP);
 		w3dTexture->Set_Mip_Mapping(TextureClass::FILTER_TYPE_NONE);
-#endif
+#endif // OG
 #ifdef ZH
 		w3dTexture->Get_Filter().Set_U_Addr_Mode(TextureFilterClass::TEXTURE_ADDRESS_CLAMP);
 		w3dTexture->Get_Filter().Set_V_Addr_Mode(TextureFilterClass::TEXTURE_ADDRESS_CLAMP);
 		w3dTexture->Get_Filter().Set_Mip_Mapping(TextureFilterClass::FILTER_TYPE_NONE);
-#endif
+#endif // ZH
 
 		DEBUG_ASSERTCRASH(w3dTexture != NULL, ("Could not load decal texture: %s\n",texture_name));
 
@@ -1716,12 +1716,12 @@ Shadow* W3DProjectedShadowManager::addDecal(RenderObjClass *robj, Shadow::Shadow
 		w3dTexture->Set_U_Addr_Mode(TextureClass::TEXTURE_ADDRESS_CLAMP);
 		w3dTexture->Set_V_Addr_Mode(TextureClass::TEXTURE_ADDRESS_CLAMP);
 		w3dTexture->Set_Mip_Mapping(TextureClass::FILTER_TYPE_NONE);
-#endif
+#endif // OG
 #ifdef ZH
 		w3dTexture->Get_Filter().Set_U_Addr_Mode(TextureFilterClass::TEXTURE_ADDRESS_CLAMP);
 		w3dTexture->Get_Filter().Set_V_Addr_Mode(TextureFilterClass::TEXTURE_ADDRESS_CLAMP);
 		w3dTexture->Get_Filter().Set_Mip_Mapping(TextureFilterClass::FILTER_TYPE_NONE);
-#endif
+#endif // ZH
 
 		DEBUG_ASSERTCRASH(w3dTexture != NULL, ("Could not load decal texture: %s\n",texture_name));
 
@@ -1868,12 +1868,12 @@ W3DProjectedShadow* W3DProjectedShadowManager::addShadow(RenderObjClass *robj, S
 					w3dTexture->Set_U_Addr_Mode(TextureClass::TEXTURE_ADDRESS_CLAMP);
 					w3dTexture->Set_V_Addr_Mode(TextureClass::TEXTURE_ADDRESS_CLAMP);
 					w3dTexture->Set_Mip_Mapping(TextureClass::FILTER_TYPE_NONE);
-#endif
+#endif // OG
 #ifdef ZH
 					w3dTexture->Get_Filter().Set_U_Addr_Mode(TextureFilterClass::TEXTURE_ADDRESS_CLAMP);
 					w3dTexture->Get_Filter().Set_V_Addr_Mode(TextureFilterClass::TEXTURE_ADDRESS_CLAMP);
 					w3dTexture->Get_Filter().Set_Mip_Mapping(TextureFilterClass::FILTER_TYPE_NONE);
-#endif
+#endif // ZH
 
 					DEBUG_ASSERTCRASH(w3dTexture != NULL, ("Could not load decal texture"));
 
@@ -2038,7 +2038,7 @@ W3DProjectedShadow* W3DProjectedShadowManager::createDecalShadow(Shadow::ShadowT
 	Real	decalOffsetX=0.0f;
 	Real	decalOffsetY=0.0f;
 	const Real defaultWidth = 10.0f;
-#endif
+#endif // ZH
 
 #ifdef ZH
 	Char	texture_name[64];
@@ -2129,7 +2129,7 @@ W3DProjectedShadow* W3DProjectedShadowManager::createDecalShadow(Shadow::ShadowT
 	return shadow;
 }
 
-#endif
+#endif // ZH
 void W3DProjectedShadowManager::removeShadow (W3DProjectedShadow *shadow)
 {
 	W3DProjectedShadow *prev_shadow=NULL;
@@ -2373,10 +2373,10 @@ Int W3DShadowTexture::init(RenderObjClass *robj)
 
 #ifdef OG
 	TextureClass *new_texture = MSGNEW("TextureClass") TextureClass(surface_desc.Width,surface_desc.Height,surface_desc.Format,TextureClass::MIP_LEVELS_1);
-#endif
+#endif // OG
 #ifdef ZH
 	TextureClass *new_texture = MSGNEW("TextureClass") TextureClass(surface_desc.Width,surface_desc.Height,surface_desc.Format,MIP_LEVELS_1);
-#endif
+#endif // ZH
 
 	setTexture(new_texture);
 

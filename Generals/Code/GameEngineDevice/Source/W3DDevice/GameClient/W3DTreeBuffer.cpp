@@ -52,7 +52,7 @@ enum
 	W3D_TOPPLE_OPTIONS_NO_BOUNCE = 0x00000001,  ///< do not bounce when hit the ground
 	W3D_TOPPLE_OPTIONS_NO_FX		 = 0x00000002	///< do not play any FX when hit the ground
 };
-#endif
+#endif // ZH
 //-----------------------------------------------------------------------------
 //         Includes                                                      
 //-----------------------------------------------------------------------------
@@ -65,7 +65,7 @@ enum
 #ifdef OG
 #include "common/GlobalData.h"
 
-#endif
+#endif // OG
 #ifdef ZH
 #include "Common/MapReaderWriterInfo.h"
 #include "Common/FileSystem.h" 
@@ -77,11 +77,11 @@ enum
 #include "GameLogic/GameLogic.h"
 #include "GameLogic/Object.h"
 #include "GameLogic/PartitionManager.h"
-#endif
+#endif // ZH
 #include "GameClient/ClientRandomValue.h"
 #ifdef ZH
 #include "GameClient/FXList.h"
-#endif
+#endif // ZH
 #include "W3DDevice/GameClient/TerrainTex.h"
 #include "W3DDevice/GameClient/HeightMap.h"
 #include "W3DDevice/GameClient/W3DDynamicLight.h"
@@ -91,13 +91,13 @@ enum
 #include "W3DDevice/GameClient/W3DShadow.h"
 #include "W3DDevice/GameClient/W3DShroud.h"
 #include "W3DDevice/GameClient/W3DProjectedShadow.h"
-#endif
+#endif // ZH
 #include "WW3D2/Camera.h"
 #include "WW3D2/DX8Wrapper.h"
 #include "WW3D2/DX8Renderer.h"
 #ifdef ZH
 #include "WW3D2/Matinfo.h"
-#endif
+#endif // ZH
 #include "WW3D2/Mesh.h"
 #include "WW3D2/MeshMdl.h"
 #ifdef ZH
@@ -108,7 +108,7 @@ enum
 //#pragma optimize("", off)
 //#pragma MESSAGE("************************************** WARNING, optimization disabled for debugging purposes")
 #endif
-#endif
+#endif // ZH
 
 #ifdef ZH
 // If TEST_AND_BLEND is defined, it will do an alpha test and blend.  Otherwise just alpha test. jba. [5/30/2003]
@@ -125,7 +125,7 @@ enum
 ******************************************************************************/
 //-----------------------------------------------------------------------------
 //         Public Functions                                                
-#endif
+#endif // ZH
 //-----------------------------------------------------------------------------
 #ifdef ZH
 
@@ -242,13 +242,13 @@ void W3DTreeBuffer::W3DTreeTextureClass::Apply(unsigned int stage)
 	TextureClass::Apply(stage);
 }
 //-----------------------------------------------------------------------------
-#endif
+#endif // ZH
 //         Private Data                                                     
 //-----------------------------------------------------------------------------
 #ifdef ZH
 
 #ifdef TEST_AND_BLEND
-#endif
+#endif // ZH
 // A W3D shader that does alpha, texturing, tests zbuffer, doesn't update zbuffer.
 #ifdef ZH
 #define SC_ALPHA_DETAIL ( SHADE_CNST(ShaderClass::PASS_LEQUAL, ShaderClass::DEPTH_WRITE_ENABLE, ShaderClass::COLOR_WRITE_ENABLE, ShaderClass::SRCBLEND_SRC_ALPHA, \
@@ -285,21 +285,21 @@ static ShaderClass detailAlphaShader(SC_ALPHA_DETAIL);
 */
 
 /*
-#endif
+#endif // ZH
 #define SC_ALPHA_DETAIL ( SHADE_CNST(ShaderClass::PASS_LEQUAL, ShaderClass::DEPTH_WRITE_DISABLE, ShaderClass::COLOR_WRITE_ENABLE, ShaderClass::SRCBLEND_SRC_ALPHA, \
 	ShaderClass::DSTBLEND_ONE_MINUS_SRC_ALPHA, ShaderClass::FOG_DISABLE, ShaderClass::GRADIENT_MODULATE, ShaderClass::SECONDARY_GRADIENT_DISABLE, ShaderClass::TEXTURING_ENABLE, \
 #ifdef OG
 	ShaderClass::ALPHATEST_DISABLE, ShaderClass::CULL_MODE_DISABLE, \
-#endif
+#endif // OG
 #ifdef ZH
 	ShaderClass::ALPHATEST_ENABLE, ShaderClass::CULL_MODE_ENABLE, \
-#endif
+#endif // ZH
 	ShaderClass::DETAILCOLOR_DISABLE, ShaderClass::DETAILALPHA_DISABLE) )
 
 static ShaderClass detailAlphaShader(SC_ALPHA_DETAIL);
 #ifdef ZH
 */
-#endif
+#endif // ZH
 
 /*
 #define SC_ALPHA_MIRROR ( SHADE_CNST(ShaderClass::PASS_LEQUAL, ShaderClass::DEPTH_WRITE_DISABLE, ShaderClass::COLOR_WRITE_ENABLE, ShaderClass::SRCBLEND_SRC_ALPHA, \
@@ -329,16 +329,16 @@ it's sortKey */
 //=============================================================================
 #ifdef OG
 void W3DTreeBuffer::cull(CameraClass * camera)
-#endif
+#endif // OG
 #ifdef ZH
 void W3DTreeBuffer::cull(const CameraClass * camera)
-#endif
+#endif // ZH
 {
 	Int curTree;
 
 #ifdef OG
 	m_anythingChanged = false;
-#endif
+#endif // OG
 	// Calulate the vector direction that the camera is looking at.
 	Matrix3D camera_matrix = camera->Get_Transform();
 	float zmod = -1;
@@ -352,10 +352,10 @@ void W3DTreeBuffer::cull(const CameraClass * camera)
 		Bool visible = !camera->Cull_Sphere(m_trees[curTree].bounds);
 #ifdef OG
 		if (visible!=m_trees[curTree].visible) {
-#endif
+#endif // OG
 #ifdef ZH
 		if (visible != m_trees[curTree].visible) {
-#endif
+#endif // ZH
 			m_trees[curTree].visible=visible;
 			m_anythingChanged = true;
 			if (visible) {
@@ -389,32 +389,32 @@ Int W3DTreeBuffer::getPartitionBucket(const Coord3D &pos) const
 	Int yIndex = REAL_TO_INT_FLOOR ( (y/(m_bounds.hi.y-m_bounds.lo.y)) * (PARTITION_WIDTH_HEIGHT-0.1f) );
 	DEBUG_ASSERTCRASH(xIndex>=0 && yIndex>=0 && xIndex<PARTITION_WIDTH_HEIGHT && yIndex<PARTITION_WIDTH_HEIGHT, ("Invalid range."));
 	return yIndex*PARTITION_WIDTH_HEIGHT + xIndex;
-#endif
+#endif // ZH
 }
 
 //=============================================================================
 #ifdef OG
 // W3DTreeBuffer::cullMirror
-#endif
+#endif // OG
 #ifdef ZH
 // W3DTreeBuffer::cull
-#endif
+#endif // ZH
 //=============================================================================
 #ifdef OG
 /** Culls the trees, marking the visible flag for the mirror view. Unlike cull(),
 doesn't update anything except the visible flag. */
-#endif
+#endif // OG
 #ifdef ZH
 /** Culls the trees, marking the visible flag.  If a tree becomes visible, it sets
 it's sortKey */
-#endif
+#endif // ZH
 //=============================================================================
 #ifdef OG
 void W3DTreeBuffer::cullMirror(CameraClass * camera)
-#endif
+#endif // OG
 #ifdef ZH
 void W3DTreeBuffer::updateSway(const BreezeInfo& info)
-#endif
+#endif // ZH
 {
 #ifdef OG
 	Int curTree;
@@ -424,7 +424,7 @@ void W3DTreeBuffer::updateSway(const BreezeInfo& info)
 			if (m_trees[curTree].visible) {
 				m_anythingChanged = true;
 
-#endif
+#endif // OG
 #ifdef ZH
 	Int i;
 	for	(i=0; i<NUM_SWAY_ENTRIES; i++) {
@@ -440,38 +440,38 @@ void W3DTreeBuffer::updateSway(const BreezeInfo& info)
 	Real delta				= info.m_randomness * 0.5f;
 	for	(i=0; i<m_numTrees; i++) {
 		m_trees[i].swayType = 1+GameClientRandomValue(0, MAX_SWAY_TYPES-1);
-#endif
+#endif // ZH
 			}
 #ifdef OG
 			m_trees[curTree].visible = false;
 			continue;
 
-#endif
+#endif // OG
 #ifdef ZH
 	for (i=0; i<MAX_SWAY_TYPES; i++) {
 		m_curSwayStep[i] = NUM_SWAY_ENTRIES / (Real)info.m_breezePeriod;
 		m_curSwayStep[i]	*= GameClientRandomValueReal(1.0f-delta, 1.0f+delta);
 		if (m_curSwayStep[i]<0.0f) {
 			m_curSwayStep[i] = 0.0f;
-#endif
+#endif // ZH
 		}
 #ifdef OG
 		Bool visible = !camera->Cull_Sphere(m_trees[curTree].bounds);
 		m_trees[curTree].visible=visible;
-#endif
+#endif // OG
 #ifdef ZH
 		m_curSwayOffset[i] = 0;
 		m_curSwayFactor[i] = GameClientRandomValueReal(1.0f-delta, 1.0f+delta);
-#endif
+#endif // ZH
 	}
 #ifdef ZH
 	m_curSwayVersion = info.m_breezeVersion;
-#endif
+#endif // ZH
 }
 
 #ifdef ZH
 #if 0 // sort is not used, and messes up the order jba. [6/6/2003]
-#endif
+#endif // ZH
 //=============================================================================
 // W3DTreeBuffer::sort
 //=============================================================================
@@ -510,7 +510,7 @@ void W3DTreeBuffer::sort(Int numIterations)
 }
 #ifdef ZH
 #endif 
-#endif
+#endif // ZH
 
 #ifdef ZH
 /********** GDIFileStream2 class ****************************/
@@ -526,34 +526,34 @@ public:
 	};
 };
 
-#endif
+#endif // ZH
 //=============================================================================
 #ifdef OG
 // W3DTreeBuffer::doLighting
-#endif
+#endif // OG
 #ifdef ZH
 // W3DTreeBuffer::updateTexture
-#endif
+#endif // ZH
 //=============================================================================
 #ifdef OG
 /** Calculates the diffuse lighting as affected by dynamic lighting. */
-#endif
+#endif // OG
 #ifdef ZH
 /** Creates a new texture. */
-#endif
+#endif // ZH
 //=============================================================================
 #ifdef OG
 Int W3DTreeBuffer::doLighting(Vector3 *loc, Real r, Real g, Real b, SphereClass &bounds, RefRenderObjListIterator *pDynamicLightsIterator)
-#endif
+#endif // OG
 #ifdef ZH
 void W3DTreeBuffer::updateTexture(void)
-#endif
+#endif // ZH
 {
 #ifdef OG
 	if (pDynamicLightsIterator == NULL) {
 		return(REAL_TO_INT(b) | (REAL_TO_INT(g) << 8) | (REAL_TO_INT(r) << 16) | (255 << 24));
 
-#endif
+#endif // OG
 #ifdef ZH
 	
 	const Int MAX_TEX_WIDTH = 2048;
@@ -646,7 +646,7 @@ void W3DTreeBuffer::updateTexture(void)
 		m_textureHeight = 64;
 		if (m_treeTexture==NULL) {
 			m_treeTexture = new TextureClass("missing.tga");
-#endif
+#endif // ZH
 	}
 #ifdef OG
 	Real shadeR, shadeG, shadeB;
@@ -659,25 +659,25 @@ void W3DTreeBuffer::updateTexture(void)
 		W3DDynamicLight *pLight = (W3DDynamicLight*)pDynamicLightsIterator->Peek_Obj();
 		if (!pLight->isEnabled()) {
 			continue; // he is turned off.
-#endif
+#endif // OG
 #ifdef ZH
 		DEBUG_CRASH(("Too many trees in a scene."));
 		return;
 
-#endif
+#endif // ZH
 		}
 #ifdef OG
 		if (CollisionMath::Overlap_Test(bounds, pLight->Get_Bounding_Sphere()) == CollisionMath::OUTSIDE) {
 			continue; // this tree is outside of the light's influence.
 
-#endif
+#endif // OG
 #ifdef ZH
 
 	for (i=0; i<m_numTiles; i++) {
 		if (m_sourceTiles[i]) {
 			m_sourceTiles[i]->m_tileLocationInTexture.x = -1;
 			m_sourceTiles[i]->m_tileLocationInTexture.y = -1;
-#endif
+#endif // ZH
 		}
 #ifdef OG
 		Vector3 lightDirection = *loc;
@@ -694,7 +694,7 @@ void W3DTreeBuffer::updateTexture(void)
 				if (midRange < 0.1) continue;
 				factor = 1.0f - (dist - midRange) / (range - midRange);
 				factor = WWMath::Clamp(factor,0.0f,1.0f);
-#endif
+#endif // OG
 			} 
 #ifdef ZH
 
@@ -711,14 +711,14 @@ void W3DTreeBuffer::updateTexture(void)
 					m_treeTypes[texClass].m_textureOrigin.x = m_treeTypes[i].m_textureOrigin.x;
 					m_treeTypes[texClass].m_textureOrigin.y = m_treeTypes[i].m_textureOrigin.y;
 					texFound = true;
-#endif
+#endif // ZH
 			break;
 #ifdef OG
 		case LightClass::DIRECTIONAL:
 			pLight->Get_Spot_Direction(lightDirection);
 			factor = 1.0;
 
-#endif
+#endif // OG
 #ifdef ZH
 				}
 			}
@@ -740,7 +740,7 @@ void W3DTreeBuffer::updateTexture(void)
 							}
 						}
 						if (open) found = true;
-#endif
+#endif // ZH
 			break;
 #ifdef OG
 		};
@@ -750,7 +750,7 @@ void W3DTreeBuffer::updateTexture(void)
 		Vector3 ambient;
 		pLight->Get_Ambient(&ambient);
 
-#endif
+#endif // OG
 #ifdef ZH
 					}
 				}
@@ -827,7 +827,7 @@ UnsignedInt W3DTreeBuffer::doLighting(const Vector3 *normal,
 		Vector3 lightRay(-lightDirection.X, -lightDirection.Y, -lightDirection.Z);
 		shade = Vector3::Dot_Product(lightRay, *normal); 
 
-#endif
+#endif // ZH
 		if (shade > 1.0) shade = 1.0;
 		if(shade < 0.0f) shade = 0.0f;
 #ifdef OG
@@ -838,27 +838,27 @@ UnsignedInt W3DTreeBuffer::doLighting(const Vector3 *normal,
 		shadeG += factor*ambient.Y;
 		shadeB += factor*ambient.Z;		
 		didLight = true;
-#endif
+#endif // OG
 #ifdef ZH
 		shadeR += shade*objectLighting[i].diffuse.red;
 		shadeG += shade*objectLighting[i].diffuse.green;
 		shadeB += shade*objectLighting[i].diffuse.blue;	
 
-#endif
+#endif // ZH
 	} 
 #ifdef OG
 	if (!didLight) {
 		return(REAL_TO_INT(b) | (REAL_TO_INT(g) << 8) | (REAL_TO_INT(r) << 16) | (255 << 24));
 	}
 
-#endif
+#endif // OG
 #ifdef ZH
 
 	shadeR *= scale;
 	shadeG *= scale;
 	shadeB *= scale;
 	
-#endif
+#endif // ZH
 	if (shadeR > 1.0) shadeR = 1.0;
 	if(shadeR < 0.0f) shadeR = 0.0f;
 	if (shadeG > 1.0) shadeG = 1.0;
@@ -876,19 +876,19 @@ UnsignedInt W3DTreeBuffer::doLighting(const Vector3 *normal,
 		shadeR *= shade/255.0f;
 	}
 
-#endif
+#endif // ZH
 	shadeR*=255.0f;
 	shadeG*=255.0f;
 	shadeB*=255.0f;
 #ifdef OG
 	return(REAL_TO_INT(shadeB) | (REAL_TO_INT(shadeG) << 8) | (REAL_TO_INT(shadeR) << 16) | (255 << 24));
 
-#endif
+#endif // OG
 #ifdef ZH
 	const Real alpha = 255.0;
 	return REAL_TO_UNSIGNEDINT(shadeB) | (REAL_TO_INT(shadeG) << 8) | (REAL_TO_INT(shadeR) << 16) | ((Int)alpha << 24);
 	
-#endif
+#endif // ZH
 }
 
 //=============================================================================
@@ -900,17 +900,17 @@ void W3DTreeBuffer::loadTreesInVertexAndIndexBuffers(RefRenderObjListIterator *p
 {
 #ifdef OG
 	if (!m_indexTree || !m_vertexTree || !m_initialized) {
-#endif
+#endif // OG
 #ifdef ZH
 	if (!m_indexTree[0] || !m_vertexTree[0] || !m_initialized) {
-#endif
+#endif // ZH
 		return;
 	}
 	if (!m_anythingChanged) {
 #ifdef OG
 		//return;
 
-#endif
+#endif // OG
 #ifdef ZH
 		return;
 	}
@@ -937,17 +937,17 @@ void W3DTreeBuffer::loadTreesInVertexAndIndexBuffers(RefRenderObjListIterator *p
 		m_curNumTreeIndices[bNdx] = 0;
 		if (curTree >= m_numTrees) {
 			break;
-#endif
+#endif // ZH
 	}
 #ifdef OG
 	m_curNumTreeVertices = 0;
 	m_curNumTreeIndices = 0;
 	VertexFormatXYZDUV1 *vb;
-#endif
+#endif // OG
 #ifdef ZH
 		VertexFormatXYZNDUV1 *vb;
 
-#endif
+#endif // ZH
 	UnsignedShort *ib;
 	// Lock the buffers.
 #ifdef OG
@@ -955,7 +955,7 @@ void W3DTreeBuffer::loadTreesInVertexAndIndexBuffers(RefRenderObjListIterator *p
 	DX8VertexBufferClass::WriteLockClass lockVtxBuffer(m_vertexTree);
 	vb=(VertexFormatXYZDUV1*)lockVtxBuffer.Get_Vertex_Array();
 
-#endif
+#endif // OG
 #ifdef ZH
 	#ifdef USE_STATIC
 		DX8IndexBufferClass::WriteLockClass lockIdxBuffer(m_indexTree[bNdx], 0);
@@ -965,7 +965,7 @@ void W3DTreeBuffer::loadTreesInVertexAndIndexBuffers(RefRenderObjListIterator *p
 		DX8VertexBufferClass::WriteLockClass lockVtxBuffer(m_vertexTree[bNdx], D3DLOCK_DISCARD);
 	#endif
 		vb=(VertexFormatXYZNDUV1*)lockVtxBuffer.Get_Vertex_Array();
-#endif
+#endif // ZH
 	ib = lockIdxBuffer.Get_Index_Array();
 	// Add to the index buffer & vertex buffer.
 	Vector2 lookAtVector(m_cameraLookAtVector.X, m_cameraLookAtVector.Y);
@@ -974,21 +974,21 @@ void W3DTreeBuffer::loadTreesInVertexAndIndexBuffers(RefRenderObjListIterator *p
 	// from back to front.
 #ifdef OG
 	UnsignedShort *curIb = ib+MAX_TREE_INDEX;
-#endif
+#endif // OG
 #ifdef ZH
 		UnsignedShort *curIb = ib;
-#endif
+#endif // ZH
 
 #ifdef OG
 	VertexFormatXYZDUV1 *curVb = vb;
-#endif
+#endif // OG
 #ifdef ZH
 		VertexFormatXYZNDUV1 *curVb = vb;
-#endif
+#endif // ZH
 
 #ifdef OG
 	Int curTree;
-#endif
+#endif // OG
 
 #ifdef OG
 	// Calculate a static lighting value to use for all the trees.
@@ -1005,11 +1005,11 @@ void W3DTreeBuffer::loadTreesInVertexAndIndexBuffers(RefRenderObjListIterator *p
 	shadeR*=255.0f;
 	shadeG*=255.0f;
 	shadeB*=255.0f;
-#endif
+#endif // OG
 
 #ifdef OG
 	for (curTree=0; curTree<m_numTrees; curTree++) {
-#endif
+#endif // OG
 
 #ifdef ZH
 		for ( ;curTree<m_numTrees;curTree++) {
@@ -1017,32 +1017,32 @@ void W3DTreeBuffer::loadTreesInVertexAndIndexBuffers(RefRenderObjListIterator *p
 			if (type<0) {
 				continue; // Deleted tree. [6/9/2003]
 			}
-#endif
+#endif // ZH
 		if (!m_trees[curTree].visible) continue;
 		Real scale = m_trees[curTree].scale;
 		Vector3 loc = m_trees[curTree].location;
 #ifdef OG
 		Int type = m_trees[curTree].treeType;
-#endif
+#endif // OG
 		Real theSin = m_trees[curTree].sin;
 		Real theCos = m_trees[curTree].cos;
 #ifdef OG
 		if (type<0 || m_typeMesh[type] == 0) {
 			type = 0;
-#endif
+#endif // OG
 #ifdef ZH
 			if (type<0 || m_treeTypes[type].m_mesh == 0) {
 				continue;
-#endif
+#endif // ZH
 		}
 #ifdef OG
 		Bool doVertexLighting = false;
 
-#endif
+#endif // OG
 #ifdef ZH
 
 			Bool doVertexLighting = true;
-#endif
+#endif // ZH
 
 #if 0 // no dynamic lighting.
 		for (pDynamicLightsIterator->First(); !pDynamicLightsIterator->Is_Done(); pDynamicLightsIterator->Next())
@@ -1074,14 +1074,14 @@ void W3DTreeBuffer::loadTreesInVertexAndIndexBuffers(RefRenderObjListIterator *p
 			Int i;
 			Int numVertex = m_treeTypes[type].m_mesh->Peek_Model()->Get_Vertex_Count();
 			Vector3 *pVert = m_treeTypes[type].m_mesh->Peek_Model()->Get_Vertex_Array();
-#endif
+#endif // ZH
 
 #ifdef OG
 		Int diffuse = 0;
 		if (!doVertexLighting) {
 			diffuse = doLighting(&loc, shadeR, shadeG, shadeB, m_trees[curTree].bounds, NULL);
 		}
-#endif
+#endif // OG
 
 #ifdef OG
 		Real typeOffset = type*0.5;
@@ -1089,39 +1089,39 @@ void W3DTreeBuffer::loadTreesInVertexAndIndexBuffers(RefRenderObjListIterator *p
 		Int i, j;
 		Int numVertex = m_typeMesh[type]->Peek_Model()->Get_Vertex_Count();
 		Vector3 *pVert = m_typeMesh[type]->Peek_Model()->Get_Vertex_Array();
-#endif
+#endif // OG
 		// If we happen to have too many trees, stop.
 #ifdef OG
 		if (m_curNumTreeVertices+numVertex+2>= MAX_TREE_VERTEX) {
-#endif
+#endif // OG
 #ifdef ZH
 			if (m_curNumTreeVertices[bNdx]+numVertex+2>= MAX_TREE_VERTEX) {
-#endif
+#endif // ZH
 			break;
 		}
 #ifdef OG
 		Int numIndex = m_typeMesh[type]->Get_Model()->Get_Polygon_Count();
 		const Vector3i *pPoly = m_typeMesh[type]->Get_Model()->Get_Polygon_Array();
 		if (m_curNumTreeIndices+3*numIndex+6 >= MAX_TREE_INDEX) {
-#endif
+#endif // OG
 #ifdef ZH
 			Int numIndex = m_treeTypes[type].m_mesh->Peek_Model()->Get_Polygon_Count();
 			const TriIndex *pPoly = m_treeTypes[type].m_mesh->Peek_Model()->Get_Polygon_Array();
 			if (m_curNumTreeIndices[bNdx]+3*numIndex+6 >= MAX_TREE_INDEX) {
-#endif
+#endif // ZH
 			break;
 		}
 
 #ifdef OG
 		const Vector2*uvs=m_typeMesh[type]->Get_Model()->Get_UV_Array_By_Index(0);
 
-#endif
+#endif // OG
 #ifdef ZH
 			const Vector2*uvs=m_treeTypes[type].m_mesh->Peek_Model()->Get_UV_Array_By_Index(0);
 			
 			const Vector3*normals = m_treeTypes[type].m_mesh->Peek_Model()->Get_Vertex_Normal_Array();
 			const unsigned *vecDiffuse = m_treeTypes[type].m_mesh->Peek_Model()->Get_Color_Array(0, false);
-#endif
+#endif // ZH
 
 #ifdef ZH
 			Int diffuse = 0;
@@ -1132,7 +1132,7 @@ void W3DTreeBuffer::loadTreesInVertexAndIndexBuffers(RefRenderObjListIterator *p
 			}
 	/*
 	 *	
-#endif
+#endif // ZH
 		// If we are doing reduced resolution terrain, do reduced
 		// poly trees.
 		Bool doPanel = (TheGlobalData->m_useHalfHeightMap || TheGlobalData->m_stretchTerrain);
@@ -1172,20 +1172,20 @@ void W3DTreeBuffer::loadTreesInVertexAndIndexBuffers(RefRenderObjListIterator *p
 #ifdef OG
 				vLoc.X = pVert[i].X*scale*theCos - pVert[i].Z*scale*theSin;
 				vLoc.Y = pVert[i].Z*scale*theCos + pVert[i].X*scale*theSin;
-#endif
+#endif // OG
 #ifdef ZH
 					vLoc.X = pVert[i].X*scale*theCos - pVert[i].Y*scale*theSin;
 					vLoc.Y = pVert[i].Y*scale*theCos + pVert[i].X*scale*theSin;
-#endif
+#endif // ZH
 
 				vLoc.X += loc.X;
 				vLoc.Y += loc.Y;
 #ifdef OG
 				vLoc.Z = loc.Z + pVert[i].Y*scale; // In W3D z is up, in 3dMax y is up.
-#endif
+#endif // OG
 #ifdef ZH
 					vLoc.Z = loc.Z + pVert[i].Z*scale; 
-#endif
+#endif // ZH
 
 				curVb->x = vLoc.X;
 				curVb->y = vLoc.Y;
@@ -1218,14 +1218,14 @@ void W3DTreeBuffer::loadTreesInVertexAndIndexBuffers(RefRenderObjListIterator *p
 				Vscale *= 0.5f;
 				VOffset += (TILE_PIXEL_EXTENT/2) / (Real)m_textureHeight;
 			}
-#endif
+#endif // ZH
 			for (i=0; i<numVertex; i++) {
 #ifdef OG
 				if (m_curNumTreeVertices >= MAX_TREE_VERTEX) 
-#endif
+#endif // OG
 #ifdef ZH
 				if (m_curNumTreeVertices[bNdx] >= MAX_TREE_VERTEX) 
-#endif
+#endif // ZH
 					break;
 
 				// Update the uv values.  The W3D models each have their own texture, and 
@@ -1242,18 +1242,18 @@ void W3DTreeBuffer::loadTreesInVertexAndIndexBuffers(RefRenderObjListIterator *p
 					V = 1.0f + uvs[i].V;		
 				} else {
 					U = typeOffset+uvs[i].U*0.5f; 
-#endif
+#endif // OG
 #ifdef ZH
 				U = uvs[i].U; 
 
-#endif
+#endif // ZH
 					V = uvs[i].V;		
 #ifdef OG
 				}
 				curVb->u1 = U;
 				curVb->v1 = V/2.0;
 
-#endif
+#endif // OG
 #ifdef ZH
 				
 				if (U>1.0f) U=1.0f;
@@ -1267,13 +1267,13 @@ void W3DTreeBuffer::loadTreesInVertexAndIndexBuffers(RefRenderObjListIterator *p
 				Real y = pVert[i].Y;
 
 				
-#endif
+#endif // ZH
 				Vector3 vLoc;
 #ifdef OG
 				vLoc.X = pVert[i].X*scale*theCos - pVert[i].Z*scale*theSin;
 				vLoc.Y = pVert[i].Z*scale*theCos + pVert[i].X*scale*theSin;
 
-#endif
+#endif // OG
 #ifdef ZH
 				x += m_treeTypes[type].m_offset.X;
 				y += m_treeTypes[type].m_offset.Y;
@@ -1281,7 +1281,7 @@ void W3DTreeBuffer::loadTreesInVertexAndIndexBuffers(RefRenderObjListIterator *p
 				vLoc.Y = y*scale*theCos + x*scale*theSin;
 				vLoc.Z = pVert[i].Z*scale; 
 				vLoc.Z += m_treeTypes[type].m_offset.Z;
-#endif
+#endif // ZH
 
 #ifdef ZH
 				if (m_trees[curTree].m_toppleState != TOPPLE_UPRIGHT) {
@@ -1291,17 +1291,17 @@ void W3DTreeBuffer::loadTreesInVertexAndIndexBuffers(RefRenderObjListIterator *p
 						vLoc.X += pVert[i].Z * m_trees[curTree].pushAside * m_trees[curTree].pushAsideCos * m_treeTypes[type].m_data->m_maxOutwardMovement;
 						vLoc.Y += pVert[i].Z * m_trees[curTree].pushAside * m_trees[curTree].pushAsideSin* m_treeTypes[type].m_data->m_maxOutwardMovement;
 					}
-#endif
+#endif // ZH
 				vLoc.X += loc.X;
 				vLoc.Y += loc.Y;
 #ifdef OG
 				vLoc.Z = loc.Z + pVert[i].Y*scale; // In W3D z is up, in 3dMax y is up.
 
-#endif
+#endif // OG
 #ifdef ZH
 					vLoc.Z += loc.Z;
 				}
-#endif
+#endif // ZH
 
 				curVb->x = vLoc.X;
 				curVb->y = vLoc.Y;
@@ -1310,12 +1310,12 @@ void W3DTreeBuffer::loadTreesInVertexAndIndexBuffers(RefRenderObjListIterator *p
 				curVb->nx = m_trees[curTree].swayType;
 				curVb->ny = 1.0f - m_treeTypes[type].m_data->m_darkening*m_trees[curTree].pushAside;
 				curVb->nz = loc.Z;
-#endif
+#endif // ZH
 				if (doVertexLighting) {
 #ifdef OG
 					curVb->diffuse = doLighting(&vLoc, shadeR, shadeG, shadeB, m_trees[curTree].bounds, pDynamicLightsIterator);
 
-#endif
+#endif // OG
 #ifdef ZH
 					Vector3 normal(0.0f, 0.0f, 1.0f);
 					if (normals) {
@@ -1331,33 +1331,33 @@ void W3DTreeBuffer::loadTreesInVertexAndIndexBuffers(RefRenderObjListIterator *p
 					}
 					curVb->diffuse = doLighting(&normal, objectLighting, &emissive, 
 														vertexDiffuse, 1.0f);
-#endif
+#endif // ZH
 				} else {
 					curVb->diffuse = diffuse;
 				}
 				curVb++;
 #ifdef OG
 				m_curNumTreeVertices++;
-#endif
+#endif // OG
 #ifdef ZH
 				m_curNumTreeVertices[bNdx]++;
-#endif
+#endif // ZH
 			}
 
 #ifdef ZH
 			try {
-#endif
+#endif // ZH
 			for (i=0; i<numIndex; i++) {
 #ifdef OG
 				if (m_curNumTreeIndices+4 > MAX_TREE_INDEX) 
-#endif
+#endif // OG
 #ifdef ZH
 				if (m_curNumTreeIndices[bNdx]+4 > MAX_TREE_INDEX) 
-#endif
+#endif // ZH
 					break;
 #ifdef OG
 				curIb-=3;
-#endif
+#endif // OG
 				*curIb++ = startVertex + pPoly[i].I;
 				*curIb++ = startVertex + pPoly[i].J;
 				*curIb++ = startVertex + pPoly[i].K;
@@ -1365,7 +1365,7 @@ void W3DTreeBuffer::loadTreesInVertexAndIndexBuffers(RefRenderObjListIterator *p
  				curIb-=3;
 				m_curNumTreeIndices+=3;
 
-#endif
+#endif // OG
 #ifdef ZH
 				m_curNumTreeIndices[bNdx]+=3;
 			}
@@ -1461,13 +1461,13 @@ void W3DTreeBuffer::updateVertexBuffer(void)
 				curVb->z = vLoc.Z;
 				curVb->ny = 1.0f - m_treeTypes[type].m_data->m_darkening*m_trees[curTree].pushAside;
 				curVb++;
-#endif
+#endif // ZH
 			}
 		}		
 	}
 #ifdef OG
 	m_curTreeIndexOffset = curIb - ib;	
-#endif
+#endif // OG
 }
 
 //-----------------------------------------------------------------------------
@@ -1488,14 +1488,14 @@ W3DTreeBuffer::~W3DTreeBuffer(void)
 #ifdef OG
 		REF_PTR_RELEASE(m_typeMesh[i]);
 
-#endif
+#endif // OG
 #ifdef ZH
 		REF_PTR_RELEASE(m_treeTypes[i].m_mesh);
 	}
 	if (m_shadow) {
 		delete m_shadow;
 		m_shadow = NULL;
-#endif
+#endif // ZH
 	}
 }
 
@@ -1509,7 +1509,7 @@ W3DTreeBuffer::W3DTreeBuffer(void)
 {
 #ifdef ZH
 	memset(this, sizeof(W3DTreeBuffer), 0);
-#endif
+#endif // ZH
 	m_initialized = false;
 #ifdef OG
 	///@toto - reactivate this optimization if useful.  jba.
@@ -1517,7 +1517,7 @@ W3DTreeBuffer::W3DTreeBuffer(void)
 	m_vertexTree = NULL;
 	m_indexTree = NULL;
 
-#endif
+#endif // OG
 #ifdef ZH
 	Int i;
 	for	(i=0; i<MAX_BUFFERS; i++) {
@@ -1526,16 +1526,16 @@ W3DTreeBuffer::W3DTreeBuffer(void)
 		m_curNumTreeVertices[i]=0;
 		m_curNumTreeIndices[i]=0;
 	}
-#endif
+#endif // ZH
 	m_treeTexture = NULL;
 #ifdef OG
 	m_curNumTreeVertices=0;
 	m_curNumTreeIndices=0;
-#endif
+#endif // OG
 #ifdef ZH
 	m_dwTreeVertexShader = 0;
 	m_dwTreePixelShader = 0;
-#endif
+#endif // ZH
 	clearAllTrees();
 	allocateTreeBuffers();
 #ifdef OG
@@ -1545,12 +1545,12 @@ W3DTreeBuffer::W3DTreeBuffer(void)
 	}
 	if (WW3DAssetManager::Get_Instance()==NULL)
 		return;  // WorldBuilderTool doesn't initialize the asset manager.  jba.
-#endif
+#endif // OG
 #ifdef ZH
 	m_initialized = true;
 	m_curSwayVersion = -1;
 
-#endif
+#endif // ZH
 
 #ifdef OG
 	m_treeTexture = NEW_REF(TextureClass, ("trees.tga"));
@@ -1585,18 +1585,18 @@ W3DTreeBuffer::W3DTreeBuffer(void)
 		m_typeBounds[i] = bounds;
 	}
 	if (m_typeMesh[0] == NULL) {
-#endif
+#endif // OG
 #ifdef ZH
 	m_shadow = NULL;
 
-#endif
+#endif // ZH
 
 #ifdef OG
 		//DEBUG_LOG("!!!!!!!!!!!!*************** W3DTreeBuffer failed to initialize.\n");
 		return;  // didn't initialize.
 	}
 	m_initialized = true;
-#endif
+#endif // OG
 }
 
 
@@ -1629,13 +1629,13 @@ void W3DTreeBuffer::freeTreeBuffers(void)
 /** Check to see if a unit collided with a tree/grass/bush. */
 //=============================================================================
 void W3DTreeBuffer::unitMoved(Object *unit)
-#endif
+#endif // ZH
 {
 #ifdef OG
 	REF_PTR_RELEASE(m_vertexTree);
 	REF_PTR_RELEASE(m_indexTree);
 
-#endif
+#endif // OG
 #ifdef ZH
 	if (unit->isKindOf(KINDOF_IMMOBILE)) {
 		// This is the initial positioning of the object, and we don't care. jba. [6/5/2003]
@@ -1706,7 +1706,7 @@ void W3DTreeBuffer::unitMoved(Object *unit)
 		}
 	}
 
-#endif
+#endif // ZH
 }
 
 //=============================================================================
@@ -1733,7 +1733,7 @@ void W3DTreeBuffer::allocateTreeBuffers(void)
 		//shader decleration
 	// DX8_FVF_XYZNDUV1
 	DWORD Declaration[] =
-#endif
+#endif // ZH
 {
 #ifdef OG
 	m_vertexTree=NEW_REF(DX8VertexBufferClass,(DX8_FVF_XYZDUV1,MAX_TREE_VERTEX+4,DX8VertexBufferClass::USAGE_DYNAMIC));
@@ -1741,7 +1741,7 @@ void W3DTreeBuffer::allocateTreeBuffers(void)
 	m_curNumTreeVertices=0;
 	m_curNumTreeIndices=0;
 
-#endif
+#endif // OG
 #ifdef ZH
 		D3DVSD_STREAM( 0 ),
 		D3DVSD_REG( 0, D3DVSDT_FLOAT3 ),  // Position
@@ -1759,7 +1759,7 @@ void W3DTreeBuffer::allocateTreeBuffers(void)
 	hr = W3DShaderManager::LoadAndCreateD3DShader("shaders\\Trees.pso", &Declaration[0], 0, false, &m_dwTreePixelShader);
 	if (FAILED(hr))
 		return;
-#endif
+#endif // ZH
 }
 
 //=============================================================================
@@ -1782,12 +1782,12 @@ void W3DTreeBuffer::clearAllTrees(void)
 	}
 	for (i=0; i<PARTITION_WIDTH_HEIGHT*PARTITION_WIDTH_HEIGHT; i++) {
 		m_areaPartition[i] = END_OF_PARTITION;
-#endif
+#endif // ZH
 }
 #ifdef ZH
 	m_numTreeTypes = 0;
 }
-#endif
+#endif // ZH
 
 //=============================================================================
 #ifdef ZH
@@ -1893,7 +1893,7 @@ Int W3DTreeBuffer::addTreeType(const W3DTreeDrawModuleData *data)
 }
 
 //=============================================================================
-#endif
+#endif // ZH
 // W3DTreeBuffer::addTree
 //=============================================================================
 /** Adds a tree.  Name is the W3D model name, supported models are
@@ -1902,11 +1902,11 @@ ALPINE, DECIDUOUS and SHRUB. */
 #ifdef OG
 void W3DTreeBuffer::addTree(Coord3D loc, Real scale, Real angle, AsciiString name, Bool mirrorVisible)
 
-#endif
+#endif // OG
 #ifdef ZH
 void W3DTreeBuffer::addTree(DrawableID id, Coord3D location, Real scale, Real angle,
 								Real randomScaleAmount, const W3DTreeDrawModuleData *data)
-#endif
+#endif // ZH
 {
 	if (m_numTrees >= MAX_TREES) {
 		return;  
@@ -1939,7 +1939,7 @@ void W3DTreeBuffer::addTree(DrawableID id, Coord3D location, Real scale, Real an
 	} else {
 		m_trees[m_numTrees].nextInPartition = END_OF_PARTITION;
 	}
-#endif
+#endif // ZH
 
 #ifdef OG
 	TTreeType treeType = ALPINE_TREE;
@@ -1954,66 +1954,66 @@ void W3DTreeBuffer::addTree(DrawableID id, Coord3D location, Real scale, Real an
 	Real randomScale = GameClientRandomValueReal( 0.7f, 1.3f );
 	if (treeType == FENCE) {
 		// Fences don't randomly scale & orient
-#endif
+#endif // OG
 #ifdef ZH
 	Real randomScale = GameClientRandomValueReal( 1.0f - randomScaleAmount, 1.0f+ randomScaleAmount );
 
-#endif
+#endif // ZH
 		m_trees[m_numTrees].sin = WWMath::Sin(angle);
 #ifdef OG
 		m_trees[m_numTrees].scale = scale;
-#endif
+#endif // OG
 		m_trees[m_numTrees].cos = WWMath::Cos(angle);
 #ifdef OG
 		m_trees[m_numTrees].rotates = false;
 		m_trees[m_numTrees].panelStart = 48;
 	} else {
-#endif
+#endif // OG
 #ifdef ZH
 	if (randomScaleAmount>0.0f) {
 
-#endif
+#endif // ZH
 		// Randomizes the scale and orientation of trees.
 #ifdef OG
 		m_trees[m_numTrees].sin = GameClientRandomValueReal( -1.0f, 1.0f );
-#endif
+#endif // OG
 		m_trees[m_numTrees].scale = scale*randomScale;
 #ifdef OG
 		m_trees[m_numTrees].cos = WWMath::Sqrt(1.0 - m_trees[m_numTrees].sin*m_trees[m_numTrees].sin);
 		m_trees[m_numTrees].rotates = true;
 
-#endif
+#endif // OG
 #ifdef ZH
 	} else {
 		// Don't randomly scale & orient
 		m_trees[m_numTrees].scale = scale;
-#endif
+#endif // ZH
 	}
 #ifdef OG
 	m_trees[m_numTrees].location = Vector3(loc.x, loc.y, loc.z);
-#endif
+#endif // OG
 #ifdef ZH
 	m_trees[m_numTrees].location = Vector3(location.x, location.y, location.z);
-#endif
+#endif // ZH
 	m_trees[m_numTrees].treeType = treeType;
 	// Translate the bounding sphere of the model.
 #ifdef OG
 	m_trees[m_numTrees].bounds = m_typeBounds[treeType];
 	m_trees[m_numTrees].bounds.Center *= scale;
 	m_trees[m_numTrees].bounds.Radius *= scale;
-#endif
+#endif // OG
 #ifdef ZH
 	m_trees[m_numTrees].bounds = m_treeTypes[treeType].m_bounds;
 	m_trees[m_numTrees].bounds.Center *= m_trees[m_numTrees].scale;
 	m_trees[m_numTrees].bounds.Radius *= m_trees[m_numTrees].scale;
-#endif
+#endif // ZH
 	m_trees[m_numTrees].bounds.Center += m_trees[m_numTrees].location;
 	// Initially set it invisible.  cull will update it's visiblity flag.
 	m_trees[m_numTrees].visible = false;
 #ifdef OG
 	m_trees[m_numTrees].mirrorVisible = mirrorVisible;
 
-#endif
+#endif // OG
 #ifdef ZH
 	m_trees[m_numTrees].drawableID = id;
 
@@ -2028,7 +2028,7 @@ void W3DTreeBuffer::addTree(DrawableID id, Coord3D location, Real scale, Real an
 	m_trees[m_numTrees].pushAsideCos = 1;
 	m_trees[m_numTrees].pushAsideSin = 1;
 	m_trees[m_numTrees].m_toppleState = TOPPLE_UPRIGHT;
-#endif
+#endif // ZH
 	m_numTrees++;
 }
 
@@ -2057,14 +2057,14 @@ Bool W3DTreeBuffer::updateTreePosition(DrawableID id, Coord3D location, Real ang
 	}
 	return false;
 }
-#endif
+#endif // ZH
 
 #ifdef ZH
 //=============================================================================
 // W3DTreeBuffer::pushAsideTree
 //=============================================================================
 /** Push sideways tree or grass. */
-#endif
+#endif // ZH
 //=============================================================================
 #ifdef ZH
 void W3DTreeBuffer::pushAsideTree(DrawableID id, const Coord3D *pusherPos, 
@@ -2104,7 +2104,7 @@ void W3DTreeBuffer::pushAsideTree(DrawableID id, const Coord3D *pusherPos,
 DECLARE_PERF_TIMER(Tree_Render)
 
 //=============================================================================
-#endif
+#endif // ZH
 // W3DTreeBuffer::drawTrees
 //=============================================================================
 /** Draws the trees.  Uses camera to cull. */
@@ -2113,7 +2113,7 @@ void W3DTreeBuffer::drawTrees(CameraClass * camera, RefRenderObjListIterator *pD
 {
 #ifdef ZH
 	USE_PERF_TIMER(Tree_Render)
-#endif
+#endif // ZH
 	if (!m_isTerrainPass) {
 		return;
 #ifdef ZH
@@ -2131,7 +2131,7 @@ void W3DTreeBuffer::drawTrees(CameraClass * camera, RefRenderObjListIterator *pD
 		if (info.m_breezeVersion != m_curSwayVersion) 
 		{
 			updateSway(info);
-#endif
+#endif // ZH
 	}
 #ifdef ZH
 	}
@@ -2152,7 +2152,7 @@ void W3DTreeBuffer::drawTrees(CameraClass * camera, RefRenderObjListIterator *pD
 		}
 	}
 	
-#endif
+#endif // ZH
 	m_isTerrainPass = false;
 
 #ifdef OG
@@ -2162,7 +2162,7 @@ void W3DTreeBuffer::drawTrees(CameraClass * camera, RefRenderObjListIterator *pD
 	} else  { 
 		// Normal draw.
 
-#endif
+#endif // OG
 #ifdef ZH
 	if (m_needToUpdateTexture) {
 		m_needToUpdateTexture = false;
@@ -2172,13 +2172,13 @@ void W3DTreeBuffer::drawTrees(CameraClass * camera, RefRenderObjListIterator *pD
 		return;
 	}
 	if (m_updateAllKeys) {
-#endif
+#endif // ZH
 		cull(camera);
 #ifdef OG
 		// Only sort once per frame.
 		sort(SORT_ITERATIONS_PER_FRAME);
 
-#endif
+#endif // OG
 #ifdef ZH
 	}
 
@@ -2235,13 +2235,13 @@ void W3DTreeBuffer::drawTrees(CameraClass * camera, RefRenderObjListIterator *pD
 				m_trees[curTree].pushAsideDelta = 0.0f;
 				m_trees[curTree].pushAside = 0.0f;
 			}
-#endif
+#endif // ZH
 	}	
 #ifdef ZH
 	}
 
 	if (m_anythingChanged) {
-#endif
+#endif // ZH
 	loadTreesInVertexAndIndexBuffers(pDynamicLightsIterator);
 #ifdef ZH
 		m_anythingChanged = false;
@@ -2282,12 +2282,12 @@ void W3DTreeBuffer::drawTrees(CameraClass * camera, RefRenderObjListIterator *pD
 			verts[0].u1=0;
 			verts[0].v1=0;
 			verts[0].diffuse=0xffffffff;
-#endif
+#endif // ZH
 
 #ifdef OG
 	if (m_curNumTreeIndices == 0) {
 
-#endif
+#endif // OG
 #ifdef ZH
 			verts[1].x=origin+width;
 			verts[1].y=origin;
@@ -2322,26 +2322,26 @@ void W3DTreeBuffer::drawTrees(CameraClass * camera, RefRenderObjListIterator *pD
 #endif
 
 	if (m_curNumTreeIndices[0] == 0) {
-#endif
+#endif // ZH
 		return;
 	}
 #ifdef OG
 	// Setup the vertex buffer, shader & texture.
 	DX8Wrapper::Set_Index_Buffer(m_indexTree,0);
 	DX8Wrapper::Set_Vertex_Buffer(m_vertexTree);
-#endif
+#endif // OG
 	DX8Wrapper::Set_Shader(detailAlphaShader);
 	DX8Wrapper::Set_Texture(0,m_treeTexture);
 #ifdef ZH
 	DX8Wrapper::Set_Texture(1,NULL);
 	DX8Wrapper::Set_DX8_Texture_Stage_State(0,  D3DTSS_TEXCOORDINDEX, 0);
 	DX8Wrapper::Set_DX8_Texture_Stage_State(1,  D3DTSS_TEXCOORDINDEX, 1);
-#endif
+#endif // ZH
 	// Draw all the trees.
 #ifdef OG
 	DX8Wrapper::Draw_Triangles(	m_curTreeIndexOffset, m_curNumTreeIndices/3, 0,	m_curNumTreeVertices);
 
-#endif
+#endif // OG
 #ifdef ZH
 	DX8Wrapper::Apply_Render_State_Changes();
 	W3DShaderManager::setShroudTex(1);
@@ -2640,7 +2640,7 @@ void W3DTreeBuffer::xfer( Xfer *xfer )
 				curTree->m_sinkFramesLeft = tree.m_sinkFramesLeft;
 			}
 		}
-#endif
+#endif // ZH
 }
 #ifdef ZH
 
@@ -2654,6 +2654,6 @@ void W3DTreeBuffer::loadPostProcess( void )
 	// empty. jba [8/11/2003]	
 }  // end loadPostProcess
 
-#endif
+#endif // ZH
 
 

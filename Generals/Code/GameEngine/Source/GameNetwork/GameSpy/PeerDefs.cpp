@@ -55,10 +55,10 @@
 GameSpyInfoInterface *TheGameSpyInfo = NULL;
 #ifdef OG
 GameSpyStagingRoom *TheGameSpyGame = NULL;
-#endif
+#endif // OG
 #ifdef ZH
 extern GameSpyStagingRoom *TheGameSpyGame = NULL;
-#endif
+#endif // ZH
 void deleteNotificationBox( void );
 
 bool AsciiComparator::operator()(AsciiString s1, AsciiString s2) const
@@ -206,7 +206,7 @@ void GameSpyInfo::setGameOptions( void )
 	//if (!md)
 		//return; // there really isn't any need to send info like this...
 
-#endif
+#endif // OG
 	req.gameOptions.numPlayers = 0;
 	req.gameOptions.numObservers = 0;
 	Int numOpenSlots = 0;
@@ -549,7 +549,7 @@ void GameSpyInfo::markAsStagingRoomHost( void )
   Int useStats = m_localStagingRoom.getUseStats();
   Bool oldFactionsOnly = m_localStagingRoom.oldFactionsOnly();
 
-#endif
+#endif // ZH
 	m_localStagingRoom.reset();
 	m_localStagingRoom.enterGame();
 	m_localStagingRoom.setSeed(GetTickCount());
@@ -558,7 +558,7 @@ void GameSpyInfo::markAsStagingRoomHost( void )
   m_localStagingRoom.setUseStats( useStats );
   m_localStagingRoom.setOldFactionsOnly( oldFactionsOnly );
 
-#endif
+#endif // ZH
 	GameSlot newSlot;
 	UnicodeString uName;
 	uName.translate(m_localName);
@@ -890,10 +890,10 @@ void GameSpyInfo::updateAdditionalGameSpyDisconnections(Int count)
 {
 #ifdef OG
 	if (TheRecorder->isMultiplayer() && TheGameLogic->isInInternetGame())
-#endif
+#endif // OG
 #ifdef ZH
 	if (TheRecorder->isMultiplayer() && TheGameLogic->isInInternetGame() && TheGameSpyGame && TheGameSpyGame->getUseStats())
-#endif
+#endif // ZH
 	{	
 		Int localID = TheGameSpyInfo->getLocalProfileID();
 		PSPlayerStats stats = TheGameSpyPSMessageQueue->findPlayerStatsByID(localID);

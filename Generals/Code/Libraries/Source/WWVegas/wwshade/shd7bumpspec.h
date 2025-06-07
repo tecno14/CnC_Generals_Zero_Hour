@@ -93,4 +93,4 @@ protected:
 
 #endif // SHD7BUMPSPEC_H
 
-#endif
+#endif // ZH

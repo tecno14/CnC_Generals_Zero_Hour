@@ -243,4 +243,4 @@ inline float NormalCone::Smallest_Dot_Product(const Vector3 & Input)
 
 #endif
 
-#endif
+#endif // ZH

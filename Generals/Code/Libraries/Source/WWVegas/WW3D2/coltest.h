@@ -27,30 +27,30 @@
 #ifdef OG
  *                       Author:: Greg Hjelstrom                                               *
 
-#endif
+#endif // OG
 #ifdef ZH
  *                   Org Author:: Greg Hjelstrom                                               *
  *                                                                                             *
  *                       Author : Kenny Mitchell                                               * 
-#endif
+#endif // ZH
  *                                                                                             *
 #ifdef OG
  *                     $Modtime:: 8/29/01 7:29p                                               $*
-#endif
+#endif // OG
 #ifdef ZH
  *                     $Modtime:: 07/01/02 12:45p                                              $*
-#endif
+#endif // ZH
  *                                                                                             *
 #ifdef OG
  *                    $Revision:: 3                                                           $*
-#endif
+#endif // OG
 #ifdef ZH
  *                    $Revision:: 5                                                           $*
-#endif
+#endif // ZH
  *                                                                                             *
 #ifdef ZH
  * 07/01/02 KM Coltype enum change to avoid MAX conflicts									   *
-#endif
+#endif // ZH
  *---------------------------------------------------------------------------------------------*
  * Functions:                                                                                  *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
@@ -147,10 +147,10 @@ public:
 	
 #ifdef OG
 	RayCollisionTestClass(const LineSegClass & ray,CastResultStruct * res,int collision_type = COLLISION_TYPE_0,bool check_translucent=false, bool check_hidden=false);
-#endif
+#endif // OG
 #ifdef ZH
 	RayCollisionTestClass(const LineSegClass & ray,CastResultStruct * res,int collision_type = COLL_TYPE_0,bool check_translucent=false, bool check_hidden=false);
-#endif
+#endif // ZH
 	RayCollisionTestClass(const RayCollisionTestClass & raytest,const Matrix3D & tm);
 		
 	bool Cull(const Vector3 & min,const Vector3 & max);
@@ -218,10 +218,10 @@ public:
 	
 #ifdef OG
 	AABoxCollisionTestClass(const AABoxClass & aabox,const Vector3 & move,CastResultStruct * res,int collision_type = COLLISION_TYPE_0);
-#endif
+#endif // OG
 #ifdef ZH
 	AABoxCollisionTestClass(const AABoxClass & aabox,const Vector3 & move,CastResultStruct * res,int collision_type = COLL_TYPE_0);
-#endif
+#endif // ZH
 	AABoxCollisionTestClass(const AABoxCollisionTestClass & that);
 
 	enum ROTATION_TYPE 
@@ -300,10 +300,10 @@ public:
 
 #ifdef OG
 	OBBoxCollisionTestClass(const OBBoxClass & obbox,const Vector3 & move,CastResultStruct * res,int type = COLLISION_TYPE_0);
-#endif
+#endif // OG
 #ifdef ZH
 	OBBoxCollisionTestClass(const OBBoxClass & obbox,const Vector3 & move,CastResultStruct * res,int type = COLL_TYPE_0);
-#endif
+#endif // ZH
 	OBBoxCollisionTestClass(const OBBoxCollisionTestClass & that);
 	OBBoxCollisionTestClass(const OBBoxCollisionTestClass & that,const Matrix3D & tm);
 	OBBoxCollisionTestClass(const AABoxCollisionTestClass & that,const Matrix3D & tm);

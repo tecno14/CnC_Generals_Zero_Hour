@@ -28,24 +28,24 @@
  *                                                                                             *
 #ifdef OG
  *                      $Author:: Jani_p                                                      $*
-#endif
+#endif // OG
 #ifdef ZH
  *                      $Author:: Greg_h                                                      $*
-#endif
+#endif // ZH
  *                                                                                             *
 #ifdef OG
  *                     $Modtime:: 7/13/01 1:38p                                               $*
-#endif
+#endif // OG
 #ifdef ZH
  *                     $Modtime:: 1/18/02 8:03p                                               $*
-#endif
+#endif // ZH
  *                                                                                             *
 #ifdef OG
  *                    $Revision:: 20                                                          $*
-#endif
+#endif // OG
 #ifdef ZH
  *                    $Revision:: 28                                                          $*
-#endif
+#endif // ZH
  *                                                                                             *
  *---------------------------------------------------------------------------------------------*
  * Functions:                                                                                  *
@@ -59,7 +59,7 @@
 #include "dx8caps.h"
 #ifdef ZH
 #include "meshmdl.h"
-#endif
+#endif // ZH
 
 
 /**************************************************************************************************
@@ -213,7 +213,7 @@ MeshMatDescClass::MeshMatDescClass(void) :
 		}
 #ifdef OG
 //		UVIndex[pass] = NULL;
-#endif
+#endif // OG
 		DCGSource[pass] = VertexMaterialClass::MATERIAL;
 		DIGSource[pass] = VertexMaterialClass::MATERIAL;
 
@@ -249,7 +249,7 @@ MeshMatDescClass::MeshMatDescClass(const MeshMatDescClass & that) :
 		}
 #ifdef OG
 //		UVIndex[pass] = NULL;
-#endif
+#endif // OG
 		DCGSource[pass] = VertexMaterialClass::MATERIAL;
 		DIGSource[pass] = VertexMaterialClass::MATERIAL;
 
@@ -293,7 +293,7 @@ MeshMatDescClass::operator = (const MeshMatDescClass & that)
 
 #ifdef OG
 //			REF_PTR_SET(UVIndex [pass], that.UVIndex [pass]);
-#endif
+#endif // OG
 			DCGSource[pass] = that.DCGSource[pass];
 			DIGSource[pass] = that.DIGSource[pass];
 
@@ -354,7 +354,7 @@ void MeshMatDescClass::Reset(int polycount,int vertcount,int passcount)
 		
 #ifdef OG
 //		REF_PTR_RELEASE(UVIndex[pass]);
-#endif
+#endif // OG
 		DCGSource[pass] = VertexMaterialClass::MATERIAL;
 		DIGSource[pass] = VertexMaterialClass::MATERIAL;
 		Shader[pass] = 0;
@@ -444,7 +444,7 @@ void MeshMatDescClass::Init_Alternate(MeshMatDescClass & default_materials,MeshM
 //			REF_PTR_SET(UVIndex[pass],default_materials.UVIndex[pass]);
 //		}
 
-#endif
+#endif // OG
 		// Vertex color configuration
 		if (alternate_materials.DCGSource[pass] == VertexMaterialClass::MATERIAL) {
 			DCGSource[pass] = default_materials.DCGSource[pass];
@@ -680,10 +680,10 @@ void MeshMatDescClass::Install_UV_Array(int pass,int stage,Vector2 * uvs,int cou
 
 #ifdef OG
 void MeshMatDescClass::Post_Load_Process(bool lighting_enabled)
-#endif
+#endif // OG
 #ifdef ZH
 void MeshMatDescClass::Post_Load_Process(bool lighting_enabled,MeshModelClass * parent)
-#endif
+#endif // ZH
 {
 	/*
 	** Configure all vertex materials to source the uv coordinates and colors from the correct arrays
@@ -691,7 +691,7 @@ void MeshMatDescClass::Post_Load_Process(bool lighting_enabled,MeshModelClass * 
 	*/
 #ifdef ZH
 	bool set_lighting_to_false=true;
-#endif
+#endif // ZH
 	for (int pass=0; pass<PassCount; pass++) {
 
 		/*
@@ -881,19 +881,19 @@ void MeshMatDescClass::Post_Load_Process(bool lighting_enabled,MeshModelClass * 
 					mtl->Set_Emissive_Color_Source(VertexMaterialClass::MATERIAL);
 #ifdef OG
 //MW:  Vegas guys asked me to disable this because it can cause z-fighting if lighting is disabled in multi-pass
-#endif
+#endif // OG
 //					mtl->Set_Lighting(false);
 #ifdef ZH
 				}
 				else {
 					if (PassCount!=1) {
 						set_lighting_to_false=false;		// Lighting can only be set to false if ALL passes and ALL materials are requesting it
-#endif
+#endif // ZH
 				}
 #ifdef ZH
 				}
 			}
-#endif
+#endif // ZH
 			}
 		}
 
@@ -905,7 +905,7 @@ void MeshMatDescClass::Post_Load_Process(bool lighting_enabled,MeshModelClass * 
 	*/
 	for (pass=0; pass<PassCount; pass++) {
 		bool kill_pass = false;
-#endif
+#endif // ZH
 
 		/*
 #ifdef OG
@@ -914,7 +914,7 @@ void MeshMatDescClass::Post_Load_Process(bool lighting_enabled,MeshModelClass * 
 		** don't need to pre-multiply the color values; hopefully this is the behavior on
 		** other hardware as well!
 
-#endif
+#endif // OG
 #ifdef ZH
 		// HY: Earth and beyond uses a different fallback from Renegade with regards to bump environment maps
 		// we keep the pass but change it to an unbumped environment
@@ -929,13 +929,13 @@ void MeshMatDescClass::Post_Load_Process(bool lighting_enabled,MeshModelClass * 
 		{
 			kill_pass = true;
 		}
-#endif
+#endif // ZH
 		*/
 #ifdef OG
 /*		if ((DCGSource[pass] != VertexMaterialClass::MATERIAL) && (ColorArray[0] != NULL)) {
 			unsigned * diffuse_array = ColorArray[0]->Get_Array();
 
-#endif
+#endif // OG
 #ifdef ZH
 
 		if (kill_pass) {
@@ -959,16 +959,16 @@ void MeshMatDescClass::Post_Load_Process(bool lighting_enabled,MeshModelClass * 
 			bool ambient_used=false;
 			bool emissive_used=false;
 
-#endif
+#endif // ZH
 			Vector3 mtl_diffuse;
 #ifdef OG
 			float mtl_opacity = 1.0f;
 
-#endif
+#endif // OG
 #ifdef ZH
 			Vector3 mtl_ambient;
 			Vector3 mtl_emissive;
-#endif
+#endif // ZH
 
 			VertexMaterialClass * prev_mtl = NULL;
 			VertexMaterialClass * mtl = Peek_Material(0,pass);
@@ -982,7 +982,7 @@ void MeshMatDescClass::Post_Load_Process(bool lighting_enabled,MeshModelClass * 
 				if (single_ambient.X || single_ambient.Y || single_ambient.Z) ambient_used=true;
 				if (single_emissive.X || single_emissive.Y || single_emissive.Z) emissive_used=true;
 			}
-#endif
+#endif // ZH
 
 			for (int vidx=0; vidx<VertexCount; vidx++) {
 				mtl = Peek_Material(vidx,pass);
@@ -992,11 +992,11 @@ void MeshMatDescClass::Post_Load_Process(bool lighting_enabled,MeshModelClass * 
 #ifdef OG
 					mtl_opacity = mtl->Get_Opacity();
 
-#endif
+#endif // OG
 #ifdef ZH
 					mtl->Get_Ambient(&mtl_ambient);
 					mtl->Get_Emissive(&mtl_emissive);
-#endif
+#endif // ZH
 				}
 
 #ifdef OG
@@ -1008,30 +1008,30 @@ void MeshMatDescClass::Post_Load_Process(bool lighting_enabled,MeshModelClass * 
 				diffuse_array[vidx]=DX8Wrapper::Convert_Color(diffuse);
 			
 			}
-#endif
+#endif // OG
 #ifdef ZH
 				if (mtl_diffuse.X || mtl_diffuse.Y || mtl_diffuse.Z) diffuse_used=true;
 				if (mtl_ambient.X || mtl_ambient.Y || mtl_ambient.Z) ambient_used=true;
 				if (mtl_emissive.X || mtl_emissive.Y || mtl_emissive.Z) emissive_used=true;
 
-#endif
+#endif // ZH
 		}
 #ifdef OG
 */		/*
 		** If needed, pre-multiply the emissive color array with the material color
 		*/
 /*		if ((DIGSource[pass] != VertexMaterialClass::MATERIAL) && (ColorArray[1] != NULL)) {
-#endif
+#endif // OG
 
 #ifdef OG
 			unsigned * emissive_array = ColorArray[1]->Get_Array();
 			Vector3 mtl_emissive;
 
-#endif
+#endif // OG
 #ifdef ZH
 			if ((DCGSource[pass] != VertexMaterialClass::MATERIAL) && (ColorArray[0] != NULL)) {
 
-#endif
+#endif // ZH
 			VertexMaterialClass * prev_mtl = NULL;
 			VertexMaterialClass * mtl = Peek_Material(0,pass);
 			for (int vidx=0; vidx<VertexCount; vidx++) {
@@ -1041,14 +1041,14 @@ void MeshMatDescClass::Post_Load_Process(bool lighting_enabled,MeshModelClass * 
 #ifdef OG
 					mtl->Get_Emissive(&mtl_emissive);
 
-#endif
+#endif // OG
 #ifdef ZH
 						// If only emissive is used apply emissive to color channel, set diffuse source to color 1, and turn off lighting
 						if (!diffuse_used && !ambient_used && emissive_used) {
 							mtl->Set_Lighting(false);
 						}
 					}
-#endif
+#endif // ZH
 				}
 #ifdef OG
 
@@ -1058,7 +1058,7 @@ void MeshMatDescClass::Post_Load_Process(bool lighting_enabled,MeshModelClass * 
 				emissive.Z *= mtl_emissive.Z;
 				emissive_array[vidx]=DX8Wrapper::Convert_Color(emissive);
 			
-#endif
+#endif // OG
 			}
 		}
 #ifdef OG
@@ -1066,7 +1066,7 @@ void MeshMatDescClass::Post_Load_Process(bool lighting_enabled,MeshModelClass * 
 
 */
 
-#endif
+#endif // OG
 	}
 }
 
@@ -1090,10 +1090,10 @@ bool MeshMatDescClass::Do_Mappers_Need_Normals(void)
 {
 #ifdef OG
 	if (DX8Caps::Support_NPatches() && WW3D::Get_NPatches_Level()>1) return true;
-#endif
+#endif // OG
 #ifdef ZH
 	if (DX8Wrapper::Is_Initted() && DX8Wrapper::Get_Current_Caps()->Support_NPatches() && WW3D::Get_NPatches_Level()>1) return true;
-#endif
+#endif // ZH
 
 	for (int pass=0; pass<PassCount; pass++) {
 		/*

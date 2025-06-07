@@ -163,7 +163,7 @@ void TunnelContain::killAllContained( void )
     obj->kill();
 	}
 }
-#endif
+#endif // ZH
 //-------------------------------------------------------------------------------------------------
 /** Remove all contained objects from the contained list */
 //-------------------------------------------------------------------------------------------------
@@ -195,17 +195,17 @@ void TunnelContain::iterateContained( ContainIterateFunc func, void *userData, B
 //-------------------------------------------------------------------------------------------------
 #ifdef OG
 void TunnelContain::onContaining( Object *obj )
-#endif
+#endif // OG
 #ifdef ZH
 void TunnelContain::onContaining( Object *obj, Bool wasSelected )
-#endif
+#endif // ZH
 {
 #ifdef OG
 	OpenContain::onContaining(obj);
-#endif
+#endif // OG
 #ifdef ZH
 	OpenContain::onContaining( obj, wasSelected );
-#endif
+#endif // ZH
 
 	// objects inside a building are held
 	obj->setDisabled( DISABLED_HELD );
@@ -217,7 +217,7 @@ void TunnelContain::onContaining( Object *obj, Bool wasSelected )
   
   obj->handlePartitionCellMaintenance();
 
-#endif
+#endif // ZH
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -423,14 +423,14 @@ void TunnelContain::onObjectCreated()
 }
 
 //-------------------------------------------------------------------------------------------------
-#endif
+#endif // ZH
 void TunnelContain::onBuildComplete( void )
 {
 #ifdef ZH
 	//Kris: July 29, 2003
 	//Obsolete -- onObjectCreated handles it before this function gets called.
 	/*
-#endif
+#endif // ZH
 	if( ! shouldDoOnBuildComplete() )
 		return;
 
@@ -471,7 +471,7 @@ void TunnelContain::onCapture( Player *oldOwner, Player *newOwner )
 
 	// extend base class
 	OpenContain::onCapture( oldOwner, newOwner );
-#endif
+#endif // ZH
 } 
 
 // ------------------------------------------------------------------------------------------------

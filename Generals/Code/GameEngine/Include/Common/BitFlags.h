@@ -181,7 +181,7 @@ public:
 		return !tmp.m_bits.any();
 	}
 
-#endif
+#endif // ZH
 	inline Int size() const
 	{
 		return m_bits.size();
@@ -308,16 +308,16 @@ public:
 	void parse(INI* ini, AsciiString* str);
 #ifdef ZH
 	void parseSingleBit(INI* ini, AsciiString* str);
-#endif
+#endif // ZH
 	void xfer(Xfer* xfer);
 #ifdef OG
 	static void parseFromINI(INI* ini, void* /*instance*/, void *store, const void* /*userData*/);
 
-#endif
+#endif // OG
 #ifdef ZH
 	static void parseFromINI(INI* ini, void* /*instance*/, void *store, const void* /*userData*/); ///< Returns a BitFlag
 	static void parseSingleBitFromINI(INI* ini, void* /*instance*/, void *store, const void* /*userData*/); ///< Returns an int, the Index of the one bit
-#endif
+#endif // ZH
 
 	void buildDescription( AsciiString* str ) const
 	{

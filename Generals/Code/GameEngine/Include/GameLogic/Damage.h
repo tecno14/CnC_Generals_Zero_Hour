@@ -35,11 +35,11 @@
 // INCLUDES ///////////////////////////////////////////////////////////////////////////////////////
 #ifdef ZH
 #include "Common/BitFlags.h"
-#endif
+#endif // ZH
 #include "Common/GameType.h"
 #ifdef ZH
 #include "Common/ObjectStatusTypes.h" // Precompiled header anyway, no detangling possibility
-#endif
+#endif // ZH
 #include "Common/Snapshot.h"
 
 // FORWARD REFERENCES /////////////////////////////////////////////////////////////////////////////
@@ -47,15 +47,15 @@ class Object;
 class INI;
 #ifdef ZH
 class ThingTemplate;
-#endif
+#endif // ZH
 
 //-------------------------------------------------------------------------------------------------
 #ifdef OG
 /** Damage types, keep this in sync with TheDamageNames[] */
-#endif
+#endif // OG
 #ifdef ZH
 /** Damage types, keep this in sync with DamageTypeFlags::s_bitNameList[] */
-#endif
+#endif // ZH
 //-------------------------------------------------------------------------------------------------
 enum DamageType
 {	
@@ -75,7 +75,7 @@ enum DamageType
 	DAMAGE_DEPLOY									= 13,					// for transports to deploy units and order them to all attack.
 #ifdef OG
 // this stays, even if ALLOW_SURRENDER is not defed, since flashbangs still use 'em
-#endif
+#endif // OG
 	DAMAGE_SURRENDER							= 14,				// if something "dies" to surrender damage, they surrender.... duh!
 	DAMAGE_HACK										= 15,
 	DAMAGE_KILLPILOT							= 16,				// special snipe attack that kills the pilot and renders a vehicle unmanned.
@@ -96,7 +96,7 @@ enum DamageType
 #ifdef OG
 	DAMAGE_FLESHY_SNIPER					= 31,		// like DAMAGE_SNIPER, but (generally) does no damage to vehicles.
 
-#endif
+#endif // OG
 #ifdef ZH
 	DAMAGE_SUBDUAL_MISSILE				= 31,	///< Damage that does not kill you, but produces some special effect based on your Body Module. Seperate HP from normal damage.
 	DAMAGE_SUBDUAL_VEHICLE				= 32,
@@ -105,18 +105,18 @@ enum DamageType
 	DAMAGE_MICROWAVE							= 35, ///< Radiation that only affects infantry
 	DAMAGE_KILL_GARRISONED				= 36, ///< Kills Passengers up to the number specified in Damage
 	DAMAGE_STATUS									= 37, ///< Damage that gives a status condition, not that does hitpoint damage
-#endif
+#endif // ZH
 
 #ifdef OG
 	// Please note: There is a string array below this enum, and when you change them,
 	// you need to search on the array names to find all the stuff that generates names
 	// based on these strings.  (eg DamageFX does a strcat to make its array of names so 
 	// change DamageFX.ini and its Default)
-#endif
+#endif // OG
 #ifdef ZH
 	// Please note: There is a string array DamageTypeFlags::s_bitNameList[]
 
-#endif
+#endif // ZH
 
 #ifdef OG
 
@@ -131,7 +131,7 @@ enum DamageType
 	// !!!!!!!!!!!!!!!!!!!!! NOTE !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	// !!!!!!!!!!!!!!!!!!!!! NOTE !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
-#endif
+#endif // OG
 	DAMAGE_NUM_TYPES			// keep this last
 };
 
@@ -176,30 +176,30 @@ static const char *TheDamageNames[] =
 };
 #endif // end DEFINE_DAMAGE_NAMES
 
-#endif
+#endif // OG
 //-------------------------------------------------------------------------------------------------
 //-------------------------------------------------------------------------------------------------
 
 #ifdef OG
 typedef UnsignedInt DamageTypeFlags;
-#endif
+#endif // OG
 #ifdef ZH
 typedef BitFlags<DAMAGE_NUM_TYPES> DamageTypeFlags;
-#endif
+#endif // ZH
 
 #ifdef OG
 const DamageTypeFlags DAMAGE_TYPE_FLAGS_ALL = 0xffffffff;
 const DamageTypeFlags DAMAGE_TYPE_FLAGS_NONE = 0x00000000;
 
-#endif
+#endif // OG
 inline Bool getDamageTypeFlag(DamageTypeFlags flags, DamageType dt)
 {
 #ifdef OG
 	return (flags & (1UL << (dt - 1))) != 0;
-#endif
+#endif // OG
 #ifdef ZH
 	return flags.test(dt);
-#endif
+#endif // ZH
 }
 
 inline DamageTypeFlags setDamageTypeFlag(DamageTypeFlags flags, DamageType dt)
@@ -207,11 +207,11 @@ inline DamageTypeFlags setDamageTypeFlag(DamageTypeFlags flags, DamageType dt)
 #ifdef OG
 	return (flags | (1UL << (dt - 1)));
 
-#endif
+#endif // OG
 #ifdef ZH
 	flags.set(dt, TRUE);
 	return flags;
-#endif
+#endif // ZH
 }
 
 inline DamageTypeFlags clearDamageTypeFlag(DamageTypeFlags flags, DamageType dt)
@@ -242,12 +242,12 @@ inline Bool IsHealthDamagingDamage( DamageType type )
 	// The need for this function brought to you by "Have the guy with no game experience write the weapon code" Foundation.
 	// Health Damage should be one type of WeaponEffect.  Thinking "Weapons can only do damage" is why AoE is boring.
 	switch( type )
-#endif
+#endif // ZH
 {
 #ifdef OG
 	return (flags & ~(1UL << (dt - 1)));
 
-#endif
+#endif // OG
 #ifdef ZH
 		case DAMAGE_STATUS:
 		case DAMAGE_SUBDUAL_MISSILE:
@@ -260,7 +260,7 @@ inline Bool IsHealthDamagingDamage( DamageType type )
 	}
 
 	return TRUE;
-#endif
+#endif // ZH
 }
 
 #ifdef ZH
@@ -274,7 +274,7 @@ extern DamageTypeFlags DAMAGE_TYPE_FLAGS_NONE;
 extern DamageTypeFlags DAMAGE_TYPE_FLAGS_ALL;
 void initDamageTypeFlags();
 
-#endif
+#endif // ZH
 //-------------------------------------------------------------------------------------------------
 /** Death types, keep this in sync with TheDeathNames[] */
 //-------------------------------------------------------------------------------------------------
@@ -309,7 +309,7 @@ enum DeathType
 	DEATH_EXTRA_8		= 19,	
 #ifdef ZH
 	DEATH_POISONED_GAMMA = 20,
-#endif
+#endif // ZH
 	
 	DEATH_NUM_TYPES			// keep this last
 };
@@ -339,7 +339,7 @@ static const char *TheDeathNames[] =
 	"EXTRA_8",	
 #ifdef ZH
 	"POISONED_GAMMA",	
-#endif
+#endif // ZH
 
 	NULL
 };
@@ -382,13 +382,13 @@ public:
 		m_sourceID = INVALID_ID; 
 #ifdef ZH
 		m_sourceTemplate = NULL;
-#endif
+#endif // ZH
 		m_sourcePlayerMask = 0;
 		m_damageType = DAMAGE_EXPLOSION; 
 #ifdef ZH
 		m_damageStatusType = OBJECT_STATUS_NONE;
 		m_damageFXOverride = DAMAGE_UNRESISTABLE;
-#endif
+#endif // ZH
 		m_deathType = DEATH_NORMAL; 
 		m_amount = 0; 
 #ifdef ZH
@@ -398,19 +398,19 @@ public:
     m_shockWaveAmount   = 0.0f;	
     m_shockWaveRadius   = 0.0f;	
     m_shockWaveTaperOff = 0.0f;
-#endif
+#endif // ZH
 	}
 
 	ObjectID		   m_sourceID;							///< source of the damage
 #ifdef ZH
 	const ThingTemplate *m_sourceTemplate;  ///< source of the damage (the template).
-#endif
+#endif // ZH
 	PlayerMaskType m_sourcePlayerMask;			///< Player mask of m_sourceID.
 	DamageType		 m_damageType;						///< type of damage
 #ifdef ZH
 	ObjectStatusTypes m_damageStatusType;		///< If status damage, what type
 	DamageType		 m_damageFXOverride;			///< If not marked as the default of Unresistable, the damage type to use in doDamageFX instead of the real damamge type
-#endif
+#endif // ZH
 	DeathType			 m_deathType;						///< if this kills us, death type to be used
 	Real					 m_amount;								///< # value of how much damage to inflict
 #ifdef ZH
@@ -422,7 +422,7 @@ public:
 	Real					 m_shockWaveRadius;			  ///< This represents the effect radius of the shockwave. 
 	Real					 m_shockWaveTaperOff;			///< This represents the taper off effect of the shockwave at the tip of the radius. 0.0 means shockwave is 0% at the radius edge.
 
-#endif
+#endif // ZH
 
 protected:
 

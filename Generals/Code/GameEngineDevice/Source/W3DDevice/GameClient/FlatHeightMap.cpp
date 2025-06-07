@@ -647,4 +647,4 @@ void FlatHeightMapRenderObjClass::Render(RenderInfoClass & rinfo)
 }
 
 
-#endif
+#endif // ZH

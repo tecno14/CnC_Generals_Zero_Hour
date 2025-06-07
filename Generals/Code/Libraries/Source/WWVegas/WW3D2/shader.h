@@ -52,7 +52,7 @@ class DX8Wrapper;
 struct W3dMaterial3Struct;
 #ifdef ZH
 class StringClass;
-#endif
+#endif // ZH
 
 // Re-written shader class
 // Hector Yee 1/24/01
@@ -152,7 +152,7 @@ public:
 		DETAILCOLOR_ADDSIGNED2X,	// 1010	(local + other - 0.5) * 2
 		DETAILCOLOR_SCALE2X,			// 1011	local * other * 2
 		DETAILCOLOR_MODALPHAADDCOLOR,	// 1100 local + localAlpha * other
-#endif
+#endif // ZH
 
 		DETAILCOLOR_MAX				//			end of enumeration
 	};
@@ -200,12 +200,12 @@ public:
 		GRADIENT_BUMPENVMAP,	// 011
 		GRADIENT_BUMPENVMAPLUMINANCE,	// 100
 		GRADIENT_DOTPRODUCT3,	// 101
-#endif
+#endif // OG
 #ifdef ZH
 		GRADIENT_BUMPENVMAP,				// 011	environment-mapped bump mapping
 		GRADIENT_BUMPENVMAPLUMINANCE,	// 100	environment-mapped bump mapping with luminance control
 		GRADIENT_MODULATE2X,				// 101	modulate fragment ARGB by gradient ARGB and multiply RGB by 2
-#endif
+#endif // ZH
 		GRADIENT_MAX			// end of enumeration
  	};
 
@@ -236,15 +236,15 @@ public:
 	{
 #ifdef OG
 		SSCAT_OPAQUE,
-#endif
+#endif // OG
 #ifdef ZH
 		SSCAT_OPAQUE=0,
-#endif
+#endif // ZH
 		SSCAT_ALPHA_TEST,
 		SSCAT_ADDITIVE,
 #ifdef ZH
 		SSCAT_SCREEN,
-#endif
+#endif // ZH
 		SSCAT_OTHER
 	};
 
@@ -375,7 +375,7 @@ public:
 #ifdef ZH
 	const StringClass& Get_Description(StringClass& str) const;
 
-#endif
+#endif // ZH
 	// These are a bunch of predefined shaders for common cases. None of them
 	// have fogging since "no fog" is the surrender default and usage of fog
 	// changes from app to app - if you want a fogging shader just grab one of
@@ -404,7 +404,7 @@ public:
 	// Texturing, default zbuffer reading, no zbuffer writing, no gradients, no blending, no
 	// fogging - mostly for opaque sprites
 	static ShaderClass _PresetOpaqueSpriteShader;
-#endif
+#endif // ZH
 
 	// Texturing, no zbuffer reading/writing, no gradients, additive blending,
 	// no fogging - mostly for additive 2D objects.

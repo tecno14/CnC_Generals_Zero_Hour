@@ -153,4 +153,4 @@ protected:
 
 #endif  // end __W3DPROP_BUFFER_H_
 
-#endif
+#endif // ZH

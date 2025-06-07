@@ -109,4 +109,4 @@ private:
 
 #endif //SHDBUMPDIFF_H
 
-#endif
+#endif // ZH

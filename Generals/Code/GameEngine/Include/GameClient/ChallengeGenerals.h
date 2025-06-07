@@ -160,4 +160,4 @@ extern ChallengeGenerals *createChallengeGenerals( void );
 
 #endif  // end __CHALLENGEGENERALS_H_
 
-#endif
+#endif // ZH

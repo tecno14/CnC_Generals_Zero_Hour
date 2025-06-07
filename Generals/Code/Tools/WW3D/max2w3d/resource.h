@@ -17,7 +17,7 @@
 **	along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#endif
+#endif // ZH
 //{{NO_DEPENDENCIES}}
 // Microsoft Developer Studio generated include file.
 // Used by max2w3d.rc

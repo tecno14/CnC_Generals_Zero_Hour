@@ -73,10 +73,10 @@ public:
 	// contain methods
 #ifdef OG
 	virtual void onContaining( Object *obj );
-#endif
+#endif // OG
 #ifdef ZH
 	virtual void onContaining( Object *obj, Bool wasSelected );
-#endif
+#endif // ZH
 	virtual void onRemoving( Object *obj );
 
 protected:

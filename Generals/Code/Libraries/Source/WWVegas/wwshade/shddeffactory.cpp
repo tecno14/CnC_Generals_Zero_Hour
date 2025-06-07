@@ -74,4 +74,4 @@ ShdDefFactoryClass::~ShdDefFactoryClass (void)
 
 
 
-#endif
+#endif // ZH

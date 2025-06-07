@@ -28,28 +28,28 @@
  *                                                                                             *
 #ifdef OG
  *                      $Author:: Greg_h                                                      $*
-#endif
+#endif // OG
 #ifdef ZH
  *                      $Author:: Kenny Mitchell                                               * 
-#endif
+#endif // ZH
  *                                                                                             *
 #ifdef OG
  *                     $Modtime:: 6/21/01 10:33a                                              $*
-#endif
+#endif // OG
 #ifdef ZH
  *                     $Modtime:: 06/26/02 4:04p                                             $*
-#endif
+#endif // ZH
  *                                                                                             *
 #ifdef OG
  *                    $Revision:: 5                                                           $*
-#endif
+#endif // OG
 #ifdef ZH
  *                    $Revision:: 6                                                           $*
-#endif
+#endif // ZH
  *                                                                                             *
 #ifdef ZH
  * 06/26/02 KM Matrix name change to avoid MAX conflicts                                       *
-#endif
+#endif // ZH
  *---------------------------------------------------------------------------------------------*
  * Functions:                                                                                  *
  *   ProjectorClass::ProjectorClass -- Constructor                                             *
@@ -84,10 +84,10 @@ ProjectorClass::ProjectorClass(void) :
 	LocalBoundingVolume(Vector3(0,0,0),Vector3(1,1,1)),
 #ifdef OG
 	WorldBoundingVolume(Vector3(0,0,0),Vector3(1,1,1),Matrix3(1))
-#endif
+#endif // OG
 #ifdef ZH
 	WorldBoundingVolume(Vector3(0,0,0),Vector3(1,1,1),Matrix3x3(1))
-#endif
+#endif // ZH
 {
 	Mapper=NEW_REF(MatrixMapperClass,(0));
 }
@@ -254,10 +254,10 @@ void ProjectorClass::Update_WS_Bounding_Volume(void)
 	*/
 #ifdef OG
 	OBBoxClass localbox(LocalBoundingVolume.Center,LocalBoundingVolume.Extent,Matrix3(1));
-#endif
+#endif // OG
 #ifdef ZH
 	OBBoxClass localbox(LocalBoundingVolume.Center,LocalBoundingVolume.Extent,Matrix3x3(1));
-#endif
+#endif // ZH
 	OBBoxClass::Transform(Transform,localbox,&WorldBoundingVolume);	
 }
 

@@ -83,7 +83,7 @@ const char* WeaponSetFlags::s_bitNameList[] =
 	"WEAPON_RIDER6",
 	"WEAPON_RIDER7",
 	"WEAPON_RIDER8",
-#endif
+#endif // ZH
 
 	NULL
 };
@@ -188,11 +188,11 @@ WeaponSet::WeaponSet()
 #ifdef OG
 	m_totalDamageTypeMask = 0;
 	DEBUG_ASSERTCRASH(DAMAGE_NUM_TYPES <= 32, ("m_totalDamageTypeMask will need to be enlarged in WeaponSet"));
-#endif
+#endif // OG
 #ifdef ZH
 	m_totalDamageTypeMask.clear();
 
-#endif
+#endif // ZH
 	m_hasPitchLimit = false;
 	m_hasDamageWeapon = false;
 	for (Int i = 0; i < WEAPONSLOT_COUNT; ++i)
@@ -291,13 +291,13 @@ void WeaponSet::xfer( Xfer *xfer )
 	xfer->xferInt(&m_totalAntiMask);
 #ifdef OG
 	xfer->xferUnsignedInt(&m_totalDamageTypeMask);
-#endif
+#endif // OG
 	xfer->xferBool(&m_hasDamageWeapon);
 	xfer->xferBool(&m_hasDamageWeapon);
 #ifdef ZH
 
 	m_totalDamageTypeMask.xfer(xfer);// BitSet has built in xfer
-#endif
+#endif // ZH
 
 }
 
@@ -326,10 +326,10 @@ void WeaponSet::updateWeaponSet(const Object* obj)
 		m_totalAntiMask = 0;
 #ifdef OG
 		m_totalDamageTypeMask = 0;
-#endif
+#endif // OG
 #ifdef ZH
 		m_totalDamageTypeMask.clear();
-#endif
+#endif // ZH
 		m_hasPitchLimit = false;
 		m_hasDamageWeapon = false;
 		for (Int i = WEAPONSLOT_COUNT - 1; i >= PRIMARY_WEAPON ; --i)
@@ -348,10 +348,10 @@ void WeaponSet::updateWeaponSet(const Object* obj)
 				m_totalAntiMask |= m_weapons[i]->getAntiMask();
 #ifdef OG
 				m_totalDamageTypeMask |= (1 << m_weapons[i]->getDamageType());
-#endif
+#endif // OG
 #ifdef ZH
 				m_totalDamageTypeMask.set(m_weapons[i]->getDamageType());
-#endif
+#endif // ZH
 				if (m_weapons[i]->isPitchLimited())
 					m_hasPitchLimit = true;
 				if (m_weapons[i]->isDamageWeapon())
@@ -400,11 +400,11 @@ static Int getVictimAntiMask(const Object* victim)
 		return WEAPON_ANTI_MINE | WEAPON_ANTI_GROUND;
 	}
 	else if( victim->isKindOf( KINDOF_SMALL_MISSILE ) )
-#endif
+#endif // OG
 #ifdef ZH
 	if( victim->isKindOf( KINDOF_SMALL_MISSILE ) )
 
-#endif
+#endif // ZH
 	{
 		//All missiles are also projectiles!
 		return WEAPON_ANTI_SMALL_MISSILE;
@@ -421,7 +421,7 @@ static Int getVictimAntiMask(const Object* victim)
 	else if( victim->isKindOf( KINDOF_MINE ) || victim->isKindOf( KINDOF_DEMOTRAP ) )
 	{
 		return WEAPON_ANTI_MINE | WEAPON_ANTI_GROUND;
-#endif
+#endif // ZH
 	}
 	else if( victim->isAirborneTarget() )
 	{
@@ -460,7 +460,7 @@ void WeaponSet::weaponSetOnWeaponBonusChange(const Object *source)
 		{
 			weapon->onWeaponBonusChange(source);
 		}
-#endif
+#endif // ZH
 	}
 }
 
@@ -484,14 +484,14 @@ Bool WeaponSet::isAnyWithinTargetPitch(const Object* obj, const Object* victim) 
 //-------------------------------------------------------------------------------------------------
 #ifdef OG
 CanAttackResult WeaponSet::getAbleToAttackSpecificObject( AbleToAttackType attackType, const Object* source, const Object* victim, CommandSourceType commandSource ) const
-#endif
+#endif // OG
 #ifdef ZH
 CanAttackResult WeaponSet::getAbleToAttackSpecificObject( AbleToAttackType attackType, const Object* source, const Object* victim, CommandSourceType commandSource, WeaponSlotType specificSlot ) const
-#endif
+#endif // ZH
 {
 #ifdef OG
   static NameKeyType key_StealthUpdate = NAMEKEY( "StealthUpdate" );
-#endif
+#endif // OG
 
 	// basic sanity checks.
 	if (!source || 
@@ -536,11 +536,11 @@ CanAttackResult WeaponSet::getAbleToAttackSpecificObject( AbleToAttackType attac
 #ifdef OG
 	  StealthUpdate *update = (StealthUpdate*)victim->findUpdateModule( key_StealthUpdate );
     if (update && update->isDisguised())
-#endif
+#endif // OG
 #ifdef ZH
 		if( victim->testStatus( OBJECT_STATUS_DISGUISED ) )
 
-#endif
+#endif // ZH
   	  allowStealthToPreventAttacks = FALSE;
   }
 
@@ -559,10 +559,10 @@ CanAttackResult WeaponSet::getAbleToAttackSpecificObject( AbleToAttackType attac
 			//Exception case -- don't return false if we are a bomb truck disguised as an enemy vehicle.
 #ifdef OG
 			StealthUpdate *update = (StealthUpdate*)victim->findUpdateModule( key_StealthUpdate );
-#endif
+#endif // OG
 #ifdef ZH
 			StealthUpdate *update = victim->getStealth();
-#endif
+#endif // ZH
 			if( update && update->isDisguised() )
 			{
 				Player *ourPlayer = source->getControllingPlayer();
@@ -655,10 +655,10 @@ CanAttackResult WeaponSet::getAbleToAttackSpecificObject( AbleToAttackType attac
 	//Check if the shot itself is valid!
 #ifdef OG
 	return getAbleToUseWeaponAgainstTarget( attackType, source, victim, victim->getPosition(), commandSource );
-#endif
+#endif // OG
 #ifdef ZH
 	return getAbleToUseWeaponAgainstTarget( attackType, source, victim, victim->getPosition(), commandSource, specificSlot );
-#endif
+#endif // ZH
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -667,10 +667,10 @@ CanAttackResult WeaponSet::getAbleToAttackSpecificObject( AbleToAttackType attac
 //supports both victim or position.
 #ifdef OG
 CanAttackResult WeaponSet::getAbleToUseWeaponAgainstTarget( AbleToAttackType attackType, const Object *source, const Object *victim, const Coord3D *pos, CommandSourceType commandSource ) const
-#endif
+#endif // OG
 #ifdef ZH
 CanAttackResult WeaponSet::getAbleToUseWeaponAgainstTarget( AbleToAttackType attackType, const Object *source, const Object *victim, const Coord3D *pos, CommandSourceType commandSource, WeaponSlotType specificSlot ) const
-#endif
+#endif // ZH
 {
 
 	//First determine if we are attacking an object or the ground and get the 
@@ -724,11 +724,11 @@ CanAttackResult WeaponSet::getAbleToUseWeaponAgainstTarget( AbleToAttackType att
 #ifdef OG
 			if( contain && contain->isGarrisonable() )
 			{
-#endif
+#endif // OG
 #ifdef ZH
 			if( contain && contain->isGarrisonable() && contain->isEnclosingContainerFor( source ))
 			{                                       // non enclosing garrison containers do not use firepoints. Lorenzen, 6/11/03
-#endif
+#endif // ZH
 				//For contained things, we need to fake-move objects to the best garrison point in order
 				//to get precise range checks.
 				Coord3D targetPos = *pos;
@@ -788,7 +788,7 @@ CanAttackResult WeaponSet::getAbleToUseWeaponAgainstTarget( AbleToAttackType att
 			first = specificSlot;
 			last = specificSlot;
 		}
-#endif
+#endif // ZH
 		else
 		{
 			first = WEAPONSLOT_COUNT - 1;
@@ -805,13 +805,13 @@ CanAttackResult WeaponSet::getAbleToUseWeaponAgainstTarget( AbleToAttackType att
 				//Kris: Aug 22, 2003
 				//Surgical fix so Jarmen Kell doesn't get a targeting cursor on enemy vehicles unless he is in snipe mode.
 				if( weapon->getDamageType() == DAMAGE_KILLPILOT && source->isKindOf( KINDOF_HERO ) && m_curWeapon == PRIMARY_WEAPON && specificSlot == (WeaponSlotType)-1 )
-#endif
+#endif // ZH
 			{
 #ifdef ZH
 					continue;
 				}
 
-#endif
+#endif // ZH
 				return okResult;
 			}
 		}
@@ -886,7 +886,7 @@ Bool WeaponSet::chooseBestWeaponForTarget(const Object* obj, const Object* victi
 
 	if (victim == NULL)
 		return false; // Usually cause victim just got killed.  jba.
-#endif
+#endif // OG
 
 	if( isCurWeaponLocked() )
 		return TRUE; // I have been forced into choosing a specific weapon, so it is right until someone says otherwise
@@ -900,7 +900,7 @@ Bool WeaponSet::chooseBestWeaponForTarget(const Object* obj, const Object* victi
 		return TRUE;
 	}
 
-#endif
+#endif // ZH
 	Bool found = FALSE;				// A Ready weapon has been found
 	Bool foundBackup = FALSE;	// An unready, but valid weapon has been found
 
@@ -928,18 +928,18 @@ Bool WeaponSet::chooseBestWeaponForTarget(const Object* obj, const Object* victi
 #ifdef OG
 		if ((okSrcs & (1 << cmdSource)) == 0)
 
-#endif
+#endif // OG
 #ifdef ZH
 		if( ( okSrcs & (1 << cmdSource) ) == 0 )
 		{
 			if( !( okSrcs & CMD_DEFAULT_SWITCH_WEAPON ) )
 			{
-#endif
+#endif // ZH
 			continue;
 #ifdef ZH
 			}
 		}
-#endif
+#endif // ZH
 
 		Weapon* weapon = m_weapons[i];
 		if (weapon == NULL)
@@ -947,16 +947,16 @@ Bool WeaponSet::chooseBestWeaponForTarget(const Object* obj, const Object* victi
 		
 #ifdef ZH
 		// No bad wrong!  Being out of range does not mean this weapon can not affect the target!
-#endif
+#endif // ZH
 		// weapon out of range.
 #ifdef OG
 		if (!weapon->isWithinAttackRange(obj, victim))
 			continue;
-#endif
+#endif // OG
 #ifdef ZH
 //		if (!weapon->isWithinAttackRange(obj, victim))
 //			continue;
-#endif
+#endif // ZH
 
 		// weapon out of ammo.
 		if (weapon->getStatus() == OUT_OF_AMMO && !weapon->getAutoReloadsClip())
@@ -1155,7 +1155,7 @@ UnsignedInt WeaponSet::getMostPercentReadyToFireAnyWeapon() const
 		}
 	}
 	return mostReady;
-#endif
+#endif // ZH
 }
 
 //-------------------------------------------------------------------------------------------------

@@ -109,12 +109,12 @@ W3DWaypointBuffer::W3DWaypointBuffer(void)
 	if( m_texture )
 	{
 		m_line->Set_Texture( m_texture );
-#endif
+#endif // OG
 #ifdef ZH
 
 
   setDefaultLineStyle();
-#endif
+#endif // ZH
 	}
 #ifdef OG
 	ShaderClass lineShader=ShaderClass::_PresetAdditiveShader;
@@ -124,7 +124,7 @@ W3DWaypointBuffer::W3DWaypointBuffer(void)
 	m_line->Set_Color( Vector3( 0.25f, 0.5f, 1.0f ) );
 	m_line->Set_Texture_Mapping_Mode( SegLineRendererClass::TILED_TEXTURE_MAP );	//this tiles the texture across the line
 }
-#endif
+#endif // OG
 
 //=============================================================================
 // W3DWaypointBuffer::~W3DWaypointBuffer
@@ -137,7 +137,7 @@ W3DWaypointBuffer::~W3DWaypointBuffer(void)
 #ifdef ZH
 	REF_PTR_RELEASE( m_texture );
 	REF_PTR_RELEASE( m_line );
-#endif
+#endif // ZH
 }
 
 //=============================================================================
@@ -153,7 +153,7 @@ void W3DWaypointBuffer::freeWaypointBuffers()
 void W3DWaypointBuffer::setDefaultLineStyle( void )
 {
 	if( m_texture )
-#endif
+#endif // ZH
 {
 #ifdef ZH
 		m_line->Set_Texture( m_texture );
@@ -164,7 +164,7 @@ void W3DWaypointBuffer::setDefaultLineStyle( void )
 	m_line->Set_Width( 1.5f );
 	m_line->Set_Color( Vector3( 0.25f, 0.5f, 1.0f ) );
 	m_line->Set_Texture_Mapping_Mode( SegLineRendererClass::TILED_TEXTURE_MAP );	//this tiles the texture across the line
-#endif
+#endif // ZH
 }
 
 
@@ -180,17 +180,17 @@ void W3DWaypointBuffer::drawWaypoints(RenderInfoClass &rinfo)
   if ( ! TheInGameUI )
     return;
 
-#endif
+#endif // ZH
 
 #ifdef OG
 	if( TheInGameUI && TheInGameUI->isInWaypointMode() )
 
-#endif
+#endif // OG
 #ifdef ZH
   setDefaultLineStyle();
 
 	if( TheInGameUI->isInWaypointMode() )
-#endif
+#endif // ZH
 	{
 		//Create a default light environment with no lights and only full ambient.
 		//@todo: Fix later by copying default scene light environement from W3DScene.cpp.
@@ -245,7 +245,7 @@ void W3DWaypointBuffer::drawWaypoints(RenderInfoClass &rinfo)
 	else // maybe we want to draw rally points, then?
 #ifdef OG
 	if (TheInGameUI)
-#endif
+#endif // OG
 	{
 		//Create a default light environment with no lights and only full ambient.
 		//@todo: Fix later by copying default scene light environement from W3DScene.cpp.
@@ -347,7 +347,7 @@ void W3DWaypointBuffer::drawWaypoints(RenderInfoClass &rinfo)
                     }
                   }
                   //////////////////////////////////////////////////////////////////////                
-#endif
+#endif // ZH
 
 #ifdef ZH
 
@@ -360,7 +360,7 @@ void W3DWaypointBuffer::drawWaypoints(RenderInfoClass &rinfo)
           break;// dont even bother with the rest, since this one listening outpost satisfies the single path-line limit
         }
 
-#endif
+#endif // ZH
 				ExitInterface *exitInterface = obj->getObjectExitInterface();
 				if( exitInterface )
 				{
@@ -559,11 +559,11 @@ void W3DWaypointBuffer::drawWaypoints(RenderInfoClass &rinfo)
 #ifdef OG
 				}
 
-#endif
+#endif // OG
 #ifdef ZH
 				}// end if exit interface
 
-#endif
+#endif // ZH
 				
 			}
 		}

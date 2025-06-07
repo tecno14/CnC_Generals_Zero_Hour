@@ -38,7 +38,7 @@
 #include "Common/GameEngine.h"
 #ifdef ZH
 #include "Common/GameLOD.h"
-#endif
+#endif // ZH
 #include "Common/GameState.h"
 #include "Common/INI.h"
 #include "Common/LatchRestore.h"
@@ -58,14 +58,14 @@
 #include "GameClient/Water.h"
 #ifdef ZH
 #include "GameClient/Snow.h"
-#endif
+#endif // ZH
 #include "Common/WellKnownKeys.h"
 #include "Common/Xfer.h"
 #include "Common/XferCRC.h"
 #include "Common/XferDeepCRC.h"
 #ifdef ZH
 #include "Common/GameSpyMiscPreferences.h"
-#endif
+#endif // ZH
 
 #include "GameClient/ControlBar.h"
 #include "GameClient/Drawable.h"
@@ -79,7 +79,7 @@
 #include "GameClient/ParticleSys.h"
 #ifdef ZH
 #include "GameClient/TerrainVisual.h"
-#endif
+#endif // ZH
 #include "GameClient/View.h"
 #include "GameClient/ControlBar.h"
 #include "GameClient/CampaignManager.h"
@@ -120,7 +120,7 @@
 #include "GameNetwork/GameSpy/PersistentStorageThread.h"
 
 #include <rts/profile.h>
-#endif
+#endif // ZH
 
 DECLARE_PERF_TIMER(SleepyMaintenance)
 
@@ -138,7 +138,7 @@ FILE *g_UT_commaLog=NULL;
 #include "../../gameenginedevice/include/W3DDevice/GameClient/Module/W3DModelDraw.h"
 #ifdef ZH
 extern void externalAddTree(Coord3D location, Real scale, Real angle, AsciiString name);
-#endif
+#endif // ZH
 #endif
 
 
@@ -273,7 +273,7 @@ GameLogic::GameLogic( void )
 	m_loadingMap = FALSE;
 	m_loadingSave = FALSE;
 	m_clearingGameData = FALSE;
-#endif
+#endif // ZH
 }
 
 // ------------------------------------------------------------------------------------------------
@@ -281,10 +281,10 @@ GameLogic::GameLogic( void )
 // ------------------------------------------------------------------------------------------------
 #ifdef OG
 void GameLogic::setDefaults( Bool saveGame )
-#endif
+#endif // OG
 #ifdef ZH
 void GameLogic::setDefaults( Bool loadingSaveGame )
-#endif
+#endif // ZH
 {
 	m_frame = 0;
 	m_width = DEFAULT_WORLD_WIDTH;
@@ -307,10 +307,10 @@ void GameLogic::setDefaults( Bool loadingSaveGame )
 	//
 #ifdef OG
 	if( saveGame == FALSE )
-#endif
+#endif // OG
 #ifdef ZH
 	if( loadingSaveGame == FALSE )
-#endif
+#endif // ZH
 		m_nextObjID = (ObjectID)1;
 
 }
@@ -462,14 +462,14 @@ void GameLogic::reset( void )
 	m_objHash.clear();
 	m_objHash.resize(OBJ_HASH_SIZE);
 
-#endif
+#endif // OG
 #ifdef ZH
 //	m_objHash.clear();
 //	m_objHash.resize(OBJ_HASH_SIZE);
 	m_objVector.clear();
 	m_objVector.resize(OBJ_HASH_SIZE, NULL);
 
-#endif
+#endif // ZH
 	m_gamePaused = FALSE;
 	m_inputEnabledMemory = TRUE;
 	m_mouseVisibleMemory = TRUE;
@@ -521,7 +521,7 @@ void GameLogic::reset( void )
 	// Clean up any weather overrides that were generated for this map.
 	WeatherSetting *ws = (WeatherSetting*) TheWeatherSetting.getNonOverloadedPointer();
 	TheWeatherSetting = (WeatherSetting*) ws->deleteOverrides();
-#endif
+#endif // ZH
 
 	m_rankPointsToAddAtGameStart = 0;
 }  // end reset
@@ -534,7 +534,7 @@ static Object * placeObjectAtPosition(Int slotNum, AsciiString objectTemplateNam
 
 	DEBUG_ASSERTCRASH(btt, ("TheThingFactory didn't find a template in placeObjectAtPosition()") );
 
-#endif
+#endif // ZH
 	Object *obj = TheThingFactory->newObject( btt, pPlayer->getDefaultTeam() );
 	DEBUG_ASSERTCRASH(obj, ("TheThingFactory didn't give me a valid Object for player %d's (%ls) starting building\n",
 		slotNum, pTemplate->getDisplayName().str()));
@@ -652,10 +652,10 @@ static void placeNetworkBuildingsForPlayer(Int slotNum, const GameSlot *pSlot, P
 // ------------------------------------------------------------------------------------------------
 #ifdef OG
 LoadScreen *GameLogic::getLoadScreen( Bool saveGame )
-#endif
+#endif // OG
 #ifdef ZH
 LoadScreen *GameLogic::getLoadScreen( Bool loadingSaveGame )
-#endif
+#endif // ZH
 {
 	switch (m_gameMode) 
 	{
@@ -664,12 +664,12 @@ LoadScreen *GameLogic::getLoadScreen( Bool loadingSaveGame )
 		break;
 #ifdef OG
 #if !defined(_PLAYTEST)
-#endif
+#endif // OG
 	case GAME_SINGLE_PLAYER:
 #ifdef OG
 		if(TheCampaignManager->getCurrentMission() && saveGame == FALSE )
 
-#endif
+#endif // OG
 #ifdef ZH
 	{
 		Campaign* currentCampaign = TheCampaignManager->getCurrentCampaign();
@@ -679,17 +679,17 @@ LoadScreen *GameLogic::getLoadScreen( Bool loadingSaveGame )
 			{
 				return NEW ChallengeLoadScreen;
 			}
-#endif
+#endif // ZH
 			return NEW SinglePlayerLoadScreen;
 #ifdef ZH
 		}
-#endif
+#endif // ZH
 		else
 			return NEW ShellGameLoadScreen;
 		break;
 #ifdef ZH
 	}
-#endif
+#endif // ZH
 	case GAME_SKIRMISH:
 		return NEW MultiPlayerLoadScreen;
 		break;
@@ -701,7 +701,7 @@ LoadScreen *GameLogic::getLoadScreen( Bool loadingSaveGame )
 		break;
 #ifdef OG
 #endif
-#endif
+#endif // OG
 	case GAME_INTERNET:
 		return NEW GameSpyLoadScreen;
 		break;
@@ -796,7 +796,7 @@ static void populateRandomSideAndColor( GameInfo *game )
 		if (disallowLockedGenerals && startsLocked)
 			continue;
 
-#endif
+#endif // ZH
 		startSlots.push_back(i);
 	}
 #endif
@@ -815,10 +815,10 @@ static void populateRandomSideAndColor( GameInfo *game )
 		{
 #ifdef OG
 			DEBUG_ASSERTCRASH(playerTemplateIdx == -1, ("Non-random bad playerTemplate %d in slot %d\n", playerTemplateIdx, i));
-#endif
+#endif // OG
 #ifdef ZH
 			DEBUG_ASSERTCRASH(playerTemplateIdx == PLAYERTEMPLATE_RANDOM, ("Non-random bad playerTemplate %d in slot %d\n", playerTemplateIdx, i));
-#endif
+#endif // ZH
 #ifdef MORE_RANDOM
 			// our RNG is basically shit -- horribly nonrandom at the start of the sequence.
 			// get a few values at random to get rid of the dreck.
@@ -934,7 +934,7 @@ static void populateRandomStartPosition( GameInfo *game )
 
 #ifdef ZH
 #if 0  //GS  The old way puts everyone as far apart as possible.
-#endif
+#endif // ZH
 	// now pick non-observer spots
 	for (i=0; i<MAX_SLOTS; ++i)
 	{
@@ -1091,20 +1091,20 @@ static void populateRandomStartPosition( GameInfo *game )
 					{	//found a better match
 						closestDist = dist;
 						closestIdx = n;
-#endif
+#endif // ZH
 			}
 #ifdef ZH
 				} //for n
 				DEBUG_ASSERTCRASH( closestDist < FLT_MAX, ("Couldn't find a closest starting positon!\n"));
 				slot->setStartPos(closestIdx);
 				taken[closestIdx] = TRUE;
-#endif
+#endif // ZH
 		}
 	}
 #ifdef ZH
 	} //for i
 #endif 0
-#endif
+#endif // ZH
 
 	// now go back & assign observer spots
 	Int numPlayersInGame = 0;
@@ -1171,7 +1171,7 @@ void GameLogic::setGameLoading( Bool loading )
 {
 	m_loadingScene = loading;
 }
-#endif
+#endif // OG
 
 // ------------------------------------------------------------------------------------------------
 /** Entry point for starting a new game, the engine is already in clean state at this
@@ -1179,10 +1179,10 @@ void GameLogic::setGameLoading( Bool loading )
 // ------------------------------------------------------------------------------------------------
 #ifdef OG
 void GameLogic::startNewGame( Bool saveGame )
-#endif
+#endif // OG
 #ifdef ZH
 void GameLogic::startNewGame( Bool loadingSaveGame )
-#endif
+#endif // ZH
 {
 
 	#ifdef DUMP_PERF_STATS
@@ -1195,12 +1195,12 @@ void GameLogic::startNewGame( Bool loadingSaveGame )
 #ifdef OG
 	if( saveGame == FALSE )
 
-#endif
+#endif // OG
 #ifdef ZH
 	setLoadingMap( TRUE );
 
 	if( loadingSaveGame == FALSE )
-#endif
+#endif // ZH
 	{
 
 		// record pristine map name when we're loading from the map (not a save game)
@@ -1221,7 +1221,7 @@ void GameLogic::startNewGame( Bool loadingSaveGame )
 		{
 #ifdef OG
 #if !defined(_PLAYTEST)
-#endif
+#endif // OG
 			/// @todo: Here is where we would look at the game mode & play an intro movie or something.
 			// Failing that, we just set the flag so the actual game can start from a uniform
 			// entry point (startNewGame() called from update()).
@@ -1236,10 +1236,10 @@ void GameLogic::startNewGame( Bool loadingSaveGame )
 				}
 #ifdef OG
 				m_loadScreen = getLoadScreen( saveGame );
-#endif
+#endif // OG
 #ifdef ZH
 				m_loadScreen = getLoadScreen( loadingSaveGame );
-#endif
+#endif // ZH
 				if(m_loadScreen)
 				{
 					TheWritableGlobalData->m_loadScreenRender = TRUE;	///< mark it so only a few select things are rendered during load
@@ -1249,7 +1249,7 @@ void GameLogic::startNewGame( Bool loadingSaveGame )
 			}
 #ifdef OG
 #endif
-#endif
+#endif // OG
 
 			m_startNewGame = TRUE;
 			return;
@@ -1261,14 +1261,14 @@ void GameLogic::startNewGame( Bool loadingSaveGame )
 	m_rankLevelLimit = 1000;	// this is reset every game.
 #ifdef OG
 	setDefaults( saveGame );
-#endif
+#endif // OG
 #ifdef ZH
 	setDefaults( loadingSaveGame );
-#endif
+#endif // ZH
 	TheWritableGlobalData->m_loadScreenRender = TRUE;	///< mark it so only a few select things are rendered during load	
 #ifdef ZH
 	TheWritableGlobalData->m_TiVOFastMode = FALSE;	//always disable the TIVO fast-forward mode at the start of a new game.
-#endif
+#endif // ZH
 
 	m_showBehindBuildingMarkers = TRUE;
 	m_drawIconUI = TRUE;
@@ -1279,7 +1279,7 @@ void GameLogic::startNewGame( Bool loadingSaveGame )
 	Campaign* currentCampaign = TheCampaignManager->getCurrentCampaign();
 	Bool isChallengeCampaign = m_gameMode == GAME_SINGLE_PLAYER && currentCampaign && currentCampaign->m_isChallengeCampaign;
 
-#endif
+#endif // ZH
 	// Fill in the game color and Factions before we do the Load Screen
 	GameInfo *game = NULL;
 	TheGameInfo = NULL;
@@ -1306,11 +1306,11 @@ void GameLogic::startNewGame( Bool loadingSaveGame )
 #ifdef OG
 #if !defined(_PLAYTEST)
     else if(m_gameMode == GAME_SKIRMISH )
-#endif
+#endif // OG
 #ifdef ZH
 		else if(m_gameMode == GAME_SKIRMISH)
 
-#endif
+#endif // ZH
     {
       TheGameInfo = game = TheSkirmishGameInfo;
 #ifdef ZH
@@ -1329,19 +1329,19 @@ void GameLogic::startNewGame( Bool loadingSaveGame )
     if ( TheGameInfo )
     {
       m_superweaponRestriction = TheGameInfo->getSuperweaponRestriction();
-#endif
+#endif // ZH
     }
 #ifdef OG
 #endif
 
-#endif
+#endif // OG
 #ifdef ZH
     else
     {
       // ??? Apparently this is legit? Oh well, use defaults
       m_superweaponRestriction = 0;
     }
-#endif
+#endif // ZH
 	}
 
 	checkForDuplicateColors( game );
@@ -1354,10 +1354,10 @@ void GameLogic::startNewGame( Bool loadingSaveGame )
 			GameSlot *slot = game->getSlot(i);
 #ifdef OG
 			if (!saveGame) {
-#endif
+#endif // OG
 #ifdef ZH
 			if (!loadingSaveGame) {
-#endif
+#endif // ZH
 				slot->saveOffOriginalInfo();
 			}
 			if (slot->isAI())
@@ -1387,10 +1387,10 @@ void GameLogic::startNewGame( Bool loadingSaveGame )
 	{
 #ifdef OG
 		m_loadScreen = getLoadScreen( saveGame );
-#endif
+#endif // OG
 #ifdef ZH
 		m_loadScreen = getLoadScreen( loadingSaveGame );
-#endif
+#endif // ZH
 		if(m_loadScreen)
 		{
 			TheMouse->setVisibility(FALSE);
@@ -1783,10 +1783,10 @@ void GameLogic::startNewGame( Bool loadingSaveGame )
 	// update the terrain logic now that all is loaded
 #ifdef OG
 	TheTerrainLogic->newMap( saveGame );
-#endif
+#endif // OG
 #ifdef ZH
 	TheTerrainLogic->newMap( loadingSaveGame );
-#endif
+#endif // ZH
 
 	// update the loadscreen 
 	updateLoadProgress(LOAD_PROGRESS_POST_TERRAIN_LOGIC_NEW_MAP);
@@ -1899,7 +1899,7 @@ void GameLogic::startNewGame( Bool loadingSaveGame )
 #ifdef ZH
 
 	Bool useTrees = TheGlobalData->m_useTrees;
-#endif
+#endif // ZH
 
 #ifdef ZH
 	// If forceFluffToProp == true, removable objects get created on client only. [7/14/2003]
@@ -1916,13 +1916,13 @@ void GameLogic::startNewGame( Bool loadingSaveGame )
 		forceFluffToProp = TRUE; // Always do client side fluff - faster, and syncs properly. jba.
 	}
 
-#endif
+#endif // ZH
 	progressCount = LOAD_PROGRESS_LOOP_ALL_THE_FREAKN_OBJECTS;
 	Int timer = timeGetTime();
 #ifdef OG
 	if( saveGame == FALSE )
 
-#endif
+#endif // OG
 #ifdef ZH
 	if( loadingSaveGame ) {
 		// Loading a loadingSaveGame, need to add the trees to the client. jba. [8/11/2003]
@@ -1952,7 +1952,7 @@ void GameLogic::startNewGame( Bool loadingSaveGame )
 		}
 	} 
 	else 
-#endif
+#endif // ZH
 	{
 
 		for (pMapObj = MapObject::getFirstMapObject(); pMapObj; pMapObj = pMapObj->getNext()) 
@@ -1989,7 +1989,7 @@ void GameLogic::startNewGame( Bool loadingSaveGame )
 			if (TheRecorder && TheRecorder->isMultiplayer()) {
 				useTrees = TRUE; // Always use trees in multiplayer, cause we want it to sync properly. jba.
 			}
-#endif
+#endif // OG
 			// don't create trees and shrubs if this is one and we have that option off
 			if( thingTemplate->isKindOf( KINDOF_SHRUBBERY ) && !useTrees )
 #ifdef ZH
@@ -2009,7 +2009,7 @@ void GameLogic::startNewGame( Bool loadingSaveGame )
 
 					TheGameClient->destroyDrawable(draw);
 				}
-#endif
+#endif // ZH
 				continue;
 #ifdef ZH
 			}
@@ -2027,7 +2027,7 @@ void GameLogic::startNewGame( Bool loadingSaveGame )
 				continue;
 			}
 #endif
-#endif
+#endif // ZH
 			
 			// Get the team information
 			DEBUG_ASSERTCRASH(pMapObj->getProperties()->getType(TheKey_originalOwner) == Dict::DICT_ASCIISTRING, ("unit %s has no original owner specified (obsolete map file)\n",pMapObj->getName().str()));
@@ -2042,7 +2042,7 @@ void GameLogic::startNewGame( Bool loadingSaveGame )
 				Coord3D pos = *pMapObj->getLocation();
 				pos.z += TheTerrainLogic->getGroundHeight( pos.x, pos.y );
 
-#endif
+#endif // OG
 				if(pMapObj->getFlag(FLAG_DRAWS_IN_MIRROR) || obj->isKindOf(KINDOF_CAN_CAST_REFLECTIONS)) 
 				{
 					Drawable* draw = obj->getDrawable();
@@ -2052,7 +2052,7 @@ void GameLogic::startNewGame( Bool loadingSaveGame )
 #ifdef OG
 
 				Real angle = normalizeAngle(pMapObj->getAngle());  
-#endif
+#endif // OG
 				obj->setOrientation(angle);
 				obj->setPosition( &pos );
 
@@ -2101,10 +2101,10 @@ void GameLogic::startNewGame( Bool loadingSaveGame )
 	// place initial network buildings/units
 #ifdef OG
 	if (game && !saveGame)
-#endif
+#endif // OG
 #ifdef ZH
 	if (game && !loadingSaveGame)
-#endif
+#endif // ZH
 	{
 		for (int i=0; i<MAX_SLOTS; ++i)
 		{
@@ -2161,7 +2161,7 @@ void GameLogic::startNewGame( Bool loadingSaveGame )
 				    continue;
         }
 
-#endif
+#endif // ZH
 				placeNetworkBuildingsForPlayer(i, slot, player, pt);
 			}
 
@@ -2262,10 +2262,10 @@ void GameLogic::startNewGame( Bool loadingSaveGame )
 	// final step, run newMap for all players
 #ifdef OG
 	if( saveGame == FALSE )
-#endif
+#endif // OG
 #ifdef ZH
 	if( loadingSaveGame == FALSE )
-#endif
+#endif // ZH
 		ThePlayerList->newMap();
 #ifdef ZH
 
@@ -2317,15 +2317,15 @@ void GameLogic::startNewGame( Bool loadingSaveGame )
 			}
 		}
 	}
-#endif
+#endif // ZH
 
 	// reset all the skill points in a single player game
 #ifdef OG
 	if(saveGame == FALSE && isInSinglePlayerGame())
-#endif
+#endif // OG
 #ifdef ZH
 	if(loadingSaveGame == FALSE && isInSinglePlayerGame())
-#endif
+#endif // ZH
 	{
 		for (Int i=0; i<MAX_PLAYER_COUNT; ++i)
 		{
@@ -2360,10 +2360,10 @@ void GameLogic::startNewGame( Bool loadingSaveGame )
 	// if we're in a load game, don't fade yet
 #ifdef OG
 	if( saveGame == FALSE )
-#endif
+#endif // OG
 #ifdef ZH
 	if( loadingSaveGame == FALSE )
-#endif
+#endif // ZH
 	{
 		TheTransitionHandler->setGroup("FadeWholeScreen");
 		while(!TheTransitionHandler->isFinished())
@@ -2391,10 +2391,10 @@ void GameLogic::startNewGame( Bool loadingSaveGame )
 		//
 #ifdef OG
 		if( saveGame == FALSE )
-#endif
+#endif // OG
 #ifdef ZH
 		if( loadingSaveGame == FALSE )
-#endif
+#endif // ZH
 */
 			deleteLoadScreen();
 
@@ -2534,18 +2534,18 @@ void GameLogic::startNewGame( Bool loadingSaveGame )
     }
   }
   
-#endif
+#endif // ZH
 	//Added By Sadullah Nader
 	//Added to fix the quit menu 
 	//ReAllows quit menu to work during loading scene
 #ifdef OG
 	setGameLoading(FALSE);
 
-#endif
+#endif // OG
 #ifdef ZH
 	//setGameLoading(FALSE);
 	setLoadingMap( FALSE );
-#endif
+#endif // ZH
 
 #ifdef DUMP_PERF_STATS
 	GetPrecisionTimer(&endTime64);
@@ -2564,7 +2564,7 @@ void GameLogic::startNewGame( Bool loadingSaveGame )
   {
 		TheInGameUI->message( TheGameText->fetch( "GUI:FastForwardInstructions" ) );
   }
-#endif
+#endif // ZH
 
 }  // end startNewGame
 
@@ -2818,22 +2818,22 @@ void GameLogic::selectObject(Object *obj, Bool createNewSelection, PlayerMaskTyp
 #ifdef ZH
 {
 	if (!obj) 
-#endif
+#endif // ZH
 {
 #ifdef OG
 	if (!obj) {
-#endif
+#endif // OG
 		return;
 	}
 
 #ifdef OG
 	if (!obj->isMassSelectable() && !createNewSelection) {
 
-#endif
+#endif // OG
 #ifdef ZH
 	if (!obj->isMassSelectable() && !createNewSelection) 
 	{
-#endif
+#endif // ZH
 		DEBUG_LOG(("GameLogic::selectObject() - Object attempted to be added to selection, but isn't mass-selectable.\n"));
 		return;
 	}
@@ -2841,20 +2841,20 @@ void GameLogic::selectObject(Object *obj, Bool createNewSelection, PlayerMaskTyp
 #ifdef OG
 	while (playerMask) {
 
-#endif
+#endif // OG
 #ifdef ZH
 	while( playerMask ) 
 	{
-#endif
+#endif // ZH
 		Player *player = ThePlayerList->getEachPlayerFromMask(playerMask);
 #ifdef OG
 		if (!player) {
 
-#endif
+#endif // OG
 #ifdef ZH
 		if( !player ) 
 		{
-#endif
+#endif // ZH
 			return;
 		}
 
@@ -2867,21 +2867,21 @@ void GameLogic::selectObject(Object *obj, Bool createNewSelection, PlayerMaskTyp
 #ifdef OG
 		if (createNewSelection)	{
 
-#endif
+#endif // OG
 #ifdef ZH
 		if (createNewSelection)	
 		{
-#endif
+#endif // ZH
 			player->setCurrentlySelectedAIGroup(group);
 #ifdef OG
 		} else {
 
-#endif
+#endif // OG
 #ifdef ZH
 		} 
 		else 
 		{
-#endif
+#endif // ZH
 			player->addAIGroupToCurrentSelection(group);
 		}
 
@@ -2890,20 +2890,20 @@ void GameLogic::selectObject(Object *obj, Bool createNewSelection, PlayerMaskTyp
 #ifdef OG
 		if (affectClient) {
 
-#endif
+#endif // OG
 #ifdef ZH
 		if( affectClient ) 
 		{
-#endif
+#endif // ZH
 			Drawable *draw = obj->getDrawable();
 #ifdef OG
 			if (draw) {
 
-#endif
+#endif // OG
 #ifdef ZH
 			if( draw ) 
 			{
-#endif
+#endif // ZH
 				TheInGameUI->selectDrawable(draw);
 			}
 		}
@@ -3296,7 +3296,7 @@ void GameLogic::friend_awakenUpdateModule(Object* obj, UpdateModulePtr u, Unsign
 #ifdef OG
 	enum {TIME_FRAMES=100};
 
-#endif
+#endif // OG
 #ifdef ZH
 
 void drawGraph( const char* style, Real scale, double value )
@@ -3314,7 +3314,7 @@ void drawGraph( const char* style, Real scale, double value )
 
 	enum {TIME_FRAMES=20};
 	enum {SETTLE_FRAMES=10};
-#endif
+#endif // ZH
 static void unitTimings(void)
 {
 	static Int settleFrames = 0;
@@ -3324,7 +3324,7 @@ static void unitTimings(void)
 #ifdef OG
 	AsciiString sides[8];
 
-#endif
+#endif // OG
 #ifdef ZH
 	AsciiString sides[16];
 
@@ -3334,16 +3334,16 @@ static void unitTimings(void)
 
 	const Int UNIT_SPACING = 30;
 	const Int UNIT_BORDER = 30;
-#endif
+#endif // ZH
 
 
 	Int sideCount = 0;
 #ifdef OG
   #define SINGLE_UNIT "OxFooble."
-#endif
+#endif // OG
 #ifdef ZH
   #define no_SINGLE_UNIT "AmericaInfantryRanger"
-#endif
+#endif // ZH
 
 #define DO_FACTION
 #ifdef DO_FACTION
@@ -3365,7 +3365,7 @@ static void unitTimings(void)
 
 //  sides[sideCount++] = "*"; // wildcard for unspecified side
 
-#endif
+#endif // ZH
 #endif
 
 #define DO_CIVILIAN
@@ -3381,7 +3381,7 @@ static void unitTimings(void)
 	//static KindOfType goalKind = KINDOF_VEHICLE;
 #endif
 
-#endif
+#endif // ZH
 	sides[sideCount] = "";
 	static bool veryFirstTime = true;
 
@@ -3390,7 +3390,7 @@ static void unitTimings(void)
 #ifdef OG
 
 	const Int FACTOR = 5; // run at TIME_FRAMES/FACTOR so we dont' die of boredom.  jba.
-#endif
+#endif // OG
 
 	static __int64 startTime64;
 	static __int64 endTime64,freq64;
@@ -3407,10 +3407,10 @@ static void unitTimings(void)
 		QueryPerformanceFrequency((LARGE_INTEGER *)&freq64);
 #ifdef OG
 		timeFrames = TIME_FRAMES/FACTOR;
-#endif
+#endif // OG
 #ifdef ZH
 		timeFrames = TIME_FRAMES;
-#endif
+#endif // ZH
 
 		// reset the draw counter
 		drawCallTotal = 0;
@@ -3425,30 +3425,30 @@ static void unitTimings(void)
 		double timeToUpdate = ((double)(endTime64-startTime64) / (double)(freq64));
 #ifdef OG
 		timeToUpdate *= FACTOR;
-#endif
+#endif // OG
 	
 #ifdef ZH
 //		Real timeToUpdateMicrosec = timeToUpdate*1E6/(TIME_FRAMES * TOTAL_UNITS);
 		timeToUpdate *= 100.0f/TIME_FRAMES;
-#endif
+#endif // ZH
 		
 
 		if (mode == LOGIC) {
 			timeLogic = timeToUpdate;
 #ifdef OG
 			drawCallLogic = (float)drawCallTotal / (float)(TIME_FRAMES * 100);  // 100 units for TIME_FRAMES
-#endif
+#endif // OG
 #ifdef ZH
 			drawCallLogic = (float)drawCallTotal / (float)(TIME_FRAMES * TOTAL_UNITS);  // 100 units for TIME_FRAMES
-#endif
+#endif // ZH
 
 			mode = ALL;
 #ifdef OG
 			settleFrames = 10;
-#endif
+#endif // OG
 #ifdef ZH
 			settleFrames = SETTLE_FRAMES;
-#endif
+#endif // ZH
 			//g_timing_no_anim = true;
 			Coord3D thePos;
 			thePos.x = 50;
@@ -3461,26 +3461,26 @@ static void unitTimings(void)
 			timeAll = timeToUpdate;
 #ifdef OG
 			drawCallAll = (float)drawCallTotal / (float)(TIME_FRAMES * 100);  // 100 units for TIME_FRAMES
-#endif
+#endif // OG
 #ifdef ZH
 			drawCallAll = (float)drawCallTotal / (float)(TIME_FRAMES * TOTAL_UNITS);  // 100 units for TIME_FRAMES
-#endif
+#endif // ZH
 
 			mode = NO_PARTICLES; 
 #ifdef OG
 			settleFrames = 10;
-#endif
+#endif // OG
 #ifdef ZH
 			settleFrames = SETTLE_FRAMES;
-#endif
+#endif // ZH
 			if (TheParticleSystemManager->getParticleCount()>1) {
 				TheParticleSystemManager->reset();
 #ifdef OG
 				DEBUG_LOG(("Starting noPart - "));
-#endif
+#endif // OG
 #ifdef ZH
 				DEBUG_LOG(("Starting noParticles - \n"));
-#endif
+#endif // ZH
 			}
 			return;
 		} 
@@ -3488,10 +3488,10 @@ static void unitTimings(void)
 			timeNoPart = timeToUpdate;
 #ifdef OG
 			drawCallNoPart = (float)drawCallTotal / (float)(TIME_FRAMES * 100);  // 100 units for TIME_FRAMES
-#endif
+#endif // OG
 #ifdef ZH
 			drawCallNoPart = (float)drawCallTotal / (float)(TIME_FRAMES * TOTAL_UNITS);  // 100 units for TIME_FRAMES
-#endif
+#endif // ZH
 
 			mode = NO_SPAWN;
 			Object *obj = TheGameLogic->getFirstObject();
@@ -3507,11 +3507,11 @@ static void unitTimings(void)
 #ifdef OG
 				DEBUG_LOG(("Starting noSpawn - "));
 				settleFrames = 10;
-#endif
+#endif // OG
 #ifdef ZH
 				DEBUG_LOG(("Starting noSpawn - \n"));
 				settleFrames = SETTLE_FRAMES;
-#endif
+#endif // ZH
 				return;
 			}
 		}	
@@ -3519,10 +3519,10 @@ static void unitTimings(void)
 			timeNoSpawn = timeToUpdate;
 #ifdef OG
 			drawCallNoSpawn = (float)drawCallTotal / (float)(TIME_FRAMES * 100);  // 100 units for TIME_FRAMES
-#endif
+#endif // OG
 #ifdef ZH
 			drawCallNoSpawn = (float)drawCallTotal / (float)(TIME_FRAMES * TOTAL_UNITS);  // 100 units for TIME_FRAMES
-#endif
+#endif // ZH
 		}
 		if (g_UT_curThing==NULL) return;
 
@@ -3530,11 +3530,11 @@ static void unitTimings(void)
 #ifdef OG
 
 		char foo[1024];
-#endif
+#endif // OG
 #ifdef ZH
 		char remark[2048];
     Real graphScale = 20.0f;
-#endif
+#endif // ZH
 		AsciiString thingName = g_UT_curThing->getName();
 		if (veryFirstTime) {
 			thingName = "No Object";
@@ -3548,7 +3548,7 @@ static void unitTimings(void)
 			drawCallAll,drawCallNoPart,drawCallNoSpawn, drawCallLogic);
 		DEBUG_LOG((foo));
 
-#endif
+#endif // OG
 #ifdef ZH
 
     sprintf(remark, "All %f: (%d ms) for %d %s's\n", timeAll, (Int)(timeAll*1000/TIME_FRAMES), TOTAL_UNITS, thingName.str() );
@@ -3587,15 +3587,15 @@ static void unitTimings(void)
 		DEBUG_LOG((remark));
     drawGraph( "#", graphScale, drawCallLogic );
 
-#endif
+#endif // ZH
 
 		if (g_UT_timingLog) {
 #ifdef OG
 			fputs(foo, g_UT_timingLog);
-#endif
+#endif // OG
 #ifdef ZH
 			fputs(remark, g_UT_timingLog);
-#endif
+#endif // ZH
 		}
 		if (g_UT_commaLog) {
 			AsciiString type;
@@ -3627,10 +3627,10 @@ static void unitTimings(void)
 			}
 #ifdef OG
 			sprintf(foo, "%f,%d,%f,%d,%f,%d,%f,%d,%s,%s,%s,%s,%f,%f,%f\n", timeAll, 
-#endif
+#endif // OG
 #ifdef ZH
 			sprintf(remark, "%f,%d,%f,%d,%f,%d,%f,%d,%s,%s,%s,%s,%f,%f,%f\n", timeAll, 
-#endif
+#endif // ZH
 			(Int)(timeAll*1000/TIME_FRAMES),timeNoPart, 
 			(Int)(timeNoPart*1000/TIME_FRAMES),timeNoSpawn, 
 			(Int)(timeNoSpawn*1000/TIME_FRAMES),timeLogic, 
@@ -3639,10 +3639,10 @@ static void unitTimings(void)
 			drawCallAll,drawCallNoPart,drawCallNoSpawn);
 #ifdef OG
 			fputs(foo, g_UT_commaLog);
-#endif
+#endif // OG
 #ifdef ZH
 			fputs(remark, g_UT_commaLog);
-#endif
+#endif // ZH
 		}
 		TheParticleSystemManager->reset();
 		g_UT_gotUnit = false;
@@ -3660,7 +3660,7 @@ static void unitTimings(void)
 				fclose(g_UT_commaLog);
 				g_UT_commaLog = NULL;
 			}
-#endif
+#endif // ZH
 			return;
 		}
 		while (g_UT_curThing->friend_getNextTemplate() 
@@ -3694,31 +3694,31 @@ static void unitTimings(void)
 #ifdef OG
 					if (sides[side].isEmpty()) {
 
-#endif
+#endif // OG
 #ifdef ZH
 					if (sides[side].isEmpty() ) // end of sides list
           {
-#endif
+#endif // ZH
 						g_UT_startTiming = false;
 #ifdef OG
 						if (g_UT_timingLog) {
 
-#endif
+#endif // OG
 #ifdef ZH
 						if (g_UT_timingLog) 
             {
-#endif
+#endif // ZH
 							fclose(g_UT_timingLog);
 							g_UT_timingLog = NULL;
 						}
 #ifdef OG
 						if (g_UT_commaLog) {
 
-#endif
+#endif // OG
 #ifdef ZH
 						if (g_UT_commaLog) 
             {
-#endif
+#endif // ZH
 							fclose(g_UT_commaLog);
 							g_UT_commaLog = NULL;
 						}
@@ -3732,7 +3732,7 @@ static void unitTimings(void)
 #ifdef OG
 			if (btt->getDefaultOwningSide() != sides[side]) {
 
-#endif
+#endif // OG
 #ifdef ZH
 
 #ifndef SINGLE_UNIT
@@ -3747,7 +3747,7 @@ static void unitTimings(void)
             continue;
         }
         else
-#endif
+#endif // ZH
 				continue;
 			}
 			if (unitTypes == INFANTRY) {
@@ -3815,7 +3815,7 @@ static void unitTimings(void)
         {
           skip = TRUE;
           break;
-#endif
+#endif // ZH
 			}
 #ifdef OG
 			if (btt->getName() == "EMPPulseBomb") continue; // 100 overloads system.
@@ -3828,7 +3828,7 @@ static void unitTimings(void)
 			if (btt->getName().startsWith("Avalanche"))	continue;	// 100 crashes
 			if (btt->getName().startsWith("InfernoTankShell"))	continue;	// 100 crashes
 
-#endif
+#endif // OG
 #ifdef ZH
       }
 
@@ -3855,7 +3855,7 @@ static void unitTimings(void)
 //      //missiondisk perps
 //      
 //      if (btt->getName() == "AmericaAircraftCarrier") continue;
-#endif
+#endif // ZH
 			
 #ifdef OG
 			if (btt->getName() == "ChinaArtilleryBarrageShell") continue; // 100 takes really, freaking long. Doesn't crash jba.
@@ -3864,7 +3864,7 @@ static void unitTimings(void)
 			if (btt->getName() == "ChinaTankOverlordGattlingCannon") continue; // 100 seems to hang gth.
 			if (btt->getName().startsWith("CINE")) continue;
 			if (btt->getName() == "GLAInfantryAngryMobNexus") continue;
-#endif
+#endif // OG
 
 #ifdef SINGLE_UNIT
 			if (btt->getName()!=SINGLE_UNIT) {
@@ -3882,11 +3882,11 @@ static void unitTimings(void)
 			attackedPos.y = UNIT_SPACING * 4.5 + UNIT_BORDER;
 			attackedPos.z = TheTerrainLogic->getGroundHeight( attackedPos.x, attackedPos.y );
 
-#endif
+#endif // ZH
 #endif
 #ifdef OG
 			DEBUG_LOG(("Doing thing %s -", btt->getName().str()));
-#endif
+#endif // OG
 			Int i, j;
 			for (i=0; i<10; i++) {
 				for (j=0; j<10; j++) {
@@ -3895,7 +3895,7 @@ static void unitTimings(void)
 					pos.x = UNIT_SPACING*i+UNIT_BORDER;
 					pos.y = UNIT_SPACING*j+UNIT_BORDER;
 					pos.z = TheTerrainLogic->getGroundHeight( pos.x, pos.y );
-#endif
+#endif // ZH
 					Team *team = ThePlayerList->getNthPlayer(1)->getDefaultTeam();
 					Object *obj = TheThingFactory->newObject( btt, team );
 					if (obj==NULL) break;
@@ -3906,7 +3906,7 @@ static void unitTimings(void)
 					externalAddTree(pos, 1.0f, 0.0f, "TreeOakFall1");
 					g_UT_gotUnit = true;
 #else
-#endif
+#endif // ZH
 					if (obj)
 					{
 						g_UT_gotUnit = true;
@@ -3915,7 +3915,7 @@ static void unitTimings(void)
 						pos.x = 20*i+30;
 						pos.y = 20*j+30;
 						pos.z = TheTerrainLogic->getGroundHeight( pos.x, pos.y );
-#endif
+#endif // OG
 					
 						obj->setOrientation(0);	
 						obj->setPosition( &pos );
@@ -3938,20 +3938,20 @@ static void unitTimings(void)
 						if(myAI)
 						{
 							myAI->aiAttackPosition(&attackedPos, 9999, CMD_FROM_AI);
-#endif
+#endif // ZH
 					}
 #ifdef ZH
 #endif
-#endif
+#endif // ZH
 				}
 #ifdef ZH
 #endif 
-#endif
+#endif // ZH
 			}
 		}
 #ifdef ZH
 		}
-#endif
+#endif // ZH
 		if (g_UT_gotUnit) {
 			settleFrames = TIME_FRAMES/2;
 			Coord3D thePos;
@@ -4005,13 +4005,13 @@ void GameLogic::update( void )
 #ifdef _PROFILE
     Profile::StartRange("map_load");
 #endif
-#endif
+#endif // ZH
 		startNewGame( FALSE );
 #ifdef ZH
 #ifdef _PROFILE
     Profile::StopRange("map_load");
 #endif
-#endif
+#endif // ZH
 		m_startNewGame = FALSE;
 
 	#ifdef DUMP_PERF_STATS
@@ -4069,21 +4069,21 @@ void GameLogic::update( void )
 #ifdef OG
 //#if defined(_DEBUG) || defined(_INTERNAL)
 #ifdef DEBUG_CRC
-#endif
+#endif // OG
 #ifdef ZH
 #if defined(_DEBUG) || defined(_INTERNAL)
 
-#endif
+#endif // ZH
 	Bool generateForSolo = isSoloGameOrReplay && ((m_frame && (m_frame%100 == 0)) ||
 		(getFrame() > TheCRCFirstFrameToLog && getFrame() < TheCRCLastFrameToLog && ((m_frame % REPLAY_CRC_INTERVAL) == 0)));
 #else
 	Bool generateForSolo = isSoloGameOrReplay && ((m_frame % REPLAY_CRC_INTERVAL) == 0);
 #ifdef OG
 #endif // DEBUG_CRC
-#endif
+#endif // OG
 #ifdef ZH
 #endif // defined(_DEBUG) || defined(_INTERNAL)
-#endif
+#endif // ZH
 
 	if (generateForSolo || generateForMP)
 	{
@@ -4282,7 +4282,7 @@ void GameLogic::addObjectToLookupTable( Object *obj )
 #ifdef OG
 	m_objHash[ obj->getID() ] = obj;
 
-#endif
+#endif // OG
 #ifdef ZH
 //	m_objHash[ obj->getID() ] = obj;
 	ObjectID newID = obj->getID();
@@ -4290,7 +4290,7 @@ void GameLogic::addObjectToLookupTable( Object *obj )
 		m_objVector.resize(m_objVector.size() * 2, NULL);
 
 	m_objVector[ newID ] = obj;
-#endif
+#endif // ZH
 
 }  // end addObjectToLookupTable
 
@@ -4308,11 +4308,11 @@ void GameLogic::removeObjectFromLookupTable( Object *obj )
 #ifdef OG
 	m_objHash.erase( obj->getID() );
 
-#endif
+#endif // OG
 #ifdef ZH
 //	m_objHash.erase( obj->getID() );
 	m_objVector[ obj->getID() ] = NULL;
-#endif
+#endif // ZH
 
 }  // end removeObjectFromLookupTable
 
@@ -4380,10 +4380,10 @@ void GameLogic::registerObject( Object *obj )
 // ------------------------------------------------------------------------------------------------
 #ifdef OG
 Object *GameLogic::friend_createObject( const ThingTemplate *thing, ObjectStatusBits statusBits, Team *team )
-#endif
+#endif // OG
 #ifdef ZH
 Object *GameLogic::friend_createObject( const ThingTemplate *thing, const ObjectStatusMaskType &statusBits, Team *team )
-#endif
+#endif // ZH
 {
 	Object *obj;
 
@@ -4415,10 +4415,10 @@ void GameLogic::destroyObject( Object *obj )
 	// mark object as destroyed
 #ifdef OG
 	obj->setStatus( OBJECT_STATUS_DESTROYED );
-#endif
+#endif // OG
 #ifdef ZH
 	obj->setStatus( MAKE_OBJECT_STATUS_MASK( OBJECT_STATUS_DESTROYED ) );
-#endif
+#endif // ZH
 
 	// We desperately need to stop here, or else the destructor of the statemachine will try to do
 	// stopping logic, which uses virtual functions and deleted modules, which will crash us.
@@ -4449,7 +4449,7 @@ void GameLogic::destroyObject( Object *obj )
 		}
 	}
 
-#endif
+#endif // ZH
 
 }  // end destroyObject
 
@@ -4484,10 +4484,10 @@ UnsignedInt GameLogic::getCRC( Int mode, AsciiString deepCRCFileName )
 		else
 #ifdef OG
 #endif // DEBUG_CRC
-#endif
+#endif // OG
 #ifdef ZH
 #endif DEBUG_CRC
-#endif
+#endif // ZH
 		{
 			xferCRC = NEW XferCRC;
 			crcName = "lightCRC";
@@ -4545,10 +4545,10 @@ UnsignedInt GameLogic::getCRC( Int mode, AsciiString deepCRCFileName )
 	}
 #ifdef OG
 #endif //DEBUG_CRC
-#endif
+#endif // OG
 #ifdef ZH
 #endif DEBUG_CRC
-#endif
+#endif // ZH
 
 	marker = "MARKER:ThePlayerList";
 	xferCRC->xferAsciiString(&marker);
@@ -4686,7 +4686,7 @@ void GameLogic::setGamePaused( Bool paused, Bool pauseMusic )
       // custom ambient code. Hopefully he can explain it to me, but until he gets back, I'm
       // disabling it. -Ian
     
-#endif
+#endif // ZH
 		//Stop all ambient sounds!
 		Drawable *drawable = TheGameClient->getDrawableList();
 		while( drawable )
@@ -4696,7 +4696,7 @@ void GameLogic::setGamePaused( Bool paused, Bool pauseMusic )
 		}
 #ifdef ZH
 #endif
-#endif
+#endif // ZH
 	}
 	else
 	{
@@ -4708,7 +4708,7 @@ void GameLogic::setGamePaused( Bool paused, Bool pauseMusic )
 
 #ifdef ZH
 #if 0
-#endif
+#endif // ZH
 		//Start all ambient sounds!
 		Drawable *drawable = TheGameClient->getDrawableList();
 		while( drawable )
@@ -4719,7 +4719,7 @@ void GameLogic::setGamePaused( Bool paused, Bool pauseMusic )
 		}
 #ifdef ZH
 #endif
-#endif
+#endif // ZH
 	}
 }
 
@@ -5151,7 +5151,7 @@ void GameLogic::prepareLogicForObjectLoad( void )
 	* 9: Added m_rankPointsToAddAtGameStart, or else on a load game, your RestartGame button will forget your exp
 #ifdef ZH
   * 10: xfer m_superweaponRestriction
-#endif
+#endif // ZH
 	*/	
 // ------------------------------------------------------------------------------------------------
 void GameLogic::xfer( Xfer *xfer )
@@ -5160,10 +5160,10 @@ void GameLogic::xfer( Xfer *xfer )
 	// version
 #ifdef OG
 	const XferVersion currentVersion = 9;
-#endif
+#endif // OG
 #ifdef ZH
 	const XferVersion currentVersion = 10;
-#endif
+#endif // ZH
 	XferVersion version = currentVersion;
 	xfer->xferVersion( &version, currentVersion );
 
@@ -5485,7 +5485,7 @@ void GameLogic::xfer( Xfer *xfer )
   {
     m_superweaponRestriction = 0;
   }
-#endif
+#endif // ZH
 }  // end xfer
 
 // ------------------------------------------------------------------------------------------------

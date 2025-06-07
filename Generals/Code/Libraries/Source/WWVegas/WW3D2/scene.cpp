@@ -26,32 +26,32 @@
  *                                                                                             *
 #ifdef OG
  *                       Author:: Greg_h                                                       *
-#endif
+#endif // OG
 #ifdef ZH
  *                   Org Author:: Greg_h                                                       *
-#endif
+#endif // ZH
  *                                                                                             *
 #ifdef OG
  *                     $Modtime:: 8/29/01 7:29p                                               $*
 
-#endif
+#endif // OG
 #ifdef ZH
  *                       Author : Kenny Mitchell                                               * 
  *                                                                                             * 
  *                     $Modtime:: 07/01/02 12:55p                                              $*
-#endif
+#endif // ZH
  *                                                                                             *
 #ifdef OG
  *                    $Revision:: 22                                                          $*
-#endif
+#endif // OG
 #ifdef ZH
  *                    $Revision:: 24                                                          $*
-#endif
+#endif // ZH
  *                                                                                             *
 #ifdef ZH
  * 06/27/02 KM Shader system light environment updates                                       *
  * 07/01/02 KM Coltype enum change to avoid MAX conflicts									   *
-#endif
+#endif // ZH
  *---------------------------------------------------------------------------------------------*
  * Functions:                                                                                  *
  *   SceneClass::SceneClass -- constructor                                                     *
@@ -234,7 +234,7 @@ void SceneClass::Render(RenderInfoClass & rinfo)
 	// Any stuff that needs to get done before anything else
 	Pre_Render_Processing(rinfo);
 
-#endif
+#endif // ZH
 	DX8Wrapper::Set_Fog(FogEnabled, FogColor, FogStart, FogEnd);
 
 	if (Get_Extra_Pass_Polygon_Mode()==EXTRA_PASS_DISABLE) {
@@ -267,7 +267,7 @@ void SceneClass::Render(RenderInfoClass & rinfo)
 
 	// Any stuff that needs to get done after anything else
 	Post_Render_Processing(rinfo);
-#endif
+#endif // ZH
 }
 
 /***********************************************************************************************
@@ -438,10 +438,10 @@ void SimpleSceneClass::Register(RenderObjClass * obj,RegType for_what)
 		case LIGHT:	
 #ifdef OG
 			LightList.Add(obj);	
-#endif
+#endif // OG
 #ifdef ZH
 			LightList.Add_Tail(obj);	
-#endif
+#endif // ZH
 			break;
 		case RELEASE:				
 			ReleaseList.Add(obj);		
@@ -498,10 +498,10 @@ void SimpleSceneClass::Visibility_Check(CameraClass * camera)
 		// Prepare visible objects for LOD:
 #ifdef OG
 		if (robj->Is_Really_Visible()) {
-#endif
+#endif // OG
 #ifdef ZH
 		if(robj->Is_Really_Visible() && !robj->Is_Ignoring_LOD_Cost()) {
-#endif
+#endif // ZH
 			robj->Prepare_LOD(*camera);
 		}
 	}
@@ -535,10 +535,10 @@ float SimpleSceneClass::Compute_Point_Visibility
 	LineSegClass ray(rinfo.Camera.Get_Position(),point);
 #ifdef OG
 	RayCollisionTestClass raytest(ray,&res,COLLISION_TYPE_PROJECTILE);
-#endif
+#endif // OG
 #ifdef ZH
 	RayCollisionTestClass raytest(ray,&res,COLL_TYPE_PROJECTILE);
-#endif
+#endif // ZH
 
 	RefRenderObjListIterator it(&RenderList);
 	for (it.First(); !it.Is_Done(); it.Next()) {
@@ -569,7 +569,7 @@ float SimpleSceneClass::Compute_Point_Visibility
  *   12/10/98   GTH : Created.                                                                 *
 #ifdef ZH
  *   06/27/02	KM Shader system light environment updates                                       *
-#endif
+#endif // ZH
  *=============================================================================================*/
 void SimpleSceneClass::Customized_Render(RenderInfoClass & rinfo)
 {	
@@ -606,7 +606,7 @@ void SimpleSceneClass::Customized_Render(RenderInfoClass & rinfo)
 // support real point lights, etc.  It will likely just evolve into "the n most important" lights
 // rather than optimizing lights into directional lights...
 #if 0
-#endif
+#endif // ZH
 	for (it.First(&LightList); !it.Is_Done(); it.Next())
 	{		
 		if (count<4)
@@ -621,7 +621,7 @@ void SimpleSceneClass::Customized_Render(RenderInfoClass & rinfo)
 	}
 #ifdef ZH
 #endif
-#endif
+#endif // ZH
 
 #ifdef ZH
 	// adding light environment for new shader system
@@ -640,7 +640,7 @@ void SimpleSceneClass::Customized_Render(RenderInfoClass & rinfo)
 		rinfo.light_environment=&lenv;
 	}
 
-#endif
+#endif // ZH
 	// loop through all render objects in the list:
 	for (it.First(&RenderList); !it.Is_Done(); it.Next()) {
 
@@ -655,11 +655,11 @@ void SimpleSceneClass::Customized_Render(RenderInfoClass & rinfo)
 				}
 				robj->Get_Render_Hook()->Post_Render(robj, rinfo);
 			} else {
-#endif
+#endif // ZH
 			robj->Render(rinfo);
 #ifdef ZH
 			}
-#endif
+#endif // ZH
 		}
 	}
 }

@@ -151,10 +151,10 @@ class W3DBridgeBuffer
 {	
 #ifdef OG
 friend class HeightMapRenderObjClass;
-#endif
+#endif // OG
 #ifdef ZH
 friend class BaseHeightMapRenderObjClass;
-#endif
+#endif // ZH
 public:
 
 	W3DBridgeBuffer(void);
@@ -172,11 +172,11 @@ public:
 #ifdef OG
 	enum { MAX_BRIDGE_VERTEX=8000, 
 					MAX_BRIDGE_INDEX=2*8000, 
-#endif
+#endif // OG
 #ifdef ZH
 	enum { MAX_BRIDGE_VERTEX=12000, //make sure it stays under 65535
 					MAX_BRIDGE_INDEX=2*MAX_BRIDGE_VERTEX,	//make sure it stays under 65535 
-#endif
+#endif // ZH
 					MAX_BRIDGES=200};
 protected:
 	DX8VertexBufferClass	*m_vertexBridge;	///<Bridge vertex buffer.

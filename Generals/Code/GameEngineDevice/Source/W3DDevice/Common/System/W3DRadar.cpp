@@ -42,7 +42,7 @@
 #ifdef OG
 #include "GameLogic/Module/StealthUpdate.h"
 
-#endif
+#endif // OG
 #include "GameClient/Color.h"
 #include "GameClient/Display.h"
 #include "GameClient/GameClient.h"
@@ -52,7 +52,7 @@
 #include "GameClient/TerrainVisual.h"
 #ifdef ZH
 #include "GameClient/Water.h"
-#endif
+#endif // ZH
 #include "W3DDevice/Common/W3DRadar.h"
 #include "W3DDevice/GameClient/HeightMap.h"
 #include "W3DDevice/GameClient/W3DShroud.h"
@@ -90,10 +90,10 @@ static WW3DFormat findFormat(const WW3DFormat formats[])
 
 #ifdef OG
 		if( DX8Caps::Support_Texture_Format( formats[ i ] ) )
-#endif
+#endif // OG
 #ifdef ZH
 		if( DX8Wrapper::Get_Current_Caps()->Support_Texture_Format( formats[ i ] ) )
-#endif
+#endif // ZH
 		{
 
 			return formats[ i ];
@@ -711,14 +711,14 @@ void W3DRadar::renderObjectList( const RadarObject *listHead, TextureClass *text
 			if( !stealth )
 				continue;
 
-#endif
+#endif // OG
       if ( ThePlayerList->getLocalPlayer()->getRelationship(obj->getTeam()) == ENEMIES )
 #ifdef OG
         if( !obj->testStatus( OBJECT_STATUS_DETECTED ) && !stealth->isDisguised() )
-#endif
+#endif // OG
 #ifdef ZH
         if( !obj->testStatus( OBJECT_STATUS_DETECTED ) && !obj->testStatus( OBJECT_STATUS_DISGUISED ) )
-#endif
+#endif // ZH
 				  skip = TRUE;
 
 			UnsignedByte r, g, b, a;
@@ -902,20 +902,20 @@ void W3DRadar::init( void )
 	m_terrainTexture = MSGNEW("TextureClass") TextureClass( m_textureWidth, m_textureHeight, 
 #ifdef OG
 																			 m_terrainTextureFormat, TextureClass::MIP_LEVELS_1 );
-#endif
+#endif // OG
 #ifdef ZH
 																			 m_terrainTextureFormat, MIP_LEVELS_1 );
-#endif
+#endif // ZH
 	DEBUG_ASSERTCRASH( m_terrainTexture, ("W3DRadar: Unable to allocate terrain texture\n") );
 
 	// allocate our overlay texture
 	m_overlayTexture = MSGNEW("TextureClass") TextureClass( m_textureWidth, m_textureHeight,
 #ifdef OG
 																			 m_overlayTextureFormat, TextureClass::MIP_LEVELS_1 );
-#endif
+#endif // OG
 #ifdef ZH
 																			 m_overlayTextureFormat, MIP_LEVELS_1 );
-#endif
+#endif // ZH
 	DEBUG_ASSERTCRASH( m_overlayTexture, ("W3DRadar: Unable to allocate overlay texture\n") );
 
 	// set filter type for the overlay texture, try it and see if you like it, I don't ;)
@@ -926,19 +926,19 @@ void W3DRadar::init( void )
 	m_shroudTexture = MSGNEW("TextureClass") TextureClass( m_textureWidth, m_textureHeight,
 #ifdef OG
 																			 m_shroudTextureFormat, TextureClass::MIP_LEVELS_1 );
-#endif
+#endif // OG
 #ifdef ZH
 																			 m_shroudTextureFormat, MIP_LEVELS_1 );
-#endif
+#endif // ZH
 	DEBUG_ASSERTCRASH( m_shroudTexture, ("W3DRadar: Unable to allocate shroud texture\n") );
 #ifdef OG
 	m_shroudTexture->Set_Min_Filter( TextureClass::FILTER_TYPE_DEFAULT );
 	m_shroudTexture->Set_Mag_Filter( TextureClass::FILTER_TYPE_DEFAULT );
-#endif
+#endif // OG
 #ifdef ZH
 	m_shroudTexture->Get_Filter().Set_Min_Filter( TextureFilterClass::FILTER_TYPE_DEFAULT );
 	m_shroudTexture->Get_Filter().Set_Mag_Filter( TextureFilterClass::FILTER_TYPE_DEFAULT );
-#endif
+#endif // ZH
 
 	//
 	// create images used for rendering and set them up with the textures
@@ -1074,12 +1074,12 @@ void W3DRadar::buildTerrainTexture( TerrainLogic *terrain )
 	waterColor.red = 0.55f;
 	waterColor.green = 0.55f;
 	waterColor.blue = 1.0f;
-#endif
+#endif // OG
 #ifdef ZH
 	waterColor.red = TheWaterTransparency->m_radarColor.red;
 	waterColor.green = TheWaterTransparency->m_radarColor.green;
 	waterColor.blue = TheWaterTransparency->m_radarColor.blue;
-#endif
+#endif // ZH
 
 	// get the terrain surface to draw in
 	surface = m_terrainTexture->Get_Surface_Level();
@@ -1091,10 +1091,10 @@ void W3DRadar::buildTerrainTexture( TerrainLogic *terrain )
 	Int i, j, samples;
 #ifdef OG
 	Int x, y, z;
-#endif
+#endif // OG
 #ifdef ZH
 	Int x, y;
-#endif
+#endif // ZH
 	ICoord2D radarPoint;
 	Coord3D worldPoint;
 	Bridge *bridge;
@@ -1112,11 +1112,11 @@ void W3DRadar::buildTerrainTexture( TerrainLogic *terrain )
 
 			// get height of the terrain at this sample point
 			z = terrain->getGroundHeight( worldPoint.x, worldPoint.y );
-#endif
+#endif // OG
 #ifdef ZH
 			radarToWorld2D( &radarPoint, &worldPoint );
 
-#endif
+#endif // ZH
 
 			// check to see if this point is part of a working bridge
 			Bool workingBridge = FALSE;
@@ -1166,21 +1166,21 @@ void W3DRadar::buildTerrainTexture( TerrainLogic *terrain )
 								
 								// get Z at this sample height
 								Real underwaterZ = terrain->getGroundHeight( worldPoint.x, worldPoint.y );
-#endif
+#endif // OG
 #ifdef ZH
 								radarToWorld2D( &radarPoint, &worldPoint );
 
-#endif
+#endif // ZH
 
 								// get color for this Z and add to our sample color
 #ifdef OG
 								if( terrain->isUnderwater( worldPoint.x, worldPoint.y ) )
 
-#endif
+#endif // OG
 #ifdef ZH
                 Real underwaterZ;
 								if( terrain->isUnderwater( worldPoint.x, worldPoint.y, NULL, &underwaterZ ) )
-#endif
+#endif // ZH
 								{
 									// this is our "color" for water
 									color = waterColor;									
@@ -1279,10 +1279,10 @@ void W3DRadar::buildTerrainTexture( TerrainLogic *terrain )
 									// interpolate the color for height
 #ifdef OG
 									interpolateColorForHeight( &color, z, getTerrainAverageZ(), 
-#endif
+#endif // OG
 #ifdef ZH
 									interpolateColorForHeight( &color, worldPoint.z, getTerrainAverageZ(), 
-#endif
+#endif // ZH
 																						 m_mapExtent.hi.z, m_mapExtent.lo.z );
 
 								}  // end else
@@ -1678,4 +1678,4 @@ void W3DRadar::refreshTerrain( TerrainLogic *terrain )
 
  *
  */
-#endif
+#endif // ZH

@@ -56,7 +56,7 @@ public:
 	Bool						m_turretsMustCenterBeforePacking;
 #ifdef ZH
 	Bool						m_manualDeployAnimations;
-#endif
+#endif // ZH
 
 	DeployStyleAIUpdateModuleData()
 	{
@@ -70,7 +70,7 @@ public:
 		// End Add
 #ifdef ZH
 		m_manualDeployAnimations = FALSE;
-#endif
+#endif // ZH
 	}
 
 	static void buildFieldParse(MultiIniFieldParse& p)
@@ -86,7 +86,7 @@ public:
 			{ "TurretsMustCenterBeforePacking", INI::parseBool,			NULL, offsetof( DeployStyleAIUpdateModuleData, m_turretsMustCenterBeforePacking ) },
 #ifdef ZH
 			{ "ManualDeployAnimations",	INI::parseBool,							NULL, offsetof( DeployStyleAIUpdateModuleData, m_manualDeployAnimations ) },
-#endif
+#endif // ZH
 			{ 0, 0, 0, 0 }
 		};
 		p.add(dataFieldParse);
@@ -118,18 +118,18 @@ public:
 #ifdef OG
 	void setMyState( DeployStateTypes StateID );
 	void reset();
-#endif
+#endif // OG
 #ifdef ZH
 	void setMyState( DeployStateTypes StateID, Bool reverseDeploy = FALSE );
 
-#endif
+#endif // ZH
 
 protected:
 
 #ifdef OG
 	AICommandParmsStorage		m_lastOutsideCommand;
 	Bool										m_hasOutsideCommand;
-#endif
+#endif // OG
 	DeployStateTypes				m_state;
 #ifdef OG
 	UnsignedInt							m_frameToWakeForDeploy;
@@ -142,11 +142,11 @@ protected:
 	Bool										m_isAttackPosition;
 	Bool										m_isGuardingPosition;
 	Bool										m_overriddenAttack;
-#endif
+#endif // OG
 #ifdef ZH
 	UnsignedInt							m_frameToWaitForDeploy;
 
-#endif
+#endif // ZH
 };
 
 #endif

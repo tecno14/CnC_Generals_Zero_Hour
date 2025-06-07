@@ -201,10 +201,10 @@ void ShowDiplomacy( Bool immediate )
 	if (!TheInGameUI->getInputEnabled() || TheGameLogic->isIntroMoviePlaying() || 
 #ifdef OG
 			TheGameLogic->isLoadingGame())
-#endif
+#endif // OG
 #ifdef ZH
 			TheGameLogic->isLoadingMap())
-#endif
+#endif // ZH
 		return;
 	
 

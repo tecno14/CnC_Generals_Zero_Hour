@@ -42,7 +42,7 @@
 #ifdef ZH
 #include "Common/GameCommon.h"
 #include "Common/Money.h"
-#endif
+#endif // ZH
 
 // FORWARD DECLARATIONS ///////////////////////////////////////////////////////////////////////////
 struct FieldParse;
@@ -64,11 +64,11 @@ const Int MAX_GLOBAL_LIGHTS	= 3;
 #ifdef OG
 	* and will cause re-compilation dependancies throughout the codebase. */
 
-#endif
+#endif // OG
 #ifdef ZH
 	* and will cause re-compilation dependancies throughout the codebase. 
   * OOPS -- TOO LATE! :) */
-#endif
+#endif // ZH
 //-------------------------------------------------------------------------------------------------
 class GlobalData : public SubsystemInterface
 {
@@ -105,7 +105,7 @@ public:
 	Bool m_useDrawModuleLOD;
 #ifdef ZH
 	Bool m_useHeatEffects;
-#endif
+#endif // ZH
 	Bool m_useFpsLimit;
 	Bool m_dumpAssetUsage;
 	Int m_framesPerSecondLimit;
@@ -132,7 +132,7 @@ public:
 #ifdef ZH
 	Bool m_clientRetaliationModeEnabled;
 	Bool m_doubleClickAttackMove;
-#endif
+#endif // ZH
 	Bool m_rightMouseAlwaysScrolls;
 	Bool m_useWaterPlane;
 	Bool m_useCloudPlane;
@@ -150,7 +150,7 @@ public:
 	Bool m_usingWaterTrackEditor;
 #ifdef ZH
 	Bool m_isWorldBuilder;
-#endif
+#endif // ZH
 
 	Int m_featherWater;
 
@@ -266,7 +266,7 @@ public:
 	AIDebugOptions m_debugAI;			///< Used to display AI debug information
 #ifdef ZH
 	Bool m_debugSupplyCenterPlacement; ///< Dumps to log everywhere it thinks about placing a supply center
-#endif
+#endif // ZH
 	Bool m_debugAIObstacles;			///< Used to display AI obstacle debug information
 	Bool m_showObjectHealth;			///< debug display object health
 	Bool m_scriptDebug;						///< Should we attempt to load the script debugger window (.DLL)
@@ -281,7 +281,7 @@ public:
 #ifdef ZH
   Bool  m_dumpStatsAtInterval;///< should I automatically dum stats every in N frames
   Int   m_statsInterval;       ///< if so, how many is N?
-#endif
+#endif // ZH
 #endif
 	
 	Bool m_forceBenchmark;	///<forces running of CPU detection benchmark, even on known cpu's.
@@ -356,7 +356,7 @@ public:
 	Bool m_playIntro;									///< Flag to say if we're to play the intro or not
 #ifdef ZH
 	Bool m_playSizzle;								///< Flag to say whether we play the sizzle movie after the logo movie.
-#endif
+#endif // ZH
 	Bool m_afterIntro;								///< we need to tell the game our intro is done
 	Bool m_allowExitOutOfMovies;			///< flag to allow exit out of movies only after the Intro has played
 
@@ -426,7 +426,7 @@ public:
   //THis is put on ice until later - M Lorenzen
   //	Int m_cheaterHasBeenSpiedIfMyLowestBitIsTrue; ///< says it all.. this lives near other "colors" cause it is masquerading as one
 	
-#endif
+#endif // ZH
 	AsciiString m_specialPowerViewObjectName;	///< Created when certain special powers are fired so players can watch.
 
 	std::vector<AsciiString> m_standardPublicBones;
@@ -438,10 +438,10 @@ public:
 	Bool m_showMetrics;								///< whether or not to show the metrics.
 #ifdef OG
 	Int m_defaultStartingCash;				///< The amount of cash a player starts with by default.
-#endif
+#endif // OG
 #ifdef ZH
 	Money m_defaultStartingCash;				///< The amount of cash a player starts with by default.
-#endif
+#endif // ZH
 	
 	Bool m_debugShowGraphicalFramerate;		///< Whether or not to show the graphical framerate bar.
 
@@ -470,13 +470,13 @@ public:
 	UnsignedInt m_networkCushionHistoryLength;	///< The number of cushion values to keep.
 	UnsignedInt m_networkRunAheadSlack;					///< The amount of slack in the run ahead value.  This is the percentage of the calculated run ahead that is added.
 	UnsignedInt m_networkKeepAliveDelay;				///< The number of seconds between when the connections to each player send a keep-alive packet.
-#endif
+#endif // OG
 #ifdef ZH
 	UnsignedInt m_networkCushionHistoryLength;      	///< The number of cushion values to keep.
 	UnsignedInt m_networkRunAheadMetricsTime;	      	///< The number of miliseconds between run ahead metrics things
 	UnsignedInt m_networkKeepAliveDelay;			      	///< The number of seconds between when the connections to each player send a keep-alive packet.
 	UnsignedInt m_networkRunAheadSlack;				      	///< The amount of slack in the run ahead value. This is the percentage of the calculated run ahead that is added.
-#endif
+#endif // ZH
 	UnsignedInt m_networkDisconnectTime;				///< The number of milliseconds between when the game gets stuck on a frame for a network stall and when the disconnect dialog comes up.
 	UnsignedInt m_networkPlayerTimeoutTime;			///< The number of milliseconds between when a player's last keep alive command was recieved and when they are considered disconnected from the game.
 	UnsignedInt	m_networkDisconnectScreenNotifyTime; ///< The number of milliseconds between when the disconnect screen comes up and when the other players are notified that we are on the disconnect screen.
@@ -490,7 +490,7 @@ public:
 #endif
   Bool m_TiVOFastMode;            ///< When true, the client speeds up the framerate... set by HOTKEY!
   
-#endif
+#endif // ZH
 
 #if defined(_DEBUG) || defined(_INTERNAL)
 	Bool m_wireframe;
@@ -498,7 +498,7 @@ public:
 	Bool m_useCameraConstraints;
 #ifdef OG
 	Bool m_specialPowerUsesDelay;
-#endif
+#endif // OG
 	Bool m_shroudOn;
 	Bool m_fogOfWarOn;
 	Bool m_jabberOn;
@@ -533,7 +533,7 @@ public:
 	Bool m_showCollisionExtents;	///< Used to display collision extents
 #ifdef ZH
   Bool m_showAudioLocations;    ///< Used to display audio markers and ambient sound radii
-#endif
+#endif // ZH
 	Bool m_saveStats;
 	Bool m_saveAllStats;
 	Bool m_useLocalMOTD;
@@ -546,7 +546,7 @@ public:
 	Int m_packetLoss;							///< Percent of packets to drop
 #ifdef ZH
 	Bool m_extraLogging;					///< More expensive debug logging to catch crashes.
-#endif
+#endif // ZH
 #endif
 
 	Bool				m_isBreakableMovie;							///< if we enter a breakable movie, set this flag
@@ -558,15 +558,15 @@ public:
 	//-allAdvice feature
 	//Bool m_allAdvice;
 
-#endif
+#endif // ZH
 
 	// the trailing '\' is included!
 #ifdef OG
 	AsciiString getPath_UserData() const;
-#endif
+#endif // OG
 #ifdef ZH
   const AsciiString &getPath_UserData() const { return m_userDataDir; }
-#endif
+#endif // ZH
 
 private:
 
@@ -580,7 +580,7 @@ private:
 	// just the "leaf name", read from INI. private because no one is ever allowed
 	// to look at it directly; they must go thru getPath_UserData(). (srj)
 	AsciiString m_userDataLeafName;
-#endif
+#endif // OG
 
 	static GlobalData *m_theOriginal;		///< the original global data instance (no overrides)
 	GlobalData *m_next;									///< next instance (for overrides)

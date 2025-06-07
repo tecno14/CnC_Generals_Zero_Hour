@@ -276,4 +276,4 @@ class TypedEventPair
 
 #endif // __NOTIFY_H__
 
-#endif
+#endif // ZH

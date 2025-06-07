@@ -27,30 +27,30 @@
 #ifdef OG
  *                      $Author:: Jani_p                                                      $* 
 
-#endif
+#endif // OG
 #ifdef ZH
  *                  $Org Author:: Jani_p                                  $* 
  *                                                                         * 
  *                      $Author:: Kenny_m                                  $* 
  *                                                                         * 
  *                     $Modtime:: 08/05/02 10:44a                          $* 
-#endif
+#endif // ZH
  *                                                                                             * 
 #ifdef OG
  *                     $Modtime:: 4/11/01 10:17p                                              $* 
-#endif
+#endif // OG
 #ifdef ZH
  *                    $Revision:: 17                                                          $* 
-#endif
+#endif // ZH
  *                                                                                             * 
 #ifdef OG
  *                    $Revision:: 16                                                          $* 
  *                                                                                             * 
-#endif
+#endif // OG
 #ifdef ZH
  * 08/05/02 KM Texture class redesign
 
-#endif
+#endif // ZH
  *---------------------------------------------------------------------------------------------* 
  * Functions:                                                                                  * 
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
@@ -356,10 +356,10 @@ bool	Font3DDataClass::Load_Font_Image( const char *filename )
 	if ( _surface ) {
 #ifdef OG
 		Texture = NEW_REF(TextureClass,(_surface,TextureClass::MIP_LEVELS_1));
-#endif
+#endif // OG
 #ifdef ZH
 		Texture = NEW_REF(TextureClass,(_surface,MIP_LEVELS_1));
-#endif
+#endif // ZH
 		REF_PTR_RELEASE(_surface);
 	}
 

@@ -43,7 +43,7 @@ LRESULT CMyTreeCtrl::WindowProc(	UINT message, WPARAM wParam, LPARAM lParam )
 	return CTreeCtrl::WindowProc(message, wParam, lParam);
 }
 
-#endif
+#endif // ZH
 /////////////////////////////////////////////////////////////////////////////
 // EditCondition dialog
 
@@ -106,7 +106,7 @@ static HTREEITEM findOrAdd(CTreeCtrl *tree, HTREEITEM parent, const char *pLabel
 	return(child);
 }
 
-#endif
+#endif // ZH
 /////////////////////////////////////////////////////////////////////////////
 // EditCondition message handlers
 
@@ -119,7 +119,7 @@ BOOL EditCondition::OnInitDialog()
 //	CDC *pDc =GetDC();
 #ifdef ZH
 	CRect rect;
-#endif
+#endif // ZH
 	
 #ifdef ZH
 	CTreeCtrl *pTree = (CTreeCtrl *)GetDlgItem(IDC_CONDITION_TREE);
@@ -131,43 +131,43 @@ BOOL EditCondition::OnInitDialog()
 	m_conditionTreeView.ShowWindow(SW_SHOW);
 	pTree->DestroyWindow();
 
-#endif
+#endif // ZH
 	CWnd *pWnd = GetDlgItem(IDC_RICH_EDIT_HERE);
 #ifdef OG
 	CRect rect;
-#endif
+#endif // OG
 	pWnd->GetWindowRect(&rect);
 
 	ScreenToClient(&rect);
 	rect.DeflateRect(2,2,2,2);
 #ifdef OG
 	m_myEditCtrl.Create(WS_CHILD | ES_MULTILINE, rect, this, IDC_RICH_EDIT_HERE+1);
-#endif
+#endif // OG
 #ifdef ZH
 	m_myEditCtrl.Create(WS_CHILD | WS_TABSTOP | ES_MULTILINE, rect, this, IDC_RICH_EDIT_HERE+1);
-#endif
+#endif // ZH
 	m_myEditCtrl.ShowWindow(SW_SHOW);
 #ifdef OG
 	m_myEditCtrl.SetEventMask(m_myEditCtrl.GetEventMask() | ENM_LINK | ENM_SELCHANGE);
-#endif
+#endif // OG
 #ifdef ZH
 	m_myEditCtrl.SetEventMask(m_myEditCtrl.GetEventMask() | ENM_LINK | ENM_SELCHANGE | ENM_KEYEVENTS);
-#endif
+#endif // ZH
 
 #ifdef OG
 	CComboBox *pCmbo = (CComboBox *)GetDlgItem(IDC_CONDITION_TYPE);
 	pCmbo->ResetContent();
-#endif
+#endif // OG
 	Int i;
 #ifdef ZH
 	HTREEITEM selItem = NULL;
-#endif
+#endif // ZH
 	for (i=0; i<Condition::NUM_ITEMS; i++) {
 		const ConditionTemplate *pTemplate = TheScriptEngine->getConditionTemplate(i);
 #ifdef OG
 		Int ndx = pCmbo->AddString(pTemplate->getName().str());
 
-#endif
+#endif // OG
 #ifdef ZH
 		char prefix[_MAX_PATH];
 		const char *name = pTemplate->getName().str();
@@ -204,12 +204,12 @@ BOOL EditCondition::OnInitDialog()
 		ins.item.pszText = (char*)name;
 		ins.item.cchTextMax = 0;				
 		HTREEITEM item = m_conditionTreeView.InsertItem(&ins);
-#endif
+#endif // ZH
 		if (i == m_condition->getConditionType()) {
 #ifdef OG
 			pCmbo->SetCurSel(ndx);
 
-#endif
+#endif // OG
 #ifdef ZH
 			selItem = item;
 		}
@@ -236,7 +236,7 @@ BOOL EditCondition::OnInitDialog()
 				strncpy(prefix, nameStart, count);
 				prefix[count-1] = 0;
 				parent = findOrAdd(&m_conditionTreeView, parent, prefix);
-#endif
+#endif // ZH
 		}
 #ifdef ZH
 		} while (count>0);
@@ -249,30 +249,30 @@ BOOL EditCondition::OnInitDialog()
 		ins.item.pszText = (char*)name;
 		ins.item.cchTextMax = 0;				
 		m_conditionTreeView.InsertItem(&ins);
-#endif
+#endif // ZH
 	}
 #ifdef ZH
 	m_conditionTreeView.Select(selItem, TVGN_FIRSTVISIBLE);
 	m_conditionTreeView.SelectItem(selItem);
-#endif
+#endif // ZH
 	m_condition->setWarnings(false); 
 	m_myEditCtrl.SetWindowText(m_condition->getUiText().str());
 	m_myEditCtrl.SetSel(-1, -1);
 #ifdef OG
 	formatConditionText(-1);
 
-#endif
+#endif // OG
 #ifdef ZH
 	formatConditionText(0);
 	m_conditionTreeView.SetFocus();
-#endif
+#endif // ZH
 
 #ifdef OG
 	return TRUE;  // return TRUE unless you set the focus to a control
-#endif
+#endif // OG
 #ifdef ZH
 	return FALSE;  // return TRUE unless you set the focus to a control
-#endif
+#endif // ZH
 	              // EXCEPTION: OCX Property Pages should return FALSE
 }
 
@@ -296,10 +296,10 @@ void EditCondition::formatConditionText(Int parameterNdx) {
 	m_myEditCtrl.SetSelectionCharFormat(cf);
 #ifdef OG
  	m_myEditCtrl.SetReadOnly();
-#endif
+#endif // OG
 #ifdef ZH
  	//m_myEditCtrl.SetReadOnly();
-#endif
+#endif // ZH
 	// Set up the links.
 	cf.dwMask =  CFE_UNDERLINE | CFM_LINK | CFM_COLOR;
 
@@ -307,7 +307,7 @@ void EditCondition::formatConditionText(Int parameterNdx) {
 	cf.crTextColor = RGB(0,0,255);
 #ifdef ZH
 	m_curEditParameter = parameterNdx;
-#endif
+#endif // ZH
 
 	AsciiString strings[MAX_PARMS];
 	Int curChar = 0;
@@ -316,11 +316,11 @@ void EditCondition::formatConditionText(Int parameterNdx) {
 #ifdef ZH
 	AsciiString warningText;
 	AsciiString informationText;
-#endif
+#endif // ZH
 	Int i;
 #ifdef OG
 	AsciiString warningText;
-#endif
+#endif // OG
 	for (i=0; i<MAX_PARMS; i++) {
 		if (i<numStrings) {
 			curChar += strings[i].getLength();
@@ -329,22 +329,22 @@ void EditCondition::formatConditionText(Int parameterNdx) {
 #ifdef ZH
 			warningText.concat(EditParameter::getWarningText(m_condition->getParameter(i), false));
 			informationText.concat(EditParameter::getInfoText(m_condition->getParameter(i)));
-#endif
+#endif // ZH
 			numChars = m_condition->getParameter(i)->getUiText().getLength();
 #ifdef OG
 			warningText.concat(EditParameter::getWarningText(m_condition->getParameter(i)));
 
-#endif
+#endif // OG
 #ifdef ZH
 			if (curChar==0) {
 				curChar++;
 				numChars--;
 			}
-#endif
+#endif // ZH
 			m_myEditCtrl.SetSel(curChar, curChar+numChars);
 #ifdef OG
 			if (numChars==0) continue;
-#endif
+#endif // OG
 			if (i==parameterNdx) {
 				startSel = curChar;
 				endSel = curChar+numChars;
@@ -361,7 +361,7 @@ void EditCondition::formatConditionText(Int parameterNdx) {
 	if (warningText.isEmpty()) {
 #ifdef ZH
 		if (informationText.isEmpty()) {
-#endif
+#endif // ZH
 		if (cstr.LoadString(IDS_SCRIPT_NOWARNINGS)) {
 			GetDlgItem(IDC_WARNINGS_CAPTION)->SetWindowText(cstr);
 		}
@@ -375,7 +375,7 @@ void EditCondition::formatConditionText(Int parameterNdx) {
 			GetDlgItem(IDC_WARNINGS_CAPTION)->EnableWindow(true);
 			GetDlgItem(IDC_WARNINGS)->SetWindowText(informationText.str());
 		}
-#endif
+#endif // ZH
 	} else {
 		if (cstr.LoadString(IDS_SCRIPT_WARNINGS)) {
 			GetDlgItem(IDC_WARNINGS_CAPTION)->SetWindowText(cstr);
@@ -389,7 +389,7 @@ void EditCondition::formatConditionText(Int parameterNdx) {
 #ifdef ZH
 	m_curLinkChrg.cpMax = endSel;
 	m_curLinkChrg.cpMin = startSel;
-#endif
+#endif // ZH
 	m_updating = false;
 }
 
@@ -437,22 +437,22 @@ BOOL EditCondition::OnNotify(WPARAM wParam, LPARAM lParam, LRESULT* pResult)
 	}  
 
 	// Handle events from the rich edit control containg the condition pieces.
-#endif
+#endif // ZH
 	if (LOWORD(wParam) == IDC_RICH_EDIT_HERE+1) {
 		NMHDR *pHdr = (NMHDR *)lParam;
 #ifdef OG
 		if (pHdr->hwndFrom == m_myEditCtrl.m_hWnd && pHdr->code == EN_LINK) {
 
-#endif
+#endif // OG
 #ifdef ZH
 		if (pHdr->hwndFrom == m_myEditCtrl.m_hWnd) {
 			if (pHdr->code == EN_LINK) {
-#endif
+#endif // ZH
 			ENLINK *pLink = (ENLINK *)pHdr;
 			CHARRANGE chrg = pLink->chrg;
 #ifdef OG
 			if (pLink->msg == WM_LBUTTONDOWN) {
-#endif
+#endif // OG
 				// Determine which parameter.
 				Int numChars = 0;
 				Int curChar = 0;
@@ -461,7 +461,7 @@ BOOL EditCondition::OnNotify(WPARAM wParam, LPARAM lParam, LRESULT* pResult)
 				Int i;
 #ifdef ZH
  				Bool match = false;
-#endif
+#endif // ZH
 				for (i=0; i<MAX_PARMS; i++) {
 					if (i<numStrings) {
 						curChar += strings[i].getLength();
@@ -472,30 +472,30 @@ BOOL EditCondition::OnNotify(WPARAM wParam, LPARAM lParam, LRESULT* pResult)
 						if (curChar == chrg.cpMin && curChar+numChars == chrg.cpMax) {
 							if (IDOK==EditParameter::edit(m_condition->getParameter(i))) {
 								m_myEditCtrl.SetWindowText(m_condition->getUiText().str());
-#endif
+#endif // OG
 #ifdef ZH
 						match = (curChar+numChars/2 > chrg.cpMin && curChar+numChars/2 < chrg.cpMax); 
 						if (match) {
 
-#endif
+#endif // ZH
 								m_curEditParameter = i;
 #ifdef OG
 								this->PostMessage(WM_TIMER, 0, 0);
-#endif
+#endif // OG
 #ifdef ZH
 							break;
-#endif
+#endif // ZH
 							}
 #ifdef OG
 							return true;
-#endif
+#endif // OG
 #ifdef ZH
 						curChar += numChars;
-#endif
+#endif // ZH
 						}
 #ifdef OG
 						curChar += numChars;
-#endif
+#endif // OG
 					}
 #ifdef ZH
 				if (pLink->msg == WM_LBUTTONDOWN) {
@@ -505,7 +505,7 @@ BOOL EditCondition::OnNotify(WPARAM wParam, LPARAM lParam, LRESULT* pResult)
 						m_myEditCtrl.SetWindowText(m_condition->getUiText().str());
 						this->PostMessage(WM_TIMER, 0, 0);
 						return true;
-#endif
+#endif // ZH
 				}
 			}
 			CHARRANGE curChrg;
@@ -516,16 +516,16 @@ BOOL EditCondition::OnNotify(WPARAM wParam, LPARAM lParam, LRESULT* pResult)
 			if (m_modifiedTextColor) {
 #ifdef OG
 				formatConditionText(-1);
-#endif
+#endif // OG
 #ifdef ZH
 					formatConditionText(m_curEditParameter);
-#endif
+#endif // ZH
 			}
 			m_curLinkChrg = chrg;
 			m_myEditCtrl.SetSel(chrg.cpMin, chrg.cpMax);
 #ifdef ZH
 				m_myEditCtrl.SetFocus();
-#endif
+#endif // ZH
 			CHARFORMAT cf;
 			memset(&cf, 0, sizeof(cf));
 			cf.cbSize = sizeof(cf);
@@ -537,12 +537,12 @@ BOOL EditCondition::OnNotify(WPARAM wParam, LPARAM lParam, LRESULT* pResult)
 #ifdef OG
 		}	else 	if (pHdr->hwndFrom == m_myEditCtrl.m_hWnd && pHdr->code == EN_SELCHANGE) {
 
-#endif
+#endif // OG
 #ifdef ZH
 			}	else 	if (pHdr->code == EN_SETFOCUS) {
 				this->PostMessage(WM_TIMER, 0, 0);
 			}	else 	if (pHdr->code == EN_SELCHANGE) {
-#endif
+#endif // ZH
 			if (m_updating) {
 				return true;
 			}
@@ -553,12 +553,12 @@ BOOL EditCondition::OnNotify(WPARAM wParam, LPARAM lParam, LRESULT* pResult)
 			}
 #ifdef ZH
 				m_myEditCtrl.SetSel(m_curLinkChrg.cpMin, m_curLinkChrg.cpMax);
-#endif
+#endif // ZH
 			if (m_modifiedTextColor) {
 #ifdef OG
 				formatConditionText(-1);
 
-#endif
+#endif // OG
 #ifdef ZH
 					this->PostMessage(WM_TIMER, 0, 0);
 				}
@@ -585,16 +585,16 @@ BOOL EditCondition::OnNotify(WPARAM wParam, LPARAM lParam, LRESULT* pResult)
 					}
 					this->PostMessage(WM_TIMER, 0, 0);
 					return 0;
-#endif
+#endif // ZH
 			}
 #ifdef ZH
 				return 1;
-#endif
+#endif // ZH
 		}
 	}
 #ifdef ZH
 	}
-#endif
+#endif // ZH
 	return CDialog::OnNotify(wParam, lParam, pResult);
 }
 
@@ -616,10 +616,10 @@ void EditCondition::OnSelchangeConditionType()
 	m_myEditCtrl.SetWindowText(m_condition->getUiText().str());
 #ifdef OG
 	formatConditionText(-1);
-#endif
+#endif // OG
 #ifdef ZH
 	formatConditionText(m_curEditParameter);
-#endif
+#endif // ZH
 }
 
 /** Not actually a timer - just used to send a delayed message to self because rich
@@ -628,6 +628,6 @@ void EditCondition::OnTimer(UINT nIDEvent)
 {
 #ifdef ZH
 	m_myEditCtrl.SetWindowText(m_condition->getUiText().str());
-#endif
+#endif // ZH
 	formatConditionText(m_curEditParameter);
 }

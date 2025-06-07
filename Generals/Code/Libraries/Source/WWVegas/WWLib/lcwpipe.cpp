@@ -313,4 +313,4 @@ int LCWPipe::Flush(void)
 }
 
 
-#endif
+#endif // ZH

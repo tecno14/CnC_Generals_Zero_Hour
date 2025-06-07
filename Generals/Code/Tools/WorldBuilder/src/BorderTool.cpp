@@ -126,10 +126,10 @@ void BorderTool::mouseDown(TTrackingMode m, CPoint viewPt, WbView* pView, CWorld
 
 #ifdef OG
 	static Coord3D zero = {0.0f, 0.0f, 0.0f};
-#endif
+#endif // OG
 #ifdef ZH
 	//static Coord3D zero = {0.0f, 0.0f, 0.0f};
-#endif
+#endif // ZH
 	
 	Coord3D groundPt;
 	pView->viewToDocCoords(viewPt, &groundPt);
@@ -146,19 +146,19 @@ void BorderTool::mouseDown(TTrackingMode m, CPoint viewPt, WbView* pView, CWorld
 #ifdef OG
 	if (motion == 0) {
 
-#endif
+#endif // OG
 #ifdef ZH
 	
 	// if bottom left boundary grabbed
 	if (motion == 0) 
 	{
-#endif
+#endif // ZH
 		// modifying the bottom left is not allowed.
 		m_modifyBorderNdx = -1;
 #ifdef OG
 	} else {
 
-#endif
+#endif // OG
 #ifdef ZH
 	}
 	// else if no boundary is near
@@ -172,7 +172,7 @@ void BorderTool::mouseDown(TTrackingMode m, CPoint viewPt, WbView* pView, CWorld
 	} 
 	else
 	{
-#endif
+#endif // ZH
 		m_modificationType = (ModificationType) motion;
 	}
 }

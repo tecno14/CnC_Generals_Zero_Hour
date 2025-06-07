@@ -24,31 +24,31 @@
  *                                                                                             *
 #ifdef OG
  *                     $Archive:: /VSS_Sync/wwdebug/wwdebug.cpp                               $*
-#endif
+#endif // OG
 #ifdef ZH
  *                     $Archive:: /Commando/Code/wwdebug/wwdebug.cpp                          $*
-#endif
+#endif // ZH
  *                                                                                             *
 #ifdef OG
  *                      $Author:: Vss_sync                                                    $*
-#endif
+#endif // OG
 #ifdef ZH
  *                      $Author:: Greg_h                                                      $*
-#endif
+#endif // ZH
  *                                                                                             *
 #ifdef OG
  *                     $Modtime:: 10/19/00 2:12p                                              $*
-#endif
+#endif // OG
 #ifdef ZH
  *                     $Modtime:: 1/13/02 1:46p                                               $*
-#endif
+#endif // ZH
  *                                                                                             *
 #ifdef OG
  *                    $Revision:: 13                                                          $*
-#endif
+#endif // OG
 #ifdef ZH
  *                    $Revision:: 16                                                          $*
-#endif
+#endif // ZH
  *                                                                                             *
  *---------------------------------------------------------------------------------------------*
  * Functions:                                                                                  *
@@ -73,7 +73,7 @@
 #ifdef ZH
 #include <signal.h>
 #include "except.h"
-#endif
+#endif // ZH
 
 
 static PrintFunc			_CurMessageHandler = NULL;
@@ -218,7 +218,7 @@ ProfileFunc	WWDebug_Install_Profile_Stop_Handler(ProfileFunc func)
  *=============================================================================================*/
 #ifdef OG
 #ifdef WWDEBUG
-#endif
+#endif // OG
 void WWDebug_Printf(const char * format,...)
 {
 	if (_CurMessageHandler != NULL) {
@@ -226,10 +226,10 @@ void WWDebug_Printf(const char * format,...)
 		va_list	va;
 #ifdef OG
 		char buffer[1024];
-#endif
+#endif // OG
 #ifdef ZH
 		char buffer[4096];
-#endif
+#endif // ZH
 
 		va_start(va, format);
 		vsprintf(buffer, format, va);
@@ -242,7 +242,7 @@ void WWDebug_Printf(const char * format,...)
 }
 #ifdef OG
 #endif
-#endif
+#endif // OG
 
 /***********************************************************************************************
  * WWDebug_Printf_Warning -- Internal function for passing messages to installed handler       *
@@ -258,7 +258,7 @@ void WWDebug_Printf(const char * format,...)
  *=============================================================================================*/
 #ifdef OG
 #ifdef WWDEBUG
-#endif
+#endif // OG
 void WWDebug_Printf_Warning(const char * format,...)
 {
 	if (_CurMessageHandler != NULL) {
@@ -266,10 +266,10 @@ void WWDebug_Printf_Warning(const char * format,...)
 		va_list	va;
 #ifdef OG
 		char buffer[1024];
-#endif
+#endif // OG
 #ifdef ZH
 		char buffer[4096];
-#endif
+#endif // ZH
 
 		va_start(va, format);
 		vsprintf(buffer, format, va);
@@ -282,7 +282,7 @@ void WWDebug_Printf_Warning(const char * format,...)
 }
 #ifdef OG
 #endif
-#endif
+#endif // OG
 
 /***********************************************************************************************
  * WWDebug_Printf_Error -- Internal function for passing messages to installed handler         *
@@ -298,7 +298,7 @@ void WWDebug_Printf_Warning(const char * format,...)
  *=============================================================================================*/
 #ifdef OG
 #ifdef WWDEBUG
-#endif
+#endif // OG
 void WWDebug_Printf_Error(const char * format,...)
 {
 	if (_CurMessageHandler != NULL) {
@@ -306,10 +306,10 @@ void WWDebug_Printf_Error(const char * format,...)
 		va_list	va;
 #ifdef OG
 		char buffer[1024];
-#endif
+#endif // OG
 #ifdef ZH
 		char buffer[4096];
-#endif
+#endif // ZH
 
 		va_start(va, format);
 		vsprintf(buffer, format, va);
@@ -322,7 +322,7 @@ void WWDebug_Printf_Error(const char * format,...)
 }
 #ifdef OG
 #endif
-#endif
+#endif // OG
 
 /***********************************************************************************************
  * WWDebug_Assert_Fail -- Internal function for passing assert messages to installed handler   *
@@ -343,10 +343,10 @@ void WWDebug_Assert_Fail(const char * expr,const char * file, int line)
 	
 #ifdef OG
 		char buffer[1024];
-#endif
+#endif // OG
 #ifdef ZH
 		char buffer[4096];
-#endif
+#endif // ZH
 		sprintf(buffer,"%s (%d) Assert: %s\n",file,line,expr);
 		_CurAssertHandler(buffer);
 
@@ -359,12 +359,12 @@ void WWDebug_Assert_Fail(const char * expr,const char * file, int line)
 		if (Is_Trying_To_Exit()) {
 			ExitProcess(0);
 		}
-#endif
+#endif // ZH
 
 #ifdef OG
 		assert(0);
 
-#endif
+#endif // OG
 #ifdef ZH
       char assertbuf[4096];
 		sprintf(assertbuf, "Assert failed\n\n. File %s Line %d", file, line);
@@ -375,14 +375,14 @@ void WWDebug_Assert_Fail(const char * expr,const char * file, int line)
       	raise(SIGABRT);
       	_exit(3);
       }
-#endif
+#endif // ZH
 
 #ifdef ZH
 		if (code == IDRETRY) {
 			_asm int 3;
       	return;
 		}
-#endif
+#endif // ZH
 	}
 #ifdef ZH
 }
@@ -409,16 +409,16 @@ void WWDebug_Assert_Fail(const char * expr,const char * file, int line)
 void __cdecl _assert(void *expr, void *filename, unsigned lineno)
 {
 	WWDebug_Assert_Fail((const char*)expr, (const char*)filename, lineno);
-#endif
+#endif // ZH
 }
 #ifdef ZH
 #endif //WWDEBUG
-#endif
+#endif // ZH
 #endif
 
 #ifdef ZH
 #endif
-#endif
+#endif // ZH
 
 /***********************************************************************************************
  * WWDebug_Assert_Fail_Print -- Internal function, passes assert message to handler            *
@@ -439,10 +439,10 @@ void WWDebug_Assert_Fail_Print(const char * expr,const char * file, int line,con
 
 #ifdef OG
 		char buffer[1024];
-#endif
+#endif // OG
 #ifdef ZH
 		char buffer[4096];
-#endif
+#endif // ZH
 		sprintf(buffer,"%s (%d) Assert: %s %s\n",file,line,expr, string);
 		_CurAssertHandler(buffer);
 

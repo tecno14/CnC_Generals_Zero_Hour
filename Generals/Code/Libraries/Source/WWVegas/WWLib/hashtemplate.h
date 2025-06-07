@@ -28,17 +28,17 @@
  *                                                                                             * 
 #ifdef OG
  *                     $Modtime:: 7/11/01 9:35p                                               $* 
-#endif
+#endif // OG
 #ifdef ZH
  *                     $Modtime:: 11/19/01 12:16p                                             $* 
-#endif
+#endif // ZH
  *                                                                                             * 
 #ifdef OG
  *                    $Revision:: 5                                                           $* 
-#endif
+#endif // OG
 #ifdef ZH
  *                    $Revision:: 7                                                           $* 
-#endif
+#endif // ZH
  *                                                                                             * 
  *---------------------------------------------------------------------------------------------* 
  * Functions:                                                                                  * 
@@ -97,7 +97,7 @@ public:
 	void Insert(const KeyType& s, const ValueType& d);
 #ifdef ZH
 	void Set_Value(const KeyType& s, const ValueType& d);
-#endif
+#endif // ZH
 	void Remove(const KeyType& s);
 	void Remove(const KeyType& s, const ValueType& d);
 	ValueType Get(const KeyType& s) const;
@@ -182,7 +182,7 @@ public:
 	const KeyType& Peek_Key()
 	{
 		return HashTable.Get_Table()[Handle].Key;
-#endif
+#endif // ZH
 	}
 };
 
@@ -227,7 +227,7 @@ template <class KeyType, class ValueType> inline void HashTemplateClass<KeyType,
 {
 #ifdef ZH
 	if (!Hash) return;
-#endif
+#endif // ZH
 	unsigned int hval = Get_Hash_Val(s,Size);
 	int  prev = NIL;
 	int	h	 = Hash[hval];
@@ -253,7 +253,7 @@ template <class KeyType, class ValueType> inline void HashTemplateClass<KeyType,
 {
 #ifdef ZH
 	if (!Hash) return;
-#endif
+#endif // ZH
 	unsigned int hval = Get_Hash_Val(s,Size);
 	int  prev = NIL;
 	int	h	 = Hash[hval];
@@ -292,12 +292,12 @@ template <class KeyType, class ValueType> inline void HashTemplateClass<KeyType,
 	Insert(s,v);
 }
 
-#endif
+#endif // ZH
 template <class KeyType, class ValueType> inline ValueType HashTemplateClass<KeyType,ValueType>::Get (const KeyType& s) const
 {
 #ifdef ZH
 	if (Hash) {
-#endif
+#endif // ZH
 	int  h = Hash[Get_Hash_Val(s,Size)];
 	while (h!=NIL)
 	{
@@ -306,7 +306,7 @@ template <class KeyType, class ValueType> inline ValueType HashTemplateClass<Key
 		h = Table[h].Next;
 #ifdef ZH
 		}
-#endif
+#endif // ZH
 	}
 	return ValueType(0);
 }
@@ -316,11 +316,11 @@ template <class KeyType, class ValueType> inline bool HashTemplateClass<KeyType,
 #ifdef OG
 	int  h = Hash[Het_Hash_Val(s,Size)];
 
-#endif
+#endif // OG
 #ifdef ZH
 	if (Hash) {
 		int  h = Hash[Get_Hash_Val(s,Size)];
-#endif
+#endif // ZH
 	while (h!=NIL)
 	{
 		if (Table[h].Key == s)
@@ -331,7 +331,7 @@ template <class KeyType, class ValueType> inline bool HashTemplateClass<KeyType,
 		h = Table[h].Next;
 #ifdef ZH
 		}
-#endif
+#endif // ZH
 	}
 	return false;
 }
@@ -340,7 +340,7 @@ template <class KeyType, class ValueType> inline bool HashTemplateClass<KeyType,
 {
 #ifdef ZH
 	if (Hash) {
-#endif
+#endif // ZH
 	int  h = Hash[Get_Hash_Val(s,Size)];
 	while (h!=NIL)
 	{
@@ -350,7 +350,7 @@ template <class KeyType, class ValueType> inline bool HashTemplateClass<KeyType,
 	}
 #ifdef ZH
 	}
-#endif
+#endif // ZH
 	return false;
 }
 
@@ -358,7 +358,7 @@ template <class KeyType, class ValueType> inline bool HashTemplateClass<KeyType,
 {
 #ifdef ZH
 	if (Hash) {
-#endif
+#endif // ZH
 	int  h = Hash[Get_Hash_Val(s,Size)];
 	while (h!=NIL)
 	{
@@ -367,7 +367,7 @@ template <class KeyType, class ValueType> inline bool HashTemplateClass<KeyType,
 		h = Table[h].Next;
 #ifdef ZH
 		}
-#endif
+#endif // ZH
 	}
 	return false;
 }
@@ -438,10 +438,10 @@ template <class KeyType, class ValueType> inline HashTemplateClass<KeyType,Value
 {
 #ifdef OG
 	Re_Hash();
-#endif
+#endif // OG
 #ifdef ZH
 //	Re_Hash();
-#endif
+#endif // ZH
 }
 
 template <class KeyType, class ValueType> inline HashTemplateClass<KeyType,ValueType>::~HashTemplateClass()

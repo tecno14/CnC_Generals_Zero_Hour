@@ -115,4 +115,4 @@ int LZOCompressor::Decompress
 	return lzo1x_decompress(in,in_len,out,out_len,NULL);
 }
 
-#endif
+#endif // ZH

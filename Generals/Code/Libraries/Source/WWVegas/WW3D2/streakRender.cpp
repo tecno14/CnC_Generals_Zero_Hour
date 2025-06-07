@@ -41,7 +41,7 @@
 // #pragma optimize("", off)
 // #pragma MESSAGE("************************************** WARNING, optimization disabled for debugging purposes")
 #endif
-#endif
+#endif // ZH
 
 /* We have chunking logic which handles N segments at a time. To simplify the subdivision logic,
 ** we will ensure that N is a power of two and that N >= 2^MAX_STREAK_SUBDIV_LEVELS, so that the
@@ -77,7 +77,7 @@ StreakRendererClass::StreakRendererClass(void) :
 		UVOffsetDeltaPerMS(0.0f, 0.0f),
 		Bits(DEFAULT_BITS)
 
-#endif
+#endif // OG
 #ifdef ZH
 		// TextureTileFactor(1.0f),
 		// LastUsedSyncTime(WW3D::Get_Sync_Time()),
@@ -86,11 +86,11 @@ StreakRendererClass::StreakRendererClass(void) :
 		Bits(DEFAULT_BITS),
 		m_vertexBufferSize(0),
 		m_vertexBuffer(NULL)
-#endif
+#endif // ZH
 {
 #ifdef ZH
   // EMPTY
-#endif
+#endif // ZH
 }
 
 StreakRendererClass::StreakRendererClass(const StreakRendererClass & that) :
@@ -109,7 +109,7 @@ StreakRendererClass::StreakRendererClass(const StreakRendererClass & that) :
 		UVOffsetDeltaPerMS(0.0f, 0.0f),
 		Bits(DEFAULT_BITS)
 
-#endif
+#endif // OG
 #ifdef ZH
 		// TextureTileFactor(1.0f),
 		// LastUsedSyncTime(that.LastUsedSyncTime),
@@ -118,7 +118,7 @@ StreakRendererClass::StreakRendererClass(const StreakRendererClass & that) :
 		Bits(DEFAULT_BITS),
 		m_vertexBufferSize(0),
 		m_vertexBuffer(NULL)
-#endif
+#endif // ZH
 {
 	*this = that;
 }
@@ -139,17 +139,17 @@ StreakRendererClass & StreakRendererClass::operator = (const StreakRendererClass
 		LastUsedSyncTime = that.LastUsedSyncTime;
 		CurrentUVOffset = that.CurrentUVOffset;
 		UVOffsetDeltaPerMS = that.UVOffsetDeltaPerMS;
-#endif
+#endif // OG
 #ifdef ZH
 		// TextureTileFactor = that.TextureTileFactor;
 		// LastUsedSyncTime = that.LastUsedSyncTime;
 		// CurrentUVOffset = that.CurrentUVOffset;
 		// UVOffsetDeltaPerMS = that.UVOffsetDeltaPerMS;
-#endif
+#endif // ZH
 		Bits = that.Bits;
 #ifdef ZH
 		// Don't modify m_vertexBufferSize and m_vertexBuffer.
-#endif
+#endif // ZH
 	}
 	return *this;
 }
@@ -159,7 +159,7 @@ StreakRendererClass::~StreakRendererClass(void)
 	REF_PTR_RELEASE(Texture);
 #ifdef ZH
 	delete [] m_vertexBuffer;
-#endif
+#endif // ZH
 }
 
 void StreakRendererClass::Init(const W3dEmitterLinePropertiesStruct & props)
@@ -191,11 +191,11 @@ void StreakRendererClass::Init(const W3dEmitterLinePropertiesStruct & props)
 #ifdef OG
 	Set_Texture_Tile_Factor(props.TextureTileFactor);
 	Set_UV_Offset_Rate(Vector2(props.UPerSec,props.VPerSec));
-#endif
+#endif // OG
 #ifdef ZH
 	// Set_Texture_Tile_Factor(props.TextureTileFactor);
 	// Set_UV_Offset_Rate(Vector2(props.UPerSec,props.VPerSec));
-#endif
+#endif // ZH
 }
 
 
@@ -217,13 +217,13 @@ void StreakRendererClass::Set_Current_UV_Offset(const Vector2 & offset)
 {
 	CurrentUVOffset = offset;
 }
-#endif
+#endif // OG
 #ifdef ZH
 // void StreakRendererClass::Set_Current_UV_Offset(const Vector2 & offset)
 // {
 // 	CurrentUVOffset = offset;
 // }
-#endif
+#endif // ZH
 
 #ifdef OG
 void StreakRendererClass::Set_Texture_Tile_Factor(float factor)
@@ -236,7 +236,7 @@ void StreakRendererClass::Set_Texture_Tile_Factor(float factor)
 	}
 	TextureTileFactor = factor;
 }
-#endif
+#endif // OG
 #ifdef ZH
 // void StreakRendererClass::Set_Texture_Tile_Factor(float factor)
 // {
@@ -248,7 +248,7 @@ void StreakRendererClass::Set_Texture_Tile_Factor(float factor)
 //	}
 //	TextureTileFactor = factor;
 //}
-#endif
+#endif // ZH
 
 #ifdef OG
 void StreakRendererClass::Reset_Line(void)
@@ -256,14 +256,14 @@ void StreakRendererClass::Reset_Line(void)
 	LastUsedSyncTime = WW3D::Get_Sync_Time();
 	CurrentUVOffset.Set(0.0f,0.0f);
 }
-#endif
+#endif // OG
 #ifdef ZH
 // void StreakRendererClass::Reset_Line(void)
 // {
 	// LastUsedSyncTime = WW3D::Get_Sync_Time();
 	// CurrentUVOffset.Set(0.0f,0.0f);
 // }
-#endif
+#endif // ZH
 
 ///////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////
@@ -284,7 +284,7 @@ void StreakRendererClass::Render
 	++a;
 
 	if (a)
-#endif
+#endif // OG
 		return;
 }
 
@@ -399,18 +399,18 @@ void StreakRendererClass::RenderStreak
 {
 #ifdef OG
 	Matrix4 view;
-#endif
+#endif // OG
 #ifdef ZH
 	Matrix4x4 view;
-#endif
+#endif // ZH
 	DX8Wrapper::Get_Transform(D3DTS_VIEW,view);
 
 #ifdef OG
 	Matrix4 identity(true);
-#endif
+#endif // OG
 #ifdef ZH
 	Matrix4x4 identity(true);
-#endif
+#endif // ZH
 	DX8Wrapper::Set_Transform(D3DTS_WORLD,identity);	
 	DX8Wrapper::Set_Transform(D3DTS_VIEW,identity);	
 
@@ -420,11 +420,11 @@ void StreakRendererClass::RenderStreak
 #ifdef OG
 	unsigned int delta = WW3D::Get_Sync_Time() - LastUsedSyncTime;
 	float del = (float)delta;
-#endif
+#endif // OG
 #ifdef ZH
 	// unsigned int delta = WW3D::Get_Sync_Time() - LastUsedSyncTime;
 	// float del = (float)delta;
-#endif
+#endif // ZH
 	//Vector2 uv_offset = CurrentUVOffset + UVOffsetDeltaPerMS * del;
 
 	// ensure offsets are in [0, 1] range:
@@ -435,10 +435,10 @@ void StreakRendererClass::RenderStreak
 	//CurrentUVOffset = uv_offset;
 #ifdef OG
 	LastUsedSyncTime = WW3D::Get_Sync_Time();
-#endif
+#endif // OG
 #ifdef ZH
 	// LastUsedSyncTime = WW3D::Get_Sync_Time();
-#endif
+#endif // ZH
 
 	// Used later
 	TextureMapMode map_mode = Get_Texture_Mapping_Mode();
@@ -639,10 +639,10 @@ void StreakRendererClass::RenderStreak
 
 #ifdef OG
 			radius = widths[segmentIndex]; /// NEW /////
-#endif
+#endif // OG
 #ifdef ZH
 			radius = widths[segmentIndex]; /// NEW ///// // TODO: Does not work correctly when subdivision are not 0
-#endif
+#endif // ZH
 
 			Vector3 &curr_point = points[segmentIndex - 1];
 			Vector3 &next_point = points[segmentIndex];
@@ -651,7 +651,7 @@ void StreakRendererClass::RenderStreak
 			{
 				next_point.X += 0.001f;
 			}
-#endif
+#endif // ZH
 
 			// We temporarily store the segment direction in the segment's StartPlane (since it is
 			// used to calculate the StartPlane later).
@@ -1204,10 +1204,10 @@ void StreakRendererClass::RenderStreak
 		unsigned int vnum = num_intersections[TOP_EDGE] + num_intersections[BOTTOM_EDGE];		
 #ifdef OG
 		VertexFormatXYZDUV1 *vertexArray=W3DNEWARRAY VertexFormatXYZDUV1[vnum];		
-#endif
+#endif // OG
 #ifdef ZH
 		VertexFormatXYZUV1 *vertexArray = getVertexBuffer(vnum);
-#endif
+#endif // ZH
 		Vector3i v_index_array[MAX_STREAK_POLY_BUFFER_SIZE];
 		
 		// Vertex and triangle indices
@@ -1229,7 +1229,7 @@ void StreakRendererClass::RenderStreak
 char p[]="  &&  &&  &&  &&  &&  &&  &&  &&  &&  &&  &&  &&  &&  &&  &&  &&  &&  &&  &&  &&  &&  &&  &&  ";
 char f[]=" &&  &&  &&  &&  &&  &&  &&  &&  &&  &&  &&  &&  &&  &&  &&  &&  &&  &&  &&  &&  &&  &&  &&   ";
 char e[]="&&  &&  &&  &&  &&  &&  &&  &&  &&  &&  &&  &&  &&  &&  &&  &&  &&  &&  &&  &&  &&  &&  &&    ";
-#endif
+#endif // OG
 
 // GENERALIZE FOR WHEN NO TEXTURE (DO NOT SET UV IN THESE CASES? NEED TO GENERALIZE FOR DIFFERENT TEXTURING MODES ANYWAY).
 
@@ -1396,7 +1396,7 @@ char e[]="&&  &&  &&  &&  &&  &&  &&  &&  &&  &&  &&  &&  &&  &&  &&  &&  &&  &&
 char d[]="  &&  &&  &&  &&  &&  &&  &&  &&  &&  &&  &&  &&  &&  &&  &&  &&  &&  &&  &&  &&  &&  &&  &&  ";
 char w[]=" &&  &&  &&  &&  &&  &&  &&  &&  &&  &&  &&  &&  &&  &&  &&  &&  &&  &&  &&  &&  &&  &&  &&   ";
 char q[]="&&  &&  &&  &&  &&  &&  &&  &&  &&  &&  &&  &&  &&  &&  &&  &&  &&  &&  &&  &&  &&  &&  &&    ";
-#endif
+#endif // OG
 
 
 
@@ -1471,7 +1471,7 @@ char q[]="&&  &&  &&  &&  &&  &&  &&  &&  &&  &&  &&  &&  &&  &&  &&  &&  &&  &&
 			const unsigned diffuseOffset = fvfinfo.Get_Diffuse_Offset();
 			const unsigned textureOffset = fvfinfo.Get_Tex_Offset(0);
 			const unsigned vbSize = fvfinfo.Get_FVF_Size();
-#endif
+#endif // ZH
 
 			for (i=0; i<vnum; i++)
 			{
@@ -1495,7 +1495,7 @@ char q[]="&&  &&  &&  &&  &&  &&  &&  &&  &&  &&  &&  &&  &&  &&  &&  &&  &&  &&
 
 				
 				vb+=fvfinfo.Get_FVF_Size();				
-#endif
+#endif // OG
 #ifdef ZH
 				DEBUG_ASSERTCRASH(vertexArray[i].x != (float)0xdeadbeef && vertexArray[i].y != (float)0xdeadbeef && vertexArray[i].z != (float)0xdeadbeef && vertexArray[i].u1 != (float)0xdeadbeeef && vertexArray[i].v1 != (float)0xdeadbeef, ("Uninitialized vertexArray[%d]", i));
 				DEBUG_ASSERTCRASH((! _isnan(vertexArray[i].x) && _finite(vertexArray[i].x) && ! _isnan(vertexArray[i].y) && _finite(vertexArray[i].y) && ! _isnan(vertexArray[i].z) && _finite(vertexArray[i].z)) , ("Bad vertexArray[%d]", i));
@@ -1509,7 +1509,7 @@ char q[]="&&  &&  &&  &&  &&  &&  &&  &&  &&  &&  &&  &&  &&  &&  &&  &&  &&  &&
 				texture->V = vertexArray[i].v1;
 				vb += vbSize;				
 
-#endif
+#endif // ZH
 			}			
 		} // copy
 		
@@ -1521,7 +1521,7 @@ char q[]="&&  &&  &&  &&  &&  &&  &&  &&  &&  &&  &&  &&  &&  &&  &&  &&  &&  &&
 
 #ifdef ZH
 			try {
-#endif
+#endif // ZH
 			for (i=0; i<triangleIndex; i++)
 			{
 				*inds++=v_index_array[i].I;
@@ -1532,7 +1532,7 @@ char q[]="&&  &&  &&  &&  &&  &&  &&  &&  &&  &&  &&  &&  &&  &&  &&  &&  &&  &&
 			IndexBufferExceptionFunc();
 			} catch(...) {
 				IndexBufferExceptionFunc();
-#endif
+#endif // ZH
 			}
 		}
 
@@ -1553,7 +1553,7 @@ char q[]="&&  &&  &&  &&  &&  &&  &&  &&  &&  &&  &&  &&  &&  &&  &&  &&  &&  &&
 #ifdef OG
 		
 		delete [] vertexArray;
-#endif
+#endif // OG
 
 	}	// Chunking loop
 
@@ -1587,4 +1587,4 @@ VertexFormatXYZUV1 *StreakRendererClass::getVertexBuffer(unsigned int number)
 
 	return m_vertexBuffer;
 }
-#endif
+#endif // ZH

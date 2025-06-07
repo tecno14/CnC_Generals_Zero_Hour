@@ -30,17 +30,17 @@
  *                                                                                             *
 #ifdef OG
  *                     $Modtime:: 6/27/01 7:52p                                               $*
-#endif
+#endif // OG
 #ifdef ZH
  *                     $Modtime:: 11/25/01 6:06p                                              $*
-#endif
+#endif // ZH
  *                                                                                             *
 #ifdef OG
  *                    $Revision:: 4                                                           $*
-#endif
+#endif // OG
 #ifdef ZH
  *                    $Revision:: 5                                                           $*
-#endif
+#endif // ZH
  *                                                                                             *
  *---------------------------------------------------------------------------------------------*
  * Functions:                                                                                  *
@@ -190,7 +190,7 @@ void HRawAnimClass::Free(void)
 		delete[] NodeMotion;
 #ifdef ZH
 		NodeMotion = NULL;
-#endif
+#endif // ZH
 	}
 }
 
@@ -343,11 +343,11 @@ bool HRawAnimClass::read_channel(ChunkLoadClass & cload,MotionChannelClass * * n
 #ifdef OG
 		(*newchan)->PivotIdx += 1;
 
-#endif
+#endif // OG
 #ifdef ZH
 //		(*newchan)->PivotIdx += 1;
 		(*newchan)->Set_Pivot((*newchan)->Get_Pivot()+1);
-#endif
+#endif // ZH
 	}
 	
 	return result;

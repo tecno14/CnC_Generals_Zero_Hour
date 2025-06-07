@@ -295,10 +295,10 @@ void Debug_Statistics::Record_DX8_Polys_And_Vertices(int pcount,int vcount,const
 {
 #ifdef OG
 	if (shader.Get_NPatch_Enable()==ShaderClass::NPATCH_ENABLE && DX8Caps::Support_NPatches()) {
-#endif
+#endif // OG
 #ifdef ZH
 	if (shader.Get_NPatch_Enable()==ShaderClass::NPATCH_ENABLE && DX8Wrapper::Get_Current_Caps()->Support_NPatches()) {
-#endif
+#endif // ZH
 		unsigned level=WW3D::Get_NPatches_Level();
 		level*=level;
 		pcount*=level;

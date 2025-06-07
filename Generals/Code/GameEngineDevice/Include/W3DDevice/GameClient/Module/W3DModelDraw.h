@@ -138,11 +138,11 @@ struct PristineBoneInfo
 #ifdef OG
 typedef std::hash_map< NameKeyType, PristineBoneInfo, rts::hash<NameKeyType>, rts::equal_to<NameKeyType> > PristineBoneInfoMap;
 
-#endif
+#endif // OG
 #ifdef ZH
 //typedef std::hash_map< NameKeyType, PristineBoneInfo, rts::hash<NameKeyType>, rts::equal_to<NameKeyType> > PristineBoneInfoMap;
 typedef std::map< NameKeyType, PristineBoneInfo, std::less<NameKeyType> > PristineBoneInfoMap;
-#endif
+#endif // ZH
 
 //-------------------------------------------------------------------------------------------------
 
@@ -277,11 +277,11 @@ typedef std::vector<ModelConditionInfo> ModelConditionVector;
 #ifdef OG
 typedef std::hash_map< TransitionSig, ModelConditionInfo, std::hash<TransitionSig>, std::equal_to<TransitionSig> > TransitionMap;
 
-#endif
+#endif // OG
 #ifdef ZH
 //typedef std::hash_map< TransitionSig, ModelConditionInfo, std::hash<TransitionSig>, std::equal_to<TransitionSig> > TransitionMap;
 typedef std::map< TransitionSig, ModelConditionInfo, std::less<TransitionSig> > TransitionMap;
-#endif
+#endif // ZH
 
 //-------------------------------------------------------------------------------------------------
 // this is more efficient and also helps solve a projectile-launch-offset problem for double-upgraded
@@ -323,7 +323,7 @@ public:
   Bool                              m_particlesAttachedToAnimatedBones;
 
   Bool                              m_receivesDynamicLights; ///< just like it sounds... it sets a property of Drawable, actually
-#endif
+#endif // ZH
 
 	W3DModelDrawModuleData();
 	~W3DModelDrawModuleData();
@@ -387,7 +387,7 @@ public:
 #ifdef ZH
 	virtual Bool clientOnly_getRenderObjBoundBox(OBBoxClass * boundbox) const;
 	virtual Bool clientOnly_getRenderObjBoneTransform(const AsciiString & boneName,Matrix3D * set_tm) const;
-#endif
+#endif // ZH
 	virtual Int getPristineBonePositionsForConditionState(const ModelConditionFlags& condition, const char* boneNamePrefix, Int startIndex, Coord3D* positions, Matrix3D* transforms, Int maxBones) const;
 	virtual Int getCurrentBonePositions(const char* boneNamePrefix, Int startIndex, Coord3D* positions, Matrix3D* transforms, Int maxBones) const;
 	virtual Bool getCurrentWorldspaceClientBonePositions(const char* boneName, Matrix3D& transform) const;
@@ -426,7 +426,7 @@ public:
 
 	//Kris: Manually set a drawable's current animation to specific frame.
 	virtual void setAnimationFrame( int frame );
-#endif
+#endif // ZH
 
 	virtual void updateSubObjects();
 	virtual void showSubObject( const AsciiString& name, Bool show );

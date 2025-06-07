@@ -31,7 +31,7 @@
 
 #ifdef OG
 #define DEFINE_DAMAGE_NAMES
-#endif
+#endif // OG
 #define DEFINE_DEATH_NAMES
 
 // INCLUDES ///////////////////////////////////////////////////////////////////////////////////////
@@ -148,10 +148,10 @@ ParticleUplinkCannonUpdateModuleData::ParticleUplinkCannonUpdateModuleData()
 		{ "TotalDamagePulses",										INI::parseUnsignedInt,					NULL, offsetof( ParticleUplinkCannonUpdateModuleData, m_totalDamagePulses ) },
 #ifdef OG
 		{ "DamageType",														INI::parseIndexList,						TheDamageNames,	offsetof( ParticleUplinkCannonUpdateModuleData, m_damageType ) },		
-#endif
+#endif // OG
 #ifdef ZH
 		{ "DamageType",														DamageTypeFlags::parseSingleBitFromINI,	NULL,	offsetof( ParticleUplinkCannonUpdateModuleData, m_damageType ) },		
-#endif
+#endif // ZH
 		{ "DeathType",														INI::parseIndexList,						TheDeathNames,	offsetof( ParticleUplinkCannonUpdateModuleData, m_deathType ) },		
 		{ "DamageRadiusScalar",										INI::parseReal,									NULL, offsetof( ParticleUplinkCannonUpdateModuleData, m_damageRadiusScalar ) },
 
@@ -173,10 +173,10 @@ ParticleUplinkCannonUpdateModuleData::ParticleUplinkCannonUpdateModuleData()
 //-------------------------------------------------------------------------------------------------
 #ifdef OG
 ParticleUplinkCannonUpdate::ParticleUplinkCannonUpdate( Thing *thing, const ModuleData* moduleData ) : UpdateModule( thing, moduleData )
-#endif
+#endif // OG
 #ifdef ZH
 ParticleUplinkCannonUpdate::ParticleUplinkCannonUpdate( Thing *thing, const ModuleData* moduleData ) : SpecialPowerUpdateModule( thing, moduleData )
-#endif
+#endif // ZH
 {
 
 	m_status = STATUS_IDLE;
@@ -195,7 +195,7 @@ ParticleUplinkCannonUpdate::ParticleUplinkCannonUpdate( Thing *thing, const Modu
 	m_invalidSettings = false;
 	m_manualTargetMode = false;
 
-#endif
+#endif // OG
 #ifdef ZH
 	m_upBonesCached = FALSE;
 	m_defaultInfoCached = FALSE;
@@ -203,7 +203,7 @@ ParticleUplinkCannonUpdate::ParticleUplinkCannonUpdate( Thing *thing, const Modu
 	m_manualTargetMode = FALSE;
 	m_scriptedWaypointMode = FALSE;
 	m_nextDestWaypointID = 0;
-#endif
+#endif // ZH
 	m_initialTargetPosition.zero();
 	m_currentTargetPosition.zero();
 	m_overrideTargetDestination.zero();
@@ -273,10 +273,10 @@ void ParticleUplinkCannonUpdate::onObjectCreated()
 		DEBUG_CRASH( ("%s object's ParticleUplinkCannonUpdate lacks access to the SpecialPowerTemplate. Needs to be specified in ini.", obj->getTemplate()->getName().str() ) );
 #ifdef OG
 		m_invalidSettings = true;
-#endif
+#endif // OG
 #ifdef ZH
 		m_invalidSettings = TRUE;
-#endif
+#endif // ZH
 		return;
 	}
 
@@ -298,10 +298,10 @@ void ParticleUplinkCannonUpdate::onObjectCreated()
 //-------------------------------------------------------------------------------------------------
 #ifdef OG
 void ParticleUplinkCannonUpdate::initiateIntentToDoSpecialPower(const SpecialPowerTemplate *specialPowerTemplate, const Object *targetObj, const Coord3D *targetPos, UnsignedInt commandOptions, Int locationCount )
-#endif
+#endif // OG
 #ifdef ZH
 Bool ParticleUplinkCannonUpdate::initiateIntentToDoSpecialPower(const SpecialPowerTemplate *specialPowerTemplate, const Object *targetObj, const Coord3D *targetPos, const Waypoint *way, UnsignedInt commandOptions )
-#endif
+#endif // ZH
 {
 	const ParticleUplinkCannonUpdateModuleData *data = getParticleUplinkCannonUpdateModuleData();
 
@@ -310,15 +310,15 @@ Bool ParticleUplinkCannonUpdate::initiateIntentToDoSpecialPower(const SpecialPow
 		//Check to make sure our modules are connected.
 #ifdef OG
 		return;
-#endif
+#endif // OG
 #ifdef ZH
 		return FALSE;
-#endif
+#endif // ZH
 	}
 #ifdef ZH
 
 //	getObject()->getControllingPlayer()->getAcademyStats()->recordSpecialPowerUsed( specialPowerTemplate );
-#endif
+#endif // ZH
 
 	if( !BitTest( commandOptions, COMMAND_FIRED_BY_SCRIPT ) )
 	{
@@ -327,10 +327,10 @@ Bool ParticleUplinkCannonUpdate::initiateIntentToDoSpecialPower(const SpecialPow
 		m_laserStatus = LASERSTATUS_NONE;
 #ifdef OG
 		m_manualTargetMode = true;
-#endif
+#endif // OG
 #ifdef ZH
 		m_manualTargetMode = TRUE;
-#endif
+#endif // ZH
 		m_initialTargetPosition.set( targetPos );
 		m_overrideTargetDestination.set( targetPos );
 		m_currentTargetPosition.set( targetPos );
@@ -369,7 +369,7 @@ Bool ParticleUplinkCannonUpdate::initiateIntentToDoSpecialPower(const SpecialPow
 		}
 
 	}
-#endif
+#endif // ZH
 	else
 	{
 		//All computer controlled players have automatic control -- the "S" curve.
@@ -377,7 +377,7 @@ Bool ParticleUplinkCannonUpdate::initiateIntentToDoSpecialPower(const SpecialPow
 #ifdef OG
    	m_initialTargetPosition.set( targetPos );
 
-#endif
+#endif // OG
 #ifdef ZH
 		
 		Coord3D pos;
@@ -390,7 +390,7 @@ Bool ParticleUplinkCannonUpdate::initiateIntentToDoSpecialPower(const SpecialPow
 			pos.set( targetObj->getPosition() );
 		}
    	m_initialTargetPosition.set( &pos );
-#endif
+#endif // ZH
    	m_startAttackFrame = max( now, (UnsignedInt)1 );
    	m_laserStatus = LASERSTATUS_NONE;
 		setLogicalStatus( STATUS_READY_TO_FIRE );
@@ -406,7 +406,7 @@ Bool ParticleUplinkCannonUpdate::initiateIntentToDoSpecialPower(const SpecialPow
 	}
 #ifdef ZH
 	return TRUE;
-#endif
+#endif // ZH
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -416,17 +416,17 @@ Bool ParticleUplinkCannonUpdate::isPowerCurrentlyInUse( const CommandButton *com
 	{
 #ifdef OG
 		return true;
-#endif
+#endif // OG
 #ifdef ZH
 		return TRUE;
-#endif
+#endif // ZH
 	}
 #ifdef OG
 	return false;
-#endif
+#endif // OG
 #ifdef ZH
 	return FALSE;
-#endif
+#endif // ZH
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -437,10 +437,10 @@ void ParticleUplinkCannonUpdate::setSpecialPowerOverridableDestination( const Co
 		m_overrideTargetDestination = *loc; 
 #ifdef OG
 		m_manualTargetMode = true; 
-#endif
+#endif // OG
 #ifdef ZH
 		m_manualTargetMode = TRUE; 
-#endif
+#endif // ZH
 		m_2ndLastDrivingClickFrame = m_lastDrivingClickFrame;
 		m_lastDrivingClickFrame = TheGameLogic->getFrame();
 	}
@@ -501,7 +501,7 @@ UpdateSleepTime ParticleUplinkCannonUpdate::update()
 					me->isDisabledByType( DISABLED_EMP ) ||
 #ifdef ZH
 					me->isDisabledByType( DISABLED_SUBDUED ) ||
-#endif
+#endif // ZH
 					me->isDisabledByType( DISABLED_HACKED ) )
 			{
 				//We must end the special power early! ABORT! ABORT!
@@ -574,10 +574,10 @@ UpdateSleepTime ParticleUplinkCannonUpdate::update()
 		
 #ifdef OG
 			if( !m_manualTargetMode )
-#endif
+#endif // OG
 #ifdef ZH
 			if( !m_manualTargetMode && !m_scriptedWaypointMode )
-#endif
+#endif // ZH
 			{
 				//Calculate the position of the beam because it swaths -- a nice S curve centering at the target location!
 				
@@ -633,10 +633,10 @@ UpdateSleepTime ParticleUplinkCannonUpdate::update()
 				Real speed = data->m_manualDrivingSpeed;
 #ifdef OG
 				if( m_lastDrivingClickFrame - m_2ndLastDrivingClickFrame < data->m_doubleClickToFastDriveDelay )
-#endif
+#endif // OG
 #ifdef ZH
 				if( m_scriptedWaypointMode || m_lastDrivingClickFrame - m_2ndLastDrivingClickFrame < data->m_doubleClickToFastDriveDelay )
-#endif
+#endif // ZH
 				{
 					//Because we double clicked, use the faster driving speed.
 					speed = data->m_manualFastDrivingSpeed;
@@ -668,11 +668,11 @@ UpdateSleepTime ParticleUplinkCannonUpdate::update()
 							m_nextDestWaypointID = way->getID();
 							m_overrideTargetDestination.set( way->getLocation() );
 						}
-#endif
+#endif // ZH
 				}
 #ifdef ZH
 				}
-#endif
+#endif // ZH
 
 				//Unitize the vector then apply the distance we will move.
 				vector.normalize();
@@ -700,10 +700,10 @@ UpdateSleepTime ParticleUplinkCannonUpdate::update()
 			{
 #ifdef OG
 				update->initLaser( NULL, &orbitPosition, &m_currentTargetPosition );
-#endif
+#endif // OG
 #ifdef ZH
 				update->initLaser( NULL, NULL, &orbitPosition, &m_currentTargetPosition, "" );
-#endif
+#endif // ZH
 				scorchRadius = update->getCurrentLaserRadius() * data->m_scorchMarkScalar;
 				damageRadius = update->getCurrentLaserRadius() * data->m_damageRadiusScalar;
 			}
@@ -814,7 +814,7 @@ UpdateSleepTime ParticleUplinkCannonUpdate::update()
 #ifdef ZH
 	else if( m_status == STATUS_ALMOST_READY )
 	{
-#endif
+#endif // ZH
 
 #ifdef ZH
 	}
@@ -825,7 +825,7 @@ UpdateSleepTime ParticleUplinkCannonUpdate::update()
 		setLogicalStatus( STATUS_PACKING );
 	}
 
-#endif
+#endif // ZH
 	if( m_status == STATUS_FIRING )
 	{
 		if( m_nextLaunchFXFrame <= now )
@@ -916,10 +916,10 @@ void ParticleUplinkCannonUpdate::createConnectorLasers( IntensityTypes intensity
 		calculateUpBonePositions();
 #ifdef OG
 		m_upBonesCached = true;
-#endif
+#endif // OG
 #ifdef ZH
 		m_upBonesCached = TRUE;
-#endif
+#endif // ZH
 	}
 
 	const ParticleUplinkCannonUpdateModuleData *data = getParticleUplinkCannonUpdateModuleData();
@@ -956,10 +956,10 @@ void ParticleUplinkCannonUpdate::createConnectorLasers( IntensityTypes intensity
 					{
 #ifdef OG
 						update->initLaser( NULL, &m_outerNodePositions[ i ], &m_connectorNodePosition );
-#endif
+#endif // OG
 #ifdef ZH
 						update->initLaser( NULL, NULL, &m_outerNodePositions[ i ], &m_connectorNodePosition, "" );
-#endif
+#endif // ZH
 					}
 				}
 			}
@@ -1068,10 +1068,10 @@ void ParticleUplinkCannonUpdate::createGroundToOrbitLaser( UnsignedInt growthFra
 					orbitPosition.z += 500.0f;
 #ifdef OG
 					update->initLaser( NULL, &m_laserOriginPosition, &orbitPosition, growthFrames );
-#endif
+#endif // OG
 #ifdef ZH
 					update->initLaser( NULL, NULL, &m_laserOriginPosition, &orbitPosition, "", growthFrames );
-#endif
+#endif // ZH
 				}
 			}
 		}
@@ -1109,10 +1109,10 @@ void ParticleUplinkCannonUpdate::createOrbitToTargetLaser( UnsignedInt growthFra
 					orbitPosition.z += 500.0f;
 #ifdef OG
 					update->initLaser( NULL, &orbitPosition, &m_initialTargetPosition, growthFrames );
-#endif
+#endif // OG
 #ifdef ZH
 					update->initLaser( NULL, NULL, &orbitPosition, &m_initialTargetPosition, "", growthFrames );
-#endif
+#endif // ZH
 				}
 			}
 		}
@@ -1186,11 +1186,11 @@ Bool ParticleUplinkCannonUpdate::calculateDefaultInformation()
 #ifdef OG
 		m_invalidSettings = true;
 		return false;
-#endif
+#endif // OG
 #ifdef ZH
 		m_invalidSettings = TRUE;
 		return FALSE;
-#endif
+#endif // ZH
 	}
 
 	for( int i = 0; i < data->m_outerEffectNumBones; i++ )
@@ -1205,10 +1205,10 @@ Bool ParticleUplinkCannonUpdate::calculateDefaultInformation()
 
 #ifdef OG
 	return true;
-#endif
+#endif // OG
 #ifdef ZH
 	return TRUE;
-#endif
+#endif // ZH
 
 }
 
@@ -1234,10 +1234,10 @@ Bool ParticleUplinkCannonUpdate::calculateUpBonePositions()
 	}
 #ifdef OG
 	return true;
-#endif
+#endif // OG
 #ifdef ZH
 	return TRUE;
-#endif
+#endif // ZH
 }
 
 
@@ -1358,18 +1358,18 @@ void ParticleUplinkCannonUpdate::setClientStatus( PUCStatus newStatus, Bool reve
 		{
 #ifdef OG
 			m_invalidSettings = true;
-#endif
+#endif // OG
 #ifdef ZH
 			m_invalidSettings = TRUE;
-#endif
+#endif // ZH
 			return;
 		}
 #ifdef OG
 		m_defaultInfoCached = true;
-#endif
+#endif // OG
 #ifdef ZH
 		m_defaultInfoCached = TRUE;
-#endif
+#endif // ZH
 	}
 
 	//This isn't the most efficient way to do this. Various effects can live in more than
@@ -1494,10 +1494,10 @@ void ParticleUplinkCannonUpdate::xfer( Xfer *xfer )
 	// version
 #ifdef OG
 	XferVersion currentVersion = 2;
-#endif
+#endif // OG
 #ifdef ZH
 	XferVersion currentVersion = 3;
-#endif
+#endif // ZH
 	XferVersion version = currentVersion;
 	xfer->xferVersion( &version, currentVersion );
 
@@ -1605,7 +1605,7 @@ void ParticleUplinkCannonUpdate::xfer( Xfer *xfer )
 		xfer->xferBool( &m_scriptedWaypointMode );
 		xfer->xferUnsignedInt( &m_nextDestWaypointID );
 	}
-#endif
+#endif // ZH
 
 }  // end xfer
 

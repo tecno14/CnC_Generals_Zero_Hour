@@ -308,7 +308,7 @@ LocomotorTemplate::LocomotorTemplate()
 	m_accelPitchLimit = 0;
 #ifdef ZH
 	m_decelPitchLimit = 0;
-#endif
+#endif // ZH
 	m_bounceKick = 0;
 
 //	m_pitchStiffness = 0;
@@ -358,7 +358,7 @@ LocomotorTemplate::LocomotorTemplate()
 	m_elevatorCorrectionDegree  = 0.0f;
 	m_elevatorCorrectionRate    = 0.0f;
 
-#endif
+#endif // ZH
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -471,7 +471,7 @@ const FieldParse* LocomotorTemplate::getFieldParse() const
 		{ "AccelerationPitchLimit", INI::parseAngleReal, NULL, offsetof(LocomotorTemplate, m_accelPitchLimit) },		
 #ifdef ZH
 		{ "DecelerationPitchLimit", INI::parseAngleReal, NULL, offsetof(LocomotorTemplate, m_decelPitchLimit) },
-#endif
+#endif // ZH
 		{ "BounceAmount", INI::parseAngularVelocityReal, NULL, offsetof(LocomotorTemplate, m_bounceKick) },		
 		{ "PitchStiffness", INI::parseReal, NULL, offsetof(LocomotorTemplate, m_pitchStiffness) },		
 		{ "RollStiffness", INI::parseReal, NULL, offsetof(LocomotorTemplate, m_rollStiffness) },		
@@ -512,7 +512,7 @@ const FieldParse* LocomotorTemplate::getFieldParse() const
 		{ "RudderCorrectionRate",			 INI::parseReal, NULL, offsetof(LocomotorTemplate, m_rudderCorrectionRate) },
 		{ "ElevatorCorrectionDegree",	 INI::parseReal, NULL, offsetof(LocomotorTemplate, m_elevatorCorrectionDegree) },
 		{ "ElevatorCorrectionRate",		 INI::parseReal, NULL, offsetof(LocomotorTemplate, m_elevatorCorrectionRate) },
-#endif
+#endif // ZH
 		{ NULL, NULL, NULL, 0 }  // keep this last	
 	
 	};
@@ -894,7 +894,7 @@ void Locomotor::locoUpdate_moveTowardsAngle(Object* obj, Real goalAngle)
 	// Skip moveTowardsAngle if physics say you're stunned
 	if(physics->getIsStunned())
 	{
-#endif
+#endif // ZH
 		return;
 	}
 
@@ -992,7 +992,7 @@ void Locomotor::locoUpdate_moveTowardsPosition(Object* obj, const Coord3D& goalP
 		return;
 	}
 
-#endif
+#endif // ZH
 #ifdef DEBUG_OBJECT_ID_EXISTS
 //	DEBUG_ASSERTLOG(obj->getID() != TheObjectIDToDebug, ("locoUpdate_moveTowardsPosition %f %f %f (dtg %f, spd %f), speed %f (%f)\n",goalPos.x,goalPos.y,goalPos.z,onPathDistToGoal,desiredSpeed,physics->getSpeed(),physics->getForwardSpeed2D()));
 #endif
@@ -1038,7 +1038,7 @@ void Locomotor::locoUpdate_moveTowardsPosition(Object* obj, const Coord3D& goalP
 	{
 		heightAboveSurface -= obj->getCarrierDeckHeight();
 	}
-#endif
+#endif // ZH
 
 	if (heightAboveSurface > -(3*3)*TheGlobalData->m_gravity) 
 	{
@@ -1089,10 +1089,10 @@ void Locomotor::locoUpdate_moveTowardsPosition(Object* obj, const Coord3D& goalP
 
 #ifdef OG
 	Bool wasBraking = BitTest( obj->getStatusBits(), OBJECT_STATUS_BRAKING );
-#endif
+#endif // OG
 #ifdef ZH
 	Bool wasBraking = obj->getStatusBits().test( OBJECT_STATUS_BRAKING );
-#endif
+#endif // ZH
 
 	physics->setTurning(TURN_NONE);
 	if (getAllowMotiveForceWhileAirborne() || !treatAsAirborne)
@@ -1109,11 +1109,11 @@ void Locomotor::locoUpdate_moveTowardsPosition(Object* obj, const Coord3D& goalP
 #ifdef OG
 					moveTowardsPositionWheels(obj, physics, goalPos, onPathDistToGoal, desiredSpeed);
 
-#endif
+#endif // OG
 #ifdef ZH
 			case LOCO_MOTORCYCLE:
 					moveTowardsPositionWheels( obj, physics, goalPos, onPathDistToGoal, desiredSpeed );
-#endif
+#endif // ZH
 					break;
 			case LOCO_TREADS:
 					moveTowardsPositionTreads(obj, physics, goalPos, onPathDistToGoal, desiredSpeed);
@@ -1138,10 +1138,10 @@ void Locomotor::locoUpdate_moveTowardsPosition(Object* obj, const Coord3D& goalP
 	// Objects that are braking don't follow the normal physics, so they end up at their destination exactly.
 #ifdef OG
 	obj->setStatus(OBJECT_STATUS_BRAKING, getFlag(IS_BRAKING));
-#endif
+#endif // OG
 #ifdef ZH
 	obj->setStatus( MAKE_OBJECT_STATUS_MASK( OBJECT_STATUS_BRAKING ), getFlag(IS_BRAKING) );
-#endif
+#endif // ZH
 
 	if (wasBraking) 
 	{
@@ -1153,10 +1153,10 @@ void Locomotor::locoUpdate_moveTowardsPosition(Object* obj, const Coord3D& goalP
 			// Projectiles never stop braking once they start.  jba.
 #ifdef OG
 			obj->setStatus(OBJECT_STATUS_BRAKING, TRUE);
-#endif
+#endif // OG
 #ifdef ZH
 			obj->setStatus( MAKE_OBJECT_STATUS_MASK( OBJECT_STATUS_BRAKING ) );
-#endif
+#endif // ZH
 			// Projectiles cheat in 3 dimensions.
 			dist = sqrt(dx*dx+dy*dy+dz*dz);
 			Real vel = physics->getVelocityMagnitude();
@@ -2017,11 +2017,11 @@ void Locomotor::moveTowardsPositionThrust(Object* obj, PhysicsBehavior *physics,
 #ifdef OG
 		if (BitTest( obj->getStatusBits(), OBJECT_STATUS_BRAKING )) {
 
-#endif
+#endif // OG
 #ifdef ZH
 		if( obj->getStatusBits().test( OBJECT_STATUS_BRAKING ) ) 
 		{
-#endif
+#endif // ZH
 			// align to target, cause that's where we're going anyway.
 
 			vel.Set(goalPos.x - pos.x, goalPos.y-pos.y, goalPos.z-pos.z);
@@ -2076,19 +2076,19 @@ Real Locomotor::getSurfaceHtAtPt(Real x, Real y)
 #ifdef OG
 	Real waterZ;
 	if (TheTerrainLogic->isUnderwater(x, y, &waterZ)) {
-#endif
+#endif // OG
 #ifdef ZH
 	Real z,waterZ;
 	if (TheTerrainLogic->isUnderwater(x, y, &waterZ, &z)) {
-#endif
+#endif // ZH
 		ht += waterZ;
 	} else {
 #ifdef OG
 		ht += TheTerrainLogic->getGroundHeight(x, y);
-#endif
+#endif // OG
 #ifdef ZH
 		ht += z;
-#endif
+#endif // ZH
 	}
 	
 	return ht;
@@ -2524,7 +2524,7 @@ Bool Locomotor::locoUpdate_maintainCurrentPosition(Object* obj)
 		case LOCO_WHEELS_FOUR:
 #ifdef ZH
 		case LOCO_MOTORCYCLE:
-#endif
+#endif // ZH
 			maintainCurrentPositionWheels(obj, physics);
 			requiresConstantCalling = FALSE;
 			break;
@@ -2645,7 +2645,7 @@ void Locomotor::maintainCurrentPositionHover(Object* obj, PhysicsBehavior *physi
       // Because of changes in wind, pressure, etc.
       // Those changes are added here, then the 
 
-#endif
+#endif // ZH
 
 			// apply forces to object
 			physics->applyMotiveForce( &force );

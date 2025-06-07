@@ -26,40 +26,40 @@
 #ifdef OG
 #include "GameClient/SelectionInfo.h"
 
-#endif
+#endif // OG
 #ifdef ZH
 
 #include "GameLogic/Damage.h"
 #include "GameLogic/Module/ContainModule.h"
-#endif
+#endif // ZH
 
 #include "Common/ActionManager.h"
 #ifdef OG
 #include "GameLogic/Damage.h"
 
-#endif
+#endif // OG
 #ifdef ZH
 #include "Common/ThingTemplate.h"
 #include "Common/PlayerList.h"
-#endif
+#endif // ZH
 #include "Common/Player.h"
 #ifdef OG
 #include "Common/PlayerList.h"
 #include "Common/ThingTemplate.h"
-#endif
+#endif // OG
 
 #ifdef ZH
 #include "GameClient/SelectionInfo.h"
-#endif
+#endif // ZH
 #include "GameClient/CommandXlat.h"
 #include "GameClient/ControlBar.h"
 #ifdef ZH
 #include "GameClient/GameClient.h"
-#endif
+#endif // ZH
 #include "GameClient/Drawable.h"
 #ifdef OG
 #include "GameClient/GameClient.h"
-#endif
+#endif // OG
 #include "GameClient/KeyDefs.h"
 
 #ifdef _INTERNAL
@@ -409,7 +409,7 @@ Bool addDrawableToList( Drawable *draw, void *userData )
 		{
 			if( obj->getShroudedStatus( player->getPlayerIndex() ) >= OBJECTSHROUD_FOGGED )
 			{
-#endif
+#endif // ZH
 		return FALSE;
 #ifdef ZH
 			}
@@ -421,7 +421,7 @@ Bool addDrawableToList( Drawable *draw, void *userData )
 			}
 		}
 	}
-#endif
+#endif // ZH
 
 	pds->drawableListToFill->push_back(draw);
 	return TRUE;

@@ -321,4 +321,4 @@ int LZOPipe::Flush(void)
 }
 
 
-#endif
+#endif // ZH

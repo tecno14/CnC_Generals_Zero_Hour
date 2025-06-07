@@ -48,7 +48,7 @@
 #include "GameClient/View.h"
 #ifdef ZH
 #include "GameClient/CampaignManager.h"
-#endif
+#endif // ZH
 
 #include "GameLogic/GameLogic.h"
 #include "GameLogic/Module/AIUpdate.h"
@@ -203,24 +203,24 @@ void AttackPriorityInfo::dumpPriorityInfo(void)
 {
 #ifdef ZH
 #ifdef DEBUG_LOGGING
-#endif
+#endif // ZH
 	DEBUG_LOG(("Attack priority '%s', default %d\n", m_name.str(), m_defaultPriority));
 	if (m_priorityMap==NULL) return;
 #ifdef OG
 	for (AttackPriorityMap::const_iterator it = m_priorityMap->begin(); it != m_priorityMap->end(); ++it) {
 
-#endif
+#endif // OG
 #ifdef ZH
 	for (AttackPriorityMap::const_iterator it = m_priorityMap->begin(); it != m_priorityMap->end(); ++it) 
     {
-#endif
+#endif // ZH
 		const ThingTemplate *tThing = (*it).first;
 		Int priority = (*it).second;
 		DEBUG_LOG(("  Thing '%s' priority %d\n",tThing->getName().str(), priority));
 	}
 #ifdef ZH
 #endif
-#endif
+#endif // ZH
 }
 #endif
 
@@ -417,7 +417,7 @@ void ScriptEngine::addActionTemplateInfo( Template *actionTemplate)
 	}
 	DEBUG_LOG(("Couldn't find script action named %s\n", actionTemplate->m_internalName.str()));
 }
-#endif
+#endif // ZH
 
 //-------------------------------------------------------------------------------------------------
 #ifdef ZH
@@ -440,7 +440,7 @@ void ScriptEngine::parseScriptCondition( INI* ini )
 internal name, and then it
 overrides the ui name and help text.  If no entry is present in the ini file, the default code 
 initialized value in ScriptEngine::init() is used. jba*/
-#endif
+#endif // ZH
 //-------------------------------------------------------------------------------------------------
 #ifdef ZH
 void ScriptEngine::addConditionTemplateInfo( Template *actionTemplate)
@@ -459,7 +459,7 @@ void ScriptEngine::addConditionTemplateInfo( Template *actionTemplate)
 
 //-------------------------------------------------------------------------------------------------
 //-------------------------------------------------------------------------------------------------
-#endif
+#endif // ZH
 ScriptEngine::ScriptEngine():
 m_numCounters(0),
 m_numFlags(0),
@@ -541,7 +541,7 @@ ScriptEngine::~ScriptEngine()
 	}
 #endif
 
-#endif
+#endif // ZH
 }  // end ~ScriptEngine
 
 //-------------------------------------------------------------------------------------------------
@@ -607,11 +607,11 @@ void ScriptEngine::init( void )
 #ifdef OG
 	curTemplate->m_name = "[Scripting] Debug message and pause";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "DEBUG_MESSAGE_BOX";
 	curTemplate->m_uiName = "Scripting_/Debug/Display message and pause";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 1;
 	curTemplate->m_parameters[0] = Parameter::TEXT_STRING;
 	curTemplate->m_numUiStrings = 1;
@@ -621,11 +621,11 @@ void ScriptEngine::init( void )
 #ifdef OG
 	curTemplate->m_name = "[Scripting] Debug string";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "DEBUG_STRING";
 	curTemplate->m_uiName = "Scripting_/Debug/Display string";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 1;
 	curTemplate->m_parameters[0] = Parameter::TEXT_STRING;
 	curTemplate->m_numUiStrings = 1;
@@ -635,11 +635,11 @@ void ScriptEngine::init( void )
 #ifdef OG
 	curTemplate->m_name = "[Scripting] Display a crash box (debug/internal builds only).";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "DEBUG_CRASH_BOX";
 	curTemplate->m_uiName = "{INTERNAL}_/Debug/Display a crash box (debug/internal builds only).";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 1;
 	curTemplate->m_parameters[0] = Parameter::TEXT_STRING;
 	curTemplate->m_numUiStrings = 1;
@@ -649,11 +649,11 @@ void ScriptEngine::init( void )
 #ifdef OG
 	curTemplate->m_name = "[Scripting] Set flag to value";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "SET_FLAG";
 	curTemplate->m_uiName = "Scripting_/Flags/Set flag to value";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 2;
 	curTemplate->m_parameters[0] = Parameter::FLAG;
 	curTemplate->m_parameters[1] = Parameter::BOOLEAN;
@@ -665,11 +665,11 @@ void ScriptEngine::init( void )
 #ifdef OG
 	curTemplate->m_name = "[Scripting] Counter -- set to a value";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "SET_COUNTER";
 	curTemplate->m_uiName = "Scripting_/Counters/Set counter to a value";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 2;
 	curTemplate->m_parameters[0] = Parameter::COUNTER;
 	curTemplate->m_parameters[1] = Parameter::INT;
@@ -681,11 +681,11 @@ void ScriptEngine::init( void )
 #ifdef OG
 	curTemplate->m_name = "[Map] Set wind sway amount and direction.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "SET_TREE_SWAY";
 	curTemplate->m_uiName = "Map_/Environment/Set wind sway amount and direction.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 5;
 	curTemplate->m_parameters[0] = Parameter::ANGLE;
 	curTemplate->m_parameters[1] = Parameter::ANGLE;
@@ -704,11 +704,11 @@ void ScriptEngine::init( void )
 #ifdef OG
 	curTemplate->m_name = "[Map] Infantry Lighting - Set.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "SET_INFANTRY_LIGHTING_OVERRIDE";
 	curTemplate->m_uiName = "Map_/Environment/Infantry Lighting - Set.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 1;
 	curTemplate->m_parameters[0] = Parameter::REAL;
 	curTemplate->m_numUiStrings = 2;
@@ -719,11 +719,11 @@ void ScriptEngine::init( void )
 #ifdef OG
 	curTemplate->m_name = "[Map] Infantry Lighting - Reset.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "RESET_INFANTRY_LIGHTING_OVERRIDE";
 	curTemplate->m_uiName = "Map_/Environment/Infantry Lighting - Reset.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 0;
 	curTemplate->m_numUiStrings = 1;
 	curTemplate->m_uiStrings[0] = "Reset infantry lighting to the normal setting. 1.0 for the two day states, 2.0 for the two night states. (Look in GamesData.ini)";
@@ -732,11 +732,11 @@ void ScriptEngine::init( void )
 #ifdef OG
 	curTemplate->m_name = "[User] Announce quick win";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "QUICKVICTORY";
 	curTemplate->m_uiName = "User_/ Announce quick win";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 0;
 	curTemplate->m_numUiStrings = 1;
 	curTemplate->m_uiStrings[0] = "End game in victory immediately.";
@@ -745,11 +745,11 @@ void ScriptEngine::init( void )
 #ifdef OG
 	curTemplate->m_name = "[User] Announce win";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "VICTORY";
 	curTemplate->m_uiName = "User_/ Announce win";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 0;
 	curTemplate->m_numUiStrings = 1;
 	curTemplate->m_uiStrings[0] = "Announce win.";
@@ -758,11 +758,11 @@ void ScriptEngine::init( void )
 #ifdef OG
 	curTemplate->m_name = "[User] Announce lose";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "DEFEAT";
 	curTemplate->m_uiName = "User_/ Announce lose";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 0;
 	curTemplate->m_numUiStrings = 1;
 	curTemplate->m_uiStrings[0] = "Announce lose.";
@@ -771,11 +771,11 @@ void ScriptEngine::init( void )
 #ifdef OG
 	curTemplate->m_name = "[Scripting] Null operation.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "NO_OP";
 	curTemplate->m_uiName = "Scripting_/Debug/Null operation.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 0;
 	curTemplate->m_numUiStrings = 1;
 	curTemplate->m_uiStrings[0] = "Null operation. (Does nothing.)";
@@ -784,11 +784,11 @@ void ScriptEngine::init( void )
 #ifdef OG
 	curTemplate->m_name = "[Scripting] Frame countdown timer -- set.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "SET_TIMER";
 	curTemplate->m_uiName = "Scripting_/Timer/Frame countdown timer -- set.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 2;
 	curTemplate->m_parameters[0] = Parameter::COUNTER;
 	curTemplate->m_parameters[1] = Parameter::INT;
@@ -801,11 +801,11 @@ void ScriptEngine::init( void )
 #ifdef OG
 	curTemplate->m_name = "[Scripting] Frame countdown timer -- set random.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "SET_RANDOM_TIMER";
 	curTemplate->m_uiName = "Scripting_/Timer/Frame countdown timer -- set random.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 3;
 	curTemplate->m_parameters[0] = Parameter::COUNTER;
 	curTemplate->m_parameters[1] = Parameter::INT;
@@ -820,11 +820,11 @@ void ScriptEngine::init( void )
 #ifdef OG
 	curTemplate->m_name = "[Scripting] Timer -- stop.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "STOP_TIMER";
 	curTemplate->m_uiName = "Scripting_/Timer/Timer -- stop.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 1;
 	curTemplate->m_parameters[0] = Parameter::COUNTER;
 	curTemplate->m_numUiStrings = 1;
@@ -834,11 +834,11 @@ void ScriptEngine::init( void )
 #ifdef OG
 	curTemplate->m_name = "[Scripting] Timer -- restart stopped.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "RESTART_TIMER";
 	curTemplate->m_uiName = "Scripting_/Timer/Timer -- restart stopped.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 1;
 	curTemplate->m_parameters[0] = Parameter::COUNTER;
 	curTemplate->m_numUiStrings = 1;
@@ -848,11 +848,11 @@ void ScriptEngine::init( void )
 #ifdef OG
 	curTemplate->m_name = "[Multimedia] Play sound effect.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "PLAY_SOUND_EFFECT";
 	curTemplate->m_uiName = "Multimedia_/Sound Effect/Play sound effect.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 1;
 	curTemplate->m_parameters[0] = Parameter::SOUND;
 	curTemplate->m_numUiStrings = 2;
@@ -863,11 +863,11 @@ void ScriptEngine::init( void )
 #ifdef OG
 	curTemplate->m_name = "[Scripting] Script -- enable.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "ENABLE_SCRIPT";
 	curTemplate->m_uiName = "Scripting_/Script/Enable Script.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 1;
 	curTemplate->m_parameters[0] = Parameter::SCRIPT;
 	curTemplate->m_numUiStrings = 2;
@@ -878,11 +878,11 @@ void ScriptEngine::init( void )
 #ifdef OG
 	curTemplate->m_name = "[Scripting] Script -- disable.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "DISABLE_SCRIPT";
 	curTemplate->m_uiName = "Scripting_/Script/Disable script.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 1;
 	curTemplate->m_parameters[0] = Parameter::SCRIPT;
 	curTemplate->m_numUiStrings = 2;
@@ -893,11 +893,11 @@ void ScriptEngine::init( void )
 #ifdef OG
 	curTemplate->m_name = "[Scripting] Script -- run.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "CALL_SUBROUTINE";
 	curTemplate->m_uiName = "Scripting_/Script/Run subroutine script.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 1;
 	curTemplate->m_parameters[0] = Parameter::SCRIPT_SUBROUTINE;
 	curTemplate->m_numUiStrings = 2;
@@ -908,11 +908,11 @@ void ScriptEngine::init( void )
 #ifdef OG
 	curTemplate->m_name = "[Multimedia] Play sound effect at waypoint.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "PLAY_SOUND_EFFECT_AT";
 	curTemplate->m_uiName = "Multimedia_/Sound Effect/Play sound effect at waypoint.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 2;
 	curTemplate->m_parameters[0] = Parameter::SOUND;
 	curTemplate->m_parameters[1] = Parameter::WAYPOINT;
@@ -925,11 +925,11 @@ void ScriptEngine::init( void )
 #ifdef OG
 	curTemplate->m_name = "[Team] Damage the members of a team.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "DAMAGE_MEMBERS_OF_TEAM";
 	curTemplate->m_uiName = "Team_/Damage/Damage the members of a team.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 2;
 	curTemplate->m_parameters[0] = Parameter::TEAM;
 	curTemplate->m_parameters[1] = Parameter::REAL;
@@ -942,11 +942,11 @@ void ScriptEngine::init( void )
 #ifdef OG
 	curTemplate->m_name = "[Team] Set to move to a location.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "MOVE_TEAM_TO";
 	curTemplate->m_uiName = "Team_/Move/Set to move to a location.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 2;
 	curTemplate->m_parameters[0] = Parameter::TEAM;
 	curTemplate->m_parameters[1] = Parameter::WAYPOINT;
@@ -959,11 +959,11 @@ void ScriptEngine::init( void )
 #ifdef OG
 	curTemplate->m_name = "[Team] Set to follow a waypoint path.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "TEAM_FOLLOW_WAYPOINTS";
 	curTemplate->m_uiName = "Team_/Move/Set to follow a waypoint path.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 3;
 	curTemplate->m_parameters[0] = Parameter::TEAM;
 	curTemplate->m_parameters[1] = Parameter::WAYPOINT_PATH;
@@ -977,11 +977,11 @@ void ScriptEngine::init( void )
 #ifdef OG
 	curTemplate->m_name = "[Team] Set to EXACTLY follow a waypoint path.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "TEAM_FOLLOW_WAYPOINTS_EXACT";
 	curTemplate->m_uiName = "Team_/Move/Set to EXACTLY follow a waypoint path.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 3;
 	curTemplate->m_parameters[0] = Parameter::TEAM;
 	curTemplate->m_parameters[1] = Parameter::WAYPOINT_PATH;
@@ -995,11 +995,11 @@ void ScriptEngine::init( void )
 #ifdef OG
 	curTemplate->m_name = "[Team] Set to wander around current location.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "TEAM_WANDER_IN_PLACE";
 	curTemplate->m_uiName = "Team_/Move/Set to wander around current location.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 1;
 	curTemplate->m_parameters[0] = Parameter::TEAM;
 	curTemplate->m_numUiStrings = 2;
@@ -1010,11 +1010,11 @@ void ScriptEngine::init( void )
 #ifdef OG
 	curTemplate->m_name = "[Team] AI - Increase priority by Success Priority Increase amount.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "TEAM_INCREASE_PRIORITY";
 	curTemplate->m_uiName = "Team_/AI/Increase priority by Success Priority Increase amount.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 1;
 	curTemplate->m_parameters[0] = Parameter::TEAM;
 	curTemplate->m_numUiStrings = 2;
@@ -1025,11 +1025,11 @@ void ScriptEngine::init( void )
 #ifdef OG
 	curTemplate->m_name = "[Team] AI - Reduce priority by Failure Priority Decrease amount.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "TEAM_DECREASE_PRIORITY";
 	curTemplate->m_uiName = "Team_/AI/Reduce priority by Failure Priority Decrease amount.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 1;
 	curTemplate->m_parameters[0] = Parameter::TEAM;
 	curTemplate->m_numUiStrings = 2;
@@ -1040,11 +1040,11 @@ void ScriptEngine::init( void )
 #ifdef OG
 	curTemplate->m_name = "[Team] Set to follow a waypoint path -- wander.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "TEAM_WANDER";
 	curTemplate->m_uiName = "Team_/Move/Set to follow a waypoint path -- wander.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 2;
 	curTemplate->m_parameters[0] = Parameter::TEAM;
 	curTemplate->m_parameters[1] = Parameter::WAYPOINT_PATH;
@@ -1056,11 +1056,11 @@ void ScriptEngine::init( void )
 #ifdef OG
 	curTemplate->m_name = "[Team] Set to follow a waypoint path -- panic.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "TEAM_PANIC";
 	curTemplate->m_uiName = "Team_/Move/Set to follow a waypoint path -- panic.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 2;
 	curTemplate->m_parameters[0] = Parameter::TEAM;
 	curTemplate->m_parameters[1] = Parameter::WAYPOINT_PATH;
@@ -1072,11 +1072,11 @@ void ScriptEngine::init( void )
 #ifdef OG
 	curTemplate->m_name = "[Unit] Move a specific unit to a location.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "MOVE_NAMED_UNIT_TO";
 	curTemplate->m_uiName = "Unit_/Move/Move a specific unit to a location.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 2;
 	curTemplate->m_parameters[0] = Parameter::UNIT;
 	curTemplate->m_parameters[1] = Parameter::WAYPOINT;
@@ -1089,11 +1089,11 @@ void ScriptEngine::init( void )
 #ifdef OG
 	curTemplate->m_name = "[Team] Team custom state - set state.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "TEAM_SET_STATE";
 	curTemplate->m_uiName = "Team_/Misc/Team custom state - set state.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 2;
 	curTemplate->m_parameters[0] = Parameter::TEAM;
 	curTemplate->m_parameters[1] = Parameter::TEAM_STATE;
@@ -1115,12 +1115,12 @@ void ScriptEngine::init( void )
 
  	curTemplate = &m_actionTemplates[ScriptAction::CREATE_REINFORCEMENT_TEAM];
 	curTemplate->m_name = "[Team] Spawn a reinforcement team.";
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "CREATE_REINFORCEMENT_TEAM";
 	curTemplate->m_uiName = "Team_/ Spawn a reinforcement team.";
 
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 2;
 	curTemplate->m_parameters[0] = Parameter::TEAM;
 	curTemplate->m_parameters[1] = Parameter::WAYPOINT;
@@ -1133,11 +1133,11 @@ void ScriptEngine::init( void )
 #ifdef OG
 	curTemplate->m_name = "[Skirmish Only] Build a building.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "SKIRMISH_BUILD_BUILDING";
 	curTemplate->m_uiName = "Skirmish Only_/ Build a building.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 1;
 	curTemplate->m_parameters[0] = Parameter::OBJECT_TYPE;
 	curTemplate->m_numUiStrings = 1;
@@ -1148,11 +1148,11 @@ void ScriptEngine::init( void )
 #ifdef OG
 	curTemplate->m_name = "[Player] AI player build near a supply source.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "AI_PLAYER_BUILD_SUPPLY_CENTER";
 	curTemplate->m_uiName = "Player_/AI/AI player build near a supply source.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 3;
 	curTemplate->m_parameters[0] = Parameter::SIDE;
 	curTemplate->m_parameters[1] = Parameter::OBJECT_TYPE;
@@ -1177,16 +1177,16 @@ void ScriptEngine::init( void )
 	curTemplate->m_uiStrings[2] = " nearest team ";
 	curTemplate->m_uiStrings[3] = ".";
 
-#endif
+#endif // ZH
   curTemplate = &m_actionTemplates[ScriptAction::TEAM_GUARD_SUPPLY_CENTER];
 #ifdef OG
 	curTemplate->m_name = "[Team] Set to guard - a supply source.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "TEAM_GUARD_SUPPLY_CENTER";
 	curTemplate->m_uiName = "Team_/Guard/Set to guard a supply source.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 2;
 	curTemplate->m_parameters[0] = Parameter::TEAM;
 	curTemplate->m_parameters[1] = Parameter::INT;
@@ -1199,11 +1199,11 @@ void ScriptEngine::init( void )
 #ifdef OG
 	curTemplate->m_name = "[Player] AI player build an upgrade.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "AI_PLAYER_BUILD_UPGRADE";
 	curTemplate->m_uiName = "Player_/AI/AI player build an upgrade.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 2;
 	curTemplate->m_parameters[0] = Parameter::SIDE;
 	curTemplate->m_parameters[1] = Parameter::UPGRADE;
@@ -1215,11 +1215,11 @@ void ScriptEngine::init( void )
 #ifdef OG
 	curTemplate->m_name = "[Skirmish Only] Team follow approach path.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "SKIRMISH_FOLLOW_APPROACH_PATH";
 	curTemplate->m_uiName = "Skirmish Only_/Move/Team follow approach path.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 3;
 	curTemplate->m_parameters[0] = Parameter::TEAM;
 	curTemplate->m_parameters[1] = Parameter::SKIRMISH_WAYPOINT_PATH;
@@ -1233,11 +1233,11 @@ void ScriptEngine::init( void )
 #ifdef OG
 	curTemplate->m_name = "[Skirmish Only] Team move to approach path.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "SKIRMISH_MOVE_TO_APPROACH_PATH";
 	curTemplate->m_uiName = "Skirmish Only_/Move/Team move to approach path.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 2;
 	curTemplate->m_parameters[0] = Parameter::TEAM;
 	curTemplate->m_parameters[1] = Parameter::SKIRMISH_WAYPOINT_PATH;
@@ -1250,11 +1250,11 @@ void ScriptEngine::init( void )
 #ifdef OG
 	curTemplate->m_name = "[Skirmish Only] Build base defense on front perimeter.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "SKIRMISH_BUILD_BASE_DEFENSE_FRONT";
 	curTemplate->m_uiName = "Skirmish Only_/Build/Build base defense on front perimeter.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 0;
 	curTemplate->m_numUiStrings = 1;
 	curTemplate->m_uiStrings[0] = "Build one additional perimeter base defenses, on the front.";
@@ -1263,11 +1263,11 @@ void ScriptEngine::init( void )
 #ifdef OG
 	curTemplate->m_name = "[Skirmish Only] Build base defense on flank perimeter.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "SKIRMISH_BUILD_BASE_DEFENSE_FLANK";
 	curTemplate->m_uiName = "Skirmish Only_/Build/Build base defense on flank perimeter.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 0;
 	curTemplate->m_numUiStrings = 1;
 	curTemplate->m_uiStrings[0] = "Build one additional perimeter base defenses, on the flank.";
@@ -1276,11 +1276,11 @@ void ScriptEngine::init( void )
 #ifdef OG
 	curTemplate->m_name = "[Skirmish Only] Build structure on front perimeter.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "SKIRMISH_BUILD_STRUCTURE_FRONT";
 	curTemplate->m_uiName = "Skirmish Only_/Build/Build structure on front perimeter.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 1;
 	curTemplate->m_parameters[0] = Parameter::OBJECT_TYPE;
 	curTemplate->m_numUiStrings = 2;
@@ -1291,11 +1291,11 @@ void ScriptEngine::init( void )
 #ifdef OG
 	curTemplate->m_name = "[Skirmish Only] Build structure on flank perimeter.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "SKIRMISH_BUILD_STRUCTURE_FLANK";
 	curTemplate->m_uiName = "Skirmish Only_/Build/Build structure on flank perimeter.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 1;
 	curTemplate->m_parameters[0] = Parameter::OBJECT_TYPE;
 	curTemplate->m_numUiStrings = 2;
@@ -1306,11 +1306,11 @@ void ScriptEngine::init( void )
 #ifdef OG
 	curTemplate->m_name = "[Team] Recruit a team.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "RECRUIT_TEAM";
 	curTemplate->m_uiName = "Team_/Create/Recruit a team.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 2;
 	curTemplate->m_parameters[0] = Parameter::TEAM;
 	curTemplate->m_parameters[1] = Parameter::REAL;
@@ -1324,80 +1324,80 @@ void ScriptEngine::init( void )
 	curTemplate->m_name = "[Camera (M)] Move the camera to a location.";
 	curTemplate->m_numParameters = 3;
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "MOVE_CAMERA_TO";
 	curTemplate->m_uiName = "Camera_/Move/Move the camera to a location.";
 	curTemplate->m_numParameters = 5;
-#endif
+#endif // ZH
 	curTemplate->m_parameters[0] = Parameter::WAYPOINT;
 	curTemplate->m_parameters[1] = Parameter::REAL;
 	curTemplate->m_parameters[2] = Parameter::REAL;
 #ifdef OG
 	curTemplate->m_numUiStrings = 4;
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_parameters[3] = Parameter::REAL;
 	curTemplate->m_parameters[4] = Parameter::REAL;
 	curTemplate->m_numUiStrings = 6;
-#endif
+#endif // ZH
 	curTemplate->m_uiStrings[0] = "Move camera to ";
 	curTemplate->m_uiStrings[1] = " in ";
 	curTemplate->m_uiStrings[2] = " seconds, camera shutter ";
 #ifdef OG
 	curTemplate->m_uiStrings[3] = " seconds.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_uiStrings[3] = " seconds, ease-in ";
 	curTemplate->m_uiStrings[4] = " seconds, ease-out ";
 	curTemplate->m_uiStrings[5] = " seconds.";
-#endif
+#endif // ZH
 
  	curTemplate = &m_actionTemplates[ScriptAction::ZOOM_CAMERA];
 #ifdef OG
 	curTemplate->m_name = "[Camera] Change the camera zoom.";
 	curTemplate->m_numParameters = 2;
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "ZOOM_CAMERA";
 	curTemplate->m_uiName = "Camera_/Adjust/Change the camera zoom.";
 	curTemplate->m_numParameters = 4;
-#endif
+#endif // ZH
 	curTemplate->m_parameters[0] = Parameter::REAL;
 	curTemplate->m_parameters[1] = Parameter::REAL;
 #ifdef OG
 	curTemplate->m_numUiStrings = 3;
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_parameters[2] = Parameter::REAL;
 	curTemplate->m_parameters[3] = Parameter::REAL;
 	curTemplate->m_numUiStrings = 5;
-#endif
+#endif // ZH
 	curTemplate->m_uiStrings[0] = "Change camera zoom to ";
 	curTemplate->m_uiStrings[1] = " in ";
 #ifdef OG
 	curTemplate->m_uiStrings[2] = " seconds.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_uiStrings[2] = " seconds, ease-in ";
 	curTemplate->m_uiStrings[3] = " seconds, ease-out ";
 	curTemplate->m_uiStrings[4] = " seconds.";
-#endif
+#endif // ZH
 
  	curTemplate = &m_actionTemplates[ScriptAction::CAMERA_FADE_ADD];
 #ifdef OG
 	curTemplate->m_name = "[Camera] Fade using an add blend to white.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "CAMERA_FADE_ADD";
 	curTemplate->m_uiName = "Camera_/Fade Effects/Fade using an add blend to white.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 5;
 	curTemplate->m_parameters[0] = Parameter::REAL;
 	curTemplate->m_parameters[1] = Parameter::REAL;
@@ -1416,11 +1416,11 @@ void ScriptEngine::init( void )
 #ifdef OG
 	curTemplate->m_name = "[Camera] Fade using a subtractive blend to black.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "CAMERA_FADE_SUBTRACT";
 	curTemplate->m_uiName = "Camera_/Fade Effects/Fade using a subtractive blend to black.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 5;
 	curTemplate->m_parameters[0] = Parameter::REAL;
 	curTemplate->m_parameters[1] = Parameter::REAL;
@@ -1439,11 +1439,11 @@ void ScriptEngine::init( void )
 #ifdef OG
 	curTemplate->m_name = "[Camera] Fade using a multiply blend to black.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "CAMERA_FADE_MULTIPLY";
 	curTemplate->m_uiName = "Camera_/Fade Effects/Fade using a multiply blend to black.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 5;
 	curTemplate->m_parameters[0] = Parameter::REAL;
 	curTemplate->m_parameters[1] = Parameter::REAL;
@@ -1462,11 +1462,11 @@ void ScriptEngine::init( void )
 #ifdef OG
 	curTemplate->m_name = "[Camera] Fade using a saturate blend.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "CAMERA_FADE_SATURATE";
 	curTemplate->m_uiName = "Camera_/Fade Effects/Fade using a saturate blend.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 5;
 	curTemplate->m_parameters[0] = Parameter::REAL;
 	curTemplate->m_parameters[1] = Parameter::REAL;
@@ -1486,44 +1486,44 @@ void ScriptEngine::init( void )
 	curTemplate->m_name = "[Camera] Change the camera pitch.";
 	curTemplate->m_numParameters = 2;
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "PITCH_CAMERA";
 	curTemplate->m_uiName = "Camera_/Adjust/Change the camera pitch.";
 	curTemplate->m_numParameters = 4;
-#endif
+#endif // ZH
 	curTemplate->m_parameters[0] = Parameter::REAL;
 	curTemplate->m_parameters[1] = Parameter::REAL;
 #ifdef OG
 	curTemplate->m_numUiStrings = 3;
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_parameters[2] = Parameter::REAL;
 	curTemplate->m_parameters[3] = Parameter::REAL;
 	curTemplate->m_numUiStrings = 5;
-#endif
+#endif // ZH
 	curTemplate->m_uiStrings[0] = "Change camera pitch to ";
 	curTemplate->m_uiStrings[1] = " in ";
 #ifdef OG
 	curTemplate->m_uiStrings[2] = " seconds.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_uiStrings[2] = " seconds, ease-in ";
 	curTemplate->m_uiStrings[3] = " seconds, ease-out ";
 	curTemplate->m_uiStrings[4] = " seconds.";
-#endif
+#endif // ZH
 
  	curTemplate = &m_actionTemplates[ScriptAction::CAMERA_FOLLOW_NAMED];
 #ifdef OG
 	curTemplate->m_name = "[Camera] Follow a specific unit.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "CAMERA_FOLLOW_NAMED";
 	curTemplate->m_uiName = "Camera_/Move/Follow a specific unit.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 2;
 	curTemplate->m_parameters[0] = Parameter::UNIT;
 	curTemplate->m_parameters[1] = Parameter::BOOLEAN;
@@ -1536,11 +1536,11 @@ void ScriptEngine::init( void )
 #ifdef OG
 	curTemplate->m_name = "[Camera] Stop following any units.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "CAMERA_STOP_FOLLOW";
 	curTemplate->m_uiName = "Camera_/Move/Stop following any units.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 0;
 	curTemplate->m_numUiStrings = 1;
 	curTemplate->m_uiStrings[0] = "Stop following any units.";
@@ -1549,11 +1549,11 @@ void ScriptEngine::init( void )
 #ifdef OG
 	curTemplate->m_name = "[Camera] Set up the camera.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "SETUP_CAMERA";
 	curTemplate->m_uiName = "Camera_/Adjust/Set up the camera.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 4;
 	curTemplate->m_parameters[0] = Parameter::WAYPOINT;
 	curTemplate->m_parameters[1] = Parameter::REAL;
@@ -1571,11 +1571,11 @@ void ScriptEngine::init( void )
 #ifdef OG
 	curTemplate->m_name = "[Scripting] Counter -- increment.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "INCREMENT_COUNTER";
 	curTemplate->m_uiName = "Scripting_/Counters/Increment counter.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 2;
 	curTemplate->m_parameters[0] = Parameter::INT;
 	curTemplate->m_parameters[1] = Parameter::COUNTER;
@@ -1587,11 +1587,11 @@ void ScriptEngine::init( void )
 #ifdef OG
 	curTemplate->m_name = "[Scripting] Counter -- decrement.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "DECREMENT_COUNTER";
 	curTemplate->m_uiName = "Scripting_/Counters/Decrement counter.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 2;
 	curTemplate->m_parameters[0] = Parameter::INT;
 	curTemplate->m_parameters[1] = Parameter::COUNTER;
@@ -1604,114 +1604,114 @@ void ScriptEngine::init( void )
 	curTemplate->m_name = "[Camera (M)] Move along a waypoint path.";
 	curTemplate->m_numParameters = 3;
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "MOVE_CAMERA_ALONG_WAYPOINT_PATH";
 	curTemplate->m_uiName = "Camera_/Move/Move along a waypoint path.";
 	curTemplate->m_numParameters = 5;
-#endif
+#endif // ZH
 	curTemplate->m_parameters[0] = Parameter::WAYPOINT;
 	curTemplate->m_parameters[1] = Parameter::REAL;
 	curTemplate->m_parameters[2] = Parameter::REAL;
 #ifdef OG
 	curTemplate->m_numUiStrings = 4;
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_parameters[3] = Parameter::REAL;
 	curTemplate->m_parameters[4] = Parameter::REAL;
 	curTemplate->m_numUiStrings = 6;
-#endif
+#endif // ZH
 	curTemplate->m_uiStrings[0] = "Move along path starting with ";
 	curTemplate->m_uiStrings[1] = " in ";
 	curTemplate->m_uiStrings[2] = " seconds, camera shutter ";
 #ifdef OG
 	curTemplate->m_uiStrings[3] = " seconds.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_uiStrings[3] = " seconds, ease-in ";
 	curTemplate->m_uiStrings[4] = " seconds, ease-out ";
 	curTemplate->m_uiStrings[5] = " seconds.";
-#endif
+#endif // ZH
 
  	curTemplate = &m_actionTemplates[ScriptAction::ROTATE_CAMERA];
 #ifdef OG
 	curTemplate->m_name = "[Camera (R)] Rotate around the current viewpoint.";
 	curTemplate->m_numParameters = 2;
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "ROTATE_CAMERA";
 	curTemplate->m_uiName = "Camera_/Rotate/ Rotate around the current viewpoint.";
 	curTemplate->m_numParameters = 4;
-#endif
+#endif // ZH
 	curTemplate->m_parameters[0] = Parameter::REAL;
 	curTemplate->m_parameters[1] = Parameter::REAL;
 #ifdef OG
 	curTemplate->m_numUiStrings = 3;
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_parameters[2] = Parameter::REAL;
 	curTemplate->m_parameters[3] = Parameter::REAL;
 	curTemplate->m_numUiStrings = 5;
-#endif
+#endif // ZH
 	curTemplate->m_uiStrings[0] = "Rotate ";
 	curTemplate->m_uiStrings[1] = " times, taking ";
 #ifdef OG
 	curTemplate->m_uiStrings[2] = " seconds total.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_uiStrings[2] = " seconds, ease-in ";
 	curTemplate->m_uiStrings[3] = " seconds, ease-out ";
 	curTemplate->m_uiStrings[4] = " seconds.";
-#endif
+#endif // ZH
 
 	curTemplate = &m_actionTemplates[ScriptAction::RESET_CAMERA];
 #ifdef OG
 	curTemplate->m_name = "[Camera (M)] Reset to the default view.";
 	curTemplate->m_numParameters = 2;
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "RESET_CAMERA";
 	curTemplate->m_uiName = "Camera_/Move/ Reset to the default view.";
 	curTemplate->m_numParameters = 4;
-#endif
+#endif // ZH
 	curTemplate->m_parameters[0] = Parameter::WAYPOINT;
 	curTemplate->m_parameters[1] = Parameter::REAL;
 #ifdef OG
 	curTemplate->m_numUiStrings = 3;
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_parameters[2] = Parameter::REAL;
 	curTemplate->m_parameters[3] = Parameter::REAL;
 	curTemplate->m_numUiStrings = 5;
-#endif
+#endif // ZH
 	curTemplate->m_uiStrings[0] = "Reset to ";
 	curTemplate->m_uiStrings[1] = ", taking ";
 #ifdef OG
 	curTemplate->m_uiStrings[2] = " seconds.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_uiStrings[2] = " seconds, ease-in ";
 	curTemplate->m_uiStrings[3] = " seconds, ease-out ";
 	curTemplate->m_uiStrings[4] = " seconds.";
-#endif
+#endif // ZH
 
 	curTemplate = &m_actionTemplates[ScriptAction::MOVE_CAMERA_TO_SELECTION];
 #ifdef OG
 	curTemplate->m_name = "[Camera mod(M)] End movement at selected unit.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "MOVE_CAMERA_TO_SELECTION";
 	curTemplate->m_uiName = "Camera_/Move/Modify/ End movement at selected unit.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 0;
 	curTemplate->m_numUiStrings = 1;
 	curTemplate->m_uiStrings[0] = "End movement at selected unit.";
@@ -1720,11 +1720,11 @@ void ScriptEngine::init( void )
 #ifdef OG
 	curTemplate->m_name = "[Scripting] Seconds countdown timer -- set.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "SET_MILLISECOND_TIMER";
 	curTemplate->m_uiName = "Scripting_/Timer/Seconds countdown timer -- set.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 2;
 	curTemplate->m_parameters[0] = Parameter::COUNTER;
 	curTemplate->m_parameters[1] = Parameter::REAL;
@@ -1737,11 +1737,11 @@ void ScriptEngine::init( void )
 #ifdef OG
 	curTemplate->m_name = "[Scripting] Seconds countdown timer -- set random.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "SET_RANDOM_MSEC_TIMER";
 	curTemplate->m_uiName = "Scripting_/Timer/Seconds countdown timer -- set random.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 3;
 	curTemplate->m_parameters[0] = Parameter::COUNTER;
 	curTemplate->m_parameters[1] = Parameter::REAL;
@@ -1756,11 +1756,11 @@ void ScriptEngine::init( void )
 #ifdef OG
 	curTemplate->m_name = "[Scripting] Seconds countdown timer -- add seconds.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "ADD_TO_MSEC_TIMER";
 	curTemplate->m_uiName = "Scripting_/Timer/Seconds countdown timer -- add seconds.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 2;
 	curTemplate->m_parameters[0] = Parameter::REAL;
 	curTemplate->m_parameters[1] = Parameter::COUNTER;
@@ -1773,11 +1773,11 @@ void ScriptEngine::init( void )
 #ifdef OG
 	curTemplate->m_name = "[Scripting] Seconds countdown timer -- subtract seconds.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "SUB_FROM_MSEC_TIMER";
 	curTemplate->m_uiName = "Scripting_/Timer/Seconds countdown timer -- subtract seconds.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 2;
 	curTemplate->m_parameters[0] = Parameter::REAL;
 	curTemplate->m_parameters[1] = Parameter::COUNTER;
@@ -1790,11 +1790,11 @@ void ScriptEngine::init( void )
 #ifdef OG
 	curTemplate->m_name = "[Camera mod(RM)] Freeze time during the camera movement.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "CAMERA_MOD_FREEZE_TIME";
 	curTemplate->m_uiName = "Camera_/Move/Modify/ Freeze time during the camera movement.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 0;
 	curTemplate->m_numUiStrings = 1;
 	curTemplate->m_uiStrings[0] = "Freeze time during the camera movement.";
@@ -1803,11 +1803,11 @@ void ScriptEngine::init( void )
 #ifdef OG
 	curTemplate->m_name = "[Camera mod(M)] Freeze camera angle during the camera movement.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "CAMERA_MOD_FREEZE_ANGLE";
 	curTemplate->m_uiName = "Camera_/Move/Modify/ Freeze camera angle during the camera movement.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 0;
 	curTemplate->m_numUiStrings = 1;
 	curTemplate->m_uiStrings[0] = "Freeze camera angle during the camera movement.";
@@ -1816,11 +1816,11 @@ void ScriptEngine::init( void )
 #ifdef OG
 	curTemplate->m_name = "[Multimedia] Suspend all sounds.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "SUSPEND_BACKGROUND_SOUNDS";
 	curTemplate->m_uiName = "Multimedia_/All Sounds/Suspend all sounds.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 0;
 	curTemplate->m_numUiStrings = 1;
 	curTemplate->m_uiStrings[0] = "Suspend background sounds.";
@@ -1829,11 +1829,11 @@ void ScriptEngine::init( void )
 #ifdef OG
 	curTemplate->m_name = "[Multimedia] Resume all sounds.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "RESUME_BACKGROUND_SOUNDS";
 	curTemplate->m_uiName = "Multimedia_/All Sounds/Resume all sounds.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 0;
 	curTemplate->m_numUiStrings = 1;
 	curTemplate->m_uiStrings[0] = "Resume background sounds.";
@@ -1843,74 +1843,74 @@ void ScriptEngine::init( void )
 	curTemplate->m_name = "[Camera mod(RM)] Final zoom for camera movement.";
 	curTemplate->m_numParameters = 1;
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "CAMERA_MOD_SET_FINAL_ZOOM";
 	curTemplate->m_uiName = "Camera_/Move/Modify/Set Final zoom for camera movement.";
 	curTemplate->m_numParameters = 3;
-#endif
+#endif // ZH
 	curTemplate->m_parameters[0] = Parameter::REAL;
 #ifdef OG
 	curTemplate->m_numUiStrings = 2;
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_parameters[1] = Parameter::PERCENT;
 	curTemplate->m_parameters[2] = Parameter::PERCENT;
 	curTemplate->m_numUiStrings = 4;
-#endif
+#endif // ZH
 	curTemplate->m_uiStrings[0] = "Adjust zoom to ";
 #ifdef OG
 	curTemplate->m_uiStrings[1] = " (1.0==max height, 0.0==in the ground.)";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_uiStrings[1] = " (1.0==max height, 0.0==in the ground) ";
 	curTemplate->m_uiStrings[2] = " ease-in ";
 	curTemplate->m_uiStrings[3] = " ease-out.";
-#endif
+#endif // ZH
 
 	curTemplate = &m_actionTemplates[ScriptAction::CAMERA_MOD_SET_FINAL_PITCH];
 #ifdef OG
 	curTemplate->m_name = "[Camera mod(RM)] Final pitch for camera movement.";
 	curTemplate->m_numParameters = 1;
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "CAMERA_MOD_SET_FINAL_PITCH";
 	curTemplate->m_uiName = "Camera_/Move/Modify/Set Final pitch for camera movement.";
 	curTemplate->m_numParameters = 3;
-#endif
+#endif // ZH
 	curTemplate->m_parameters[0] = Parameter::REAL;
 #ifdef OG
 	curTemplate->m_numUiStrings = 2;
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_parameters[1] = Parameter::PERCENT;
 	curTemplate->m_parameters[2] = Parameter::PERCENT;
 	curTemplate->m_numUiStrings = 4;
-#endif
+#endif // ZH
 	curTemplate->m_uiStrings[0] = "Adjust pitch to ";
 #ifdef OG
 	curTemplate->m_uiStrings[1] = " (1.0==default, 0.0==toward horizon, >1 = toward ground.)";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_uiStrings[1] = " (1.0==default, 0.0==toward horizon, >1 = toward ground) ";
 	curTemplate->m_uiStrings[2] = " ease-in ";
 	curTemplate->m_uiStrings[3] = " ease-out.";
-#endif
+#endif // ZH
 
 	curTemplate = &m_actionTemplates[ScriptAction::SET_VISUAL_SPEED_MULTIPLIER];
 #ifdef OG
 	curTemplate->m_name = "[Multimedia] Modify visual game time.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "SET_VISUAL_SPEED_MULTIPLIER";
 	curTemplate->m_uiName = "{Compatibility}_/Multimedia/Modify visual game time.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 1;
 	curTemplate->m_parameters[0] = Parameter::INT;
 	curTemplate->m_numUiStrings = 2;
@@ -1921,11 +1921,11 @@ void ScriptEngine::init( void )
 #ifdef OG
 	curTemplate->m_name = "[Camera mod(RM)] Final visual game time for camera movement.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "CAMERA_MOD_SET_FINAL_SPEED_MULTIPLIER";
 	curTemplate->m_uiName = "{Compatibility}_/Camera/Modify/Final visual game time for camera movement.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 1;
 	curTemplate->m_parameters[0] = Parameter::INT;
 	curTemplate->m_numUiStrings = 2;
@@ -1936,11 +1936,11 @@ void ScriptEngine::init( void )
 #ifdef OG
 	curTemplate->m_name = "[Camera mod(M)] Number of frames to average movements.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "CAMERA_MOD_SET_ROLLING_AVERAGE";
 	curTemplate->m_uiName = "Camera_/Move/Modify/ Number of frames to average movements.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 1;
 	curTemplate->m_parameters[0] = Parameter::INT;
 	curTemplate->m_numUiStrings = 2;
@@ -1951,11 +1951,11 @@ void ScriptEngine::init( void )
 #ifdef OG
 	curTemplate->m_name = "[Camera mod(M)] Final camera look toward point.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "CAMERA_MOD_FINAL_LOOK_TOWARD";
 	curTemplate->m_uiName = "{Compatibility}_/Camera/Modify/Move/ Final camera look toward point.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 1;
 	curTemplate->m_parameters[0] = Parameter::WAYPOINT;
 	curTemplate->m_numUiStrings = 2;
@@ -1966,11 +1966,11 @@ void ScriptEngine::init( void )
 #ifdef OG
 	curTemplate->m_name = "[Camera mod(M)] Camera look toward point.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "CAMERA_MOD_LOOK_TOWARD";
 	curTemplate->m_uiName = "Camera_/Modify/Move/Camera look toward point while moving.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 1;
 	curTemplate->m_parameters[0] = Parameter::WAYPOINT;
 	curTemplate->m_numUiStrings = 2;
@@ -1981,11 +1981,11 @@ void ScriptEngine::init( void )
 #ifdef OG
 	curTemplate->m_name = "[Unit] Spawn -- object.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "CREATE_OBJECT";
 	curTemplate->m_uiName = "Unit_/Spawn/Spawn object.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 4;
 	curTemplate->m_parameters[0] = Parameter::OBJECT_TYPE;
 	curTemplate->m_parameters[1] = Parameter::TEAM;
@@ -2002,53 +2002,53 @@ void ScriptEngine::init( void )
 #ifdef OG
 	curTemplate->m_name = "[Team] Set to attack -- another team.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "TEAM_ATTACK_TEAM";
 	curTemplate->m_uiName = "Team_/Attack/Set to attack -- another team.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 2;
 	curTemplate->m_parameters[0] = Parameter::TEAM;
 	curTemplate->m_parameters[1] = Parameter::TEAM;
 	curTemplate->m_numUiStrings = 2;
 #ifdef OG
 	curTemplate->m_uiStrings[0] = "";
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_uiStrings[0] = " ";
-#endif
+#endif // ZH
 	curTemplate->m_uiStrings[1] = " begin attack on ";
 
 	curTemplate = &m_actionTemplates[ScriptAction::NAMED_ATTACK_NAMED];
 #ifdef OG
 	curTemplate->m_name = "[Unit] Set unit to attack another unit.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "NAMED_ATTACK_NAMED";
 	curTemplate->m_uiName = "Unit_/Attack/Set unit to attack another unit.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 2;
 	curTemplate->m_parameters[0] = Parameter::UNIT;
 	curTemplate->m_parameters[1] = Parameter::UNIT;
 	curTemplate->m_numUiStrings = 2;
 #ifdef OG
 	curTemplate->m_uiStrings[0] = "";
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_uiStrings[0] = " ";
-#endif
+#endif // ZH
 	curTemplate->m_uiStrings[1] = " begin attack on ";
 
 	curTemplate = &m_actionTemplates[ScriptAction::CREATE_NAMED_ON_TEAM_AT_WAYPOINT];
 #ifdef OG
 	curTemplate->m_name = "[Unit] Spawn -- named unit on a team at a waypoint.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "CREATE_NAMED_ON_TEAM_AT_WAYPOINT";
 	curTemplate->m_uiName = "Unit_/Spawn/Spawn -- named unit on a team at a waypoint.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 4;
 	curTemplate->m_parameters[0] = Parameter::UNIT;
 	curTemplate->m_parameters[1] = Parameter::OBJECT_TYPE;
@@ -2064,11 +2064,11 @@ void ScriptEngine::init( void )
 #ifdef OG
 	curTemplate->m_name = "[Unit] Spawn -- unnamed unit on a team at a waypoint.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "CREATE_UNNAMED_ON_TEAM_AT_WAYPOINT";
 	curTemplate->m_uiName = "Unit_/Spawn/Spawn -- unnamed unit on a team at a waypoint.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 3;
 	curTemplate->m_parameters[0] = Parameter::OBJECT_TYPE;
 	curTemplate->m_parameters[1] = Parameter::TEAM;
@@ -2082,11 +2082,11 @@ void ScriptEngine::init( void )
 #ifdef OG
 	curTemplate->m_name = "[Unit] Apply unit's attack priority set.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "NAMED_APPLY_ATTACK_PRIORITY_SET";
 	curTemplate->m_uiName = "AttackPrioritySet_/Apply/Unit/Apply unit's attack priority set.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 2;
 	curTemplate->m_parameters[0] = Parameter::UNIT;
 	curTemplate->m_parameters[1] = Parameter::ATTACK_PRIORITY_SET;
@@ -2099,11 +2099,11 @@ void ScriptEngine::init( void )
 #ifdef OG
 	curTemplate->m_name = "[Team] Apply a team's attack priority set.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "TEAM_APPLY_ATTACK_PRIORITY_SET";
 	curTemplate->m_uiName = "AttackPrioritySet_/Apply/Team/Apply a team's attack priority set.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 2;
 	curTemplate->m_parameters[0] = Parameter::TEAM;
 	curTemplate->m_parameters[1] = Parameter::ATTACK_PRIORITY_SET;
@@ -2116,11 +2116,11 @@ void ScriptEngine::init( void )
 #ifdef OG
 	curTemplate->m_name = "[Attack Priority Set] Modify priority for a single unit type.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "SET_ATTACK_PRIORITY_THING";
 	curTemplate->m_uiName = "AttackPrioritySet_/Set/Modify a set's priority for a single unit type.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 3;
 	curTemplate->m_parameters[0] = Parameter::ATTACK_PRIORITY_SET;
 	curTemplate->m_parameters[1] = Parameter::OBJECT_TYPE;
@@ -2134,11 +2134,11 @@ void ScriptEngine::init( void )
 #ifdef OG
 	curTemplate->m_name = "[Attack Priority Set] Modify priorities for all of a kind.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "SET_ATTACK_PRIORITY_KIND_OF";
 	curTemplate->m_uiName = "AttackPrioritySet_/Set/Modify a set's priorities for all of a kind.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 3;
 	curTemplate->m_parameters[0] = Parameter::ATTACK_PRIORITY_SET;
 	curTemplate->m_parameters[1] = Parameter::KIND_OF_PARAM;
@@ -2152,11 +2152,11 @@ void ScriptEngine::init( void )
 #ifdef OG
 	curTemplate->m_name = "[Attack Priority Set] Set the default priority.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "SET_DEFAULT_ATTACK_PRIORITY";
 	curTemplate->m_uiName = "AttackPrioritySet_/Set/Specify the set's default priority.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 2;
 	curTemplate->m_parameters[0] = Parameter::ATTACK_PRIORITY_SET;
 	curTemplate->m_parameters[1] = Parameter::INT;
@@ -2168,21 +2168,21 @@ void ScriptEngine::init( void )
 #ifdef OG
 	curTemplate->m_name = "[Player] Add/Subtract Skill Points.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "PLAYER_ADD_SKILLPOINTS";
 	curTemplate->m_uiName = "Player_/Experience/Add or Subtract Skill Points.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 2;
 	curTemplate->m_parameters[0] = Parameter::SIDE;
 	curTemplate->m_parameters[1] = Parameter::INT;
 	curTemplate->m_numUiStrings = 3;
 #ifdef OG
 	curTemplate->m_uiStrings[0] = "";
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_uiStrings[0] = " ";
-#endif
+#endif // ZH
 	curTemplate->m_uiStrings[1] = " is given ";
 	curTemplate->m_uiStrings[2] = " Skill Points.";
 
@@ -2190,21 +2190,21 @@ void ScriptEngine::init( void )
 #ifdef OG
 	curTemplate->m_name = "[Player] Add/Subtract Rank Levels.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "PLAYER_ADD_RANKLEVEL";
 	curTemplate->m_uiName = "Player_/Experience/Add or Subtract Rank Levels.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 2;
 	curTemplate->m_parameters[0] = Parameter::SIDE;
 	curTemplate->m_parameters[1] = Parameter::INT;
 	curTemplate->m_numUiStrings = 3;
 #ifdef OG
 	curTemplate->m_uiStrings[0] = "";
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_uiStrings[0] = " ";
-#endif
+#endif // ZH
 	curTemplate->m_uiStrings[1] = " is given ";
 	curTemplate->m_uiStrings[2] = " Rank Levels.";
 
@@ -2212,21 +2212,21 @@ void ScriptEngine::init( void )
 #ifdef OG
 	curTemplate->m_name = "[Player] Set Rank Level.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "PLAYER_SET_RANKLEVEL";
 	curTemplate->m_uiName = "Player_/Experience/Set Rank Level.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 2;
 	curTemplate->m_parameters[0] = Parameter::SIDE;
 	curTemplate->m_parameters[1] = Parameter::INT;
 	curTemplate->m_numUiStrings = 3;
 #ifdef OG
 	curTemplate->m_uiStrings[0] = "";
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_uiStrings[0] = " ";
-#endif
+#endif // ZH
 	curTemplate->m_uiStrings[1] = " is given a Rank Level of ";
 	curTemplate->m_uiStrings[2] = ".";
 
@@ -2234,11 +2234,11 @@ void ScriptEngine::init( void )
 #ifdef OG
 	curTemplate->m_name = "[Map] Set Rank Level Limit for current Map.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "PLAYER_SET_RANKLEVELLIMIT";
 	curTemplate->m_uiName = "Map_/Experience/Set Rank Level Limit for current Map.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 1;
 	curTemplate->m_parameters[0] = Parameter::INT;
 	curTemplate->m_numUiStrings = 2;
@@ -2249,21 +2249,21 @@ void ScriptEngine::init( void )
 #ifdef OG
 	curTemplate->m_name = "[Player] Grant a Science to a given Player (ignoring prerequisites).";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "PLAYER_GRANT_SCIENCE";
 	curTemplate->m_uiName = "Player_/Science/Grant a Science to a given Player (ignoring prerequisites).";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 2;
 	curTemplate->m_parameters[0] = Parameter::SIDE;
 	curTemplate->m_parameters[1] = Parameter::SCIENCE;
 	curTemplate->m_numUiStrings = 3;
 #ifdef OG
 	curTemplate->m_uiStrings[0] = "";
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_uiStrings[0] = " ";
-#endif
+#endif // ZH
 	curTemplate->m_uiStrings[1] = " is granted ";
 	curTemplate->m_uiStrings[2] = ".";
 
@@ -2271,21 +2271,21 @@ void ScriptEngine::init( void )
 #ifdef OG
 	curTemplate->m_name = "[Player] Player attempts to purchase a Science.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "PLAYER_PURCHASE_SCIENCE";
 	curTemplate->m_uiName = "Player_/Science/Player attempts to purchase a Science.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 2;
 	curTemplate->m_parameters[0] = Parameter::SIDE;
 	curTemplate->m_parameters[1] = Parameter::SCIENCE;
 	curTemplate->m_numUiStrings = 3;
 #ifdef OG
 	curTemplate->m_uiStrings[0] = "";
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_uiStrings[0] = " ";
-#endif
+#endif // ZH
 	curTemplate->m_uiStrings[1] = " attempts to purchase Science ";
 	curTemplate->m_uiStrings[2] = ".";
 	
@@ -2293,11 +2293,11 @@ void ScriptEngine::init( void )
 #ifdef OG
 	curTemplate->m_name = "[Player] Set science availability.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "PLAYER_SCIENCE_AVAILABILITY";
 	curTemplate->m_uiName = "Player_/Science/Set science availability.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 3;
 	curTemplate->m_parameters[0] = Parameter::SIDE;
 	curTemplate->m_parameters[1] = Parameter::SCIENCE;
@@ -2305,10 +2305,10 @@ void ScriptEngine::init( void )
 	curTemplate->m_numUiStrings = 4;
 #ifdef OG
 	curTemplate->m_uiStrings[0] = "";
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_uiStrings[0] = " ";
-#endif
+#endif // ZH
 	curTemplate->m_uiStrings[1] = " set ";
 	curTemplate->m_uiStrings[2] = " availability to ";
 	curTemplate->m_uiStrings[3] = ".";
@@ -2317,21 +2317,21 @@ void ScriptEngine::init( void )
 #ifdef OG
 	curTemplate->m_name = "[Player] Set the delay between building teams.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "SET_BASE_CONSTRUCTION_SPEED";
 	curTemplate->m_uiName = "Player_/AI/Set the delay between building teams.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 2;
 	curTemplate->m_parameters[0] = Parameter::SIDE;
 	curTemplate->m_parameters[1] = Parameter::INT;
 	curTemplate->m_numUiStrings = 3;
 #ifdef OG
 	curTemplate->m_uiStrings[0] = "";
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_uiStrings[0] = " ";
-#endif
+#endif // ZH
 	curTemplate->m_uiStrings[1] = " will delay ";
 	curTemplate->m_uiStrings[1] = " seconds between building teams.";
 
@@ -2339,456 +2339,456 @@ void ScriptEngine::init( void )
 #ifdef OG
 	curTemplate->m_name = "[Unit] Set the general attitude of a specific unit.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "NAMED_SET_ATTITUDE";
 	curTemplate->m_uiName = "Unit_/Mood/Set the general attitude of a specific unit.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 2;
 	curTemplate->m_parameters[0] = Parameter::UNIT;
 	curTemplate->m_parameters[1] = Parameter::AI_MOOD;
 	curTemplate->m_numUiStrings = 2;
 #ifdef OG
 	curTemplate->m_uiStrings[0] = "";
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_uiStrings[0] = " ";
-#endif
+#endif // ZH
 	curTemplate->m_uiStrings[1] = " changes his attitude to ";
 
 	curTemplate = &m_actionTemplates[ScriptAction::TEAM_SET_ATTITUDE];
 #ifdef OG
 	curTemplate->m_name = "[Team] Set the general attitude of a team.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "TEAM_SET_ATTITUDE";
 	curTemplate->m_uiName = "Team_/Mood/Set the general attitude of a team.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 2;
 	curTemplate->m_parameters[0] = Parameter::TEAM;
 	curTemplate->m_parameters[1] = Parameter::AI_MOOD;
 	curTemplate->m_numUiStrings = 2;
 #ifdef OG
 	curTemplate->m_uiStrings[0] = "";
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_uiStrings[0] = " ";
-#endif
+#endif // ZH
 	curTemplate->m_uiStrings[1] = " change their attitude to ";
 
 	curTemplate = &m_actionTemplates[ScriptAction::NAMED_SET_REPULSOR];
 #ifdef OG
 	curTemplate->m_name = "[Unit] Set the REPULSOR flag of a specific unit.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "NAMED_SET_REPULSOR";
 	curTemplate->m_uiName = "Unit_/Internal/Repulsor/Set the REPULSOR flag of a specific unit.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 2;
 	curTemplate->m_parameters[0] = Parameter::UNIT;
 	curTemplate->m_parameters[1] = Parameter::BOOLEAN;
 	curTemplate->m_numUiStrings = 2;
 #ifdef OG
 	curTemplate->m_uiStrings[0] = "";
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_uiStrings[0] = " ";
-#endif
+#endif // ZH
 	curTemplate->m_uiStrings[1] = " REPULSOR flag is ";
 
 	curTemplate = &m_actionTemplates[ScriptAction::TEAM_SET_REPULSOR];
 #ifdef OG
 	curTemplate->m_name = "[Team] Set the REPULSOR flag of a team.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "TEAM_SET_REPULSOR";
 	curTemplate->m_uiName = "Team_/Internal/Repulsor/Set the REPULSOR flag of a team.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 2;
 	curTemplate->m_parameters[0] = Parameter::TEAM;
 	curTemplate->m_parameters[1] = Parameter::BOOLEAN;
 	curTemplate->m_numUiStrings = 2;
 #ifdef OG
 	curTemplate->m_uiStrings[0] = "";
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_uiStrings[0] = " ";
-#endif
+#endif // ZH
 	curTemplate->m_uiStrings[1] = " REPULSOR flag is ";
 
 	curTemplate = &m_actionTemplates[ScriptAction::NAMED_ATTACK_AREA];
 #ifdef OG
 	curTemplate->m_name = "[Unit] Set a specific unit to attack a specific trigger area.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "NAMED_ATTACK_AREA";
 	curTemplate->m_uiName = "Unit_/Attack/Set a specific unit to attack a specific trigger area.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 2;
 	curTemplate->m_parameters[0] = Parameter::UNIT;
 	curTemplate->m_parameters[1] = Parameter::TRIGGER_AREA;
 	curTemplate->m_numUiStrings = 2;
 #ifdef OG
 	curTemplate->m_uiStrings[0] = "";
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_uiStrings[0] = " ";
-#endif
+#endif // ZH
 	curTemplate->m_uiStrings[1] = " attacks anything in ";
 
 	curTemplate = &m_actionTemplates[ScriptAction::NAMED_ATTACK_TEAM];
 #ifdef OG
 	curTemplate->m_name = "[Unit] Set a specific unit to attack a team.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "NAMED_ATTACK_TEAM";
 	curTemplate->m_uiName = "Unit_/Attack/Set a specific unit to attack a team.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 2;
 	curTemplate->m_parameters[0] = Parameter::UNIT;
 	curTemplate->m_parameters[1] = Parameter::TEAM;
 	curTemplate->m_numUiStrings = 2;
 #ifdef OG
 	curTemplate->m_uiStrings[0] = "";
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_uiStrings[0] = " ";
-#endif
+#endif // ZH
 	curTemplate->m_uiStrings[1] = " attacks ";
 
 	curTemplate = &m_actionTemplates[ScriptAction::TEAM_ATTACK_AREA];
 #ifdef OG
 	curTemplate->m_name = "[Team] Set to attack -- trigger area.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "TEAM_ATTACK_AREA";
 	curTemplate->m_uiName = "Team_/Attack/Set to attack -- trigger area.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 2;
 	curTemplate->m_parameters[0] = Parameter::TEAM;
 	curTemplate->m_parameters[1] = Parameter::TRIGGER_AREA;
 	curTemplate->m_numUiStrings = 2;
 #ifdef OG
 	curTemplate->m_uiStrings[0] = "";
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_uiStrings[0] = " ";
-#endif
+#endif // ZH
 	curTemplate->m_uiStrings[1] = " attack anything in ";
 
 	curTemplate = &m_actionTemplates[ScriptAction::TEAM_ATTACK_NAMED];
 #ifdef OG
 	curTemplate->m_name = "[Team] Set to attack -- specific unit.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "TEAM_ATTACK_NAMED";
 	curTemplate->m_uiName = "Team_/Attack/Set to attack -- specific unit.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 2;
 	curTemplate->m_parameters[0] = Parameter::TEAM;
 	curTemplate->m_parameters[1] = Parameter::UNIT;
 	curTemplate->m_numUiStrings = 2;
 #ifdef OG
 	curTemplate->m_uiStrings[0] = "";
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_uiStrings[0] = " ";
-#endif
+#endif // ZH
 	curTemplate->m_uiStrings[1] = " attacks ";
 
 	curTemplate = &m_actionTemplates[ScriptAction::TEAM_LOAD_TRANSPORTS];
 #ifdef OG
 	curTemplate->m_name = "[Team] Transport -- automatically load.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "TEAM_LOAD_TRANSPORTS";
 	curTemplate->m_uiName = "Team_/Transport/Transport -- automatically load.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 1;
 	curTemplate->m_parameters[0] = Parameter::TEAM;
 	curTemplate->m_numUiStrings = 2;
 #ifdef OG
 	curTemplate->m_uiStrings[0] = "";
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_uiStrings[0] = " ";
-#endif
+#endif // ZH
 	curTemplate->m_uiStrings[1] = " load into transports.";
 
 	curTemplate = &m_actionTemplates[ScriptAction::NAMED_ENTER_NAMED];
 #ifdef OG
 	curTemplate->m_name = "[Unit] Transport -- load unit into specific.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "NAMED_ENTER_NAMED";
 	curTemplate->m_uiName = "Unit_/Transport/Transport -- load unit into specific.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 2;
 	curTemplate->m_parameters[0] = Parameter::UNIT;
 	curTemplate->m_parameters[1] = Parameter::UNIT;
 	curTemplate->m_numUiStrings = 2;
 #ifdef OG
 	curTemplate->m_uiStrings[0] = "";
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_uiStrings[0] = " ";
-#endif
+#endif // ZH
 	curTemplate->m_uiStrings[1] = " loads into ";
 
 	curTemplate = &m_actionTemplates[ScriptAction::TEAM_ENTER_NAMED];
 #ifdef OG
 	curTemplate->m_name = "[Team] Transport -- load team into specific.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "TEAM_ENTER_NAMED";
 	curTemplate->m_uiName = "Team_/Transport/Transport -- load team into specific.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 2;
 	curTemplate->m_parameters[0] = Parameter::TEAM;
 	curTemplate->m_parameters[1] = Parameter::UNIT;
 	curTemplate->m_numUiStrings = 2;
 #ifdef OG
 	curTemplate->m_uiStrings[0] = "";
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_uiStrings[0] = " ";
-#endif
+#endif // ZH
 	curTemplate->m_uiStrings[1] = " attempt to load into ";
 
 	curTemplate = &m_actionTemplates[ScriptAction::NAMED_EXIT_ALL];
 #ifdef OG
 	curTemplate->m_name = "[Unit] Transport -- unload units from specific.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "NAMED_EXIT_ALL";
 	curTemplate->m_uiName = "Unit_/Transport/Transport -- unload units from specific.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 1;
 	curTemplate->m_parameters[0] = Parameter::UNIT;
 	curTemplate->m_numUiStrings = 2;
 #ifdef OG
 	curTemplate->m_uiStrings[0] = "";
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_uiStrings[0] = " ";
-#endif
+#endif // ZH
 	curTemplate->m_uiStrings[1] = " unloads.";
 
 	curTemplate = &m_actionTemplates[ScriptAction::TEAM_EXIT_ALL];
 #ifdef OG
 	curTemplate->m_name = "[Team] Transport -- unload team from all.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "TEAM_EXIT_ALL";
 	curTemplate->m_uiName = "Team_/Transport/Transport -- unload team from all.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 1;
 	curTemplate->m_parameters[0] = Parameter::TEAM;
 	curTemplate->m_numUiStrings = 2;
 #ifdef OG
 	curTemplate->m_uiStrings[0] = "";
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_uiStrings[0] = " ";
-#endif
+#endif // ZH
 	curTemplate->m_uiStrings[1] = " unload.";
 
 	curTemplate = &m_actionTemplates[ScriptAction::NAMED_FOLLOW_WAYPOINTS];
 #ifdef OG
 	curTemplate->m_name = "[Unit] Set a specific unit to follow a waypoint path.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "NAMED_FOLLOW_WAYPOINTS";
 	curTemplate->m_uiName = "Unit_/Move/Set a specific unit to follow a waypoint path.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 2;
 	curTemplate->m_parameters[0] = Parameter::UNIT;
 	curTemplate->m_parameters[1] = Parameter::WAYPOINT_PATH;
 	curTemplate->m_numUiStrings = 2;
 #ifdef OG
 	curTemplate->m_uiStrings[0] = "";
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_uiStrings[0] = " ";
-#endif
+#endif // ZH
 	curTemplate->m_uiStrings[1] = " follows waypoints, beginning at ";
 
 	curTemplate = &m_actionTemplates[ScriptAction::NAMED_FOLLOW_WAYPOINTS_EXACT];
 #ifdef OG
 	curTemplate->m_name = "[Unit] Set a specific unit to EXACTLY follow a waypoint path.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "NAMED_FOLLOW_WAYPOINTS_EXACT";
 	curTemplate->m_uiName = "Unit_/Move/Set a specific unit to EXACTLY follow a waypoint path.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 2;
 	curTemplate->m_parameters[0] = Parameter::UNIT;
 	curTemplate->m_parameters[1] = Parameter::WAYPOINT_PATH;
 	curTemplate->m_numUiStrings = 2;
 #ifdef OG
 	curTemplate->m_uiStrings[0] = "";
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_uiStrings[0] = " ";
-#endif
+#endif // ZH
 	curTemplate->m_uiStrings[1] = " EXACTLY follows waypoints, beginning at ";
 
 		curTemplate = &m_actionTemplates[ScriptAction::NAMED_GUARD];
 #ifdef OG
 	curTemplate->m_name = "[Unit] Set to guard.";
 
-#endif
+#endif // OG
 #ifdef ZH
 		curTemplate->m_internalName = "NAMED_GUARD";
 	curTemplate->m_uiName = "Unit_/Move/Set to guard.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 1;
 	curTemplate->m_parameters[0] = Parameter::UNIT;
 	curTemplate->m_numUiStrings = 2;
 #ifdef OG
 	curTemplate->m_uiStrings[0] = "";
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_uiStrings[0] = " ";
-#endif
+#endif // ZH
 	curTemplate->m_uiStrings[1] = " begins guarding.";
 
 	curTemplate = &m_actionTemplates[ScriptAction::TEAM_GUARD];
 #ifdef OG
 	curTemplate->m_name = "[Team] Set to guard -- current location.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "TEAM_GUARD";
 	curTemplate->m_uiName = "Team_/Guard/Set to guard -- current location.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 1;
 	curTemplate->m_parameters[0] = Parameter::TEAM;
 	curTemplate->m_numUiStrings = 2;
 #ifdef OG
 	curTemplate->m_uiStrings[0] = "";
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_uiStrings[0] = " ";
-#endif
+#endif // ZH
 	curTemplate->m_uiStrings[1] = " begins guarding.";
 
 	curTemplate = &m_actionTemplates[ScriptAction::TEAM_GUARD_POSITION];
 #ifdef OG
 	curTemplate->m_name = "[Team] Set to guard -- location.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "TEAM_GUARD_POSITION";
 	curTemplate->m_uiName = "Team_/Guard/Set to guard -- location.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 2;
 	curTemplate->m_parameters[0] = Parameter::TEAM;
 	curTemplate->m_parameters[1] = Parameter::WAYPOINT;
 	curTemplate->m_numUiStrings = 2;
 #ifdef OG
 	curTemplate->m_uiStrings[0] = "";
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_uiStrings[0] = " ";
-#endif
+#endif // ZH
 	curTemplate->m_uiStrings[1] = " begins guarding at ";
 
 	curTemplate = &m_actionTemplates[ScriptAction::TEAM_GUARD_OBJECT];
 #ifdef OG
 	curTemplate->m_name = "[Team] Set to guard -- specific unit.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "TEAM_GUARD_OBJECT";
 	curTemplate->m_uiName = "Team_/Guard/Set to guard -- specific unit.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 2;
 	curTemplate->m_parameters[0] = Parameter::TEAM;
 	curTemplate->m_parameters[1] = Parameter::UNIT;
 	curTemplate->m_numUiStrings = 2;
 #ifdef OG
 	curTemplate->m_uiStrings[0] = "";
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_uiStrings[0] = " ";
-#endif
+#endif // ZH
 	curTemplate->m_uiStrings[1] = " begins guarding ";
 
 	curTemplate = &m_actionTemplates[ScriptAction::TEAM_GUARD_AREA];
 #ifdef OG
 	curTemplate->m_name = "[Team] Set to guard -- area.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "TEAM_GUARD_AREA";
 	curTemplate->m_uiName = "Team_/Guard/Set to guard -- area.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 2;
 	curTemplate->m_parameters[0] = Parameter::TEAM;
 	curTemplate->m_parameters[1] = Parameter::TRIGGER_AREA;
 	curTemplate->m_numUiStrings = 2;
 #ifdef OG
 	curTemplate->m_uiStrings[0] = "";
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_uiStrings[0] = " ";
-#endif
+#endif // ZH
 	curTemplate->m_uiStrings[1] = " begins guarding ";
 
 	curTemplate = &m_actionTemplates[ScriptAction::NAMED_HUNT];
 #ifdef OG
 	curTemplate->m_name = "[Unit] Set a specific unit to hunt.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "NAMED_HUNT";
 	curTemplate->m_uiName = "Unit_/Hunt/Set a specific unit to hunt.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 1;
 	curTemplate->m_parameters[0] = Parameter::UNIT;
 	curTemplate->m_numUiStrings = 2;
 #ifdef OG
 	curTemplate->m_uiStrings[0] = "";
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_uiStrings[0] = " ";
-#endif
+#endif // ZH
 	curTemplate->m_uiStrings[1] = " begins hunting.";
 
 	curTemplate = &m_actionTemplates[ScriptAction::TEAM_HUNT_WITH_COMMAND_BUTTON];
 #ifdef OG
 	curTemplate->m_name = "[Team] Set to hunt using commandbutton ability.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "TEAM_HUNT_WITH_COMMAND_BUTTON";
 	curTemplate->m_uiName = "Team_/Hunt/Set to hunt using commandbutton ability.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 2;
 	curTemplate->m_parameters[0] = Parameter::TEAM;
 	curTemplate->m_parameters[1] = Parameter::COMMANDBUTTON_ALL_ABILITIES;
 	curTemplate->m_numUiStrings = 3;
 #ifdef OG
 	curTemplate->m_uiStrings[0] = "";
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_uiStrings[0] = " ";
-#endif
+#endif // ZH
 	curTemplate->m_uiStrings[1] = " begins hunting using ";
 	curTemplate->m_uiStrings[2] = ".";
 
@@ -2796,193 +2796,193 @@ void ScriptEngine::init( void )
 #ifdef OG
 	curTemplate->m_name = "[Team] Set to hunt.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "TEAM_HUNT";
 	curTemplate->m_uiName = "Team_/Hunt/Set to hunt.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 1;
 	curTemplate->m_parameters[0] = Parameter::TEAM;
 	curTemplate->m_numUiStrings = 2;
 #ifdef OG
 	curTemplate->m_uiStrings[0] = "";
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_uiStrings[0] = " ";
-#endif
+#endif // ZH
 	curTemplate->m_uiStrings[1] = " begins hunting.";
 
 	curTemplate = &m_actionTemplates[ScriptAction::PLAYER_HUNT];
 #ifdef OG
 	curTemplate->m_name = "[Player] Set all of a player's units to hunt.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "PLAYER_HUNT";
 	curTemplate->m_uiName = "Player_/Hunt/Set all of a player's units to hunt.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 1;
 	curTemplate->m_parameters[0] = Parameter::SIDE;
 	curTemplate->m_numUiStrings = 2;
 #ifdef OG
 	curTemplate->m_uiStrings[0] = "";
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_uiStrings[0] = " ";
-#endif
+#endif // ZH
 	curTemplate->m_uiStrings[1] = " begins hunting.";
 
 	curTemplate = &m_actionTemplates[ScriptAction::PLAYER_SELL_EVERYTHING];
 #ifdef OG
 	curTemplate->m_name = "[Player] Set a player to sell everything.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "PLAYER_SELL_EVERYTHING";
 	curTemplate->m_uiName = "Player_/Set/Set a player to sell everything.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 1;
 	curTemplate->m_parameters[0] = Parameter::SIDE;
 	curTemplate->m_numUiStrings = 2;
 #ifdef OG
 	curTemplate->m_uiStrings[0] = "";
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_uiStrings[0] = " ";
-#endif
+#endif // ZH
 	curTemplate->m_uiStrings[1] = " sells everything.";
 
 	curTemplate = &m_actionTemplates[ScriptAction::PLAYER_DISABLE_BASE_CONSTRUCTION];
 #ifdef OG
 	curTemplate->m_name = "[Player] Set a player to be unable to build buildings.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "PLAYER_DISABLE_BASE_CONSTRUCTION";
 	curTemplate->m_uiName = "Player_/Build/Set a player to be unable to build buildings.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 1;
 	curTemplate->m_parameters[0] = Parameter::SIDE;
 	curTemplate->m_numUiStrings = 2;
 #ifdef OG
 	curTemplate->m_uiStrings[0] = "";
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_uiStrings[0] = " ";
-#endif
+#endif // ZH
 	curTemplate->m_uiStrings[1] = " is unable to build buildings.";
 
 	curTemplate = &m_actionTemplates[ScriptAction::PLAYER_DISABLE_FACTORIES];
 #ifdef OG
 	curTemplate->m_name = "[Player] Set a player to be unable to build from a specific building.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "PLAYER_DISABLE_FACTORIES";
 	curTemplate->m_uiName = "Player_/Build/Set a player to be unable to build from a specific building.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 2;
 	curTemplate->m_parameters[0] = Parameter::SIDE;
 	curTemplate->m_parameters[1] = Parameter::OBJECT_TYPE;
 	curTemplate->m_numUiStrings = 2;
 #ifdef OG
 	curTemplate->m_uiStrings[0] = "";
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_uiStrings[0] = " ";
-#endif
+#endif // ZH
 	curTemplate->m_uiStrings[1] = " is unable to build from ";
 
 	curTemplate = &m_actionTemplates[ScriptAction::PLAYER_DISABLE_UNIT_CONSTRUCTION];
 #ifdef OG
 	curTemplate->m_name = "[Player] Set a player to be unable to build units.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "PLAYER_DISABLE_UNIT_CONSTRUCTION";
 	curTemplate->m_uiName = "Player_/Build/Set a player to be unable to build units.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 1;
 	curTemplate->m_parameters[0] = Parameter::SIDE;
 	curTemplate->m_numUiStrings = 2;
 #ifdef OG
 	curTemplate->m_uiStrings[0] = "";
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_uiStrings[0] = " ";
-#endif
+#endif // ZH
 	curTemplate->m_uiStrings[1] = " is unable to build units.";
 
 	curTemplate = &m_actionTemplates[ScriptAction::PLAYER_ENABLE_BASE_CONSTRUCTION];
 #ifdef OG
 	curTemplate->m_name = "[Player] Set a player to be able to build buildings.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "PLAYER_ENABLE_BASE_CONSTRUCTION";
 	curTemplate->m_uiName = "Player_/Build/Set a player to be able to build buildings.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 1;
 	curTemplate->m_parameters[0] = Parameter::SIDE;
 	curTemplate->m_numUiStrings = 2;
 #ifdef OG
 	curTemplate->m_uiStrings[0] = "";
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_uiStrings[0] = " ";
-#endif
+#endif // ZH
 	curTemplate->m_uiStrings[1] = " is able to build buildings.";
 
 	curTemplate = &m_actionTemplates[ScriptAction::PLAYER_ENABLE_FACTORIES];
 #ifdef OG
 	curTemplate->m_name = "[Player] Set a player to be able to build from a specific building.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "PLAYER_ENABLE_FACTORIES";
 	curTemplate->m_uiName = "Player_/Build/Set a player to be able to build from a specific building.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 2;
 	curTemplate->m_parameters[0] = Parameter::SIDE;
 	curTemplate->m_parameters[1] = Parameter::OBJECT_TYPE;
 	curTemplate->m_numUiStrings = 2;
 #ifdef OG
 	curTemplate->m_uiStrings[0] = "";
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_uiStrings[0] = " ";
-#endif
+#endif // ZH
 	curTemplate->m_uiStrings[1] = " is able to build from ";
 
 	curTemplate = &m_actionTemplates[ScriptAction::PLAYER_ENABLE_UNIT_CONSTRUCTION];
 #ifdef OG
 	curTemplate->m_name = "[Player] Set a player to be able to build units.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "PLAYER_ENABLE_UNIT_CONSTRUCTION";
 	curTemplate->m_uiName = "Player_/Build/Set a player to be able to build units.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 1;
 	curTemplate->m_parameters[0] = Parameter::SIDE;
 	curTemplate->m_numUiStrings = 2;
 #ifdef OG
 	curTemplate->m_uiStrings[0] = "";
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_uiStrings[0] = " ";
-#endif
+#endif // ZH
 	curTemplate->m_uiStrings[1] = " is able to build units.";
 
 	curTemplate = &m_actionTemplates[ScriptAction::CAMERA_MOVE_HOME];
 #ifdef OG
 	curTemplate->m_name = "[Camera (M)] Move the camera to the home position.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "CAMERA_MOVE_HOME";
 	curTemplate->m_uiName = "Camera_/Move/Move the camera to the home position.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 0;
 	curTemplate->m_numUiStrings = 1;
 	curTemplate->m_uiStrings[0] = "The camera moves to the home base.";
@@ -2991,11 +2991,11 @@ void ScriptEngine::init( void )
 #ifdef OG
 	curTemplate->m_name = "[Camera] Oversize the terrain.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "OVERSIZE_TERRAIN";
 	curTemplate->m_uiName = "Camera_/Terrain/Oversize the terrain.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 1;
 	curTemplate->m_parameters[0] = Parameter::INT;
 	curTemplate->m_numUiStrings = 2;
@@ -3006,40 +3006,40 @@ void ScriptEngine::init( void )
 #ifdef OG
 	curTemplate->m_name = "[Team] Build a team.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "BUILD_TEAM";
 	curTemplate->m_uiName = "Team_/AI/Start building a team.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 1;
 	curTemplate->m_parameters[0] = Parameter::TEAM;
 	curTemplate->m_numUiStrings = 1;
 #ifdef OG
 	curTemplate->m_uiStrings[0] = "Build team ";
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_uiStrings[0] = "Start building team ";
-#endif
+#endif // ZH
 
 	curTemplate = &m_actionTemplates[ScriptAction::NAMED_DAMAGE];
 #ifdef OG
 	curTemplate->m_name = "[Unit] Deal damage to a specific unit.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "NAMED_DAMAGE";
 	curTemplate->m_uiName = "Unit_/Damage/Deal damage to a specific unit.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 2;
 	curTemplate->m_parameters[0] = Parameter::UNIT;
 	curTemplate->m_parameters[1] = Parameter::INT;
 	curTemplate->m_numUiStrings = 3;
 #ifdef OG
 	curTemplate->m_uiStrings[0] = "";
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_uiStrings[0] = " ";
-#endif
+#endif // ZH
 	curTemplate->m_uiStrings[1] = " takes ";
 	curTemplate->m_uiStrings[2] = " points of damage.";
 
@@ -3047,51 +3047,51 @@ void ScriptEngine::init( void )
 #ifdef OG
 	curTemplate->m_name = "[Unit] Delete a specific unit.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "NAMED_DELETE";
 	curTemplate->m_uiName = "Unit_/Damage or Remove/Delete a specific unit.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 1;
 	curTemplate->m_parameters[0] = Parameter::UNIT;
 	curTemplate->m_numUiStrings = 2;
 #ifdef OG
 	curTemplate->m_uiStrings[0] = "";
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_uiStrings[0] = " ";
-#endif
+#endif // ZH
 	curTemplate->m_uiStrings[1] = " is removed from the world.";
 
 	curTemplate = &m_actionTemplates[ScriptAction::TEAM_DELETE];
 #ifdef OG
 	curTemplate->m_name = "[Team] Delete a team.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "TEAM_DELETE";
 	curTemplate->m_uiName = "Team_/Damage or Remove/Delete a team.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 1;
 	curTemplate->m_parameters[0] = Parameter::TEAM;
 	curTemplate->m_numUiStrings = 2;
 #ifdef OG
 	curTemplate->m_uiStrings[0] = "";
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_uiStrings[0] = " ";
-#endif
+#endif // ZH
 	curTemplate->m_uiStrings[1] = " is removed from the world.";
 
 	curTemplate = &m_actionTemplates[ScriptAction::TEAM_DELETE_LIVING];
 #ifdef OG
 	curTemplate->m_name = "[Team] Delete a team, but ignore dead guys.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "TEAM_DELETE_LIVING";
 	curTemplate->m_uiName = "Team_/Damage or Remove/Delete a team, but ignore dead guys.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 1;
 	curTemplate->m_parameters[0] = Parameter::TEAM;
 	curTemplate->m_numUiStrings = 2;
@@ -3102,51 +3102,51 @@ void ScriptEngine::init( void )
 #ifdef OG
 	curTemplate->m_name = "[Unit] Kill a specific unit.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "NAMED_KILL";
 	curTemplate->m_uiName = "Unit_/Damage or Remove/Kill a specific unit.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 1;
 	curTemplate->m_parameters[0] = Parameter::UNIT;
 	curTemplate->m_numUiStrings = 2;
 #ifdef OG
 	curTemplate->m_uiStrings[0] = "";
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_uiStrings[0] = " ";
-#endif
+#endif // ZH
 	curTemplate->m_uiStrings[1] = "is dealt a lethal amount of damage.";
 
 	curTemplate = &m_actionTemplates[ScriptAction::TEAM_KILL];
 #ifdef OG
 	curTemplate->m_name = "[Team] Kill an entire team.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "TEAM_KILL";
 	curTemplate->m_uiName = "Team_/Damage or Remove/Kill an entire team.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 1;
 	curTemplate->m_parameters[0] = Parameter::TEAM;
 	curTemplate->m_numUiStrings = 2;
 #ifdef OG
 	curTemplate->m_uiStrings[0] = "";
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_uiStrings[0] = " ";
-#endif
+#endif // ZH
 	curTemplate->m_uiStrings[1] = " is dealt a lethal amount of damage.";
 
 	curTemplate = &m_actionTemplates[ScriptAction::PLAYER_KILL];
 #ifdef OG
 	curTemplate->m_name = "[Player] Kill a player.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "PLAYER_KILL";
 	curTemplate->m_uiName = "Player_/Damage or Remove/Kill a player.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 1;
 	curTemplate->m_parameters[0] = Parameter::SIDE;
 	curTemplate->m_numUiStrings = 2;
@@ -3157,11 +3157,11 @@ void ScriptEngine::init( void )
 #ifdef OG
 	curTemplate->m_name = "[User] Display a string.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "DISPLAY_TEXT";
 	curTemplate->m_uiName = "User_/String/Display a string.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 1;
 	curTemplate->m_parameters[0] = Parameter::LOCALIZED_TEXT;
 	curTemplate->m_numUiStrings = 2;
@@ -3172,11 +3172,11 @@ void ScriptEngine::init( void )
 #ifdef OG
 	curTemplate->m_name = "[User] Display a cinematic string.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "DISPLAY_CINEMATIC_TEXT";
 	curTemplate->m_uiName = "User_/String/Display a cinematic string.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 3;
 	curTemplate->m_parameters[0] = Parameter::LOCALIZED_TEXT;
 	curTemplate->m_parameters[1] = Parameter::FONT_NAME;
@@ -3191,21 +3191,21 @@ void ScriptEngine::init( void )
 #ifdef OG
 	curTemplate->m_name = "[User] Flash a cameo for a specified amount of time.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "CAMEO_FLASH";
 	curTemplate->m_uiName = "User_/Flash/Flash a cameo for a specified amount of time.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 2;
 	curTemplate->m_parameters[0] = Parameter::COMMAND_BUTTON;
 	curTemplate->m_parameters[1] = Parameter::INT;
 	curTemplate->m_numUiStrings = 3;
 #ifdef OG
 	curTemplate->m_uiStrings[0] = "";
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_uiStrings[0] = " ";
-#endif
+#endif // ZH
 	curTemplate->m_uiStrings[1] = " flashes for ";
 	curTemplate->m_uiStrings[2] = " seconds.";
 
@@ -3213,21 +3213,21 @@ void ScriptEngine::init( void )
 #ifdef OG
 	curTemplate->m_name = "[User] Flash a specific unit for a specified amount of time.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "NAMED_FLASH";
 	curTemplate->m_uiName = "User_/Flash/Flash a specific unit for a specified amount of time.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 2;
 	curTemplate->m_parameters[0] = Parameter::UNIT;
 	curTemplate->m_parameters[1] = Parameter::INT;
 	curTemplate->m_numUiStrings = 3;
 #ifdef OG
 	curTemplate->m_uiStrings[0] = "";
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_uiStrings[0] = " ";
-#endif
+#endif // ZH
 	curTemplate->m_uiStrings[1] = " flashes for ";
 	curTemplate->m_uiStrings[2] = " seconds.";
 
@@ -3235,21 +3235,21 @@ void ScriptEngine::init( void )
 #ifdef OG
 	curTemplate->m_name = "[User] Flash a team for a specified amount of time.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "TEAM_FLASH";
 	curTemplate->m_uiName = "User_/Flash/Flash a team for a specified amount of time.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 2;
 	curTemplate->m_parameters[0] = Parameter::TEAM;
 	curTemplate->m_parameters[1] = Parameter::INT;
 	curTemplate->m_numUiStrings = 3;
 #ifdef OG
 	curTemplate->m_uiStrings[0] = "";
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_uiStrings[0] = " ";
-#endif
+#endif // ZH
 	curTemplate->m_uiStrings[1] = " flashes for ";
 	curTemplate->m_uiStrings[2] = " seconds.";
 
@@ -3257,21 +3257,21 @@ void ScriptEngine::init( void )
 #ifdef OG
 	curTemplate->m_name = "[User] Set a specific unit to use a special indicator color.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "NAMED_CUSTOM_COLOR";
 	curTemplate->m_uiName = "User_/Flash/Set a specific unit to use a special indicator color.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 2;
 	curTemplate->m_parameters[0] = Parameter::UNIT;
 	curTemplate->m_parameters[1] = Parameter::COLOR;
 	curTemplate->m_numUiStrings = 3;
 #ifdef OG
 	curTemplate->m_uiStrings[0] = "";
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_uiStrings[0] = " ";
-#endif
+#endif // ZH
 	curTemplate->m_uiStrings[1] = " uses the color ";
 	curTemplate->m_uiStrings[2] = " .";
 
@@ -3279,21 +3279,21 @@ void ScriptEngine::init( void )
 #ifdef OG
 	curTemplate->m_name = "[User] Flash a specific unit white for a specified amount of time.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "NAMED_FLASH_WHITE";
 	curTemplate->m_uiName = "User_/Flash/Flash a specific unit white for a specified amount of time.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 2;
 	curTemplate->m_parameters[0] = Parameter::UNIT;
 	curTemplate->m_parameters[1] = Parameter::INT;
 	curTemplate->m_numUiStrings = 3;
 #ifdef OG
 	curTemplate->m_uiStrings[0] = "";
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_uiStrings[0] = " ";
-#endif
+#endif // ZH
 	curTemplate->m_uiStrings[1] = " flashes white for ";
 	curTemplate->m_uiStrings[2] = " seconds.";
 
@@ -3301,21 +3301,21 @@ void ScriptEngine::init( void )
 #ifdef OG
 	curTemplate->m_name = "[User] Flash a team white for a specified amount of time.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "TEAM_FLASH_WHITE";
 	curTemplate->m_uiName = "User_/Flash/Flash a team white for a specified amount of time.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 2;
 	curTemplate->m_parameters[0] = Parameter::TEAM;
 	curTemplate->m_parameters[1] = Parameter::INT;
 	curTemplate->m_numUiStrings = 3;
 #ifdef OG
 	curTemplate->m_uiStrings[0] = "";
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_uiStrings[0] = " ";
-#endif
+#endif // ZH
 	curTemplate->m_uiStrings[1] = " flashes white for ";
 	curTemplate->m_uiStrings[2] = " seconds.";
 
@@ -3323,11 +3323,11 @@ void ScriptEngine::init( void )
 #ifdef OG
 	curTemplate->m_name = "[User] Display Popup Message Box.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "INGAME_POPUP_MESSAGE";
 	curTemplate->m_uiName = "User_/String/Display Popup Message Box.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 5;
 	curTemplate->m_parameters[0] = Parameter::LOCALIZED_TEXT;
 	curTemplate->m_parameters[1] = Parameter::INT;
@@ -3346,82 +3346,82 @@ void ScriptEngine::init( void )
 #ifdef OG
 	curTemplate->m_name = "[Multimedia] Play a movie in fullscreen mode.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "MOVIE_PLAY_FULLSCREEN";
 	curTemplate->m_uiName = "Multimedia_/Movie/Play a movie in fullscreen mode.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 1;
 	curTemplate->m_parameters[0] = Parameter::MOVIE;
 	curTemplate->m_numUiStrings = 2;
 #ifdef OG
 	curTemplate->m_uiStrings[0] = "";
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_uiStrings[0] = " ";
-#endif
+#endif // ZH
 	curTemplate->m_uiStrings[1] = " plays fullscreen.";
 
 	curTemplate = &m_actionTemplates[ScriptAction::MOVIE_PLAY_RADAR];
 #ifdef OG
 	curTemplate->m_name = "[Multimedia] Play a movie in the radar.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "MOVIE_PLAY_RADAR";
 	curTemplate->m_uiName = "Multimedia_/Movie/Play a movie in the radar.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 1;
 	curTemplate->m_parameters[0] = Parameter::MOVIE;
 	curTemplate->m_numUiStrings = 2;
 #ifdef OG
 	curTemplate->m_uiStrings[0] = "";
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_uiStrings[0] = " ";
-#endif
+#endif // ZH
 	curTemplate->m_uiStrings[1] = " plays in the radar window.";
 
 	curTemplate = &m_actionTemplates[ScriptAction::SOUND_PLAY_NAMED];
 #ifdef OG
 	curTemplate->m_name = "[Multimedia] Play a sound as though coming from a specific unit.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "SOUND_PLAY_NAMED";
 	curTemplate->m_uiName = "Multimedia_/Sound Effects/Play a sound as though coming from a specific unit.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 2;
 	curTemplate->m_parameters[0] = Parameter::TEXT_STRING;
 	curTemplate->m_parameters[1] = Parameter::UNIT;
 	curTemplate->m_numUiStrings = 2;
 #ifdef OG
 	curTemplate->m_uiStrings[0] = "";
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_uiStrings[0] = " ";
-#endif
+#endif // ZH
 	curTemplate->m_uiStrings[1] = " plays as though coming from ";
 
 	curTemplate = &m_actionTemplates[ScriptAction::SPEECH_PLAY];
 #ifdef OG
 	curTemplate->m_name = "[Multimedia] Play a speech file.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "SPEECH_PLAY";
 	curTemplate->m_uiName = "Multimedia_/Sound Effects/Play a speech file.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 2;
 	curTemplate->m_parameters[0] = Parameter::DIALOG;
 	curTemplate->m_parameters[1] = Parameter::BOOLEAN;
 	curTemplate->m_numUiStrings = 3;
 #ifdef OG
 	curTemplate->m_uiStrings[0] = "";
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_uiStrings[0] = " ";
-#endif
+#endif // ZH
 	curTemplate->m_uiStrings[1] = " plays, allowing overlap ";
 	curTemplate->m_uiStrings[2] = " (true to allow, false to disallow).";
 
@@ -3429,11 +3429,11 @@ void ScriptEngine::init( void )
 #ifdef OG
 	curTemplate->m_name = "[Player] Transfer assets from one player to another player.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "PLAYER_TRANSFER_OWNERSHIP_PLAYER";
 	curTemplate->m_uiName = "Player_/Transfer/Transfer assets from one player to another player.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 2;
 	curTemplate->m_parameters[0] = Parameter::SIDE;
 	curTemplate->m_parameters[1] = Parameter::SIDE;
@@ -3445,32 +3445,32 @@ void ScriptEngine::init( void )
 #ifdef OG
 	curTemplate->m_name = "[Player] Transfer a specific unit to the control of a player.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "NAMED_TRANSFER_OWNERSHIP_PLAYER";
 	curTemplate->m_uiName = "Player_/Transfer/Transfer a specific unit to the control of a player.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 2;
 	curTemplate->m_parameters[0] = Parameter::UNIT;
 	curTemplate->m_parameters[1] = Parameter::SIDE;
 	curTemplate->m_numUiStrings = 2;
 #ifdef OG
 	curTemplate->m_uiStrings[0] = "";
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_uiStrings[0] = " ";
-#endif
+#endif // ZH
 	curTemplate->m_uiStrings[1] = " is transferred to the command of ";
 
 	curTemplate = &m_actionTemplates[ScriptAction::PLAYER_EXCLUDE_FROM_SCORE_SCREEN];
 #ifdef OG
 	curTemplate->m_name = "[Player] Exclude this player from the score screen.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "PLAYER_EXCLUDE_FROM_SCORE_SCREEN";
 	curTemplate->m_uiName = "Player_/Score/Exclude this player from the score screen.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 1;
 	curTemplate->m_parameters[0] = Parameter::SIDE;
 	curTemplate->m_numUiStrings = 2;
@@ -3481,11 +3481,11 @@ void ScriptEngine::init( void )
 #ifdef OG
 	curTemplate->m_name = "[Scripting] Turn on scoring.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "ENABLE_SCORING";
 	curTemplate->m_uiName = "Player_/Score/Turn on scoring.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 0;
 	curTemplate->m_numUiStrings = 1;
 	curTemplate->m_uiStrings[0] = "Turn on scoring.";
@@ -3494,11 +3494,11 @@ void ScriptEngine::init( void )
 #ifdef OG
 	curTemplate->m_name = "[Scripting] Turn off scoring.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "DISABLE_SCORING";
 	curTemplate->m_uiName = "Player_/Score/Turn off scoring.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 0;
 	curTemplate->m_numUiStrings = 1;
 	curTemplate->m_uiStrings[0] = "Turn off scoring.";
@@ -3507,11 +3507,11 @@ void ScriptEngine::init( void )
 #ifdef OG
 	curTemplate->m_name = "[Player] Change how a player relates to another player.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "PLAYER_RELATES_PLAYER";
 	curTemplate->m_uiName = "Player_/Alliances/Change how a player relates to another player.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 3;
 	curTemplate->m_parameters[0] = Parameter::SIDE;
 	curTemplate->m_parameters[1] = Parameter::SIDE;
@@ -3519,10 +3519,10 @@ void ScriptEngine::init( void )
 	curTemplate->m_numUiStrings = 3;
 #ifdef OG
 	curTemplate->m_uiStrings[0] = "";
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_uiStrings[0] = " ";
-#endif
+#endif // ZH
 	curTemplate->m_uiStrings[1] = " considers ";
 	curTemplate->m_uiStrings[2] = " to be ";
 
@@ -3530,11 +3530,11 @@ void ScriptEngine::init( void )
 #ifdef OG
 	curTemplate->m_name = "[Radar] Create a radar event at a specified location.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "RADAR_CREATE_EVENT";
 	curTemplate->m_uiName = "Radar_/Create Event/Create a radar event at a specified location.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 2;
 	curTemplate->m_parameters[0] = Parameter::COORD3D;
 	curTemplate->m_parameters[1] = Parameter::RADAR_EVENT_TYPE;
@@ -3546,11 +3546,11 @@ void ScriptEngine::init( void )
 #ifdef OG
 	curTemplate->m_name = "[Radar] Create a radar event at a specific object.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "OBJECT_CREATE_RADAR_EVENT";
 	curTemplate->m_uiName = "Radar_/Create Event/Create  a radar event at a specific object.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 2;
 	curTemplate->m_parameters[0] = Parameter::UNIT;
 	curTemplate->m_parameters[1] = Parameter::RADAR_EVENT_TYPE;
@@ -3562,11 +3562,11 @@ void ScriptEngine::init( void )
 #ifdef OG
 	curTemplate->m_name = "[Radar] Create a radar event at a specific team.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "TEAM_CREATE_RADAR_EVENT";
 	curTemplate->m_uiName = "Radar_/Create Event/Create  a radar event at a specific team.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 2;
 	curTemplate->m_parameters[0] = Parameter::TEAM;
 	curTemplate->m_parameters[1] = Parameter::RADAR_EVENT_TYPE;
@@ -3578,11 +3578,11 @@ void ScriptEngine::init( void )
 #ifdef OG
 	curTemplate->m_name = "[Radar] Disable the radar.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "RADAR_DISABLE";
 	curTemplate->m_uiName = "Radar_/Control/Disable the radar.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 0;
 	curTemplate->m_numUiStrings = 1;
 	curTemplate->m_uiStrings[0] = "The radar is disabled.";
@@ -3591,11 +3591,11 @@ void ScriptEngine::init( void )
 #ifdef OG
 	curTemplate->m_name = "[Radar] Enable the radar.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "RADAR_ENABLE";
 	curTemplate->m_uiName = "Radar_/Control/Enable the radar.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 0;
 	curTemplate->m_numUiStrings = 1;
 	curTemplate->m_uiStrings[0] = "The radar is enabled.";
@@ -3604,11 +3604,11 @@ void ScriptEngine::init( void )
 #ifdef OG
 	curTemplate->m_name = "[Unit] Stealth set enabled or disabled.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "NAMED_SET_STEALTH_ENABLED";
 	curTemplate->m_uiName = "Unit_/Status/Stealth set enabled or disabled.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 2;
 	curTemplate->m_parameters[0] = Parameter::UNIT;
 	curTemplate->m_parameters[1] = Parameter::BOOLEAN;
@@ -3621,11 +3621,11 @@ void ScriptEngine::init( void )
 #ifdef OG
 	curTemplate->m_name = "[Team] Stealth set enabled or disabled.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "TEAM_SET_STEALTH_ENABLED";
 	curTemplate->m_uiName = "Team_/Status/Stealth set enabled or disabled.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 2;
 	curTemplate->m_parameters[0] = Parameter::TEAM;
 	curTemplate->m_parameters[1] = Parameter::BOOLEAN;
@@ -3675,16 +3675,16 @@ void ScriptEngine::init( void )
 	curTemplate->m_uiStrings[1] = " to team ";
 	curTemplate->m_uiStrings[2] = ".";
 
-#endif
+#endif // ZH
 	curTemplate = &m_actionTemplates[ScriptAction::MAP_REVEAL_AT_WAYPOINT];
 #ifdef OG
 	curTemplate->m_name = "[Map] Reveal map at waypoint -- fog.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "MAP_REVEAL_AT_WAYPOINT";
 	curTemplate->m_uiName = "Map_/Shroud or Reveal/Reveal map at waypoint -- fog.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 3;
 	curTemplate->m_parameters[0] = Parameter::WAYPOINT;
 	curTemplate->m_parameters[1] = Parameter::REAL;
@@ -3699,11 +3699,11 @@ void ScriptEngine::init( void )
 #ifdef OG
 	curTemplate->m_name = "[Map] Reveal map at waypoint -- undo fog.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "MAP_SHROUD_AT_WAYPOINT";
 	curTemplate->m_uiName = "Map_/Shroud or Reveal/Shroud map at waypoint -- add fog.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 3;
 	curTemplate->m_parameters[0] = Parameter::WAYPOINT;
 	curTemplate->m_parameters[1] = Parameter::REAL;
@@ -3718,11 +3718,11 @@ void ScriptEngine::init( void )
 #ifdef OG
 	curTemplate->m_name = "[Map] Reveal the entire map for a player.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "MAP_REVEAL_ALL";
 	curTemplate->m_uiName = "Map_/Shroud or Reveal/Reveal the entire map for a player.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 1;
 	curTemplate->m_parameters[0] = Parameter::SIDE;
 	curTemplate->m_numUiStrings = 2;
@@ -3733,11 +3733,11 @@ void ScriptEngine::init( void )
 #ifdef OG
 	curTemplate->m_name = "[Map] Reveal the entire map permanently for a player.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "MAP_REVEAL_ALL_PERM";
 	curTemplate->m_uiName = "Map_/Shroud or Reveal/Reveal the entire map permanently for a player.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 1;
 	curTemplate->m_parameters[0] = Parameter::SIDE;
 	curTemplate->m_numUiStrings = 2;
@@ -3748,11 +3748,11 @@ void ScriptEngine::init( void )
 #ifdef OG
 	curTemplate->m_name = "[Map] Reveal the entire map permanently is un-done for a player.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "MAP_REVEAL_ALL_UNDO_PERM";
 	curTemplate->m_uiName = "Map_/Shroud or Reveal/Un-Reveal the entire map permanently for a player.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 1;
 	curTemplate->m_parameters[0] = Parameter::SIDE;
 	curTemplate->m_numUiStrings = 2;
@@ -3763,11 +3763,11 @@ void ScriptEngine::init( void )
 #ifdef OG
 	curTemplate->m_name = "[Map] Shroud the entire map for a player.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "MAP_SHROUD_ALL";
 	curTemplate->m_uiName = "Map_/Shroud or Reveal/Shroud the entire map for a player.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 1;
 	curTemplate->m_parameters[0] = Parameter::SIDE;
 	curTemplate->m_numUiStrings = 2;
@@ -3778,11 +3778,11 @@ void ScriptEngine::init( void )
 #ifdef OG
 	curTemplate->m_name = "[Map] Border Shroud is turned off.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "DISABLE_BORDER_SHROUD";
 	curTemplate->m_uiName = "Map_/Shroud or Reveal/Border Shroud is turned off.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 0;
 	curTemplate->m_numUiStrings = 1;
 	curTemplate->m_uiStrings[0] = "Shroud off the map edges is turned off.";
@@ -3791,11 +3791,11 @@ void ScriptEngine::init( void )
 #ifdef OG
 	curTemplate->m_name = "[Map] Border Shroud is turned on.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "ENABLE_BORDER_SHROUD";
 	curTemplate->m_uiName = "Map_/Shroud or Reveal/Border Shroud is turned on.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 0;
 	curTemplate->m_numUiStrings = 1;
 	curTemplate->m_uiStrings[0] = "Shroud off the map edges is turned on.";
@@ -3804,255 +3804,255 @@ void ScriptEngine::init( void )
 #ifdef OG
 	curTemplate->m_name = "[Team] Garrison a specific building with a team.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "TEAM_GARRISON_SPECIFIC_BUILDING";
 	curTemplate->m_uiName = "Team_/Garrison/Garrison a specific building with a team.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 2;
 	curTemplate->m_parameters[0] = Parameter::TEAM;
 	curTemplate->m_parameters[1] = Parameter::UNIT;
 	curTemplate->m_numUiStrings = 2;
 #ifdef OG
 	curTemplate->m_uiStrings[0] = "";
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_uiStrings[0] = " ";
-#endif
+#endif // ZH
 	curTemplate->m_uiStrings[1] = " enters into building named ";
 
 	curTemplate = &m_actionTemplates[ScriptAction::EXIT_SPECIFIC_BUILDING];
 #ifdef OG
 	curTemplate->m_name = "[Unit] Empty a specific building.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "EXIT_SPECIFIC_BUILDING";
 	curTemplate->m_uiName = "Unit_/Garrison/Empty a specific building.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 1;
 	curTemplate->m_parameters[0] = Parameter::UNIT;
 	curTemplate->m_numUiStrings = 2;
 #ifdef OG
 	curTemplate->m_uiStrings[0] = "";
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_uiStrings[0] = " ";
-#endif
+#endif // ZH
 	curTemplate->m_uiStrings[1] = " empties.";
 
 	curTemplate = &m_actionTemplates[ScriptAction::TEAM_GARRISON_NEAREST_BUILDING];
 #ifdef OG
 	curTemplate->m_name = "[Team] Garrison a nearby building with a team.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "TEAM_GARRISON_NEAREST_BUILDING";
 	curTemplate->m_uiName = "Team_/Garrison/Garrison a nearby building with a team.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 1;
 	curTemplate->m_parameters[0] = Parameter::TEAM;
 	curTemplate->m_numUiStrings = 2;
 #ifdef OG
 	curTemplate->m_uiStrings[0] = "";
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_uiStrings[0] = " ";
-#endif
+#endif // ZH
 	curTemplate->m_uiStrings[1] = " garrison a nearby building.";
 
 	curTemplate = &m_actionTemplates[ScriptAction::TEAM_EXIT_ALL_BUILDINGS];
 #ifdef OG
 	curTemplate->m_name = "[Team] Exit all buildings a team is in.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "TEAM_EXIT_ALL_BUILDINGS";
 	curTemplate->m_uiName = "Team_/Garrison/Exit all buildings a team is in.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 1;
 	curTemplate->m_parameters[0] = Parameter::TEAM;
 	curTemplate->m_numUiStrings = 2;
 #ifdef OG
 	curTemplate->m_uiStrings[0] = "";
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_uiStrings[0] = " ";
-#endif
+#endif // ZH
 	curTemplate->m_uiStrings[1] = " exits all buildings.";
 
 	curTemplate = &m_actionTemplates[ScriptAction::NAMED_GARRISON_SPECIFIC_BUILDING];
 #ifdef OG
 	curTemplate->m_name = "[Unit] Garrison a specific building with a specific unit.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "NAMED_GARRISON_SPECIFIC_BUILDING";
 	curTemplate->m_uiName = "Unit_/Garrison/Garrison a specific building with a specific unit.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 2;
 	curTemplate->m_parameters[0] = Parameter::UNIT;
 	curTemplate->m_parameters[1] = Parameter::UNIT;
 	curTemplate->m_numUiStrings = 2;
 #ifdef OG
 	curTemplate->m_uiStrings[0] = "";
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_uiStrings[0] = " ";
-#endif
+#endif // ZH
 	curTemplate->m_uiStrings[1] = " garrison building ";
 
 	curTemplate = &m_actionTemplates[ScriptAction::NAMED_GARRISON_NEAREST_BUILDING];
 #ifdef OG
 	curTemplate->m_name = "[Unit] Garrison a nearby building with a specific unit.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "NAMED_GARRISON_NEAREST_BUILDING";
 	curTemplate->m_uiName = "Unit_/Garrison/Garrison a nearby building with a specific unit.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 1;
 	curTemplate->m_parameters[0] = Parameter::UNIT;
 	curTemplate->m_numUiStrings = 2;
 #ifdef OG
 	curTemplate->m_uiStrings[0] = "";
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_uiStrings[0] = " ";
-#endif
+#endif // ZH
 	curTemplate->m_uiStrings[1] = " garrison a nearby building.";
 
 	curTemplate = &m_actionTemplates[ScriptAction::NAMED_EXIT_BUILDING];
 #ifdef OG
 	curTemplate->m_name = "[Unit] Exit the building the unit is in.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "NAMED_EXIT_BUILDING";
 	curTemplate->m_uiName = "Unit_/Garrison/Exit the building the unit is in.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 1;
 	curTemplate->m_parameters[0] = Parameter::UNIT;
 	curTemplate->m_numUiStrings = 2;
 #ifdef OG
 	curTemplate->m_uiStrings[0] = "";
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_uiStrings[0] = " ";
-#endif
+#endif // ZH
 	curTemplate->m_uiStrings[1] = " leaves the building.";
 
 	curTemplate = &m_actionTemplates[ScriptAction::PLAYER_GARRISON_ALL_BUILDINGS];
 #ifdef OG
 	curTemplate->m_name = "[Player] Garrison as many buildings as player has units for.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "PLAYER_GARRISON_ALL_BUILDINGS";
 	curTemplate->m_uiName = "Player_/Garrison/Garrison as many buildings as player has units for.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 1;
 	curTemplate->m_parameters[0] = Parameter::SIDE;
 	curTemplate->m_numUiStrings = 2;
 #ifdef OG
 	curTemplate->m_uiStrings[0] = "";
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_uiStrings[0] = " ";
-#endif
+#endif // ZH
 	curTemplate->m_uiStrings[1] = " garrison buildings.";
 
 	curTemplate = &m_actionTemplates[ScriptAction::PLAYER_EXIT_ALL_BUILDINGS];
 #ifdef OG
 	curTemplate->m_name = "[Player] All units leave their garrisons.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "PLAYER_EXIT_ALL_BUILDINGS";
 	curTemplate->m_uiName = "Player_/Garrison/All units leave their garrisons.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 1;
 	curTemplate->m_parameters[0] = Parameter::SIDE;
 	curTemplate->m_numUiStrings = 2;
 #ifdef OG
 	curTemplate->m_uiStrings[0] = "";
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_uiStrings[0] = " ";
-#endif
+#endif // ZH
 	curTemplate->m_uiStrings[1] = " evacuate.";
 
 	curTemplate = &m_actionTemplates[ScriptAction::TEAM_AVAILABLE_FOR_RECRUITMENT];
 #ifdef OG
 	curTemplate->m_name = "[Team] Set whether members of a team can be recruited into another team.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "TEAM_AVAILABLE_FOR_RECRUITMENT";
 	curTemplate->m_uiName = "Team_/AI/Set whether members of a team can be recruited into another team.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 2;
 	curTemplate->m_parameters[0] = Parameter::TEAM;
 	curTemplate->m_parameters[1] = Parameter::BOOLEAN;
 	curTemplate->m_numUiStrings = 2;
 #ifdef OG
 	curTemplate->m_uiStrings[0] = "";
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_uiStrings[0] = " ";
-#endif
+#endif // ZH
 	curTemplate->m_uiStrings[1] = " sets their willingness to join teams to ";
 
 	curTemplate = &m_actionTemplates[ScriptAction::TEAM_COLLECT_NEARBY_FOR_TEAM];
 #ifdef OG
 	curTemplate->m_name = "[Team] Set to collect nearby units.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "TEAM_COLLECT_NEARBY_FOR_TEAM";
 	curTemplate->m_uiName = "Team_/AI/Set to collect nearby units.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 1;
 	curTemplate->m_parameters[0] = Parameter::TEAM;
 	curTemplate->m_numUiStrings = 2;
 #ifdef OG
 	curTemplate->m_uiStrings[0] = "";
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_uiStrings[0] = " ";
-#endif
+#endif // ZH
 	curTemplate->m_uiStrings[1] = " attempts to collect nearby units for a team.";
 
 	curTemplate = &m_actionTemplates[ScriptAction::TEAM_MERGE_INTO_TEAM];
 #ifdef OG
 	curTemplate->m_name = "[Team] Merge a team into another team.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "TEAM_MERGE_INTO_TEAM";
 	curTemplate->m_uiName = "Team_/Merge/Merge a team into another team.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 2;
 	curTemplate->m_parameters[0] = Parameter::TEAM;
 	curTemplate->m_parameters[1] = Parameter::TEAM;
 	curTemplate->m_numUiStrings = 2;
 #ifdef OG
 	curTemplate->m_uiStrings[0] = "";
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_uiStrings[0] = " ";
-#endif
+#endif // ZH
 	curTemplate->m_uiStrings[1] = " merges onto ";
 
 	curTemplate = &m_actionTemplates[ScriptAction::IDLE_ALL_UNITS];
 #ifdef OG
 	curTemplate->m_name = "[Scripting] Idle all units for all players.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "IDLE_ALL_UNITS";
 	curTemplate->m_uiName = "Scripting_/Idle or Restart/Idle all units for all players.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 0;
 	curTemplate->m_numUiStrings = 1;
 	curTemplate->m_uiStrings[0] = "Idle all units for all players.";
@@ -4061,11 +4061,11 @@ void ScriptEngine::init( void )
 #ifdef OG
 	curTemplate->m_name = "[Scripting] All idle Supply Trucks attempt to resume supply routes.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "RESUME_SUPPLY_TRUCKING";
 	curTemplate->m_uiName = "Scripting_/Idle or Restart/All idle Supply Trucks attempt to resume supply routes.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 0;
 	curTemplate->m_numUiStrings = 1;
 	curTemplate->m_uiStrings[0] = "All idle Supply Trucks attempt to resume supply routes.";
@@ -4074,11 +4074,11 @@ void ScriptEngine::init( void )
 #ifdef OG
 	curTemplate->m_name = "[User] User input -- disable.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "DISABLE_INPUT";
 	curTemplate->m_uiName = "User_/Input/User input -- disable.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 0;
 	curTemplate->m_numUiStrings = 1;
 	curTemplate->m_uiStrings[0] = "Disable mouse and keyboard input.";
@@ -4087,11 +4087,11 @@ void ScriptEngine::init( void )
 #ifdef OG
 	curTemplate->m_name = "[User] User input -- enable.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "ENABLE_INPUT";
 	curTemplate->m_uiName = "User_/Input/User input -- enable.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 0;
 	curTemplate->m_numUiStrings = 1;
 	curTemplate->m_uiStrings[0] = "Enable mouse and keyboard input.";
@@ -4100,11 +4100,11 @@ void ScriptEngine::init( void )
 #ifdef OG
 	curTemplate->m_name = "[Multimedia] Pause the ambient sounds.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "SOUND_AMBIENT_PAUSE";
 	curTemplate->m_uiName = "Multimedia_/SoundEffects/Pause the ambient sounds.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 0;
 	curTemplate->m_numUiStrings = 1;
 	curTemplate->m_uiStrings[0] = "Pause the ambient sounds.";
@@ -4113,11 +4113,11 @@ void ScriptEngine::init( void )
 #ifdef OG
 	curTemplate->m_name = "[Multimedia] Resume the ambient sounds.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "SOUND_AMBIENT_RESUME";
 	curTemplate->m_uiName = "Multimedia_/SoundEffects/Resume the ambient sounds.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 0;
 	curTemplate->m_numUiStrings = 1;
 	curTemplate->m_uiStrings[0] = "Resume the ambient sounds.";
@@ -4126,11 +4126,11 @@ void ScriptEngine::init( void )
 #ifdef OG
 	curTemplate->m_name = "[Multimedia] Play a music track.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "MUSIC_SET_TRACK";
 	curTemplate->m_uiName = "Multimedia_/Music/Play a music track.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 3;
 	curTemplate->m_parameters[0] = Parameter::MUSIC;
 	curTemplate->m_parameters[1] = Parameter::BOOLEAN;
@@ -4145,11 +4145,11 @@ void ScriptEngine::init( void )
 #ifdef OG
 	curTemplate->m_name = "[Camera] Start letterbox mode.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "CAMERA_LETTERBOX_BEGIN";
 	curTemplate->m_uiName = "Camera_/Letterbox/Start letterbox mode.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 0;
 	curTemplate->m_numUiStrings = 1;
 	curTemplate->m_uiStrings[0] = "Start letterbox mode (hide UI, add border).";
@@ -4158,11 +4158,11 @@ void ScriptEngine::init( void )
 #ifdef OG
 	curTemplate->m_name = "[Camera] End letterbox mode.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "CAMERA_LETTERBOX_END";
 	curTemplate->m_uiName = "Camera_/ End letterbox mode.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 0;
 	curTemplate->m_numUiStrings = 1;
 	curTemplate->m_uiStrings[0] = "End letterbox mode (show UI, remove border).";
@@ -4171,11 +4171,11 @@ void ScriptEngine::init( void )
 #ifdef OG
 	curTemplate->m_name = "[Camera] Start black & white mode.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "CAMERA_BW_MODE_BEGIN";
 	curTemplate->m_uiName = "Camera_/Fade Effects/Start black & white mode.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 1;
 	curTemplate->m_parameters[0] = Parameter::INT;
 	curTemplate->m_numUiStrings = 1;
@@ -4185,11 +4185,11 @@ void ScriptEngine::init( void )
 #ifdef OG
 	curTemplate->m_name = "[Camera] End black & white mode.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "CAMERA_BW_MODE_END";
 	curTemplate->m_uiName = "Camera_/Fade Effects/End black & white mode.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 1;
 	curTemplate->m_numUiStrings = 1;
 	curTemplate->m_uiStrings[0] = "Frames to fade into color mode = ";
@@ -4198,11 +4198,11 @@ void ScriptEngine::init( void )
 #ifdef OG
 	curTemplate->m_name = "[Camera] Motion blur zoom.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "CAMERA_MOTION_BLUR";
 	curTemplate->m_uiName = "Camera_/Fade Effects/Motion blur zoom.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 2;
 	curTemplate->m_parameters[0] = Parameter::BOOLEAN;
 	curTemplate->m_parameters[1] = Parameter::BOOLEAN;
@@ -4214,11 +4214,11 @@ void ScriptEngine::init( void )
 #ifdef OG
 	curTemplate->m_name = "[Camera] Motion blur zoom with jump cut.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "CAMERA_MOTION_BLUR_JUMP";
 	curTemplate->m_uiName = "Camera_/Fade Effects/Motion blur zoom with jump cut.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 2;
 	curTemplate->m_parameters[0] = Parameter::WAYPOINT;
 	curTemplate->m_parameters[1] = Parameter::BOOLEAN;
@@ -4230,11 +4230,11 @@ void ScriptEngine::init( void )
 #ifdef OG
 	curTemplate->m_name = "[Camera] Start motion blur as the camera moves.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "CAMERA_MOTION_BLUR_FOLLOW";
 	curTemplate->m_uiName = "Camera_/Fade Effects/Start motion blur as the camera moves.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 1;
 	curTemplate->m_parameters[1] = Parameter::INT;
 	curTemplate->m_numUiStrings = 2;
@@ -4245,11 +4245,11 @@ void ScriptEngine::init( void )
 #ifdef OG
 	curTemplate->m_name = "[Camera] End motion blur as the camera moves.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "CAMERA_MOTION_BLUR_END_FOLLOW";
 	curTemplate->m_uiName = "Camera_/Fade Effects/End motion blur as the camera moves.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 0;
 	curTemplate->m_numUiStrings = 1;
 	curTemplate->m_uiStrings[0] = "End motion blur as the camera moves.";
@@ -4258,11 +4258,11 @@ void ScriptEngine::init( void )
 #ifdef OG
 	curTemplate->m_name = "[Camera] Start skybox mode.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "DRAW_SKYBOX_BEGIN";
 	curTemplate->m_uiName = "Camera_/Skybox/Start skybox mode.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 0;
 	curTemplate->m_numUiStrings = 1;
 	curTemplate->m_uiStrings[0] = "Start skybox mode (draw sky background).";
@@ -4271,11 +4271,11 @@ void ScriptEngine::init( void )
 #ifdef OG
 	curTemplate->m_name = "[Camera] End skybox mode.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "DRAW_SKYBOX_END";
 	curTemplate->m_uiName = "Camera_/Skybox/End skybox mode.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 0;
 	curTemplate->m_numUiStrings = 1;
 	curTemplate->m_uiStrings[0] = "End skybox mode (draw black background).";
@@ -4284,11 +4284,11 @@ void ScriptEngine::init( void )
 #ifdef OG
 	curTemplate->m_name = "[Scripting] Time -- freeze .";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "FREEZE_TIME";
 	curTemplate->m_uiName = "Scripting_/Time/Freeze time.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 0;
 	curTemplate->m_numUiStrings = 1;
 	curTemplate->m_uiStrings[0] = "Freeze time.";
@@ -4297,11 +4297,11 @@ void ScriptEngine::init( void )
 #ifdef OG
 	curTemplate->m_name = "[Scripting] Time -- unfreeze.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "UNFREEZE_TIME";
 	curTemplate->m_uiName = "Scripting_/Time/Unfreeze time.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 0;
 	curTemplate->m_numUiStrings = 1;
 	curTemplate->m_uiStrings[0] = "Unfreeze time.";
@@ -4310,11 +4310,11 @@ void ScriptEngine::init( void )
 #ifdef OG
 	curTemplate->m_name = "[Scripting] Show military briefing caption.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "SHOW_MILITARY_CAPTION";
 	curTemplate->m_uiName = "Scripting_/Briefing/Show military briefing caption.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 2;
 	curTemplate->m_parameters[0] = Parameter::TEXT_STRING;
 	curTemplate->m_parameters[1] = Parameter::INT;
@@ -4327,11 +4327,11 @@ void ScriptEngine::init( void )
 #ifdef OG
 	curTemplate->m_name = "[Camera] Set the audible distance for camera-up shots.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "CAMERA_SET_AUDIBLE_DISTANCE";
 	curTemplate->m_uiName = "Camera_/Sounds/Set the audible distance for camera-up shots.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 1;
 	curTemplate->m_parameters[0] = Parameter::REAL;
 	curTemplate->m_numUiStrings = 2;
@@ -4341,11 +4341,11 @@ void ScriptEngine::init( void )
 #ifdef OG
 	curTemplate->m_name = "[Unit] Set unit to be held in place, ignoring Physics, Locomotors, etc.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "NAMED_SET_HELD";
 	curTemplate->m_uiName = "Unit_/Move/Set unit to be held in place, ignoring Physics, Locomotors, etc.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 2;
 	curTemplate->m_parameters[0] = Parameter::UNIT;
 	curTemplate->m_parameters[1] = Parameter::BOOLEAN;
@@ -4358,11 +4358,11 @@ void ScriptEngine::init( void )
 #ifdef OG
 	curTemplate->m_name = "[Unit] Set stopping distance for current locomotor.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "NAMED_SET_STOPPING_DISTANCE";
 	curTemplate->m_uiName = "Unit_/Move/Set stopping distance for current locomotor.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 2;
 	curTemplate->m_parameters[0] = Parameter::UNIT;
 	curTemplate->m_parameters[1] = Parameter::REAL;
@@ -4375,11 +4375,11 @@ void ScriptEngine::init( void )
 #ifdef OG
 	curTemplate->m_name = "[Team] Set stopping distance for each unit's current locomotor.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "SET_STOPPING_DISTANCE";
 	curTemplate->m_uiName = "Team_/Move/Set stopping distance for each unit's current locomotor.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 2;
 	curTemplate->m_parameters[0] = Parameter::TEAM;
 	curTemplate->m_parameters[1] = Parameter::REAL;
@@ -4392,11 +4392,11 @@ void ScriptEngine::init( void )
 #ifdef OG
 	curTemplate->m_name = "[Scripting] Set max frames per second.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "SET_FPS_LIMIT";
 	curTemplate->m_uiName = "Scripting_/ Set max frames per second.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 1;
 	curTemplate->m_parameters[0] = Parameter::INT;
 	curTemplate->m_numUiStrings = 2;
@@ -4407,11 +4407,11 @@ void ScriptEngine::init( void )
 #ifdef OG
 	curTemplate->m_name = "[Scripting] Special power countdown display -- disable.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "DISABLE_SPECIAL_POWER_DISPLAY";
 	curTemplate->m_uiName = "Scripting_/ Special power countdown display -- disable.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 0;
 	curTemplate->m_numUiStrings = 1;
 	curTemplate->m_uiStrings[0] = "Disables special power countdown display.";
@@ -4420,11 +4420,11 @@ void ScriptEngine::init( void )
 #ifdef OG
 	curTemplate->m_name = "[Scripting] Special power countdown display -- enable.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "ENABLE_SPECIAL_POWER_DISPLAY";
 	curTemplate->m_uiName = "Scripting_/ Special power countdown display -- enable.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 0;
 	curTemplate->m_numUiStrings = 1;
 	curTemplate->m_uiStrings[0] = "Enables special power countdown display.";
@@ -4433,11 +4433,11 @@ void ScriptEngine::init( void )
 #ifdef OG
 	curTemplate->m_name = "[Unit] Special power countdown timer -- hide.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "NAMED_HIDE_SPECIAL_POWER_DISPLAY";
 	curTemplate->m_uiName = "Unit_/ Special power countdown timer -- hide.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 1;
 	curTemplate->m_parameters[0] = Parameter::UNIT;
 	curTemplate->m_numUiStrings = 2;
@@ -4448,11 +4448,11 @@ void ScriptEngine::init( void )
 #ifdef OG
 	curTemplate->m_name = "[Unit] Special power countdown timer -- display.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "NAMED_SHOW_SPECIAL_POWER_DISPLAY";
 	curTemplate->m_uiName = "Unit_/ Special power countdown timer -- display.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 1;
 	curTemplate->m_parameters[0] = Parameter::UNIT;
 	curTemplate->m_numUiStrings = 2;
@@ -4463,11 +4463,11 @@ void ScriptEngine::init( void )
 #ifdef OG
 	curTemplate->m_name = "[Multimedia] Set the current music volume.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "MUSIC_SET_VOLUME";
 	curTemplate->m_uiName = "Multimedia_/ Set the current music volume.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 1;
 	curTemplate->m_parameters[0] = Parameter::REAL;
 	curTemplate->m_numUiStrings = 2;
@@ -4478,11 +4478,11 @@ void ScriptEngine::init( void )
 #ifdef OG
 	curTemplate->m_name = "[Team] Transfer control of a team to a player.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "TEAM_TRANSFER_TO_PLAYER";
 	curTemplate->m_uiName = "Team_/ Transfer control of a team to a player.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 2;
 	curTemplate->m_parameters[0] = Parameter::TEAM;
 	curTemplate->m_parameters[1] = Parameter::SIDE;
@@ -4494,11 +4494,11 @@ void ScriptEngine::init( void )
 #ifdef OG
 	curTemplate->m_name = "[Player] Set player's money.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "PLAYER_SET_MONEY";
 	curTemplate->m_uiName = "Player_/ Set player's money.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 2;
 	curTemplate->m_parameters[0] = Parameter::SIDE;
 	curTemplate->m_parameters[1] = Parameter::INT;
@@ -4510,32 +4510,32 @@ void ScriptEngine::init( void )
 #ifdef OG
 	curTemplate->m_name = "[Player] Gives/takes from player's money.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "PLAYER_GIVE_MONEY";
 	curTemplate->m_uiName = "Player_/ Gives/takes from player's money.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 2;
 	curTemplate->m_parameters[0] = Parameter::SIDE;
 	curTemplate->m_parameters[1] = Parameter::INT;
 	curTemplate->m_numUiStrings = 2;
 #ifdef OG
 	curTemplate->m_uiStrings[0] = "";
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_uiStrings[0] = " ";
-#endif
+#endif // ZH
 	curTemplate->m_uiStrings[1] = " gets $";
 
 	curTemplate = &m_actionTemplates[ScriptAction::DISPLAY_COUNTER];
 #ifdef OG
 	curTemplate->m_name = "[Scripting] Counter -- display an individual counter to the user.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "DISPLAY_COUNTER";
 	curTemplate->m_uiName = "Scripting_/ Counter -- display an individual counter to the user.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 2;
 	curTemplate->m_parameters[0] = Parameter::COUNTER;
 	curTemplate->m_parameters[1] = Parameter::LOCALIZED_TEXT;
@@ -4547,11 +4547,11 @@ void ScriptEngine::init( void )
 #ifdef OG
 	curTemplate->m_name = "[Scripting] Counter -- hides an individual counter from the user.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "HIDE_COUNTER";
 	curTemplate->m_uiName = "Scripting_/ Counter -- hides an individual counter from the user.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 1;
 	curTemplate->m_parameters[0] = Parameter::COUNTER;
 	curTemplate->m_numUiStrings = 1;
@@ -4561,11 +4561,11 @@ void ScriptEngine::init( void )
 #ifdef OG
 	curTemplate->m_name = "[Scripting] Timer -- display an individual timer to the user.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "DISPLAY_COUNTDOWN_TIMER";
 	curTemplate->m_uiName = "Scripting_/ Timer -- display an individual timer to the user.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 2;
 	curTemplate->m_parameters[0] = Parameter::COUNTER;
 	curTemplate->m_parameters[1] = Parameter::LOCALIZED_TEXT;
@@ -4577,11 +4577,11 @@ void ScriptEngine::init( void )
 #ifdef OG
 	curTemplate->m_name = "[Scripting] Timer -- hides an individual timer from the user.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "HIDE_COUNTDOWN_TIMER";
 	curTemplate->m_uiName = "Scripting_/ Timer -- hides an individual timer from the user.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 1;
 	curTemplate->m_parameters[0] = Parameter::COUNTER;
 	curTemplate->m_numUiStrings = 1;
@@ -4591,11 +4591,11 @@ void ScriptEngine::init( void )
 #ifdef OG
 	curTemplate->m_name = "[Scripting] Timer -- hide all timers from the user.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "DISABLE_COUNTDOWN_TIMER_DISPLAY";
 	curTemplate->m_uiName = "Scripting_/ Timer -- hide all timers from the user.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 0;
 	curTemplate->m_numUiStrings = 1;
 	curTemplate->m_uiStrings[0] = "Disables timer display.";
@@ -4604,11 +4604,11 @@ void ScriptEngine::init( void )
 #ifdef OG
 	curTemplate->m_name = "[Scripting] Timer -- display all timers to the user.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "ENABLE_COUNTDOWN_TIMER_DISPLAY";
 	curTemplate->m_uiName = "Scripting_/ Timer -- display all timers to the user.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 0;
 	curTemplate->m_numUiStrings = 1;
 	curTemplate->m_uiStrings[0] = "Enables timer display.";
@@ -4617,11 +4617,11 @@ void ScriptEngine::init( void )
 #ifdef OG
 	curTemplate->m_name = "[Unit] Special power countdown timer -- pause.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "NAMED_STOP_SPECIAL_POWER_COUNTDOWN";
 	curTemplate->m_uiName = "Unit_/ Special power countdown timer -- pause.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 2;
 	curTemplate->m_parameters[0] = Parameter::UNIT;
 	curTemplate->m_parameters[1] = Parameter::SPECIAL_POWER;
@@ -4634,11 +4634,11 @@ void ScriptEngine::init( void )
 #ifdef OG
 	curTemplate->m_name = "[Unit] Special power countdown timer -- resume.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "NAMED_START_SPECIAL_POWER_COUNTDOWN";
 	curTemplate->m_uiName = "Unit_/ Special power countdown timer -- resume.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 2;
 	curTemplate->m_parameters[0] = Parameter::UNIT;
 	curTemplate->m_parameters[1] = Parameter::SPECIAL_POWER;
@@ -4651,11 +4651,11 @@ void ScriptEngine::init( void )
 #ifdef OG
 	curTemplate->m_name = "[Unit] Special power countdown timer -- set.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "NAMED_SET_SPECIAL_POWER_COUNTDOWN";
 	curTemplate->m_uiName = "Unit_/ Special power countdown timer -- set.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 3;
 	curTemplate->m_parameters[0] = Parameter::UNIT;
 	curTemplate->m_parameters[1] = Parameter::SPECIAL_POWER;
@@ -4670,11 +4670,11 @@ void ScriptEngine::init( void )
 #ifdef OG
 	curTemplate->m_name = "[Unit] Special power countdown timer -- add seconds.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "NAMED_ADD_SPECIAL_POWER_COUNTDOWN";
 	curTemplate->m_uiName = "Unit_/ Special power countdown timer -- add seconds.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 3;
 	curTemplate->m_parameters[0] = Parameter::UNIT;
 	curTemplate->m_parameters[1] = Parameter::SPECIAL_POWER;
@@ -4682,10 +4682,10 @@ void ScriptEngine::init( void )
 	curTemplate->m_numUiStrings = 4;
 #ifdef OG
 	curTemplate->m_uiStrings[0] = "";
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_uiStrings[0] = " ";
-#endif
+#endif // ZH
 	curTemplate->m_uiStrings[1] = "'s ";
 	curTemplate->m_uiStrings[2] = " has ";
 	curTemplate->m_uiStrings[3] = " seconds added to it.";
@@ -4694,21 +4694,21 @@ void ScriptEngine::init( void )
 #ifdef OG
 	curTemplate->m_name = "[Skirmish] Special power -- fire at enemy's highest cost area.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "SKIRMISH_FIRE_SPECIAL_POWER_AT_MOST_COST";
 	curTemplate->m_uiName = "Skirmish_/ Special power -- fire at enemy's highest cost area.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 2;
 	curTemplate->m_parameters[0] = Parameter::SIDE;
 	curTemplate->m_parameters[1] = Parameter::SPECIAL_POWER;
 	curTemplate->m_numUiStrings = 2;
 #ifdef OG
 	curTemplate->m_uiStrings[0] = "";
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_uiStrings[0] = " ";
-#endif
+#endif // ZH
 	curTemplate->m_uiStrings[1] = " fire ";
 	curTemplate->m_uiStrings[2] = " at enemy's most costly area.";
 
@@ -4716,11 +4716,11 @@ void ScriptEngine::init( void )
 #ifdef OG
 	curTemplate->m_name = "[Player] Repair named bridge or structure.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "PLAYER_REPAIR_NAMED_STRUCTURE";
 	curTemplate->m_uiName = "Player_/ Repair named bridge or structure.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 2;
 	curTemplate->m_parameters[0] = Parameter::SIDE;
 	curTemplate->m_parameters[1] = Parameter::UNIT;
@@ -4733,11 +4733,11 @@ void ScriptEngine::init( void )
 #ifdef OG
 	curTemplate->m_name = "[Unit] Special power -- fire at location.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "NAMED_FIRE_SPECIAL_POWER_AT_WAYPOINT";
 	curTemplate->m_uiName = "Unit_/ Special power -- fire at location.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 3;
 	curTemplate->m_parameters[0] = Parameter::UNIT;
 	curTemplate->m_parameters[1] = Parameter::SPECIAL_POWER;
@@ -4745,10 +4745,10 @@ void ScriptEngine::init( void )
 	curTemplate->m_numUiStrings = 4;
 #ifdef OG
 	curTemplate->m_uiStrings[0] = "";
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_uiStrings[0] = " ";
-#endif
+#endif // ZH
 	curTemplate->m_uiStrings[1] = " fires ";
 	curTemplate->m_uiStrings[2] = " at ";
 	curTemplate->m_uiStrings[3] = ".";
@@ -4757,11 +4757,11 @@ void ScriptEngine::init( void )
 #ifdef OG
 	curTemplate->m_name = "[Unit] Special power -- fire at unit.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "NAMED_FIRE_SPECIAL_POWER_AT_NAMED";
 	curTemplate->m_uiName = "Unit_/ Special power -- fire at unit.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 3;
 	curTemplate->m_parameters[0] = Parameter::UNIT;
 	curTemplate->m_parameters[1] = Parameter::SPECIAL_POWER;
@@ -4769,10 +4769,10 @@ void ScriptEngine::init( void )
 	curTemplate->m_numUiStrings = 4;
 #ifdef OG
 	curTemplate->m_uiStrings[0] = "";
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_uiStrings[0] = " ";
-#endif
+#endif // ZH
 	curTemplate->m_uiStrings[1] = " fires ";
 	curTemplate->m_uiStrings[2] = " at ";
 	curTemplate->m_uiStrings[3] = ".";
@@ -4781,11 +4781,11 @@ void ScriptEngine::init( void )
 #ifdef OG
 	curTemplate->m_name = "[Scripting] Refresh radar terrain.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "REFRESH_RADAR";
 	curTemplate->m_uiName = "Scripting_/ Refresh radar terrain.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 0;
 	curTemplate->m_numUiStrings = 1;
 	curTemplate->m_uiStrings[0] = "Refresh radar terrain.";
@@ -4794,71 +4794,71 @@ void ScriptEngine::init( void )
 #ifdef OG
 	curTemplate->m_name = "[Unit] Set a specific unit to stop.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "NAMED_STOP";
 	curTemplate->m_uiName = "Unit_/ Set a specific unit to stop.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 1;
 	curTemplate->m_parameters[0] = Parameter::UNIT;
 	curTemplate->m_numUiStrings = 2;
 #ifdef OG
 	curTemplate->m_uiStrings[0] = "";
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_uiStrings[0] = " ";
-#endif
+#endif // ZH
 	curTemplate->m_uiStrings[1] = " stops.";
 
 	curTemplate = &m_actionTemplates[ScriptAction::TEAM_STOP];
 #ifdef OG
 	curTemplate->m_name = "[Team] Set to stop.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "TEAM_STOP";
 	curTemplate->m_uiName = "Team_/ Set to stop.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 1;
 	curTemplate->m_parameters[0] = Parameter::TEAM;
 	curTemplate->m_numUiStrings = 2;
 #ifdef OG
 	curTemplate->m_uiStrings[0] = "";
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_uiStrings[0] = " ";
-#endif
+#endif // ZH
 	curTemplate->m_uiStrings[1] = " stops.";
 
 	curTemplate = &m_actionTemplates[ScriptAction::TEAM_STOP_AND_DISBAND];
 #ifdef OG
 	curTemplate->m_name = "[Team] Set to stop, then disband.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "TEAM_STOP_AND_DISBAND";
 	curTemplate->m_uiName = "Team_/ Set to stop, then disband.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 1;
 	curTemplate->m_parameters[0] = Parameter::TEAM;
 	curTemplate->m_numUiStrings = 2;
 #ifdef OG
 	curTemplate->m_uiStrings[0] = "";
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_uiStrings[0] = " ";
-#endif
+#endif // ZH
 	curTemplate->m_uiStrings[1] = " stops, then disbands.";
 
 	curTemplate = &m_actionTemplates[ScriptAction::TEAM_SET_OVERRIDE_RELATION_TO_TEAM];
 #ifdef OG
 	curTemplate->m_name = "[Team] Override a team's relationship to another team.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "TEAM_SET_OVERRIDE_RELATION_TO_TEAM";
 	curTemplate->m_uiName = "Team_/ Override a team's relationship to another team.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 3;
 	curTemplate->m_parameters[0] = Parameter::TEAM;
 	curTemplate->m_parameters[1] = Parameter::TEAM;
@@ -4866,10 +4866,10 @@ void ScriptEngine::init( void )
 	curTemplate->m_numUiStrings = 4;
 #ifdef OG
 	curTemplate->m_uiStrings[0] = "";
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_uiStrings[0] = " ";
-#endif
+#endif // ZH
 	curTemplate->m_uiStrings[1] = " considers ";
 	curTemplate->m_uiStrings[2] = " to be ";
 	curTemplate->m_uiStrings[3] = " (rather than using the the player relationship).";
@@ -4878,52 +4878,52 @@ void ScriptEngine::init( void )
 #ifdef OG
 	curTemplate->m_name = "[Team] Remove an override to a team's relationship to another team.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "TEAM_REMOVE_OVERRIDE_RELATION_TO_TEAM";
 	curTemplate->m_uiName = "Team_/ Remove an override to a team's relationship to another team.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 2;
 	curTemplate->m_parameters[0] = Parameter::TEAM;
 	curTemplate->m_parameters[1] = Parameter::TEAM;
 	curTemplate->m_numUiStrings = 2;
 #ifdef OG
 	curTemplate->m_uiStrings[0] = "";
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_uiStrings[0] = " ";
-#endif
+#endif // ZH
 	curTemplate->m_uiStrings[1] = " uses the player relationship to ";
 
 	curTemplate = &m_actionTemplates[ScriptAction::TEAM_REMOVE_ALL_OVERRIDE_RELATIONS];
 #ifdef OG
 	curTemplate->m_name = "[Team] Remove all overrides to team's relationship to teams and/or players.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "TEAM_REMOVE_ALL_OVERRIDE_RELATIONS";
 	curTemplate->m_uiName = "Team_/ Remove all overrides to team's relationship to teams and/or players.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 1;
 	curTemplate->m_parameters[0] = Parameter::TEAM;
 	curTemplate->m_numUiStrings = 2;
 #ifdef OG
 	curTemplate->m_uiStrings[0] = "";
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_uiStrings[0] = " ";
-#endif
+#endif // ZH
 	curTemplate->m_uiStrings[1] = " uses the player relationship to all other teams and players.";
 
  	curTemplate = &m_actionTemplates[ScriptAction::CAMERA_TETHER_NAMED];
 #ifdef OG
 	curTemplate->m_name = "[Camera] Tether camera to a specific unit.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "CAMERA_TETHER_NAMED";
 	curTemplate->m_uiName = "Camera_/ Tether camera to a specific unit.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 3;
 	curTemplate->m_parameters[0] = Parameter::UNIT;
 	curTemplate->m_parameters[1] = Parameter::BOOLEAN;
@@ -4938,11 +4938,11 @@ void ScriptEngine::init( void )
 #ifdef OG
 	curTemplate->m_name = "[Camera] Stop tether to any units.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "CAMERA_STOP_TETHER_NAMED";
 	curTemplate->m_uiName = "Camera_/ Stop tether to any units.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 0;
 	curTemplate->m_numUiStrings = 1;
 	curTemplate->m_uiStrings[0] = "Stop tether to any units.";
@@ -4951,11 +4951,11 @@ void ScriptEngine::init( void )
 #ifdef OG
 	curTemplate->m_name = "[Camera] Set default camera.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "CAMERA_SET_DEFAULT";
 	curTemplate->m_uiName = "Camera_/ Set default camera.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 3;
 	curTemplate->m_parameters[0] = Parameter::REAL;
 	curTemplate->m_parameters[1] = Parameter::REAL;
@@ -4971,82 +4971,82 @@ void ScriptEngine::init( void )
 	curTemplate->m_name = "[Camera (R)] Rotate toward unit.";
 	curTemplate->m_numParameters = 3;
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "CAMERA_LOOK_TOWARD_OBJECT";
 	curTemplate->m_uiName = "Camera (R)_/ Rotate toward unit.";
 	curTemplate->m_numParameters = 5;
-#endif
+#endif // ZH
 	curTemplate->m_parameters[0] = Parameter::UNIT;
 	curTemplate->m_parameters[1] = Parameter::REAL;
 	curTemplate->m_parameters[2] = Parameter::REAL;
 #ifdef OG
 	curTemplate->m_numUiStrings = 4;
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_parameters[3] = Parameter::REAL;
 	curTemplate->m_parameters[4] = Parameter::REAL;
 	curTemplate->m_numUiStrings = 6;
-#endif
+#endif // ZH
 	curTemplate->m_uiStrings[0] = "Rotate toward ";
 	curTemplate->m_uiStrings[1] = ", taking ";
 	curTemplate->m_uiStrings[2] = " seconds and holding ";
 #ifdef OG
 	curTemplate->m_uiStrings[3] = " seconds.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_uiStrings[3] = " seconds, ease-in ";
 	curTemplate->m_uiStrings[4] = " seconds, ease-out ";
 	curTemplate->m_uiStrings[5] = " seconds.";
-#endif
+#endif // ZH
 
  	curTemplate = &m_actionTemplates[ScriptAction::CAMERA_LOOK_TOWARD_WAYPOINT];
 #ifdef OG
 	curTemplate->m_name = "[Camera (R)] Rotate to look at a waypoint.";
 	curTemplate->m_numParameters = 2;
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "CAMERA_LOOK_TOWARD_WAYPOINT";
 	curTemplate->m_uiName = "Camera (R)_/ Rotate to look at a waypoint.";
 	curTemplate->m_numParameters = 5;
-#endif
+#endif // ZH
 	curTemplate->m_parameters[0] = Parameter::WAYPOINT;
 	curTemplate->m_parameters[1] = Parameter::REAL;
 #ifdef OG
 	curTemplate->m_numUiStrings = 3;
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_parameters[2] = Parameter::REAL;
 	curTemplate->m_parameters[3] = Parameter::REAL;
 	curTemplate->m_parameters[4] = Parameter::BOOLEAN;
 	curTemplate->m_numUiStrings = 6;
-#endif
+#endif // ZH
 	curTemplate->m_uiStrings[0] = "Rotate to look at ";
 	curTemplate->m_uiStrings[1] = ", taking ";
 #ifdef OG
 	curTemplate->m_uiStrings[2] = " seconds.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_uiStrings[2] = " seconds, ease-in ";
 	curTemplate->m_uiStrings[3] = " seconds, ease-out ";
 	curTemplate->m_uiStrings[4] = " seconds, reverse rotation ";
 	curTemplate->m_uiStrings[5] = ".";
-#endif
+#endif // ZH
 
  	curTemplate = &m_actionTemplates[ScriptAction::UNIT_DESTROY_ALL_CONTAINED];
 #ifdef OG
 	curTemplate->m_name = "[Unit] Kill all units contained within a specific transport or structure.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "UNIT_DESTROY_ALL_CONTAINED";
 	curTemplate->m_uiName = "Unit_/ Kill all units contained within a specific transport or structure.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 1;
 	curTemplate->m_parameters[0] = Parameter::UNIT;
 //	curTemplate->m_parameters[1] = Parameter::INT;
@@ -5058,21 +5058,21 @@ void ScriptEngine::init( void )
 #ifdef OG
 	curTemplate->m_name = "[Unit] Fire waypoint-weapon following waypoint path.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "NAMED_FIRE_WEAPON_FOLLOWING_WAYPOINT_PATH";
 	curTemplate->m_uiName = "Unit_/ Fire waypoint-weapon following waypoint path.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 2;
 	curTemplate->m_parameters[0] = Parameter::UNIT;
 	curTemplate->m_parameters[1] = Parameter::WAYPOINT_PATH;
 	curTemplate->m_numUiStrings = 3;
 #ifdef OG
 	curTemplate->m_uiStrings[0] = "";
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_uiStrings[0] = " ";
-#endif
+#endif // ZH
 	curTemplate->m_uiStrings[1] = " fire waypoint-weapon following waypoints starting at ";
 	curTemplate->m_uiStrings[2] = ".";
 
@@ -5080,11 +5080,11 @@ void ScriptEngine::init( void )
 #ifdef OG
 	curTemplate->m_name = "[Team] Override a team's relationship to another player.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "TEAM_SET_OVERRIDE_RELATION_TO_PLAYER";
 	curTemplate->m_uiName = "Team_/ Override a team's relationship to another player.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 3;
 	curTemplate->m_parameters[0] = Parameter::TEAM;
 	curTemplate->m_parameters[1] = Parameter::SIDE;
@@ -5092,10 +5092,10 @@ void ScriptEngine::init( void )
 	curTemplate->m_numUiStrings = 4;
 #ifdef OG
 	curTemplate->m_uiStrings[0] = "";
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_uiStrings[0] = " ";
-#endif
+#endif // ZH
 	curTemplate->m_uiStrings[1] = " considers ";
 	curTemplate->m_uiStrings[2] = " to be ";
 	curTemplate->m_uiStrings[3] = " (rather than using the the player relationship).";
@@ -5104,32 +5104,32 @@ void ScriptEngine::init( void )
 #ifdef OG
 	curTemplate->m_name = "[Team] Remove an override to a team's relationship to another player.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "TEAM_REMOVE_OVERRIDE_RELATION_TO_PLAYER";
 	curTemplate->m_uiName = "Team_/ Remove an override to a team's relationship to another player.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 2;
 	curTemplate->m_parameters[0] = Parameter::TEAM;
 	curTemplate->m_parameters[1] = Parameter::SIDE;
 	curTemplate->m_numUiStrings = 2;
 #ifdef OG
 	curTemplate->m_uiStrings[0] = "";
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_uiStrings[0] = " ";
-#endif
+#endif // ZH
 	curTemplate->m_uiStrings[1] = " uses the player relationship to ";
 
 	curTemplate = &m_actionTemplates[ScriptAction::PLAYER_SET_OVERRIDE_RELATION_TO_TEAM];
 #ifdef OG
 	curTemplate->m_name = "[Player] Override a player's relationship to another team.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "PLAYER_SET_OVERRIDE_RELATION_TO_TEAM";
 	curTemplate->m_uiName = "Player_/ Override a player's relationship to another team.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 3;
 	curTemplate->m_parameters[0] = Parameter::SIDE;
 	curTemplate->m_parameters[1] = Parameter::TEAM;
@@ -5137,10 +5137,10 @@ void ScriptEngine::init( void )
 	curTemplate->m_numUiStrings = 4;
 #ifdef OG
 	curTemplate->m_uiStrings[0] = "";
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_uiStrings[0] = " ";
-#endif
+#endif // ZH
 	curTemplate->m_uiStrings[1] = " considers ";
 	curTemplate->m_uiStrings[2] = " to be ";
 	curTemplate->m_uiStrings[3] = " (rather than using the the player relationship).";
@@ -5149,42 +5149,42 @@ void ScriptEngine::init( void )
 #ifdef OG
 	curTemplate->m_name = "[Player] Remove an override to a player's relationship to another team.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "PLAYER_REMOVE_OVERRIDE_RELATION_TO_TEAM";
 	curTemplate->m_uiName = "Player_/ Remove an override to a player's relationship to another team.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 2;
 	curTemplate->m_parameters[0] = Parameter::SIDE;
 	curTemplate->m_parameters[1] = Parameter::TEAM;
 	curTemplate->m_numUiStrings = 2;
 #ifdef OG
 	curTemplate->m_uiStrings[0] = "";
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_uiStrings[0] = " ";
-#endif
+#endif // ZH
 	curTemplate->m_uiStrings[1] = " uses the player relationship to ";
 
 	curTemplate = &m_actionTemplates[ScriptAction::UNIT_EXECUTE_SEQUENTIAL_SCRIPT];
 #ifdef OG
 	curTemplate->m_name = "[Unit] Set a specific unit to execute a script sequentially.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "UNIT_EXECUTE_SEQUENTIAL_SCRIPT";
 	curTemplate->m_uiName = "Unit_/ Set a specific unit to execute a script sequentially.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 2;
 	curTemplate->m_parameters[0] = Parameter::UNIT;
 	curTemplate->m_parameters[1] = Parameter::SCRIPT;
 	curTemplate->m_numUiStrings = 3;
 #ifdef OG
 	curTemplate->m_uiStrings[0] = "";
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_uiStrings[0] = " ";
-#endif
+#endif // ZH
 	curTemplate->m_uiStrings[1] = " executes ";
 	curTemplate->m_uiStrings[2] = " sequentially.";
 
@@ -5192,11 +5192,11 @@ void ScriptEngine::init( void )
 #ifdef OG
 	curTemplate->m_name = "[Unit] Set a specific unit to execute a looping sequential script.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "UNIT_EXECUTE_SEQUENTIAL_SCRIPT_LOOPING";
 	curTemplate->m_uiName = "Unit_/ Set a specific unit to execute a looping sequential script.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 3;
 	curTemplate->m_parameters[0] = Parameter::UNIT;
 	curTemplate->m_parameters[1] = Parameter::SCRIPT;
@@ -5204,10 +5204,10 @@ void ScriptEngine::init( void )
 	curTemplate->m_numUiStrings = 4;
 #ifdef OG
 	curTemplate->m_uiStrings[0] = "";
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_uiStrings[0] = " ";
-#endif
+#endif // ZH
 	curTemplate->m_uiStrings[1] = " executes ";
 	curTemplate->m_uiStrings[2] = " sequentially, ";
 	curTemplate->m_uiStrings[3] = " times. (0=forever)";
@@ -5216,21 +5216,21 @@ void ScriptEngine::init( void )
 #ifdef OG
 	curTemplate->m_name = "[Team] Execute script sequentially -- start.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "TEAM_EXECUTE_SEQUENTIAL_SCRIPT";
 	curTemplate->m_uiName = "Team_/ Execute script sequentially -- start.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 2;
 	curTemplate->m_parameters[0] = Parameter::TEAM;
 	curTemplate->m_parameters[1] = Parameter::SCRIPT;
 	curTemplate->m_numUiStrings = 3;
 #ifdef OG
 	curTemplate->m_uiStrings[0] = "";
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_uiStrings[0] = " ";
-#endif
+#endif // ZH
 	curTemplate->m_uiStrings[1] = " executes ";
 	curTemplate->m_uiStrings[2] = " sequentially.";
 
@@ -5238,11 +5238,11 @@ void ScriptEngine::init( void )
 #ifdef OG
 	curTemplate->m_name = "[Team] Execute script sequentially -- looping.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "TEAM_EXECUTE_SEQUENTIAL_SCRIPT_LOOPING";
 	curTemplate->m_uiName = "Team_/ Execute script sequentially -- looping.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 3;
 	curTemplate->m_parameters[0] = Parameter::TEAM;
 	curTemplate->m_parameters[1] = Parameter::SCRIPT;
@@ -5250,10 +5250,10 @@ void ScriptEngine::init( void )
 	curTemplate->m_numUiStrings = 4;
 #ifdef OG
 	curTemplate->m_uiStrings[0] = "";
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_uiStrings[0] = " ";
-#endif
+#endif // ZH
 	curTemplate->m_uiStrings[1] = " executes ";
 	curTemplate->m_uiStrings[2] = " sequentially, ";
 	curTemplate->m_uiStrings[3] = " times. (0=forever)";
@@ -5262,61 +5262,61 @@ void ScriptEngine::init( void )
 #ifdef OG
 	curTemplate->m_name = "[Unit] Set a specific unit to stop executing a sequential script.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "UNIT_STOP_SEQUENTIAL_SCRIPT";
 	curTemplate->m_uiName = "Unit_/ Set a specific unit to stop executing a sequential script.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 1;
 	curTemplate->m_parameters[0] = Parameter::UNIT;
 	curTemplate->m_numUiStrings = 2;
 #ifdef OG
 	curTemplate->m_uiStrings[0] = "";
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_uiStrings[0] = " ";
-#endif
+#endif // ZH
 	curTemplate->m_uiStrings[1] = " stops executing.";
 
 	curTemplate = &m_actionTemplates[ScriptAction::TEAM_STOP_SEQUENTIAL_SCRIPT];
 #ifdef OG
 	curTemplate->m_name = "[Team] Execute script sequentially -- stop.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "TEAM_STOP_SEQUENTIAL_SCRIPT";
 	curTemplate->m_uiName = "Team_/ Execute script sequentially -- stop.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 1;
 	curTemplate->m_parameters[0] = Parameter::TEAM;
 	curTemplate->m_numUiStrings = 2;
 #ifdef OG
 	curTemplate->m_uiStrings[0] = "";
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_uiStrings[0] = " ";
-#endif
+#endif // ZH
 	curTemplate->m_uiStrings[1] = " stops executing.";
 
 	curTemplate = &m_actionTemplates[ScriptAction::UNIT_GUARD_FOR_FRAMECOUNT];
 #ifdef OG
 	curTemplate->m_name = "[Unit] Set to guard for some number of frames.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "UNIT_GUARD_FOR_FRAMECOUNT";
 	curTemplate->m_uiName = "Unit_/ Set to guard for some number of frames.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 2;
 	curTemplate->m_parameters[0] = Parameter::UNIT;
 	curTemplate->m_parameters[1] = Parameter::INT;
 	curTemplate->m_numUiStrings = 3;
 #ifdef OG
 	curTemplate->m_uiStrings[0] = "";
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_uiStrings[0] = " ";
-#endif
+#endif // ZH
 	curTemplate->m_uiStrings[1] = " guards for ";
 	curTemplate->m_uiStrings[2] = " frames.";
 
@@ -5324,21 +5324,21 @@ void ScriptEngine::init( void )
 #ifdef OG
 	curTemplate->m_name = "[Unit] Set to idle for some number of frames.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "UNIT_IDLE_FOR_FRAMECOUNT";
 	curTemplate->m_uiName = "Unit_/ Set to idle for some number of frames.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 2;
 	curTemplate->m_parameters[0] = Parameter::UNIT;
 	curTemplate->m_parameters[1] = Parameter::INT;
 	curTemplate->m_numUiStrings = 3;
 #ifdef OG
 	curTemplate->m_uiStrings[0] = "";
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_uiStrings[0] = " ";
-#endif
+#endif // ZH
 	curTemplate->m_uiStrings[1] = " idles for ";
 	curTemplate->m_uiStrings[2] = " frames.";
 
@@ -5346,21 +5346,21 @@ void ScriptEngine::init( void )
 #ifdef OG
 	curTemplate->m_name = "[Team] Set to guard -- number of frames.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "TEAM_GUARD_FOR_FRAMECOUNT";
 	curTemplate->m_uiName = "Team_/ Set to guard -- number of frames.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 2;
 	curTemplate->m_parameters[0] = Parameter::TEAM;
 	curTemplate->m_parameters[1] = Parameter::INT;
 	curTemplate->m_numUiStrings = 3;
 #ifdef OG
 	curTemplate->m_uiStrings[0] = "";
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_uiStrings[0] = " ";
-#endif
+#endif // ZH
 	curTemplate->m_uiStrings[1] = " guards for ";
 	curTemplate->m_uiStrings[2] = " frames.";
 
@@ -5368,21 +5368,21 @@ void ScriptEngine::init( void )
 #ifdef OG
 	curTemplate->m_name = "[Team] Set to idle for some number of frames.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "TEAM_IDLE_FOR_FRAMECOUNT";
 	curTemplate->m_uiName = "Team_/ Set to idle for some number of frames.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 2;
 	curTemplate->m_parameters[0] = Parameter::TEAM;
 	curTemplate->m_parameters[1] = Parameter::INT;
 	curTemplate->m_numUiStrings = 3;
 #ifdef OG
 	curTemplate->m_uiStrings[0] = "";
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_uiStrings[0] = " ";
-#endif
+#endif // ZH
 	curTemplate->m_uiStrings[1] = " idles for ";
 	curTemplate->m_uiStrings[2] = " frames.";
 
@@ -5390,32 +5390,32 @@ void ScriptEngine::init( void )
 #ifdef OG
 	curTemplate->m_name = "[Map] Adjust water height to a new level";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "WATER_CHANGE_HEIGHT";
 	curTemplate->m_uiName = "Map_/ Adjust water height to a new level";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 2;
 	curTemplate->m_parameters[0] = Parameter::TRIGGER_AREA;
 	curTemplate->m_parameters[1] = Parameter::REAL;
 	curTemplate->m_numUiStrings = 2;
 #ifdef OG
 	curTemplate->m_uiStrings[0] = "";
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_uiStrings[0] = " ";
-#endif
+#endif // ZH
 	curTemplate->m_uiStrings[1] = " changes altitude to ";
 
 	curTemplate = &m_actionTemplates[ ScriptAction::WATER_CHANGE_HEIGHT_OVER_TIME ];
 #ifdef OG
 	curTemplate->m_name = "[Map] Adjust water height to a new level with damage over time";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "WATER_CHANGE_HEIGHT_OVER_TIME";
 	curTemplate->m_uiName = "Map_/ Adjust water height to a new level with damage over time";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 4;
 	curTemplate->m_parameters[0] = Parameter::TRIGGER_AREA;
 	curTemplate->m_parameters[1] = Parameter::REAL;
@@ -5424,39 +5424,39 @@ void ScriptEngine::init( void )
 	curTemplate->m_numUiStrings = 5;
 #ifdef OG
 	curTemplate->m_uiStrings[0] = "";
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_uiStrings[0] = " ";
-#endif
+#endif // ZH
 	curTemplate->m_uiStrings[1] = " changes altitude to ";
 	curTemplate->m_uiStrings[2] = " in ";
 	curTemplate->m_uiStrings[3] = " seconds doing ";
 #ifdef OG
 	curTemplate->m_uiStrings[4] = " dam/sec.";
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_uiStrings[4] = " dam_/sec.";
-#endif
+#endif // ZH
 
 	curTemplate = &m_actionTemplates[ ScriptAction::NAMED_USE_COMMANDBUTTON_ABILITY ];
 #ifdef OG
 	curTemplate->m_name = "[Unit] Use commandbutton ability."; 
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "NAMED_USE_COMMANDBUTTON_ABILITY";
 	curTemplate->m_uiName = "Unit_/ Use commandbutton ability.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 2;
 	curTemplate->m_parameters[0] = Parameter::UNIT;
 	curTemplate->m_parameters[1] = Parameter::COMMANDBUTTON_ABILITY;
 	curTemplate->m_numUiStrings = 3;
 #ifdef OG
 	curTemplate->m_uiStrings[0] = "";
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_uiStrings[0] = " ";
-#endif
+#endif // ZH
 	curTemplate->m_uiStrings[1] = " use ";
 	curTemplate->m_uiStrings[2] = ".";
 
@@ -5464,11 +5464,11 @@ void ScriptEngine::init( void )
 #ifdef OG
 	curTemplate->m_name = "[Unit] Use commandbutton ability on an object."; 
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "NAMED_USE_COMMANDBUTTON_ABILITY_ON_NAMED";
 	curTemplate->m_uiName = "Unit_/ Use commandbutton ability on an object.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 3;
 	curTemplate->m_parameters[0] = Parameter::UNIT;
 	curTemplate->m_parameters[1] = Parameter::COMMANDBUTTON_ABILITY;
@@ -5476,10 +5476,10 @@ void ScriptEngine::init( void )
 	curTemplate->m_numUiStrings = 4;
 #ifdef OG
 	curTemplate->m_uiStrings[0] = "";
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_uiStrings[0] = " ";
-#endif
+#endif // ZH
 	curTemplate->m_uiStrings[1] = " use ";
 	curTemplate->m_uiStrings[2] = " on ";
 	curTemplate->m_uiStrings[3] = ".";
@@ -5488,11 +5488,11 @@ void ScriptEngine::init( void )
 #ifdef OG
 	curTemplate->m_name = "[Unit] Use commandbutton ability at a waypoint."; 
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "NAMED_USE_COMMANDBUTTON_ABILITY_AT_WAYPOINT";
 	curTemplate->m_uiName = "Unit_/ Use commandbutton ability at a waypoint.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 3;
 	curTemplate->m_parameters[0] = Parameter::UNIT;
 	curTemplate->m_parameters[1] = Parameter::COMMANDBUTTON_ABILITY;
@@ -5500,10 +5500,10 @@ void ScriptEngine::init( void )
 	curTemplate->m_numUiStrings = 4;
 #ifdef OG
 	curTemplate->m_uiStrings[0] = "";
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_uiStrings[0] = " ";
-#endif
+#endif // ZH
 	curTemplate->m_uiStrings[1] = " use ";
 	curTemplate->m_uiStrings[2] = " at ";
 	curTemplate->m_uiStrings[3] = ".";
@@ -5521,27 +5521,27 @@ void ScriptEngine::init( void )
 	curTemplate->m_uiStrings[1] = " use ";
 	curTemplate->m_uiStrings[2] = " to follow ";
 	curTemplate->m_uiStrings[3] = " path.";
-#endif
+#endif // ZH
 
 	curTemplate = &m_actionTemplates[ ScriptAction::TEAM_USE_COMMANDBUTTON_ABILITY ];
 #ifdef OG
 	curTemplate->m_name = "[Team] Use commandbutton ability."; 
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "TEAM_USE_COMMANDBUTTON_ABILITY";
 	curTemplate->m_uiName = "Team_/ Use commandbutton ability.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 2;
 	curTemplate->m_parameters[0] = Parameter::TEAM;
 	curTemplate->m_parameters[1] = Parameter::COMMANDBUTTON_ALL_ABILITIES;
 	curTemplate->m_numUiStrings = 3;
 #ifdef OG
 	curTemplate->m_uiStrings[0] = "";
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_uiStrings[0] = " ";
-#endif
+#endif // ZH
 	curTemplate->m_uiStrings[1] = " use ";
 	curTemplate->m_uiStrings[2] = ".";
 
@@ -5549,11 +5549,11 @@ void ScriptEngine::init( void )
 #ifdef OG
 	curTemplate->m_name = "[Team] Use commandbutton ability on an object."; 
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "TEAM_USE_COMMANDBUTTON_ABILITY_ON_NAMED";
 	curTemplate->m_uiName = "Team_/ Use commandbutton ability on an object.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 3;
 	curTemplate->m_parameters[0] = Parameter::TEAM;
 	curTemplate->m_parameters[1] = Parameter::COMMANDBUTTON_ALL_ABILITIES;
@@ -5561,10 +5561,10 @@ void ScriptEngine::init( void )
 	curTemplate->m_numUiStrings = 4;
 #ifdef OG
 	curTemplate->m_uiStrings[0] = "";
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_uiStrings[0] = " ";
-#endif
+#endif // ZH
 	curTemplate->m_uiStrings[1] = " use ";
 	curTemplate->m_uiStrings[2] = " on ";
 	curTemplate->m_uiStrings[3] = ".";
@@ -5573,11 +5573,11 @@ void ScriptEngine::init( void )
 #ifdef OG
 	curTemplate->m_name = "[Team] Use commandbutton ability at a waypoint."; 
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "TEAM_USE_COMMANDBUTTON_ABILITY_AT_WAYPOINT";
 	curTemplate->m_uiName = "Team_/ Use commandbutton ability at a waypoint.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 3;
 	curTemplate->m_parameters[0] = Parameter::TEAM;
 	curTemplate->m_parameters[1] = Parameter::COMMANDBUTTON_ALL_ABILITIES;
@@ -5585,10 +5585,10 @@ void ScriptEngine::init( void )
 	curTemplate->m_numUiStrings = 4;
 #ifdef OG
 	curTemplate->m_uiStrings[0] = "";
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_uiStrings[0] = " ";
-#endif
+#endif // ZH
 	curTemplate->m_uiStrings[1] = " use ";
 	curTemplate->m_uiStrings[2] = " at ";
 	curTemplate->m_uiStrings[3] = ".";
@@ -5597,31 +5597,31 @@ void ScriptEngine::init( void )
 #ifdef OG
 	curTemplate->m_name = "[Map] Change the active boundary.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "MAP_SWITCH_BORDER";
 	curTemplate->m_uiName = "Map_/ Change the active boundary.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 1;
 	curTemplate->m_parameters[0] = Parameter::BOUNDARY;
 	curTemplate->m_numUiStrings = 2;
 #ifdef OG
 	curTemplate->m_uiStrings[0] = "";
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_uiStrings[0] = " ";
-#endif
+#endif // ZH
 	curTemplate->m_uiStrings[1] = " becomes the active border.";
 
 	curTemplate = &m_actionTemplates[ScriptAction::OBJECT_FORCE_SELECT];
 #ifdef OG
 	curTemplate->m_name = "[Scripting] Select the first object type on a team.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "OBJECT_FORCE_SELECT";
 	curTemplate->m_uiName = "Scripting_/ Select the first object type on a team.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 4;
 	curTemplate->m_parameters[0] = Parameter::TEAM;
 	curTemplate->m_parameters[1] = Parameter::OBJECT_TYPE;
@@ -5630,10 +5630,10 @@ void ScriptEngine::init( void )
 	curTemplate->m_numUiStrings = 4;
 #ifdef OG
 	curTemplate->m_uiStrings[0] = "";
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_uiStrings[0] = " ";
-#endif
+#endif // ZH
 	curTemplate->m_uiStrings[1] = " 's first ";
 	curTemplate->m_uiStrings[2] = ", centers in view (";
 	curTemplate->m_uiStrings[3] = ") while playing ";
@@ -5642,11 +5642,11 @@ void ScriptEngine::init( void )
 #ifdef OG
 	curTemplate->m_name = "[Radar] Force enable the radar.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "RADAR_FORCE_ENABLE";
 	curTemplate->m_uiName = "Radar_/ Force enable the radar.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 0;
 	curTemplate->m_numUiStrings = 1;
 	curTemplate->m_uiStrings[0] = "The radar is now forced to be enabled.";
@@ -5656,11 +5656,11 @@ void ScriptEngine::init( void )
 #ifdef OG
 	curTemplate->m_name = "[Radar] Revert radar to normal behavior.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "RADAR_REVERT_TO_NORMAL";
 	curTemplate->m_uiName = "Radar_/ Revert radar to normal behavior.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 0;
 	curTemplate->m_numUiStrings = 1;
 	curTemplate->m_uiStrings[0] = "The radar is now reverting to its normal behavior.";
@@ -5669,11 +5669,11 @@ void ScriptEngine::init( void )
 #ifdef OG
 	curTemplate->m_name = "[Camera] Shake Screen.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "SCREEN_SHAKE";
 	curTemplate->m_uiName = "Camera_/ Shake Screen.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 1;
 	curTemplate->m_parameters[0] = Parameter::SHAKE_INTENSITY;
 	curTemplate->m_numUiStrings = 1;
@@ -5683,32 +5683,32 @@ void ScriptEngine::init( void )
 #ifdef OG
 	curTemplate->m_name = "[Map] Adjust the tech tree for a specific object type.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "TECHTREE_MODIFY_BUILDABILITY_OBJECT";
 	curTemplate->m_uiName = "Map_/ Adjust the tech tree for a specific object type.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 2;
 	curTemplate->m_parameters[0] = Parameter::OBJECT_TYPE;
 	curTemplate->m_parameters[1] = Parameter::BUILDABLE;
 	curTemplate->m_numUiStrings = 2;
 #ifdef OG
 	curTemplate->m_uiStrings[0] = "";
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_uiStrings[0] = " ";
-#endif
+#endif // ZH
 	curTemplate->m_uiStrings[1] = " becomes ";
 
  	curTemplate = &m_actionTemplates[ScriptAction::SET_CAVE_INDEX];
 #ifdef OG
 	curTemplate->m_name = "[Unit] Set Cave connectivity index.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "SET_CAVE_INDEX";
 	curTemplate->m_uiName = "Unit_/ Set Cave connectivity index.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 2;
 	curTemplate->m_parameters[0] = Parameter::UNIT;
 	curTemplate->m_parameters[1] = Parameter::INT;
@@ -5721,11 +5721,11 @@ void ScriptEngine::init( void )
 #ifdef OG
 	curTemplate->m_name = "[Unit] Set cash value of Warehouse.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "WAREHOUSE_SET_VALUE";
 	curTemplate->m_uiName = "Unit_/ Set cash value of Warehouse.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 2;
 	curTemplate->m_parameters[0] = Parameter::UNIT;
 	curTemplate->m_parameters[1] = Parameter::INT;
@@ -5738,71 +5738,71 @@ void ScriptEngine::init( void )
 #ifdef OG
 	curTemplate->m_name = "[Multimedia] Sound Events -- disable type.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "SOUND_DISABLE_TYPE";
 	curTemplate->m_uiName = "Multimedia_/ Sound Events -- disable type.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 1;
 	curTemplate->m_parameters[0] = Parameter::SOUND;
 	curTemplate->m_numUiStrings = 2;
 #ifdef OG
 	curTemplate->m_uiStrings[0] = "";
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_uiStrings[0] = " ";
-#endif
+#endif // ZH
 	curTemplate->m_uiStrings[1] = " is disabled.";
 
  	curTemplate = &m_actionTemplates[ScriptAction::SOUND_ENABLE_TYPE];
 #ifdef OG
 	curTemplate->m_name = "[Multimedia] Sound Events -- enable type.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "SOUND_ENABLE_TYPE";
 	curTemplate->m_uiName = "Multimedia_/ Sound Events -- enable type.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 1;
 	curTemplate->m_parameters[0] = Parameter::SOUND;
 	curTemplate->m_numUiStrings = 2;
 #ifdef OG
 	curTemplate->m_uiStrings[0] = "";
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_uiStrings[0] = " ";
-#endif
+#endif // ZH
 	curTemplate->m_uiStrings[1] = " is enabled.";
 
  	curTemplate = &m_actionTemplates[ScriptAction::SOUND_REMOVE_TYPE];
 #ifdef OG
 	curTemplate->m_name = "[Multimedia] Sound Events -- remove type.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "SOUND_REMOVE_TYPE";
 	curTemplate->m_uiName = "Multimedia_/ Sound Events -- remove type.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 1;
 	curTemplate->m_parameters[0] = Parameter::SOUND;
 	curTemplate->m_numUiStrings = 2;
 #ifdef OG
 	curTemplate->m_uiStrings[0] = "";
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_uiStrings[0] = " ";
-#endif
+#endif // ZH
 	curTemplate->m_uiStrings[1] = " is removed.";
 
  	curTemplate = &m_actionTemplates[ScriptAction::SOUND_REMOVE_ALL_DISABLED];
 #ifdef OG
 	curTemplate->m_name = "[Multimedia] Sound Events -- remove all disabled.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "SOUND_REMOVE_ALL_DISABLED";
 	curTemplate->m_uiName = "Multimedia_/ Sound Events -- remove all disabled.";
-#endif
+#endif // ZH
 	curTemplate->m_numUiStrings = 1;
 	curTemplate->m_uiStrings[0] = "Remove all disabled sound events.";
 
@@ -5810,11 +5810,11 @@ void ScriptEngine::init( void )
 #ifdef OG
 	curTemplate->m_name = "[Multimedia] Sound Events -- enable all.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "SOUND_ENABLE_ALL";
 	curTemplate->m_uiName = "Multimedia_/ Sound Events -- enable all.";
-#endif
+#endif // ZH
 	curTemplate->m_numUiStrings = 1;
 	curTemplate->m_uiStrings[0] = "Enable all sound events.";
 
@@ -5822,21 +5822,21 @@ void ScriptEngine::init( void )
 #ifdef OG
 	curTemplate->m_name = "[Multimedia] Sound Events -- override volume -- type.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "AUDIO_OVERRIDE_VOLUME_TYPE";
 	curTemplate->m_uiName = "Multimedia_/ Sound Events -- override volume -- type.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 2;
 	curTemplate->m_parameters[0] = Parameter::SOUND;
 	curTemplate->m_parameters[1] = Parameter::REAL;
 	curTemplate->m_numUiStrings = 3;
 #ifdef OG
 	curTemplate->m_uiStrings[0] = "";
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_uiStrings[0] = " ";
-#endif
+#endif // ZH
 	curTemplate->m_uiStrings[1] = " play at ";
 	curTemplate->m_uiStrings[2] = "% of full volume.";
 
@@ -5844,31 +5844,31 @@ void ScriptEngine::init( void )
 #ifdef OG
 	curTemplate->m_name = "[Multimedia] Sound Events -- restore volume -- type.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "AUDIO_RESTORE_VOLUME_TYPE";
 	curTemplate->m_uiName = "Multimedia_/ Sound Events -- restore volume -- type.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 1;
 	curTemplate->m_parameters[0] = Parameter::SOUND;
 	curTemplate->m_numUiStrings = 3;
 #ifdef OG
 	curTemplate->m_uiStrings[0] = "";
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_uiStrings[0] = " ";
-#endif
+#endif // ZH
 	curTemplate->m_uiStrings[1] = " play at normal volume.";
 
  	curTemplate = &m_actionTemplates[ScriptAction::AUDIO_RESTORE_VOLUME_ALL_TYPE];
 #ifdef OG
 	curTemplate->m_name = "[Multimedia] Sound Events -- restore volume -- all.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "AUDIO_RESTORE_VOLUME_ALL_TYPE";
 	curTemplate->m_uiName = "Multimedia_/ Sound Events -- restore volume -- all.";
-#endif
+#endif // ZH
 	curTemplate->m_numUiStrings = 1;
 	curTemplate->m_uiStrings[0] = "All sound events play at normal volume.";
 
@@ -5876,21 +5876,21 @@ void ScriptEngine::init( void )
 #ifdef OG
 	curTemplate->m_name = "[Unit] Set topple direction.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "NAMED_SET_TOPPLE_DIRECTION";
 	curTemplate->m_uiName = "Unit_/ Set topple direction.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 2;
 	curTemplate->m_parameters[0] = Parameter::UNIT;
 	curTemplate->m_parameters[1] = Parameter::COORD3D;
 	curTemplate->m_numUiStrings = 3;
 #ifdef OG
 	curTemplate->m_uiStrings[0] = "";
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_uiStrings[0] = " ";
-#endif
+#endif // ZH
 	curTemplate->m_uiStrings[1] = " will topple towards ";
 	curTemplate->m_uiStrings[2] = " if destroyed.";
 
@@ -5898,11 +5898,11 @@ void ScriptEngine::init( void )
 #ifdef OG
 	curTemplate->m_name = "[Unit] Move unit towards the nearest object of a specific type.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "UNIT_MOVE_TOWARDS_NEAREST_OBJECT_TYPE";
 	curTemplate->m_uiName = "Unit_/ Move unit towards the nearest object of a specific type.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 3;
 	curTemplate->m_parameters[0] = Parameter::UNIT;
 	curTemplate->m_parameters[1] = Parameter::OBJECT_TYPE;
@@ -5910,10 +5910,10 @@ void ScriptEngine::init( void )
 	curTemplate->m_numUiStrings = 3;
 #ifdef OG
 	curTemplate->m_uiStrings[0] = "";
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_uiStrings[0] = " ";
-#endif
+#endif // ZH
 	curTemplate->m_uiStrings[1] = " will move towards the nearest ";
 	curTemplate->m_uiStrings[2] = " within ";
 
@@ -5921,11 +5921,11 @@ void ScriptEngine::init( void )
 #ifdef OG
 	curTemplate->m_name = "[Team] Move team towards the nearest object of a specific type.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "TEAM_MOVE_TOWARDS_NEAREST_OBJECT_TYPE";
 	curTemplate->m_uiName = "Team_/ Move team towards the nearest object of a specific type.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 3;
 	curTemplate->m_parameters[0] = Parameter::TEAM;
 	curTemplate->m_parameters[1] = Parameter::OBJECT_TYPE;
@@ -5933,10 +5933,10 @@ void ScriptEngine::init( void )
 	curTemplate->m_numUiStrings = 3;
 #ifdef OG
 	curTemplate->m_uiStrings[0] = "";
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_uiStrings[0] = " ";
-#endif
+#endif // ZH
 	curTemplate->m_uiStrings[1] = " will move towards the nearest ";
 	curTemplate->m_uiStrings[2] = " within ";
 	
@@ -5944,11 +5944,11 @@ void ScriptEngine::init( void )
 #ifdef OG
 	curTemplate->m_name = "[Skirmish] Team attacks nearest group matching value comparison.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "SKIRMISH_ATTACK_NEAREST_GROUP_WITH_VALUE";
 	curTemplate->m_uiName = "Skirmish_/ Team attacks nearest group matching value comparison.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 3;
 	curTemplate->m_parameters[0] = Parameter::TEAM;
 	curTemplate->m_parameters[1] = Parameter::COMPARISON;
@@ -5956,10 +5956,10 @@ void ScriptEngine::init( void )
 	curTemplate->m_numUiStrings = 3;
 #ifdef OG
 	curTemplate->m_uiStrings[0] = "";
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_uiStrings[0] = " ";
-#endif
+#endif // ZH
 	curTemplate->m_uiStrings[1] = " attacks nearest group worth ";
 	curTemplate->m_uiStrings[2] = " ";
 
@@ -5967,11 +5967,11 @@ void ScriptEngine::init( void )
 #ifdef OG
 	curTemplate->m_name = "[Skirmish] Team performs command ability on most valuable object.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "SKIRMISH_PERFORM_COMMANDBUTTON_ON_MOST_VALUABLE_OBJECT";
 	curTemplate->m_uiName = "Skirmish_/ Team performs command ability on most valuable object.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 4;
 	curTemplate->m_parameters[0] = Parameter::TEAM;
 	curTemplate->m_parameters[1] = Parameter::COMMANDBUTTON_ALL_ABILITIES;
@@ -5980,10 +5980,10 @@ void ScriptEngine::init( void )
 	curTemplate->m_numUiStrings = 5;
 #ifdef OG
 	curTemplate->m_uiStrings[0] = "";
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_uiStrings[0] = " ";
-#endif
+#endif // ZH
 	curTemplate->m_uiStrings[1] = " performs ";
 	curTemplate->m_uiStrings[2] = " on most expensive object within ";	
 	curTemplate->m_uiStrings[3] = " ";
@@ -5993,11 +5993,11 @@ void ScriptEngine::init( void )
 #ifdef OG
 	curTemplate->m_name = "[Skirmish] Delay a sequential script until the specified command ability is ready - all.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "SKIRMISH_WAIT_FOR_COMMANDBUTTON_AVAILABLE_ALL";
 	curTemplate->m_uiName = "Skirmish_/ Delay a sequential script until the specified command ability is ready - all.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 3;
 	curTemplate->m_parameters[0] = Parameter::SIDE;
 	curTemplate->m_parameters[1] = Parameter::TEAM;
@@ -6005,10 +6005,10 @@ void ScriptEngine::init( void )
 	curTemplate->m_numUiStrings = 4;
 #ifdef OG
 	curTemplate->m_uiStrings[0] = "";
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_uiStrings[0] = " ";
-#endif
+#endif // ZH
 	curTemplate->m_uiStrings[1] = " 's ";
 	curTemplate->m_uiStrings[2] = " all wait until ";	
 	curTemplate->m_uiStrings[3] = " is ready.";
@@ -6017,11 +6017,11 @@ void ScriptEngine::init( void )
 #ifdef OG
 	curTemplate->m_name = "[Skirmish] Delay a sequential script until the specified command ability is ready - partial.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "SKIRMISH_WAIT_FOR_COMMANDBUTTON_AVAILABLE_PARTIAL";
 	curTemplate->m_uiName = "Skirmish_/ Delay a sequential script until the specified command ability is ready - partial.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 3;
 	curTemplate->m_parameters[0] = Parameter::SIDE;
 	curTemplate->m_parameters[1] = Parameter::TEAM;
@@ -6029,10 +6029,10 @@ void ScriptEngine::init( void )
 	curTemplate->m_numUiStrings = 4;
 #ifdef OG
 	curTemplate->m_uiStrings[0] = "";
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_uiStrings[0] = " ";
-#endif
+#endif // ZH
 	curTemplate->m_uiStrings[1] = " 's ";
 	curTemplate->m_uiStrings[2] = " wait until at least one member is ";	
 	curTemplate->m_uiStrings[3] = " ready.";
@@ -6041,21 +6041,21 @@ void ScriptEngine::init( void )
 #ifdef OG
 	curTemplate->m_name = "[Team] Set to continue current action for some number of frames.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "TEAM_SPIN_FOR_FRAMECOUNT";
 	curTemplate->m_uiName = "Team_/ Set to continue current action for some number of frames.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 2;
 	curTemplate->m_parameters[0] = Parameter::TEAM;
 	curTemplate->m_parameters[1] = Parameter::INT;
 	curTemplate->m_numUiStrings = 3;
 #ifdef OG
 	curTemplate->m_uiStrings[0] = "";
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_uiStrings[0] = " ";
-#endif
+#endif // ZH
 	curTemplate->m_uiStrings[1] = " continue their current action for at least ";
 	curTemplate->m_uiStrings[2] = " frames.";
 #ifdef ZH
@@ -6094,17 +6094,17 @@ void ScriptEngine::init( void )
 	curTemplate->m_uiStrings[1] = " with Amplitude ";
 	curTemplate->m_uiStrings[2] = " Duration (seconds) ";
 	curTemplate->m_uiStrings[3] = " Radius.";
-#endif
+#endif // ZH
 
  	curTemplate = &m_actionTemplates[ScriptAction::TEAM_ALL_USE_COMMANDBUTTON_ON_NAMED];
 #ifdef OG
 	curTemplate->m_name = "[Team] Use command ability -- all -- named enemy";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "TEAM_ALL_USE_COMMANDBUTTON_ON_NAMED";
 	curTemplate->m_uiName = "Team_/ Use command ability -- all -- named enemy";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 2;
 	curTemplate->m_parameters[0] = Parameter::TEAM;
 	curTemplate->m_parameters[1] = Parameter::COMMANDBUTTON_ALL_ABILITIES;
@@ -6112,10 +6112,10 @@ void ScriptEngine::init( void )
 	curTemplate->m_numUiStrings = 3;
 #ifdef OG
 	curTemplate->m_uiStrings[0] = "";
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_uiStrings[0] = " ";
-#endif
+#endif // ZH
 	curTemplate->m_uiStrings[1] = " use ";
 	curTemplate->m_uiStrings[2] = "  on ";
 
@@ -6123,21 +6123,21 @@ void ScriptEngine::init( void )
 #ifdef OG
 	curTemplate->m_name = "[Team] Use command ability -- all -- nearest enemy unit";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "TEAM_ALL_USE_COMMANDBUTTON_ON_NEAREST_ENEMY_UNIT";
 	curTemplate->m_uiName = "Team_/ Use command ability -- all -- nearest enemy unit";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 2;
 	curTemplate->m_parameters[0] = Parameter::TEAM;
 	curTemplate->m_parameters[1] = Parameter::COMMANDBUTTON_ALL_ABILITIES;
 	curTemplate->m_numUiStrings = 3;
 #ifdef OG
 	curTemplate->m_uiStrings[0] = "";
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_uiStrings[0] = " ";
-#endif
+#endif // ZH
 	curTemplate->m_uiStrings[1] = " use ";
 	curTemplate->m_uiStrings[2] = "  on nearest enemy unit.";
 
@@ -6145,21 +6145,21 @@ void ScriptEngine::init( void )
 #ifdef OG
 	curTemplate->m_name = "[Team] Use command ability -- all -- nearest enemy garrisoned building.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "TEAM_ALL_USE_COMMANDBUTTON_ON_NEAREST_GARRISONED_BUILDING";
 	curTemplate->m_uiName = "Team_/ Use command ability -- all -- nearest enemy garrisoned building.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 2;
 	curTemplate->m_parameters[0] = Parameter::TEAM;
 	curTemplate->m_parameters[1] = Parameter::COMMANDBUTTON_ALL_ABILITIES;
 	curTemplate->m_numUiStrings = 3;
 #ifdef OG
 	curTemplate->m_uiStrings[0] = "";
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_uiStrings[0] = " ";
-#endif
+#endif // ZH
 	curTemplate->m_uiStrings[1] = " use ";
 	curTemplate->m_uiStrings[2] = "  on nearest enemy garrisoned building.";
 
@@ -6167,11 +6167,11 @@ void ScriptEngine::init( void )
 #ifdef OG
 	curTemplate->m_name = "[Team] Use command ability -- all -- nearest enemy object with kind of.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "TEAM_ALL_USE_COMMANDBUTTON_ON_NEAREST_KINDOF";
 	curTemplate->m_uiName = "Team_/ Use command ability -- all -- nearest enemy object with kind of.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 3;
 	curTemplate->m_parameters[0] = Parameter::TEAM;
 	curTemplate->m_parameters[1] = Parameter::COMMANDBUTTON_ALL_ABILITIES;
@@ -6179,10 +6179,10 @@ void ScriptEngine::init( void )
 	curTemplate->m_numUiStrings = 4;
 #ifdef OG
 	curTemplate->m_uiStrings[0] = "";
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_uiStrings[0] = " ";
-#endif
+#endif // ZH
 	curTemplate->m_uiStrings[1] = " use ";
 	curTemplate->m_uiStrings[2] = "  on nearest enemy with ";
 	curTemplate->m_uiStrings[4] = ".";
@@ -6191,21 +6191,21 @@ void ScriptEngine::init( void )
 #ifdef OG
 	curTemplate->m_name = "[Team] Use command ability -- all -- nearest enemy building.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "TEAM_ALL_USE_COMMANDBUTTON_ON_NEAREST_ENEMY_BUILDING";
 	curTemplate->m_uiName = "Team_/ Use command ability -- all -- nearest enemy building.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 2;
 	curTemplate->m_parameters[0] = Parameter::TEAM;
 	curTemplate->m_parameters[1] = Parameter::COMMANDBUTTON_ALL_ABILITIES;
 	curTemplate->m_numUiStrings = 3;
 #ifdef OG
 	curTemplate->m_uiStrings[0] = "";
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_uiStrings[0] = " ";
-#endif
+#endif // ZH
 	curTemplate->m_uiStrings[1] = " use ";
 	curTemplate->m_uiStrings[2] = "  on nearest enemy building.";
 
@@ -6213,11 +6213,11 @@ void ScriptEngine::init( void )
 #ifdef OG
 	curTemplate->m_name = "[Team] Use command ability -- all -- nearest enemy building kindof.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "TEAM_ALL_USE_COMMANDBUTTON_ON_NEAREST_ENEMY_BUILDING_CLASS";
 	curTemplate->m_uiName = "Team_/ Use command ability -- all -- nearest enemy building kindof.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 3;
 	curTemplate->m_parameters[0] = Parameter::TEAM;
 	curTemplate->m_parameters[1] = Parameter::COMMANDBUTTON_ALL_ABILITIES;
@@ -6225,10 +6225,10 @@ void ScriptEngine::init( void )
 	curTemplate->m_numUiStrings = 3;
 #ifdef OG
 	curTemplate->m_uiStrings[0] = "";
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_uiStrings[0] = " ";
-#endif
+#endif // ZH
 	curTemplate->m_uiStrings[1] = " use ";
 	curTemplate->m_uiStrings[2] = "  on nearest enemy building with ";
 
@@ -6236,11 +6236,11 @@ void ScriptEngine::init( void )
 #ifdef OG
 	curTemplate->m_name = "[Team] Use command ability -- all -- nearest object type.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "TEAM_ALL_USE_COMMANDBUTTON_ON_NEAREST_OBJECTTYPE";
 	curTemplate->m_uiName = "Team_/ Use command ability -- all -- nearest object type.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 3;
 	curTemplate->m_parameters[0] = Parameter::TEAM;
 	curTemplate->m_parameters[1] = Parameter::COMMANDBUTTON_ALL_ABILITIES;
@@ -6248,10 +6248,10 @@ void ScriptEngine::init( void )
 	curTemplate->m_numUiStrings = 4;
 #ifdef OG
 	curTemplate->m_uiStrings[0] = "";
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_uiStrings[0] = " ";
-#endif
+#endif // ZH
 	curTemplate->m_uiStrings[1] = " use ";
 	curTemplate->m_uiStrings[2] = " on nearest object of type ";
 	curTemplate->m_uiStrings[3] = ".";
@@ -6260,11 +6260,11 @@ void ScriptEngine::init( void )
 #ifdef OG
 	curTemplate->m_name = "[Team] Use command ability -- partial -- self.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "TEAM_PARTIAL_USE_COMMANDBUTTON";
 	curTemplate->m_uiName = "Team_/ Use command ability -- partial -- self.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 3;
 	curTemplate->m_parameters[0] = Parameter::REAL;
 	curTemplate->m_parameters[1] = Parameter::TEAM;
@@ -6272,10 +6272,10 @@ void ScriptEngine::init( void )
 	curTemplate->m_numUiStrings = 4;
 #ifdef OG
 	curTemplate->m_uiStrings[0] = "";
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_uiStrings[0] = " ";
-#endif
+#endif // ZH
 	curTemplate->m_uiStrings[1] = "% of ";
 	curTemplate->m_uiStrings[2] = " perform ";
 	curTemplate->m_uiStrings[3] = ".";
@@ -6284,41 +6284,41 @@ void ScriptEngine::init( void )
 #ifdef OG
 	curTemplate->m_name = "[Team] Capture unowned faction unit -- nearest.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "TEAM_CAPTURE_NEAREST_UNOWNED_FACTION_UNIT";
 	curTemplate->m_uiName = "Team_/ Capture unowned faction unit -- nearest.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 1;
 	curTemplate->m_parameters[0] = Parameter::TEAM;
 	curTemplate->m_numUiStrings = 2;
 #ifdef OG
 	curTemplate->m_uiStrings[0] = "";
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_uiStrings[0] = " ";
-#endif
+#endif // ZH
 	curTemplate->m_uiStrings[1] = " capture the nearest unowned faction unit.";
 
  	curTemplate = &m_actionTemplates[ScriptAction::PLAYER_CREATE_TEAM_FROM_CAPTURED_UNITS];
 #ifdef OG
 	curTemplate->m_name = "[Player] Create team from all captured units.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "PLAYER_CREATE_TEAM_FROM_CAPTURED_UNITS";
 	curTemplate->m_uiName = "Player_/ Create team from all captured units.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 2;
 	curTemplate->m_parameters[0] = Parameter::SIDE;
 	curTemplate->m_parameters[1] = Parameter::TEAM;
 	curTemplate->m_numUiStrings = 3;
 #ifdef OG
 	curTemplate->m_uiStrings[0] = "";
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_uiStrings[0] = " ";
-#endif
+#endif // ZH
 	curTemplate->m_uiStrings[1] = " creates a new ";
 	curTemplate->m_uiStrings[2] = " from units it has captured. (There's nothing quite like being assaulted by your own captured units!)";
 
@@ -6326,51 +6326,51 @@ void ScriptEngine::init( void )
 #ifdef OG
 	curTemplate->m_name = "[Team] Delay a sequential script until the team is no longer contained - all";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "TEAM_WAIT_FOR_NOT_CONTAINED_ALL";
 	curTemplate->m_uiName = "Team_/ Delay a sequential script until the team is no longer contained - all";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 1;
 	curTemplate->m_parameters[0] = Parameter::TEAM;
 	curTemplate->m_numUiStrings = 2;
 #ifdef OG
 	curTemplate->m_uiStrings[0] = "";
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_uiStrings[0] = " ";
-#endif
+#endif // ZH
 	curTemplate->m_uiStrings[1] = " all delay until they are no longer contained.";
 
  	curTemplate = &m_actionTemplates[ScriptAction::TEAM_WAIT_FOR_NOT_CONTAINED_PARTIAL];
 #ifdef OG
 	curTemplate->m_name = "[Team] Delay a sequential script until the team is no longer contained - partial";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "TEAM_WAIT_FOR_NOT_CONTAINED_PARTIAL";
 	curTemplate->m_uiName = "Team_/ Delay a sequential script until the team is no longer contained - partial";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 1;
 	curTemplate->m_parameters[0] = Parameter::TEAM;
 	curTemplate->m_numUiStrings = 2;
 #ifdef OG
 	curTemplate->m_uiStrings[0] = "";
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_uiStrings[0] = " ";
-#endif
+#endif // ZH
 	curTemplate->m_uiStrings[1] = " delay until at least one of them is no longer contained.";
 
 	curTemplate = &m_actionTemplates[ScriptAction::TEAM_SET_EMOTICON];
 #ifdef OG
 	curTemplate->m_name = "[Team] Set emoticon for duration (-1.0 permanent, otherwise duration in sec).";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "TEAM_SET_EMOTICON";
 	curTemplate->m_uiName = "Team_/ Set emoticon for duration (-1.0 permanent, otherwise duration in sec).";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 3;
 	curTemplate->m_parameters[0] = Parameter::TEAM;
 	curTemplate->m_parameters[1] = Parameter::EMOTICON;
@@ -6378,10 +6378,10 @@ void ScriptEngine::init( void )
 	curTemplate->m_numUiStrings = 4;
 #ifdef OG
 	curTemplate->m_uiStrings[0] = "";
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_uiStrings[0] = " ";
-#endif
+#endif // ZH
 	curTemplate->m_uiStrings[1] = " use ";
 	curTemplate->m_uiStrings[2] = " emoticon for ";
 	curTemplate->m_uiStrings[3] = " seconds.";
@@ -6390,11 +6390,11 @@ void ScriptEngine::init( void )
 #ifdef OG
 	curTemplate->m_name = "[Unit] Set emoticon for duration (-1.0 permanent, otherwise duration in sec).";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "NAMED_SET_EMOTICON";
 	curTemplate->m_uiName = "Unit_/ Set emoticon for duration (-1.0 permanent, otherwise duration in sec).";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 3;
 	curTemplate->m_parameters[0] = Parameter::UNIT;
 	curTemplate->m_parameters[1] = Parameter::EMOTICON;
@@ -6402,10 +6402,10 @@ void ScriptEngine::init( void )
 	curTemplate->m_numUiStrings = 4;
 #ifdef OG
 	curTemplate->m_uiStrings[0] = "";
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_uiStrings[0] = " ";
-#endif
+#endif // ZH
 	curTemplate->m_uiStrings[1] = " use ";
 	curTemplate->m_uiStrings[2] = " emoticon for ";
 	curTemplate->m_uiStrings[3] = " seconds.";
@@ -6414,53 +6414,53 @@ void ScriptEngine::init( void )
 #ifdef OG
 	curTemplate->m_name = "[Scripting] Object Type List -- Add Object Type.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "OBJECTLIST_ADDOBJECTTYPE";
 	curTemplate->m_uiName = "Scripting_/ Object Type List -- Add Object Type.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 2;
 	curTemplate->m_parameters[0] = Parameter::OBJECT_TYPE_LIST;
 	curTemplate->m_parameters[1] = Parameter::OBJECT_TYPE;
 	curTemplate->m_numUiStrings = 2;
 #ifdef OG
 	curTemplate->m_uiStrings[0] = "";
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_uiStrings[0] = " ";
-#endif
+#endif // ZH
 	curTemplate->m_uiStrings[1] = " : add ";
 
  	curTemplate = &m_actionTemplates[ScriptAction::OBJECTLIST_REMOVEOBJECTTYPE];
 #ifdef OG
 	curTemplate->m_name = "[Scripting] Object Type List -- Remove Object Type.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "OBJECTLIST_REMOVEOBJECTTYPE";
 	curTemplate->m_uiName = "Scripting_/ Object Type List -- Remove Object Type.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 2;
 	curTemplate->m_parameters[0] = Parameter::OBJECT_TYPE_LIST;
 	curTemplate->m_parameters[1] = Parameter::OBJECT_TYPE;
 	curTemplate->m_numUiStrings = 2;
 #ifdef OG
 	curTemplate->m_uiStrings[0] = "";
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_uiStrings[0] = " ";
-#endif
+#endif // ZH
 	curTemplate->m_uiStrings[1] = " : remove ";
 
  	curTemplate = &m_actionTemplates[ScriptAction::MAP_REVEAL_PERMANENTLY_AT_WAYPOINT];
 #ifdef OG
 	curTemplate->m_name = "[Map] Reveal map at waypoint -- permanently.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "MAP_REVEAL_PERMANENTLY_AT_WAYPOINT";
 	curTemplate->m_uiName = "Map_/ Reveal map at waypoint -- permanently.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 4;
 	curTemplate->m_parameters[0] = Parameter::WAYPOINT;
 	curTemplate->m_parameters[1] = Parameter::REAL;
@@ -6477,31 +6477,31 @@ void ScriptEngine::init( void )
 #ifdef OG
 	curTemplate->m_name = "[Map] Reveal map at waypoint -- undo permanently.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "MAP_UNDO_REVEAL_PERMANENTLY_AT_WAYPOINT";
 	curTemplate->m_uiName = "Map_/ Reveal map at waypoint -- undo permanently.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 1;
 	curTemplate->m_parameters[0] = Parameter::REVEALNAME;
 	curTemplate->m_numUiStrings = 2;
 #ifdef OG
 	curTemplate->m_uiStrings[0] = "";
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_uiStrings[0] = " ";
-#endif
+#endif // ZH
 	curTemplate->m_uiStrings[1] = " is undone.";
 
  	curTemplate = &m_actionTemplates[ScriptAction::EVA_SET_ENABLED_DISABLED];
 #ifdef OG
 	curTemplate->m_name = "[Scripting] Enable or Disable EVA.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "EVA_SET_ENABLED_DISABLED";
 	curTemplate->m_uiName = "Scripting_/ Enable or Disable EVA.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 1;
 	curTemplate->m_parameters[0] = Parameter::BOOLEAN;
 	curTemplate->m_numUiStrings = 2;
@@ -6512,11 +6512,11 @@ void ScriptEngine::init( void )
 #ifdef OG
 	curTemplate->m_name = "[Scripting] Enable or Disable Occlusion (Drawing Behind Buildings).";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "OPTIONS_SET_OCCLUSION_MODE";
 	curTemplate->m_uiName = "Scripting_/ Enable or Disable Occlusion (Drawing Behind Buildings).";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 1;
 	curTemplate->m_parameters[0] = Parameter::BOOLEAN;
 	curTemplate->m_numUiStrings = 2;
@@ -6527,11 +6527,11 @@ void ScriptEngine::init( void )
 #ifdef OG
 	curTemplate->m_name = "[Scripting] Enable or Disable Draw-icon UI.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "OPTIONS_SET_DRAWICON_UI_MODE";
 	curTemplate->m_uiName = "Scripting_/ Enable or Disable Draw-icon UI.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 1;
 	curTemplate->m_parameters[0] = Parameter::BOOLEAN;
 	curTemplate->m_numUiStrings = 2;
@@ -6542,11 +6542,11 @@ void ScriptEngine::init( void )
 #ifdef OG
 	curTemplate->m_name = "[Scripting] Enable or Disable Particle Cap.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "OPTIONS_SET_PARTICLE_CAP_MODE";
 	curTemplate->m_uiName = "Scripting_/ Enable or Disable Particle Cap.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 1;
 	curTemplate->m_parameters[0] = Parameter::BOOLEAN;
 	curTemplate->m_numUiStrings = 2;
@@ -6557,11 +6557,11 @@ void ScriptEngine::init( void )
 #ifdef OG
 	curTemplate->m_name = "[Unit] Affect flags set on object panel.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "UNIT_AFFECT_OBJECT_PANEL_FLAGS";
 	curTemplate->m_uiName = "Unit_/ Affect flags set on object panel.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 3;
 	curTemplate->m_parameters[0] = Parameter::UNIT;
 	curTemplate->m_parameters[1] = Parameter::OBJECT_PANEL_FLAG;
@@ -6576,11 +6576,11 @@ void ScriptEngine::init( void )
 #ifdef OG
 	curTemplate->m_name = "[Team] Affect flags set on object panel - all.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "TEAM_AFFECT_OBJECT_PANEL_FLAGS";
 	curTemplate->m_uiName = "Team_/ Affect flags set on object panel - all.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 3;
 	curTemplate->m_parameters[0] = Parameter::TEAM;
 	curTemplate->m_parameters[1] = Parameter::OBJECT_PANEL_FLAG;
@@ -6595,11 +6595,11 @@ void ScriptEngine::init( void )
 #ifdef OG
 	curTemplate->m_name = "[Player] Set the skillset for a computer player.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "PLAYER_SELECT_SKILLSET";
 	curTemplate->m_uiName = "Player_/ Set the skillset for a computer player.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 2;
 	curTemplate->m_parameters[0] = Parameter::SIDE;
 	curTemplate->m_parameters[1] = Parameter::INT;
@@ -6612,11 +6612,11 @@ void ScriptEngine::init( void )
 #ifdef OG
 	curTemplate->m_name = "[Scripting] Hulk set override lifetime.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "SCRIPTING_OVERRIDE_HULK_LIFETIME";
 	curTemplate->m_uiName = "Scripting_/ Hulk set override lifetime.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 1;
 	curTemplate->m_parameters[0] = Parameter::REAL;
 	curTemplate->m_numUiStrings = 2;
@@ -6627,95 +6627,95 @@ void ScriptEngine::init( void )
 #ifdef OG
 	curTemplate->m_name = "[Unit] Set unit to face another unit.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "NAMED_FACE_NAMED";
 	curTemplate->m_uiName = "Unit_/ Set unit to face another unit.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 2;
 	curTemplate->m_parameters[0] = Parameter::UNIT;
 	curTemplate->m_parameters[1] = Parameter::UNIT;
 	curTemplate->m_numUiStrings = 2;
 #ifdef OG
 	curTemplate->m_uiStrings[0] = "";
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_uiStrings[0] = " ";
-#endif
+#endif // ZH
 	curTemplate->m_uiStrings[1] = " begin facing ";
 
 	curTemplate = &m_actionTemplates[ScriptAction::NAMED_FACE_WAYPOINT];
 #ifdef OG
 	curTemplate->m_name = "[Unit] Set unit to face a waypoint.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "NAMED_FACE_WAYPOINT";
 	curTemplate->m_uiName = "Unit_/ Set unit to face a waypoint.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 2;
 	curTemplate->m_parameters[0] = Parameter::UNIT;
 	curTemplate->m_parameters[1] = Parameter::WAYPOINT;
 	curTemplate->m_numUiStrings = 2;
 #ifdef OG
 	curTemplate->m_uiStrings[0] = "";
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_uiStrings[0] = " ";
-#endif
+#endif // ZH
 	curTemplate->m_uiStrings[1] = " begin facing ";
 	
 	curTemplate = &m_actionTemplates[ScriptAction::TEAM_FACE_NAMED];
 #ifdef OG
 	curTemplate->m_name = "[Team] Set team to face another unit.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "TEAM_FACE_NAMED";
 	curTemplate->m_uiName = "Team_/ Set team to face another unit.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 2;
 	curTemplate->m_parameters[0] = Parameter::TEAM;
 	curTemplate->m_parameters[1] = Parameter::UNIT;
 	curTemplate->m_numUiStrings = 2;
 #ifdef OG
 	curTemplate->m_uiStrings[0] = "";
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_uiStrings[0] = " ";
-#endif
+#endif // ZH
 	curTemplate->m_uiStrings[1] = " begin facing ";
 
 	curTemplate = &m_actionTemplates[ScriptAction::TEAM_FACE_WAYPOINT];
 #ifdef OG
 	curTemplate->m_name = "[Team] Set team to face a waypoint.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "TEAM_FACE_WAYPOINT";
 	curTemplate->m_uiName = "Team_/ Set team to face a waypoint.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 2;
 	curTemplate->m_parameters[0] = Parameter::TEAM;
 	curTemplate->m_parameters[1] = Parameter::WAYPOINT;
 	curTemplate->m_numUiStrings = 2;
 #ifdef OG
 	curTemplate->m_uiStrings[0] = "";
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_uiStrings[0] = " ";
-#endif
+#endif // ZH
 	curTemplate->m_uiStrings[1] = " begin facing ";
 	
 	curTemplate = &m_actionTemplates[ScriptAction::COMMANDBAR_REMOVE_BUTTON_OBJECTTYPE];
 #ifdef OG
 	curTemplate->m_name = "[Scripting] Remove a command button from an object type.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "COMMANDBAR_REMOVE_BUTTON_OBJECTTYPE";
 	curTemplate->m_uiName = "Scripting_/ Remove a command button from an object type.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 2;
 	curTemplate->m_parameters[0] = Parameter::COMMAND_BUTTON;
 	curTemplate->m_parameters[1] = Parameter::OBJECT_TYPE;
@@ -6728,11 +6728,11 @@ void ScriptEngine::init( void )
 #ifdef OG
 	curTemplate->m_name = "[Scripting] Add a command button to an object type.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "COMMANDBAR_ADD_BUTTON_OBJECTTYPE_SLOT";
 	curTemplate->m_uiName = "Scripting_/ Add a command button to an object type.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 3;
 	curTemplate->m_parameters[0] = Parameter::COMMAND_BUTTON;
 	curTemplate->m_parameters[1] = Parameter::OBJECT_TYPE;
@@ -6747,11 +6747,11 @@ void ScriptEngine::init( void )
 #ifdef OG
 	curTemplate->m_name = "[Unit] Spawn -- named unit on a team at a position with an orientation.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "UNIT_SPAWN_NAMED_LOCATION_ORIENTATION";
 	curTemplate->m_uiName = "Unit_/ Spawn -- named unit on a team at a position with an orientation.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 5;
 	curTemplate->m_parameters[0] = Parameter::UNIT;
 	curTemplate->m_parameters[1] = Parameter::OBJECT_TYPE;
@@ -6770,11 +6770,11 @@ void ScriptEngine::init( void )
 #ifdef OG
 	curTemplate->m_name = "[Player] Change the modifier to generals experience that a player receives.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "PLAYER_AFFECT_RECEIVING_EXPERIENCE";
 	curTemplate->m_uiName = "Player_/ Change the modifier to generals experience that a player receives.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 2;
 	curTemplate->m_parameters[0] = Parameter::SIDE;
 	curTemplate->m_parameters[1] = Parameter::REAL;
@@ -6787,11 +6787,11 @@ void ScriptEngine::init( void )
 #ifdef OG
 	curTemplate->m_name = "[Multimedia] Set the current sound volume.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "SOUND_SET_VOLUME";
 	curTemplate->m_uiName = "Multimedia_/ Set the current sound volume.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 1;
 	curTemplate->m_parameters[0] = Parameter::REAL;
 	curTemplate->m_numUiStrings = 2;
@@ -6802,11 +6802,11 @@ void ScriptEngine::init( void )
 #ifdef OG
 	curTemplate->m_name = "[Multimedia] Set the current speech volume.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "SPEECH_SET_VOLUME";
 	curTemplate->m_uiName = "Multimedia_/ Set the current speech volume.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 1;
 	curTemplate->m_parameters[0] = Parameter::REAL;
 	curTemplate->m_numUiStrings = 2;
@@ -6817,11 +6817,11 @@ void ScriptEngine::init( void )
 #ifdef OG
 	curTemplate->m_name = "[Map] Adjust Object Bonuses based on difficulty.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "OBJECT_ALLOW_BONUSES";
 	curTemplate->m_uiName = "Map_/ Adjust Object Bonuses based on difficulty.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 1;
 	curTemplate->m_parameters[0] = Parameter::BOOLEAN;
 	curTemplate->m_numUiStrings = 2;
@@ -6832,31 +6832,31 @@ void ScriptEngine::init( void )
 #ifdef OG
 	curTemplate->m_name = "[Team] Set to guard - from inside tunnel network.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "TEAM_GUARD_IN_TUNNEL_NETWORK";
 	curTemplate->m_uiName = "Team_/ Set to guard - from inside tunnel network.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 1;
 	curTemplate->m_parameters[0] = Parameter::TEAM;
 	curTemplate->m_numUiStrings = 2;
 #ifdef OG
 	curTemplate->m_uiStrings[0] = "";
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_uiStrings[0] = " ";
-#endif
+#endif // ZH
 	curTemplate->m_uiStrings[1] = " Enter and guard from tunnel network.";
 
 	curTemplate = &m_actionTemplates[ScriptAction::LOCALDEFEAT];
 #ifdef OG
 	curTemplate->m_name = "[Multiplayer] Announce local defeat.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "LOCALDEFEAT";
 	curTemplate->m_uiName = "Multiplayer_/ Announce local defeat.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 0;
 	curTemplate->m_numUiStrings = 1;
 	curTemplate->m_uiStrings[0] = "Show 'Game Over' window";
@@ -6865,11 +6865,11 @@ void ScriptEngine::init( void )
 #ifdef OG
 	curTemplate->m_name = "[Multiplayer] Announce victory.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "VICTORY";
 	curTemplate->m_uiName = "Multiplayer_/ Announce victory.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 0;
 	curTemplate->m_numUiStrings = 1;
 	curTemplate->m_uiStrings[0] = "Show 'Victorious' window and end game";
@@ -6878,11 +6878,11 @@ void ScriptEngine::init( void )
 #ifdef OG
 	curTemplate->m_name = "[Multiplayer] Announce defeat.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "DEFEAT";
 	curTemplate->m_uiName = "Multiplayer_/ Announce defeat.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 0;
 	curTemplate->m_numUiStrings = 1;
 	curTemplate->m_uiStrings[0] = "Show 'Defeated' window and end game";
@@ -6891,11 +6891,11 @@ void ScriptEngine::init( void )
 #ifdef OG
 	curTemplate->m_name = "[Map] Resize view guardband.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "RESIZE_VIEW_GUARDBAND";
 	curTemplate->m_uiName = "Map_/ Resize view guardband.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 2;
 	curTemplate->m_parameters[0] = Parameter::REAL;
 	curTemplate->m_parameters[1] = Parameter::REAL;
@@ -6908,11 +6908,11 @@ void ScriptEngine::init( void )
 #ifdef OG
 	curTemplate->m_name = "[Scripting] Delete all unmanned (sniped) vehicles.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "DELETE_ALL_UNMANNED";
 	curTemplate->m_uiName = "Scripting_/ Delete all unmanned (sniped) vehicles.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 0;
 	curTemplate->m_numUiStrings = 1;
 	curTemplate->m_uiStrings[0] = "Delete all unmanned (sniped) vehicles." ;
@@ -6921,11 +6921,11 @@ void ScriptEngine::init( void )
 #ifdef OG
 	curTemplate->m_name = "[Map] Force ChooseVictim to ignore game difficulty and always use Normal setting.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "CHOOSE_VICTIM_ALWAYS_USES_NORMAL";
 	curTemplate->m_uiName = "Map_/ Force ChooseVictim to ignore game difficulty and always use Normal setting.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 1;
 	curTemplate->m_parameters[0] = Parameter::BOOLEAN;
 	curTemplate->m_numUiStrings = 2;
@@ -6972,7 +6972,7 @@ void ScriptEngine::init( void )
   curTemplate->m_uiStrings[1] = "'s ambient sound.";
   
 
-#endif
+#endif // ZH
 	///////////////////////////////////////////////////////////////////////////////////////////////////
 
 	/* Recipe for adding a condition:
@@ -6988,11 +6988,11 @@ void ScriptEngine::init( void )
 #ifdef OG
 	curTemplate->m_name = "[Scripting] False.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "CONDITION_FALSE";
 	curTemplate->m_uiName = "Scripting_/ False.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 0;
 	curTemplate->m_numUiStrings = 1;
 	curTemplate->m_uiStrings[0] = "False.";
@@ -7001,11 +7001,11 @@ void ScriptEngine::init( void )
 #ifdef OG
 	curTemplate->m_name = "[Scripting] Counter compared to a value.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "COUNTER";
 	curTemplate->m_uiName = "Scripting_/ Counter compared to a value.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 3;
 	curTemplate->m_parameters[0] = Parameter::COUNTER;
 	curTemplate->m_parameters[1] = Parameter::COMPARISON;
@@ -7019,11 +7019,11 @@ void ScriptEngine::init( void )
 #ifdef OG
 	curTemplate->m_name = "[Unit] Unit health % compared to a value.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "UNIT_HEALTH";
 	curTemplate->m_uiName = "Unit_/ Unit health % compared to a value.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 3;
 	curTemplate->m_parameters[0] = Parameter::UNIT;
 	curTemplate->m_parameters[1] = Parameter::COMPARISON;
@@ -7031,10 +7031,10 @@ void ScriptEngine::init( void )
 	curTemplate->m_numUiStrings = 4;
 #ifdef OG
 	curTemplate->m_uiStrings[0] = "";
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_uiStrings[0] = " ";
-#endif
+#endif // ZH
 	curTemplate->m_uiStrings[1] = " Health IS ";
 	curTemplate->m_uiStrings[2] = " ";
 	curTemplate->m_uiStrings[3] = " percent.";
@@ -7043,74 +7043,74 @@ void ScriptEngine::init( void )
 #ifdef OG
 	curTemplate->m_name = "[Scripting] Flag compared to a value.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "FLAG";
 	curTemplate->m_uiName = "Scripting_/ Flag compared to a value.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 2;
 	curTemplate->m_parameters[0] = Parameter::FLAG;
 	curTemplate->m_parameters[1] = Parameter::BOOLEAN;
 	curTemplate->m_numUiStrings = 2;
 #ifdef OG
 	curTemplate->m_uiStrings[0] = "";
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_uiStrings[0] = " ";
-#endif
+#endif // ZH
 	curTemplate->m_uiStrings[1] = " IS ";
 
 	curTemplate = &m_conditionTemplates[Condition::TEAM_STATE_IS];
 #ifdef OG
 	curTemplate->m_name = "[Team] Team state is.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "TEAM_STATE_IS";
 	curTemplate->m_uiName = "Team_/ Team state is.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 2;
 	curTemplate->m_parameters[0] = Parameter::TEAM;
 	curTemplate->m_parameters[1] = Parameter::TEAM_STATE;
 	curTemplate->m_numUiStrings = 2;
 #ifdef OG
 	curTemplate->m_uiStrings[0] = "";
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_uiStrings[0] = " ";
-#endif
+#endif // ZH
 	curTemplate->m_uiStrings[1] = " state IS ";
 
 	curTemplate = &m_conditionTemplates[Condition::TEAM_STATE_IS_NOT];
 #ifdef OG
 	curTemplate->m_name = "[Team] Team state is not.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "TEAM_STATE_IS_NOT";
 	curTemplate->m_uiName = "Team_/ Team state is not.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 2;
 	curTemplate->m_parameters[0] = Parameter::TEAM;
 	curTemplate->m_parameters[1] = Parameter::TEAM_STATE;
 	curTemplate->m_numUiStrings = 2;
 #ifdef OG
 	curTemplate->m_uiStrings[0] = "";
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_uiStrings[0] = " ";
-#endif
+#endif // ZH
 	curTemplate->m_uiStrings[1] = " state IS NOT ";
 																										 
 	curTemplate = &m_conditionTemplates[Condition::CONDITION_TRUE];
 #ifdef OG
 	curTemplate->m_name = "[Scripting] True.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "CONDITION_TRUE";
 	curTemplate->m_uiName = "Scripting_/ True.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 0;
 	curTemplate->m_numUiStrings = 1;
 	curTemplate->m_uiStrings[0] = "True.";
@@ -7119,11 +7119,11 @@ void ScriptEngine::init( void )
 #ifdef OG
 	curTemplate->m_name = "[Scripting] Timer expired.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "TIMER_EXPIRED";
 	curTemplate->m_uiName = "Scripting_/ Timer expired.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 1;
 	curTemplate->m_parameters[0] = Parameter::COUNTER;
 	curTemplate->m_numUiStrings = 2;
@@ -7134,11 +7134,11 @@ void ScriptEngine::init( void )
 #ifdef OG
 	curTemplate->m_name = "[Player] All destroyed.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "PLAYER_ALL_DESTROYED";
 	curTemplate->m_uiName = "Player_/ All destroyed.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 1;
 	curTemplate->m_parameters[0] = Parameter::SIDE;
 	curTemplate->m_numUiStrings = 2;
@@ -7149,11 +7149,11 @@ void ScriptEngine::init( void )
 #ifdef OG
 	curTemplate->m_name = "[Player] All factories destroyed.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "PLAYER_ALL_BUILDFACILITIES_DESTROYED";
 	curTemplate->m_uiName = "Player_/ All factories destroyed.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 1;
 	curTemplate->m_parameters[0] = Parameter::SIDE;
 	curTemplate->m_numUiStrings = 2;
@@ -7165,11 +7165,11 @@ void ScriptEngine::init( void )
 #ifdef OG
 	curTemplate->m_name = "[Team] Team has units in an area.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "TEAM_INSIDE_AREA_PARTIALLY";
 	curTemplate->m_uiName = "Team_/ Team has units in an area.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 3;
 	curTemplate->m_parameters[0] = Parameter::TEAM;
 	curTemplate->m_parameters[1] = Parameter::TRIGGER_AREA;
@@ -7177,10 +7177,10 @@ void ScriptEngine::init( void )
 	curTemplate->m_numUiStrings = 4;
 #ifdef OG
 	curTemplate->m_uiStrings[0] = "";
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_uiStrings[0] = " ";
-#endif
+#endif // ZH
  	curTemplate->m_uiStrings[1] = " has one or more units in ";
 	curTemplate->m_uiStrings[2] = " (";
 	curTemplate->m_uiStrings[3] = ").";
@@ -7189,21 +7189,21 @@ void ScriptEngine::init( void )
 #ifdef OG
 	curTemplate->m_name = "[Unit] Unit entered area.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "NAMED_INSIDE_AREA";
 	curTemplate->m_uiName = "Unit_/ Unit entered area.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 2;
 	curTemplate->m_parameters[0] = Parameter::UNIT;
 	curTemplate->m_parameters[1] = Parameter::TRIGGER_AREA;
 	curTemplate->m_numUiStrings = 4;
 #ifdef OG
 	curTemplate->m_uiStrings[0] = "";
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_uiStrings[0] = " ";
-#endif
+#endif // ZH
  	curTemplate->m_uiStrings[1] = " is in ";
 	curTemplate->m_uiStrings[2] = " (";
 	curTemplate->m_uiStrings[3] = ").";
@@ -7213,171 +7213,171 @@ void ScriptEngine::init( void )
 #ifdef OG
 	curTemplate->m_name = "[Team] Team is destroyed.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "TEAM_DESTROYED";
 	curTemplate->m_uiName = "Team_/ Team is destroyed.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 1;
 	curTemplate->m_parameters[0] = Parameter::TEAM;
 	curTemplate->m_numUiStrings = 2;
 #ifdef OG
 	curTemplate->m_uiStrings[0] = "";
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_uiStrings[0] = " ";
-#endif
+#endif // ZH
 	curTemplate->m_uiStrings[1] = " has been destroyed.";
 
 	curTemplate = &m_conditionTemplates[Condition::NAMED_DESTROYED];
 #ifdef OG
 	curTemplate->m_name = "[Unit] Unit is destroyed.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "NAMED_DESTROYED";
 	curTemplate->m_uiName = "Unit_/ Unit is destroyed.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 1;
 	curTemplate->m_parameters[0] = Parameter::UNIT;
 	curTemplate->m_numUiStrings = 2;
 #ifdef OG
 	curTemplate->m_uiStrings[0] = "";
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_uiStrings[0] = " ";
-#endif
+#endif // ZH
 	curTemplate->m_uiStrings[1] = " has been destroyed.";
 
 	curTemplate = &m_conditionTemplates[Condition::NAMED_DYING];
 #ifdef OG
 	curTemplate->m_name = "[Unit] Unit is dying.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "NAMED_DYING";
 	curTemplate->m_uiName = "Unit_/ Unit is dying.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 1;
 	curTemplate->m_parameters[0] = Parameter::UNIT;
 	curTemplate->m_numUiStrings = 2;
 #ifdef OG
 	curTemplate->m_uiStrings[0] = "";
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_uiStrings[0] = " ";
-#endif
+#endif // ZH
 	curTemplate->m_uiStrings[1] = " has been killed, but still on screen.";
 
 	curTemplate = &m_conditionTemplates[Condition::NAMED_TOTALLY_DEAD];
 #ifdef OG
 	curTemplate->m_name = "[Unit] Unit is finished dying.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "NAMED_TOTALLY_DEAD";
 	curTemplate->m_uiName = "Unit_/ Unit is finished dying.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 1;
 	curTemplate->m_parameters[0] = Parameter::UNIT;
 	curTemplate->m_numUiStrings = 2;
 #ifdef OG
 	curTemplate->m_uiStrings[0] = "";
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_uiStrings[0] = " ";
-#endif
+#endif // ZH
 	curTemplate->m_uiStrings[1] = " has been killed, and is finished dying.";
 
 	curTemplate = &m_conditionTemplates[Condition::BRIDGE_BROKEN];
 #ifdef OG
 	curTemplate->m_name = "[Unit] Bridge is broken.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "BRIDGE_BROKEN";
 	curTemplate->m_uiName = "Unit_/ Bridge is broken.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 1;
 	curTemplate->m_parameters[0] = Parameter::BRIDGE;
 	curTemplate->m_numUiStrings = 2;
 #ifdef OG
 	curTemplate->m_uiStrings[0] = "";
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_uiStrings[0] = " ";
-#endif
+#endif // ZH
 	curTemplate->m_uiStrings[1] = " has been broken.";
 
 	curTemplate = &m_conditionTemplates[Condition::BRIDGE_REPAIRED];
 #ifdef OG
 	curTemplate->m_name = "[Unit] Bridge is repaired.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "BRIDGE_REPAIRED";
 	curTemplate->m_uiName = "Unit_/ Bridge is repaired.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 1;
 	curTemplate->m_parameters[0] = Parameter::BRIDGE;
 	curTemplate->m_numUiStrings = 2;
 #ifdef OG
 	curTemplate->m_uiStrings[0] = "";
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_uiStrings[0] = " ";
-#endif
+#endif // ZH
 	curTemplate->m_uiStrings[1] = " has been repaired.";
 
 	curTemplate = &m_conditionTemplates[Condition::NAMED_NOT_DESTROYED];
 #ifdef OG
 	curTemplate->m_name = "[Unit] Unit exists and is alive.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "NAMED_NOT_DESTROYED";
 	curTemplate->m_uiName = "Unit_/ Unit exists and is alive.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 1;
 	curTemplate->m_parameters[0] = Parameter::UNIT;
 	curTemplate->m_numUiStrings = 2;
 #ifdef OG
 	curTemplate->m_uiStrings[0] = "";
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_uiStrings[0] = " ";
-#endif
+#endif // ZH
 	curTemplate->m_uiStrings[1] = " exists and is alive.";
 
 	curTemplate = &m_conditionTemplates[Condition::TEAM_HAS_UNITS];
 #ifdef OG
 	curTemplate->m_name = "[Team] Team has units.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "TEAM_HAS_UNITS";
 	curTemplate->m_uiName = "Team_/ Team has units.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 1;
 	curTemplate->m_parameters[0] = Parameter::TEAM;
 	curTemplate->m_numUiStrings = 2;
 #ifdef OG
 	curTemplate->m_uiStrings[0] = "";
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_uiStrings[0] = " ";
-#endif
+#endif // ZH
 	curTemplate->m_uiStrings[1] = " has one or more units.";
 
 	curTemplate = &m_conditionTemplates[Condition::CAMERA_MOVEMENT_FINISHED];
 #ifdef OG
 	curTemplate->m_name = "[Camera] Camera movement finished.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "CAMERA_MOVEMENT_FINISHED";
 	curTemplate->m_uiName = "Camera_/ Camera movement finished.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 0;
 	curTemplate->m_numUiStrings = 1;
 	curTemplate->m_uiStrings[0] = "The camera movement has finished.";
@@ -7386,53 +7386,53 @@ void ScriptEngine::init( void )
 #ifdef OG
 	curTemplate->m_name = "[Unit] Unit inside an area.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "NAMED_INSIDE_AREA";
 	curTemplate->m_uiName = "Unit_/ Unit inside an area.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 2;
 	curTemplate->m_parameters[0] = Parameter::UNIT;
 	curTemplate->m_parameters[1] = Parameter::TRIGGER_AREA;
 	curTemplate->m_numUiStrings = 2;
 #ifdef OG
 	curTemplate->m_uiStrings[0] = "";
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_uiStrings[0] = " ";
-#endif
+#endif // ZH
 	curTemplate->m_uiStrings[1] = " is inside ";
 
 	curTemplate = &m_conditionTemplates[Condition::NAMED_OUTSIDE_AREA];
 #ifdef OG
 	curTemplate->m_name = "[Unit] Unit outside an area.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "NAMED_OUTSIDE_AREA";
 	curTemplate->m_uiName = "Unit_/ Unit outside an area.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 2;
 	curTemplate->m_parameters[0] = Parameter::UNIT;
 	curTemplate->m_parameters[1] = Parameter::TRIGGER_AREA;
 	curTemplate->m_numUiStrings = 2;
 #ifdef OG
 	curTemplate->m_uiStrings[0] = "";
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_uiStrings[0] = " ";
-#endif
+#endif // ZH
 	curTemplate->m_uiStrings[1] = " is outside ";	
 
 	curTemplate = &m_conditionTemplates[Condition::TEAM_INSIDE_AREA_ENTIRELY];
 #ifdef OG
 	curTemplate->m_name = "[Team] Team completely inside an area.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "TEAM_INSIDE_AREA_ENTIRELY";
 	curTemplate->m_uiName = "Team_/ Team completely inside an area.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 3;
 	curTemplate->m_parameters[0] = Parameter::TEAM;
 	curTemplate->m_parameters[1] = Parameter::TRIGGER_AREA;
@@ -7440,10 +7440,10 @@ void ScriptEngine::init( void )
 	curTemplate->m_numUiStrings = 4;
 #ifdef OG
 	curTemplate->m_uiStrings[0] = "";
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_uiStrings[0] = " ";
-#endif
+#endif // ZH
 	curTemplate->m_uiStrings[1] = " is all inside ";
 	curTemplate->m_uiStrings[2] = " (";
 	curTemplate->m_uiStrings[3] = ").";
@@ -7452,11 +7452,11 @@ void ScriptEngine::init( void )
 #ifdef OG
 	curTemplate->m_name = "[Team] Team is completely outside an area.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "TEAM_OUTSIDE_AREA_ENTIRELY";
 	curTemplate->m_uiName = "Team_/ Team is completely outside an area.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 3;
 	curTemplate->m_parameters[0] = Parameter::TEAM;
 	curTemplate->m_parameters[1] = Parameter::TRIGGER_AREA;
@@ -7464,10 +7464,10 @@ void ScriptEngine::init( void )
 	curTemplate->m_numUiStrings = 4;
 #ifdef OG
 	curTemplate->m_uiStrings[0] = "";
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_uiStrings[0] = " ";
-#endif
+#endif // ZH
 	curTemplate->m_uiStrings[1] = " is completely outside ";
 	curTemplate->m_uiStrings[2] = " (";
 	curTemplate->m_uiStrings[3] = ").";
@@ -7476,156 +7476,156 @@ void ScriptEngine::init( void )
 #ifdef OG
 	curTemplate->m_name = "[Unit] Unit is attacked by a specific unit type.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "NAMED_ATTACKED_BY_OBJECTTYPE";
 	curTemplate->m_uiName = "Unit_/ Unit is attacked by a specific unit type.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 2;
 	curTemplate->m_parameters[0] = Parameter::UNIT;
 	curTemplate->m_parameters[1] = Parameter::OBJECT_TYPE;
 	curTemplate->m_numUiStrings = 2;
 #ifdef OG
 	curTemplate->m_uiStrings[0] = "";
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_uiStrings[0] = " ";
-#endif
+#endif // ZH
 	curTemplate->m_uiStrings[1] = " has been attacked by a(n) ";
 
 	curTemplate = &m_conditionTemplates[Condition::TEAM_ATTACKED_BY_OBJECTTYPE];
 #ifdef OG
 	curTemplate->m_name = "[Team] Team is attacked by a specific unit type.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "TEAM_ATTACKED_BY_OBJECTTYPE";
 	curTemplate->m_uiName = "Team_/ Team is attacked by a specific unit type.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 2;
 	curTemplate->m_parameters[0] = Parameter::TEAM;
 	curTemplate->m_parameters[1] = Parameter::OBJECT_TYPE;
 	curTemplate->m_numUiStrings = 2;
 #ifdef OG
 	curTemplate->m_uiStrings[0] = "";
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_uiStrings[0] = " ";
-#endif
+#endif // ZH
 	curTemplate->m_uiStrings[1] = " has been attacked by a(n) ";
 
 	curTemplate = &m_conditionTemplates[Condition::NAMED_ATTACKED_BY_PLAYER];
 #ifdef OG
 	curTemplate->m_name = "[Unit] Unit has been attacked by a player.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "NAMED_ATTACKED_BY_PLAYER";
 	curTemplate->m_uiName = "Unit_/ Unit has been attacked by a player.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 2;
 	curTemplate->m_parameters[0] = Parameter::UNIT;
 	curTemplate->m_parameters[1] = Parameter::SIDE;
 	curTemplate->m_numUiStrings = 2;
 #ifdef OG
 	curTemplate->m_uiStrings[0] = "";
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_uiStrings[0] = " ";
-#endif
+#endif // ZH
 	curTemplate->m_uiStrings[1] = " has been attacked by ";
 
 	curTemplate = &m_conditionTemplates[Condition::TEAM_ATTACKED_BY_PLAYER];
 #ifdef OG
 	curTemplate->m_name = "[Team] Team has been attacked by a player.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "TEAM_ATTACKED_BY_PLAYER";
 	curTemplate->m_uiName = "Team_/ Team has been attacked by a player.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 2;
 	curTemplate->m_parameters[0] = Parameter::TEAM;
 	curTemplate->m_parameters[1] = Parameter::SIDE;
 	curTemplate->m_numUiStrings = 2;
 #ifdef OG
 	curTemplate->m_uiStrings[0] = "";
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_uiStrings[0] = " ";
-#endif
+#endif // ZH
 	curTemplate->m_uiStrings[1] = " has been attacked by ";
 
 	curTemplate = &m_conditionTemplates[Condition::BUILT_BY_PLAYER];
 #ifdef OG
 	curTemplate->m_name = "[Player] Player has built an object type.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "BUILT_BY_PLAYER";
 	curTemplate->m_uiName = "Player_/ Player has built an object type.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 2;
 	curTemplate->m_parameters[0] = Parameter::OBJECT_TYPE;
 	curTemplate->m_parameters[1] = Parameter::SIDE;
 	curTemplate->m_numUiStrings = 2;
 #ifdef OG
 	curTemplate->m_uiStrings[0] = "";
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_uiStrings[0] = " ";
-#endif
+#endif // ZH
 	curTemplate->m_uiStrings[1] = " has been built by ";
 
 	curTemplate = &m_conditionTemplates[Condition::NAMED_CREATED];
 #ifdef OG
 	curTemplate->m_name = "[Unit] Unit has been created.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "NAMED_CREATED";
 	curTemplate->m_uiName = "Unit_/ Unit has been created.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 1;
 	curTemplate->m_parameters[0] = Parameter::UNIT;
 	curTemplate->m_numUiStrings = 2;
 #ifdef OG
 	curTemplate->m_uiStrings[0] = "";
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_uiStrings[0] = " ";
-#endif
+#endif // ZH
 	curTemplate->m_uiStrings[1] = " has been created.";
 
 	curTemplate = &m_conditionTemplates[Condition::TEAM_CREATED];
 #ifdef OG
 	curTemplate->m_name = "[Team] Team has been created.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "TEAM_CREATED";
 	curTemplate->m_uiName = "Team_/ Team has been created.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 1;
 	curTemplate->m_parameters[0] = Parameter::TEAM;
 	curTemplate->m_numUiStrings = 2;
 #ifdef OG
 	curTemplate->m_uiStrings[0] = "";
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_uiStrings[0] = " ";
-#endif
+#endif // ZH
 	curTemplate->m_uiStrings[1] = " has been created.";
 
 	curTemplate = &m_conditionTemplates[Condition::PLAYER_HAS_CREDITS];
 #ifdef OG
 	curTemplate->m_name = "[Player] Player has (comparison) to a number of credits.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "PLAYER_HAS_CREDITS";
 	curTemplate->m_uiName = "Player_/ Player has (comparison) to a number of credits.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 3;
 	curTemplate->m_parameters[0] = Parameter::INT;
 	curTemplate->m_parameters[1] = Parameter::COMPARISON;
@@ -7633,10 +7633,10 @@ void ScriptEngine::init( void )
 	curTemplate->m_numUiStrings = 3;
 #ifdef OG
 	curTemplate->m_uiStrings[0] = "";
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_uiStrings[0] = " ";
-#endif
+#endif // ZH
 	curTemplate->m_uiStrings[1] = " is ";
 	curTemplate->m_uiStrings[2] = " the number of credits possessed by ";
 
@@ -7644,73 +7644,73 @@ void ScriptEngine::init( void )
 #ifdef OG
 	curTemplate->m_name = "[Player] Player has discovered a specific unit.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "NAMED_DISCOVERED";
 	curTemplate->m_uiName = "Player_/ Player has discovered a specific unit.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 2;
 	curTemplate->m_parameters[0] = Parameter::UNIT;
 	curTemplate->m_parameters[1] = Parameter::SIDE;
 	curTemplate->m_numUiStrings = 2;
 #ifdef OG
 	curTemplate->m_uiStrings[0] = "";
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_uiStrings[0] = " ";
-#endif
+#endif // ZH
 	curTemplate->m_uiStrings[1] = " has been discovered by ";
 
 	curTemplate = &m_conditionTemplates[Condition::NAMED_BUILDING_IS_EMPTY];
 #ifdef OG
 	curTemplate->m_name = "[Unit] A specific building is empty.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "NAMED_BUILDING_IS_EMPTY";
 	curTemplate->m_uiName = "Unit_/ A specific building is empty.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 1;
 	curTemplate->m_parameters[0] = Parameter::UNIT;
  	curTemplate->m_numUiStrings = 2;
 #ifdef OG
 	curTemplate->m_uiStrings[0] = "";
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_uiStrings[0] = " ";
-#endif
+#endif // ZH
 	curTemplate->m_uiStrings[1] = " is empty.";
 
 	curTemplate = &m_conditionTemplates[Condition::BUILDING_ENTERED_BY_PLAYER];
 #ifdef OG
 	curTemplate->m_name = "[Player] Player has entered a specific building.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "BUILDING_ENTERED_BY_PLAYER";
 	curTemplate->m_uiName = "Player_/ Player has entered a specific building.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 2;
 	curTemplate->m_parameters[0] = Parameter::SIDE;
 	curTemplate->m_parameters[1] = Parameter::UNIT;
  	curTemplate->m_numUiStrings = 2;
 #ifdef OG
 	curTemplate->m_uiStrings[0] = "";
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_uiStrings[0] = " ";
-#endif
+#endif // ZH
 	curTemplate->m_uiStrings[1] = " has entered building named ";
 
 	curTemplate = &m_conditionTemplates[Condition::ENEMY_SIGHTED];
 #ifdef OG
 	curTemplate->m_name = "[Unit] Unit has sighted a(n) friendly/neutral/enemy unit belonging to a side.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "ENEMY_SIGHTED";
 	curTemplate->m_uiName = "Unit_/ Unit has sighted a(n) friendly/neutral/enemy unit belonging to a side.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 3;
 	curTemplate->m_parameters[0] = Parameter::UNIT;
 	curTemplate->m_parameters[1] = Parameter::RELATION;
@@ -7718,10 +7718,10 @@ void ScriptEngine::init( void )
 	curTemplate->m_numUiStrings = 4;
 #ifdef OG
 	curTemplate->m_uiStrings[0] = "";
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_uiStrings[0] = " ";
-#endif
+#endif // ZH
 	curTemplate->m_uiStrings[1] = " sees a(n) ";
 	curTemplate->m_uiStrings[2] = " unit belonging to ";
 	curTemplate->m_uiStrings[3] = ".";
@@ -7730,11 +7730,11 @@ void ScriptEngine::init( void )
 #ifdef OG
 	curTemplate->m_name = "[Unit] Unit has sighted a type of unit belonging to a side.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "TYPE_SIGHTED";
 	curTemplate->m_uiName = "Unit_/ Unit has sighted a type of unit belonging to a side.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 3;
 	curTemplate->m_parameters[0] = Parameter::UNIT;
 	curTemplate->m_parameters[1] = Parameter::OBJECT_TYPE;
@@ -7742,10 +7742,10 @@ void ScriptEngine::init( void )
 	curTemplate->m_numUiStrings = 4;
 #ifdef OG
 	curTemplate->m_uiStrings[0] = "";
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_uiStrings[0] = " ";
-#endif
+#endif // ZH
 	curTemplate->m_uiStrings[1] = " sees a(n) ";
 	curTemplate->m_uiStrings[2] = " belonging to ";
 	curTemplate->m_uiStrings[3] = ".";
@@ -7754,32 +7754,32 @@ void ScriptEngine::init( void )
 #ifdef OG
 	curTemplate->m_name = "[Player] Player has discovered a team.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "TEAM_DISCOVERED";
 	curTemplate->m_uiName = "Player_/ Player has discovered a team.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 2;
 	curTemplate->m_parameters[0] = Parameter::TEAM;
 	curTemplate->m_parameters[1] = Parameter::SIDE;
 	curTemplate->m_numUiStrings = 2;
 #ifdef OG
 	curTemplate->m_uiStrings[0] = "";
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_uiStrings[0] = " ";
-#endif
+#endif // ZH
 	curTemplate->m_uiStrings[1] = " has been discovered by ";
 
 	curTemplate = &m_conditionTemplates[Condition::MISSION_ATTEMPTS];
 #ifdef OG
 	curTemplate->m_name = "[Player] Player has attempted the mission a number of times.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "MISSION_ATTEMPTS";
 	curTemplate->m_uiName = "Player_/ Player has attempted the mission a number of times.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 3;
 	curTemplate->m_parameters[0] = Parameter::SIDE;
 	curTemplate->m_parameters[1] = Parameter::COMPARISON;
@@ -7787,10 +7787,10 @@ void ScriptEngine::init( void )
 	curTemplate->m_numUiStrings = 4;
 #ifdef OG
 	curTemplate->m_uiStrings[0] = "";
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_uiStrings[0] = " ";
-#endif
+#endif // ZH
 	curTemplate->m_uiStrings[1] = " has attempted the mission ";
 	curTemplate->m_uiStrings[2] = " ";
 	curTemplate->m_uiStrings[3] = " times.";
@@ -7799,63 +7799,63 @@ void ScriptEngine::init( void )
 #ifdef OG
 	curTemplate->m_name = "[Player] Player owns the specific Unit.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "NAMED_OWNED_BY_PLAYER";
 	curTemplate->m_uiName = "Player_/ Player owns the specific Unit.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 2;
 	curTemplate->m_parameters[0] = Parameter::UNIT;
 	curTemplate->m_parameters[1] = Parameter::SIDE;
 	curTemplate->m_numUiStrings = 2;
 #ifdef OG
 	curTemplate->m_uiStrings[0] = "";
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_uiStrings[0] = " ";
-#endif
+#endif // ZH
 	curTemplate->m_uiStrings[1] = " is owned by ";
 
 	curTemplate = &m_conditionTemplates[Condition::TEAM_OWNED_BY_PLAYER];
 #ifdef OG
 	curTemplate->m_name = "[Player] Player owns a specific team.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "TEAM_OWNED_BY_PLAYER";
 	curTemplate->m_uiName = "Player_/ Player owns a specific team.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 2;
 	curTemplate->m_parameters[0] = Parameter::TEAM;
 	curTemplate->m_parameters[1] = Parameter::SIDE;
 	curTemplate->m_numUiStrings = 2;
 #ifdef OG
 	curTemplate->m_uiStrings[0] = "";
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_uiStrings[0] = " ";
-#endif
+#endif // ZH
 	curTemplate->m_uiStrings[1] = " is owned by ";
 
 	curTemplate = &m_conditionTemplates[Condition::PLAYER_HAS_N_OR_FEWER_BUILDINGS];
 #ifdef OG
 	curTemplate->m_name = "[Player] Player currently owns N or fewer buildings.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "PLAYER_HAS_N_OR_FEWER_BUILDINGS";
 	curTemplate->m_uiName = "Player_/ Player currently owns N or fewer buildings.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 2;
 	curTemplate->m_parameters[0] = Parameter::SIDE;
 	curTemplate->m_parameters[1] = Parameter::INT;
 	curTemplate->m_numUiStrings = 3;
 #ifdef OG
 	curTemplate->m_uiStrings[0] = "";
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_uiStrings[0] = " ";
-#endif
+#endif // ZH
 	curTemplate->m_uiStrings[1] = " currently owns ";
 	curTemplate->m_uiStrings[2] = " or fewer buildings.";
 
@@ -7863,21 +7863,21 @@ void ScriptEngine::init( void )
 #ifdef OG
 	curTemplate->m_name = "[Player] Player currently owns N or fewer faction buildings.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "PLAYER_HAS_N_OR_FEWER_FACTION_BUILDINGS";
 	curTemplate->m_uiName = "Player_/ Player currently owns N or fewer faction buildings.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 2;
 	curTemplate->m_parameters[0] = Parameter::SIDE;
 	curTemplate->m_parameters[1] = Parameter::INT;
 	curTemplate->m_numUiStrings = 3;
 #ifdef OG
 	curTemplate->m_uiStrings[0] = "";
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_uiStrings[0] = " ";
-#endif
+#endif // ZH
 	curTemplate->m_uiStrings[1] = " currently owns ";
 	curTemplate->m_uiStrings[2] = " or fewer faction buildings.";
 
@@ -7885,155 +7885,155 @@ void ScriptEngine::init( void )
 #ifdef OG
 	curTemplate->m_name = "[Player] Player's base currently has power.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "PLAYER_HAS_POWER";
 	curTemplate->m_uiName = "Player_/ Player's base currently has power.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 1;
 	curTemplate->m_parameters[0] = Parameter::SIDE;
 	curTemplate->m_numUiStrings = 2;
 #ifdef OG
 	curTemplate->m_uiStrings[0] = "";
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_uiStrings[0] = " ";
-#endif
+#endif // ZH
 	curTemplate->m_uiStrings[1] = " buildings are powered.";
 
 	curTemplate = &m_conditionTemplates[Condition::PLAYER_HAS_NO_POWER];
 #ifdef OG
 	curTemplate->m_name = "[Player] Player's base currently has no power.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "PLAYER_HAS_NO_POWER";
 	curTemplate->m_uiName = "Player_/ Player's base currently has no power.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 1;
 	curTemplate->m_parameters[0] = Parameter::SIDE;
 	curTemplate->m_numUiStrings = 2;
 #ifdef OG
 	curTemplate->m_uiStrings[0] = "";
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_uiStrings[0] = " ";
-#endif
+#endif // ZH
 	curTemplate->m_uiStrings[1] = " buildings are not powered.";
 
 	curTemplate = &m_conditionTemplates[Condition::NAMED_REACHED_WAYPOINTS_END];
 #ifdef OG
 	curTemplate->m_name = "[Unit] Unit has reached the end of a specific waypoint path.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "NAMED_REACHED_WAYPOINTS_END";
 	curTemplate->m_uiName = "Unit_/ Unit has reached the end of a specific waypoint path.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 2;
 	curTemplate->m_parameters[0] = Parameter::UNIT;
 	curTemplate->m_parameters[1] = Parameter::WAYPOINT_PATH;
 	curTemplate->m_numUiStrings = 2;
 #ifdef OG
 	curTemplate->m_uiStrings[0] = "";
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_uiStrings[0] = " ";
-#endif
+#endif // ZH
 	curTemplate->m_uiStrings[1] = " has reached the end of ";
 
 	curTemplate = &m_conditionTemplates[Condition::TEAM_REACHED_WAYPOINTS_END];
 #ifdef OG
 	curTemplate->m_name = "[Team] Team has reached the end of a specific waypoint path.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "TEAM_REACHED_WAYPOINTS_END";
 	curTemplate->m_uiName = "Team_/ Team has reached the end of a specific waypoint path.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 2;
 	curTemplate->m_parameters[0] = Parameter::TEAM;
 	curTemplate->m_parameters[1] = Parameter::WAYPOINT_PATH;
 	curTemplate->m_numUiStrings = 2;
 #ifdef OG
 	curTemplate->m_uiStrings[0] = "";
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_uiStrings[0] = " ";
-#endif
+#endif // ZH
 	curTemplate->m_uiStrings[1] = " has reached the end of ";
 
 	curTemplate = &m_conditionTemplates[Condition::NAMED_SELECTED];
 #ifdef OG
 	curTemplate->m_name = "[Unit] Unit currently selected.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "NAMED_SELECTED";
 	curTemplate->m_uiName = "Unit_/ Unit currently selected.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 1;
 	curTemplate->m_parameters[0] = Parameter::UNIT;
 	curTemplate->m_numUiStrings = 2;
 #ifdef OG
 	curTemplate->m_uiStrings[0] = "";
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_uiStrings[0] = " ";
-#endif
+#endif // ZH
 	curTemplate->m_uiStrings[1] = " is currently selected.";
 
 	curTemplate = &m_conditionTemplates[Condition::NAMED_ENTERED_AREA];
 #ifdef OG
 	curTemplate->m_name = "[Unit] Unit enters an area.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "NAMED_ENTERED_AREA";
 	curTemplate->m_uiName = "Unit_/ Unit enters an area.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 2;
 	curTemplate->m_parameters[0] = Parameter::UNIT;
 	curTemplate->m_parameters[1] = Parameter::TRIGGER_AREA;
 	curTemplate->m_numUiStrings = 2;
 #ifdef OG
 	curTemplate->m_uiStrings[0] = "";
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_uiStrings[0] = " ";
-#endif
+#endif // ZH
 	curTemplate->m_uiStrings[1] = " enters ";
 
 	curTemplate = &m_conditionTemplates[Condition::NAMED_EXITED_AREA];
 #ifdef OG
 	curTemplate->m_name = "[Unit] Unit exits an area.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "NAMED_EXITED_AREA";
 	curTemplate->m_uiName = "Unit_/ Unit exits an area.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 2;
 	curTemplate->m_parameters[0] = Parameter::UNIT;
 	curTemplate->m_parameters[1] = Parameter::TRIGGER_AREA;
 	curTemplate->m_numUiStrings = 2;
 #ifdef OG
 	curTemplate->m_uiStrings[0] = "";
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_uiStrings[0] = " ";
-#endif
+#endif // ZH
 	curTemplate->m_uiStrings[1] = " exits ";
 
 	curTemplate = &m_conditionTemplates[Condition::TEAM_ENTERED_AREA_ENTIRELY];
 #ifdef OG
 	curTemplate->m_name = "[Team] Team entirely enters an area.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "TEAM_ENTERED_AREA_ENTIRELY";
 	curTemplate->m_uiName = "Team_/ Team entirely enters an area.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 3;
 	curTemplate->m_parameters[0] = Parameter::TEAM;
 	curTemplate->m_parameters[1] = Parameter::TRIGGER_AREA;
@@ -8041,10 +8041,10 @@ void ScriptEngine::init( void )
 	curTemplate->m_numUiStrings = 4;
 #ifdef OG
 	curTemplate->m_uiStrings[0] = "";
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_uiStrings[0] = " ";
-#endif
+#endif // ZH
 	curTemplate->m_uiStrings[1] = " all enter ";
 	curTemplate->m_uiStrings[2] = " (";
 	curTemplate->m_uiStrings[3] = ").";
@@ -8055,11 +8055,11 @@ void ScriptEngine::init( void )
 #ifdef OG
 	curTemplate->m_name = "[Team] One unit enters an area.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "TEAM_ENTERED_AREA_PARTIALLY";
 	curTemplate->m_uiName = "Team_/ One unit enters an area.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 3;
 	curTemplate->m_parameters[0] = Parameter::TEAM;
 	curTemplate->m_parameters[1] = Parameter::TRIGGER_AREA;
@@ -8074,11 +8074,11 @@ void ScriptEngine::init( void )
 #ifdef OG
 	curTemplate->m_name = "[Team] Team entirely exits an area.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "TEAM_EXITED_AREA_ENTIRELY";
 	curTemplate->m_uiName = "Team_/ Team entirely exits an area.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 3;
 	curTemplate->m_parameters[0] = Parameter::TEAM;
 	curTemplate->m_parameters[1] = Parameter::TRIGGER_AREA;
@@ -8086,10 +8086,10 @@ void ScriptEngine::init( void )
 	curTemplate->m_numUiStrings = 4;
 #ifdef OG
 	curTemplate->m_uiStrings[0] = "";
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_uiStrings[0] = " ";
-#endif
+#endif // ZH
 	curTemplate->m_uiStrings[1] = " all exit ";
 	curTemplate->m_uiStrings[2] = " (";
 	curTemplate->m_uiStrings[3] = ").";
@@ -8098,11 +8098,11 @@ void ScriptEngine::init( void )
 #ifdef OG
 	curTemplate->m_name = "[Team] One unit exits an area.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "TEAM_EXITED_AREA_PARTIALLY";
 	curTemplate->m_uiName = "Team_/ One unit exits an area.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 3;
 	curTemplate->m_parameters[0] = Parameter::TEAM;
 	curTemplate->m_parameters[1] = Parameter::TRIGGER_AREA;
@@ -8117,11 +8117,11 @@ void ScriptEngine::init( void )
 #ifdef OG
 	curTemplate->m_name = "[Multiplayer] Multiplayer allied victory.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "MULTIPLAYER_ALLIED_VICTORY";
 	curTemplate->m_uiName = "Multiplayer_/ Multiplayer allied victory.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 0;
 	curTemplate->m_numUiStrings = 1;
 	curTemplate->m_uiStrings[0] = "The multiplayer game has ended in victory for the local player and his allies.";
@@ -8130,11 +8130,11 @@ void ScriptEngine::init( void )
 #ifdef OG
 	curTemplate->m_name = "[Multiplayer] Multiplayer allied defeat.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "MULTIPLAYER_ALLIED_DEFEAT";
 	curTemplate->m_uiName = "Multiplayer_/ Multiplayer allied defeat.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 0;
 	curTemplate->m_numUiStrings = 1;
 	curTemplate->m_uiStrings[0] = "The multiplayer game has ended in defeat for the local player and his allies.";
@@ -8143,11 +8143,11 @@ void ScriptEngine::init( void )
 #ifdef OG
 	curTemplate->m_name = "[Multiplayer] Multiplayer local player defeat check.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "MULTIPLAYER_PLAYER_DEFEAT";
 	curTemplate->m_uiName = "Multiplayer_/ Multiplayer local player defeat check.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 0;
 	curTemplate->m_numUiStrings = 1;
 	curTemplate->m_uiStrings[0] = "Everything belonging to the local player has been destroyed, but his allies may or may not have been defeated.";
@@ -8156,71 +8156,71 @@ void ScriptEngine::init( void )
 #ifdef OG
 	curTemplate->m_name = "[Multimedia] Video has completed playing.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "HAS_FINISHED_VIDEO";
 	curTemplate->m_uiName = "Multimedia_/ Video has completed playing.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 1;
 	curTemplate->m_parameters[0] = Parameter::MOVIE;
 	curTemplate->m_numUiStrings = 2;
 #ifdef OG
 	curTemplate->m_uiStrings[0] = "";
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_uiStrings[0] = " ";
-#endif
+#endif // ZH
 	curTemplate->m_uiStrings[1] = " has completed playing.";
 
 	curTemplate = &m_conditionTemplates[Condition::HAS_FINISHED_SPEECH];
 #ifdef OG
 	curTemplate->m_name = "[Multimedia] Speech has completed playing.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "HAS_FINISHED_SPEECH";
 	curTemplate->m_uiName = "Multimedia_/ Speech has completed playing.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 1;
 	curTemplate->m_parameters[0] = Parameter::DIALOG;
 	curTemplate->m_numUiStrings = 2;
 #ifdef OG
 	curTemplate->m_uiStrings[0] = "";
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_uiStrings[0] = " ";
-#endif
+#endif // ZH
 	curTemplate->m_uiStrings[1] = " has completed playing.";
 
 	curTemplate = &m_conditionTemplates[Condition::HAS_FINISHED_AUDIO];
 #ifdef OG
 	curTemplate->m_name = "[Multimedia] Sound has completed playing.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "HAS_FINISHED_AUDIO";
 	curTemplate->m_uiName = "Multimedia_/ Sound has completed playing.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 1;
 	curTemplate->m_parameters[0] = Parameter::SOUND;
 	curTemplate->m_numUiStrings = 2;
 #ifdef OG
 	curTemplate->m_uiStrings[0] = "";
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_uiStrings[0] = " ";
-#endif
+#endif // ZH
 	curTemplate->m_uiStrings[1] = " has completed playing.";
 
 	curTemplate = &m_conditionTemplates[Condition::PLAYER_TRIGGERED_SPECIAL_POWER];
 #ifdef OG
 	curTemplate->m_name = "[Player] Player starts using a special power.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "PLAYER_TRIGGERED_SPECIAL_POWER";
 	curTemplate->m_uiName = "Player_/ Player starts using a special power.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 2;
 	curTemplate->m_parameters[0] = Parameter::SIDE;
 	curTemplate->m_parameters[1] = Parameter::SPECIAL_POWER;
@@ -8233,11 +8233,11 @@ void ScriptEngine::init( void )
 #ifdef OG
 	curTemplate->m_name = "[Player] Player start using a special power from a named unit.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "PLAYER_TRIGGERED_SPECIAL_POWER_FROM_NAMED";
 	curTemplate->m_uiName = "Player_/ Player start using a special power from a named unit.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 3;
 	curTemplate->m_parameters[0] = Parameter::SIDE;
 	curTemplate->m_parameters[1] = Parameter::SPECIAL_POWER;
@@ -8252,11 +8252,11 @@ void ScriptEngine::init( void )
 #ifdef OG
 	curTemplate->m_name = "[Player] Player is midway through using a special power.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "PLAYER_MIDWAY_SPECIAL_POWER";
 	curTemplate->m_uiName = "Player_/ Player is midway through using a special power.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 2;
 	curTemplate->m_parameters[0] = Parameter::SIDE;
 	curTemplate->m_parameters[1] = Parameter::SPECIAL_POWER;
@@ -8269,11 +8269,11 @@ void ScriptEngine::init( void )
 #ifdef OG
 	curTemplate->m_name = "[Player] Player is midway through using a special power from a named unit.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "PLAYER_MIDWAY_SPECIAL_POWER_FROM_NAMED";
 	curTemplate->m_uiName = "Player_/ Player is midway through using a special power from a named unit.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 3;
 	curTemplate->m_parameters[0] = Parameter::SIDE;
 	curTemplate->m_parameters[1] = Parameter::SPECIAL_POWER;
@@ -8288,11 +8288,11 @@ void ScriptEngine::init( void )
 #ifdef OG
 	curTemplate->m_name = "[Player] Player completed using a special power.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "PLAYER_COMPLETED_SPECIAL_POWER";
 	curTemplate->m_uiName = "Player_/ Player completed using a special power.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 2;
 	curTemplate->m_parameters[0] = Parameter::SIDE;
 	curTemplate->m_parameters[1] = Parameter::SPECIAL_POWER;
@@ -8305,11 +8305,11 @@ void ScriptEngine::init( void )
 #ifdef OG
 	curTemplate->m_name = "[Player] Player completed using a special power from a named unit.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "PLAYER_COMPLETED_SPECIAL_POWER_FROM_NAMED";
 	curTemplate->m_uiName = "Player_/ Player completed using a special power from a named unit.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 3;
 	curTemplate->m_parameters[0] = Parameter::SIDE;
 	curTemplate->m_parameters[1] = Parameter::SPECIAL_POWER;
@@ -8324,11 +8324,11 @@ void ScriptEngine::init( void )
 #ifdef OG
 	curTemplate->m_name = "[Player] Player acquired a Science.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "PLAYER_ACQUIRED_SCIENCE";
 	curTemplate->m_uiName = "Player_/ Player acquired a Science.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 2;
 	curTemplate->m_parameters[0] = Parameter::SIDE;
 	curTemplate->m_parameters[1] = Parameter::SCIENCE;
@@ -8341,11 +8341,11 @@ void ScriptEngine::init( void )
 #ifdef OG
 	curTemplate->m_name = "[Player] Player can purchase a particular Science (has all prereqs & points).";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "PLAYER_CAN_PURCHASE_SCIENCE";
 	curTemplate->m_uiName = "Player_/ Player can purchase a particular Science (has all prereqs & points).";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 2;
 	curTemplate->m_parameters[0] = Parameter::SIDE;
 	curTemplate->m_parameters[1] = Parameter::SCIENCE;
@@ -8358,11 +8358,11 @@ void ScriptEngine::init( void )
 #ifdef OG
 	curTemplate->m_name = "[Player] Player has a certain number of Science Purchase Points available.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "PLAYER_HAS_SCIENCEPURCHASEPOINTS";
 	curTemplate->m_uiName = "Player_/ Player has a certain number of Science Purchase Points available.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 2;
 	curTemplate->m_parameters[0] = Parameter::SIDE;
 	curTemplate->m_parameters[1] = Parameter::INT;
@@ -8380,17 +8380,17 @@ void ScriptEngine::init( void )
 	curTemplate->m_numUiStrings = 2;
 	curTemplate->m_uiStrings[0] = " ";
 	curTemplate->m_uiStrings[1] = " has free container slots.";
-#endif
+#endif // ZH
 
 	curTemplate = &m_conditionTemplates[Condition::PLAYER_BUILT_UPGRADE];
 #ifdef OG
 	curTemplate->m_name = "[Player] Player built an upgrade.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "PLAYER_BUILT_UPGRADE";
 	curTemplate->m_uiName = "Player_/ Player built an upgrade.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 2;
 	curTemplate->m_parameters[0] = Parameter::SIDE;
 	curTemplate->m_parameters[1] = Parameter::UPGRADE;
@@ -8403,11 +8403,11 @@ void ScriptEngine::init( void )
 #ifdef OG
 	curTemplate->m_name = "[Player] Player built an upgrade from a named unit.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "PLAYER_BUILT_UPGRADE_FROM_NAMED";
 	curTemplate->m_uiName = "Player_/ Player built an upgrade from a named unit.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 3;
 	curTemplate->m_parameters[0] = Parameter::SIDE;
 	curTemplate->m_parameters[1] = Parameter::UPGRADE;
@@ -8422,11 +8422,11 @@ void ScriptEngine::init( void )
 #ifdef OG
 	curTemplate->m_name = "[Player] Player destroyed N or more of an opponent's buildings.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "PLAYER_DESTROYED_N_BUILDINGS_PLAYER";
 	curTemplate->m_uiName = "Player_/ Player destroyed N or more of an opponent's buildings.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 3;
 	curTemplate->m_parameters[0] = Parameter::SIDE;
 	curTemplate->m_parameters[1] = Parameter::INT;
@@ -8441,11 +8441,11 @@ void ScriptEngine::init( void )
 #ifdef OG
 	curTemplate->m_name = "[Player] Player has (comparison) unit type.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "PLAYER_HAS_OBJECT_COMPARISON";
 	curTemplate->m_uiName = "Player_/ Player has (comparison) unit type.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 4;
 	curTemplate->m_parameters[0] = Parameter::SIDE;
 	curTemplate->m_parameters[1] = Parameter::COMPARISON;
@@ -8454,10 +8454,10 @@ void ScriptEngine::init( void )
 	curTemplate->m_numUiStrings = 4;
 #ifdef OG
 	curTemplate->m_uiStrings[0] = "";
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_uiStrings[0] = " ";
-#endif
+#endif // ZH
 	curTemplate->m_uiStrings[1] = " has ";
 	curTemplate->m_uiStrings[2] = " ";
 	curTemplate->m_uiStrings[3] = " unit or structure of type ";
@@ -8466,11 +8466,11 @@ void ScriptEngine::init( void )
 #ifdef OG
 	curTemplate->m_name = "[Player] Player has (comparison) unit type in an area.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "PLAYER_HAS_COMPARISON_UNIT_TYPE_IN_TRIGGER_AREA";
 	curTemplate->m_uiName = "Player_/ Player has (comparison) unit type in an area.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 5;
 	curTemplate->m_parameters[0] = Parameter::SIDE;
 	curTemplate->m_parameters[1] = Parameter::COMPARISON;
@@ -8480,10 +8480,10 @@ void ScriptEngine::init( void )
 	curTemplate->m_numUiStrings = 5;
 #ifdef OG
 	curTemplate->m_uiStrings[0] = "";
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_uiStrings[0] = " ";
-#endif
+#endif // ZH
 	curTemplate->m_uiStrings[1] = " has ";
 	curTemplate->m_uiStrings[2] = " ";
 	curTemplate->m_uiStrings[3] = " unit or structure of type ";
@@ -8493,11 +8493,11 @@ void ScriptEngine::init( void )
 #ifdef OG
 	curTemplate->m_name = "[Player] Player has (comparison) kind of unit or structure in an area.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "PLAYER_HAS_COMPARISON_UNIT_KIND_IN_TRIGGER_AREA";
 	curTemplate->m_uiName = "Player_/ Player has (comparison) kind of unit or structure in an area.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 5;
 	curTemplate->m_parameters[0] = Parameter::SIDE;
 	curTemplate->m_parameters[1] = Parameter::COMPARISON;
@@ -8507,10 +8507,10 @@ void ScriptEngine::init( void )
 	curTemplate->m_numUiStrings = 5;
 #ifdef OG
 	curTemplate->m_uiStrings[0] = "";
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_uiStrings[0] = " ";
-#endif
+#endif // ZH
 	curTemplate->m_uiStrings[1] = " has ";
 	curTemplate->m_uiStrings[2] = " ";
 	curTemplate->m_uiStrings[3] = " unit or structure with ";
@@ -8520,11 +8520,11 @@ void ScriptEngine::init( void )
 #ifdef OG
 	curTemplate->m_name = "[Player] Player has (comparison) percent power supply to consumption.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "PLAYER_POWER_COMPARE_PERCENT";
 	curTemplate->m_uiName = "Player_/ Player has (comparison) percent power supply to consumption.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 3;
 	curTemplate->m_parameters[0] = Parameter::SIDE;
 	curTemplate->m_parameters[1] = Parameter::COMPARISON;
@@ -8532,10 +8532,10 @@ void ScriptEngine::init( void )
 	curTemplate->m_numUiStrings = 4;
 #ifdef OG
 	curTemplate->m_uiStrings[0] = "";
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_uiStrings[0] = " ";
-#endif
+#endif // ZH
 	curTemplate->m_uiStrings[1] = " has ";
 	curTemplate->m_uiStrings[2] = " ";
 	curTemplate->m_uiStrings[3] = " percent power supply ratio.";
@@ -8544,11 +8544,11 @@ void ScriptEngine::init( void )
 #ifdef OG
 	curTemplate->m_name = "[Player] Player has (comparison) kilowatts excess power supply.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "PLAYER_EXCESS_POWER_COMPARE_VALUE";
 	curTemplate->m_uiName = "Player_/ Player has (comparison) kilowatts excess power supply.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 3;
 	curTemplate->m_parameters[0] = Parameter::SIDE;
 	curTemplate->m_parameters[1] = Parameter::COMPARISON;
@@ -8556,10 +8556,10 @@ void ScriptEngine::init( void )
 	curTemplate->m_numUiStrings = 4;
 #ifdef OG
 	curTemplate->m_uiStrings[0] = "";
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_uiStrings[0] = " ";
-#endif
+#endif // ZH
 	curTemplate->m_uiStrings[1] = " has ";
 	curTemplate->m_uiStrings[2] = " ";
 	curTemplate->m_uiStrings[3] = " excess kilowatts power supply.";
@@ -8568,41 +8568,41 @@ void ScriptEngine::init( void )
 #ifdef OG
 	curTemplate->m_name = "[Unit] Unit has emptied its contents.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "UNIT_EMPTIED";
 	curTemplate->m_uiName = "Unit_/ Unit has emptied its contents.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 1;
 	curTemplate->m_parameters[0] = Parameter::UNIT;
 	curTemplate->m_numUiStrings = 2;
 #ifdef OG
 	curTemplate->m_uiStrings[0] = "";
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_uiStrings[0] = " ";
-#endif
+#endif // ZH
 	curTemplate->m_uiStrings[1] = " emptied its contents.";
 
 	curTemplate = &m_conditionTemplates[Condition::SKIRMISH_SPECIAL_POWER_READY];
 #ifdef OG
 	curTemplate->m_name = "[Skirmish] Player's special power is ready to fire.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "SKIRMISH_SPECIAL_POWER_READY";
 	curTemplate->m_uiName = "Skirmish_/ Player's special power is ready to fire.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 2;
 	curTemplate->m_parameters[0] = Parameter::SIDE;
 	curTemplate->m_parameters[1] = Parameter::SPECIAL_POWER;
 	curTemplate->m_numUiStrings = 3;
 #ifdef OG
 	curTemplate->m_uiStrings[0] = "";
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_uiStrings[0] = " ";
-#endif
+#endif // ZH
 	curTemplate->m_uiStrings[1] = " is ready to fire ";
 	curTemplate->m_uiStrings[2] = ".";
 
@@ -8610,74 +8610,74 @@ void ScriptEngine::init( void )
 #ifdef OG
 	curTemplate->m_name = "[Unit] Unit has object status.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "UNIT_HAS_OBJECT_STATUS";
 	curTemplate->m_uiName = "Unit_/ Unit has object status.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 2;
 	curTemplate->m_parameters[0] = Parameter::UNIT;
 	curTemplate->m_parameters[1] = Parameter::OBJECT_STATUS;
 	curTemplate->m_numUiStrings = 2;
 #ifdef OG
 	curTemplate->m_uiStrings[0] = "";
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_uiStrings[0] = " ";
-#endif
+#endif // ZH
 	curTemplate->m_uiStrings[1] = " has ";
 
 	curTemplate = &m_conditionTemplates[Condition::TEAM_ALL_HAS_OBJECT_STATUS];
 #ifdef OG
 	curTemplate->m_name = "[Team] Team has object status - all.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "TEAM_ALL_HAS_OBJECT_STATUS";
 	curTemplate->m_uiName = "Team_/ Team has object status - all.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 2;
 	curTemplate->m_parameters[0] = Parameter::TEAM;
 	curTemplate->m_parameters[1] = Parameter::OBJECT_STATUS;
 	curTemplate->m_numUiStrings = 2;
 #ifdef OG
 	curTemplate->m_uiStrings[0] = "";
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_uiStrings[0] = " ";
-#endif
+#endif // ZH
 	curTemplate->m_uiStrings[1] = " has ";
 
 	curTemplate = &m_conditionTemplates[Condition::TEAM_SOME_HAVE_OBJECT_STATUS];
 #ifdef OG
 	curTemplate->m_name = "[Team] Team has object status - partial.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "TEAM_SOME_HAVE_OBJECT_STATUS";
 	curTemplate->m_uiName = "Team_/ Team has object status - partial.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 2;
 	curTemplate->m_parameters[0] = Parameter::TEAM;
 	curTemplate->m_parameters[1] = Parameter::OBJECT_STATUS;
 	curTemplate->m_numUiStrings = 2;
 #ifdef OG
 	curTemplate->m_uiStrings[0] = "";
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_uiStrings[0] = " ";
-#endif
+#endif // ZH
 	curTemplate->m_uiStrings[1] = " has ";
 
 	curTemplate = &m_conditionTemplates[Condition::SKIRMISH_VALUE_IN_AREA];
 #ifdef OG
 	curTemplate->m_name = "[Skirmish Only] Player has total value in area.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "SKIRMISH_VALUE_IN_AREA";
 	curTemplate->m_uiName = "Skirmish Only_/ Player has total value in area.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 4;
 	curTemplate->m_parameters[0] = Parameter::SIDE;
 	curTemplate->m_parameters[1] = Parameter::COMPARISON;
@@ -8686,10 +8686,10 @@ void ScriptEngine::init( void )
 	curTemplate->m_numUiStrings = 4;
 #ifdef OG
 	curTemplate->m_uiStrings[0] = "";
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_uiStrings[0] = " ";
-#endif
+#endif // ZH
 	curTemplate->m_uiStrings[1] = " has ";
 	curTemplate->m_uiStrings[2] = " ";
 	curTemplate->m_uiStrings[3] = " within area ";
@@ -8698,32 +8698,32 @@ void ScriptEngine::init( void )
 #ifdef OG
 	curTemplate->m_name = "[Skirmish] Player is faction. - untested";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "SKIRMISH_PLAYER_FACTION";
 	curTemplate->m_uiName = "Skirmish_/ Player is faction. - untested";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 2;
 	curTemplate->m_parameters[0] = Parameter::SIDE;
 	curTemplate->m_parameters[1] = Parameter::FACTION_NAME;
 	curTemplate->m_numUiStrings = 2;
 #ifdef OG
 	curTemplate->m_uiStrings[0] = "";
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_uiStrings[0] = " ";
-#endif
+#endif // ZH
 	curTemplate->m_uiStrings[1] = " is ";
 
 	curTemplate = &m_conditionTemplates[Condition::SKIRMISH_SUPPLIES_VALUE_WITHIN_DISTANCE];
 #ifdef OG
 	curTemplate->m_name = "[Skirmish Only] Supplies are within specified distance.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "SKIRMISH_SUPPLIES_VALUE_WITHIN_DISTANCE";
 	curTemplate->m_uiName = "Skirmish Only_/ Supplies are within specified distance.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 4;
 	curTemplate->m_parameters[0] = Parameter::SIDE;
 	curTemplate->m_parameters[1] = Parameter::REAL;
@@ -8732,10 +8732,10 @@ void ScriptEngine::init( void )
 	curTemplate->m_numUiStrings = 4;
 #ifdef OG
 	curTemplate->m_uiStrings[0] = "";
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_uiStrings[0] = " ";
-#endif
+#endif // ZH
 	curTemplate->m_uiStrings[1] = " has supplies within ";
 	curTemplate->m_uiStrings[2] = " of ";
 	curTemplate->m_uiStrings[3] = " worth at least ";
@@ -8745,11 +8745,11 @@ void ScriptEngine::init( void )
 #ifdef OG
 	curTemplate->m_name = "[Skirmish Only] Tech building is within specified distance.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "SKIRMISH_TECH_BUILDING_WITHIN_DISTANCE";
 	curTemplate->m_uiName = "Skirmish Only_/ Tech building is within specified distance.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 3;
 	curTemplate->m_parameters[0] = Parameter::SIDE;
 	curTemplate->m_parameters[1] = Parameter::REAL;
@@ -8757,10 +8757,10 @@ void ScriptEngine::init( void )
 	curTemplate->m_numUiStrings = 3;
 #ifdef OG
 	curTemplate->m_uiStrings[0] = "";
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_uiStrings[0] = " ";
-#endif
+#endif // ZH
 	curTemplate->m_uiStrings[1] = " has a tech building within ";
 	curTemplate->m_uiStrings[2] = " of ";
 
@@ -8768,11 +8768,11 @@ void ScriptEngine::init( void )
 #ifdef OG
 	curTemplate->m_name = "[Skirmish] Command Ability is ready - all.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "SKIRMISH_COMMAND_BUTTON_READY_ALL";
 	curTemplate->m_uiName = "Skirmish_/ Command Ability is ready - all.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 3;
 	curTemplate->m_parameters[0] = Parameter::SIDE;
 	curTemplate->m_parameters[1] = Parameter::TEAM;
@@ -8780,10 +8780,10 @@ void ScriptEngine::init( void )
 	curTemplate->m_numUiStrings = 4;
 #ifdef OG
 	curTemplate->m_uiStrings[0] = "";
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_uiStrings[0] = " ";
-#endif
+#endif // ZH
 	curTemplate->m_uiStrings[1] = "'s ";
 	curTemplate->m_uiStrings[2] = " are ready to use ";
 	curTemplate->m_uiStrings[3] = " (all applicable members).";
@@ -8792,11 +8792,11 @@ void ScriptEngine::init( void )
 #ifdef OG
 	curTemplate->m_name = "[Skirmish] Command Ability is ready - partial";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "SKIRMISH_COMMAND_BUTTON_READY_PARTIAL";
 	curTemplate->m_uiName = "Skirmish_/ Command Ability is ready - partial";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 3;
 	curTemplate->m_parameters[0] = Parameter::SIDE;
 	curTemplate->m_parameters[1] = Parameter::TEAM;
@@ -8804,10 +8804,10 @@ void ScriptEngine::init( void )
 	curTemplate->m_numUiStrings = 4;
 #ifdef OG
 	curTemplate->m_uiStrings[0] = "";
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_uiStrings[0] = " ";
-#endif
+#endif // ZH
 	curTemplate->m_uiStrings[1] = "'s ";
 	curTemplate->m_uiStrings[2] = " are ready to use ";
 	curTemplate->m_uiStrings[3] = " (at least one member).";
@@ -8816,11 +8816,11 @@ void ScriptEngine::init( void )
 #ifdef OG
 	curTemplate->m_name = "[Skirmish] Unowned faction unit -- comparison.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "SKIRMISH_UNOWNED_FACTION_UNIT_EXISTS";
 	curTemplate->m_uiName = "Skirmish_/ Unowned faction unit -- comparison.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 3;
 	curTemplate->m_parameters[0] = Parameter::SIDE;
 	curTemplate->m_parameters[1] = Parameter::COMPARISON;
@@ -8828,10 +8828,10 @@ void ScriptEngine::init( void )
 	curTemplate->m_numUiStrings = 4;
 #ifdef OG
 	curTemplate->m_uiStrings[0] = "";
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_uiStrings[0] = " ";
-#endif
+#endif // ZH
 	curTemplate->m_uiStrings[1] = ". There are ";
 	curTemplate->m_uiStrings[2] = " ";
 	curTemplate->m_uiStrings[3] = " unowned faction units.";
@@ -8841,21 +8841,21 @@ void ScriptEngine::init( void )
 #ifdef OG
 	curTemplate->m_name = "[Skirmish] Player has prerequisites to build an object type.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "SKIRMISH_PLAYER_HAS_PREREQUISITE_TO_BUILD";
 	curTemplate->m_uiName = "Skirmish_/ Player has prerequisites to build an object type.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 2;
 	curTemplate->m_parameters[0] = Parameter::SIDE;
 	curTemplate->m_parameters[1] = Parameter::OBJECT_TYPE;
 	curTemplate->m_numUiStrings = 3;
 #ifdef OG
 	curTemplate->m_uiStrings[0] = "";
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_uiStrings[0] = " ";
-#endif
+#endif // ZH
 	curTemplate->m_uiStrings[1] = " can build ";
 	curTemplate->m_uiStrings[2] = ".";
 	
@@ -8863,11 +8863,11 @@ void ScriptEngine::init( void )
 #ifdef OG
 	curTemplate->m_name = "[Skirmish] Player has garrisoned buildings -- comparison.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "SKIRMISH_PLAYER_HAS_COMPARISON_GARRISONED";
 	curTemplate->m_uiName = "Skirmish_/ Player has garrisoned buildings -- comparison.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 3;
 	curTemplate->m_parameters[0] = Parameter::SIDE;
 	curTemplate->m_parameters[1] = Parameter::COMPARISON;
@@ -8875,10 +8875,10 @@ void ScriptEngine::init( void )
 	curTemplate->m_numUiStrings = 4;
 #ifdef OG
 	curTemplate->m_uiStrings[0] = "";
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_uiStrings[0] = " ";
-#endif
+#endif // ZH
 	curTemplate->m_uiStrings[1] = " has ";
 	curTemplate->m_uiStrings[2] = " ";
 	curTemplate->m_uiStrings[3] = " garrisoned buildings.";
@@ -8887,11 +8887,11 @@ void ScriptEngine::init( void )
 #ifdef OG
 	curTemplate->m_name = "[Skirmish] Player has captured units -- comparison";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "SKIRMISH_PLAYER_HAS_COMPARISON_CAPTURED_UNITS";
 	curTemplate->m_uiName = "Skirmish_/ Player has captured units -- comparison";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 3;
 	curTemplate->m_parameters[0] = Parameter::SIDE;
 	curTemplate->m_parameters[1] = Parameter::COMPARISON;
@@ -8899,10 +8899,10 @@ void ScriptEngine::init( void )
 	curTemplate->m_numUiStrings = 4;
 #ifdef OG
 	curTemplate->m_uiStrings[0] = "";
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_uiStrings[0] = " ";
-#endif
+#endif // ZH
 	curTemplate->m_uiStrings[1] = " has captured ";
 	curTemplate->m_uiStrings[2] = " ";
 	curTemplate->m_uiStrings[3] = " units.";
@@ -8911,21 +8911,21 @@ void ScriptEngine::init( void )
 #ifdef OG
 	curTemplate->m_name = "[Skirmish] Area exists.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "SKIRMISH_NAMED_AREA_EXIST";
 	curTemplate->m_uiName = "Skirmish_/ Area exists.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 2;
 	curTemplate->m_parameters[0] = Parameter::SIDE;
 	curTemplate->m_parameters[1] = Parameter::TRIGGER_AREA;
 	curTemplate->m_numUiStrings = 3;
 #ifdef OG
 	curTemplate->m_uiStrings[0] = "";
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_uiStrings[0] = " ";
-#endif
+#endif // ZH
 	curTemplate->m_uiStrings[1] = ". ";
 	curTemplate->m_uiStrings[2] = " exists.";
 	
@@ -8933,21 +8933,21 @@ void ScriptEngine::init( void )
 #ifdef OG
 	curTemplate->m_name = "[Skirmish] Player has units in an area";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "SKIRMISH_PLAYER_HAS_UNITS_IN_AREA";
 	curTemplate->m_uiName = "Skirmish_/ Player has units in an area";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 2;
 	curTemplate->m_parameters[0] = Parameter::SIDE;
 	curTemplate->m_parameters[1] = Parameter::TRIGGER_AREA;
 	curTemplate->m_numUiStrings = 3;
 #ifdef OG
 	curTemplate->m_uiStrings[0] = "";
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_uiStrings[0] = " ";
-#endif
+#endif // ZH
 	curTemplate->m_uiStrings[1] = " has units in ";
 	curTemplate->m_uiStrings[2] = ".";
 
@@ -8955,21 +8955,21 @@ void ScriptEngine::init( void )
 #ifdef OG
 	curTemplate->m_name = "[Skirmish] Player has been attacked by player.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "SKIRMISH_PLAYER_HAS_BEEN_ATTACKED_BY_PLAYER";
 	curTemplate->m_uiName = "Skirmish_/ Player has been attacked by player.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 2;
 	curTemplate->m_parameters[0] = Parameter::SIDE;
 	curTemplate->m_parameters[1] = Parameter::SIDE;
 	curTemplate->m_numUiStrings = 3;
 #ifdef OG
 	curTemplate->m_uiStrings[0] = "";
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_uiStrings[0] = " ";
-#endif
+#endif // ZH
 	curTemplate->m_uiStrings[1] = " has been attacked by ";
 	curTemplate->m_uiStrings[2] = ".";
 
@@ -8977,21 +8977,21 @@ void ScriptEngine::init( void )
 #ifdef OG
 	curTemplate->m_name = "[Skirmish] Player doesn't have units in an area.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "SKIRMISH_PLAYER_IS_OUTSIDE_AREA";
 	curTemplate->m_uiName = "Skirmish_/ Player doesn't have units in an area.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 2;
 	curTemplate->m_parameters[0] = Parameter::SIDE;
 	curTemplate->m_parameters[1] = Parameter::TRIGGER_AREA;
 	curTemplate->m_numUiStrings = 3;
 #ifdef OG
 	curTemplate->m_uiStrings[0] = "";
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_uiStrings[0] = " ";
-#endif
+#endif // ZH
 	curTemplate->m_uiStrings[1] = " has doesn't have units in ";
 	curTemplate->m_uiStrings[2] = ".";
 
@@ -8999,21 +8999,21 @@ void ScriptEngine::init( void )
 #ifdef OG
 	curTemplate->m_name = "[Skirmish] Player has discovered another player.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "SKIRMISH_PLAYER_HAS_DISCOVERED_PLAYER";
 	curTemplate->m_uiName = "Skirmish_/ Player has discovered another player.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 2;
 	curTemplate->m_parameters[0] = Parameter::SIDE;
 	curTemplate->m_parameters[1] = Parameter::SIDE;
 	curTemplate->m_numUiStrings = 3;
 #ifdef OG
 	curTemplate->m_uiStrings[0] = "";
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_uiStrings[0] = " ";
-#endif
+#endif // ZH
 	curTemplate->m_uiStrings[1] = " has discovered ";
 	curTemplate->m_uiStrings[2] = ".";
 
@@ -9021,21 +9021,21 @@ void ScriptEngine::init( void )
 #ifdef OG
 	curTemplate->m_name = "[Multimedia] Music track has completed some number of times.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "MUSIC_TRACK_HAS_COMPLETED";
 	curTemplate->m_uiName = "Multimedia_/ Music track has completed some number of times.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 2;
 	curTemplate->m_parameters[0] = Parameter::MUSIC;
 	curTemplate->m_parameters[1] = Parameter::INT;
 	curTemplate->m_numUiStrings = 3;
 #ifdef OG
 	curTemplate->m_uiStrings[0] = "";
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_uiStrings[0] = " ";
-#endif
+#endif // ZH
 	curTemplate->m_uiStrings[1] = " has completed at least ";
 	curTemplate->m_uiStrings[2] = " times. (NOTE: This can only be used to "
 		"start other music. USING THIS SCRIPT IN ANY OTHER WAY WILL CAUSE REPLAYS TO NOT WORK.)";
@@ -9044,21 +9044,21 @@ void ScriptEngine::init( void )
 #ifdef OG
 	curTemplate->m_name = "[Skirmish] Supply source is safe.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "SUPPLY_SOURCE_SAFE";
 	curTemplate->m_uiName = "Skirmish_/ Supply source is safe.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 2;
 	curTemplate->m_parameters[0] = Parameter::SIDE;
 	curTemplate->m_parameters[1] = Parameter::INT;
 	curTemplate->m_numUiStrings = 3;
 #ifdef OG
 	curTemplate->m_uiStrings[0] = "";
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_uiStrings[0] = " ";
-#endif
+#endif // ZH
 	curTemplate->m_uiStrings[1] = " closest supply src with at least ";
 	curTemplate->m_uiStrings[2] = " available resources is SAFE from enemy influence.";
 
@@ -9066,41 +9066,41 @@ void ScriptEngine::init( void )
 #ifdef OG
 	curTemplate->m_name = "[Skirmish] Supply source is attacked.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "SUPPLY_SOURCE_ATTACKED";
 	curTemplate->m_uiName = "Skirmish_/ Supply source is attacked.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 1;
 	curTemplate->m_parameters[0] = Parameter::SIDE;
 	curTemplate->m_numUiStrings = 2;
 #ifdef OG
 	curTemplate->m_uiStrings[0] = "";
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_uiStrings[0] = " ";
-#endif
+#endif // ZH
 	curTemplate->m_uiStrings[1] = " supply source is under attack.";
 
 	curTemplate = &m_conditionTemplates[Condition::START_POSITION_IS];
 #ifdef OG
 	curTemplate->m_name = "[Skirmish] Start position.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "START_POSITION_IS";
 	curTemplate->m_uiName = "Skirmish_/ Start position.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 2;
 	curTemplate->m_parameters[0] = Parameter::SIDE;
 	curTemplate->m_parameters[1] = Parameter::INT;
 	curTemplate->m_numUiStrings = 3;
 #ifdef OG
 	curTemplate->m_uiStrings[0] = "";
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_uiStrings[0] = " ";
-#endif
+#endif // ZH
 	curTemplate->m_uiStrings[1] = " starting position is ";
 	curTemplate->m_uiStrings[2] = " .";
 
@@ -9108,21 +9108,21 @@ void ScriptEngine::init( void )
 #ifdef OG
 	curTemplate->m_name = "[Player] Player has lost an object of type.";
 
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_internalName = "PLAYER_LOST_OBJECT_TYPE";
 	curTemplate->m_uiName = "Player_/ Player has lost an object of type.";
-#endif
+#endif // ZH
 	curTemplate->m_numParameters = 2;
 	curTemplate->m_parameters[0] = Parameter::SIDE;
 	curTemplate->m_parameters[1] = Parameter::OBJECT_TYPE;
 	curTemplate->m_numUiStrings = 3;
 #ifdef OG
 	curTemplate->m_uiStrings[0] = "";
-#endif
+#endif // OG
 #ifdef ZH
 	curTemplate->m_uiStrings[0] = " ";
-#endif
+#endif // ZH
 	curTemplate->m_uiStrings[1] = " has lost an object of type ";
 	curTemplate->m_uiStrings[2] = " (can be an object type list).";
 #ifdef ZH
@@ -9149,7 +9149,7 @@ void ScriptEngine::init( void )
 		m_actionTemplates[i].m_uiName.concat(str);
 		m_actionTemplates[i].m_internalNameKey = NAMEKEY(m_actionTemplates[i].m_internalName);
 	}
-#endif
+#endif // ZH
 	
 
 	reset();
@@ -9690,7 +9690,7 @@ Player *ScriptEngine::getSkirmishEnemyPlayer(void)
 {
 #ifdef ZH
 	Bool is_GeneralsChallengeContext = TheCampaignManager->getCurrentCampaign() && TheCampaignManager->getCurrentCampaign()->m_isChallengeCampaign;
-#endif
+#endif // ZH
 	if (m_currentPlayer) {
 		Player *enemy = m_currentPlayer->getCurrentEnemy();
 		if (enemy==NULL) {
@@ -9704,7 +9704,7 @@ Player *ScriptEngine::getSkirmishEnemyPlayer(void)
 						continue; // In generals challenge, ThePlayer is a dummy player. jba. [8/15/2003]
 					}
 					
-#endif
+#endif // ZH
 					return enemy;
 				}
 				enemy = NULL;
@@ -9724,7 +9724,7 @@ Player *ScriptEngine::getSkirmishPlayerFromParm(Parameter *pSkirmishPlayerParm)
 {
 	if (!pSkirmishPlayerParm)
 		return NULL;
-#endif
+#endif // OG
 
 #ifdef OG
 	return getSkirmishPlayerFromAsciiString(pSkirmishPlayerParm->getString());
@@ -9732,7 +9732,7 @@ Player *ScriptEngine::getSkirmishPlayerFromParm(Parameter *pSkirmishPlayerParm)
 
 //-------------------------------------------------------------------------------------------------
 /** getSkirmishPlayerFromAsciiString */
-#endif
+#endif // OG
 //-------------------------------------------------------------------------------------------------
 #ifdef OG
 Player *ScriptEngine::getSkirmishPlayerFromAsciiString(const AsciiString& skirmishPlayerString)
@@ -9749,7 +9749,7 @@ Player *ScriptEngine::getSkirmishPlayerFromAsciiString(const AsciiString& skirmi
 #endif
 
 //-------------------------------------------------------------------------------------------------
-#endif
+#endif // OG
 /** getPlayerFromAsciiString */
 //-------------------------------------------------------------------------------------------------
 Player *ScriptEngine::getPlayerFromAsciiString(const AsciiString& playerString)
@@ -9757,13 +9757,13 @@ Player *ScriptEngine::getPlayerFromAsciiString(const AsciiString& playerString)
 #ifdef OG
 	if (playerString == LOCAL_PLAYER)
 
-#endif
+#endif // OG
 #ifdef ZH
 	Bool is_GeneralsChallengeContext = TheCampaignManager->getCurrentCampaign() && TheCampaignManager->getCurrentCampaign()->m_isChallengeCampaign;
 	if (playerString == LOCAL_PLAYER || (playerString == THE_PLAYER && is_GeneralsChallengeContext))
 		// Designers have built their Generals' Challenge maps, referencing "ThePlayer" meaning the local player.
 		// However, they've also built many of their single player maps with this string, where "ThePlayer" is not intended as an alias.
-#endif
+#endif // ZH
 		return ThePlayerList->getLocalPlayer();
 	if (playerString == THIS_PLAYER)
 		return getCurrentPlayer();
@@ -9891,7 +9891,7 @@ Team * ScriptEngine::getTeamNamed(const AsciiString& teamName)
 		// Designers have built their Generals' Challenge maps, referencing "teamThePlayer" meaning the local player's default (parent) team.
 		// However, they've also built many of their single player maps with this string, where "teamThePlayer" is not intended as an alias.
 		return ThePlayerList->getLocalPlayer()->getDefaultTeam();
-#endif
+#endif // ZH
 	if (teamName == THIS_TEAM) {
 		if (m_callingTeam) 
 			return m_callingTeam;
@@ -11722,20 +11722,20 @@ void ScriptEngine::removeAllSequentialScripts(Object *obj)
 		if (!seqScript) {
 #ifdef ZH
       ++it;
-#endif
+#endif // ZH
 			continue;
 		}
 		if (seqScript->m_objectID == id) {
 #ifdef OG
 			cleanupSequentialScript(it, TRUE);
-#endif
+#endif // OG
 #ifdef ZH
 			it = cleanupSequentialScript(it, TRUE);
-#endif
+#endif // ZH
 		}
 #ifdef ZH
     else
-#endif
+#endif // ZH
 		++it;
 	}
 }
@@ -13757,7 +13757,7 @@ void _writeSingleParticleSystem( File *out, ParticleSystemTemplate *templ )
 	sprintf(buff2, FORMAT_STRING, templ->m_angleY.getMaximumValue());
 	thisEntry.append(SEP_HEAD).append(F_ANGLEY).append(EQ_WITH_SPACES).append(buff1).append(SEP_SPACE).append(buff2).append(SEP_EOL);
 	
-#endif
+#endif // OG
 	sprintf(buff1, FORMAT_STRING, templ->m_angleZ.getMinimumValue());
 	sprintf(buff2, FORMAT_STRING, templ->m_angleZ.getMaximumValue());
 	thisEntry.append(SEP_HEAD).append(F_ANGLEZ).append(EQ_WITH_SPACES).append(buff1).append(SEP_SPACE).append(buff2).append(SEP_EOL);
@@ -13766,14 +13766,14 @@ void _writeSingleParticleSystem( File *out, ParticleSystemTemplate *templ )
 	sprintf(buff1, FORMAT_STRING, templ->m_angularRateX.getMinimumValue());
 	sprintf(buff2, FORMAT_STRING, templ->m_angularRateX.getMaximumValue());
 	thisEntry.append(SEP_HEAD).append(F_ANGLERATEX).append(EQ_WITH_SPACES).append(buff1).append(SEP_SPACE).append(buff2).append(SEP_EOL);
-#endif
+#endif // OG
 	
 #ifdef OG
 	sprintf(buff1, FORMAT_STRING, templ->m_angularRateY.getMinimumValue());
 	sprintf(buff2, FORMAT_STRING, templ->m_angularRateY.getMaximumValue());
 	thisEntry.append(SEP_HEAD).append(F_ANGLERATEY).append(EQ_WITH_SPACES).append(buff1).append(SEP_SPACE).append(buff2).append(SEP_EOL);
 	
-#endif
+#endif // OG
 	sprintf(buff1, FORMAT_STRING, templ->m_angularRateZ.getMinimumValue());
 	sprintf(buff2, FORMAT_STRING, templ->m_angularRateZ.getMaximumValue());
 	thisEntry.append(SEP_HEAD).append(F_ANGLERATEZ).append(EQ_WITH_SPACES).append(buff1).append(SEP_SPACE).append(buff2).append(SEP_EOL);

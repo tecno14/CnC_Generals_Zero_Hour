@@ -39,7 +39,7 @@
 //#pragma MESSAGE("************************************** WARNING, optimization disabled for debugging purposes")
 #endif
 
-#endif
+#endif // ZH
 // GLOBALS ////////////////////////////////////////////////////////////////////////////////////////
 TerrainVisual *TheTerrainVisual = NULL;
 
@@ -209,4 +209,4 @@ Real DomeStyleSeismicFilter::applyGravityCallback( Real velocityIn )
   velocityOut -= 1.5f;
   return velocityOut;
 }
-#endif
+#endif // ZH

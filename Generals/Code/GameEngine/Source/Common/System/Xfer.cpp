@@ -43,7 +43,7 @@
 //#pragma MESSAGE("************************************** WARNING, optimization disabled for debugging purposes")
 #endif
 
-#endif
+#endif // ZH
 //-------------------------------------------------------------------------------------------------
 //-------------------------------------------------------------------------------------------------
 Xfer::Xfer( void )
@@ -419,7 +419,7 @@ void Xfer::xferSTLObjectIDVector( std::vector<ObjectID> *objectIDVectorData )
 			objectIDVectorData->push_back( objectID );
 
 		}  // end for, i
-#endif
+#endif // ZH
 
 #ifdef ZH
 	}  // end else if
@@ -432,7 +432,7 @@ void Xfer::xferSTLObjectIDVector( std::vector<ObjectID> *objectIDVectorData )
 	}  // end else
 }
 
-#endif
+#endif // ZH
 // ------------------------------------------------------------------------------------------------
 /** STL Object ID list (cause it's a common data structure we use a lot)
 	* Version Info;
@@ -611,10 +611,10 @@ void Xfer::xferScienceType( ScienceType *science )
 
 #ifdef OG
 		DEBUG_CRASH(( "xferScienceVec - Unknown xfer mode '%d'\n", getXferMode() ));
-#endif
+#endif // OG
 #ifdef ZH
 		DEBUG_CRASH(( "xferScienceType - Unknown xfer mode '%d'\n", getXferMode() ));
-#endif
+#endif // ZH
 		throw XFER_MODE_UNKNOWN;
 
 	}  // end else
@@ -655,7 +655,7 @@ void Xfer::xferScienceVec( ScienceVec *scienceVec )
 			DEBUG_CRASH(( "xferScienceVec - vector is not empty, but should be\n" ));
 			throw XFER_LIST_NOT_EMPTY;
 
-#endif
+#endif // OG
 #ifdef ZH
 			// Not worth an assert, since things can give you Sciences on creation.  Just handle it and load.
 			scienceVec->clear();
@@ -663,7 +663,7 @@ void Xfer::xferScienceVec( ScienceVec *scienceVec )
 			// Homework for today.  Write 2000 words reconciling "Your code must never crash" with "Intentionally putting crashes in the code".  Fucktard.
 //			DEBUG_CRASH(( "xferScienceVec - vector is not empty, but should be\n" ));
 //			throw XFER_LIST_NOT_EMPTY;
-#endif
+#endif // ZH
 		}
 
 		for( UnsignedShort i = 0; i < count; ++i )
@@ -749,10 +749,10 @@ void Xfer::xferKindOf( KindOfType *kindOfData )
 // ------------------------------------------------------------------------------------------------
 #ifdef OG
 void Xfer::xferUpgradeMask( Int64 *upgradeMaskData )
-#endif
+#endif // OG
 #ifdef ZH
 void Xfer::xferUpgradeMask( UpgradeMaskType *upgradeMaskData )
-#endif
+#endif // ZH
 {
 
 	// this deserves a version number
@@ -769,7 +769,7 @@ void Xfer::xferUpgradeMask( UpgradeMaskType *upgradeMaskData )
 	//NOTE: The xfer code didn't have to change with the bitset upgrades, because either way, we're 
 	//converting data <-> Ascii, so the minor syntax works with the before and after code!
 
-#endif
+#endif // ZH
 	// check which type of xfer we're doing
 	if( getXferMode() == XFER_SAVE )
 	{
@@ -782,25 +782,25 @@ void Xfer::xferUpgradeMask( UpgradeMaskType *upgradeMaskData )
 		for( upgradeTemplate = TheUpgradeCenter->firstUpgradeTemplate();
 				 upgradeTemplate;
 				 upgradeTemplate = upgradeTemplate->friend_getNext() )
-#endif
+#endif // OG
 #ifdef ZH
 		for( upgradeTemplate = TheUpgradeCenter->firstUpgradeTemplate(); upgradeTemplate; upgradeTemplate = upgradeTemplate->friend_getNext() )
 
-#endif
+#endif // ZH
 		{
 			// if the mask of this upgrade is set, it counts
 #ifdef OG
 			if( BitTest( *upgradeMaskData, upgradeTemplate->getUpgradeMask() ) )
 
-#endif
+#endif // OG
 #ifdef ZH
 			if( upgradeMaskData->testForAll( upgradeTemplate->getUpgradeMask() ) )
 			{
-#endif
+#endif // ZH
 				count++;
 #ifdef ZH
 			}
-#endif
+#endif // ZH
 		}  // end for, upgradeTemplate
 
 		// write the count
@@ -811,19 +811,19 @@ void Xfer::xferUpgradeMask( UpgradeMaskType *upgradeMaskData )
 		for( upgradeTemplate = TheUpgradeCenter->firstUpgradeTemplate();
 				 upgradeTemplate;
 				 upgradeTemplate = upgradeTemplate->friend_getNext() )
-#endif
+#endif // OG
 #ifdef ZH
 		for( upgradeTemplate = TheUpgradeCenter->firstUpgradeTemplate(); upgradeTemplate; upgradeTemplate = upgradeTemplate->friend_getNext() )
 
-#endif
+#endif // ZH
 		{
 			// if the mask of this upgrade is set, it counts
 #ifdef OG
 			if( BitTest( *upgradeMaskData, upgradeTemplate->getUpgradeMask() ) )
-#endif
+#endif // OG
 #ifdef ZH
 			if( upgradeMaskData->testForAll( upgradeTemplate->getUpgradeMask() ) )
-#endif
+#endif // ZH
 			{
 				upgradeName = upgradeTemplate->getUpgradeName();
 				xferAsciiString( &upgradeName );
@@ -842,10 +842,10 @@ void Xfer::xferUpgradeMask( UpgradeMaskType *upgradeMaskData )
 		// zero the mask data
 #ifdef OG
 		*upgradeMaskData = 0;
-#endif
+#endif // OG
 #ifdef ZH
 		upgradeMaskData->clear();
-#endif
+#endif // ZH
 
 		// read all the strings and set the mask vaules
 		for( UnsignedShort i = 0; i < count; ++i )
@@ -867,10 +867,10 @@ void Xfer::xferUpgradeMask( UpgradeMaskType *upgradeMaskData )
 			// set the mask data
 #ifdef OG
 			BitSet( *upgradeMaskData, upgradeTemplate->getUpgradeMask() );
-#endif
+#endif // OG
 #ifdef ZH
 			upgradeMaskData->set( upgradeTemplate->getUpgradeMask() );
-#endif
+#endif // ZH
 
 		}  // end for i
 
@@ -881,10 +881,10 @@ void Xfer::xferUpgradeMask( UpgradeMaskType *upgradeMaskData )
 		// just xfer implementation the data itself
 #ifdef OG
 		xferImplementation( upgradeMaskData, sizeof( Int64 ) );
-#endif
+#endif // OG
 #ifdef ZH
 		xferImplementation( upgradeMaskData, sizeof( UpgradeMaskType ) );
-#endif
+#endif // ZH
 
 	}  // end else if, crc
 	else

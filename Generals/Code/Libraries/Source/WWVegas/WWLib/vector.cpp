@@ -26,24 +26,24 @@
  *                                                                                             * 
 #ifdef OG
  *                      $Author:: Patrick                                                     $*
-#endif
+#endif // OG
 #ifdef ZH
  *                      $Author:: Jani_p                                                      $*
-#endif
+#endif // ZH
  *                                                                                             * 
 #ifdef OG
  *                     $Modtime:: 8/22/01 1:46p                                               $*
-#endif
+#endif // OG
 #ifdef ZH
  *                     $Modtime:: 1/16/02 11:40a                                              $*
-#endif
+#endif // ZH
  *                                                                                             * 
 #ifdef OG
  *                    $Revision:: 19                                                          $*
-#endif
+#endif // OG
 #ifdef ZH
  *                    $Revision:: 20                                                          $*
-#endif
+#endif // ZH
  *                                                                                             *
  *---------------------------------------------------------------------------------------------* 
  * Functions:                                                                                  * 
@@ -407,5 +407,5 @@ void BooleanVectorClass::Init(unsigned size)
 	LastIndex = -1;
 	BitCount = size;
 	BitArray.Resize(((size + (8-1)) / 8));
-#endif
+#endif // ZH
 }

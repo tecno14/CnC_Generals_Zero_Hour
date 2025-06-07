@@ -75,7 +75,7 @@ enum SpecialPowerType
 	SPECIAL_TIMED_CHARGES,
 #ifdef ZH
 	SPECIAL_HELIX_NAPALM_BOMB,
-#endif
+#endif // ZH
 	SPECIAL_HACKER_DISABLE_BUILDING,
 	SPECIAL_TANKHUNTER_TNT_ATTACK,
 	SPECIAL_BLACKLOTUS_CAPTURE_BUILDING,
@@ -87,7 +87,7 @@ enum SpecialPowerType
 	SPECIAL_DISGUISE_AS_VEHICLE,
 #ifdef ZH
 	SPECIAL_BOOBY_TRAP,
-#endif
+#endif // ZH
 	// don't forget to add new strings to SpecialPowerMaskType::s_bitNameList[]
 	SPECIAL_REPAIR_VEHICLES,
 	SPECIAL_PARTICLE_UPLINK_CANNON,
@@ -133,7 +133,7 @@ enum SpecialPowerType
 	SUPW_SPECIAL_NEUTRON_MISSILE,
 
 	SPECIAL_BATTLESHIP_BOMBARDMENT,
-#endif
+#endif // ZH
 		
 	SPECIALPOWER_COUNT,
 	// don't forget to add new strings to SpecialPowerMaskType::s_bitNameList[]

@@ -61,7 +61,7 @@ public:
   
   Money getStartingCash(void) const;
   void setStartingCash( const Money &startingCash );
-#endif
+#endif // ZH
 };
 
 #endif // __SKIRMISHPREFERENCES_H__

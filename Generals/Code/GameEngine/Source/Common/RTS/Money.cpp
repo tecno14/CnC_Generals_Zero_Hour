@@ -50,7 +50,7 @@
 #include "Common/Player.h"
 #ifdef ZH
 #include "Common/PlayerList.h"
-#endif
+#endif // ZH
 #include "Common/Xfer.h"
 
 // ------------------------------------------------------------------------------------------------
@@ -100,7 +100,7 @@ void Money::deposit(UnsignedInt amountToDeposit, Bool playSound)
 			player->getAcademyStats()->recordIncome();
 		}
 	}
-#endif
+#endif // ZH
 }
 
 // ------------------------------------------------------------------------------------------------
@@ -147,5 +147,5 @@ void Money::parseMoneyAmount( INI *ini, void *instance, void *store, const void*
   Money * money = (Money *)store;
   INI::parseUnsignedInt( ini, instance, &money->m_money, userData );
 }
-#endif
+#endif // ZH
 

@@ -78,4 +78,4 @@ const ShdDefClass * ShdInterfaceClass::Peek_Definition(void)
 	return Definition;
 }
 
-#endif
+#endif // ZH

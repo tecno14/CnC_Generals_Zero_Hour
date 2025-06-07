@@ -152,4 +152,4 @@ protected:
 
 #endif //SHDCUBEMAP_H
 
-#endif
+#endif // ZH

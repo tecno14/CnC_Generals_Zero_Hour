@@ -100,4 +100,4 @@ protected:
 
 #endif // SHD8BUMPSPEC_H
 
-#endif
+#endif // ZH

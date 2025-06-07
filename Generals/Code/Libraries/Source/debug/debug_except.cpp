@@ -409,4 +409,4 @@ LONG __stdcall DebugExceptionhandler::ExceptionFilter(struct _EXCEPTION_POINTERS
   return EXCEPTION_EXECUTE_HANDLER;
 }
 
-#endif
+#endif // ZH

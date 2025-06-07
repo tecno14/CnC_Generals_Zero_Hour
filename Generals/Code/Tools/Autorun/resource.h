@@ -17,15 +17,15 @@
 **	along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#endif
+#endif // ZH
 //{{NO_DEPENDENCIES}}
 // Microsoft Developer Studio generated include file.
 #ifdef OG
 // Used by D:\Projects\Renegade\Autorun\English\AUTORUN.RC
-#endif
+#endif // OG
 #ifdef ZH
 // Used by AUTORUN.RC
-#endif
+#endif // ZH
 //
 #define IDD_OK                          100
 #define IDD_OK2                         101

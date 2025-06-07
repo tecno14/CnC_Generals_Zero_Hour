@@ -39,7 +39,7 @@
  * Functions:                                                                                  *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-#endif
+#endif // ZH
 #include "sortingrenderer.h"
 #include "dx8vertexbuffer.h"
 #include "dx8indexbuffer.h"
@@ -52,7 +52,7 @@
 #ifdef ZH
 #include <wwprofile.h>
 #include <algorithm>
-#endif
+#endif // ZH
 
 #ifdef ZH
 #ifdef _INTERNAL
@@ -61,16 +61,16 @@
 // #pragma MESSAGE("************************************** WARNING, optimization disabled for debugging purposes")
 #endif
 
-#endif
+#endif // ZH
 bool SortingRendererClass::_EnableTriangleDraw=true;
 #ifdef OG
 unsigned DEFAULT_SORTING_POLY_COUNT = 16384;	// (count * 3) must be less than 65536
 unsigned DEFAULT_SORTING_VERTEX_COUNT = 32768;	// count must be less than 65536
-#endif
+#endif // OG
 #ifdef ZH
 static unsigned DEFAULT_SORTING_POLY_COUNT = 16384;	// (count * 3) must be less than 65536
 static unsigned DEFAULT_SORTING_VERTEX_COUNT = 32768;	// count must be less than 65536
-#endif
+#endif // ZH
 
 void SortingRendererClass::SetMinVertexBufferSize( unsigned val )
 {
@@ -87,7 +87,7 @@ struct ShortVectorIStruct
 
 	ShortVectorIStruct(unsigned short i_,unsigned short j_,unsigned short k_) : i(i_),j(j_),k(k_) {}
 	ShortVectorIStruct() {}
-#endif
+#endif // OG
 };
 
 struct TempIndexStruct
@@ -103,11 +103,11 @@ struct TempIndexStruct
 		idx(idx_)
 	{
 	}
-#endif
+#endif // OG
 #ifdef ZH
 	float z;
 
-#endif
+#endif // ZH
 };
 
 #ifdef ZH
@@ -116,7 +116,7 @@ bool operator <=(const TempIndexStruct &l, const TempIndexStruct &r) { return l.
 bool operator >(const TempIndexStruct &l, const TempIndexStruct &r) { return l.z > r.z; }
 bool operator >=(const TempIndexStruct &l, const TempIndexStruct &r) { return l.z >= r.z; }
 bool operator ==(const TempIndexStruct &l, const TempIndexStruct &r) { return l.z == r.z; }
-#endif
+#endif // ZH
 // ----------------------------------------------------------------------------
 #ifdef OG
 //
@@ -132,12 +132,12 @@ void InsertionSort (
 	K* keys,			// sort keys
 	int l,			//	first item
 	int r)			//	last item
-#endif
+#endif // OG
 #ifdef ZH
 static
 void InsertionSort(TempIndexStruct *begin, TempIndexStruct *end)
 
-#endif
+#endif // ZH
 {
 #ifdef OG
 	for (int i = l+1; i < r; i++) {
@@ -153,7 +153,7 @@ void InsertionSort(TempIndexStruct *begin, TempIndexStruct *end)
 		};
 		keys[j]=v;
 		array[j]=tv;
-#endif
+#endif // OG
 #ifdef ZH
 	for (TempIndexStruct *iter = begin + 1; iter < end; ++iter) {
 		TempIndexStruct val = iter[0];
@@ -164,7 +164,7 @@ void InsertionSort(TempIndexStruct *begin, TempIndexStruct *end)
 		}
 		insert[0] = val;
 
-#endif
+#endif // ZH
 	}
 }
 
@@ -186,19 +186,19 @@ void QuickSort (
 	K* keys,			// sort keys
 	int l,			// first element
 	int r)			// last element
-#endif
+#endif // OG
 #ifdef ZH
 static
 void Sort(TempIndexStruct *begin, TempIndexStruct *end)
 
-#endif
+#endif // ZH
 {
 #ifdef OG
 	if (r-l <= 8) {
 		InsertionSort(array,keys,l,r+1);
 		return;
 
-#endif
+#endif // OG
 #ifdef ZH
 	const int diff = end - begin;
 	if (diff <= 16) {
@@ -212,7 +212,7 @@ void Sort(TempIndexStruct *begin, TempIndexStruct *end)
 		std::swap(mid[0], begin[1]);
 		if (begin[1] > end[-1]) {
 			std::swap(begin[1], end[-1]);
-#endif
+#endif // ZH
 	}
 #ifdef ZH
 		if (begin[0] > end[-1]) {
@@ -221,7 +221,7 @@ void Sort(TempIndexStruct *begin, TempIndexStruct *end)
 		if (begin[1] > begin[0]) {
 			std::swap(begin[1], begin[0]);
 		}																// begin[0] has the middle element and begin[1] has the smallest element
-#endif
+#endif // ZH
 
 #ifdef OG
 	K t;
@@ -250,7 +250,7 @@ void Sort(TempIndexStruct *begin, TempIndexStruct *end)
 	
 	if (i-1>l) QuickSort(array,keys,l,i-1);
 	if (r>i+1) QuickSort(array,keys,i+1,r);
-#endif
+#endif // OG
 #ifdef ZH
 		// *begin is now the partitioning element
 		TempIndexStruct *begin1 = begin + 1;	// TODO: Temp fix until I find out who is passing me NaN
@@ -268,11 +268,11 @@ void Sort(TempIndexStruct *begin, TempIndexStruct *end)
 			if (right < left) break;									// Pointers crossed.  Partitioning completed.
 			std::swap(left[0], right[0]);							// Exchange elements.
 
-#endif
+#endif // ZH
 }
 #ifdef ZH
 		std::swap(begin[0], right[0]);							// Insert partition element
-#endif
+#endif // ZH
 
 #ifdef OG
 // ----------------------------------------------------------------------------
@@ -308,7 +308,7 @@ void Sort (
 
 			tmp=array[i]; array[i]=array[neg]; array[neg]=tmp;
 			tval=keys[i]; keys[i] = keys[neg]; keys[neg]=tval;
-#endif
+#endif // OG
 #ifdef ZH
 		// Sort the smaller subarray first then the larger
 		if (right - begin > end - (right + 1)) {
@@ -318,19 +318,19 @@ void Sort (
 			Sort(begin, right);
 			Sort(right + 1, end);
 
-#endif
+#endif // ZH
 		}
 #ifdef OG
 
 		if (!c) return;
 
 		do_insertion = true;
-#endif
+#endif // OG
 	}
 #ifdef OG
 	if (do_insertion) InsertionSort(array,keys,0,count);
 	else QuickSort(array,keys,0,count-1);			// quick sort
-#endif
+#endif // OG
 }
 
 // ----------------------------------------------------------------------------
@@ -386,12 +386,12 @@ static unsigned sorted_node_id_array_count;
 static unsigned polygon_index_array_count;
 TempIndexStruct* temp_index_array;
 unsigned temp_index_array_count;
-#endif
+#endif // OG
 #ifdef ZH
 static TempIndexStruct* temp_index_array;
 static unsigned temp_index_array_count;
 
-#endif
+#endif // ZH
 
 static TempIndexStruct* Get_Temp_Index_Array(unsigned count)
 {
@@ -438,12 +438,12 @@ static unsigned * Get_Node_Id_Array(unsigned count)
 		delete[] node_id_array;
 		node_id_array=W3DNEWARRAY unsigned[count];
 		node_id_array_count=count;
-#endif
+#endif // OG
 	}
 #ifdef OG
 	return node_id_array;
 }
-#endif
+#endif // OG
 
 #ifdef OG
 static unsigned * Get_Sorted_Node_Id_Array(unsigned count)
@@ -470,7 +470,7 @@ static ShortVectorIStruct* Get_Polygon_Index_Array(unsigned count)
 	return polygon_index_array;
 }
 
-#endif
+#endif // OG
 // ----------------------------------------------------------------------------
 //
 // Insert triangles to the sorting system.
@@ -492,7 +492,7 @@ void SortingRendererClass::Insert_Triangles(
 #ifdef ZH
 	SNAPSHOT_SAY(("SortingRenderer::Insert(start_i: %d, polygons : %d, min_vi: %d, vertex_count: %d)\n",
 		start_index,polygon_count,min_vertex_index,vertex_count));
-#endif
+#endif // ZH
 
 	DX8_RECORD_SORTING_RENDER(polygon_count,vertex_count);
 
@@ -504,10 +504,10 @@ void SortingRendererClass::Insert_Triangles(
 		((state->sorting_state.index_buffer_type==BUFFER_TYPE_SORTING || state->sorting_state.index_buffer_type==BUFFER_TYPE_DYNAMIC_SORTING) &&
 #ifdef OG
 		(state->sorting_state.vertex_buffer_type==BUFFER_TYPE_SORTING || state->sorting_state.vertex_buffer_type==BUFFER_TYPE_DYNAMIC_SORTING)));
-#endif
+#endif // OG
 #ifdef ZH
 		(state->sorting_state.vertex_buffer_types[0]==BUFFER_TYPE_SORTING || state->sorting_state.vertex_buffer_types[0]==BUFFER_TYPE_DYNAMIC_SORTING)));
-#endif
+#endif // ZH
 
 
 	state->bounding_sphere=bounding_sphere;
@@ -518,10 +518,10 @@ void SortingRendererClass::Insert_Triangles(
 
 #ifdef OG
 	SortingVertexBufferClass* vertex_buffer=static_cast<SortingVertexBufferClass*>(state->sorting_state.vertex_buffer);
-#endif
+#endif // OG
 #ifdef ZH
 	SortingVertexBufferClass* vertex_buffer=static_cast<SortingVertexBufferClass*>(state->sorting_state.vertex_buffers[0]);
-#endif
+#endif // ZH
 	WWASSERT(vertex_buffer);
 	WWASSERT(state->vertex_count<=vertex_buffer->Get_Vertex_Count());
 
@@ -569,10 +569,10 @@ void SortingRendererClass::Insert_Triangles(
 	}
 #ifdef OG
 #endif
-#endif
+#endif // OG
 #ifdef ZH
 #endif // WWDEBUG
-#endif
+#endif // ZH
 }
 
 // ----------------------------------------------------------------------------
@@ -602,23 +602,23 @@ void Release_Refs(SortingNodeStruct* state)
 #ifdef OG
 	REF_PTR_RELEASE(state->sorting_state.vertex_buffer);
 
-#endif
+#endif // OG
 #ifdef ZH
 	int i;
 	for (i=0;i<MAX_VERTEX_STREAMS;++i) {
 		REF_PTR_RELEASE(state->sorting_state.vertex_buffers[i]);
 	}
-#endif
+#endif // ZH
 	REF_PTR_RELEASE(state->sorting_state.index_buffer);
 	REF_PTR_RELEASE(state->sorting_state.material);
 #ifdef OG
 	for (unsigned i=0;i<MAX_TEXTURE_STAGES;++i) {
 
-#endif
+#endif // OG
 #ifdef ZH
 	for (i=0;i<DX8Wrapper::Get_Current_Caps()->Get_Max_Textures_Per_Pass();++i) 
 	{
-#endif
+#endif // ZH
 		REF_PTR_RELEASE(state->sorting_state.Textures[i]);
 	}
 }
@@ -628,10 +628,10 @@ static unsigned overlapping_polygon_count;
 static unsigned overlapping_vertex_count;
 #ifdef OG
 const unsigned MAX_OVERLAPPING_NODES=4096;
-#endif
+#endif // OG
 #ifdef ZH
 static const unsigned MAX_OVERLAPPING_NODES=4096;
-#endif
+#endif // ZH
 static SortingNodeStruct* overlapping_nodes[MAX_OVERLAPPING_NODES];
 
 // ----------------------------------------------------------------------------
@@ -653,7 +653,7 @@ void SortingRendererClass::Insert_To_Sorting_Pool(SortingNodeStruct* state)
 // ----------------------------------------------------------------------------
 #ifdef ZH
 //static unsigned prevLight = 0xffffffff;
-#endif
+#endif // ZH
 
 static void Apply_Render_State(RenderStateStruct& render_state)
 {
@@ -661,13 +661,13 @@ static void Apply_Render_State(RenderStateStruct& render_state)
 /*	state->sorting_state.shader.Apply();
 */
 
-#endif
+#endif // OG
 	DX8Wrapper::Set_Shader(render_state.shader);
 
 #ifdef OG
 /*	if (render_state.material) render_state.material->Apply();
 */
-#endif
+#endif // OG
 	DX8Wrapper::Set_Material(render_state.material);
 
 #ifdef OG
@@ -679,12 +679,12 @@ static void Apply_Render_State(RenderStateStruct& render_state)
 	if (render_state.Textures[7]) render_state.Textures[7]->Apply();
 */
 	for (unsigned i=0;i<MAX_TEXTURE_STAGES;++i) {
-#endif
+#endif // OG
 #ifdef ZH
 	for (int i=0;i<DX8Wrapper::Get_Current_Caps()->Get_Max_Textures_Per_Pass();++i) 
 	{
 
-#endif
+#endif // ZH
 		DX8Wrapper::Set_Texture(i,render_state.Textures[i]);
 	}
 
@@ -696,87 +696,87 @@ static void Apply_Render_State(RenderStateStruct& render_state)
 #ifdef OG
 		return;	//no point changing lights if they are ignored.
 
-#endif
+#endif // OG
 #ifdef ZH
     return;
   //prevLight = render_state.lightsHash;
 
 	if (render_state.LightEnable[0]) 
   {
-#endif
+#endif // ZH
 
 #ifdef OG
 	if (render_state.LightEnable[0]) {
-#endif
+#endif // OG
 		DX8Wrapper::Set_DX8_Light(0,&render_state.Lights[0]);
 #ifdef OG
 		if (render_state.LightEnable[1]) {
 
-#endif
+#endif // OG
 #ifdef ZH
 		if (render_state.LightEnable[1]) 
     {
-#endif
+#endif // ZH
 			DX8Wrapper::Set_DX8_Light(1,&render_state.Lights[1]);
 #ifdef OG
 			if (render_state.LightEnable[2]) {
 
-#endif
+#endif // OG
 #ifdef ZH
 			if (render_state.LightEnable[2]) 
       {
-#endif
+#endif // ZH
 				DX8Wrapper::Set_DX8_Light(2,&render_state.Lights[2]);
 #ifdef OG
 				if (render_state.LightEnable[3]) {
-#endif
+#endif // OG
 #ifdef ZH
 				if (render_state.LightEnable[3]) 
-#endif
+#endif // ZH
 					DX8Wrapper::Set_DX8_Light(3,&render_state.Lights[3]);
 #ifdef OG
 				}
 				else {
-#endif
+#endif // OG
 #ifdef ZH
 				else 
 
-#endif
+#endif // ZH
 					DX8Wrapper::Set_DX8_Light(3,NULL);
 #ifdef OG
 				}
-#endif
+#endif // OG
 			}
 #ifdef OG
 			else {
-#endif
+#endif // OG
 #ifdef ZH
 			else 
-#endif
+#endif // ZH
 				DX8Wrapper::Set_DX8_Light(2,NULL);
 			}
 #ifdef OG
 		}
 		else {
-#endif
+#endif // OG
 #ifdef ZH
 		else 
 
-#endif
+#endif // ZH
 			DX8Wrapper::Set_DX8_Light(1,NULL);
 		}
 #ifdef OG
 	}
 	else {
-#endif
+#endif // OG
 #ifdef ZH
 	else 
 
-#endif
+#endif // ZH
 		DX8Wrapper::Set_DX8_Light(0,NULL);
 #ifdef OG
 	}
-#endif
+#endif // OG
 
 #ifdef OG
 //	Matrix4 mtx;
@@ -784,7 +784,7 @@ static void Apply_Render_State(RenderStateStruct& render_state)
 //	DX8Wrapper::Set_Transform(D3DTS_WORLD,mtx);
 //	mtx=render_state.view.Transpose();
 //	DX8Wrapper::Set_Transform(D3DTS_VIEW,mtx);
-#endif
+#endif // OG
 
 }
 
@@ -798,17 +798,17 @@ void SortingRendererClass::Flush_Sorting_Pool()
 
 #ifdef OG
 	unsigned node_id;
-#endif
+#endif // OG
 	// Fill dynamic index buffer with sorting index buffer vertices
 #ifdef OG
 	unsigned * node_id_array=Get_Node_Id_Array(overlapping_polygon_count);
 	float* polygon_z_array=Get_Polygon_Z_Array(overlapping_polygon_count);
 	ShortVectorIStruct* polygon_idx_array=(ShortVectorIStruct*)Get_Polygon_Index_Array(overlapping_polygon_count);
-#endif
+#endif // OG
 #ifdef ZH
 	TempIndexStruct* tis=Get_Temp_Index_Array(overlapping_polygon_count);
 
-#endif
+#endif // ZH
 
 	unsigned vertexAllocCount = overlapping_vertex_count;
 	if (DynamicVBAccessClass::Get_Default_Vertex_Count() < DEFAULT_SORTING_VERTEX_COUNT)
@@ -821,31 +821,31 @@ void SortingRendererClass::Flush_Sorting_Pool()
 		DynamicVBAccessClass::WriteLockClass lock(&dyn_vb_access);
 #ifdef OG
 		VertexFormatXYZNDUV2* dest_verts=lock.Get_Formatted_Vertex_Array();
-#endif
+#endif // OG
 #ifdef ZH
 		VertexFormatXYZNDUV2* dest_verts=(VertexFormatXYZNDUV2 *)lock.Get_Formatted_Vertex_Array();
-#endif
+#endif // ZH
 
 		unsigned polygon_array_offset=0;
 		unsigned vertex_array_offset=0;
 #ifdef OG
 		for (node_id=0;node_id<overlapping_node_count;++node_id) {
-#endif
+#endif // OG
 #ifdef ZH
 		for (unsigned node_id=0;node_id<overlapping_node_count;++node_id) {
-#endif
+#endif // ZH
 			SortingNodeStruct* state=overlapping_nodes[node_id];
 #ifdef OG
 			float* vertex_z_array=Get_Vertex_Z_Array(state->vertex_count);
 
-#endif
+#endif // OG
 			VertexFormatXYZNDUV2* src_verts=NULL;
 #ifdef OG
 			SortingVertexBufferClass* vertex_buffer=static_cast<SortingVertexBufferClass*>(state->sorting_state.vertex_buffer);
-#endif
+#endif // OG
 #ifdef ZH
 			SortingVertexBufferClass* vertex_buffer=static_cast<SortingVertexBufferClass*>(state->sorting_state.vertex_buffers[0]);
-#endif
+#endif // ZH
 			WWASSERT(vertex_buffer);
 			src_verts=vertex_buffer->VertexBuffer;
 			WWASSERT(src_verts);
@@ -859,7 +859,7 @@ void SortingRendererClass::Flush_Sorting_Pool()
 			// This illegal state is usually caused by Quake3-engine powered games such as MOHAA.
 			memcpy(dest_verts, src_verts, sizeof(VertexFormatXYZNDUV2)*state->vertex_count);
 			dest_verts += state->vertex_count;
-#endif
+#endif // ZH
 
 			D3DXMATRIX d3d_mtx=(D3DXMATRIX&)state->sorting_state.world*(D3DXMATRIX&)state->sorting_state.view;
 #ifdef OG
@@ -869,11 +869,11 @@ void SortingRendererClass::Flush_Sorting_Pool()
 				vertex_z_array[i] = (mtx[2][0] * src_verts->x + mtx[2][1] * src_verts->y + mtx[2][2] * src_verts->z + mtx[2][3]);
 				*dest_verts++=*src_verts;
 			}
-#endif
+#endif // OG
 #ifdef ZH
 			const Matrix4x4& mtx=(const Matrix4x4&)d3d_mtx;
 
-#endif
+#endif // ZH
 
 			unsigned short* indices=NULL;
 			SortingIndexBufferClass* index_buffer=static_cast<SortingIndexBufferClass*>(state->sorting_state.index_buffer);
@@ -886,7 +886,7 @@ void SortingRendererClass::Flush_Sorting_Pool()
 #ifdef OG
 			for (i=0;i<state->polygon_count;++i) {
 
-#endif
+#endif // OG
 #ifdef ZH
 			if (mtx[0][2] == 0.0f && mtx[1][2] == 0.0f && mtx[3][2] == 0.0f && mtx[2][2] == 1.0f) {
 				// The common case for particle systems.
@@ -912,7 +912,7 @@ void SortingRendererClass::Flush_Sorting_Pool()
 				}
 			} else {
 				for (int i=0;i<state->polygon_count;++i) {
-#endif
+#endif // ZH
 				unsigned short idx1=indices[i*3]-state->min_vertex_index;
 				unsigned short idx2=indices[i*3+1]-state->min_vertex_index;
 				unsigned short idx3=indices[i*3+2]-state->min_vertex_index;
@@ -924,13 +924,13 @@ void SortingRendererClass::Flush_Sorting_Pool()
 				float z2=vertex_z_array[idx2];
 				float z3=vertex_z_array[idx3];
 				float z=(z1+z2+z3)/3.0f;
-#endif
+#endif // OG
 #ifdef ZH
 					const VertexFormatXYZNDUV2 *v1 = src_verts + idx1;
 					const VertexFormatXYZNDUV2 *v2 = src_verts + idx2;
 					const VertexFormatXYZNDUV2 *v3 = src_verts + idx3;
 
-#endif
+#endif // ZH
 				unsigned array_index=i+polygon_array_offset;
 				WWASSERT(array_index<overlapping_polygon_count);
 #ifdef OG
@@ -941,7 +941,7 @@ void SortingRendererClass::Flush_Sorting_Pool()
 					idx2+vertex_array_offset,
 					idx3+vertex_array_offset);
 
-#endif
+#endif // OG
 #ifdef ZH
 					TempIndexStruct *tis_ptr = tis + array_index;
 					tis_ptr->tri.i = idx1 + vertex_array_offset;
@@ -953,7 +953,7 @@ void SortingRendererClass::Flush_Sorting_Pool()
 												mtx[2][2]*(v1->z + v2->z + v3->z))/3.0f + mtx[3][2];
 					DEBUG_ASSERTCRASH((! _isnan(tis_ptr->z) && _finite(tis_ptr->z)), ("Triangle has invalid center"));
 				}
-#endif
+#endif // ZH
 			}
 
 			state->min_vertex_index=vertex_array_offset;
@@ -969,11 +969,11 @@ void SortingRendererClass::Flush_Sorting_Pool()
 		tis[a]=TempIndexStruct(polygon_idx_array[a],node_id_array[a]);
 	}
 	Sort<TempIndexStruct,float>(tis,polygon_z_array,overlapping_polygon_count);
-#endif
+#endif // OG
 #ifdef ZH
 	Sort(tis, tis + overlapping_polygon_count);
 
-#endif
+#endif // ZH
 
 /*	///@todo: Add code to break up rendering into multiple index buffer fills to allow more than 65536/3 triangles.  -MW
 	int total_overlapping_polygon_count = overlapping_polygon_count;
@@ -1006,18 +1006,18 @@ void SortingRendererClass::Flush_Sorting_Pool()
 #ifdef OG
 		for (a=0;a<overlapping_polygon_count;++a) {
 
-#endif
+#endif // OG
 #ifdef ZH
 		try {
 		for (unsigned a=0;a<overlapping_polygon_count;++a) {
-#endif
+#endif // ZH
 			sorted_polygon_index_array[a]=tis[a].tri;
 #ifdef ZH
 		}
 		IndexBufferExceptionFunc();
 		} catch(...) {
 			IndexBufferExceptionFunc();
-#endif
+#endif // ZH
 		}
 	}
 
@@ -1032,10 +1032,10 @@ void SortingRendererClass::Flush_Sorting_Pool()
 	unsigned start_index=0;
 #ifdef OG
 	node_id=tis[0].idx;
-#endif
+#endif // OG
 #ifdef ZH
 	unsigned node_id=tis[0].idx;
-#endif
+#endif // ZH
 	for (unsigned i=1;i<overlapping_polygon_count;++i) {
 		if (node_id!=tis[i].idx) {
 			SortingNodeStruct* state=overlapping_nodes[node_id];
@@ -1088,12 +1088,12 @@ void SortingRendererClass::Flush()
 	Matrix4 old_view;
 	Matrix4 old_world;
 
-#endif
+#endif // OG
 #ifdef ZH
 	WWPROFILE("SortingRenderer::Flush");
 	Matrix4x4 old_view;
 	Matrix4x4 old_world;
-#endif
+#endif // ZH
 	DX8Wrapper::Get_Transform(D3DTS_VIEW,old_view);
 	DX8Wrapper::Get_Transform(D3DTS_WORLD,old_world);
 
@@ -1103,10 +1103,10 @@ void SortingRendererClass::Flush()
 		if ((state->sorting_state.index_buffer_type==BUFFER_TYPE_SORTING || state->sorting_state.index_buffer_type==BUFFER_TYPE_DYNAMIC_SORTING) &&
 #ifdef OG
 			(state->sorting_state.vertex_buffer_type==BUFFER_TYPE_SORTING || state->sorting_state.vertex_buffer_type==BUFFER_TYPE_DYNAMIC_SORTING)) {
-#endif
+#endif // OG
 #ifdef ZH
 			(state->sorting_state.vertex_buffer_types[0]==BUFFER_TYPE_SORTING || state->sorting_state.vertex_buffer_types[0]==BUFFER_TYPE_DYNAMIC_SORTING)) {
-#endif
+#endif // ZH
 			Insert_To_Sorting_Pool(state);
 		}
 		else {
@@ -1121,11 +1121,11 @@ void SortingRendererClass::Flush()
 #ifdef ZH
 	bool old_enable=DX8Wrapper::_Is_Triangle_Draw_Enabled();
 	DX8Wrapper::_Enable_Triangle_Draw(_EnableTriangleDraw);
-#endif
+#endif // ZH
 	Flush_Sorting_Pool();
 #ifdef ZH
 	DX8Wrapper::_Enable_Triangle_Draw(old_enable);
-#endif
+#endif // ZH
 
 	DX8Wrapper::Set_Index_Buffer(0,0);
 	DX8Wrapper::Set_Vertex_Buffer(0);
@@ -1178,7 +1178,7 @@ void SortingRendererClass::Deinit()
 	delete[] polygon_index_array;
 	polygon_index_array=NULL;
 	polygon_index_array_count=0;
-#endif
+#endif // OG
 	delete[] temp_index_array;
 	temp_index_array=NULL;
 	temp_index_array_count=0;
@@ -1215,12 +1215,12 @@ void SortingRendererClass::Insert_VolumeParticle(
  	WWASSERT(((state->sorting_state.index_buffer_type==BUFFER_TYPE_SORTING || state->sorting_state.index_buffer_type==BUFFER_TYPE_DYNAMIC_SORTING) &&
 		(state->sorting_state.vertex_buffer_type==BUFFER_TYPE_SORTING || state->sorting_state.vertex_buffer_type==BUFFER_TYPE_DYNAMIC_SORTING)));
 
-#endif
+#endif // OG
 #ifdef ZH
  	WWASSERT(
 		((state->sorting_state.index_buffer_type==BUFFER_TYPE_SORTING || state->sorting_state.index_buffer_type==BUFFER_TYPE_DYNAMIC_SORTING) &&
 		(state->sorting_state.vertex_buffer_types[0]==BUFFER_TYPE_SORTING || state->sorting_state.vertex_buffer_types[0]==BUFFER_TYPE_DYNAMIC_SORTING)));
-#endif
+#endif // ZH
 
 	state->bounding_sphere=bounding_sphere;
 	state->start_index=start_index;
@@ -1230,10 +1230,10 @@ void SortingRendererClass::Insert_VolumeParticle(
 
 #ifdef OG
 	SortingVertexBufferClass* vertex_buffer=static_cast<SortingVertexBufferClass*>(state->sorting_state.vertex_buffer);
-#endif
+#endif // OG
 #ifdef ZH
 	SortingVertexBufferClass* vertex_buffer=static_cast<SortingVertexBufferClass*>(state->sorting_state.vertex_buffers[0]);
-#endif
+#endif // ZH
 	WWASSERT(vertex_buffer);
 	WWASSERT(state->vertex_count<=vertex_buffer->Get_Vertex_Count());
 
@@ -1287,7 +1287,7 @@ void SortingRendererClass::Insert_VolumeParticle(
 //		WWASSERT(idx3<state->vertex_count);
 //	}
 //#endif
-#endif
+#endif // OG
 }
 
 

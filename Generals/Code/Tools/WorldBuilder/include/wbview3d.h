@@ -121,7 +121,7 @@ protected:
 	afx_msg void OnUpdateLookSouth(CCmdUI* pCmdUI);
 	afx_msg void OnLookWest();
 	afx_msg void OnUpdateLookWest(CCmdUI* pCmdUI);
-#endif
+#endif // OG
 	afx_msg void OnViewShowshadows();
 	afx_msg void OnUpdateViewShowshadows(CCmdUI* pCmdUI);
 	afx_msg void OnViewShowSoftWater();
@@ -154,7 +154,7 @@ protected:
 	afx_msg void OnUpdateHighlightTestArt(CCmdUI* pCmdUI);
 	afx_msg void OnShowLetterbox();
 	afx_msg void OnUpdateShowLetterbox(CCmdUI* pCmdUI);
-#endif
+#endif // ZH
 	afx_msg void OnViewLayersList();
 	afx_msg void OnUpdateViewLayersList(CCmdUI* pCmdUI);
 	afx_msg void OnViewGarrisoned();
@@ -166,7 +166,7 @@ protected:
 #ifdef ZH
   afx_msg void OnViewShowSoundCircles();
   afx_msg void OnUpdateViewShowSoundCircles(CCmdUI* pCmdUI);
-#endif
+#endif // ZH
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 
@@ -228,7 +228,7 @@ private:
 	Bool										m_showWeaponRanges;
 	Bool										m_highlightTestArt;
 	Bool										m_showLetterbox;
-#endif
+#endif // ZH
 
 
 	ID3DXFont*							m3DFont;
@@ -243,7 +243,7 @@ protected:
 	void initWW3D();
 #ifdef ZH
   void drawCircle( HDC hdc, const Coord3D & centerPoint, Real radius, COLORREF color );
-#endif
+#endif // ZH
 	void drawLabels(HDC hdc);
 	void drawLabels(void);
 	void shutdownWW3D();
@@ -255,7 +255,7 @@ protected:
 	void updateScorches();
 #ifdef ZH
 	void updateTrees();
-#endif
+#endif // ZH
 
 public:
 	virtual Bool viewToDocCoords(CPoint curPt, Coord3D *newPt, Bool constrain=true);
@@ -285,14 +285,14 @@ public:
 	Real getCameraPitch(void);
 #ifdef ZH
 	Real getCurrentZoom(void); //WST 10/17/2002
-#endif
+#endif // ZH
 	Real getHeightAboveGround(void) { return m_actualHeightAboveGround; }
 	Vector3 getCameraSource(void) { return m_cameraSource; }
 	Vector3 getCameraTarget(void) { return m_cameraTarget; }
 	Real getCameraAngle(void) { return m_cameraAngle; }
 #ifdef ZH
 	CPoint getActualWinSize(void) {return m_actualWinSize;}
-#endif
+#endif // ZH
 
 	virtual MapObject *picked3dObjectInView(CPoint viewPt);
 	virtual BuildListInfo *pickedBuildObjectInView(CPoint viewPt);
@@ -343,7 +343,7 @@ public:
 	Bool getHighlightTestArt(void) { return m_highlightTestArt;}
 	void setShowLetterbox(Bool toggle) {m_showLetterbox = toggle;}
 	Bool getShowLetterbox(void) { return m_showLetterbox;}
-#endif
+#endif // ZH
 };
 
 inline UINT WbView3d::getLastDrawTime() { return m_time; }

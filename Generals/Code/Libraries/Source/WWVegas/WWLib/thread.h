@@ -29,11 +29,11 @@
 #include "always.h"
 #ifdef ZH
 #include "vector.h"
-#endif
+#endif // ZH
 
 #ifdef ZH
 struct _EXCEPTION_POINTERS;
-#endif
+#endif // ZH
 
 // ****************************************************************************
 //
@@ -55,12 +55,12 @@ public:
 #ifdef OG
 	ThreadClass();
 
-#endif
+#endif // OG
 #ifdef ZH
 	typedef int (*ExceptionHandlerType)(int exception_code, struct _EXCEPTION_POINTERS *e_info);
 
 	ThreadClass(const char *name = NULL, ExceptionHandlerType exception_handler = NULL);
-#endif
+#endif // ZH
 	virtual ~ThreadClass();
 
 	// Execute Thread_Function(). Note that only one instance can be executed at a time.
@@ -91,7 +91,7 @@ public:
 	// Get info about a registered thread by it's index.
 	static int Get_Thread_By_Index(int index, char *name_ptr = NULL);
 
-#endif
+#endif // ZH
 protected:
 
 	// User defined thread function. The thread function should check for "running" flag every now and then
@@ -109,7 +109,7 @@ protected:
 	// Exception handler for this thread.
 	ExceptionHandlerType ExceptionHandler;
 
-#endif
+#endif // ZH
 private:
 	static void __cdecl Internal_Thread_Function(void*);
 	volatile unsigned long handle;

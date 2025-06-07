@@ -288,4 +288,4 @@ int PKPipe::Plain_Key_Length(void) const
 	return(CipherKey->Block_Count(BLOWFISH_KEY_SIZE) * CipherKey->Plain_Block_Size());
 }
 
-#endif
+#endif // ZH

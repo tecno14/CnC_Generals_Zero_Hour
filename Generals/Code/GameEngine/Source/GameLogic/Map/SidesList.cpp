@@ -432,7 +432,7 @@ static AsciiString static_readPlayerNames[MAX_PLAYER_COUNT];
 #define K_PLAYERS_NAMES_FOR_SCRIPTS_VERSION_1 1
 #define K_PLAYERS_NAMES_FOR_SCRIPTS_VERSION_2 2
 
-#endif
+#endif // ZH
 static Bool ParsePlayersDataChunk(DataChunkInput &file, DataChunkInfo *info, void *userData)
 {
 #ifdef ZH
@@ -440,7 +440,7 @@ static Bool ParsePlayersDataChunk(DataChunkInput &file, DataChunkInfo *info, voi
 	if (info->version >= K_PLAYERS_NAMES_FOR_SCRIPTS_VERSION_2) {
 		readDicts = file.readInt();
 	}
-#endif
+#endif // ZH
 	Int numNames = file.readInt();
 	Int i;
 	for (i=0; i<numNames; i++) {
@@ -449,11 +449,11 @@ static Bool ParsePlayersDataChunk(DataChunkInput &file, DataChunkInfo *info, voi
 #ifdef ZH
 		if (readDicts) {
 			Dict sideDict = file.readDict();
-#endif
+#endif // ZH
 	}
 #ifdef ZH
 	}
-#endif
+#endif // ZH
 	DEBUG_ASSERTCRASH(file.atEndOfChunk(), ("Unexpected data left over."));
 	return true;
 }
@@ -1140,10 +1140,10 @@ void TeamsInfoRec::addTeam(const Dict* d)
 
 #ifdef OG
 	DEBUG_ASSERTCRASH(m_numTeams < 1024, ("hmm, seems like an awful lot of teams..."));
-#endif
+#endif // OG
 #ifdef ZH
 	DEBUG_ASSERTCRASH(m_numTeams < 2048, ("%d teams have been allocated (so far). This seems excessive.", m_numTeams ));
-#endif
+#endif // ZH
 	if (m_numTeams >= m_numTeamsAllocated)
 	{
 	// pool[]ify

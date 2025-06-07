@@ -60,10 +60,10 @@
 
 #ifdef OG
 #define LAZY_CAP_MTX_ALLOC
-#endif
+#endif // OG
 #ifdef ZH
 //#define LAZY_CAP_MTX_ALLOC
-#endif
+#endif // ZH
 
 struct PivotClass
 {

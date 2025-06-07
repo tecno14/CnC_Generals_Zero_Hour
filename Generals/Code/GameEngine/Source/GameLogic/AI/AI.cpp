@@ -178,7 +178,7 @@ static const FieldParse TheAIFieldParseTable[] =
  	{ "MaxRecruitRadius",				INI::parseReal,NULL,		offsetof( TAiData, m_maxRecruitDistance ) },
 #ifdef ZH
 	{ "SkirmishBaseDefenseExtraDistance",	INI::parseReal,NULL,	offsetof( TAiData, m_skirmishBaseDefenseExtraDistance ) },
-#endif
+#endif // ZH
 
  	{ "WallHeight",							INI::parseReal,NULL,		offsetof( TAiData, m_wallHeight ) },
 
@@ -206,7 +206,7 @@ static const FieldParse TheAIFieldParseTable[] =
 #ifdef ZH
  	{ "MaxRetaliationDistance",	INI::parseReal,NULL,			offsetof( TAiData, m_maxRetaliateDistance ) },
  	{ "RetaliationFriendsRadius",	INI::parseReal,NULL,			offsetof( TAiData, m_retaliateFriendsRadius ) },
-#endif
+#endif // ZH
 
 
 	{ NULL,					NULL,						NULL,						0 }  // keep this last
@@ -794,11 +794,11 @@ Object *AI::findClosestRepulsor( const Object *me, Real range)
 #ifdef OG
 	PartitionFilterRejectByObjectStatus filterStealth(OBJECT_STATUS_STEALTHED, OBJECT_STATUS_DETECTED);
 
-#endif
+#endif // OG
 #ifdef ZH
 	PartitionFilterRejectByObjectStatus filterStealth( MAKE_OBJECT_STATUS_MASK( OBJECT_STATUS_STEALTHED ), 
 																										 MAKE_OBJECT_STATUS_MASK2( OBJECT_STATUS_DETECTED, OBJECT_STATUS_DISGUISED ) );
-#endif
+#endif // ZH
 
 	PartitionFilter *filters[16];
 	Int numFilters = 0;
@@ -933,7 +933,7 @@ m_attackPriorityDistanceModifier(0),
 m_maxRecruitDistance(0),
 #ifdef ZH
 m_skirmishBaseDefenseExtraDistance(0),
-#endif
+#endif // ZH
 m_repulsedDistance(0),
 m_enableRepulsors(false),
 m_forceSkirmishAI(false),
@@ -957,12 +957,12 @@ m_aiDozerBoredRadiusModifier(2.0),
 #ifdef OG
 m_aiCrushesInfantry(true)
 
-#endif
+#endif // OG
 #ifdef ZH
 m_aiCrushesInfantry(true), 
 m_maxRetaliateDistance(210.0f), 
 m_retaliateFriendsRadius(120.0f)
-#endif
+#endif // ZH
 //
 {
 }
@@ -993,7 +993,7 @@ void TAiData::crc( Xfer *xfer )
 	xfer->xferReal( &m_maxRecruitDistance );
 #ifdef ZH
 	xfer->xferReal( &m_skirmishBaseDefenseExtraDistance );
-#endif
+#endif // ZH
 	xfer->xferReal( &m_repulsedDistance );
 	xfer->xferBool( &m_enableRepulsors );
 	CRCGEN_LOG(("CRC after AI TAiData for frame %d is 0x%8.8X\n", TheGameLogic->getFrame(), ((XferCRC *)xfer)->getCRC()));

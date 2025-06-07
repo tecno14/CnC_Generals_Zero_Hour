@@ -26,24 +26,24 @@
  *                                                                         * 
 #ifdef OG
  *                      $Author:: Jani_p                                  $* 
-#endif
+#endif // OG
 #ifdef ZH
  *                      $Author:: Greg_h                                  $* 
-#endif
+#endif // ZH
  *                                                                         * 
 #ifdef OG
  *                     $Modtime:: 4/11/01 4:52p                           $* 
-#endif
+#endif // OG
 #ifdef ZH
  *                     $Modtime:: 12/03/01 4:20p                          $* 
-#endif
+#endif // ZH
  *                                                                         * 
 #ifdef OG
  *                    $Revision:: 13                                      $* 
-#endif
+#endif // OG
 #ifdef ZH
  *                    $Revision:: 15                                      $* 
-#endif
+#endif // ZH
  *                                                                         * 
  *-------------------------------------------------------------------------*/
 
@@ -129,10 +129,10 @@ public:
 	// New geometry accessors (non-const)
 #ifdef OG
 	Vector3i *	Get_Non_Const_Polygon_Array(void);
-#endif
+#endif // OG
 #ifdef ZH
 	TriIndex *	Get_Non_Const_Polygon_Array(void);
-#endif
+#endif // ZH
 	Vector3 *	Get_Non_Const_Vertex_Normal_Array(void);
 
 private:
@@ -429,7 +429,7 @@ public:
 	// DynamicMeshClass's back so use at your own risk!
 	DynamicMeshModel *		Peek_Model(void)	{ return Model; }
 	
-#endif
+#endif // ZH
 protected:
 	
 	inline void	Switch_To_Multi_Vertex_Color(int color_array_index = 0);
@@ -478,10 +478,10 @@ inline Vector3 * DynamicMeshModel::Get_Non_Const_Vertex_Normal_Array(void)
 
 #ifdef OG
 inline Vector3i * DynamicMeshModel::Get_Non_Const_Polygon_Array(void)
-#endif
+#endif // OG
 #ifdef ZH
 inline TriIndex * DynamicMeshModel::Get_Non_Const_Polygon_Array(void)
-#endif
+#endif // ZH
 {
 	return get_polys();
 }

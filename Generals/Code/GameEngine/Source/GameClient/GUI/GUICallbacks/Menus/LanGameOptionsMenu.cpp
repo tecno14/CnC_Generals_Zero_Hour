@@ -47,14 +47,14 @@
 #include "GameClient/GadgetPushButton.h"
 #ifdef ZH
 #include "GameClient/GadgetCheckbox.h"
-#endif
+#endif // ZH
 #include "GameClient/MapUtil.h"
 #include "GameClient/Mouse.h"
 #include "GameClient/GameWindowTransitions.h"
 #ifdef ZH
 #include "GameClient/ChallengeGenerals.h"
 #include "GameNetwork/GameSpy/LobbyUtils.h"
-#endif
+#endif // ZH
 
 #include "GameNetwork/FirewallHelper.h"
 #include "GameNetwork/LANAPI.h"
@@ -124,7 +124,7 @@ static NameKeyType buttonSelectMapID = NAMEKEY_INVALID;
 #ifdef ZH
 static NameKeyType checkboxLimitSuperweaponsID = NAMEKEY_INVALID;
 static NameKeyType comboBoxStartingCashID = NAMEKEY_INVALID;
-#endif
+#endif // ZH
 static NameKeyType windowMapID = NAMEKEY_INVALID;
 // Window Pointers ------------------------------------------------------------------------
 static GameWindow *parentLanGameOptions = NULL;
@@ -137,7 +137,7 @@ static GameWindow *textEntryMapDisplay = NULL;
 #ifdef ZH
 static GameWindow *checkboxLimitSuperweapons = NULL;
 static GameWindow *comboBoxStartingCash = NULL;
-#endif
+#endif // ZH
 static GameWindow *windowMap = NULL;
 
 static GameWindow *comboBoxPlayer[MAX_SLOTS] = {NULL,NULL,NULL,NULL,
@@ -671,7 +671,7 @@ static void handleLimitSuperweaponsClick()
         // send around a new slotlist
         TheLAN->RequestGameOptions(GenerateGameOptionsString(), true);
         lanUpdateSlotList(); // Update the accepted button UI
-#endif
+#endif // ZH
 			}
 		}
 	}
@@ -704,7 +704,7 @@ void InitLanGameGadgets( void )
 #ifdef ZH
   checkboxLimitSuperweaponsID = TheNameKeyGenerator->nameToKey( AsciiString( "LanGameOptionsMenu.wnd:CheckboxLimitSuperweapons" ) );
   comboBoxStartingCashID = TheNameKeyGenerator->nameToKey( AsciiString( "LanGameOptionsMenu.wnd:ComboBoxStartingCash" ) );
-#endif
+#endif // ZH
 	windowMapID = TheNameKeyGenerator->nameToKey( AsciiString( "LanGameOptionsMenu.wnd:MapWindow" ) );
 
 	// Initialize the pointers to our gadgets
@@ -730,7 +730,7 @@ void InitLanGameGadgets( void )
   comboBoxStartingCash = TheWindowManager->winGetWindowFromId( parentLanGameOptions, comboBoxStartingCashID );
   DEBUG_ASSERTCRASH(comboBoxStartingCash, ("Could not find the comboBoxStartingCash"));
 	PopulateStartingCashComboBox(comboBoxStartingCash, TheLAN->GetMyGame());
-#endif
+#endif // ZH
 
 	windowMap = TheWindowManager->winGetWindowFromId( parentLanGameOptions,windowMapID  );
 	DEBUG_ASSERTCRASH(windowMap, ("Could not find the LanGameOptionsMenu.wnd:MapWindow" ));
@@ -790,7 +790,7 @@ void InitLanGameGadgets( void )
 		// add tooltips to the player template combobox and listbox
 		comboBoxPlayerTemplate[i]->winSetTooltipFunc(playerTemplateComboBoxTooltip);
 		GadgetComboBoxGetListBox(comboBoxPlayerTemplate[i])->winSetTooltipFunc(playerTemplateListBoxTooltip);
-#endif
+#endif // ZH
 
 		tmpString.format("LanGameOptionsMenu.wnd:ComboBoxTeam%d", i);
 		comboBoxTeamID[i] = TheNameKeyGenerator->nameToKey( tmpString );
@@ -837,7 +837,7 @@ void DeinitLanGameGadgets( void )
 #ifdef ZH
   checkboxLimitSuperweapons = NULL;
   comboBoxStartingCash = NULL;
-#endif
+#endif // ZH
 	windowMap = NULL;
 	for (Int i = 0; i < MAX_SLOTS; i++)
 	{
@@ -894,7 +894,7 @@ void LanGameOptionsMenuInit( WindowLayout *layout, void *userData )
 #ifdef ZH
     game->setStartingCash( pref.getStartingCash() );
     game->setSuperweaponRestriction( pref.getSuperweaponRestricted() ? 1 : 0 );
-#endif
+#endif // ZH
 		AsciiString lowerMap = pref.getPreferredMap();
 		lowerMap.toLower();
 		std::map<AsciiString, MapMetaData>::iterator it = TheMapCache->find(lowerMap);
@@ -921,7 +921,7 @@ void LanGameOptionsMenuInit( WindowLayout *layout, void *userData )
 #ifdef ZH
     checkboxLimitSuperweapons->winEnable( FALSE ); // Can look but only host can touch
     comboBoxStartingCash->winEnable( FALSE );      // Ditto
-#endif
+#endif // ZH
 		TheLAN->GetMyGame()->setMapCRC( TheLAN->GetMyGame()->getMapCRC() );		// force a recheck
 		TheLAN->GetMyGame()->setMapSize( TheLAN->GetMyGame()->getMapSize() ); // of if we have the map
 		TheLAN->RequestHasMap();
@@ -1011,7 +1011,7 @@ void updateGameOptions( void )
     }
 
     DEBUG_ASSERTCRASH( index < itemCount, ("Could not find new starting cash amount %d in list", theGame->getStartingCash().countMoney() ) );
-#endif
+#endif // ZH
 	}
 }
 
@@ -1173,7 +1173,7 @@ WindowMsgHandledType LanGameOptionsMenuSystem( GameWindow *window, UnsignedInt m
         }
         else
         {
-#endif
+#endif // ZH
 				for (Int i = 0; i < MAX_SLOTS; i++)
 				{
 					if (controlID == comboBoxColorID[i])
@@ -1224,12 +1224,12 @@ WindowMsgHandledType LanGameOptionsMenuSystem( GameWindow *window, UnsignedInt m
 						break;
 #ifdef ZH
             }
-#endif
+#endif // ZH
 					}
 				}
 #ifdef ZH
         break;
-#endif
+#endif // ZH
 			}// case GCM_SELECTED:
 		//-------------------------------------------------------------------------------------------------
 		case GBM_SELECTED:
@@ -1291,13 +1291,13 @@ WindowMsgHandledType LanGameOptionsMenuSystem( GameWindow *window, UnsignedInt m
 						
 #ifdef ZH
 					}
-#endif
+#endif // ZH
 					}
 #ifdef ZH
         else if ( controlID == checkboxLimitSuperweaponsID )
         {
           handleLimitSuperweaponsClick();
-#endif
+#endif // ZH
 				}
 				else
 				{

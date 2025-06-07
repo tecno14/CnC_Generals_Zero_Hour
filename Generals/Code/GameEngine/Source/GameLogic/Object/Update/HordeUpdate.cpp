@@ -127,7 +127,7 @@ HordeUpdateModuleData::HordeUpdateModuleData() :
 	m_exactMatch(false),
 #ifdef ZH
 	m_allowedNationalism(TRUE),
-#endif
+#endif // ZH
 	m_action(HORDEACTION_HORDE)
 {
 }
@@ -150,7 +150,7 @@ HordeUpdateModuleData::HordeUpdateModuleData() :
 		{ "FlagSubObjectNames", INI::parseAsciiStringVector, NULL, offsetof(HordeUpdateModuleData, m_flagSubObjNames) },
 #ifdef ZH
 		{ "AllowedNationalism", INI::parseBool, NULL, offsetof(HordeUpdateModuleData, m_allowedNationalism) },
-#endif
+#endif // ZH
 		{ 0, 0, 0, 0 }
 	};
 	p.add(dataFieldParse);
@@ -190,7 +190,7 @@ Bool HordeUpdate::isAllowedNationalism() const
 }
 
 //-------------------------------------------------------------------------------------------------
-#endif
+#endif // ZH
 /** @todo I think we should model the horde list ... so we can do all this without doing
   * all this scanning, plus we can give exactly 1 flag to the right person in the
 	* center of the horde which I think would look better (CBD) 
@@ -352,7 +352,7 @@ UpdateSleepTime HordeUpdate::update( void )
 #ifdef OG
 						nuType = (TERRAIN_DECAL_HORDE_WITH_NATIONALISM_UPGRADE);
 
-#endif
+#endif // OG
 #ifdef ZH
           {
             if ( obj->testWeaponBonusCondition( WEAPONBONUSCONDITION_FANATICISM ) == TRUE )
@@ -360,7 +360,7 @@ UpdateSleepTime HordeUpdate::update( void )
             else
   						nuType = ( TERRAIN_DECAL_HORDE_WITH_NATIONALISM_UPGRADE );
           }
-#endif
+#endif // ZH
 					else
 						nuType =(TERRAIN_DECAL_HORDE);
 
@@ -376,7 +376,7 @@ UpdateSleepTime HordeUpdate::update( void )
 #ifdef OG
 						nuType = (TERRAIN_DECAL_HORDE_WITH_NATIONALISM_UPGRADE_VEHICLE);
 
-#endif
+#endif // OG
 #ifdef ZH
           {
             if ( obj->testWeaponBonusCondition( WEAPONBONUSCONDITION_FANATICISM ) == TRUE )
@@ -384,7 +384,7 @@ UpdateSleepTime HordeUpdate::update( void )
             else
   						nuType = ( TERRAIN_DECAL_HORDE_WITH_NATIONALISM_UPGRADE );
           }
-#endif
+#endif // ZH
 					else
 						nuType = (TERRAIN_DECAL_HORDE_VEHICLE);
 

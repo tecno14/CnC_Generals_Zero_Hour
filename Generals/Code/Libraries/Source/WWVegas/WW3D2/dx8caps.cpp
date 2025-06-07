@@ -24,37 +24,37 @@
  *                                                                                             *
 #ifdef OG
  *                     $Archive:: /VSS_Sync/ww3d2/dx8caps.cpp                                 $*
-#endif
+#endif // OG
 #ifdef ZH
  *                     $Archive:: /Commando/Code/ww3d2/dx8caps.cpp                            $*
-#endif
+#endif // ZH
  *                                                                                             *
  *              Original Author:: Hector Yee                                                   *
  *                                                                                             *
 #ifdef OG
  *                      $Author:: Vss_sync                                                    $*
-#endif
+#endif // OG
 #ifdef ZH
  *                       Author : Kenny Mitchell                                               * 
-#endif
+#endif // ZH
  *                                                                                             *
 #ifdef OG
  *                     $Modtime:: 8/29/01 8:16p                                               $*
-#endif
+#endif // OG
 #ifdef ZH
  *                     $Modtime:: 06/27/02 1:27p                                              $*
-#endif
+#endif // ZH
  *                                                                                             *
 #ifdef OG
  *                    $Revision:: 11                                                          $*
-#endif
+#endif // OG
 #ifdef ZH
  *                    $Revision:: 31                                                          $*
-#endif
+#endif // ZH
  *                                                                                             *
 #ifdef ZH
  * 06/27/02 KM Z Format support																						*
-#endif
+#endif // ZH
  *---------------------------------------------------------------------------------------------*
  * Functions:                                                                                  *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
@@ -227,7 +227,7 @@ static const char* DeviceNamesPowerVR[]={
 	"Unknown PowerVR Device",
 	"Kyro"
 };
-#endif
+#endif // ZH
 
 #ifdef OG
 D3DCAPS8 DX8Caps::hwVPCaps;
@@ -243,7 +243,7 @@ bool DX8Caps::SupportTextureFormat[WW3D_FORMAT_COUNT];
 int DX8Caps::VertexShaderVersion;
 int DX8Caps::PixelShaderVersion;
 int DX8Caps::MaxSimultaneousTextures;
-#endif
+#endif // OG
 #ifdef ZH
 static const char* DeviceNamesS3[]={
 	"Unknown S3 Device",
@@ -252,21 +252,21 @@ static const char* DeviceNamesS3[]={
 	"Savage 200"
 };
 
-#endif
+#endif // ZH
 
 #ifdef OG
 enum {
 	VENDOR_ID_NVIDIA=0x10de,
 	VENROD_ID_ATI=0x1002
 
-#endif
+#endif // OG
 #ifdef ZH
 static const char* DeviceNamesIntel[]={
 	"Unknown Intel Device",
 	"i810",
 	"i810e",
 	"i815"
-#endif
+#endif // ZH
 };
 #ifdef ZH
 
@@ -433,7 +433,7 @@ DX8Caps::DeviceTypeNVidia DX8Caps::Get_NVidia_Device(unsigned device_id)
 	case 0x002D: return DEVICE_NVIDIA_TNT2_M64;
 	case 0x0020: return DEVICE_NVIDIA_TNT;
 	case 0x0008: return DEVICE_NVIDIA_NV1;
-#endif
+#endif // ZH
 
 #ifdef ZH
 	// STB cards
@@ -556,7 +556,7 @@ void DX8Caps::Shutdown(void)
 	CapsWorkString.Release_Resources();
 }
 
-#endif
+#endif // ZH
 // ----------------------------------------------------------------------------
 //
 // Init the caps structure
@@ -568,34 +568,34 @@ void DX8Caps::Init_Caps(IDirect3DDevice8* D3DDevice)
 	D3DDevice->SetRenderState(D3DRS_SOFTWAREVERTEXPROCESSING,TRUE);
 #ifdef OG
 	DX8CALL(GetDeviceCaps(&swVPCaps));
-#endif
+#endif // OG
 #ifdef ZH
 	DX8CALL(GetDeviceCaps(&Caps));
-#endif
+#endif // ZH
 
 #ifdef OG
 	if ((swVPCaps.DevCaps&D3DDEVCAPS_HWTRANSFORMANDLIGHT)==D3DDEVCAPS_HWTRANSFORMANDLIGHT) {
 		UseTnL=true;
-#endif
+#endif // OG
 #ifdef ZH
 	if ((Caps.DevCaps&D3DDEVCAPS_HWTRANSFORMANDLIGHT)==D3DDEVCAPS_HWTRANSFORMANDLIGHT) {
 		SupportTnL=true;
-#endif
+#endif // ZH
 
 		D3DDevice->SetRenderState(D3DRS_SOFTWAREVERTEXPROCESSING,FALSE);
 #ifdef OG
 		DX8CALL(GetDeviceCaps(&hwVPCaps));	
-#endif
+#endif // OG
 #ifdef ZH
 		DX8CALL(GetDeviceCaps(&Caps));	
-#endif
+#endif // ZH
 	} else {
 #ifdef OG
 		UseTnL=false;			
-#endif
+#endif // OG
 #ifdef ZH
 		SupportTnL=false;			
-#endif
+#endif // ZH
 	}
 }
 
@@ -608,14 +608,14 @@ void DX8Caps::Init_Caps(IDirect3DDevice8* D3DDevice)
 void DX8Caps::Compute_Caps(WW3DFormat display_format, const D3DADAPTER_IDENTIFIER8& adapter_id)
 {
 //	Init_Caps(D3DDevice);
-#endif
+#endif // ZH
 
 #ifdef OG
 void DX8Caps::Compute_Caps(D3DFORMAT display_format, D3DFORMAT depth_stencil_format, IDirect3DDevice8* D3DDevice)
 {
 	const D3DADAPTER_IDENTIFIER8& adapter_id=DX8Wrapper::Get_Current_Adapter_Identifier();
 
-#endif
+#endif // OG
 #ifdef ZH
 	CanDoMultiPass=true;
 	IsFogAllowed=true;
@@ -624,26 +624,26 @@ void DX8Caps::Compute_Caps(D3DFORMAT display_format, D3DFORMAT depth_stencil_for
 	CompactLog="";
 	DXLOG(("Video Card: %s\r\n",adapter_id.Description));
 	DXLOG(("Driver: %s\r\n",adapter_id.Driver));
-#endif
+#endif // ZH
 
 #ifdef OG
 	Init_Caps(D3DDevice);
 
-#endif
+#endif // OG
 #ifdef ZH
 	DriverDLL=adapter_id.Driver;
 	int Product = HIWORD(adapter_id.DriverVersion.HighPart);
 	int Version = LOWORD(adapter_id.DriverVersion.HighPart);
 	int SubVersion = HIWORD(adapter_id.DriverVersion.LowPart);
 	DriverBuildVersion = LOWORD(adapter_id.DriverVersion.LowPart);
-#endif
+#endif // ZH
 
 #ifdef OG
 	const D3DCAPS8& caps=Get_Default_Caps();
-#endif
+#endif // OG
 #ifdef ZH
 	DXLOG(("Product=%d, Version=%d, SubVersion=%d, Build=%d\r\n",Product, Version, SubVersion, DriverBuildVersion));
-#endif
+#endif // ZH
 
 #ifdef OG
 	if ((caps.DevCaps&D3DDEVCAPS_NPATCHES)==D3DDEVCAPS_NPATCHES) {
@@ -651,7 +651,7 @@ void DX8Caps::Compute_Caps(D3DFORMAT display_format, D3DFORMAT depth_stencil_for
 	} else {
 		SupportNPatches=false;
 
-#endif
+#endif // OG
 #ifdef ZH
 	VendorId=Define_Vendor(adapter_id.VendorId);
 	// Make a guess - if driver doesn't intruduce itself and the name starts with 3, what could it possibly be?
@@ -708,7 +708,7 @@ void DX8Caps::Compute_Caps(D3DFORMAT display_format, D3DFORMAT depth_stencil_for
 		DXLOG((DeviceNames3DLabs[DeviceId]));
 		COMPACTLOG((DeviceNames3DLabs[DeviceId]));
 		break;
-#endif
+#endif // ZH
 	}
 #ifdef ZH
 
@@ -751,7 +751,7 @@ void DX8Caps::Compute_Caps(D3DFORMAT display_format, D3DFORMAT depth_stencil_for
 	DXLOG(("ModAlphaAddClr support: %s\r\n",SupportModAlphaAddClr ? "Yes" : "No"));
 	DXLOG(("Dot3 support: %s\r\n",SupportDot3 ? "Yes" : "No"));
 	DXLOG(("Anisotropic filtering support: %s\r\n",SupportAnisotropicFiltering ? "Yes" : "No"));
-#endif
+#endif // ZH
 
 #ifdef OG
 	if ((caps.TextureOpCaps&D3DTEXOPCAPS_DOTPRODUCT3)==D3DTEXOPCAPS_DOTPRODUCT3) {
@@ -760,7 +760,7 @@ void DX8Caps::Compute_Caps(D3DFORMAT display_format, D3DFORMAT depth_stencil_for
 		SupportDOT3=false;
 	}
 
-#endif
+#endif // OG
 #ifdef ZH
 	Check_Texture_Format_Support(display_format,Caps);
 	Check_Render_To_Texture_Support(display_format,Caps);
@@ -770,14 +770,14 @@ void DX8Caps::Compute_Caps(D3DFORMAT display_format, D3DFORMAT depth_stencil_for
 	Check_Shader_Support(Caps);
 	Check_Driver_Version_Status();
 	Check_Maximum_Texture_Support(Caps);
-#endif
+#endif // ZH
 
 #ifdef OG
 	supportGamma=((swVPCaps.Caps2&D3DCAPS2_FULLSCREENGAMMA)==D3DCAPS2_FULLSCREENGAMMA);
-#endif
+#endif // OG
 #ifdef ZH
 	MaxTexturesPerPass=Caps.MaxSimultaneousTextures;
-#endif
+#endif // ZH
 
 #ifdef OG
 	Check_Texture_Format_Support(display_format,caps);
@@ -785,15 +785,15 @@ void DX8Caps::Compute_Caps(D3DFORMAT display_format, D3DFORMAT depth_stencil_for
 	Check_Bumpmap_Support(caps);
 	Check_Shader_Support(caps);
 	Check_Maximum_Texture_Support(caps);
-#endif
+#endif // OG
 #ifdef ZH
 	DXLOG(("Max textures per pass: %d\r\n",MaxTexturesPerPass));
 
-#endif
+#endif // ZH
 	Vendor_Specific_Hacks(adapter_id);
 #ifdef ZH
 	CapsWorkString="";
-#endif
+#endif // ZH
 }
 
 // ----------------------------------------------------------------------------
@@ -809,7 +809,7 @@ void DX8Caps::Check_Bumpmap_Support(const D3DCAPS8& caps)
 #ifdef ZH
 	DXLOG(("Bumpmap support: %s\r\n",SupportBumpEnvmap ? "Yes" : "No"));
 	DXLOG(("Bumpmap luminance support: %s\r\n",SupportBumpEnvmapLuminance ? "Yes" : "No"));
-#endif
+#endif // ZH
 }
 
 // ----------------------------------------------------------------------------
@@ -827,15 +827,15 @@ void DX8Caps::Check_Texture_Compression_Support(const D3DCAPS8& caps)
 		SupportTextureFormat[WW3D_FORMAT_DXT5];
 #ifdef ZH
 	DXLOG(("Texture compression support: %s\r\n",SupportDXTC ? "Yes" : "No"));
-#endif
+#endif // ZH
 }
 
 #ifdef OG
 void DX8Caps::Check_Texture_Format_Support(D3DFORMAT display_format,const D3DCAPS8& caps)
-#endif
+#endif // OG
 #ifdef ZH
 void DX8Caps::Check_Texture_Format_Support(WW3DFormat display_format,const D3DCAPS8& caps)
-#endif
+#endif // ZH
 {
 #ifdef ZH
 	if (display_format==WW3D_FORMAT_UNKNOWN) {
@@ -845,7 +845,7 @@ void DX8Caps::Check_Texture_Format_Support(WW3DFormat display_format,const D3DCA
 		return;
 	}
 	D3DFORMAT d3d_display_format=WW3DFormat_To_D3DFormat(display_format);
-#endif
+#endif // ZH
 	for (unsigned i=0;i<WW3D_FORMAT_COUNT;++i) {
 		if (i==WW3D_FORMAT_UNKNOWN) {
 			SupportTextureFormat[i]=false;
@@ -853,28 +853,28 @@ void DX8Caps::Check_Texture_Format_Support(WW3DFormat display_format,const D3DCA
 		else {
 #ifdef ZH
 			WW3DFormat format=(WW3DFormat)i;
-#endif
+#endif // ZH
 			SupportTextureFormat[i]=SUCCEEDED(
 #ifdef OG
 				DX8Wrapper::_Get_D3D8()->CheckDeviceFormat(
-#endif
+#endif // OG
 #ifdef ZH
 				Direct3D->CheckDeviceFormat(
-#endif
+#endif // ZH
 					caps.AdapterOrdinal,
 					caps.DeviceType,
 #ifdef OG
 					display_format,
-#endif
+#endif // OG
 #ifdef ZH
 					d3d_display_format,
-#endif
+#endif // ZH
 					0,
 					D3DRTYPE_TEXTURE,
 #ifdef OG
 					WW3DFormat_To_D3DFormat((WW3DFormat)i)));
 
-#endif
+#endif // OG
 #ifdef ZH
 					WW3DFormat_To_D3DFormat(format)));
 			if (SupportTextureFormat[i]) {
@@ -963,7 +963,7 @@ void DX8Caps::Check_Depth_Stencil_Support(WW3DFormat display_format, const D3DCA
 				Get_WW3D_ZFormat_Name(format,name);
 				DXLOG(("Supports depth stencil format: %s\r\n",name));
 			}
-#endif
+#endif // ZH
 		}
 	}
 }
@@ -997,11 +997,11 @@ void DX8Caps::Check_Driver_Version_Status()
 			switch (DriverBuildVersion) {
 			case 327:	// 5.00.2165.327
 				DriverVersionStatus=DRIVER_STATUS_BAD;
-#endif
+#endif // ZH
 }
 #ifdef ZH
 		}
-#endif
+#endif // ZH
 
 #ifdef ZH
 		if (!stricmp(DriverDLL,"nv4_disp.dll") || !stricmp(DriverDLL,"nvdd32.dll")) {
@@ -1161,7 +1161,7 @@ bool DX8Caps::Is_Valid_Display_Format(int width, int height, WW3DFormat format)
 	return true;
 }
 
-#endif
+#endif // ZH
 // ----------------------------------------------------------------------------
 //
 // Implement some vendor-specific hacks to fix certain driver bugs that can't be
@@ -1174,7 +1174,7 @@ void DX8Caps::Vendor_Specific_Hacks(const D3DADAPTER_IDENTIFIER8& adapter_id)
 #ifdef OG
 	if (adapter_id.VendorId==VENDOR_ID_NVIDIA) {
 
-#endif
+#endif // OG
 #ifdef ZH
 	if (VendorId==VENDOR_NVIDIA) 
   {
@@ -1185,7 +1185,7 @@ void DX8Caps::Vendor_Specific_Hacks(const D3DADAPTER_IDENTIFIER8& adapter_id)
 			DXLOG(("Disabling DXT1 support on NVidia hardware.\r\n"));
 		}
 
-#endif
+#endif // ZH
 		SupportNPatches = false;	// Driver incorrectly report N-Patch support
 		SupportTextureFormat[WW3D_FORMAT_DXT1] = false;			// DXT1 is broken on NVidia hardware
 		SupportDXTC=
@@ -1293,13 +1293,13 @@ void DX8Caps::Vendor_Specific_Hacks(const D3DADAPTER_IDENTIFIER8& adapter_id)
 			DXLOG(("Maximum screen resolution limited to 1280 x 1024 on Voodoo2/Voodoo3/Banshee\r\n"));			
 			MaxDisplayWidth=1280;
 			MaxDisplayHeight=1024;
-#endif
+#endif // ZH
 	}
 
 #ifdef OG
 //	SupportDXTC=false;
 
-#endif
+#endif // OG
 #ifdef ZH
 		if (DeviceId==DEVICE_3DFX_VOODOO_3) {
 			DXLOG(("Disabling render-to-texture on Voodoo3\r\n"));
@@ -1331,10 +1331,10 @@ void DX8Caps::Vendor_Specific_Hacks(const D3DADAPTER_IDENTIFIER8& adapter_id)
 			CanDoMultiPass=false;
 		}
 
-#endif
+#endif // ZH
 
 }
 #ifdef ZH
 }
 
-#endif
+#endif // ZH

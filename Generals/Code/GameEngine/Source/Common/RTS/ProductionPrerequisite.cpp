@@ -91,7 +91,7 @@ void ProductionPrerequisite::resolveNames()
 #ifdef ZH
 		if( m_prereqUnits[ i ].name.isNotEmpty() )
 		{
-#endif
+#endif // ZH
 		m_prereqUnits[i].unit = TheThingFactory->findTemplate(m_prereqUnits[i].name);	// might be null
 
  		/** @todo for now removing this assert until we can completely remove
@@ -102,7 +102,7 @@ void ProductionPrerequisite::resolveNames()
 		m_prereqUnits[i].name.clear(); // we're done with it
 #ifdef ZH
 		}
-#endif
+#endif // ZH
 
 	}
 

@@ -134,4 +134,4 @@ void DelayedWeaponSetUpgradeUpdate::loadPostProcess( void )
 
 }  // end loadPostProcess
 
-#endif
+#endif // OG

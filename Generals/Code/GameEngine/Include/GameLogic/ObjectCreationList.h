@@ -31,7 +31,7 @@
 // Kris: August 23, 2003
 // All OCLs return the first object that is created (or NULL if not applicable).
 
-#endif
+#endif // ZH
 #pragma once
 
 #ifndef _ObjectCreationList_H_
@@ -88,10 +88,10 @@ public:
 	*/
 #ifdef OG
 	virtual void create( const Object* primaryObj, const Coord3D *primary, const Coord3D* secondary, UnsignedInt lifetimeFrames = 0 ) const = 0;
-#endif
+#endif // OG
 #ifdef ZH
 	virtual Object* create( const Object* primaryObj, const Coord3D *primary, const Coord3D* secondary, Real angle, UnsignedInt lifetimeFrames = 0 ) const = 0;
-#endif
+#endif // ZH
 
 	/**
 		the object-based version... by default, just call the location-based implementation.
@@ -99,10 +99,10 @@ public:
 	*/
 #ifdef OG
 	virtual void create( const Object* primary, const Object* secondary, UnsignedInt lifetimeFrames = 0 ) const;
-#endif
+#endif // OG
 #ifdef ZH
 	virtual Object* create( const Object* primary, const Object* secondary, UnsignedInt lifetimeFrames = 0 ) const;
-#endif
+#endif // ZH
 
 	/**
 		A variation used by DeliverPayload -- the createOwner Bool specifies whether we are creating the transport
@@ -110,10 +110,10 @@ public:
 	*/
 #ifdef OG
 	virtual void create( const Object* primaryObj, const Coord3D *primary, const Coord3D *secondary, Bool createOwner, UnsignedInt lifetimeFrames = 0 ) const;
-#endif
+#endif // OG
 #ifdef ZH
 	virtual Object* create( const Object* primaryObj, const Coord3D *primary, const Coord3D *secondary, Bool createOwner, UnsignedInt lifetimeFrames = 0 ) const;
-#endif
+#endif // ZH
 };  
 EMPTY_DTOR(ObjectCreationNugget)
 
@@ -155,68 +155,68 @@ public:
 #ifdef OG
 	inline static void create( const ObjectCreationList* ocl, const Object* primaryObj, const Coord3D *primary, const Coord3D *secondary, Bool createOwner, UnsignedInt lifetimeFrames = 0 )
 
-#endif
+#endif // OG
 #ifdef ZH
 	// Kris: August 23, 2003
 	// All OCLs return the first object that is created (or NULL if not applicable).
 	inline static Object* create( const ObjectCreationList* ocl, const Object* primaryObj, const Coord3D *primary, const Coord3D *secondary, Bool createOwner, UnsignedInt lifetimeFrames = 0 )
-#endif
+#endif // ZH
 	{
 #ifdef OG
 		if (ocl) ocl->create( primaryObj, primary, secondary, createOwner, lifetimeFrames );
 
-#endif
+#endif // OG
 #ifdef ZH
 		if( ocl ) 
 			return ocl->createInternal( primaryObj, primary, secondary, createOwner, lifetimeFrames );
 		return NULL;
-#endif
+#endif // ZH
 	}
 
 #ifdef ZH
 	// Kris: August 23, 2003
 	// All OCLs return the first object that is created (or NULL if not applicable).
-#endif
+#endif // ZH
 	/// inline convenience method to avoid having to check for null.
 #ifdef OG
 	inline static void create(const ObjectCreationList* ocl, const Object* primaryObj, const Coord3D *primary, const Coord3D *secondary, UnsignedInt lifetimeFrames = 0 )
-#endif
+#endif // OG
 #ifdef ZH
 	inline static Object* create(const ObjectCreationList* ocl, const Object* primaryObj, const Coord3D *primary, const Coord3D *secondary, Real angle, UnsignedInt lifetimeFrames = 0 )
-#endif
+#endif // ZH
 	{
 #ifdef OG
 		if (ocl) ocl->create( primaryObj, primary, secondary, lifetimeFrames );
 
-#endif
+#endif // OG
 #ifdef ZH
 		if (ocl) 
 			return ocl->createInternal( primaryObj, primary, secondary, angle, lifetimeFrames );
 		return NULL;
-#endif
+#endif // ZH
 	}
 
 #ifdef ZH
 	// Kris: August 23, 2003
 	// All OCLs return the first object that is created (or NULL if not applicable).
-#endif
+#endif // ZH
 	/// inline convenience method to avoid having to check for null.
 #ifdef OG
 	inline static void create( const ObjectCreationList* ocl, const Object* primary, const Object* secondary, UnsignedInt lifetimeFrames = 0 )
-#endif
+#endif // OG
 #ifdef ZH
 	inline static Object* create( const ObjectCreationList* ocl, const Object* primary, const Object* secondary, UnsignedInt lifetimeFrames = 0 )
-#endif
+#endif // ZH
 	{
 #ifdef OG
 		if (ocl) ocl->create( primary, secondary, lifetimeFrames );
 
-#endif
+#endif // OG
 #ifdef ZH
 		if (ocl) 
 			return ocl->createInternal( primary, secondary, lifetimeFrames );
 		return NULL;
-#endif
+#endif // ZH
 	}
 
 protected:
@@ -228,14 +228,14 @@ private:
 	void create(const Object* primaryObj, const Coord3D *primary, const Coord3D* secondary, UnsignedInt lifetimeFrames = 0 ) const;
 	void create(const Object* primary, const Object* secondary, UnsignedInt lifetimeFrames = 0 ) const;
 
-#endif
+#endif // OG
 #ifdef ZH
 	// Kris: August 23, 2003
 	// All OCLs return the first object that is created (or NULL if not applicable).
 	Object* createInternal(const Object* primaryObj, const Coord3D *primary, const Coord3D *secondary, Bool createOwner, UnsignedInt lifetimeFrames = 0 ) const;
 	Object* createInternal(const Object* primaryObj, const Coord3D *primary, const Coord3D* secondary, Real angle, UnsignedInt lifetimeFrames = 0 ) const;
 	Object* createInternal(const Object* primary, const Object* secondary, UnsignedInt lifetimeFrames = 0 ) const;
-#endif
+#endif // ZH
 
 	// note, this list doesn't own the nuggets; all nuggets are owned by the Store.
 	typedef std::vector<ObjectCreationNugget*> ObjectCreationNuggetVector;

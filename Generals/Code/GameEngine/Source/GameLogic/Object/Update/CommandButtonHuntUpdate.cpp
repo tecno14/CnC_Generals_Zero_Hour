@@ -173,7 +173,7 @@ UpdateSleepTime CommandButtonHuntUpdate::update()
 		case GUICOMMANDMODE_CONVERT_TO_CARBOMB:
 		case GUICOMMANDMODE_SABOTAGE_BUILDING:
 			return huntEnter( ai );
-#endif
+#endif // ZH
 		default:
 			return UPDATE_SLEEP_FOREVER;
 	}
@@ -247,7 +247,7 @@ UpdateSleepTime CommandButtonHuntUpdate::huntEnter( AIUpdateInterface *ai )
 	}
 	return UPDATE_SLEEP( data->m_scanFrames );
 }
-#endif
+#endif // ZH
 
 //-------------------------------------------------------------------------------------------------
 Object* CommandButtonHuntUpdate::scanClosestTarget(void)
@@ -261,7 +261,7 @@ Object* CommandButtonHuntUpdate::scanClosestTarget(void)
 	// only consider enemies.
 	PartitionFilterRelationship	filterTeam(me, PartitionFilterRelationship::ALLOW_ENEMIES);
 
-#endif
+#endif // OG
 #ifdef ZH
 	// only consider enemies (unless it's convert to carbomb).
 	PartitionFilterRelationship::RelationshipAllowTypes relationship = PartitionFilterRelationship::ALLOW_ENEMIES;
@@ -279,37 +279,37 @@ Object* CommandButtonHuntUpdate::scanClosestTarget(void)
 			break;
 	}
 
-#endif
+#endif // ZH
 	PartitionFilterSameMapStatus filterMapStatus(getObject());
 #ifdef ZH
 	PartitionFilterRelationship	filterTeam(me, relationship );
 	PartitionFilterStealthedAndUndetected filterStealthed( me, FALSE );
-#endif
+#endif // ZH
 
 #ifdef OG
 	PartitionFilter *filters[4];
-#endif
+#endif // OG
 #ifdef ZH
 	PartitionFilter *filters[5];
-#endif
+#endif // ZH
 	filters[0] = &aliveFilter;
 	filters[1] = &filterMapStatus;
 #ifdef OG
 	filters[2] = &filterTeam;
 	filters[3] = NULL;
 
-#endif
+#endif // OG
 #ifdef ZH
 	filters[2] = &filterStealthed;
 	filters[3] = &filterTeam;
 	filters[4] = NULL;
-#endif
+#endif // ZH
 
 #ifdef ZH
 	Bool isBlackLotusVehicleHack = FALSE;
 	Bool isCaptureBuilding = FALSE;
 	Bool isPlaceExplosive = FALSE;
-#endif
+#endif // ZH
  	const SpecialPowerTemplate *spTemplate = m_commandButton->getSpecialPowerTemplate();
 #ifdef OG
 	if( !spTemplate ) return NULL;  // isn't going to happen.
@@ -318,7 +318,7 @@ Object* CommandButtonHuntUpdate::scanClosestTarget(void)
 	if (isCaptureBuilding) {
 		filters[2] = NULL;  // It's ok (in fact necessary for oil derricks) to capture special buildings.
 
-#endif
+#endif // OG
 #ifdef ZH
 	if( !isEnter )
 	{
@@ -334,7 +334,7 @@ Object* CommandButtonHuntUpdate::scanClosestTarget(void)
 			if (spTemplate->getSpecialPowerType() == SPECIAL_TANKHUNTER_TNT_ATTACK) 
 				isPlaceExplosive = true;
 		}
-#endif
+#endif // ZH
 	}
 #ifdef OG
 
@@ -342,7 +342,7 @@ Object* CommandButtonHuntUpdate::scanClosestTarget(void)
 	if (spTemplate->getSpecialPowerType() == SPECIAL_TIMED_CHARGES) isPlaceExplosive = true;
 	if (spTemplate->getSpecialPowerType() == SPECIAL_TANKHUNTER_TNT_ATTACK) isPlaceExplosive = true;
 
-#endif
+#endif // OG
 
 	ObjectIterator *iter = ThePartitionManager->iterateObjectsInRange( me->getPosition(), data->m_scanRange, 
 		FROM_CENTER_2D, filters, ITER_SORTED_NEAR_TO_FAR );
@@ -437,7 +437,7 @@ Object* CommandButtonHuntUpdate::scanClosestTarget(void)
 		}
 	}
 
-#endif
+#endif // ZH
 
 	return bestTarget;
 }

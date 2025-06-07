@@ -18,10 +18,10 @@
 
 #ifdef OG
 /* $Header: /Commando/Code/ww3d2/assetmgr.cpp 36    8/24/01 3:23p Jani_p $ */
-#endif
+#endif // OG
 #ifdef ZH
 /* $Header: /Commando/Code/ww3d2/assetmgr.cpp 43    11/01/01 1:11a Jani_p $ */
-#endif
+#endif // ZH
 /*********************************************************************************************** 
  ***                            Confidential - Westwood Studios                              *** 
  *********************************************************************************************** 
@@ -32,34 +32,34 @@
 #ifdef ZH
  *                                                                                             * 
  *                   Org Author:: Greg_h                                                       * 
-#endif
+#endif // ZH
  *                                                                                             * 
 #ifdef OG
  *                       Author:: Greg_h                                                       * 
-#endif
+#endif // OG
 #ifdef ZH
  *                       Author : Kenny Mitchell                                               * 
-#endif
+#endif // ZH
  *                                                                                             * 
 #ifdef OG
  *                     $Modtime:: 8/22/01 6:54p                                               $* 
-#endif
+#endif // OG
 #ifdef ZH
  *                     $Modtime:: 08/05/02 10:14a                                              $*
-#endif
+#endif // ZH
  *                                                                                             * 
 #ifdef OG
  *                    $Revision:: 36                                                          $* 
-#endif
+#endif // OG
 #ifdef ZH
  *                    $Revision:: 46                                                          $* 
-#endif
+#endif // ZH
  *                                                                                             * 
 #ifdef ZH
  * 06/27/02 KM Texture class abstraction																			*
  * 07/01/02 KM Shader library integration
  * 08/05/02 KM Texture class redesign (revisited)
-#endif
+#endif // ZH
  *---------------------------------------------------------------------------------------------* 
  * Functions:                                                                                  * 
  *   WW3DAssetManager::WW3DAssetManager -- Constructor                                         *
@@ -145,12 +145,12 @@
 #include "assetstatus.h"
 #include "ringobj.h"
 #include "sphereobj.h"
-#endif
+#endif // ZH
 
 #ifdef ZH
 #include "shdlib.h"
 
-#endif
+#endif // ZH
 /*
 ** Static member variable which keeps track of the single instanced asset manager
 */
@@ -255,12 +255,12 @@ WW3DAssetManager::WW3DAssetManager(void) :
 	// install the default loaders
 #ifdef ZH
 #ifndef USE_WWSHADE
-#endif
+#endif // ZH
 	Register_Prototype_Loader(&_MeshLoader);
 #ifdef ZH
 #endif
 
-#endif
+#endif // ZH
 	Register_Prototype_Loader(&_HModelLoader);
 	Register_Prototype_Loader(&_CollectionLoader);
 	Register_Prototype_Loader(&_BoxLoader);
@@ -274,7 +274,7 @@ WW3DAssetManager::WW3DAssetManager(void) :
 	Register_Prototype_Loader (&_SphereLoader);
 
 	SHD_REG_LOADER;
-#endif
+#endif // ZH
 	
 	// allocate the hash table and clear it.
 	PrototypeHashTable = W3DNEWARRAY PrototypeClass * [PROTOTYPE_HASH_TABLE_SIZE];
@@ -354,10 +354,10 @@ static void Log_Textures(bool inited,unsigned& total_count, unsigned& total_mem)
 		D3DSURFACE_DESC desc;
 #ifdef OG
 		IDirect3DTexture8* d3d_texture=tex->Peek_DX8_Texture();
-#endif
+#endif // OG
 #ifdef ZH
 		IDirect3DTexture8* d3d_texture=tex->Peek_D3D_Texture();
-#endif
+#endif // ZH
 		if (!d3d_texture) continue;
 		DX8_ErrorCode(d3d_texture->GetLevelDesc(0,&desc));
 
@@ -847,7 +847,7 @@ RenderObjClass * WW3DAssetManager::Create_Render_Obj(const char * name)
 #ifdef ZH
 		AssetStatusClass::Peek_Instance()->Report_Load_On_Demand_RObj(name);
 
-#endif
+#endif // ZH
 		char filename [MAX_PATH];
 		char *mesh_name = ::strchr (name, '.');
 		if (mesh_name != NULL) {
@@ -862,11 +862,11 @@ RenderObjClass * WW3DAssetManager::Create_Render_Obj(const char * name)
 #ifdef OG
 			StringClass	new_filename = StringClass("..\\") + filename;
 
-#endif
+#endif // OG
 #ifdef ZH
 			StringClass	new_filename(StringClass("..\\"),true);
 			new_filename+=filename;
-#endif
+#endif // ZH
 			Load_3D_Assets( new_filename );
 		}
 
@@ -882,7 +882,7 @@ RenderObjClass * WW3DAssetManager::Create_Render_Obj(const char * name)
 			}
 #ifdef ZH
 			AssetStatusClass::Peek_Instance()->Report_Missing_RObj(name);
-#endif
+#endif // ZH
 		}
 		return NULL;		// Failed to find a prototype
 	}
@@ -1037,7 +1037,7 @@ HAnimClass *	WW3DAssetManager::Get_HAnim(const char * name)
 #ifdef ZH
 
 			AssetStatusClass::Peek_Instance()->Report_Load_On_Demand_HAnim(name);
-#endif
+#endif // ZH
 
 			char filename[ MAX_PATH ];
 			char *animname = strchr( name, '.');
@@ -1047,11 +1047,11 @@ HAnimClass *	WW3DAssetManager::Get_HAnim(const char * name)
 #ifdef OG
 				WWASSERT_PRINT( 0,"Animation has no . in the name\n");
 
-#endif
+#endif // OG
 #ifdef ZH
 				WWDEBUG_SAY(( "Animation %s has no . in the name\n", name ));
 				WWASSERT( 0 );
-#endif
+#endif // ZH
 				return NULL;
 			}
 
@@ -1065,11 +1065,11 @@ HAnimClass *	WW3DAssetManager::Get_HAnim(const char * name)
 			if (anim == NULL) {
 #ifdef OG
 //				WWDEBUG_SAY(("WARNING: Animation %s not found!\n", name));
-#endif
+#endif // OG
 				HAnimManager.Register_Missing( name );		// This is now a KNOWN missing anim
 #ifdef ZH
 				AssetStatusClass::Peek_Instance()->Report_Missing_HAnim(name);
-#endif
+#endif // ZH
 			}
 		}
 	}
@@ -1103,7 +1103,7 @@ HTreeClass *	WW3DAssetManager::Get_HTree(const char * name)
 #ifdef ZH
 		AssetStatusClass::Peek_Instance()->Report_Load_On_Demand_HTree(name);
 
-#endif
+#endif // ZH
 		char filename[ MAX_PATH ];
 		sprintf( filename, "%s.w3d", name);
 
@@ -1112,27 +1112,27 @@ HTreeClass *	WW3DAssetManager::Get_HTree(const char * name)
 #ifdef OG
 			StringClass	new_filename = StringClass("..\\") + filename;
 
-#endif
+#endif // OG
 #ifdef ZH
 			StringClass	new_filename("..\\",true);
 			new_filename+=filename;
-#endif
+#endif // ZH
 			Load_3D_Assets( new_filename );
 		}
 
 		htree = HTreeManager.Get_Tree(name);	// Try again
 #ifdef OG
 	}
-#endif
+#endif // OG
 
 #ifdef OG
 	return htree;
 
-#endif
+#endif // OG
 #ifdef ZH
 		if (htree == NULL) {
 			AssetStatusClass::Peek_Instance()->Report_Missing_HTree(name);
-#endif
+#endif // ZH
 }
 #ifdef OG
 
@@ -1170,17 +1170,17 @@ TextureClass* WW3DAssetManager::Get_Bumpmap_Based_On_Texture(TextureClass* textu
 		tex = NEW_REF(BumpmapTextureClass,(texture));
 		tex->Set_Texture_Name(bump_name);
 		TextureHash.Insert(tex->Get_Texture_Name(),tex);
-#endif
+#endif // OG
 	}
 
 #ifdef OG
 	tex->Add_Ref();
 	return tex;
-#endif
+#endif // OG
 #ifdef ZH
 	return htree;
 
-#endif
+#endif // ZH
 }
 
 /***********************************************************************************************
@@ -1198,29 +1198,29 @@ TextureClass* WW3DAssetManager::Get_Bumpmap_Based_On_Texture(TextureClass* textu
 #ifdef OG
 TextureClass * WW3DAssetManager::Get_Texture(
 
-#endif
+#endif // OG
 #ifdef ZH
 TextureClass * WW3DAssetManager::Get_Texture
 (
-#endif
+#endif // ZH
 	const char * filename, 
 #ifdef OG
 	TextureClass::MipCountType mip_level_count,
-#endif
+#endif // OG
 #ifdef ZH
 	MipCountType mip_level_count,
-#endif
+#endif // ZH
 	WW3DFormat texture_format,
 #ifdef OG
 	bool allow_compression)
 
-#endif
+#endif // OG
 #ifdef ZH
 	bool allow_compression,
 	TextureBaseClass::TexAssetType type,
 	bool allow_reduction
 )
-#endif
+#endif // ZH
 {
 	WWPROFILE( "WW3DAssetManager::Get_Texture 1" );
 #ifdef ZH
@@ -1232,7 +1232,7 @@ TextureClass * WW3DAssetManager::Get_Texture
 	{
 		mip_level_count=MIP_LEVELS_1;
 	}
-#endif
+#endif // ZH
 
 	/*
 	** Bail if the user isn't really asking for anything
@@ -1240,11 +1240,11 @@ TextureClass * WW3DAssetManager::Get_Texture
 #ifdef OG
 	if ((filename == NULL) || (strlen(filename) == 0)) {
 
-#endif
+#endif // OG
 #ifdef ZH
 	if ((filename == NULL) || (strlen(filename) == 0)) 
 	{
-#endif
+#endif // ZH
 		return NULL;
 	}
 
@@ -1259,12 +1259,12 @@ TextureClass * WW3DAssetManager::Get_Texture
 	if (tex && texture_format!=WW3D_FORMAT_UNKNOWN) {
 		WWASSERT_PRINT(tex->Get_Texture_Format()==texture_format,("Texture %s has already been loaded witt different format",filename));
 
-#endif
+#endif // OG
 #ifdef ZH
 	if (tex && (tex->Is_Initialized() == true) && (texture_format!=WW3D_FORMAT_UNKNOWN)) 
 	{
 		WWASSERT_PRINT(tex->Get_Texture_Format()==texture_format,("Texture %s has already been loaded with different format",filename));
-#endif
+#endif // ZH
 	}
 
 	/*
@@ -1274,7 +1274,7 @@ TextureClass * WW3DAssetManager::Get_Texture
 	if (!tex) {
 		tex = NEW_REF(TextureClass,(lower_case_name, NULL, mip_level_count, texture_format, allow_compression));
 
-#endif
+#endif // OG
 #ifdef ZH
 	if (!tex) 
 	{
@@ -1290,7 +1290,7 @@ TextureClass * WW3DAssetManager::Get_Texture
 		{
 			tex = NEW_REF (VolumeTextureClass, (lower_case_name, NULL, mip_level_count, texture_format, allow_compression, allow_reduction));
 		}
-#endif
+#endif // ZH
 		TextureHash.Insert(tex->Get_Texture_Name(),tex);
 	}
 
@@ -1348,7 +1348,7 @@ void WW3DAssetManager::Release_Unused_Textures(void)
 	*/
 #ifdef OG
 //	SLNode<TextureClass> *node, *next;
-#endif
+#endif // OG
 
 	unsigned count=0;
 	TextureClass* temp_textures[256];
@@ -1405,7 +1405,7 @@ void WW3DAssetManager::Release_Texture(TextureClass *tex)
 //			return;
 //		}
 //	}
-#endif
+#endif // OG
 }
 
 void WW3DAssetManager::Log_All_Textures(void)

@@ -71,7 +71,7 @@
 // DEFINES ////////////////////////////////////////////////////////////////////
 //-----------------------------------------------------------------------------
 
-#endif
+#endif // OG
 #ifdef ZH
 
 //-------------------------------------------------------------------------------------------------
@@ -102,12 +102,12 @@ void parseUpgradePair( INI *ini, void *instance, void *store, const void *userDa
 	// Insert the info into the upgrade list
 	std::list<upgradePair> * theList = (std::list<upgradePair>*)store;
 	theList->push_back(info);
-#endif
+#endif // ZH
 
 #ifdef ZH
 }  // end parseFactionObjectCreationList
 
-#endif
+#endif // ZH
 //-----------------------------------------------------------------------------
 // PUBLIC FUNCTIONS ///////////////////////////////////////////////////////////
 //-----------------------------------------------------------------------------
@@ -156,7 +156,7 @@ UpdateSleepTime AutoDepositUpdate::update( void )
 {
 #ifdef ZH
 	const AutoDepositUpdateModuleData *modData = getAutoDepositUpdateModuleData();
-#endif
+#endif // ZH
 /// @todo srj use SLEEPY_UPDATE here
 	if( TheGameLogic->getFrame() >= m_depositOnFrame)
 	{
@@ -168,17 +168,17 @@ UpdateSleepTime AutoDepositUpdate::update( void )
 		}
 #ifdef OG
 		m_depositOnFrame = TheGameLogic->getFrame() + getAutoDepositUpdateModuleData()->m_depositFrame;
-#endif
+#endif // OG
 #ifdef ZH
 		m_depositOnFrame = TheGameLogic->getFrame() + modData->m_depositFrame;
-#endif
+#endif // ZH
 		
 #ifdef OG
 		if(getObject()->isNeutralControlled() || getAutoDepositUpdateModuleData()->m_depositAmount <= 0 )
-#endif
+#endif // OG
 #ifdef ZH
 		if(getObject()->isNeutralControlled() || modData->m_depositAmount <= 0 )
-#endif
+#endif // ZH
 			return UPDATE_SLEEP_NONE;
 
 		// makes sure that buildings under construction do not get a bonus CCB
@@ -187,13 +187,13 @@ UpdateSleepTime AutoDepositUpdate::update( void )
 #ifdef ZH
 		
 		int moneyAmount = modData->m_depositAmount + getUpgradedSupplyBoost();
-#endif
+#endif // ZH
 		
 #ifdef OG
 		getObject()->getControllingPlayer()->getMoney()->deposit( getAutoDepositUpdateModuleData()->m_depositAmount);
 		getObject()->getControllingPlayer()->getScoreKeeper()->addMoneyEarned( getAutoDepositUpdateModuleData()->m_depositAmount);
 
-#endif
+#endif // OG
 #ifdef ZH
 		if( modData->m_isActualMoney )
 		{
@@ -214,28 +214,28 @@ UpdateSleepTime AutoDepositUpdate::update( void )
 		
 		if( displayMoney )
 		{
-#endif
+#endif // ZH
 		
 #ifdef OG
 		//Display cash income floating over the blacklotus
 		if(getAutoDepositUpdateModuleData()->m_depositAmount > 0)
-#endif
+#endif // OG
 #ifdef ZH
       const Object *owner = getObject();
       if ( owner )
-#endif
+#endif // ZH
 		{
 #ifdef ZH
 
 			  // OY LOOK!  I AM USING LOCAL PLAYER.  Do not put anything other than TheInGameUI->addFloatingText in the block this controls!!!
-#endif
+#endif // ZH
 			UnicodeString moneyString;
 #ifdef OG
 			moneyString.format( TheGameText->fetch( "GUI:AddCash" ), getAutoDepositUpdateModuleData()->m_depositAmount );
-#endif
+#endif // OG
 #ifdef ZH
 			  moneyString.format( TheGameText->fetch( "GUI:AddCash" ), moneyAmount );
-#endif
+#endif // ZH
 			Coord3D pos;
 			pos.set( getObject()->getPosition() );
 			pos.z += 10.0f; //add a little z to make it show up above the unit.
@@ -250,13 +250,13 @@ UpdateSleepTime AutoDepositUpdate::update( void )
         }
       
       
-#endif
+#endif // ZH
 			Color color = getObject()->getControllingPlayer()->getPlayerColor() | GameMakeColor( 0, 0, 0, 230 );
 			TheInGameUI->addFloatingText( moneyString, &pos, color );
 #ifdef ZH
       }
 		}		
-#endif
+#endif // ZH
 		}
 		
 #ifdef ZH
@@ -284,15 +284,15 @@ Int AutoDepositUpdate::getUpgradedSupplyBoost() const
 
 		// check next
 		++it;
-#endif
+#endif // ZH
 	}
 
 #ifdef OG
 	return UPDATE_SLEEP_NONE;
-#endif
+#endif // OG
 #ifdef ZH
 	return 0;
-#endif
+#endif // ZH
 }
 
 // ------------------------------------------------------------------------------------------------

@@ -470,11 +470,11 @@ __declspec(dllexport) LPVOID CALLBACK PatchCallBack(UINT Id, LPVOID Param)
 #ifdef OG
 	break;  // these just display text
 
-#endif
+#endif // OG
 #ifdef ZH
 		// Need to return this so Foreign Lang chars don't mess up.
 		return "ANSI";
-#endif
+#endif // ZH
 
     case 5:
 	  // % completed

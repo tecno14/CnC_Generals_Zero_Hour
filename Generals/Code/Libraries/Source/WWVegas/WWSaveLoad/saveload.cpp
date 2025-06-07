@@ -28,17 +28,17 @@
  *                                                                                             *
 #ifdef OG
  *                     $Modtime:: 5/09/01 11:48a                                              $*
-#endif
+#endif // OG
 #ifdef ZH
  *                     $Modtime:: 12/09/01 6:42p                                              $*
-#endif
+#endif // ZH
  *                                                                                             *
 #ifdef OG
  *                    $Revision:: 15                                                          $*
-#endif
+#endif // OG
 #ifdef ZH
  *                    $Revision:: 19                                                          $*
-#endif
+#endif // ZH
  *                                                                                             *
  *---------------------------------------------------------------------------------------------*
  * Functions:                                                                                  *
@@ -59,7 +59,7 @@
 #pragma warning(disable:4201) // warning C4201: nonstandard extension used : nameless struct/union
 #include <windows.h>
 #include "systimer.h"
-#endif
+#endif // ZH
 
 
 SaveLoadSubSystemClass *		SaveLoadSystemClass::SubSystemListHead = NULL;
@@ -87,35 +87,35 @@ bool SaveLoadSystemClass::Load (ChunkLoadClass &cload,bool auto_post_load)
 #ifdef OG
 //	WWASSERT(PostLoadList.Head() == NULL);
 
-#endif
+#endif // OG
 #ifdef ZH
 	WWLOG_PREPARE_TIME_AND_MEMORY("SaveLoadSystemClass::Load");
 
-#endif
+#endif // ZH
 	PointerRemapper.Reset();
 #ifdef ZH
 	WWLOG_INTERMEDIATE("PointerRemapper.Reset()");
-#endif
+#endif // ZH
 	bool ok = true;
 
 	// Load each chunk we encounter and link the manager into the PostLoad list
 	while (cload.Open_Chunk ()) {
 #ifdef ZH
 		SaveLoadStatus::Inc_Status_Count();		// Count the sub systems loaded
-#endif
+#endif // ZH
 		SaveLoadSubSystemClass *sys = Find_Sub_System(cload.Cur_Chunk_ID ());
 #ifdef ZH
 		WWLOG_INTERMEDIATE("Find_Sub_System");
-#endif
+#endif // ZH
 		if (sys != NULL) {
 #ifdef ZH
 //WWRELEASE_SAY(("			Name: %s\n",sys->Name()));
-#endif
+#endif // ZH
 			INIT_SUB_STATUS(sys->Name());
 			ok &= sys->Load(cload);
 #ifdef ZH
 			WWLOG_INTERMEDIATE(sys->Name());
-#endif
+#endif // ZH
 		}
 		cload.Close_Chunk();
 	}
@@ -124,24 +124,24 @@ bool SaveLoadSystemClass::Load (ChunkLoadClass &cload,bool auto_post_load)
 	PointerRemapper.Process();
 #ifdef ZH
 	WWLOG_INTERMEDIATE("PointerRemapper.Process()");
-#endif
+#endif // ZH
 	PointerRemapper.Reset();
 #ifdef ZH
 	WWLOG_INTERMEDIATE("PointerRemapper.Reset()");
-#endif
+#endif // ZH
 
 	// Call PostLoad on each PersistClass that wanted post-load
 	if (auto_post_load) {
 #ifdef OG
 		Post_Load_Processing();
-#endif
+#endif // OG
 #ifdef ZH
 		Post_Load_Processing(NULL);
-#endif
+#endif // ZH
 	}
 #ifdef ZH
 	WWLOG_INTERMEDIATE("PostLoadProcessing");
-#endif
+#endif // ZH
 
 	return ok;
 }
@@ -149,7 +149,7 @@ bool SaveLoadSystemClass::Load (ChunkLoadClass &cload,bool auto_post_load)
 #ifdef OG
 bool SaveLoadSystemClass::Post_Load_Processing (void)
 
-#endif
+#endif // OG
 #ifdef ZH
 // Nework update macro for post loader.
 #define UPDATE_NETWORK 											\
@@ -162,18 +162,18 @@ bool SaveLoadSystemClass::Post_Load_Processing (void)
 	}                                                  \
 
 bool SaveLoadSystemClass::Post_Load_Processing (void(*network_callback)(void))
-#endif
+#endif // ZH
 {
 #ifdef ZH
 	unsigned long time = TIMEGETTIME();
 
-#endif
+#endif // ZH
 	// Call PostLoad on each PersistClass that wanted post-load
 	PostLoadableClass * obj = PostLoadList.Remove_Head();
 	while (obj) {
 #ifdef ZH
 		UPDATE_NETWORK;
-#endif
+#endif // ZH
 		obj->On_Post_Load();
 		obj->Set_Post_Load_Registered(false);
 		obj = PostLoadList.Remove_Head();

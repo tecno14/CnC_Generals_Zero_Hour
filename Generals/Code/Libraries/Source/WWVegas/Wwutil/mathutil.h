@@ -53,10 +53,10 @@ class cMathUtil
 
 #ifdef OG
 		static const double PI;
-#endif
+#endif // OG
 #ifdef ZH
 		static const double PI_1;
-#endif
+#endif // ZH
 		static const double PI_2;
 };
 

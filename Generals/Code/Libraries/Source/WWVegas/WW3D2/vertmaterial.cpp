@@ -549,7 +549,7 @@ void VertexMaterialClass::Parse_W3dVertexMaterialStruct(const W3dVertexMaterialS
 void VertexMaterialClass::Parse_Mapping_Args(const W3dVertexMaterialStruct & vmat,char * mapping0_arg_buffer,char * mapping1_arg_buffer)
 {
 	
-#endif
+#endif // ZH
 	// Read an INIClass from the mapping argument buffer - this will be used
 	// to initialize any special mappers used.
 	INIClass mapping0_arg_ini;
@@ -557,7 +557,7 @@ void VertexMaterialClass::Parse_Mapping_Args(const W3dVertexMaterialStruct & vma
 #ifdef ZH
 
 		int mapping0_arg_len = strlen(mapping0_arg_buffer);
-#endif
+#endif // ZH
 
 		char *extended_arg_buffer = MSGW3DNEWARRAY("VertexMaterialClassTemp") char[mapping0_arg_len + 10];
 		sprintf(extended_arg_buffer, "[Args]\n%s", mapping0_arg_buffer);
@@ -567,7 +567,7 @@ void VertexMaterialClass::Parse_Mapping_Args(const W3dVertexMaterialStruct & vma
 		delete [] mapping0_arg_buffer;
 		mapping0_arg_buffer = NULL;
 
-#endif
+#endif // OG
 		BufferStraw map_arg_buf_straw((void *)extended_arg_buffer, mapping0_arg_len);
 
 		mapping0_arg_ini.Load(map_arg_buf_straw);
@@ -581,7 +581,7 @@ void VertexMaterialClass::Parse_Mapping_Args(const W3dVertexMaterialStruct & vma
 #ifdef ZH
 		int mapping1_arg_len = strlen(mapping1_arg_buffer);
 
-#endif
+#endif // ZH
 		char *extended_arg_buffer = MSGW3DNEWARRAY("VertexMaterialClassTemp") char[mapping1_arg_len + 20];
 		sprintf(extended_arg_buffer, "[Args]\n%s", mapping1_arg_buffer);
 		mapping1_arg_len = strlen(extended_arg_buffer) + 1;
@@ -590,7 +590,7 @@ void VertexMaterialClass::Parse_Mapping_Args(const W3dVertexMaterialStruct & vma
 		delete [] mapping1_arg_buffer;
 		mapping1_arg_buffer = NULL;
 
-#endif
+#endif // OG
 		BufferStraw map_arg_buf_straw((void *)extended_arg_buffer, mapping1_arg_len);
 
 		mapping1_arg_ini.Load(map_arg_buf_straw);
@@ -602,7 +602,7 @@ void VertexMaterialClass::Parse_Mapping_Args(const W3dVertexMaterialStruct & vma
 
 	if (vmat.Attributes & W3DVERTMAT_USE_DEPTH_CUE) {
 		Set_Flag(VertexMaterialClass::DEPTH_CUE,true);
-#endif
+#endif // OG
 	}
 
 #ifdef OG
@@ -610,7 +610,7 @@ void VertexMaterialClass::Parse_Mapping_Args(const W3dVertexMaterialStruct & vma
 		Set_Flag(VertexMaterialClass::COPY_SPECULAR_TO_DIFFUSE,true);
 	}
 
-#endif
+#endif // OG
 	// Set up the vertex mapper.  If it is one of the simple
 	// ones, set the pointer to one of the global instances. 
 	int mapping = vmat.Attributes & W3DVERTMAT_STAGE0_MAPPING_MASK;
@@ -710,10 +710,10 @@ void VertexMaterialClass::Parse_Mapping_Args(const W3dVertexMaterialStruct & vma
 			{
 #ifdef OG
 				WSClassicEnvironmentMapperClass *mapper = NEW_REF(WSClassicEnvironmentMapperClass,(0));
-#endif
+#endif // OG
 #ifdef ZH
 				WSClassicEnvironmentMapperClass *mapper = NEW_REF(WSClassicEnvironmentMapperClass,(mapping0_arg_ini, "Args", 0));
-#endif
+#endif // ZH
 				Set_Mapper(mapper,0);
 				mapper->Release_Ref();
 			}
@@ -723,10 +723,10 @@ void VertexMaterialClass::Parse_Mapping_Args(const W3dVertexMaterialStruct & vma
 			{
 #ifdef OG
 				WSEnvironmentMapperClass *mapper = NEW_REF(WSEnvironmentMapperClass,(0));
-#endif
+#endif // OG
 #ifdef ZH
 				WSEnvironmentMapperClass *mapper = NEW_REF(WSEnvironmentMapperClass,(mapping0_arg_ini, "Args", 0));
-#endif
+#endif // ZH
 				Set_Mapper(mapper,0);
 				mapper->Release_Ref();
 			}
@@ -782,7 +782,7 @@ void VertexMaterialClass::Parse_Mapping_Args(const W3dVertexMaterialStruct & vma
 			{
 				GridWSClassicEnvironmentMapperClass *mapper =
 					NEW_REF(GridWSClassicEnvironmentMapperClass,(mapping0_arg_ini, "Args", 0));
-#endif
+#endif // ZH
 			Set_Mapper(mapper,0);
 			mapper->Release_Ref();
 		}
@@ -798,11 +798,11 @@ void VertexMaterialClass::Parse_Mapping_Args(const W3dVertexMaterialStruct & vma
 			}
 			break;
 
-#endif
+#endif // ZH
 		default:
 #ifdef OG
 				WWDEBUG_SAY(("Unsupported mapper in %s\n",name));
-#endif
+#endif // OG
 			break;
 	}
 
@@ -904,10 +904,10 @@ void VertexMaterialClass::Parse_Mapping_Args(const W3dVertexMaterialStruct & vma
 			{
 #ifdef OG
 				WSClassicEnvironmentMapperClass *mapper = NEW_REF(WSClassicEnvironmentMapperClass,(1));
-#endif
+#endif // OG
 #ifdef ZH
 				WSClassicEnvironmentMapperClass *mapper = NEW_REF(WSClassicEnvironmentMapperClass,(mapping1_arg_ini, "Args", 1));
-#endif
+#endif // ZH
 				Set_Mapper(mapper,1);
 				mapper->Release_Ref();
 			}
@@ -917,10 +917,10 @@ void VertexMaterialClass::Parse_Mapping_Args(const W3dVertexMaterialStruct & vma
 			{
 #ifdef OG
 				WSEnvironmentMapperClass *mapper = NEW_REF(WSEnvironmentMapperClass,(1));
-#endif
+#endif // OG
 #ifdef ZH
 				WSEnvironmentMapperClass *mapper = NEW_REF(WSEnvironmentMapperClass,(mapping1_arg_ini, "Args", 1));
-#endif
+#endif // ZH
 				Set_Mapper(mapper,1);
 				mapper->Release_Ref();
 			}
@@ -964,16 +964,16 @@ void VertexMaterialClass::Parse_Mapping_Args(const W3dVertexMaterialStruct & vma
 
 #ifdef OG
 		case W3DVERTMAT_STAGE0_MAPPING_BUMPENV:
-#endif
+#endif // OG
 #ifdef ZH
 		case W3DVERTMAT_STAGE1_MAPPING_BUMPENV:
-#endif
+#endif // ZH
 			{
 				BumpEnvTextureMapperClass *mapper =
 #ifdef OG
 					NEW_REF(BumpEnvTextureMapperClass,(mapping1_arg_ini, "Args", 0));
 
-#endif
+#endif // OG
 #ifdef ZH
 					NEW_REF(BumpEnvTextureMapperClass,(mapping1_arg_ini, "Args", 1));
 				Set_Mapper(mapper,1);
@@ -994,7 +994,7 @@ void VertexMaterialClass::Parse_Mapping_Args(const W3dVertexMaterialStruct & vma
 			{
 				GridWSEnvironmentMapperClass *mapper =
 					NEW_REF(GridWSEnvironmentMapperClass,(mapping1_arg_ini, "Args", 1));
-#endif
+#endif // ZH
 				Set_Mapper(mapper,1);
 				mapper->Release_Ref();
 			}
@@ -1003,7 +1003,7 @@ void VertexMaterialClass::Parse_Mapping_Args(const W3dVertexMaterialStruct & vma
 		default:
 #ifdef OG
 			WWDEBUG_SAY(("Unsupported mapper in %s\n",name));
-#endif
+#endif // OG
 			break;
 	}
 #ifdef OG
@@ -1025,7 +1025,7 @@ void VertexMaterialClass::Parse_Mapping_Args(const W3dVertexMaterialStruct & vma
 	Set_Opacity(vmat.Opacity);
 
 	return WW3D_ERROR_OK;
-#endif
+#endif // OG
 }
 
 

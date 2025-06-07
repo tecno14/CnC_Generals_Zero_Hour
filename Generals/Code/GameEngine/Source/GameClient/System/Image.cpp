@@ -41,7 +41,7 @@
 #include "GameClient/Image.h"
 #ifdef ZH
 #include "Common/NameKeyGenerator.h"
-#endif
+#endif // ZH
 
 // PRIVATE DATA ///////////////////////////////////////////////////////////////////////////////////
 const FieldParse Image::m_imageFieldParseTable[] = 
@@ -158,7 +158,7 @@ Image::Image( void )
 	m_status = IMAGE_STATUS_NONE;
 #ifdef OG
 	m_next = NULL;
-#endif
+#endif // OG
 
 }  // end Image
 
@@ -207,7 +207,7 @@ ImageCollection::ImageCollection( void )
 
 	m_imageList = NULL;
 
-#endif
+#endif // OG
 }  // end ImageCollection
 
 //-------------------------------------------------------------------------------------------------
@@ -229,28 +229,28 @@ ImageCollection::~ImageCollection( void )
 	}  // end while
 	m_imageList = NULL;
 
-#endif
+#endif // OG
 #ifdef ZH
   for (std::map<unsigned,Image *>::iterator i=m_imageMap.begin();i!=m_imageMap.end();++i)
     i->second->deleteInstance();
 
-#endif
+#endif // ZH
 }  // end ~ImageCollection
 
 //-------------------------------------------------------------------------------------------------
 #ifdef OG
 /** Return the next image in the collection */
-#endif
+#endif // OG
 #ifdef ZH
 /** adds the given image to the collection, transfers ownership to this object */
-#endif
+#endif // ZH
 //-------------------------------------------------------------------------------------------------
 #ifdef OG
 Image *ImageCollection::nextImage( Image *image )
-#endif
+#endif // OG
 #ifdef ZH
 void ImageCollection::addImage( Image *image )
-#endif
+#endif // ZH
 {
 #ifdef OG
 
@@ -274,11 +274,11 @@ Image *ImageCollection::newImage( void )
 
 	return image;
 
-#endif
+#endif // OG
 #ifdef ZH
   m_imageMap[TheNameKeyGenerator->nameToLowercaseKey(image->getName())]=image;
 
-#endif
+#endif // ZH
 }  // end newImage
 
 //-------------------------------------------------------------------------------------------------
@@ -310,12 +310,12 @@ const Image *ImageCollection::findImageByName( const AsciiString& name )
 	// not found
 	return NULL;
 
-#endif
+#endif // OG
 #ifdef ZH
   std::map<unsigned,Image *>::iterator i=m_imageMap.find(TheNameKeyGenerator->nameToLowercaseKey(name));
   return i==m_imageMap.end()?NULL:i->second;
 
-#endif
+#endif // ZH
 }  // end findImageByName
 #ifdef OG
 
@@ -344,7 +344,7 @@ const Image *ImageCollection::findImageByFilename( const AsciiString& filename )
 	return NULL;
 
 }  // end findImageByFilename
-#endif
+#endif // OG
 
 //-------------------------------------------------------------------------------------------------
 /** Load this image collection with all the images specified in the INI files

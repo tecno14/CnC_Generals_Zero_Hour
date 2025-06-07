@@ -487,12 +487,12 @@ void RecorderClass::updateRecord()
 #ifdef OG
 			 msg->getArgument(0)->integer != GAME_NONE) {
 
-#endif
+#endif // OG
 #ifdef ZH
 			 msg->getArgument(0)->integer != GAME_SINGLE_PLAYER && // Due to the massive amount of scripts that use <local player> in GC and single player, replays have been cut for them.
 			 msg->getArgument(0)->integer != GAME_NONE) 
 		{
-#endif
+#endif // ZH
 			m_originalGameMode = msg->getArgument(0)->integer;
 			DEBUG_LOG(("RecorderClass::updateRecord() - original game is mode %d\n", m_originalGameMode));
 			lastFrame = 0;
@@ -563,10 +563,10 @@ void RecorderClass::startRecording(GameDifficulty diff, Int originalGameMode, In
 	//
 #ifdef OG
 	// **** if this changes, change the LAN Playtest code above ****
-#endif
+#endif // OG
 #ifdef ZH
 	// **** if this changes, change the LAN code above ****
-#endif
+#endif // ZH
 	//
 	time_t t = 0;
 	fwrite(&t, sizeof(time_t), 1, m_file);	// reserve space for start time
@@ -1015,7 +1015,7 @@ void RecorderClass::handleCRCMessage(UnsignedInt newCRC, Int playerIndex, Bool f
 
 #ifdef ZH
 			//Kris: Patch 1.01 November 10, 2003 (integrated changes from Matt Campbell)
-#endif
+#endif // ZH
 			// Since we don't seem to have any *visible* desyncs when replaying games, but get this warning
 			// virtually every replay, the assumption is our CRC checking is faulty.  Since we're at the
 			// tail end of patch season, let's just disable the message, and hope the users believe the

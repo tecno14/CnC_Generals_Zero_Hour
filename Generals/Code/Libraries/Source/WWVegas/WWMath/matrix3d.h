@@ -27,31 +27,31 @@
  *                                                                                             * 
 #ifdef OG
  *                   Programmer : Greg Hjelstrom                                               * 
-#endif
+#endif // OG
 #ifdef ZH
  *                Org Programmer : Greg Hjelstrom                                               * 
-#endif
+#endif // ZH
  *                                                                                             * 
 #ifdef OG
  *                   Start Date : 02/24/97                                                     * 
-#endif
+#endif // OG
 #ifdef ZH
  *                   Programmer : Kenny Mitchell                          * 
-#endif
+#endif // ZH
  *                                                                                             * 
 #ifdef OG
  *                  Last Update : February 24, 1997 [GH]                                       * 
 
-#endif
+#endif // OG
 #ifdef ZH
  *                   Start Date : 06/02/97                                                     * 
  *                                                                         * 
  *                  Last Update : June 6, 2002 [KM]                                            * 
-#endif
+#endif // ZH
  *                                                                                             * 
 #ifdef ZH
  * 06/26/02 KM Matrix name change to avoid MAX conflicts                                       *
-#endif
+#endif // ZH
  *---------------------------------------------------------------------------------------------* 
  * Functions:                                                                                  * 
  *   Matrix3D::Matrix3D -- Constructors for Matrix3D                                           * 
@@ -120,11 +120,11 @@
 #ifdef OG
 class Matrix3;
 class Matrix4;
-#endif
+#endif // OG
 #ifdef ZH
 class Matrix3x3;
 class Matrix4x4;
-#endif
+#endif // ZH
 class Quaternion;
 
 /*******************************************************************************
@@ -191,10 +191,10 @@ public:
 	WWINLINE explicit Matrix3D(
 #ifdef OG
 		const Matrix3 & rotation,
-#endif
+#endif // OG
 #ifdef ZH
 		const Matrix3x3 & rotation,
-#endif
+#endif // ZH
 		const Vector3 & position
 	);
 
@@ -234,10 +234,10 @@ public:
 
 #ifdef OG
 	void Set(const Matrix3 & rotation,const Vector3 & position);
-#endif
+#endif // OG
 #ifdef ZH
 	void Set(const Matrix3x3 & rotation,const Vector3 & position);
-#endif
+#endif // ZH
 
 	void Set(const Quaternion & rotation,const Vector3 & position);
 
@@ -254,10 +254,10 @@ public:
 
 #ifdef OG
 	void Set_Rotation(const Matrix3 & m);
-#endif
+#endif // OG
 #ifdef ZH
 	void Set_Rotation(const Matrix3x3 & m);
-#endif
+#endif // ZH
 	void Set_Rotation(const Quaternion & q);
 
 	WWINLINE float Get_X_Translation(void) const { return Row[0][3]; };
@@ -499,10 +499,10 @@ WWINLINE Matrix3D::Matrix3D(const Vector3 & axis,float sine,float cosine)
 
 #ifdef OG
 WWINLINE Matrix3D::Matrix3D(const Matrix3 & rot,const Vector3 & pos)
-#endif
+#endif // OG
 #ifdef ZH
 WWINLINE Matrix3D::Matrix3D(const Matrix3x3 & rot,const Vector3 & pos)
-#endif
+#endif // ZH
 {
 	Set(rot,pos);
 }

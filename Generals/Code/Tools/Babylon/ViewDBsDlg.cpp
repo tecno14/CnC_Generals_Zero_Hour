@@ -23,11 +23,11 @@
 #ifdef OG
 #include "noxstring.h"
 #include "noxstringdlg.h"
-#endif
+#endif // OG
 #ifdef ZH
 #include "Babylon.h"
 #include "Babylondlg.h"
-#endif
+#endif // ZH
 #include "VIEWDBSII.h"
 #include "transdb.h"
 

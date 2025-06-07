@@ -75,4 +75,4 @@ void SHD_Register_Loader()
 	WW3DAssetManager::Get_Instance()->Register_Prototype_Loader(&_MeshLoader);
 }
 
-#endif
+#endif // ZH

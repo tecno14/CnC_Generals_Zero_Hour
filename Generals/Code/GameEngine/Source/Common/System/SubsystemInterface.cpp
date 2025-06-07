@@ -38,10 +38,10 @@
 #ifdef DUMP_PERF_STATS
 #ifdef OG
 #include "GameLogic\GameLogic.h"
-#endif
+#endif // OG
 #ifdef ZH
 #include "GameLogic/GameLogic.h"
-#endif
+#endif // ZH
 #include "Common/PerfTimer.h"
 
 Real SubsystemInterface::s_msConsumed = 0;
@@ -56,12 +56,12 @@ m_startTimeConsumed(0),
 #ifdef OG
 m_curUpdateTime(0)
 
-#endif
+#endif // OG
 #ifdef ZH
 m_curUpdateTime(0),
 m_dumpUpdate(false),
 m_dumpDraw(false)
-#endif
+#endif // ZH
 #endif
 {
 	if (TheSubsystemList) {
@@ -80,7 +80,7 @@ SubsystemInterface::~SubsystemInterface()
 #ifdef DUMP_PERF_STATS
 #ifdef ZH
 static const Real MIN_TIME_THRESHOLD = 0.0002f; // .2 msec. [8/13/2003]
-#endif
+#endif // ZH
 void SubsystemInterface::UPDATE(void) 
 {
 	__int64 startTime64;
@@ -97,14 +97,14 @@ void SubsystemInterface::UPDATE(void)
 	if (m_curUpdateTime > 0.00001) {
 		//DEBUG_LOG(("Subsys %s total time %.2f, subTime %.2f, net time %.2f\n", 
 
-#endif
+#endif // OG
 #ifdef ZH
 	if (m_curUpdateTime>MIN_TIME_THRESHOLD) {
 		m_dumpUpdate = true;
 	}
 	if (m_curUpdateTime > MIN_TIME_THRESHOLD/10.0f) {
 		//DLOG(Debug::Format("Subsys %s total time %.2f, subTime %.2f, net time %.2f\n", 
-#endif
+#endif // ZH
 		//	m_name.str(), m_curUpdateTime*1000, subTime*1000, (m_curUpdateTime-subTime)*1000	));
 
 		m_curUpdateTime -= subTime;
@@ -130,14 +130,14 @@ void SubsystemInterface::DRAW(void)
 	if (m_curDrawTime > 0.00001) {
 		//DEBUG_LOG(("Subsys %s total time %.2f, subTime %.2f, net time %.2f\n", 
 
-#endif
+#endif // OG
 #ifdef ZH
 	if (m_curDrawTime>MIN_TIME_THRESHOLD) {
 		m_dumpDraw = true;
 	}
 	if (m_curDrawTime > MIN_TIME_THRESHOLD/10.0f) {
 		//DLOG(Debug::Format("Subsys %s total time %.2f, subTime %.2f, net time %.2f\n", 
-#endif
+#endif // ZH
 		//	m_name.str(), m_curUpdateTime*1000, subTime*1000, (m_curUpdateTime-subTime)*1000	));
 
 		m_curDrawTime -= subTime;
@@ -248,10 +248,10 @@ AsciiString SubsystemInterfaceList::dumpTimesForAll()
 		total += sys->getUpdateTime();
 #ifdef OG
 		if (sys->getUpdateTime()>0.00001f) {
-#endif
+#endif // OG
 #ifdef ZH
 		if (sys->doDumpUpdate()) {
-#endif
+#endif // ZH
 			AsciiString curLine;
 			curLine.format("  Time %02.2f MS update() %s \n", sys->getUpdateTime()*1000.0f, sys->getName().str());
 			buffer.concat(curLine);
@@ -261,10 +261,10 @@ AsciiString SubsystemInterfaceList::dumpTimesForAll()
 		total += sys->getDrawTime();
 #ifdef OG
 		if (sys->getDrawTime()>0.00001f) {
-#endif
+#endif // OG
 #ifdef ZH
 		if (sys->doDumpDraw()) {
-#endif
+#endif // ZH
 			AsciiString curLine;
 			curLine.format("  Time %02.2f MS  draw () %s \n", sys->getDrawTime()*1000.0f, sys->getName().str());
 			buffer.concat(curLine);

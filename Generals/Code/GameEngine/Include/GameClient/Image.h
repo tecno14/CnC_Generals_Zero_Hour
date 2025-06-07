@@ -38,7 +38,7 @@
 #include "Common/SubsystemInterface.h"
 #ifdef ZH
 #include <map>
-#endif
+#endif // ZH
 
 struct FieldParse;
 class INI;
@@ -115,7 +115,7 @@ friend class ImageCollection;
 #ifdef OG
 	Image *m_next;						///< for maintaining lists as collections
 
-#endif
+#endif // OG
 	static const FieldParse m_imageFieldParseTable[];		///< the parse table for INI definition
 
 };  // end Image
@@ -140,21 +140,21 @@ public:
 	const Image *findImageByName( const AsciiString& name );					 ///< find image based on name
 #ifdef OG
 	const Image *findImageByFilename( const AsciiString& name );  ///< find image based on filename
-#endif
+#endif // OG
 	
 #ifdef OG
 	Image *firstImage( void );						///< return first image in list
 	Image *nextImage( Image *image );			///< return next image
-#endif
+#endif // OG
 #ifdef ZH
   /// adds the given image to the collection, transfers ownership to this object
   void addImage(Image *image);
-#endif
+#endif // ZH
 
 #ifdef OG
 	Image *newImage( void );							///< return a new, linked image
 
-#endif
+#endif // OG
 #ifdef ZH
   /// enumerates the list of existing images
   Image *Enum(unsigned index)
@@ -164,18 +164,18 @@ public:
         return i->second;
     return NULL;
   }
-#endif
+#endif // ZH
 
 protected:
 #ifdef OG
 
 	Image *m_imageList;  ///< the image list
 
-#endif
+#endif // OG
 #ifdef ZH
   std::map<unsigned,Image *> m_imageMap;  ///< maps named keys to images
 
-#endif
+#endif // ZH
 };  // end ImageCollection
 
 // INLINING ///////////////////////////////////////////////////////////////////////////////////////
@@ -185,7 +185,7 @@ inline void Image::setFilename( AsciiString name ) { m_filename = name; }
 inline AsciiString Image::getFilename( void ) const { return m_filename; }
 #ifdef OG
 inline Image *ImageCollection::firstImage( void ) { return m_imageList; }
-#endif
+#endif // OG
 inline void Image::setUV( Region2D *uv ) { if( uv ) m_UVCoords = *uv; }
 inline const Region2D *Image::getUV( void ) const { return &m_UVCoords; }
 inline void Image::setTextureWidth( Int width ) { m_textureSize.x = width; }

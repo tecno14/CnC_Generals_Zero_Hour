@@ -36,7 +36,7 @@
 #include "GameLogic/WeaponStatus.h"
 #ifdef ZH
 #include "GameLogic/GameLogic.h"
-#endif
+#endif // ZH
 
 #ifdef _INTERNAL
 // for occasional debugging...
@@ -51,7 +51,7 @@ FireWeaponUpdateModuleData::FireWeaponUpdateModuleData()
 #ifdef ZH
   m_initialDelayFrames = 0;
 	m_exclusiveWeaponDelay = 0;
-#endif
+#endif // ZH
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -65,7 +65,7 @@ FireWeaponUpdateModuleData::FireWeaponUpdateModuleData()
 #ifdef ZH
 		{ "InitialDelay",					INI::parseDurationUnsignedInt,	NULL, offsetof( FireWeaponUpdateModuleData, m_initialDelayFrames ) },
 		{ "ExclusiveWeaponDelay",	INI::parseDurationUnsignedInt,	NULL, offsetof( FireWeaponUpdateModuleData, m_exclusiveWeaponDelay ) },
-#endif
+#endif // ZH
 		{ 0, 0, 0, 0 }
 	};
   p.add(dataFieldParse);
@@ -88,7 +88,7 @@ FireWeaponUpdate::FireWeaponUpdate( Thing *thing, const ModuleData* moduleData )
 
   m_initialDelayFrame = TheGameLogic->getFrame() + getFireWeaponUpdateModuleData()->m_initialDelayFrames;
 
-#endif
+#endif // ZH
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -108,14 +108,14 @@ UpdateSleepTime FireWeaponUpdate::update( void )
   if ( TheGameLogic->getFrame() < m_initialDelayFrame )
     return UPDATE_SLEEP_NONE;
 
-#endif
+#endif // ZH
 	// If my weapon is ready, shoot it.
 #ifdef OG
 	if( m_weapon && m_weapon->getStatus() == READY_TO_FIRE )
-#endif
+#endif // OG
 #ifdef ZH
 	if( isOkayToFire() )
-#endif
+#endif // ZH
 	{
 		m_weapon->forceFireWeapon( getObject(), getObject()->getPosition() );
 	}
@@ -145,7 +145,7 @@ Bool FireWeaponUpdate::isOkayToFire()
 		return FALSE;
 
 	return TRUE;
-#endif
+#endif // ZH
 }
 
 // ------------------------------------------------------------------------------------------------
@@ -169,10 +169,10 @@ void FireWeaponUpdate::xfer( Xfer *xfer )
 	// version
 #ifdef OG
 	XferVersion currentVersion = 1;
-#endif
+#endif // OG
 #ifdef ZH
 	XferVersion currentVersion = 2;
-#endif
+#endif // ZH
 	XferVersion version = currentVersion;
 	xfer->xferVersion( &version, currentVersion );
 
@@ -185,7 +185,7 @@ void FireWeaponUpdate::xfer( Xfer *xfer )
 
   if ( version >= 2 )
     xfer->xferUnsignedInt( &m_initialDelayFrame );
-#endif
+#endif // ZH
 
 }  // end xfer
 

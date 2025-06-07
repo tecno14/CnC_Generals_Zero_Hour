@@ -26,43 +26,43 @@
  *                                                                                             *
 #ifdef OG
  *                       Author:: Greg_h                                                       *
-#endif
+#endif // OG
 #ifdef ZH
  *                   Org Author:: Greg_h                                                       *
-#endif
+#endif // ZH
  *                                                                                             *
 #ifdef OG
  *                     $Modtime:: 11/13/99 10:50a                                             $*
-#endif
+#endif // OG
 #ifdef ZH
  *                       Author : Kenny_m                                                      * 
-#endif
+#endif // ZH
  *                                                                                             *
 #ifdef OG
  *                    $Revision:: 5                                                           $*
 
-#endif
+#endif // OG
 #ifdef ZH
  *                     $Modtime:: 06/26/02 4:04p                                             $*
  *                                                                                             *
  *                    $Revision:: 6                                                           $*
-#endif
+#endif // ZH
  *                                                                                             *
 #ifdef ZH
  * 06/26/02 KM Matrix name change to avoid MAX conflicts                                       *
-#endif
+#endif // ZH
  *---------------------------------------------------------------------------------------------*
  * Functions:                                                                                  *
 #ifdef OG
  *   Matrix4::Multiply -- Multiply two Matrix4's together                                      *
  *   Matrix4::Multiply -- Multiply a Matrix3D * Matrix4                                        *
  *   Matrix4::Multiply -- Multiply a Matrix4 * Matrix3D                                        *
-#endif
+#endif // OG
 #ifdef ZH
  *   Matrix4x4::Multiply -- Multiply two Matrix4x4's together                                      *
  *   Matrix4x4::Multiply -- Multiply a Matrix3D * Matrix4x4                                        *
  *   Matrix4x4::Multiply -- Multiply a Matrix4x4 * Matrix3D                                        *
-#endif
+#endif // ZH
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
 #include "matrix4.h"
@@ -71,10 +71,10 @@
 /***********************************************************************************************
 #ifdef OG
  * Matrix4::Multiply -- Multiply two Matrix4's together                                        *
-#endif
+#endif // OG
 #ifdef ZH
  * Matrix4x4::Multiply -- Multiply two Matrix4x4's together                                        *
-#endif
+#endif // ZH
  *                                                                                             *
  * INPUT:                                                                                      *
  *  a - first operand                                                                          *
@@ -90,10 +90,10 @@
  *=============================================================================================*/
 #ifdef OG
 void Matrix4::Multiply(const Matrix4 &a,const Matrix4 &b,Matrix4 * res)
-#endif
+#endif // OG
 #ifdef ZH
 void Matrix4x4::Multiply(const Matrix4x4 &a,const Matrix4x4 &b,Matrix4x4 * res)
-#endif
+#endif // ZH
 {
 	assert(res != &a);
 	assert(res != &b);
@@ -127,10 +127,10 @@ void Matrix4x4::Multiply(const Matrix4x4 &a,const Matrix4x4 &b,Matrix4x4 * res)
 /***********************************************************************************************
 #ifdef OG
  * Matrix4::Multiply -- Multiply a Matrix3D * Matrix4                                          *
-#endif
+#endif // OG
 #ifdef ZH
  * Matrix4x4::Multiply -- Multiply a Matrix3D * Matrix4x4                                          *
-#endif
+#endif // ZH
  *                                                                                             *
  * INPUT:                                                                                      *
  *                                                                                             *
@@ -143,10 +143,10 @@ void Matrix4x4::Multiply(const Matrix4x4 &a,const Matrix4x4 &b,Matrix4x4 * res)
  *=============================================================================================*/
 #ifdef OG
 void Matrix4::Multiply(const Matrix3D &a,const Matrix4 &b,Matrix4 * res)
-#endif
+#endif // OG
 #ifdef ZH
 void Matrix4x4::Multiply(const Matrix3D &a,const Matrix4x4 &b,Matrix4x4 * res)
-#endif
+#endif // ZH
 {
 	assert(res != &b);
 
@@ -179,10 +179,10 @@ void Matrix4x4::Multiply(const Matrix3D &a,const Matrix4x4 &b,Matrix4x4 * res)
 /***********************************************************************************************
 #ifdef OG
  * Matrix4::Multiply -- Multiply a Matrix4 * Matrix3D                                          *
-#endif
+#endif // OG
 #ifdef ZH
  * Matrix4x4::Multiply -- Multiply a Matrix4x4 * Matrix3D                                          *
-#endif
+#endif // ZH
  *                                                                                             *
  * INPUT:                                                                                      *
  *                                                                                             *
@@ -194,10 +194,10 @@ void Matrix4x4::Multiply(const Matrix3D &a,const Matrix4x4 &b,Matrix4x4 * res)
  *=============================================================================================*/
 #ifdef OG
 void Matrix4::Multiply(const Matrix4 & a,const Matrix3D & b,Matrix4 * res)
-#endif
+#endif // OG
 #ifdef ZH
 void Matrix4x4::Multiply(const Matrix4x4 & a,const Matrix3D & b,Matrix4x4 * res)
-#endif
+#endif // ZH
 {
 	assert(res != &a);
 	
@@ -251,4 +251,4 @@ int operator != (const Matrix4x4 & a, const Matrix4x4 & b)
 	return (!(a == b));
 }
 
-#endif
+#endif // ZH

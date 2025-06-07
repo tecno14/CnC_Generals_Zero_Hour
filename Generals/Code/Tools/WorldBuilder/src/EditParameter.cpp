@@ -112,10 +112,10 @@ SidesList *EditParameter::m_sidesListP = NULL;
 
 #ifdef OG
 Int EditParameter::edit( Parameter *pParm, AsciiString unitName ) 
-#endif
+#endif // OG
 #ifdef ZH
 Int EditParameter::edit( Parameter *pParm, Int keyPressed, AsciiString unitName ) 
-#endif
+#endif // ZH
 {
 	if (pParm->getParameterType() == Parameter::COORD3D) 
 	{
@@ -159,7 +159,7 @@ Int EditParameter::edit( Parameter *pParm, Int keyPressed, AsciiString unitName 
 		EditParameter editDlg;
 #ifdef ZH
 		editDlg.m_key = keyPressed;
-#endif
+#endif // ZH
 		editDlg.m_parameter = pParm;
 		//Set the name of the unit, because some parameters build information from the unit itself.
 		editDlg.m_unitName = unitName;
@@ -170,10 +170,10 @@ Int EditParameter::edit( Parameter *pParm, Int keyPressed, AsciiString unitName 
 
 #ifdef OG
 AsciiString EditParameter::getWarningText(Parameter *pParm) 
-#endif
+#endif // OG
 #ifdef ZH
 AsciiString EditParameter::getWarningText(Parameter *pParm, Bool isAction) 
-#endif
+#endif // ZH
 {
 	AsciiString warningText;
 	AsciiString uiString = pParm->getString();
@@ -280,12 +280,12 @@ AsciiString EditParameter::getWarningText(Parameter *pParm, Bool isAction)
 #ifdef OG
 			/// @todo - perhaps add more complex syntaxing for counters.
 
-#endif
+#endif // OG
 #ifdef ZH
 			if (!isAction && !loadCounters(NULL, uiString)) {
 				warningText.format("Counter/Timer '%s' does not exist.", uiString.str());
 			}
-#endif
+#endif // ZH
 			break;
 		case Parameter::INT:
 			break;
@@ -299,7 +299,7 @@ AsciiString EditParameter::getWarningText(Parameter *pParm, Bool isAction)
 #ifdef ZH
 			break;
 		case Parameter::PERCENT:
-#endif
+#endif // ZH
 			break;
 		case Parameter::BOOLEAN:
 			break;
@@ -311,12 +311,12 @@ AsciiString EditParameter::getWarningText(Parameter *pParm, Bool isAction)
 #ifdef OG
 			/// @todo - perhaps add more complex syntaxing for flags.
 
-#endif
+#endif // OG
 #ifdef ZH
 			if (!isAction && !loadFlags(NULL, uiString)) {
 				warningText.format("Flag '%s' is never initialized.", uiString.str());
 			}
-#endif
+#endif // ZH
 			break;
 		case Parameter::COMPARISON:
 			break;
@@ -334,7 +334,7 @@ AsciiString EditParameter::getWarningText(Parameter *pParm, Bool isAction)
     case Parameter::LEFT_OR_RIGHT:
       break;
 
-#endif
+#endif // ZH
 		case Parameter::RELATION:
 			break;
 
@@ -423,7 +423,7 @@ AsciiString EditParameter::getWarningText(Parameter *pParm, Bool isAction)
 	}
 	if (warningText.isNotEmpty()) {
 		warningText.concat("  ");
-#endif
+#endif // ZH
 	}
 	return warningText;
 }
@@ -464,7 +464,7 @@ AsciiString EditParameter::getInfoText(Parameter *pParm)
 		case Parameter::ANGLE:
 #ifdef ZH
 		case Parameter::PERCENT:
-#endif
+#endif // ZH
 		case Parameter::BOOLEAN:
 		case Parameter::REAL:
 		case Parameter::FLAG:
@@ -494,7 +494,7 @@ AsciiString EditParameter::getInfoText(Parameter *pParm)
 #ifdef ZH
     case Parameter::LEFT_OR_RIGHT:
 
-#endif
+#endif // ZH
 			break;
 
 		case Parameter::LOCALIZED_TEXT:
@@ -534,7 +534,7 @@ void EditParameter::loadConditionParameter(Script *pScr, Parameter::ParameterTyp
 	OrCondition *pOr;
 #ifdef ZH
 	if (pCombo==NULL) return; // null pcombo is used in syntaxing commands.  jba.
-#endif
+#endif // ZH
 	for (pOr= pScr->getOrCondition(); pOr; pOr = pOr->getNextOrCondition()) {
 		Condition *pCondition;
 		for (pCondition = pOr->getFirstAndCondition(); pCondition; pCondition = pCondition->getNext()) {
@@ -560,22 +560,22 @@ void EditParameter::loadConditionParameter(Script *pScr, Parameter::ParameterTyp
 
 #ifdef OG
 void EditParameter::loadActionParameter(Script *pScr, Parameter::ParameterType type, 	CComboBox *pCombo) 
-#endif
+#endif // OG
 #ifdef ZH
 Bool EditParameter::loadActionParameter(Script *pScr, Parameter::ParameterType type, 	CComboBox *pCombo, AsciiString match) 
-#endif
+#endif // ZH
 {
 	ScriptAction *pAction;
 #ifdef ZH
 	Bool found = false;
-#endif
+#endif // ZH
 	for (pAction = pScr->getAction(); pAction; pAction = pAction->getNext()) {
 		Int i;
 		for (i=0; i<pAction->getNumParameters(); i++) {
 			if (type == pAction->getParameter(i)->getParameterType()) {
 #ifdef ZH
 				if (pCombo) {
-#endif
+#endif // ZH
 				if (CB_ERR == pCombo->FindStringExact(-1, pAction->getParameter(i)->getString().str())) {
 					pCombo->AddString(pAction->getParameter(i)->getString().str());
 				}
@@ -584,14 +584,14 @@ Bool EditParameter::loadActionParameter(Script *pScr, Parameter::ParameterType t
 				if (match == pAction->getParameter(i)->getString()) {
 					found = true;
 				}
-#endif
+#endif // ZH
 		}
 	}
 }
 #ifdef ZH
 	return found;
 }
-#endif
+#endif // ZH
 
 Bool EditParameter::loadAttackSetParameter(Script *pScr, CComboBox *pCombo, AsciiString match) 
 {
@@ -741,19 +741,19 @@ AsciiString EditParameter::getCreatedUnitTemplateName(AsciiString unitName)
 
 #ifdef OG
 void EditParameter::loadCounters(CComboBox *pCombo) 
-#endif
+#endif // OG
 #ifdef ZH
 Bool EditParameter::loadCounters(CComboBox *pCombo, AsciiString match) 
-#endif
+#endif // ZH
 {
 #ifdef OG
 	pCombo->ResetContent();
 
-#endif
+#endif // OG
 #ifdef ZH
 	Bool found = false;
 	if (pCombo) pCombo->ResetContent();
-#endif
+#endif // ZH
 	Int i;
 	SidesList *sidesListP = m_sidesListP;
 	if (sidesListP==NULL) sidesListP = TheSidesList;
@@ -765,12 +765,12 @@ Bool EditParameter::loadCounters(CComboBox *pCombo, AsciiString match)
 #ifdef OG
 			loadActionParameter(pScr, Parameter::COUNTER, pCombo);
 
-#endif
+#endif // OG
 #ifdef ZH
 			if (loadActionParameter(pScr, Parameter::COUNTER, pCombo, match)) {
 				found = true;
 			}
-#endif
+#endif // ZH
 		}
 		ScriptGroup *pGroup;
 		for (pGroup = pSL->getScriptGroup(); pGroup; pGroup=pGroup->getNext()) {
@@ -779,18 +779,18 @@ Bool EditParameter::loadCounters(CComboBox *pCombo, AsciiString match)
 #ifdef OG
 				loadActionParameter(pScr, Parameter::COUNTER, pCombo);
 
-#endif
+#endif // OG
 #ifdef ZH
 				if (loadActionParameter(pScr, Parameter::COUNTER, pCombo, match)) {
 					found = true;
 				}
-#endif
+#endif // ZH
 			}
 		}
 	}
 #ifdef ZH
 	return found;
-#endif
+#endif // ZH
 }
 
 Bool EditParameter::loadAttackPrioritySets(CComboBox *pCombo, AsciiString match) 
@@ -1054,19 +1054,19 @@ Bool EditParameter::loadEmoticons( CComboBox *pCombo, AsciiString match )
 //-------------------------------------------------------------------------------------------------
 #ifdef OG
 void EditParameter::loadFlags(CComboBox *pCombo) 
-#endif
+#endif // OG
 #ifdef ZH
 Bool EditParameter::loadFlags(CComboBox *pCombo, AsciiString match) 
-#endif
+#endif // ZH
 {
 #ifdef OG
 	pCombo->ResetContent();
 
-#endif
+#endif // OG
 #ifdef ZH
 	Bool found = false;
 	if (pCombo) pCombo->ResetContent();
-#endif
+#endif // ZH
 	Int i;
 	SidesList *sidesListP = m_sidesListP;
 	if (sidesListP==NULL) sidesListP = TheSidesList;
@@ -1078,12 +1078,12 @@ Bool EditParameter::loadFlags(CComboBox *pCombo, AsciiString match)
 #ifdef OG
 			loadActionParameter(pScr, Parameter::FLAG, pCombo);
 
-#endif
+#endif // OG
 #ifdef ZH
 			if (loadActionParameter(pScr, Parameter::FLAG, pCombo, match)) {
 				found = true;
 			}
-#endif
+#endif // ZH
 		}
 		ScriptGroup *pGroup;
 		for (pGroup = pSL->getScriptGroup(); pGroup; pGroup=pGroup->getNext()) {
@@ -1092,18 +1092,18 @@ Bool EditParameter::loadFlags(CComboBox *pCombo, AsciiString match)
 #ifdef OG
 				loadActionParameter(pScr, Parameter::FLAG, pCombo);
 
-#endif
+#endif // OG
 #ifdef ZH
 				if (loadActionParameter(pScr, Parameter::FLAG, pCombo, match)) {
 					found = true;
 				}
-#endif
+#endif // ZH
 			}
 		}
 	}
 #ifdef ZH
 	return found;
-#endif
+#endif // ZH
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -1959,7 +1959,7 @@ BOOL EditParameter::OnInitDialog()
 			showCombo = false;
 			break;
 
-#endif
+#endif // ZH
 		case Parameter::FLAG:
 			captionText = "Flag named:";
 			showCombo = true;
@@ -1975,7 +1975,7 @@ BOOL EditParameter::OnInitDialog()
 			pList->InsertString(-1, "Greater Than");
 			pList->InsertString(-1, "Not Equal To");
 
-#endif
+#endif // OG
 #ifdef ZH
 			pList->InsertString(-1, "LT Less Than");
 			pList->InsertString(-1, "LE Less Than or Equal");
@@ -1984,7 +1984,7 @@ BOOL EditParameter::OnInitDialog()
 			pList->InsertString(-1, "GT Greater Than");
 			pList->InsertString(-1, "NE Not Equal To");
 			pList->SetCurSel(m_parameter->getInt());
-#endif
+#endif // ZH
 			showList = true;
 			break;
 
@@ -2045,7 +2045,7 @@ BOOL EditParameter::OnInitDialog()
 			pList->InsertString(-1,"Right");
 			pList->InsertString(-1,"Center (Default)");
 			pList->SetCurSel(m_parameter->getInt() - 1);
-#endif
+#endif // ZH
 			showList = true;
 			break;
 
@@ -2175,19 +2175,19 @@ BOOL EditParameter::OnInitDialog()
 			for (i=0; TheObjectStatusBitNames[i]; ++i) {
 				pList->InsertString(-1, TheObjectStatusBitNames[i]);				
 
-#endif
+#endif // OG
 #ifdef ZH
 			for( i = 0; i < OBJECT_STATUS_COUNT; i++ )
 			{
 				pList->InsertString( -1, ObjectStatusMaskType::getBitNames()[i] );				
-#endif
+#endif // ZH
 			}
 #ifdef OG
 			pList->SelectString(-1, m_parameter->getString().str());
-#endif
+#endif // OG
 #ifdef ZH
 			pList->SelectString( -1, m_parameter->getString().str() );
-#endif
+#endif // ZH
 			break;
 		}
 
@@ -2240,23 +2240,23 @@ BOOL EditParameter::OnInitDialog()
 		pCombo->SetFocus();
 #ifdef ZH
 		if (m_key && m_key != VK_SPACE) pCombo->PostMessage(WM_CHAR, m_key, 0);
-#endif
+#endif // ZH
 	}	else if (showList) {
 		pList->ShowWindow(SW_SHOW);
 		pList->SetFocus();
 #ifdef ZH
 		if (m_key && m_key != VK_SPACE) pList->PostMessage(WM_CHAR, m_key, 0);
-#endif
+#endif // ZH
 	}	else {
 		pEdit->ShowWindow(SW_SHOW);
 		pEdit->SetWindowText(editText);
 #ifdef ZH
 		pEdit->SetSel(0, 999);
-#endif
+#endif // ZH
 		pEdit->SetFocus();
 #ifdef ZH
 		if (m_key && m_key != VK_SPACE) pEdit->PostMessage(WM_CHAR, m_key, 0);
-#endif
+#endif // ZH
 	}
 	pCaption->SetWindowText(captionText);
 
@@ -2284,7 +2284,7 @@ Bool EditParameter::scanReal(CEdit *pEdit, Real scale)
 		::MessageBeep(MB_ICONEXCLAMATION);
 		return FALSE;
 	}
-#endif
+#endif // ZH
 }
 
 void EditParameter::OnOK() 
@@ -2369,11 +2369,11 @@ void EditParameter::OnOK()
 			} else {
 				pEdit->SetFocus();
 				::MessageBeep(MB_ICONEXCLAMATION);
-#endif
+#endif // OG
 #ifdef ZH
 			if (! scanReal(pEdit, 1.0f)) {
 
-#endif
+#endif // ZH
 				return;
 			}
 			break;
@@ -2387,7 +2387,7 @@ void EditParameter::OnOK()
 				pEdit->SetFocus();
 				::MessageBeep(MB_ICONEXCLAMATION);
 
-#endif
+#endif // OG
 #ifdef ZH
 			if (! scanReal(pEdit, PI/180.0f)) {
 				return;
@@ -2396,7 +2396,7 @@ void EditParameter::OnOK()
 
 		case Parameter::PERCENT:
 			if (! scanReal(pEdit, 1.0f/100.0f)) {
-#endif
+#endif // ZH
 				return;
 			}
 			break;
@@ -2431,7 +2431,7 @@ void EditParameter::OnOK()
       m_parameter->friend_setInt(pList->GetCurSel() + 1);
       break;
 
-#endif
+#endif // ZH
 		case Parameter::LOCALIZED_TEXT:
 			pCombo->GetWindowText(txt);
 			comboText = AsciiString(txt);
@@ -2467,7 +2467,7 @@ void EditParameter::OnOK()
 			} else {
 				m_parameter->friend_setString(AsciiString::TheEmptyString);
 
-#endif
+#endif // OG
 #ifdef ZH
 			if( curSel >= 0 ) 
 			{
@@ -2476,7 +2476,7 @@ void EditParameter::OnOK()
 			else 
 			{
 				m_parameter->friend_setString( AsciiString::TheEmptyString );
-#endif
+#endif // ZH
 			}
 			break;
 		}

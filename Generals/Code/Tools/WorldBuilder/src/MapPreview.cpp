@@ -413,7 +413,7 @@ void MapPreview::buildMapPreviewTexture( CString tgaName )
 	}  // end for y
 #ifdef ZH
 	{
-#endif
+#endif // ZH
 	Targa tga;
 	tga.Header.Width = MAP_PREVIEW_WIDTH;
 	tga.Header.Height = MAP_PREVIEW_HEIGHT;
@@ -423,7 +423,7 @@ void MapPreview::buildMapPreviewTexture( CString tgaName )
 	tga.Save(tgaName,TGAF_IMAGE, FALSE);
 #ifdef ZH
 	}
-#endif
+#endif // ZH
 
 }  // end buildTerrainTexture
 

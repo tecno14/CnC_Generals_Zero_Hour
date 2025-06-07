@@ -84,13 +84,13 @@ ProfileFunc			WWDebug_Install_Profile_Stop_Handler(ProfileFunc func);
 */
 #ifdef OG
 #ifdef WWDEBUG
-#endif
+#endif // OG
 void					WWDebug_Printf(const char * format,...);
 void					WWDebug_Printf_Warning(const char * format,...);
 void					WWDebug_Printf_Error(const char * format,...);
 #ifdef ZH
 #ifdef WWDEBUG
-#endif
+#endif // ZH
 void					WWDebug_Assert_Fail(const char * expr,const char * file, int line);
 void					WWDebug_Assert_Fail_Print(const char * expr,const char * file, int line,const char * string);
 bool					WWDebug_Check_Trigger(int trigger_num);
@@ -127,7 +127,7 @@ void					WWDebug_DBWin32_Message_Handler( const char * message);
 #define WWRELEASE_SAY(x)						WWDebug_Printf x
 #define WWRELEASE_WARNING(x)					WWDebug_Printf_Warning x
 #define WWRELEASE_ERROR(x)						WWDebug_Printf_Error x
-#endif
+#endif // ZH
 /*
 ** The WWASSERT and WWASSERT_PRINT macros will send messages to your
 ** assert handler.

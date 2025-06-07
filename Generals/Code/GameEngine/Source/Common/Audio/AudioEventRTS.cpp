@@ -810,7 +810,7 @@ void AudioEventRTS::adjustForLocalization(AsciiString &strToAdjust)
 		return;
 	}
 
-#endif
+#endif // OG
 	const char *str = strToAdjust.reverseFind('\\');
 	if (!str) {
 		return;
@@ -820,17 +820,17 @@ void AudioEventRTS::adjustForLocalization(AsciiString &strToAdjust)
 	// try the localized version first so that we're guarenteed to get it
 	// even if the generic data directory holds a version of the file
 	AsciiString localizedFilePath = generateFilenamePrefix(m_eventInfo->m_soundType, TRUE);
-#endif
+#endif // ZH
 	AsciiString filename = str;
 #ifdef ZH
 	localizedFilePath.concat(filename);
-#endif
+#endif // ZH
 
 #ifdef OG
 	strToAdjust = generateFilenamePrefix(m_eventInfo->m_soundType, TRUE);
 	strToAdjust.concat(filename);
 
-#endif
+#endif // OG
 #ifdef ZH
 	if (TheFileSystem->doesFileExist(localizedFilePath.str())) {
 		strToAdjust = localizedFilePath;
@@ -838,7 +838,7 @@ void AudioEventRTS::adjustForLocalization(AsciiString &strToAdjust)
 	// else there was no localized version, so leave the path we received unchanged
 
 	return;
-#endif
+#endif // ZH
 }
 
 //-------------------------------------------------------------------------------------------------

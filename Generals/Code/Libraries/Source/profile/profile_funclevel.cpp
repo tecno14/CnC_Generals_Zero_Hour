@@ -787,4 +787,4 @@ ProfileFuncLevel::ProfileFuncLevel(void)
 ProfileFuncLevel ProfileFuncLevel::Instance;
 HANDLE ProfileFastCS::testEvent=::CreateEvent(NULL,FALSE,FALSE,"");
 
-#endif
+#endif // ZH

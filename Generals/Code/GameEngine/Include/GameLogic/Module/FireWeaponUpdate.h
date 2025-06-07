@@ -45,7 +45,7 @@ public:
   UnsignedInt m_initialDelayFrames;
 	UnsignedInt m_exclusiveWeaponDelay;	///< If non-zero, any other weapon having fired this recently will keep us from doing anything
 	
-#endif
+#endif // ZH
 	FireWeaponUpdateModuleData();
 
 	static void buildFieldParse(MultiIniFieldParse& p);
@@ -73,12 +73,12 @@ protected:
 #ifdef ZH
 
 	Bool isOkayToFire();
-#endif
+#endif // ZH
 	
 	Weapon* m_weapon;
 #ifdef ZH
   UnsignedInt m_initialDelayFrame;
-#endif
+#endif // ZH
 
 };
 

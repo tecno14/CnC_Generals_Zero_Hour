@@ -114,4 +114,4 @@ void DelayedUpgrade::loadPostProcess( void )
 
 }  // end loadPostProcess
 
-#endif
+#endif // OG

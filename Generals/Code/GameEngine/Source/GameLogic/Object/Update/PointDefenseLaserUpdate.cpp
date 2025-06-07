@@ -278,7 +278,7 @@ Object* PointDefenseLaserUpdate::scanClosestTarget()
 		if( !other->isAirborneTarget() && !(data->m_weaponTemplate->getAntiMask() & WEAPON_ANTI_GROUND) )
 			continue;
 
-#endif
+#endif // ZH
 			// order matters: we want to know if I consider it to be an enemy, not vice versa
 		if( getObject()->getRelationship( other ) != ENEMIES )
 		{
@@ -288,10 +288,10 @@ Object* PointDefenseLaserUpdate::scanClosestTarget()
 
 #ifdef OG
 		if( other->testStatus( OBJECT_STATUS_STEALTHED ) && !other->testStatus( OBJECT_STATUS_DETECTED ) )
-#endif
+#endif // OG
 #ifdef ZH
 		if( other->testStatus( OBJECT_STATUS_STEALTHED ) && !other->testStatus( OBJECT_STATUS_DETECTED ) && !other->testStatus( OBJECT_STATUS_DISGUISED ) )
-#endif
+#endif // ZH
 		{
 			//We can't see it.
 			continue;

@@ -28,24 +28,24 @@
  *                                                                                             *
 #ifdef OG
  *                      $Author:: Jani_p                                                      $*
-#endif
+#endif // OG
 #ifdef ZH
  *                      $Author:: Greg_h                                                      $*
-#endif
+#endif // ZH
  *                                                                                             *
 #ifdef OG
  *                     $Modtime:: 7/11/01 9:49p                                               $*
-#endif
+#endif // OG
 #ifdef ZH
  *                     $Modtime:: 12/03/01 4:57p                                              $*
-#endif
+#endif // ZH
  *                                                                                             *
 #ifdef OG
  *                    $Revision:: 7                                                           $*
-#endif
+#endif // OG
 #ifdef ZH
  *                    $Revision:: 11                                                          $*
-#endif
+#endif // ZH
  *                                                                                             *
  *---------------------------------------------------------------------------------------------*
  * Functions:                                                                                  *
@@ -875,7 +875,7 @@ void ShatterSystem::Shatter_Mesh(MeshClass * mesh,const Vector3 & point,const Ve
 		return ;
 	}
 
-#endif
+#endif // ZH
 	int ivert,ipoly;
 	int ipass,istage;
 
@@ -982,10 +982,10 @@ void ShatterSystem::Shatter_Mesh(MeshClass * mesh,const Vector3 & point,const Ve
 	*/
 #ifdef OG
 	const Vector3i * polys = model->Get_Polygon_Array();
-#endif
+#endif // OG
 #ifdef ZH
 	const TriIndex * polys = model->Get_Polygon_Array();
-#endif
+#endif // ZH
 	const Vector3 * src_verts = model->Get_Vertex_Array();
 	const Vector3 * src_vnorms = model->Get_Vertex_Normal_Array();
 
@@ -1166,16 +1166,16 @@ void ShatterSystem::Process_Clip_Pools
 				if (model->Peek_Single_Texture(ipass) != NULL) {
 					matinfo->Add_Texture(model->Peek_Single_Texture(ipass));
 
-#endif
+#endif // OG
 #ifdef ZH
 				for (int istage=0; istage<MeshMatDescClass::MAX_TEX_STAGES; istage++) {
 					if (model->Peek_Single_Texture(ipass,istage) != NULL) {
 						matinfo->Add_Texture(model->Peek_Single_Texture(ipass,istage));
-#endif
+#endif // ZH
 					has_textures = true;
 #ifdef ZH
 					}
-#endif
+#endif // ZH
 				}
 			}
 			new_mesh->Set_Material_Info(matinfo);
@@ -1187,20 +1187,20 @@ void ShatterSystem::Process_Clip_Pools
 #ifdef OG
 				TextureClass * tex = model->Peek_Single_Texture(ipass,0);	
 
-#endif
+#endif // OG
 #ifdef ZH
 				for (istage=0; istage<MeshMatDescClass::MAX_TEX_STAGES; istage++) {
 					TextureClass * tex = model->Peek_Single_Texture(ipass,istage);	
-#endif
+#endif // ZH
 				if (tex != NULL) {
 #ifdef OG
 					new_mesh->Set_Texture(tex,true,ipass);
 
-#endif
+#endif // OG
 #ifdef ZH
 						new_mesh->Peek_Model()->Set_Single_Texture(tex,ipass,istage);
 					}
-#endif
+#endif // ZH
 				}
 			}
 			
@@ -1251,7 +1251,7 @@ void ShatterSystem::Process_Clip_Pools
 
 #ifdef ZH
 						// HY- Multiplying DIG with DCG as in meshmdlio
-#endif
+#endif // ZH
 						if (mtl_params.DIG[ipass] != NULL) {
 							SHATTER_DEBUG_SAY(("DIG: pass:%d: %f %f %f\n",ipass,vert.DIG[ipass].X,vert.DIG[ipass].Y,vert.DIG[ipass].Z));
 							Vector4 mc=DX8Wrapper::Convert_Color(mycolor);
@@ -1268,16 +1268,16 @@ void ShatterSystem::Process_Clip_Pools
 						*/
 #ifdef ZH
 //						#pragma MESSAGE("HY- Naty, will dynamesh support multiple stages of UV?")
-#endif
+#endif // ZH
 						for (istage=0; istage<MeshMatDescClass::MAX_TEX_STAGES; istage++) {
 							if (mtl_params.UV[ipass][istage] != NULL) {
 								SHATTER_DEBUG_SAY(("UV: pass:%d stage: %d: %f %f\n",ipass,istage,vert.TexCoord[ipass][istage].X,vert.TexCoord[ipass][istage].Y));
 #ifdef OG
 								new_mesh->UV(vert.TexCoord[ipass][istage]);
-#endif
+#endif // OG
 #ifdef ZH
 								new_mesh->UV(vert.TexCoord[ipass][istage],istage);
-#endif
+#endif // ZH
 							}
 						}
 					}
@@ -1296,7 +1296,7 @@ void ShatterSystem::Process_Clip_Pools
 							new_mesh->Set_Texture(tex,true,ipass);
 						}
 					}
-#endif
+#endif // OG
 				}
 				new_mesh->End_Tri_Fan();
 			}

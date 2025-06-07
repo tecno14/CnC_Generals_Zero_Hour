@@ -18,10 +18,10 @@
 
 #ifdef OG
 /* $Header: /Commando/Code/ww3d2/mesh.h 15    8/20/01 9:31a Jani_p $ */
-#endif
+#endif // OG
 #ifdef ZH
 /* $Header: /Commando/Code/ww3d2/mesh.h 16    11/07/01 5:50p Jani_p $ */
-#endif
+#endif // ZH
 /*********************************************************************************************** 
  ***                            Confidential - Westwood Studios                              *** 
  *********************************************************************************************** 
@@ -150,7 +150,7 @@ public:
 											const Vector2* uv0,
 											const Vector2* uv1,
 											const unsigned* diffuse);
-#endif
+#endif // OG
 	void								Get_Deformed_Vertices(Vector3 *dst_vert, Vector3 *dst_norm);
 	void								Get_Deformed_Vertices(Vector3 *dst_vert);
 
@@ -173,16 +173,16 @@ public:
 
 	void								Make_Unique(bool force_meshmdl_clone = false);
 	unsigned							Get_Debug_Id() const { return  MeshDebugId; }
-#endif
+#endif // ZH
 
 #ifdef OG
 	void								Make_Unique();
 
-#endif
+#endif // OG
 #ifdef ZH
 	void								Set_Debugger_Disable(bool b) { IsDisabledByDebugger=b; }
 	bool								Is_Disabled_By_Debugger() const { return IsDisabledByDebugger; }
-#endif
+#endif // ZH
 	
 protected:
 
@@ -209,7 +209,7 @@ protected:
 
 	unsigned							MeshDebugId;
 	bool								IsDisabledByDebugger;
-#endif
+#endif // ZH
 
 	friend class MeshBuilderClass;
 };

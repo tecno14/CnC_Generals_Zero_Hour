@@ -58,12 +58,12 @@ void ShowInGameChat( Bool immediate )
 {
 #ifdef OG
 #if !defined(_PLAYTEST)
-#endif
+#endif // OG
 	if (TheGameLogic->isInReplayGame())
 		return;
 #ifdef OG
 #endif
-#endif
+#endif // OG
 
 	if (TheInGameUI->isQuitMenuVisible())
 		return;
@@ -204,12 +204,12 @@ void ToggleInGameChat( Bool immediate )
 
 #ifdef OG
 #if !defined(_PLAYTEST)
-#endif
+#endif // OG
 	if (TheGameLogic->isInReplayGame())
 		return;
 #ifdef OG
 #endif
-#endif
+#endif // OG
 
 	if (!TheGameInfo->isMultiPlayer() && TheGlobalData->m_netMinPlayers)
 		return;

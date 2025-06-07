@@ -117,7 +117,7 @@ private:
 
 	// Use 16-bit metal maps or not
 	bool					Use16Bit;
-#endif
+#endif // ZH
 };
 
 #endif

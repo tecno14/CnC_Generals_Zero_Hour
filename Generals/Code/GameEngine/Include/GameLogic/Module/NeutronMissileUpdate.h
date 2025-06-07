@@ -107,7 +107,7 @@ public:
 #ifdef ZH
 	virtual void setFramesTillCountermeasureDiversionOccurs( UnsignedInt frames ) {}
 	virtual void projectileNowJammed() {}
-#endif
+#endif // ZH
 
 	virtual UpdateSleepTime update();
 	virtual void onDelete( void );

@@ -40,7 +40,7 @@
 #include "GameLogic/Module/BodyModule.h"
 #ifdef ZH
 #include "GameLogic/Module/CountermeasuresBehavior.h"
-#endif
+#endif // ZH
 #include "GameLogic/Module/JetAIUpdate.h"
 #include "GameLogic/Module/ParkingPlaceBehavior.h"
 #include "GameLogic/Module/PhysicsUpdate.h"
@@ -92,7 +92,7 @@ enum JetAIStateType
 #ifdef OG
 static Bool isOutOfSpecialReloadAmmo(Object* jet)
 
-#endif
+#endif // OG
 #ifdef ZH
 Bool JetAIUpdate::getFlag( FlagType f ) const 
 { 
@@ -101,7 +101,7 @@ Bool JetAIUpdate::getFlag( FlagType f ) const
 
 //-------------------------------------------------------------------------------------------------
 void JetAIUpdate::setFlag( FlagType f, Bool v) 
-#endif
+#endif // ZH
 {
 #ifdef ZH
 	if (v) 
@@ -114,7 +114,7 @@ void JetAIUpdate::setFlag( FlagType f, Bool v)
 Bool JetAIUpdate::isOutOfSpecialReloadAmmo() const
 {
 	const Object* jet = getObject();
-#endif
+#endif // ZH
 	// if we have at least one special reload weapon,
 	// AND all such weapons are out of ammo,
 	// return true.
@@ -124,10 +124,10 @@ Bool JetAIUpdate::isOutOfSpecialReloadAmmo() const
 	{
 #ifdef OG
 		Weapon* weapon = jet->getWeaponInWeaponSlot((WeaponSlotType)i);
-#endif
+#endif // OG
 #ifdef ZH
 		const Weapon* weapon = jet->getWeaponInWeaponSlot((WeaponSlotType)i);
-#endif
+#endif // ZH
 		if (weapon == NULL || weapon->getReloadType() != RETURN_TO_BASE_TO_RELOAD)
 			continue;
 		++specials;
@@ -146,10 +146,10 @@ static ParkingPlaceBehaviorInterface* getPP(ObjectID id, Object** airfieldPP = N
 	Object* airfield = TheGameLogic->findObjectByID( id );
 #ifdef OG
 	if (airfield == NULL || airfield->isEffectivelyDead() || !airfield->isKindOf(KINDOF_AIRFIELD) || airfield->testStatus(OBJECT_STATUS_SOLD))
-#endif
+#endif // OG
 #ifdef ZH
 	if (airfield == NULL || airfield->isEffectivelyDead() || !airfield->isKindOf(KINDOF_FS_AIRFIELD) || airfield->testStatus(OBJECT_STATUS_SOLD))
-#endif
+#endif // ZH
 		return NULL;
 
 	if (airfieldPP)
@@ -192,12 +192,12 @@ static Object* findSuitableAirfield(Object* jet)
 	PartitionFilterAcceptByKindOf					filterKind(MAKE_KINDOF_MASK(KINDOF_AIRFIELD), KINDOFMASK_NONE);
 	PartitionFilterRejectByObjectStatus		filterStatus(OBJECT_STATUS_UNDER_CONSTRUCTION, 0);
 	PartitionFilterRejectByObjectStatus		filterStatusTwo(OBJECT_STATUS_SOLD, 0); // Independent to make it an OR
-#endif
+#endif // OG
 #ifdef ZH
 	PartitionFilterAcceptByKindOf					filterKind(MAKE_KINDOF_MASK(KINDOF_FS_AIRFIELD), KINDOFMASK_NONE);
 	PartitionFilterRejectByObjectStatus		filterStatus( MAKE_OBJECT_STATUS_MASK( OBJECT_STATUS_UNDER_CONSTRUCTION ), OBJECT_STATUS_MASK_NONE );
 	PartitionFilterRejectByObjectStatus		filterStatusTwo( MAKE_OBJECT_STATUS_MASK( OBJECT_STATUS_SOLD ), OBJECT_STATUS_MASK_NONE ); // Independent to make it an OR
-#endif
+#endif // ZH
 	PartitionFilterRelationship						filterTeam(jet, PartitionFilterRelationship::ALLOW_ALLIES);
 	PartitionFilterAlive									filterAlive;
 	PartitionFilterSameMapStatus					filterMapStatus(jet);
@@ -312,7 +312,7 @@ public:
 				jetAI->getCurLocomotor()->setAllowInvalidPosition(true);
 				jetAI->ignoreObstacleID(jet->getProducerID());
 			}
-#endif
+#endif // ZH
 		}
 
 		// can't get a runway? gotta wait.
@@ -379,10 +379,10 @@ public:
 		// case, but just punt back out to idle.
 #ifdef OG
 		if (!isOutOfSpecialReloadAmmo(jet) && jet->getProducerID() == INVALID_ID)
-#endif
+#endif // OG
 #ifdef ZH
 		if (!jetAI->isOutOfSpecialReloadAmmo() && jet->getProducerID() == INVALID_ID)
-#endif
+#endif // ZH
 		{
 			return STATE_FAILURE;
 		}
@@ -540,7 +540,7 @@ public:
 			}
 		}
 
-#endif
+#endif // ZH
 		jetAI->friend_setAllowAirLoco(false);
 		jetAI->chooseLocomotorSet(LOCOMOTORSET_TAXIING);
 		DEBUG_ASSERTCRASH(jetAI->getCurLocomotor(), ("no loco"));
@@ -577,7 +577,7 @@ public:
 #ifdef ZH
 		{
 			if( jet->testStatus( OBJECT_STATUS_DECK_HEIGHT_OFFSET ) )
-#endif
+#endif // ZH
 		{
 #ifdef ZH
 				//We're on an aircraft carrier.
@@ -601,20 +601,20 @@ public:
 			else
 			{
 				//We're on a normal airfield
-#endif
+#endif // ZH
 			movePath->appendNode( &ppinfo.runwayPrep, LAYER_GROUND );
 			if (intermed)
 				movePath->appendNode( &intermedPt, LAYER_GROUND );
 			movePath->appendNode( &ppinfo.parkingSpace, LAYER_GROUND );
 #ifdef ZH
 			}
-#endif
+#endif // ZH
 		}
 		else if (m_taxiMode == FROM_PARKING)
 #ifdef ZH
 		{
 			if( jet->testStatus( OBJECT_STATUS_DECK_HEIGHT_OFFSET ) )
-#endif
+#endif // ZH
 		{
 #ifdef ZH
 				if( !(ppinfo.runwayStart == ppinfo.runwayPrep) )	
@@ -624,20 +624,20 @@ public:
 			}
 			else
 			{
-#endif
+#endif // ZH
 			if (intermed)
 				movePath->appendNode( &intermedPt, LAYER_GROUND );
 			movePath->appendNode( &ppinfo.runwayPrep, LAYER_GROUND );
 			movePath->appendNode( &ppinfo.runwayStart, LAYER_GROUND );
 #ifdef ZH
 			}
-#endif
+#endif // ZH
 		}
 		else if (m_taxiMode == FROM_HANGAR)
 #ifdef ZH
 		{
 			if( jet->testStatus( OBJECT_STATUS_DECK_HEIGHT_OFFSET ) )
-#endif
+#endif // ZH
 		{
 #ifdef ZH
 				//Aircraft carrier
@@ -675,11 +675,11 @@ public:
 			else
 			{
 				//Airfield
-#endif
+#endif // ZH
 			movePath->appendNode( &ppinfo.parkingSpace, LAYER_GROUND );
 #ifdef ZH
 			}
-#endif
+#endif // ZH
 		}
 
 		m_waitingForPath = FALSE;	 
@@ -730,7 +730,7 @@ public:
 		return AIMoveOutOfTheWayState::update();
 	}
 
-#endif
+#endif // ZH
 	virtual void onExit( StateExitType status )
 	{
 		Object* jet = getMachineOwner();
@@ -845,12 +845,12 @@ public:
 			else
 			{
 				//Assigned to an airstrip -- land the same way we took off but in reverse.
-#endif
+#endif // ZH
 			path.push_back(ppinfo.runwayEnd);
 			path.push_back(ppinfo.runwayStart);
 #ifdef ZH
 			}
-#endif
+#endif // ZH
 		}
 		else
 		{
@@ -858,10 +858,10 @@ public:
 			path.push_back(ppinfo.runwayEnd);
 #ifdef OG
 			path.push_back(ppinfo.runwayApproach);
-#endif
+#endif // OG
 #ifdef ZH
 			path.push_back(ppinfo.runwayExit);
-#endif
+#endif // ZH
 		}
 
 		setAdjustsDestination(false);	// precision is necessary
@@ -907,7 +907,7 @@ public:
 			{
 #ifdef ZH
 				ParkingPlaceBehaviorInterface* pp = getPP(jet->getProducerID());
-#endif
+#endif // ZH
 				Real zPos = jet->getPosition()->z;
 				Real zSlop = 0.25f;
 				PathfindLayerEnum layer = TheTerrainLogic->getHighestLayerForDestination( jet->getPosition() );
@@ -917,7 +917,7 @@ public:
 				{
 					groundZ += pp->getLandingDeckHeightOffset();
 				}
-#endif
+#endif // ZH
 				
 				if( zPos - zSlop <= groundZ )
 				{
@@ -944,16 +944,16 @@ public:
 			Coord3D vector = ppinfo.runwayEnd;
 			vector.sub( jet->getPosition() );
 			Real dist = vector.length();
-#endif
+#endif // ZH
 
 #ifdef OG
 			PhysicsBehavior* physics = jet->getPhysics();
 			Real ratio = physics->getVelocityMagnitude() / (m_maxSpeed * jetAI->friend_getTakeoffSpeedForMaxLift());
-#endif
+#endif // OG
 #ifdef ZH
 			Real ratio = 1.0f - (dist / ppinfo.runwayTakeoffDist);
 			ratio *= ratio; //dampen it....
-#endif
+#endif // ZH
 			if (ratio < 0.0f) ratio = 0.0f;
 			if (ratio > 1.0f) ratio = 1.0f;
 			jetAI->getCurLocomotor()->setMaxLift(m_maxLift * ratio);
@@ -1097,10 +1097,10 @@ public:
 			landingApproach = m_parkingLoc;
 #ifdef OG
 			landingApproach.z += pp->getApproachHeight();
-#endif
+#endif // OG
 #ifdef ZH
 			landingApproach.z += pp->getApproachHeight() + pp->getLandingDeckHeightOffset();
-#endif
+#endif // ZH
 		}
 		else
 		{
@@ -1297,7 +1297,7 @@ public:
 			hoverloc = ppinfo.runwayPrep;
 		}
 
-#endif
+#endif // ZH
 		hoverloc.z = jet->getPosition()->z;
 		jet->setPosition(&hoverloc);
 
@@ -1368,10 +1368,10 @@ private:
 			{
 #ifdef OG
 				Object* otherJet = TheGameLogic->findObjectByID(pp->getRunwayReservation(i));
-#endif
+#endif // OG
 #ifdef ZH
 				Object* otherJet = TheGameLogic->findObjectByID( pp->getRunwayReservation( i, RESERVATION_TAKEOFF ) );
-#endif
+#endif // ZH
 				if (otherJet == NULL || otherJet == jet)
 					continue;
 
@@ -1554,10 +1554,10 @@ public:
 			Int clipSize = w->getClipSize();
 #ifdef OG
 			UnsignedInt rt = w->getClipReloadTime(jet);
-#endif
+#endif // OG
 #ifdef ZH
 			Int rt = w->getClipReloadTime(jet);
-#endif
+#endif // ZH
 			if (clipSize > 0)
 			{
 				// bias by amount empty.
@@ -1747,10 +1747,10 @@ JetAIUpdateModuleData::JetAIUpdateModuleData()
 	m_keepsParkingSpaceWhenAirborne = true;
 #ifdef OG
 	m_takeoffSpeedForMaxLift = 1.0f;
-#endif
+#endif // OG
 #ifdef ZH
 	m_takeoffDistForMaxLift = 0.0f;
-#endif
+#endif // ZH
 	m_minHeight = 0.0f;
 	m_parkingOffset = 0.0f;
 	m_sneakyOffsetWhenAttacking = 0.0f;
@@ -1779,10 +1779,10 @@ JetAIUpdateModuleData::JetAIUpdateModuleData()
 		{ "KeepsParkingSpaceWhenAirborne",INI::parseBool, NULL, offsetof( JetAIUpdateModuleData, m_keepsParkingSpaceWhenAirborne ) },
 #ifdef OG
 		{ "TakeoffSpeedForMaxLift",				INI::parsePercentToReal, NULL, offsetof( JetAIUpdateModuleData, m_takeoffSpeedForMaxLift ) },
-#endif
+#endif // OG
 #ifdef ZH
 		{ "TakeoffDistForMaxLift",				INI::parsePercentToReal, NULL, offsetof( JetAIUpdateModuleData, m_takeoffDistForMaxLift ) },
-#endif
+#endif // ZH
 		{ "TakeoffPause",									INI::parseDurationUnsignedInt, NULL, offsetof( JetAIUpdateModuleData, m_takeoffPause ) },
 		{ "MinHeight",										INI::parseReal, NULL, offsetof( JetAIUpdateModuleData, m_minHeight ) },
 		{ "ParkingOffset",								INI::parseReal, NULL, offsetof( JetAIUpdateModuleData, m_parkingOffset ) },
@@ -1884,12 +1884,12 @@ Bool JetAIUpdate::isTaxiingToParking() const
 		case PAUSE_BEFORE_TAKEOFF:
 		case TAKING_OFF:
 			return TRUE;
-#endif
+#endif // ZH
 }
 #ifdef ZH
 	return FALSE;
 }
-#endif
+#endif // ZH
 
 //-------------------------------------------------------------------------------------------------
 void JetAIUpdate::onObjectCreated()
@@ -1987,10 +1987,10 @@ UpdateSleepTime JetAIUpdate::update()
 		// note that we might still have weapons with ammo, but still be forced to return to reload.
 #ifdef OG
 		if (isOutOfSpecialReloadAmmo(jet) && getFlag(ALLOW_AIR_LOCO))
-#endif
+#endif // OG
 #ifdef ZH
 		if (isOutOfSpecialReloadAmmo() && getFlag(ALLOW_AIR_LOCO))
-#endif
+#endif // ZH
 		{
 			m_returnToBaseFrame = 0;
 
@@ -2018,10 +2018,10 @@ UpdateSleepTime JetAIUpdate::update()
 			m_returnToBaseFrame = 0;
 #ifdef OG
 			DEBUG_ASSERTCRASH(isOutOfSpecialReloadAmmo(jet) == false, ("Hmm, this seems unlikely -- isOutOfSpecialReloadAmmo(jet)==false"));
-#endif
+#endif // OG
 #ifdef ZH
 			DEBUG_ASSERTCRASH(isOutOfSpecialReloadAmmo() == false, ("Hmm, this seems unlikely -- isOutOfSpecialReloadAmmo()==false"));
-#endif
+#endif // ZH
 			setFlag(USE_SPECIAL_RETURN_LOCO, false);
 			setLastCommandSource( CMD_FROM_AI );
 			getStateMachine()->setState(RETURNING_FOR_LANDING);
@@ -2041,10 +2041,10 @@ UpdateSleepTime JetAIUpdate::update()
 		if (getFlag(ALLOW_INTERRUPT_AND_RESUME_OF_CUR_STATE_FOR_RELOAD) && 
 #ifdef OG
 						isOutOfSpecialReloadAmmo(jet) && getFlag(ALLOW_AIR_LOCO))
-#endif
+#endif // OG
 #ifdef ZH
 						isOutOfSpecialReloadAmmo() && getFlag(ALLOW_AIR_LOCO))
-#endif
+#endif // ZH
 		{
 			setFlag(USE_SPECIAL_RETURN_LOCO, true);
 			setFlag(HAS_PENDING_COMMAND, true);
@@ -2061,7 +2061,7 @@ UpdateSleepTime JetAIUpdate::update()
 		minHeight += pp->getLandingDeckHeightOffset();
 	}
 
-#endif
+#endif // ZH
 	Drawable* draw = jet->getDrawable();
 	if (draw != NULL)
 	{
@@ -2071,10 +2071,10 @@ UpdateSleepTime JetAIUpdate::update()
 																	!getFlag(ALLOW_AIR_LOCO);
 #ifdef OG
 		if (needToCheckMinHeight)
-#endif
+#endif // OG
 #ifdef ZH
 		if( needToCheckMinHeight || jet->getStatusBits().test( OBJECT_STATUS_DECK_HEIGHT_OFFSET ) )
-#endif
+#endif // ZH
 		{
 			Real ht = jet->isAboveTerrain() ? jet->getHeightAboveTerrain() : 0;
 			if (ht < minHeight)
@@ -2459,10 +2459,10 @@ void JetAIUpdate::doLandingCommand(Object *airfield, CommandSourceType cmdSource
 			getObject()->setProducer(airfield);
 #ifdef OG
 			DEBUG_ASSERTCRASH(isOutOfSpecialReloadAmmo(getObject()) == false, ("Hmm, this seems unlikely -- isOutOfSpecialReloadAmmo(jet)==false"));
-#endif
+#endif // OG
 #ifdef ZH
 			DEBUG_ASSERTCRASH(isOutOfSpecialReloadAmmo() == false, ("Hmm, this seems unlikely -- isOutOfSpecialReloadAmmo()==false"));
-#endif
+#endif // ZH
 			setFlag(USE_SPECIAL_RETURN_LOCO, false);
 			setFlag(ALLOW_INTERRUPT_AND_RESUME_OF_CUR_STATE_FOR_RELOAD, false);
 			setLastCommandSource( cmdSource );
@@ -2566,7 +2566,7 @@ void JetAIUpdate::aiDoCommand(const AICommandParms* parms)
 		getStateMachine()->clear();
 		setLastCommandSource( CMD_FROM_AI );
 		getStateMachine()->setState( RETURNING_FOR_LANDING );
-#endif
+#endif // ZH
 		return;
 	}
 	else if (!getFlag(ALLOW_AIR_LOCO))
@@ -2611,7 +2611,7 @@ void JetAIUpdate::aiDoCommand(const AICommandParms* parms)
 		case AICMD_HUNT:
 #ifdef ZH
 		case AICMD_GUARD_RETALIATE:
-#endif
+#endif // ZH
 			setFlag(ALLOW_INTERRUPT_AND_RESUME_OF_CUR_STATE_FOR_RELOAD, true);
 			break;
 		default:
@@ -2657,7 +2657,7 @@ void JetAIUpdate::friend_enableAfterburners(Bool v)
 void JetAIUpdate::friend_addWaypointToGoalPath( const Coord3D &bestPos )
 {
 	privateFollowPathAppend( &bestPos, CMD_FROM_AI );
-#endif
+#endif // ZH
 		}
 #ifdef ZH
 
@@ -2669,7 +2669,7 @@ AICommandType JetAIUpdate::friend_getPendingCommandType() const
 		return m_mostRecentCommand.getCommandType();
 	}
 	return AICMD_NO_COMMAND;
-#endif
+#endif // ZH
 	}
 #ifdef ZH
 
@@ -2677,7 +2677,7 @@ AICommandType JetAIUpdate::friend_getPendingCommandType() const
 void JetAIUpdate::friend_purgePendingCommand()
 {
 	setFlag(HAS_PENDING_COMMAND, false);
-#endif
+#endif // ZH
 }
 
 // ------------------------------------------------------------------------------------------------

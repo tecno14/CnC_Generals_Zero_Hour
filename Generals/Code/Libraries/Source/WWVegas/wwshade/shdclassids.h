@@ -70,4 +70,4 @@ enum
 
 #endif //SHDCLASSIDS_H
 
-#endif
+#endif // ZH

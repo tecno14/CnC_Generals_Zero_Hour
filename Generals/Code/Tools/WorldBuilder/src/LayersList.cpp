@@ -44,7 +44,7 @@
 #include "WorldBuilderDoc.h"
 #ifdef ZH
 #include "GameLogic/PolygonTrigger.h"
-#endif
+#endif // ZH
 
 #include <stack>
 
@@ -84,7 +84,7 @@ enum LayersListMenuSelectionsEnum {
 	LAYERS_LIST_BREAK_2,
 	LAYERS_LIST_HIDE_CURRENT_LAYER,
 };
-#endif
+#endif // ZH
 void CLLTreeCtrl::OnRButtonDown(UINT nFlags, CPoint point)
 {
 	// first, if there's something under the mouse, select it.
@@ -118,11 +118,11 @@ void CLLTreeCtrl::OnRButtonDown(UINT nFlags, CPoint point)
 #ifdef OG
 	CMenu *moveViewSelectionMenu = pPopup->GetSubMenu(4);
 	moveViewSelectionMenu ->RemoveMenu(0, MF_BYPOSITION);
-#endif
+#endif // OG
 #ifdef ZH
 	CMenu *moveViewSelectionMenu = pPopup->GetSubMenu(LAYERS_LIST_MERGE_VIEW_SELECTION_INTO);
 	moveViewSelectionMenu->RemoveMenu(0, MF_BYPOSITION);
-#endif
+#endif // ZH
 	buildMoveMenu(moveViewSelectionMenu, ID_LAYERSLIST_MERGEVIEWSELECTIONINTO_BEGIN);
 
 	if (item) {
@@ -136,27 +136,27 @@ void CLLTreeCtrl::OnRButtonDown(UINT nFlags, CPoint point)
 				// Because the objects will immediately disappear when placed.
 				pPopup->EnableMenuItem(ID_HIDECURRENTLAYER, MF_GRAYED);
 			} else {
-#endif
+#endif // ZH
 			LayersList *ll = (LayersList*) GetParent();
 #ifdef OG
 			pPopup->RemoveMenu(3, MF_BYPOSITION);
 			Bool hidden = ll->isLayerHidden(AsciiString(GetItemText(item)));
-#endif
+#endif // OG
 #ifdef ZH
 				Bool hidden = ll->isLayerHidden(AsciiString(itemText));
 
-#endif
+#endif // ZH
 			pPopup->CheckMenuItem(ID_HIDECURRENTLAYER, MF_BYCOMMAND | (hidden ? MF_CHECKED : MF_UNCHECKED));
 #ifdef ZH
 			}
-#endif
+#endif // ZH
 			
 #ifdef OG
 			CMenu *moveMenu = pPopup->GetSubMenu(2);
-#endif
+#endif // OG
 #ifdef ZH
 			CMenu *moveMenu = pPopup->GetSubMenu(LAYERS_LIST_MERGE_LAYER_INTO);
-#endif
+#endif // ZH
 			moveMenu->RemoveMenu(0, MF_BYPOSITION);
 			buildMoveMenu(moveMenu, ID_LAYERSLIST_MERGELAYERINTO_BEGIN);
 #ifdef ZH
@@ -165,30 +165,30 @@ void CLLTreeCtrl::OnRButtonDown(UINT nFlags, CPoint point)
 			pPopup->RemoveMenu(LAYERS_LIST_MERGE_OBJECT_INTO, MF_BYPOSITION);
 			pPopup->RemoveMenu(LAYERS_LIST_SELECT_OBJECT, MF_BYPOSITION);
 
-#endif
+#endif // ZH
 		} else {
 			pPopup->EnableMenuItem(ID_DELETECURRENTLAYER, MF_GRAYED);
 #ifdef OG
 			pPopup->RemoveMenu(2, MF_BYPOSITION);
 			pPopup->RemoveMenu(ID_HIDECURRENTLAYER, MF_BYCOMMAND);
-#endif
+#endif // OG
 #ifdef ZH
 			pPopup->EnableMenuItem(ID_HIDECURRENTLAYER, MF_GRAYED);
 
-#endif
+#endif // ZH
 			
 #ifdef OG
 			CMenu* moveMenu = pPopup->GetSubMenu(2);
-#endif
+#endif // OG
 #ifdef ZH
 			CMenu* moveMenu = pPopup->GetSubMenu(LAYERS_LIST_MERGE_OBJECT_INTO);
-#endif
+#endif // ZH
 			moveMenu->RemoveMenu(0, MF_BYPOSITION);
 			buildMoveMenu(moveMenu, ID_LAYERSLIST_MERGEOBJECTINTO_BEGIN);
 #ifdef ZH
 
 			pPopup->RemoveMenu(LAYERS_LIST_MERGE_LAYER_INTO, MF_BYPOSITION);
-#endif
+#endif // ZH
 		}
 	} else {
 #ifdef OG
@@ -197,7 +197,7 @@ void CLLTreeCtrl::OnRButtonDown(UINT nFlags, CPoint point)
 		pPopup->RemoveMenu(2, MF_BYPOSITION);
 		pPopup->RemoveMenu(ID_HIDECURRENTLAYER, MF_BYCOMMAND);
 
-#endif
+#endif // OG
 #ifdef ZH
 		pPopup->RemoveMenu(LAYERS_LIST_HIDE_CURRENT_LAYER, MF_BYPOSITION);
 		pPopup->RemoveMenu(LAYERS_LIST_MERGE_OBJECT_INTO, MF_BYPOSITION);
@@ -205,7 +205,7 @@ void CLLTreeCtrl::OnRButtonDown(UINT nFlags, CPoint point)
 		pPopup->RemoveMenu(LAYERS_LIST_DELETE_CURRENT_LAYER, MF_BYPOSITION);
 		pPopup->RemoveMenu(LAYERS_LIST_SELECT_ACTIVE_LAYER, MF_BYPOSITION);
 		pPopup->RemoveMenu(LAYERS_LIST_SELECT_OBJECT, MF_BYPOSITION);
-#endif
+#endif // ZH
 	}
 
 	pPopup->TrackPopupMenu(TPM_LEFTALIGN | TPM_LEFTBUTTON, point.x, point.y, GetParent());
@@ -222,7 +222,7 @@ LayersList::LayersList(UINT nIDTemplate, CWnd *parentWnd) : CDialog(nIDTemplate,
 	mTree = NULL;
 #ifdef ZH
 	m_activatedLayer = false;
-#endif
+#endif // ZH
 	resetLayers();
 }
 
@@ -245,7 +245,7 @@ void LayersList::resetLayers(void)
 #ifdef ZH
 	mLayers.push_back(defaultLayer);
 	defaultLayer.layerName = AsciiString(ThePolygonTriggerLayerName.c_str());
-#endif
+#endif // ZH
 	mLayers.push_back(defaultLayer);
 	TheLayersList = this;
 	if (mTree) {
@@ -269,13 +269,13 @@ void LayersList::addMapObjectToLayersList(MapObject *objToAdd, AsciiString layer
 #ifdef ZH
 			// Try to place it in the active layer.
 			if (!findLayerNamed(AsciiString(TheActiveLayerName.c_str()), &layerIt)) {
-#endif
+#endif // ZH
 			// if we still can't find that layer name, then try adding it to the default layer.
 			if (!findLayerNamed(AsciiString(TheDefaultLayerName.c_str()), &layerIt)) {
 				return;
 #ifdef ZH
 				}
-#endif
+#endif // ZH
 			}
 		}
 	}
@@ -307,7 +307,7 @@ void LayersList::addPolygonTriggerToLayersList(PolygonTrigger *triggerToAdd, Asc
 	}
 
 	addPolygonTriggerToLayer(triggerToAdd, &layerIt);
-#endif
+#endif // ZH
 }
 
 AsciiString LayersList::removeMapObjectFromLayersList(MapObject *objToRemove)
@@ -337,7 +337,7 @@ AsciiString LayersList::removePolygonTriggerFromLayersList(PolygonTrigger *trigg
 	return layerIt->layerName;
 }
 
-#endif
+#endif // ZH
 void LayersList::changeMapObjectLayer(MapObject *objToChange, AsciiString layerToPlaceOn)
 {
 	if (!objToChange) {
@@ -361,7 +361,7 @@ void LayersList::changePolygonTriggerLayer(PolygonTrigger *triggerToChange, Asci
 	addPolygonTriggerToLayersList(triggerToChange, layerToPlaceOn);
 }
 
-#endif
+#endif // ZH
 void LayersList::addLayerNamed(IN AsciiString layerToAdd)
 {
 	if (findLayerNamed(layerToAdd)) {
@@ -390,7 +390,7 @@ void LayersList::removeLayerNamed(IN AsciiString layerToRemove)
 
 	// Not allowed to remove the Default trigger layer
 	if (layerToRemove.compareNoCase(ThePolygonTriggerLayerName.c_str()) == 0) {
-#endif
+#endif // ZH
 		return;
 	}
 
@@ -443,13 +443,13 @@ void LayersList::mergeLayerInto(IN ListLayerIt src, IN ListLayerIt dst)
 	}
 
 	// Don't remove these layers.
-#endif
+#endif // ZH
 	if (src->layerName.compareNoCase(TheDefaultLayerName.c_str()) == 0) {
 #ifdef ZH
 		return;
 	}
 	if (src->layerName.compareNoCase(ThePolygonTriggerLayerName.c_str()) == 0) {
-#endif
+#endif // ZH
 		return;
 #ifdef ZH
 	}
@@ -457,7 +457,7 @@ void LayersList::mergeLayerInto(IN ListLayerIt src, IN ListLayerIt dst)
 	if (src->layerName.compareNoCase(TheActiveLayerName.c_str()) == 0) {
 		// The active layer is no longer available.
 		TheActiveLayerName = AsciiString::TheEmptyString.str();
-#endif
+#endif // ZH
 	}
 
 	// remove the layer from the tree view
@@ -517,12 +517,12 @@ void LayersList::updateUIFromList(void)
 		for (ListPolygonTriggerPtrIt triggerIt = layersIt->polygonTriggersInLayer.begin(); triggerIt != layersIt->polygonTriggersInLayer.end(); ++triggerIt) {
 			AsciiString uniqueID = (*triggerIt)->getTriggerName();
 			pTree->InsertItem(uniqueID.str(), iconToShow, iconToShow, thisBranch);
-#endif
+#endif // ZH
 	}
 }
 #ifdef ZH
 }
-#endif
+#endif // ZH
 
 Bool LayersList::findMapObjectAndList(IN MapObject *objectToFind, OUT ListLayerIt *layerIt, OUT ListMapObjectPtrIt *objectIt)
 {
@@ -566,7 +566,7 @@ Bool LayersList::findPolygonTriggerAndList(IN PolygonTrigger *triggerToFind, OUT
 
 				if (triggerIt) {
 					(*triggerIt) = triggerPtrIt;
-#endif
+#endif // ZH
 				}
 
 				return true;
@@ -697,7 +697,7 @@ void LayersList::addPolygonTriggerToLayer(IN PolygonTrigger *triggerToAdd, IN Li
 	} else {
 		triggerToAdd->setShouldRender(true);
 	}
-#endif
+#endif // ZH
 
 }
 
@@ -741,7 +741,7 @@ void LayersList::removeMapObjectFromLayer(IN MapObject *objectToRemove, IN ListL
 #ifdef ZH
 	
 }
-#endif
+#endif // ZH
 	
 #ifdef ZH
 void LayersList::removePolygonTriggerFromLayer(IN PolygonTrigger *triggerToRemove, IN ListLayerIt *layerIt, IN ListPolygonTriggerPtrIt *triggerIt)
@@ -749,7 +749,7 @@ void LayersList::removePolygonTriggerFromLayer(IN PolygonTrigger *triggerToRemov
 	if (!triggerToRemove) {
 		DEBUG_CRASH(("Attempted to remove NULL trigger from layers list. jkmcd"));
 		return;
-#endif
+#endif // ZH
 }
 
 #ifdef ZH
@@ -785,7 +785,7 @@ void LayersList::removePolygonTriggerFromLayer(IN PolygonTrigger *triggerToRemov
 	
 }
 
-#endif
+#endif // ZH
 BOOL LayersList::OnInitDialog()
 {
 	// call the parent first
@@ -812,19 +812,19 @@ BOOL LayersList::OnInitDialog()
 
 #ifdef OG
 	mImageList.Create(16, 16, ILC_COLOR8, 2, 2);
-#endif
+#endif // OG
 #ifdef ZH
 	mImageList.Create(16, 16, ILC_COLOR8, 3, 3);
-#endif
+#endif // ZH
 	
 #ifdef ZH
 	// If the order of these are changed, please update the enum in updateTreeImages.
-#endif
+#endif // ZH
 	mImageList.Add(LoadIcon(AfxGetInstanceHandle(), MAKEINTRESOURCE(IDI_Show)));
 	mImageList.Add(LoadIcon(AfxGetInstanceHandle(), MAKEINTRESOURCE(IDI_Hide)));
 #ifdef ZH
 	mImageList.Add(LoadIcon(AfxGetInstanceHandle(), MAKEINTRESOURCE(IDI_Selected)));
-#endif
+#endif // ZH
 
 	pTree->SetImageList(&mImageList, LVSIL_NORMAL);
 	pTree->InsertItem(TheDefaultLayerName.c_str(), 0, 0);
@@ -858,7 +858,7 @@ void LayersList::OnBeginEditLabel(NMHDR *pNotifyStruct, LRESULT* pResult)
 
 	if (strcmp(ptvdi->item.pszText, ThePolygonTriggerLayerName.c_str()) == 0) {
 		// Can't edit the default polygon trigger layer name.
-#endif
+#endif // ZH
 		(*pResult) = 1;
 		return;
 	}
@@ -949,7 +949,7 @@ void LayersList::OnDeleteLayer()
 		return;
 	}
 
-#endif
+#endif // ZH
 	ListLayerIt srcLayerIt, dstLayerIt;
 	if (!findLayerNamed(asciiCatToDelete, &srcLayerIt)) {
 		return;
@@ -962,13 +962,13 @@ void LayersList::OnDeleteLayer()
 		TheActiveLayerName = AsciiString::TheEmptyString.str();
 		updateTreeImages();
 
-#endif
+#endif // ZH
 	if (!findLayerNamed(AsciiString(TheDefaultLayerName.c_str()), &dstLayerIt)) {
 		return;
 	}
 #ifdef ZH
 	} else {
-#endif
+#endif // ZH
 
 #ifdef ZH
 		if (!findLayerNamed(AsciiString(TheActiveLayerName.c_str()), &dstLayerIt)) {
@@ -978,7 +978,7 @@ void LayersList::OnDeleteLayer()
 		}
 	}
 
-#endif
+#endif // ZH
 	mergeLayerInto(srcLayerIt, dstLayerIt);
 
 	HTREEITEM itemToRemove = findTreeLayerNamed(asciiCatToDelete);
@@ -1062,12 +1062,12 @@ void LayersList::OnHideShowLayer()
 		}
 	}
 
-#endif
+#endif // OG
 #ifdef ZH
 	updateObjectRenderFlags(&layerIt);
 	updateTreeImages();
 
-#endif
+#endif // ZH
 	//PointerTool::clearSelection();
 }
 
@@ -1202,13 +1202,13 @@ void LayersList::updateObjectRenderFlags(ListLayerIt *updateLayer)
 			(*it)->clearFlag(FLAG_DONT_RENDER);
 		} else {
 			(*it)->setFlag(FLAG_DONT_RENDER);
-#endif
+#endif // ZH
 	}
 #ifdef ZH
 
 		CWorldBuilderDoc *pDoc = CWorldBuilderDoc::GetActiveDoc();
 		pDoc->invalObject((*it));
-#endif
+#endif // ZH
 }
 
 #ifdef ZH
@@ -1261,7 +1261,7 @@ void LayersList::updateTreeImages()
 	}
 }
 
-#endif
+#endif // ZH
 void LayersList::OnMergeViewSelection(UINT commandID)
 {
 	int layerOffset = commandID - ID_LAYERSLIST_MERGEVIEWSELECTIONINTO_BEGIN;
@@ -1365,7 +1365,7 @@ Bool LayersList::findAndSelectPolygonTrigger(AsciiString selectedItemAsciiString
 		trigger = trigger->getNext();
 	}
 	return (false);
-#endif
+#endif // ZH
 }
 
 
@@ -1413,7 +1413,7 @@ void LayersList::OnSelectLayerObject()
 	}
 }
 
-#endif
+#endif // ZH
 MapObject *LayersList::findObjectByUID(AsciiString objectIDToFind)
 {
 	MapObject *obj = MapObject::getFirstMapObject();
@@ -1439,7 +1439,7 @@ PolygonTrigger* LayersList::findPolygonTriggerByUID(AsciiString triggerIDToFind)
 
 	while (trigger) {
 		AsciiString triggerName = trigger->getTriggerName();
-#endif
+#endif // ZH
 
 #ifdef ZH
 		if (triggerName.compareNoCase(triggerIDToFind) == 0) {
@@ -1451,19 +1451,19 @@ PolygonTrigger* LayersList::findPolygonTriggerByUID(AsciiString triggerIDToFind)
 	return (NULL);
 }
 
-#endif
+#endif // ZH
 BEGIN_MESSAGE_MAP(LayersList, CDialog)
 	ON_NOTIFY(TVN_BEGINLABELEDIT, IDC_LL_TREE, OnBeginEditLabel)
 	ON_NOTIFY(TVN_ENDLABELEDIT, IDC_LL_TREE, OnEndEditLabel)
 #ifdef ZH
 	ON_COMMAND(ID_SELECTLAYEROBJECT, OnSelectLayerObject)
-#endif
+#endif // ZH
 	ON_COMMAND(ID_INSERTNEWLAYER, OnNewLayer)
 	ON_COMMAND(ID_DELETECURRENTLAYER, OnDeleteLayer)
 	ON_COMMAND(ID_HIDECURRENTLAYER, OnHideShowLayer)
 #ifdef ZH
 	ON_COMMAND(ID_SELECTACTIVELAYER, OnSelectActiveLayer)
-#endif
+#endif // ZH
 	ON_COMMAND_RANGE(ID_LAYERSLIST_MERGELAYERINTO_BEGIN, ID_LAYERSLIST_MERGELAYERINTO_END, OnMergeLayer)
 	ON_COMMAND_RANGE(ID_LAYERSLIST_MERGEOBJECTINTO_BEGIN, ID_LAYERSLIST_MERGEOBJECTINTO_END, OnMergeObject)
 	ON_COMMAND_RANGE(ID_LAYERSLIST_MERGEVIEWSELECTIONINTO_BEGIN, ID_LAYERSLIST_MERGEVIEWSELECTIONINTO_END, OnMergeViewSelection)
@@ -1475,18 +1475,18 @@ END_MESSAGE_MAP()
 // TheDefaultLayerName is NOT constant, because it is okay to change it.
 #ifdef OG
 std::string LayersList::TheDefaultLayerName = "Default Layer";
-#endif
+#endif // OG
 #ifdef ZH
 std::string LayersList::TheDefaultLayerName = "Default Object Layer";
-#endif
+#endif // ZH
 std::string LayersList::TheDefaultNewLayerName = "New Layer";
 #ifdef OG
 const std::string LayersList::TheUnmutableDefaultLayerName = "Default Layer";
 
-#endif
+#endif // OG
 #ifdef ZH
 std::string LayersList::ThePolygonTriggerLayerName = "Default Trigger Layer";
 std::string LayersList::TheActiveLayerName;
 const std::string LayersList::TheUnmutableDefaultLayerName = "Default Object Layer";
-#endif
+#endif // ZH
 extern LayersList *TheLayersList = NULL;

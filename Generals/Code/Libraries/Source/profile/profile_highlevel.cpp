@@ -339,4 +339,4 @@ ProfileHighLevel::ProfileHighLevel(void)
 
 ProfileHighLevel ProfileHighLevel::Instance;
 
-#endif
+#endif // ZH

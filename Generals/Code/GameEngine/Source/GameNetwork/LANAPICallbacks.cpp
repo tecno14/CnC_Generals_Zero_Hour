@@ -194,7 +194,7 @@ void LANAPI::OnGameStart( void )
 
 #ifdef OG
 #if !defined(_PLAYTEST)
-#endif
+#endif // OG
 	if (m_currentGame)
 	{
 		LANPreferences pref;
@@ -206,13 +206,13 @@ void LANAPI::OnGameStart( void )
 		if (m_currentGame->amIHost())
 #ifdef ZH
     {
-#endif
+#endif // ZH
 			pref["Map"] = AsciiStringToQuotedPrintable(m_currentGame->getMap());
 #ifdef ZH
       pref.setSuperweaponRestricted( m_currentGame->getSuperweaponRestriction() > 0 );
       pref.setStartingCash( m_currentGame->getStartingCash() );
     }
-#endif
+#endif // ZH
 		pref.write();
 
 		m_isInLANMenu = FALSE;
@@ -276,7 +276,7 @@ void LANAPI::OnGameStart( void )
 	}
 #ifdef OG
 #endif
-#endif
+#endif // OG
 }
 
 void LANAPI::OnGameOptions( UnsignedInt playerIP, Int playerSlot, AsciiString options )

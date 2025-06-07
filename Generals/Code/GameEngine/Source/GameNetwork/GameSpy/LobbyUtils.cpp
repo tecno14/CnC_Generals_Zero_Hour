@@ -71,7 +71,7 @@
 // PRIVATE DATA ///////////////////////////////////////////////////////////////////////////////////
 #ifdef ZH
 // Note: if you add more columns, you must modify the .wnd files and change the listbox properties (yuck!)
-#endif
+#endif // ZH
 static enum {
 	COLUMN_NAME = 0,
 	COLUMN_MAP,
@@ -81,7 +81,7 @@ static enum {
 	COLUMN_OBSERVER,
 #ifdef ZH
   COLUMN_USE_STATS,
-#endif
+#endif // ZH
 	COLUMN_PING,
 };
 
@@ -228,10 +228,10 @@ static void gameTooltip(GameWindow *window,
 	{
 #ifdef OG
 #ifdef DEBUG_LOGGING
-#endif
+#endif // OG
 #ifdef ZH
 #if 0 //def DEBUG_LOGGING
-#endif
+#endif // ZH
 		UnicodeString s;
 		s.format(L"Ping is %d ms (cutoffs are %d ms and %d ms\n%hs local pings\n%hs remote pings",
 			room->getPingAsInt(), TheGameSpyConfig->getPingCutoffGood(), TheGameSpyConfig->getPingCutoffBad(),
@@ -272,7 +272,7 @@ static void gameTooltip(GameWindow *window,
     {
       TheMouse->setCursorTooltip( TheGameText->fetch("TOOLTIP:UseStatsOff") );
     }
-#endif
+#endif // ZH
 		return;
 	}
 
@@ -667,7 +667,7 @@ static Int insertGame( GameWindow *win, GameSpyStagingRoom *game, Bool showMap )
       GadgetListBoxAddEntryImage(win, img, index, COLUMN_USE_STATS, img->getImageHeight(), img->getImageWidth());
 	}
     
-#endif
+#endif // ZH
 	}
 
 	s.format(L"%d", game->getPingAsInt());
@@ -950,5 +950,5 @@ void playerTemplateListBoxTooltip(GameWindow *wndListBox, WinInstanceData *instD
 	// use no tooltip delay here
 	TheMouse->setCursorTooltip(ustringTooltip, 0);
 }
-#endif
+#endif // ZH
 

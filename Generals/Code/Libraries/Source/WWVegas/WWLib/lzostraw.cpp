@@ -184,4 +184,4 @@ int LZOStraw::Get(void * destbuf, int slen)
 	return(total);
 }
 
-#endif
+#endif // ZH

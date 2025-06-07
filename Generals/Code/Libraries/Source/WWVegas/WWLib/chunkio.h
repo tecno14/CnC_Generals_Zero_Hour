@@ -18,10 +18,10 @@
 
 #ifdef OG
 /* $Header: /Commando/Code/wwlib/chunkio.h 21    7/31/01 6:41p Patrick $ */
-#endif
+#endif // OG
 #ifdef ZH
 /* $Header: /Commando/Code/wwlib/chunkio.h 22    10/22/01 6:42p Steve_t $ */
-#endif
+#endif // ZH
 /*********************************************************************************************** 
  ***                            Confidential - Westwood Studios                              *** 
  *********************************************************************************************** 
@@ -32,24 +32,24 @@
  *                                                                                             * 
 #ifdef OG
  *                      $Author:: Patrick                                                     $* 
-#endif
+#endif // OG
 #ifdef ZH
  *                      $Author:: Steve_t                                                     $*
-#endif
+#endif // ZH
  *                                                                                             * 
 #ifdef OG
  *                     $Modtime:: 7/27/01 2:47p                                               $* 
-#endif
+#endif // OG
 #ifdef ZH
  *                     $Modtime:: 10/21/01 8:58p                                              $*
-#endif
+#endif // ZH
  *                                                                                             * 
 #ifdef OG
  *                    $Revision:: 21                                                          $* 
-#endif
+#endif // OG
 #ifdef ZH
  *                    $Revision:: 22                                                          $*
-#endif
+#endif // ZH
  *                                                                                             * 
  *---------------------------------------------------------------------------------------------* 
  * Functions:                                                                                  * 
@@ -362,11 +362,11 @@ private:
 #ifdef OG
 		void *temp_read_buffer_on_the_stack = _alloca(sizeof(var));		\
 		cload.Read(temp_read_buffer_on_the_stack, sizeof(var));        \
-#endif
+#endif // OG
 #ifdef ZH
 		void *temp_read_buffer_on_the_stack = _alloca(sizeof(type));	\
 		cload.Read(temp_read_buffer_on_the_stack, sizeof(type));       \
-#endif
+#endif // ZH
 		var = *((type*)temp_read_buffer_on_the_stack);                 \
 		break;                                                         \
 	}

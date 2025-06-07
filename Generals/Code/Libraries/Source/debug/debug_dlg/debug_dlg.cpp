@@ -209,4 +209,4 @@ int CALLBACK WinMain(HINSTANCE hInst, HINSTANCE, LPSTR, int)
   return 0;
 }
 
-#endif
+#endif // ZH

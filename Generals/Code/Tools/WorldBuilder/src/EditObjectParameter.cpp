@@ -257,7 +257,7 @@ BOOL EditObjectParameter::OnNotify(WPARAM wParam, LPARAM lParam, LRESULT* pResul
 	}
 	return CDialog::OnNotify(wParam, lParam, pResult);
 }
-#endif
+#endif // ZH
 
 void EditObjectParameter::OnOK() 
 {

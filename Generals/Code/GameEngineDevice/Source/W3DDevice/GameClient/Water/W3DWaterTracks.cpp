@@ -48,11 +48,11 @@
 #ifdef ZH
 #include "W3DDevice/GameClient/W3DShaderManager.h"
 #include "W3DDevice/GameClient/W3DShroud.h"
-#endif
+#endif // ZH
 #include "GameClient/InGameUI.h"
 #ifdef ZH
 #include "GameClient/Water.h"
-#endif
+#endif // ZH
 #include "GameLogic/TerrainLogic.h"
 #include "common/GlobalData.h"
 #include "common/UnicodeString.h"
@@ -877,7 +877,7 @@ Try improving the fit to vertical surfaces like cliffs.
 	if (!TheGlobalData->m_showSoftWaterEdge || TheWaterTransparency->m_transparentWaterDepth ==0 )
 		return;
 
-#endif
+#endif // ZH
 	if (TheGlobalData->m_usingWaterTrackEditor)
 		TestWaterUpdate();
 
@@ -933,7 +933,7 @@ Try improving the fit to vertical surfaces like cliffs.
 		//write to the zbuffer.  Change to LESSEQUAL.
 		DX8Wrapper::Set_DX8_Render_State(D3DRS_ZFUNC, D3DCMP_LESSEQUAL);
 	}
-#endif
+#endif // ZH
 
 	Int LastTextureType=-1;
 
@@ -959,7 +959,7 @@ Try improving the fit to vertical surfaces like cliffs.
 		DX8Wrapper::Set_DX8_Render_State(D3DRS_ZFUNC, D3DCMP_EQUAL);
 		W3DShaderManager::resetShader(W3DShaderManager::ST_SHROUD_TEXTURE);
 	}
-#endif
+#endif // ZH
 }
 
 WaterTracksObj *WaterTracksRenderSystem::findTrack(Vector2 &start, Vector2 &end, waveType type)

@@ -40,7 +40,7 @@
 #include "GameLogic/Module/DieModule.h"
 #ifdef ZH
 #include "GameLogic/ObjectCreationList.h"
-#endif
+#endif // ZH
 
 //-------------------------------------------------------------------------------------------------
 // ------------------------------------------------------------------------------------------------
@@ -65,7 +65,7 @@ public:
 	Real									m_healthPercentToDrainPerSecond;
 #ifdef ZH
 	const ObjectCreationList* m_ocl; ///< object creaton list to make
-#endif
+#endif // ZH
 
 };
 
@@ -114,7 +114,7 @@ public:
 	virtual Bool isSalvageCrateCollide() const { return false; }
 #ifdef ZH
 	virtual Bool isSabotageBuildingCrateCollide() const { return FALSE; }
-#endif
+#endif // ZH
 
 	// Minefield specific methods
 	virtual void setScootParms(const Coord3D& start, const Coord3D& end);

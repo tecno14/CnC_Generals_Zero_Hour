@@ -63,11 +63,11 @@ enum LocomotorAppearance
 #ifdef OG
 	LOCO_OTHER
 
-#endif
+#endif // OG
 #ifdef ZH
 	LOCO_OTHER,
 	LOCO_MOTORCYCLE
-#endif
+#endif // ZH
 };
 
 enum LocomotorPriority
@@ -90,7 +90,7 @@ static const char *TheLocomotorAppearanceNames[] =
 	"OTHER",
 #ifdef ZH
 	"MOTORCYCLE",
-#endif
+#endif // ZH
 
 	NULL
 };
@@ -179,11 +179,11 @@ private:
 #ifdef OG
 	Real											m_accelPitchLimit;			///< Maximum amount we will pitch up or down under acceleration (including recoil.)
 
-#endif
+#endif // OG
 #ifdef ZH
 	Real											m_accelPitchLimit;			///< Maximum amount we will pitch up  under acceleration (including recoil.)
 	Real											m_decelPitchLimit;			///< Maximum amount we will pitch down under deceleration (including recoil.)
-#endif
+#endif // ZH
 	Real											m_bounceKick;						///< How much simulating rough terrain "bounces" a wheel up.
 	Real											m_pitchStiffness;				///< How stiff the springs are forward & back.
 	Real											m_rollStiffness;				///< How stiff the springs are side to side.
@@ -228,7 +228,7 @@ private:
 	Real											m_rudderCorrectionRate;	
 	Real											m_elevatorCorrectionDegree;
 	Real											m_elevatorCorrectionRate;
-#endif
+#endif // ZH
 };	
 
 typedef OVERRIDE<LocomotorTemplate> LocomotorTemplateOverride;
@@ -273,7 +273,7 @@ public:
 	inline Real getAccelPitchLimit() const { return m_template->m_accelPitchLimit;}	///< Maximum amount we will pitch up or down under acceleration (including recoil.)
 #ifdef ZH
 	inline Real getDecelPitchLimit() const { return m_template->m_decelPitchLimit;}	///< Maximum amount we will pitch down under deceleration (including recoil.)
-#endif
+#endif // ZH
 	inline Real getBounceKick() const { return m_template->m_bounceKick;}						///< How much simulating rough terrain "bounces" a wheel up.
 	inline Real getPitchStiffness() const { return m_template->m_pitchStiffness;}			///< How stiff the springs are forward & back.
 	inline Real getRollStiffness() const { return m_template->m_rollStiffness;}				///< How stiff the springs are side to side.
@@ -312,7 +312,7 @@ public:
 	inline Real getElevatorCorrectionDegree() const { return m_template->m_elevatorCorrectionDegree;}			///< How much we roll in response to acceleration.
 	inline Real getElevatorCorrectionRate()	  const { return m_template->m_elevatorCorrectionRate;}			///< How much we roll in response to acceleration.
 
-#endif
+#endif // ZH
 
 	inline Real getWanderWidthFactor() const {return m_template->m_wanderWidthFactor;}
 	inline Real getWanderAboutPointRadius() const {return m_template->m_wanderAboutPointRadius;}
@@ -334,7 +334,7 @@ public:
 	inline void setCloseEnoughDist3D( Bool setting ) { setFlag(IS_CLOSE_ENOUGH_DIST_3D, setting); }
 #ifdef ZH
 	inline Bool isInvalidPositionAllowed() const { return getFlag( ALLOW_INVALID_POSITION ); }
-#endif
+#endif // ZH
 
 	inline void setPreferredHeight( Real height ) { m_preferredHeight = height; }
 

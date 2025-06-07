@@ -18,10 +18,10 @@
 
 #ifdef OG
 /* $Header: /Commando/Code/wwmath/matrix4.h 19    5/11/01 7:11p Jani_p $ */
-#endif
+#endif // OG
 #ifdef ZH
 /* $Header: /Commando/Code/wwmath/matrix4.h 20    10/04/01 10:33a Greg_h $ */
-#endif
+#endif // ZH
 /*********************************************************************************************** 
  ***                            Confidential - Westwood Studios                              *** 
  *********************************************************************************************** 
@@ -32,27 +32,27 @@
 #ifdef ZH
  *                                                                                             * 
  *               Org Programmer : Greg Hjelstrom                                               * 
-#endif
+#endif // ZH
  *                                                                                             * 
 #ifdef OG
  *                   Programmer : Greg Hjelstrom                                               * 
-#endif
+#endif // OG
 #ifdef ZH
  *                       Author : Kenny Mitchell                                               * 
-#endif
+#endif // ZH
  *                                                                                             * 
  *                   Start Date : 06/02/97                                                     * 
  *                                                                                             * 
 #ifdef OG
  *                  Last Update : June 2, 1997 [GH]                                            * 
-#endif
+#endif // OG
 #ifdef ZH
  *                  Last Update : June 6, 2002 [KM]                                            * 
-#endif
+#endif // ZH
  *                                                                                             * 
 #ifdef ZH
  * 06/26/02 KM Matrix name change to avoid MAX conflicts                                       *
-#endif
+#endif // ZH
  *---------------------------------------------------------------------------------------------* 
  * Functions:                                                                                  * 
 #ifdef OG
@@ -74,7 +74,7 @@
  *   Matrix4::operator *= -- "times equals" operator                                           * 
  *   Matrix4::operator /= -- "divide equals" operator                                          * 
 
-#endif
+#endif // OG
 #ifdef ZH
  *   Matrix4x4::Matrix4x4 -- Constructor, optionally initialize to Identitiy matrix                * 
  *   Matrix4x4::Matrix4x4 -- Copy Constructor                                                      * 
@@ -94,7 +94,7 @@
  *   Matrix4x4::operator -= -- "minus equals" operator                                            * 
  *   Matrix4x4::operator *= -- "times equals" operator                                           * 
  *   Matrix4x4::operator /= -- "divide equals" operator                                          * 
-#endif
+#endif // ZH
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
 
@@ -114,10 +114,10 @@
 
 #ifdef OG
 class Matrix4
-#endif
+#endif // OG
 #ifdef ZH
 class Matrix4x4
-#endif
+#endif // ZH
 {
 public:
 
@@ -127,11 +127,11 @@ public:
 #ifdef OG
 	Matrix4(void) {};
 	Matrix4(const Matrix4 & m);
-#endif
+#endif // OG
 #ifdef ZH
 	Matrix4x4(void) {};
 	Matrix4x4(const Matrix4x4 & m);
-#endif
+#endif // ZH
 
 #ifdef OG
 	WWINLINE explicit Matrix4(bool identity);
@@ -139,7 +139,7 @@ public:
 	WWINLINE explicit Matrix4(const Matrix3 & m);
 	WWINLINE explicit Matrix4(const Vector4 & v0, const Vector4 & v1, const Vector4 & v2, const Vector4 & v3);
 
-#endif
+#endif // OG
 #ifdef ZH
 	WWINLINE explicit Matrix4x4(bool identity);
 	WWINLINE explicit Matrix4x4(const Matrix3D & m);
@@ -149,23 +149,23 @@ public:
 										float m21,float m22,float m23,float m24,
 										float m31,float m32,float m33,float m34,  
 										float m41,float m42,float m43,float m44 ); 
-#endif
+#endif // ZH
 	
 	WWINLINE void		Make_Identity(void);
 	WWINLINE void		Init(const Matrix3D & m);
 #ifdef OG
 	WWINLINE void		Init(const Matrix3 & m);
-#endif
+#endif // OG
 #ifdef ZH
 	WWINLINE void		Init(const Matrix3x3 & m);
-#endif
+#endif // ZH
 	WWINLINE void		Init(const Vector4 & v0, const Vector4 & v1, const Vector4 & v2, const Vector4 & v3);
 #ifdef ZH
 	WWINLINE void		Init(	float m11,float m12,float m13,float m14,
 									float m21,float m22,float m23,float m24,
 									float m31,float m32,float m33,float m34,  
 									float m41,float m42,float m43,float m44 ); 
-#endif
+#endif // ZH
 
 	/*
 	** Projection matrices.  The znear and zfar parameters are positive values indicating the
@@ -187,11 +187,11 @@ public:
 #ifdef OG
 	WWINLINE Matrix4 Transpose(void) const;
 	WWINLINE Matrix4 Inverse(void) const;
-#endif
+#endif // OG
 #ifdef ZH
 	WWINLINE Matrix4x4 Transpose(void) const;
 	WWINLINE Matrix4x4 Inverse(void) const;
-#endif
+#endif // ZH
 
 	/*
 	** Assignment operators
@@ -202,24 +202,24 @@ public:
 	WWINLINE Matrix4 & operator -= (const Matrix4 & m);
 	WWINLINE Matrix4 & operator *= (float d);
 	WWINLINE Matrix4 & operator /= (float d);
-#endif
+#endif // OG
 #ifdef ZH
 	WWINLINE Matrix4x4 & operator = (const Matrix4x4 & m);
 	WWINLINE Matrix4x4 & operator += (const Matrix4x4 & m);
 	WWINLINE Matrix4x4 & operator -= (const Matrix4x4 & m);
 	WWINLINE Matrix4x4 & operator *= (float d);
 	WWINLINE Matrix4x4 & operator /= (float d);
-#endif
+#endif // ZH
 
 	/*
 	** Negation
 	*/
 #ifdef OG
 	WWINLINE friend Matrix4 operator - (const Matrix4& a);
-#endif
+#endif // OG
 #ifdef ZH
 	WWINLINE friend Matrix4x4 operator - (const Matrix4x4& a);
-#endif
+#endif // ZH
 	
 	/*
 	** Scalar multiplication and division
@@ -228,12 +228,12 @@ public:
 	WWINLINE friend Matrix4 operator * (const Matrix4& a,float d);
 	WWINLINE friend Matrix4 operator * (float d,const Matrix4& a);
 	WWINLINE friend Matrix4 operator / (const Matrix4& a,float d);
-#endif
+#endif // OG
 #ifdef ZH
 	WWINLINE friend Matrix4x4 operator * (const Matrix4x4& a,float d);
 	WWINLINE friend Matrix4x4 operator * (float d,const Matrix4x4& a);
 	WWINLINE friend Matrix4x4 operator / (const Matrix4x4& a,float d);
-#endif
+#endif // ZH
 
 	/*
 	** matrix addition
@@ -241,11 +241,11 @@ public:
 #ifdef OG
 	WWINLINE friend Matrix4 operator + (const Matrix4& a, const Matrix4& b);
 	WWINLINE friend Matrix4 Add(const Matrix4& a);
-#endif
+#endif // OG
 #ifdef ZH
 	WWINLINE friend Matrix4x4 operator + (const Matrix4x4& a, const Matrix4x4& b);
 	WWINLINE friend Matrix4x4 Add(const Matrix4x4& a);
-#endif
+#endif // ZH
 
 	/*
 	** matrix subtraction
@@ -253,11 +253,11 @@ public:
 #ifdef OG
 	WWINLINE friend Matrix4 operator - (const Matrix4 & a, const Matrix4 & b);
 	WWINLINE friend Matrix4 Subtract(const Matrix4 & a, const Matrix4 & b);
-#endif
+#endif // OG
 #ifdef ZH
 	WWINLINE friend Matrix4x4 operator - (const Matrix4x4 & a, const Matrix4x4 & b);
 	WWINLINE friend Matrix4x4 Subtract(const Matrix4x4 & a, const Matrix4x4 & b);
-#endif
+#endif // ZH
 
 	/*
 	** matrix multiplication
@@ -267,13 +267,13 @@ public:
 	WWINLINE friend Matrix4 Multiply(const Matrix4 & a, const Matrix4 & b);
 	WWINLINE friend Matrix4 operator * (const Matrix4 & a, const Matrix3D & b);
 	WWINLINE friend Matrix4 operator * (const Matrix3D & a, const Matrix4 & b);
-#endif
+#endif // OG
 #ifdef ZH
 	WWINLINE friend Matrix4x4 operator * (const Matrix4x4 & a, const Matrix4x4 & b);
 	WWINLINE friend Matrix4x4 Multiply(const Matrix4x4 & a, const Matrix4x4 & b);
 	WWINLINE friend Matrix4x4 operator * (const Matrix4x4 & a, const Matrix3D & b);
 	WWINLINE friend Matrix4x4 operator * (const Matrix3D & a, const Matrix4x4 & b);
-#endif
+#endif // ZH
 
 	/*
 	** Comparison operators
@@ -281,21 +281,21 @@ public:
 #ifdef OG
 	friend int operator == (const Matrix4 & a, const Matrix4 & b);
 	friend int operator != (const Matrix4 & a, const Matrix4 & b);
-#endif
+#endif // OG
 #ifdef ZH
 	friend int operator == (const Matrix4x4 & a, const Matrix4x4 & b);
 	friend int operator != (const Matrix4x4 & a, const Matrix4x4 & b);
-#endif
+#endif // ZH
 
 	/*
 	** Swap two matrices in place
 	*/
 #ifdef OG
 	WWINLINE friend void Swap(Matrix4 & a,Matrix4 & b);
-#endif
+#endif // OG
 #ifdef ZH
 	WWINLINE friend void Swap(Matrix4x4 & a,Matrix4x4 & b);
-#endif
+#endif // ZH
 
 	/*
 	** Linear Transforms
@@ -303,11 +303,11 @@ public:
 #ifdef OG
 	WWINLINE friend Vector4 operator * (const Matrix4 & a, const Vector4 & v);
 	WWINLINE friend Vector4 operator * (const Matrix4 & a, const Vector3 & v);
-#endif
+#endif // OG
 #ifdef ZH
 	WWINLINE friend Vector4 operator * (const Matrix4x4 & a, const Vector4 & v);
 	WWINLINE friend Vector4 operator * (const Matrix4x4 & a, const Vector3 & v);
-#endif
+#endif // ZH
 
 	/*
 	** Matrix multiplication without temporaries...
@@ -316,23 +316,23 @@ public:
 	static void	Multiply(const Matrix4 &A,const Matrix4 &B,Matrix4 * set_result);
 	static void	Multiply(const Matrix3D &A,const Matrix4 &B,Matrix4 * set_result);
 	static void	Multiply(const Matrix4 &A,const Matrix3D &B,Matrix4 * set_result);
-#endif
+#endif // OG
 #ifdef ZH
 	static void	Multiply(const Matrix4x4 &A,const Matrix4x4 &B,Matrix4x4 * set_result);
 	static void	Multiply(const Matrix3D &A,const Matrix4x4 &B,Matrix4x4 * set_result);
 	static void	Multiply(const Matrix4x4 &A,const Matrix3D &B,Matrix4x4 * set_result);
-#endif
+#endif // ZH
 
 #ifdef OG
 	static WWINLINE void	Transform_Vector(const Matrix4 & tm,const Vector3 & in,Vector3 * out);
 	static WWINLINE void	Transform_Vector(const Matrix4 & tm,const Vector3 & in,Vector4 * out);
 	static WWINLINE void	Transform_Vector(const Matrix4 & tm,const Vector4 & in,Vector4 * out);
-#endif
+#endif // OG
 #ifdef ZH
 	static WWINLINE void	Transform_Vector(const Matrix4x4 & tm,const Vector3 & in,Vector3 * out);
 	static WWINLINE void	Transform_Vector(const Matrix4x4 & tm,const Vector3 & in,Vector4 * out);
 	static WWINLINE void	Transform_Vector(const Matrix4x4 & tm,const Vector4 & in,Vector4 * out);
-#endif
+#endif // ZH
 
 protected:
 
@@ -344,10 +344,10 @@ protected:
 /*********************************************************************************************** 
 #ifdef OG
  * Matrix4::Matrix4 -- Constructor, optionally initialize to Identitiy matrix                  * 
-#endif
+#endif // OG
 #ifdef ZH
  * Matrix4x4::Matrix4x4 -- Constructor, optionally initialize to Identitiy matrix                  * 
-#endif
+#endif // ZH
  *                                                                                             * 
  * INPUT:                                                                                      * 
  *                                                                                             * 
@@ -360,10 +360,10 @@ protected:
  *=============================================================================================*/
 #ifdef OG
 WWINLINE Matrix4::Matrix4(bool identity)
-#endif
+#endif // OG
 #ifdef ZH
 WWINLINE Matrix4x4::Matrix4x4(bool identity)
-#endif
+#endif // ZH
 {
 	if (identity) {
 		Make_Identity();
@@ -373,10 +373,10 @@ WWINLINE Matrix4x4::Matrix4x4(bool identity)
 /*********************************************************************************************** 
 #ifdef OG
  * Matrix4::Matrix4 -- Copy Constructor                                                        * 
-#endif
+#endif // OG
 #ifdef ZH
  * Matrix4x4::Matrix4x4 -- Copy Constructor                                                        * 
-#endif
+#endif // ZH
  *                                                                                             * 
  * INPUT:                                                                                      * 
  *                                                                                             * 
@@ -389,10 +389,10 @@ WWINLINE Matrix4x4::Matrix4x4(bool identity)
  *=============================================================================================*/
 #ifdef OG
 WWINLINE Matrix4::Matrix4(const Matrix4 & m)
-#endif
+#endif // OG
 #ifdef ZH
 WWINLINE Matrix4x4::Matrix4x4(const Matrix4x4 & m)
-#endif
+#endif // ZH
 {
 	Row[0] = m.Row[0]; Row[1] = m.Row[1]; Row[2] = m.Row[2]; Row[3] = m.Row[3]; 
 }
@@ -400,10 +400,10 @@ WWINLINE Matrix4x4::Matrix4x4(const Matrix4x4 & m)
 /*********************************************************************************************** 
 #ifdef OG
  * Matrix4::Matrix4 -- Convert a Matrix3D (fake 4x4) to a Matrix4                              * 
-#endif
+#endif // OG
 #ifdef ZH
  * Matrix4x4::Matrix4x4 -- Convert a Matrix3D (fake 4x4) to a Matrix4x4                              * 
-#endif
+#endif // ZH
  *                                                                                             * 
  * INPUT:                                                                                      * 
  *                                                                                             * 
@@ -416,10 +416,10 @@ WWINLINE Matrix4x4::Matrix4x4(const Matrix4x4 & m)
  *=============================================================================================*/
 #ifdef OG
 WWINLINE Matrix4::Matrix4(const Matrix3D & m)
-#endif
+#endif // OG
 #ifdef ZH
 WWINLINE Matrix4x4::Matrix4x4(const Matrix3D & m)
-#endif
+#endif // ZH
 {
 	Init(m);
 }
@@ -427,10 +427,10 @@ WWINLINE Matrix4x4::Matrix4x4(const Matrix3D & m)
 /*********************************************************************************************** 
 #ifdef OG
  * Matrix4::Matrix4 -- Constructor                                                             * 
-#endif
+#endif // OG
 #ifdef ZH
  * Matrix4x4::Matrix4x4 -- Constructor                                                             * 
-#endif
+#endif // ZH
  *                                                                                             * 
  * INPUT:                                                                                      * 
  *                                                                                             * 
@@ -443,10 +443,10 @@ WWINLINE Matrix4x4::Matrix4x4(const Matrix3D & m)
  *=============================================================================================*/
 #ifdef OG
 WWINLINE Matrix4::Matrix4(const Vector4 & r0, const Vector4 & r1, const Vector4 & r2, const Vector4 & r3)
-#endif
+#endif // OG
 #ifdef ZH
 WWINLINE Matrix4x4::Matrix4x4(const Vector4 & r0, const Vector4 & r1, const Vector4 & r2, const Vector4 & r3)
-#endif
+#endif // ZH
 { 
 	Init(r0,r1,r2,r3);
 }
@@ -469,15 +469,15 @@ WWINLINE Matrix4x4::Matrix4x4(float m11,float m12,float m13,float m14, float m21
 {
 	Init(m11, m12, m13, m14, m21, m22, m23, m24, m31, m32, m33, m34, m41, m42, m43, m44);
 }
-#endif
+#endif // ZH
 
 /***********************************************************************************************
 #ifdef OG
  * Matrix4::Make_Identity -- Initializes the matrix to Identity                                *
-#endif
+#endif // OG
 #ifdef ZH
  * Matrix4x4::Make_Identity -- Initializes the matrix to Identity                                *
-#endif
+#endif // ZH
  *                                                                                             *
  * INPUT:                                                                                      *
  *                                                                                             *
@@ -490,10 +490,10 @@ WWINLINE Matrix4x4::Matrix4x4(float m11,float m12,float m13,float m14, float m21
  *=============================================================================================*/
 #ifdef OG
 WWINLINE void Matrix4::Make_Identity(void)
-#endif
+#endif // OG
 #ifdef ZH
 WWINLINE void Matrix4x4::Make_Identity(void)
-#endif
+#endif // ZH
 {
 	Row[0].Set(1.0,0.0,0.0,0.0);
 	Row[1].Set(0.0,1.0,0.0,0.0);
@@ -505,10 +505,10 @@ WWINLINE void Matrix4x4::Make_Identity(void)
 /***********************************************************************************************
 #ifdef OG
  * Matrix4::Init -- Initializes from the contents of the give Matrix3D                         *
-#endif
+#endif // OG
 #ifdef ZH
  * Matrix4x4::Init -- Initializes from the contents of the give Matrix3D                         *
-#endif
+#endif // ZH
  *                                                                                             *
  * INPUT:                                                                                      *
  *                                                                                             *
@@ -521,10 +521,10 @@ WWINLINE void Matrix4x4::Make_Identity(void)
  *=============================================================================================*/
 #ifdef OG
 WWINLINE void Matrix4::Init(const Matrix3D & m)
-#endif
+#endif // OG
 #ifdef ZH
 WWINLINE void Matrix4x4::Init(const Matrix3D & m)
-#endif
+#endif // ZH
 {
 	Row[0] = m[0]; Row[1] = m[1]; Row[2] = m[2]; Row[3] = Vector4(0.0,0.0,0.0,1.0); 
 }
@@ -533,10 +533,10 @@ WWINLINE void Matrix4x4::Init(const Matrix3D & m)
 /***********************************************************************************************
 #ifdef OG
  * Matrix4::Init -- Initializes the rows from the given Vector4s                               *
-#endif
+#endif // OG
 #ifdef ZH
  * Matrix4x4::Init -- Initializes the rows from the given Vector4s                               *
-#endif
+#endif // ZH
  *                                                                                             *
  * INPUT:                                                                                      *
  *                                                                                             *
@@ -549,10 +549,10 @@ WWINLINE void Matrix4x4::Init(const Matrix3D & m)
  *=============================================================================================*/
 #ifdef OG
 WWINLINE void Matrix4::Init(const Vector4 & r0, const Vector4 & r1, const Vector4 & r2, const Vector4 & r3)
-#endif
+#endif // OG
 #ifdef ZH
 WWINLINE void Matrix4x4::Init(const Vector4 & r0, const Vector4 & r1, const Vector4 & r2, const Vector4 & r3)
-#endif
+#endif // ZH
 {
 	Row[0] = r0; Row[1] = r1; Row[2] = r2; Row[3] = r3; 
 }
@@ -562,7 +562,7 @@ WWINLINE void Matrix4x4::Init(const Vector4 & r0, const Vector4 & r1, const Vect
 #ifdef OG
  * Matrix4::Init_Ortho -- Initialize to an orthographic projection matrix                      *
 
-#endif
+#endif // OG
 #ifdef ZH
  * Matrix4x4::Init -- Initializes the rows from the given 16 floats                              *
  *                                                                                             *
@@ -586,7 +586,7 @@ WWINLINE void Matrix4x4::Init(float m11,float m12,float m13,float m14, float m21
 
 /***********************************************************************************************
  * Matrix4x4::Init_Ortho -- Initialize to an orthographic projection matrix                      *
-#endif
+#endif // ZH
  *                                                                                             *
  * You can find the formulas for this in the appendix of the OpenGL programming guide.  Also   *
  * this happens to be the same convention used by Surrender.                                   *
@@ -610,10 +610,10 @@ WWINLINE void Matrix4x4::Init(float m11,float m12,float m13,float m14, float m21
  *=============================================================================================*/
 #ifdef OG
 WWINLINE void Matrix4::Init_Ortho
-#endif
+#endif // OG
 #ifdef ZH
 WWINLINE void Matrix4x4::Init_Ortho
-#endif
+#endif // ZH
 (
 	float left,
 	float right,
@@ -639,10 +639,10 @@ WWINLINE void Matrix4x4::Init_Ortho
 /***********************************************************************************************
 #ifdef OG
  * Matrix4::Init_Perspective -- Initialize to a perspective projection matrix                  *
-#endif
+#endif // OG
 #ifdef ZH
  * Matrix4x4::Init_Perspective -- Initialize to a perspective projection matrix                  *
-#endif
+#endif // ZH
  *                                                                                             *
  * You can find the formulas for this matrix in the appendix of the OpenGL programming guide.  *
  * Also, this happens to be the same convention used by Surrender.                             *
@@ -670,10 +670,10 @@ WWINLINE void Matrix4x4::Init_Ortho
  *=============================================================================================*/
 #ifdef OG
 WWINLINE void Matrix4::Init_Perspective(float hfov,float vfov,float znear,float zfar)
-#endif
+#endif // OG
 #ifdef ZH
 WWINLINE void Matrix4x4::Init_Perspective(float hfov,float vfov,float znear,float zfar)
-#endif
+#endif // ZH
 {
 	assert(znear > 0.0f);
 	assert(zfar > znear);
@@ -691,10 +691,10 @@ WWINLINE void Matrix4x4::Init_Perspective(float hfov,float vfov,float znear,floa
 /***********************************************************************************************
 #ifdef OG
  * Matrix4::Init_Perspective -- Initialize to a perspective projection matrix                  *
-#endif
+#endif // OG
 #ifdef ZH
  * Matrix4x4::Init_Perspective -- Initialize to a perspective projection matrix                  *
-#endif
+#endif // ZH
  *                                                                                             *
  * You can find the formulas for this matrix in the appendix of the OpenGL programming guide.  *
  * Also, this happens to be the same convention used by Surrender.                             *
@@ -725,10 +725,10 @@ WWINLINE void Matrix4x4::Init_Perspective(float hfov,float vfov,float znear,floa
  *=============================================================================================*/
 #ifdef OG
 WWINLINE void Matrix4::Init_Perspective
-#endif
+#endif // OG
 #ifdef ZH
 WWINLINE void Matrix4x4::Init_Perspective
-#endif
+#endif // ZH
 (
 	float left,
 	float right,
@@ -755,10 +755,10 @@ WWINLINE void Matrix4x4::Init_Perspective
 /*********************************************************************************************** 
 #ifdef OG
  * Matrix4::Transpose -- Returns transpose of the matrix                                       * 
-#endif
+#endif // OG
 #ifdef ZH
  * Matrix4x4::Transpose -- Returns transpose of the matrix                                       * 
-#endif
+#endif // ZH
  *                                                                                             * 
  * INPUT:                                                                                      * 
  *                                                                                             * 
@@ -771,17 +771,17 @@ WWINLINE void Matrix4x4::Init_Perspective
  *=============================================================================================*/
 #ifdef OG
 WWINLINE Matrix4 Matrix4::Transpose() const
-#endif
+#endif // OG
 #ifdef ZH
 WWINLINE Matrix4x4 Matrix4x4::Transpose() const
-#endif
+#endif // ZH
 {
 #ifdef OG
     return Matrix4(
-#endif
+#endif // OG
 #ifdef ZH
     return Matrix4x4(
-#endif
+#endif // ZH
 			Vector4(Row[0][0], Row[1][0], Row[2][0], Row[3][0]),
 			Vector4(Row[0][1], Row[1][1], Row[2][1], Row[3][1]),
 			Vector4(Row[0][2], Row[1][2], Row[2][2], Row[3][2]),
@@ -792,10 +792,10 @@ WWINLINE Matrix4x4 Matrix4x4::Transpose() const
 /*********************************************************************************************** 
 #ifdef OG
  * Matrix4::Inverse -- returns the inverse of the matrix                                       * 
-#endif
+#endif // OG
 #ifdef ZH
  * Matrix4x4::Inverse -- returns the inverse of the matrix                                       * 
-#endif
+#endif // ZH
  *                                                                                             * 
  * INPUT:                                                                                      * 
  *                                                                                             * 
@@ -808,22 +808,22 @@ WWINLINE Matrix4x4 Matrix4x4::Transpose() const
  *=============================================================================================*/
 #ifdef OG
 WWINLINE Matrix4 Matrix4::Inverse() const    // Gauss-Jordan elimination with partial pivoting
-#endif
+#endif // OG
 #ifdef ZH
 WWINLINE Matrix4x4 Matrix4x4::Inverse() const    // Gauss-Jordan elimination with partial pivoting
-#endif
+#endif // ZH
 {
 #ifdef OG
 	Matrix4 a(*this);				// As a evolves from original mat into identity
 	Matrix4 b(true);				// b evolves from identity into inverse(a)
 
-#endif
+#endif // OG
 #ifdef ZH
 	WWASSERT_PRINT(0,"Matrix4x4::Inverse does not work, re-implement!");
 
 	Matrix4x4 a(*this);				// As a evolves from original mat into identity
 	Matrix4x4 b(true);				// b evolves from identity into inverse(a)
-#endif
+#endif // ZH
 	int i, j, i1;
 
 	// Loop over cols of a from left to right, eliminating above and below diagonal
@@ -845,10 +845,10 @@ WWINLINE Matrix4x4 Matrix4x4::Inverse() const    // Gauss-Jordan elimination wit
 		if (a[j][j]==0.) {
 #ifdef OG
 			//ALGEBRA_ERROR("Matrix4::inverse: singular matrix; can't invert\n");
-#endif
+#endif // OG
 #ifdef ZH
 			//ALGEBRA_ERROR("Matrix4x4::inverse: singular matrix; can't invert\n");
-#endif
+#endif // ZH
 		}
 		b.Row[j] /= a.Row[j][j];
 		a.Row[j] /= a.Row[j][j];
@@ -867,10 +867,10 @@ WWINLINE Matrix4x4 Matrix4x4::Inverse() const    // Gauss-Jordan elimination wit
 /*********************************************************************************************** 
 #ifdef OG
  * Matrix4::operator = -- assignment operator                                                  * 
-#endif
+#endif // OG
 #ifdef ZH
  * Matrix4x4::operator = -- assignment operator                                                  * 
-#endif
+#endif // ZH
  *                                                                                             * 
  * INPUT:                                                                                      * 
  *                                                                                             * 
@@ -883,10 +883,10 @@ WWINLINE Matrix4x4 Matrix4x4::Inverse() const    // Gauss-Jordan elimination wit
  *=============================================================================================*/
 #ifdef OG
 WWINLINE Matrix4 & Matrix4::operator = (const Matrix4 & m)
-#endif
+#endif // OG
 #ifdef ZH
 WWINLINE Matrix4x4 & Matrix4x4::operator = (const Matrix4x4 & m)
-#endif
+#endif // ZH
 {
 	Row[0] = m.Row[0]; Row[1] = m.Row[1]; Row[2] = m.Row[2]; Row[3] = m.Row[3];
 	return *this; 
@@ -895,10 +895,10 @@ WWINLINE Matrix4x4 & Matrix4x4::operator = (const Matrix4x4 & m)
 /*********************************************************************************************** 
 #ifdef OG
  * Matrix4::operator += -- "plus equals" operator                                              * 
-#endif
+#endif // OG
 #ifdef ZH
  * Matrix4x4::operator += -- "plus equals" operator                                              * 
-#endif
+#endif // ZH
  *                                                                                             * 
  * INPUT:                                                                                      * 
  *                                                                                             * 
@@ -911,10 +911,10 @@ WWINLINE Matrix4x4 & Matrix4x4::operator = (const Matrix4x4 & m)
  *=============================================================================================*/
 #ifdef OG
 WWINLINE Matrix4& Matrix4::operator += (const Matrix4 & m)
-#endif
+#endif // OG
 #ifdef ZH
 WWINLINE Matrix4x4& Matrix4x4::operator += (const Matrix4x4 & m)
-#endif
+#endif // ZH
 {
 	Row[0] += m.Row[0]; Row[1] += m.Row[1]; Row[2] += m.Row[2]; Row[3] += m.Row[3];
 	return *this; 
@@ -923,10 +923,10 @@ WWINLINE Matrix4x4& Matrix4x4::operator += (const Matrix4x4 & m)
 /*********************************************************************************************** 
 #ifdef OG
  * Matrix4::operator-= -- "minus equals" operator                                              * 
-#endif
+#endif // OG
 #ifdef ZH
  * Matrix4x4::operator-= -- "minus equals" operator                                              * 
-#endif
+#endif // ZH
  *                                                                                             * 
  * INPUT:                                                                                      * 
  *                                                                                             * 
@@ -939,10 +939,10 @@ WWINLINE Matrix4x4& Matrix4x4::operator += (const Matrix4x4 & m)
  *=============================================================================================*/
 #ifdef OG
 WWINLINE Matrix4& Matrix4::operator -= (const Matrix4 & m)
-#endif
+#endif // OG
 #ifdef ZH
 WWINLINE Matrix4x4& Matrix4x4::operator -= (const Matrix4x4 & m)
-#endif
+#endif // ZH
 {
 	Row[0] -= m.Row[0]; Row[1] -= m.Row[1]; Row[2] -= m.Row[2]; Row[3] -= m.Row[3];
 	return *this; 
@@ -951,10 +951,10 @@ WWINLINE Matrix4x4& Matrix4x4::operator -= (const Matrix4x4 & m)
 /*********************************************************************************************** 
 #ifdef OG
  * Matrix4::operator *= -- "times equals" operator                                             * 
-#endif
+#endif // OG
 #ifdef ZH
  * Matrix4x4::operator *= -- "times equals" operator                                             * 
-#endif
+#endif // ZH
  *                                                                                             * 
  * INPUT:                                                                                      * 
  *                                                                                             * 
@@ -967,10 +967,10 @@ WWINLINE Matrix4x4& Matrix4x4::operator -= (const Matrix4x4 & m)
  *=============================================================================================*/
 #ifdef OG
 WWINLINE Matrix4& Matrix4::operator *= (float d)
-#endif
+#endif // OG
 #ifdef ZH
 WWINLINE Matrix4x4& Matrix4x4::operator *= (float d)
-#endif
+#endif // ZH
 {
 	Row[0] *= d; Row[1] *= d; Row[2] *= d; Row[3] *= d;
 	return *this; 
@@ -979,10 +979,10 @@ WWINLINE Matrix4x4& Matrix4x4::operator *= (float d)
 /*********************************************************************************************** 
 #ifdef OG
  * Matrix4::operator /= -- "divide equals" operator                                            * 
-#endif
+#endif // OG
 #ifdef ZH
  * Matrix4x4::operator /= -- "divide equals" operator                                            * 
-#endif
+#endif // ZH
  *                                                                                             * 
  * INPUT:                                                                                      * 
  *                                                                                             * 
@@ -995,10 +995,10 @@ WWINLINE Matrix4x4& Matrix4x4::operator *= (float d)
  *=============================================================================================*/
 #ifdef OG
 WWINLINE Matrix4& Matrix4::operator /= (float d)
-#endif
+#endif // OG
 #ifdef ZH
 WWINLINE Matrix4x4& Matrix4x4::operator /= (float d)
-#endif
+#endif // ZH
 {
 	float ood = d;
 	Row[0] *= ood; Row[1] *= ood; Row[2] *= ood; Row[3] *= ood;
@@ -1007,58 +1007,58 @@ WWINLINE Matrix4x4& Matrix4x4::operator /= (float d)
 
 #ifdef OG
 WWINLINE Matrix4 operator - (const Matrix4 & a)
-#endif
+#endif // OG
 #ifdef ZH
 WWINLINE Matrix4x4 operator - (const Matrix4x4 & a)
-#endif
+#endif // ZH
 { 
 #ifdef OG
 	return Matrix4(-a.Row[0], -a.Row[1], -a.Row[2], -a.Row[3]); 
-#endif
+#endif // OG
 #ifdef ZH
 	return Matrix4x4(-a.Row[0], -a.Row[1], -a.Row[2], -a.Row[3]); 
-#endif
+#endif // ZH
 }
 
 #ifdef OG
 WWINLINE Matrix4 operator * (const Matrix4 & a, float d)
-#endif
+#endif // OG
 #ifdef ZH
 WWINLINE Matrix4x4 operator * (const Matrix4x4 & a, float d)
-#endif
+#endif // ZH
 { 
 #ifdef OG
 	return Matrix4(a.Row[0] * d, a.Row[1] * d, a.Row[2] * d, a.Row[3] * d); 
-#endif
+#endif // OG
 #ifdef ZH
 	return Matrix4x4(a.Row[0] * d, a.Row[1] * d, a.Row[2] * d, a.Row[3] * d); 
-#endif
+#endif // ZH
 }
 
 #ifdef OG
 WWINLINE Matrix4 operator * (float d, const Matrix4 & a)
-#endif
+#endif // OG
 #ifdef ZH
 WWINLINE Matrix4x4 operator * (float d, const Matrix4x4 & a)
-#endif
+#endif // ZH
 { 
 	return a*d; 
 }
 
 #ifdef OG
 WWINLINE Matrix4 operator / (const Matrix4 & a, float d)
-#endif
+#endif // OG
 #ifdef ZH
 WWINLINE Matrix4x4 operator / (const Matrix4x4 & a, float d)
-#endif
+#endif // ZH
 { 
 	float ood = 1.0f / d;
 #ifdef OG
 	return Matrix4(a.Row[0] * ood, a.Row[1] * ood, a.Row[2] * ood, a.Row[3] * ood); 
-#endif
+#endif // OG
 #ifdef ZH
 	return Matrix4x4(a.Row[0] * ood, a.Row[1] * ood, a.Row[2] * ood, a.Row[3] * ood); 
-#endif
+#endif // ZH
 }
 
 /*
@@ -1066,17 +1066,17 @@ WWINLINE Matrix4x4 operator / (const Matrix4x4 & a, float d)
 */ 
 #ifdef OG
 WWINLINE Matrix4 operator + (const Matrix4 & a, const Matrix4 & b)
-#endif
+#endif // OG
 #ifdef ZH
 WWINLINE Matrix4x4 operator + (const Matrix4x4 & a, const Matrix4x4 & b)
-#endif
+#endif // ZH
 {
 #ifdef OG
 	return Matrix4(
-#endif
+#endif // OG
 #ifdef ZH
 	return Matrix4x4(
-#endif
+#endif // ZH
 				a.Row[0] + b.Row[0],
 				a.Row[1] + b.Row[1],
 				a.Row[2] + b.Row[2],
@@ -1086,10 +1086,10 @@ WWINLINE Matrix4x4 operator + (const Matrix4x4 & a, const Matrix4x4 & b)
 
 #ifdef OG
 WWINLINE Matrix4 Add(const Matrix4 & a, const Matrix4 & b)
-#endif
+#endif // OG
 #ifdef ZH
 WWINLINE Matrix4x4 Add(const Matrix4x4 & a, const Matrix4x4 & b)
-#endif
+#endif // ZH
 { return a+b; }
 
 /*
@@ -1097,17 +1097,17 @@ WWINLINE Matrix4x4 Add(const Matrix4x4 & a, const Matrix4x4 & b)
 */
 #ifdef OG
 WWINLINE Matrix4 operator - (const Matrix4 & a, const Matrix4 & b)
-#endif
+#endif // OG
 #ifdef ZH
 WWINLINE Matrix4x4 operator - (const Matrix4x4 & a, const Matrix4x4 & b)
-#endif
+#endif // ZH
 {
 #ifdef OG
 	return Matrix4(
-#endif
+#endif // OG
 #ifdef ZH
 	return Matrix4x4(
-#endif
+#endif // ZH
 				a.Row[0] - b.Row[0],
 				a.Row[1] - b.Row[1],
 				a.Row[2] - b.Row[2],
@@ -1117,10 +1117,10 @@ WWINLINE Matrix4x4 operator - (const Matrix4x4 & a, const Matrix4x4 & b)
 
 #ifdef OG
 WWINLINE Matrix4 Subtract(const Matrix4 & a, const Matrix4 & b)
-#endif
+#endif // OG
 #ifdef ZH
 WWINLINE Matrix4x4 Subtract(const Matrix4x4 & a, const Matrix4x4 & b)
-#endif
+#endif // ZH
 { return a-b; }
 
 /*
@@ -1128,19 +1128,19 @@ WWINLINE Matrix4x4 Subtract(const Matrix4x4 & a, const Matrix4x4 & b)
 */
 #ifdef OG
 WWINLINE Matrix4 operator * (const Matrix4 & a, const Matrix4 & b)
-#endif
+#endif // OG
 #ifdef ZH
 WWINLINE Matrix4x4 operator * (const Matrix4x4 & a, const Matrix4x4 & b)
-#endif
+#endif // ZH
 {
 	#define ROWCOL(i, j) a[i][0]*b[0][j] + a[i][1]*b[1][j] + a[i][2]*b[2][j] + a[i][3]*b[3][j]
     
 #ifdef OG
 	return Matrix4(
-#endif
+#endif // OG
 #ifdef ZH
 	return Matrix4x4(
-#endif
+#endif // ZH
 		Vector4(ROWCOL(0,0), ROWCOL(0,1), ROWCOL(0,2), ROWCOL(0,3)),
 		Vector4(ROWCOL(1,0), ROWCOL(1,1), ROWCOL(1,2), ROWCOL(1,3)),
 		Vector4(ROWCOL(2,0), ROWCOL(2,1), ROWCOL(2,2), ROWCOL(2,3)),
@@ -1152,28 +1152,28 @@ WWINLINE Matrix4x4 operator * (const Matrix4x4 & a, const Matrix4x4 & b)
 
 #ifdef OG
 WWINLINE Matrix4 Multiply(const Matrix4 & a, const Matrix4 & b)
-#endif
+#endif // OG
 #ifdef ZH
 WWINLINE Matrix4x4 Multiply(const Matrix4x4 & a, const Matrix4x4 & b)
-#endif
+#endif // ZH
 { return a*b; }
 
 #ifdef OG
 WWINLINE Matrix4 operator * (const Matrix4 & a, const Matrix3D & b)
-#endif
+#endif // OG
 #ifdef ZH
 WWINLINE Matrix4x4 operator * (const Matrix4x4 & a, const Matrix3D & b)
-#endif
+#endif // ZH
 {
 	// This function hand coded to handle the last row of b as 0,0,0,1
 	#define ROWCOL(i,j) a[i][0]*b[0][j] + a[i][1]*b[1][j] + a[i][2]*b[2][j]
 	#define ROWCOL_LAST(i,j) a[i][0]*b[0][j] + a[i][1]*b[1][j] + a[i][2]*b[2][j] + a[i][3]
 #ifdef OG
 	return Matrix4(
-#endif
+#endif // OG
 #ifdef ZH
 	return Matrix4x4(
-#endif
+#endif // ZH
 		Vector4(ROWCOL(0,0), ROWCOL(0,1), ROWCOL(0,2), ROWCOL_LAST(0,3)),
 		Vector4(ROWCOL(1,0), ROWCOL(1,1), ROWCOL(1,2), ROWCOL_LAST(1,3)),
 		Vector4(ROWCOL(2,0), ROWCOL(2,1), ROWCOL(2,2), ROWCOL_LAST(2,3)),
@@ -1185,19 +1185,19 @@ WWINLINE Matrix4x4 operator * (const Matrix4x4 & a, const Matrix3D & b)
 
 #ifdef OG
 WWINLINE Matrix4 operator * (const Matrix3D & a, const Matrix4 & b)
-#endif
+#endif // OG
 #ifdef ZH
 WWINLINE Matrix4x4 operator * (const Matrix3D & a, const Matrix4x4 & b)
-#endif
+#endif // ZH
 {
 	// This function hand coded to handle the last row of a as 0,0,0,1
 	#define ROWCOL(i,j) a[i][0]*b[0][j] + a[i][1]*b[1][j] + a[i][2]*b[2][j] + a[i][3]*b[3][j]
 #ifdef OG
 	return Matrix4(
-#endif
+#endif // OG
 #ifdef ZH
 	return Matrix4x4(
-#endif
+#endif // ZH
 		Vector4(ROWCOL(0,0), ROWCOL(0,1), ROWCOL(0,2), ROWCOL(0,3)),
 		Vector4(ROWCOL(1,0), ROWCOL(1,1), ROWCOL(1,2), ROWCOL(1,3)),
 		Vector4(ROWCOL(2,0), ROWCOL(2,1), ROWCOL(2,2), ROWCOL(2,3)),
@@ -1209,17 +1209,17 @@ WWINLINE Matrix4x4 operator * (const Matrix3D & a, const Matrix4x4 & b)
 /*
 #ifdef OG
 ** Multiply a Matrix4 by a Vector3 (assumes w=1.0!!!). Yeilds a Vector4 result
-#endif
+#endif // OG
 #ifdef ZH
 ** Multiply a Matrix4x4 by a Vector3 (assumes w=1.0!!!). Yeilds a Vector4 result
-#endif
+#endif // ZH
 */
 #ifdef OG
 WWINLINE Vector4 operator * (const Matrix4 & a, const Vector3 & v) {
-#endif
+#endif // OG
 #ifdef ZH
 WWINLINE Vector4 operator * (const Matrix4x4 & a, const Vector3 & v) {
-#endif
+#endif // ZH
 	return Vector4(
 		a[0][0] * v[0] + a[0][1] * v[1] + a[0][2] * v[2] + a[0][3] * 1.0f,
 		a[1][0] * v[0] + a[1][1] * v[1] + a[1][2] * v[2] + a[1][3] * 1.0f,
@@ -1231,17 +1231,17 @@ WWINLINE Vector4 operator * (const Matrix4x4 & a, const Vector3 & v) {
 /*
 #ifdef OG
 ** Multiply a Matrix4 by a Vector4
-#endif
+#endif // OG
 #ifdef ZH
 ** Multiply a Matrix4x4 by a Vector4
-#endif
+#endif // ZH
 */
 #ifdef OG
 WWINLINE Vector4 operator * (const Matrix4 & a, const Vector4 & v) {
-#endif
+#endif // OG
 #ifdef ZH
 WWINLINE Vector4 operator * (const Matrix4x4 & a, const Vector4 & v) {
-#endif
+#endif // ZH
 	return Vector4(
 		a[0][0] * v[0] + a[0][1] * v[1] + a[0][2] * v[2] + a[0][3] * v[3],
 		a[1][0] * v[0] + a[1][1] * v[1] + a[1][2] * v[2] + a[1][3] * v[3],
@@ -1253,17 +1253,17 @@ WWINLINE Vector4 operator * (const Matrix4x4 & a, const Vector4 & v) {
 /*
 #ifdef OG
 ** Multiply a Matrix4 by a Vector4
-#endif
+#endif // OG
 #ifdef ZH
 ** Multiply a Matrix4x4 by a Vector4
-#endif
+#endif // ZH
 */
 #ifdef OG
 WWINLINE void Matrix4::Transform_Vector(const Matrix4 & A,const Vector3 & in,Vector3 * out)
-#endif
+#endif // OG
 #ifdef ZH
 WWINLINE void Matrix4x4::Transform_Vector(const Matrix4x4 & A,const Vector3 & in,Vector3 * out)
-#endif
+#endif // ZH
 {
 	Vector3 tmp;
 	Vector3 * v;
@@ -1284,10 +1284,10 @@ WWINLINE void Matrix4x4::Transform_Vector(const Matrix4x4 & A,const Vector3 & in
 
 #ifdef OG
 WWINLINE void Matrix4::Transform_Vector(const Matrix4 & A,const Vector3 & in,Vector4 * out)
-#endif
+#endif // OG
 #ifdef ZH
 WWINLINE void Matrix4x4::Transform_Vector(const Matrix4x4 & A,const Vector3 & in,Vector4 * out)
-#endif
+#endif // ZH
 {
 	out->X = (A[0][0] * in.X + A[0][1] * in.Y + A[0][2] * in.Z + A[0][3]);
 	out->Y = (A[1][0] * in.X + A[1][1] * in.Y + A[1][2] * in.Z + A[1][3]);
@@ -1297,10 +1297,10 @@ WWINLINE void Matrix4x4::Transform_Vector(const Matrix4x4 & A,const Vector3 & in
 
 #ifdef OG
 WWINLINE void	Matrix4::Transform_Vector(const Matrix4 & A,const Vector4 & in,Vector4 * out)
-#endif
+#endif // OG
 #ifdef ZH
 WWINLINE void	Matrix4x4::Transform_Vector(const Matrix4x4 & A,const Vector4 & in,Vector4 * out)
-#endif
+#endif // ZH
 {
 	Vector4 tmp;
 	Vector4 * v;

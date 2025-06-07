@@ -121,4 +121,4 @@ void SpecialPowerUpdateModule::loadPostProcess( void )
 
 }  // end loadPostProcess
 
-#endif
+#endif // ZH

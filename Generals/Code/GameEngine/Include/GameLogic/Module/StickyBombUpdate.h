@@ -39,7 +39,7 @@
 class WeaponTemplate;
 class FXList;
 
-#endif
+#endif // ZH
 //-------------------------------------------------------------------------------------------------
 class StickyBombUpdateModuleData : public UpdateModuleData
 {
@@ -49,7 +49,7 @@ public:
 #ifdef ZH
 	WeaponTemplate*	m_geometryBasedDamageWeaponTemplate;
 	FXList*					m_geometryBasedDamageFX;
-#endif
+#endif // ZH
 
 	StickyBombUpdateModuleData()
 	{
@@ -57,7 +57,7 @@ public:
 #ifdef ZH
 		m_geometryBasedDamageWeaponTemplate = NULL;
 		m_geometryBasedDamageFX = NULL;
-#endif
+#endif // ZH
 	}
 
 	static void buildFieldParse(MultiIniFieldParse& p) 
@@ -70,7 +70,7 @@ public:
 #ifdef ZH
 			{ "GeometryBasedDamageWeapon",INI::parseWeaponTemplate, NULL, offsetof( StickyBombUpdateModuleData, m_geometryBasedDamageWeaponTemplate ) },
 			{ "GeometryBasedDamageFX",		INI::parseFXList,					NULL, offsetof( StickyBombUpdateModuleData, m_geometryBasedDamageFX ) },
-#endif
+#endif // ZH
 			{ 0, 0, 0, 0 }
 		};
     p.add(dataFieldParse);
@@ -95,10 +95,10 @@ public:
 
 #ifdef OG
 	void init( const Object *object, const Object *bomber );
-#endif
+#endif // OG
 #ifdef ZH
 	void initStickyBomb( Object *object, const Object *bomber, const Coord3D *specificPos = NULL );
-#endif
+#endif // ZH
 	void detonate();
 	Bool isTimedBomb() const { return m_dieFrame > 0; }
 	UnsignedInt getDetonationFrame() const { return m_dieFrame; }

@@ -18,10 +18,10 @@
 
 #ifdef OG
 /* $Header: /Commando/Code/ww3d2/assetmgr.h 15    7/24/01 6:28p Jani_p $ */
-#endif
+#endif // OG
 #ifdef ZH
 /* $Header: /Commando/Code/ww3d2/assetmgr.h 19    12/17/01 7:55p Jani_p $ */
-#endif
+#endif // ZH
 /*********************************************************************************************** 
  ***                            Confidential - Westwood Studios                              *** 
  *********************************************************************************************** 
@@ -34,17 +34,17 @@
  *                                                                                             * 
 #ifdef OG
  *                     $Modtime:: 7/17/01 5:52p                                               $* 
-#endif
+#endif // OG
 #ifdef ZH
  *                     $Modtime:: 12/15/01 4:14p                                              $* 
-#endif
+#endif // ZH
  *                                                                                             * 
 #ifdef OG
  *                    $Revision:: 15                                                          $* 
-#endif
+#endif // OG
 #ifdef ZH
  *                    $Revision:: 19                                                          $* 
-#endif
+#endif // ZH
  *                                                                                             * 
  *---------------------------------------------------------------------------------------------* 
  * Functions:                                                                                  * 
@@ -219,10 +219,10 @@ public:
 	static WW3DAssetManager *		Get_Instance(void) { return TheInstance; }
 #ifdef OG
 	static void							Delete_This(void) { if (TheInstance) delete TheInstance; }
-#endif
+#endif // OG
 #ifdef ZH
 	static void							Delete_This(void) { if (TheInstance) delete TheInstance; TheInstance=NULL; }
-#endif
+#endif // ZH
 
 	/*
 	** Load data from any type of w3d file
@@ -284,30 +284,30 @@ public:
 #ifdef OG
 	virtual TextureClass *			Get_Texture(
 
-#endif
+#endif // OG
 #ifdef ZH
 	virtual TextureClass *			Get_Texture
 	(
-#endif
+#endif // ZH
 		const char * filename, 
 #ifdef OG
 		TextureClass::MipCountType mip_level_count=TextureClass::MIP_LEVELS_ALL,
-#endif
+#endif // OG
 #ifdef ZH
 		MipCountType mip_level_count=MIP_LEVELS_ALL,
-#endif
+#endif // ZH
 		WW3DFormat texture_format=WW3D_FORMAT_UNKNOWN,
 #ifdef OG
 		bool allow_compression=true);
 	TextureClass*						Get_Bumpmap_Based_On_Texture(TextureClass* texture);
 
-#endif
+#endif // OG
 #ifdef ZH
 		bool allow_compression=true,
 		TextureBaseClass::TexAssetType type=TextureBaseClass::TEX_REGULAR,
 		bool allow_reduction=true
 	);
-#endif
+#endif // ZH
 
 	virtual void						Release_All_Textures(void);
 	virtual void						Release_Unused_Textures(void);

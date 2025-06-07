@@ -382,4 +382,4 @@ static void ProfileShutdown(void)
 
 int profileTracerInit=atexit(ProfileShutdown);
 
-#endif
+#endif // ZH

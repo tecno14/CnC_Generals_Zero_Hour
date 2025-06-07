@@ -24,33 +24,33 @@
  *                                                                                             *
 #ifdef OG
  *                     $Archive:: /VSS_Sync/ww3d2/meshgeometry.cpp                            $*
-#endif
+#endif // OG
 #ifdef ZH
  *                     $Archive:: /Commando/Code/ww3d2/meshgeometry.cpp                       $*
-#endif
+#endif // ZH
  *                                                                                             *
  *              Original Author:: Greg Hjelstrom                                               *
  *                                                                                             *
 #ifdef OG
  *                      $Author:: Vss_sync                                                    $*
-#endif
+#endif // OG
 #ifdef ZH
  *                      $Author:: Jani_p                                                      $*
-#endif
+#endif // ZH
  *                                                                                             *
 #ifdef OG
  *                     $Modtime:: 8/29/01 7:29p                                               $*
-#endif
+#endif // OG
 #ifdef ZH
  *                     $Modtime:: 11/24/01 5:34p                                              $*
-#endif
+#endif // ZH
  *                                                                                             *
 #ifdef OG
  *                    $Revision:: 13                                                          $*
-#endif
+#endif // OG
 #ifdef ZH
  *                    $Revision:: 14                                                          $*
-#endif
+#endif // ZH
  *                                                                                             *
  *---------------------------------------------------------------------------------------------*
  * Functions:                                                                                  *
@@ -121,7 +121,7 @@
 #include "matrix4.h"
 #include "rinfo.h"
 #include "camera.h"
-#endif
+#endif // ZH
 
 
 #if (OPTIMIZE_PLANEEQ_RAM)
@@ -245,7 +245,7 @@ MeshGeometryClass & MeshGeometryClass::operator = (const MeshGeometryClass & tha
 #ifdef OG
 		REF_PTR_SET(CullTree,that.CullTree);
 
-#endif
+#endif // OG
 #ifdef ZH
 
 		// Clone the cull tree..
@@ -256,7 +256,7 @@ MeshGeometryClass & MeshGeometryClass::operator = (const MeshGeometryClass & tha
 			*CullTree = *that.CullTree;
 			CullTree->Set_Mesh(this);
 		}
-#endif
+#endif // ZH
 	}
 	return * this;
 }
@@ -318,10 +318,10 @@ void MeshGeometryClass::Reset_Geometry(int polycount,int vertcount)
 	if ((polycount != 0) && (vertcount != 0)) {
 #ifdef OG
 		Poly = NEW_REF(ShareBufferClass<Vector3i>,(PolyCount, "MeshGeometryClass::Poly"));
-#endif
+#endif // OG
 #ifdef ZH
 		Poly = NEW_REF(ShareBufferClass<TriIndex>,(PolyCount, "MeshGeometryClass::Poly"));
-#endif
+#endif // ZH
 		PolySurfaceType = NEW_REF(ShareBufferClass<uint8>,(PolyCount, "MeshGeometryClass::PolySurfaceType"));
 		Vertex = NEW_REF(ShareBufferClass<Vector3>,(VertexCount, "MeshGeometryClass::Vertex"));
 
@@ -487,10 +487,10 @@ void MeshGeometryClass::Generate_Rigid_APT(const Vector3 & view_dir, SimpleDynVe
 	const Vector4 * norms = Get_Plane_Array();
 #ifdef OG
 	const Vector3i * polys = Get_Polygon_Array();
-#endif
+#endif // OG
 #ifdef ZH
 	const TriIndex * polys = Get_Polygon_Array();
-#endif
+#endif // ZH
 	TriClass tri;
 
 	for (int poly_counter = 0; poly_counter < PolyCount; poly_counter++) {
@@ -532,10 +532,10 @@ void MeshGeometryClass::Generate_Rigid_APT(const OBBoxClass & local_box, SimpleD
 		const Vector4 * norms = Get_Plane_Array();
 #ifdef OG
 		const Vector3i * polys = Get_Polygon_Array();
-#endif
+#endif // OG
 #ifdef ZH
 		const TriIndex * polys = Get_Polygon_Array();
-#endif
+#endif // ZH
 		TriClass tri;
 
 		for (int poly_counter = 0; poly_counter < PolyCount; poly_counter++) {
@@ -576,10 +576,10 @@ void MeshGeometryClass::Generate_Rigid_APT(const OBBoxClass & local_box,const Ve
 		const Vector4 * norms = Get_Plane_Array();
 #ifdef OG
 		const Vector3i * polys = Get_Polygon_Array();
-#endif
+#endif // OG
 #ifdef ZH
 		const TriIndex * polys = Get_Polygon_Array();
-#endif
+#endif // ZH
 		TriClass tri;
 
 		for (int poly_counter = 0; poly_counter < PolyCount; poly_counter++) {
@@ -619,10 +619,10 @@ void MeshGeometryClass::Generate_Skin_APT(const OBBoxClass & world_box, SimpleDy
 	// Beware, this is gonna be expensive!
 #ifdef OG
 	const Vector3i * polys = Get_Polygon_Array();
-#endif
+#endif // OG
 #ifdef ZH
 	const TriIndex * polys = Get_Polygon_Array();
-#endif
+#endif // ZH
 	TriClass tri;
 
 	for (int poly_counter=0; poly_counter < PolyCount; poly_counter++) {
@@ -895,10 +895,10 @@ int MeshGeometryClass::cast_semi_infinite_axis_aligned_ray(const Vector3 & start
 		const Vector4 * plane = Get_Plane_Array();
 #ifdef OG
 		const Vector3i * polyverts = Get_Polygon_Array();
-#endif
+#endif // OG
 #ifdef ZH
 		const TriIndex * polyverts = Get_Polygon_Array();
-#endif
+#endif // ZH
 
 		// These tables translate between the axis_dir representation (which is an integer in which 0
 		// indicates a ray along the positive x axis, 1 along the negative x axis, 2 the positive y
@@ -1102,10 +1102,10 @@ bool MeshGeometryClass::intersect_obbox_brute_force(OBBoxIntersectionTestClass &
 	const Vector3 * loc = Get_Vertex_Array();
 #ifdef OG
 	const Vector3i * polyverts = Get_Polygon_Array();
-#endif
+#endif // OG
 #ifdef ZH
 	const TriIndex * polyverts = Get_Polygon_Array();
-#endif
+#endif // ZH
 #ifndef COMPUTE_NORMALS
 	const Vector4 * norms = Get_Plane_Array();
 #endif
@@ -1156,10 +1156,10 @@ bool MeshGeometryClass::cast_ray_brute_force(RayCollisionTestClass & raytest)
 	const Vector3 * loc = Get_Vertex_Array();
 #ifdef OG
 	const Vector3i * polyverts = Get_Polygon_Array();
-#endif
+#endif // OG
 #ifdef ZH
 	const TriIndex * polyverts = Get_Polygon_Array();
-#endif
+#endif // ZH
 #ifndef COMPUTE_NORMALS
 	const Vector4 * norms = Get_Plane_Array();
 #endif
@@ -1186,11 +1186,11 @@ bool MeshGeometryClass::cast_ray_brute_force(RayCollisionTestClass & raytest)
 #ifdef OG
 		hit = hit | CollisionMath::Collide(raytest.Ray, tri, raytest.Result);
 		if (hit) {
-#endif
+#endif // OG
 #ifdef ZH
 		if (CollisionMath::Collide(raytest.Ray, tri, raytest.Result)) {
 			hit = true;
-#endif
+#endif // ZH
 			raytest.Result->SurfaceType = Get_Poly_Surface_Type (srtri);
 		}
 	
@@ -1226,10 +1226,10 @@ bool MeshGeometryClass::cast_aabox_brute_force(AABoxCollisionTestClass & boxtest
 	const Vector3 * loc = Get_Vertex_Array();
 #ifdef OG
 	const Vector3i * polyverts = Get_Polygon_Array();
-#endif
+#endif // OG
 #ifdef ZH
 	const TriIndex * polyverts = Get_Polygon_Array();
-#endif
+#endif // ZH
 #ifndef COMPUTE_NORMALS
 	const Vector4 * norms = Get_Plane_Array();
 #endif
@@ -1289,10 +1289,10 @@ bool MeshGeometryClass::cast_obbox_brute_force(OBBoxCollisionTestClass & boxtest
 	const Vector3 * loc = Get_Vertex_Array();
 #ifdef OG
 	const Vector3i * polyverts = Get_Polygon_Array();
-#endif
+#endif // OG
 #ifdef ZH
 	const TriIndex * polyverts = Get_Polygon_Array();
-#endif
+#endif // ZH
 #ifndef COMPUTE_NORMALS
 	const Vector4 * norms = Get_Plane_Array();
 #endif
@@ -1347,10 +1347,10 @@ void MeshGeometryClass::Compute_Plane_Equations(Vector4 * peq)
 
 #ifdef OG
 	Vector3i * poly	= Poly->Get_Array();
-#endif
+#endif // OG
 #ifdef ZH
 	TriIndex * poly	= Poly->Get_Array();
-#endif
+#endif // ZH
 	Vector3 * vert		= Vertex->Get_Array();
 
 	for(int pidx = 0; pidx < PolyCount; pidx++)
@@ -1393,10 +1393,10 @@ void MeshGeometryClass::Compute_Vertex_Normals(Vector3 * vnorm)
 	const Vector4 * peq = Get_Plane_Array();
 #ifdef OG
 	Vector3i * poly = Poly->Get_Array();
-#endif
+#endif // OG
 #ifdef ZH
 	TriIndex * poly = Poly->Get_Array();
-#endif
+#endif // ZH
 	const uint32 * shadeIx	= Get_Vertex_Shade_Index_Array(false);
 
 	// Two cases, with or without vertex shade indices.  The vertex shade indices
@@ -1621,10 +1621,10 @@ void MeshGeometryClass::Compute_Plane(int pidx,PlaneClass * set_plane) const
 	WWASSERT(pidx < PolyCount);
 #ifdef OG
 	Vector3i & poly = Poly->Get_Array()[pidx];
-#endif
+#endif // OG
 #ifdef ZH
 	TriIndex & poly = Poly->Get_Array()[pidx];
-#endif
+#endif // ZH
 	Vector3 * verts = Vertex->Get_Array();
 
 	set_plane->Set(verts[poly.I],verts[poly.J],verts[poly.K]);
@@ -1952,10 +1952,10 @@ WW3DErrorType MeshGeometryClass::read_triangles(ChunkLoadClass & cload)
 	// cache pointers to various arrays in the surrender mesh
 #ifdef OG
 	Vector3i * vi = get_polys();
-#endif
+#endif // OG
 #ifdef ZH
 	TriIndex * vi = get_polys();
-#endif
+#endif // ZH
 	Set_Flag(DIRTY_PLANES,false);
 	Vector4 * peq = get_planes();
 	uint8 * surface_types = Get_Poly_Surface_Type_Array();
@@ -2188,7 +2188,7 @@ void MeshGeometryClass::get_deformed_vertices(Vector3 *dst_vert, Vector3 *dst_no
 			if (idx!=bonelink[cnt]) {
 				break;
 			}
-#endif
+#endif // ZH
 }
 #ifdef ZH
 
@@ -2235,4 +2235,4 @@ void MeshGeometryClass::get_deformed_screenspace_vertices(Vector4 *dst_vert,cons
 	}
 }
 
-#endif
+#endif // ZH

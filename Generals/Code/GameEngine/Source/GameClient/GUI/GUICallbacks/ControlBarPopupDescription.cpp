@@ -196,12 +196,12 @@ void ControlBar::showBuildTooltipLayout( GameWindow *cmdButton )
 	// to work as a solo game!
 #ifdef OG
 	#if !defined(_PLAYTEST)
-#endif
+#endif // OG
 		if (TheGameLogic->isInReplayGame())
 			return;
 #ifdef OG
 	#endif
-#endif
+#endif // OG
 
 		if (TheInGameUI->isQuitMenuVisible())
 			return;
@@ -265,7 +265,7 @@ void ControlBar::populateBuildTooltipLayout( const CommandButton *commandButton,
 	Bool fireScienceButton = false;
 #ifdef ZH
 	UnsignedInt costToBuild = 0;
-#endif
+#endif // ZH
 
 	if(commandButton)
 	{
@@ -276,13 +276,13 @@ void ControlBar::populateBuildTooltipLayout( const CommandButton *commandButton,
 #ifdef OG
 		if(commandButton->getScienceVec().size() > 1)
 
-#endif
+#endif // OG
 #ifdef ZH
 		if( commandButton->getCommandType() != GUI_COMMAND_PLAYER_UPGRADE &&
 				commandButton->getCommandType() != GUI_COMMAND_OBJECT_UPGRADE ) 
 		{
 			if( commandButton->getScienceVec().size() > 1 ) 						
-#endif
+#endif // ZH
 		{
 			for(Int j = 0; j < commandButton->getScienceVec().size(); ++j)
 			{
@@ -303,10 +303,10 @@ void ControlBar::populateBuildTooltipLayout( const CommandButton *commandButton,
 					//to generate a simpler help text!
 #ifdef OG
 					fireScienceButton = true;
-#endif
+#endif // OG
 #ifdef ZH
 						fireScienceButton = TRUE;
-#endif
+#endif // ZH
 
 					break;
 				}
@@ -327,12 +327,12 @@ void ControlBar::populateBuildTooltipLayout( const CommandButton *commandButton,
 					//Now that we got the science for the button that executes the science, we need
 					//to generate a simpler help text!
 					fireScienceButton = TRUE;
-#endif
+#endif // ZH
 		}
 #ifdef ZH
 			}
 		}
-#endif
+#endif // ZH
 
 		if( commandButton->getDescriptionLabel().isNotEmpty() )
 		{
@@ -364,10 +364,10 @@ void ControlBar::populateBuildTooltipLayout( const CommandButton *commandButton,
 				
 #ifdef OG
 				//Special case: When building units, the CanMakeType determines reasons for not being able to buy stuff.
-#endif
+#endif // OG
 #ifdef ZH
 				//Special case: When building units & buildings, the CanMakeType determines reasons for not being able to buy stuff.
-#endif
+#endif // ZH
 				else if( thingTemplate )
 				{
 					CanMakeType makeType = TheBuildAssistant->canMakeUnit( selectedObject, commandButton->getThingTemplate() );
@@ -394,11 +394,11 @@ void ControlBar::populateBuildTooltipLayout( const CommandButton *commandButton,
               }
               else
               {
-#endif
+#endif // ZH
 							descrip.concat( TheGameText->fetch( "TOOLTIP:TooltipCannotBuildUnitBecauseMaximumNumber" ) );
 #ifdef ZH
               }
-#endif
+#endif // ZH
 							break;
 						//case CANMAKE_NO_PREREQ:
 						//	descrip.concat( L"\n\n" );
@@ -442,14 +442,14 @@ void ControlBar::populateBuildTooltipLayout( const CommandButton *commandButton,
 #ifdef OG
 			cost.format(TheGameText->fetch("TOOLTIP:Cost"), thingTemplate->calcCostToBuild(player));
 
-#endif
+#endif // OG
 #ifdef ZH
 			costToBuild = thingTemplate->calcCostToBuild( player );
 			if( costToBuild > 0 )
 			{
 				cost.format( TheGameText->fetch("TOOLTIP:Cost"), costToBuild );
 			}
-#endif
+#endif // ZH
 
 			// ask each prerequisite to give us a list of the non satisfied prerequisites
 			for( Int i=0; i<thingTemplate->getPrereqCount(); i++ ) 
@@ -485,12 +485,12 @@ void ControlBar::populateBuildTooltipLayout( const CommandButton *commandButton,
 			Bool hasUpgradeAlready = false;
 			Bool hasConflictingUpgrade = false;
 
-#endif
+#endif // OG
 #ifdef ZH
 			Bool hasUpgradeAlready = player->hasUpgradeComplete( upgradeTemplate );
 			Bool hasConflictingUpgrade = FALSE;
 			Bool missingScience = FALSE;
-#endif
+#endif // ZH
 			Bool playerUpgradeButton = commandButton->getCommandType() == GUI_COMMAND_PLAYER_UPGRADE;
 			Bool objectUpgradeButton = commandButton->getCommandType() == GUI_COMMAND_OBJECT_UPGRADE;
 
@@ -498,7 +498,7 @@ void ControlBar::populateBuildTooltipLayout( const CommandButton *commandButton,
 			//Check if the local player has the specified upgrade
 			hasUpgradeAlready = player->hasUpgradeComplete( upgradeTemplate );
 
-#endif
+#endif // OG
 			if( !hasUpgradeAlready )
 			{
 				//Check if the first selected object has the specified upgrade. 
@@ -554,12 +554,12 @@ void ControlBar::populateBuildTooltipLayout( const CommandButton *commandButton,
 					}
 				}
 
-#endif
+#endif // ZH
 				//Determine the cost of the upgrade.
 #ifdef OG
 				cost.format(TheGameText->fetch("TOOLTIP:Cost"),upgradeTemplate->calcCostToBuild(player));
 
-#endif
+#endif // OG
 #ifdef ZH
 				costToBuild = upgradeTemplate->calcCostToBuild( player );
 				if( costToBuild > 0 )
@@ -574,7 +574,7 @@ void ControlBar::populateBuildTooltipLayout( const CommandButton *commandButton,
 					requires.format( TheGameText->fetch( "CONTROLBAR:Requirements" ).str(), TheGameText->fetch( "CONTROLBAR:GeneralsPromotion" ).str() );
 					descrip.concat( requires );
 				}
-#endif
+#endif // ZH
 			}
 		}	
 		else if( st != SCIENCE_INVALID && !fireScienceButton )
@@ -584,7 +584,7 @@ void ControlBar::populateBuildTooltipLayout( const CommandButton *commandButton,
 			cost.format(TheGameText->fetch("TOOLTIP:ScienceCost"),TheScienceStore->getSciencePurchaseCost(st));
 						// ask each prerequisite to give us a list of the non satisfied prerequisites
 
-#endif
+#endif // OG
 #ifdef ZH
 			
 			costToBuild = TheScienceStore->getSciencePurchaseCost( st );
@@ -592,11 +592,11 @@ void ControlBar::populateBuildTooltipLayout( const CommandButton *commandButton,
 			{
 				cost.format( TheGameText->fetch("TOOLTIP:ScienceCost"), costToBuild );
 			}
-#endif
+#endif // ZH
 
 #ifdef ZH
 			// ask each prerequisite to give us a list of the non satisfied prerequisites
-#endif
+#endif // ZH
 			if( thingTemplate )
 			{
 				for( Int i=0; i<thingTemplate->getPrereqCount(); i++ ) 
@@ -679,7 +679,7 @@ void ControlBar::populateBuildTooltipLayout( const CommandButton *commandButton,
 		if( costToBuild > 0 )
 		{
 			win->winHide( FALSE );
-#endif
+#endif // ZH
 		GadgetStaticTextSetText(win, cost);
 #ifdef ZH
 		}
@@ -687,7 +687,7 @@ void ControlBar::populateBuildTooltipLayout( const CommandButton *commandButton,
 		{
 			win->winHide( TRUE );
 		}
-#endif
+#endif // ZH
 	}
 	win = TheWindowManager->winGetWindowFromId(m_buildToolTipLayout->getFirstWindow(), TheNameKeyGenerator->nameToKey("ControlBarPopupDescription.wnd:StaticTextDescription"));
 	if(win)

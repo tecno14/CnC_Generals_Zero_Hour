@@ -220,10 +220,10 @@ static UnsignedByte * generatePreview( const ThingTemplate *tt )
 			// Set the render target
 #ifdef OG
 			DX8Wrapper::Set_Render_Target(objectTexture);
-#endif
+#endif // OG
 #ifdef ZH
 			DX8Wrapper::Set_Render_Target_With_Z(objectTexture);
-#endif
+#endif // ZH
 
 			// create the camera
 			Bool orthoCamera = false;

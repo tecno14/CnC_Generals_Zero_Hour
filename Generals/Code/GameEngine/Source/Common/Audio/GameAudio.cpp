@@ -782,7 +782,7 @@ void AudioManager::set3DVolumeAdjustment( Real volumeAdjustment )
 
 #ifdef ZH
   if ( ! has3DSensitiveStreamsPlaying() )
-#endif
+#endif // ZH
 	m_volumeHasChanged = TRUE;
 }
 
@@ -836,7 +836,7 @@ void AudioManager::removeAllAudioRequests( void )
 }
 
 //-------------------------------------------------------------------------------------------------
-#endif
+#endif // ZH
 void AudioManager::processRequestList( void )
 {
 	
@@ -871,7 +871,7 @@ void AudioManager::addAudioEventInfo( AudioEventInfo * newEvent )
   {
     m_allAudioEventInfo[newEvent->m_audioName] = newEvent;
   }
-#endif
+#endif // ZH
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -907,7 +907,7 @@ void AudioManager::removeLevelSpecificAudioEventInfos(void)
     it = next;
   }
 
-#endif
+#endif // ZH
 }
 
 //-------------------------------------------------------------------------------------------------

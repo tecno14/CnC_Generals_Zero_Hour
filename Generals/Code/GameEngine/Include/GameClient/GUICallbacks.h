@@ -128,7 +128,7 @@ extern void ChallengeMenuShutdown( WindowLayout *layout, void *userData );
 extern WindowMsgHandledType ChallengeMenuSystem( GameWindow *window, UnsignedInt msg, WindowMsgData mData1, WindowMsgData mData2 );
 extern WindowMsgHandledType ChallengeMenuInput( GameWindow *window, UnsignedInt msg, WindowMsgData mData1, WindowMsgData mData2 );
 
-#endif
+#endif // ZH
 // Keyboard Options Menu ---------------------------------------------------------------------------
 extern void KeyboardOptionsMenuInit( WindowLayout *layout, void *userData );
 extern void KeyboardOptionsMenuUpdate( WindowLayout *layout, void *userData );
@@ -283,7 +283,7 @@ extern WindowMsgHandledType GameSpyPlayerInfoOverlayInput( GameWindow *window, U
 extern void PopupHostGameInit( WindowLayout *layout, void *userData );
 #ifdef ZH
 extern void PopupHostGameUpdate( WindowLayout * layout, void *userData);
-#endif
+#endif // ZH
 extern WindowMsgHandledType PopupHostGameSystem( GameWindow *window, UnsignedInt msg, WindowMsgData mData1, WindowMsgData mData2 );
 extern WindowMsgHandledType PopupHostGameInput( GameWindow *window, UnsignedInt msg, WindowMsgData mData1, WindowMsgData mData2 );
 

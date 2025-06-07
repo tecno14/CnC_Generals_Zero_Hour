@@ -57,12 +57,12 @@ public:
 	Bool							m_goAggressiveOnExit;
 #ifdef ZH
 	Bool							m_armedRidersUpgradeWeaponSet;
-#endif
+#endif // ZH
 	Bool							m_resetMoodCheckTimeOnExit;
 	Bool							m_destroyRidersWhoAreNotFreeToExit;
 #ifdef ZH
 	Bool							m_isDelayExitInAir;
-#endif
+#endif // ZH
 
 	TransportContainModuleData();
 
@@ -88,17 +88,17 @@ public:
 	virtual void onCapture( Player *oldOwner, Player *newOwner ); // have to kick everyone out on capture.
 #ifdef OG
 	virtual void onContaining( Object *obj );		///< object now contains 'obj'
-#endif
+#endif // OG
 #ifdef ZH
 	virtual void onContaining( Object *obj, Bool wasSelected );		///< object now contains 'obj'
-#endif
+#endif // ZH
 	virtual void onRemoving( Object *obj );			///< object no longer contains 'obj'
 	virtual UpdateSleepTime update();							///< called once per frame
 #ifdef ZH
 
 	virtual Bool isRiderChangeContain() const { return FALSE; }
   virtual Bool isSpecialOverlordStyleContainer() const {return FALSE;}
-#endif
+#endif // ZH
 
 	virtual Int getContainMax( void ) const;
 
@@ -119,19 +119,19 @@ protected:
 
 	virtual void createPayload();
 	void letRidersUpgradeWeaponSet( void );
-#endif
+#endif // ZH
 
 #ifdef ZH
 	Bool m_payloadCreated;	
 
-#endif
+#endif // ZH
 private:
 
 #ifdef OG
 	void createPayload();
 	
 	Bool m_payloadCreated;	
-#endif
+#endif // OG
 	Int m_extraSlotsInUse;
 	UnsignedInt m_frameExitNotBusy;
 

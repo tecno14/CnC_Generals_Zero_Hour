@@ -57,7 +57,7 @@
 
 //#define _CAMPEA_DEMO
 
-#endif
+#endif // ZH
 // ----------------------------------------------------------------------------------------------
 #include "Lib/BaseType.h"
 
@@ -65,11 +65,11 @@
 #ifdef OG
 #if defined(_INTERNAL) || defined(_DEBUG) || defined(_PLAYTEST)
 	#define NO_DUMP_PERF_STATS
-#endif
+#endif // OG
 #ifdef ZH
 #if defined(_INTERNAL) || defined(_DEBUG)
 	#define DUMP_PERF_STATS
-#endif
+#endif // ZH
 #else
 	#define NO_DUMP_PERF_STATS
 #endif
@@ -146,7 +146,7 @@ enum
 	GLOBAL_GENERAL_END = (GLOBAL_GENERAL_BEGIN + MAX_GLOBAL_GENERAL_TYPES - 1)
 };
 
-#endif
+#endif // ZH
 //-------------------------------------------------------------------------------------------------
 enum GameDifficulty
 {
@@ -241,7 +241,7 @@ enum CommandSourceType
 	CMD_FROM_DOZER,							// Special rare command when the dozer originates a command to attack a mine. Mines are not ai-attackable, and it seems deceitful for the dozer to generate a player or script command. jba.
 #ifdef ZH
 	CMD_DEFAULT_SWITCH_WEAPON,	// Special case: A weapon that can be chosen -- this is the default case (machine gun vs flashbang).
-#endif
+#endif // ZH
 
 };		///< the source of a command
 

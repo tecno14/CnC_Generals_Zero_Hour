@@ -493,11 +493,11 @@ void DockUpdate::loadDockPositions()
 #ifdef OG
 	Drawable *myDrawable = getObject()->getDrawable();
 
-#endif
+#endif // OG
 #ifdef ZH
 	Object *obj = getObject();
 	Drawable *myDrawable = obj->getDrawable();
-#endif
+#endif // ZH
 
 	if (myDrawable)
 	{
@@ -510,7 +510,7 @@ void DockUpdate::loadDockPositions()
 		if( !obj->isKindOf( KINDOF_IGNORE_DOCKING_BONES ) )
 		{
 
-#endif
+#endif // ZH
 		myDrawable->getPristineBonePositions( "DockStart", 0, &m_enterPosition, NULL, 1);
 		myDrawable->getPristineBonePositions( "DockAction", 0, &m_dockPosition, NULL, 1);
 		myDrawable->getPristineBonePositions( "DockEnd", 0, &m_exitPosition, NULL, 1);
@@ -536,11 +536,11 @@ void DockUpdate::loadDockPositions()
 		else
 		{
 			m_numberApproachPositionBones = 0;
-#endif
+#endif // ZH
 		m_positionsLoaded = TRUE;
 #ifdef ZH
 		}
-#endif
+#endif // ZH
 	}
 }
 

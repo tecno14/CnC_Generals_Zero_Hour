@@ -35,7 +35,7 @@
 #include "GameClient/Color.h"
 #ifdef ZH
 #include "Common/Money.h"
-#endif
+#endif // ZH
 
 // FORWARD DECLARATIONS ///////////////////////////////////////////////////////////////////////////
 struct FieldParse;
@@ -75,7 +75,7 @@ typedef std::map<Int, MultiplayerColorDefinition>::iterator MultiplayerColorIter
 
 // A list of values to display in the starting money dropdown
 typedef std::vector< Money > MultiplayerStartingMoneyList;
-#endif
+#endif // ZH
 
 //-------------------------------------------------------------------------------------------------
 /** Multiplayer Settings container class
@@ -91,12 +91,12 @@ public:
 	void init() { }
 	void update() { }
 	void reset() { }
-#endif
+#endif // OG
 #ifdef ZH
 	virtual void init() { }
 	virtual void update() { }
 	virtual void reset() { }
-#endif
+#endif // ZH
 
 	//-----------------------------------------------------------------------------------------------
 	static const FieldParse m_multiplayerSettingsFieldParseTable[];		///< the parse table for INI definition
@@ -109,7 +109,7 @@ public:
 #ifdef OG
 	inline Int getInitialCreditsMin( void ) { return m_initialCreditsMin; }
 	inline Int getInitialCreditsMax( void ) { return m_initialCreditsMax; }
-#endif
+#endif // OG
 	inline Int getStartCountdownTimerSeconds( void ) { return m_startCountdownTimerSeconds; }
 	inline Int getMaxBeaconsPerPlayer( void ) { return m_maxBeaconsPerPlayer; }
 	inline Bool isShroudInMultiplayer( void ) { return m_isShroudInMultiplayer; }
@@ -135,12 +135,12 @@ public:
   }
 
   const MultiplayerStartingMoneyList & getStartingMoneyList() const { return m_startingMoneyList; }
-#endif
+#endif // ZH
 
 #ifdef ZH
   void addStartingMoneyChoice( const Money & money, Bool isDefault );
     
-#endif
+#endif // ZH
 private:
 	Int m_initialCreditsMin;
 	Int m_initialCreditsMax;
@@ -159,7 +159,7 @@ private:
   MultiplayerStartingMoneyList      m_startingMoneyList;
   Money                             m_defaultStartingMoney;
   Bool                              m_gotDefaultStartingMoney;
-#endif
+#endif // ZH
 };
 
 // singleton

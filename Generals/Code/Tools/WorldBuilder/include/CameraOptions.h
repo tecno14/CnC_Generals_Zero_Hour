@@ -60,7 +60,7 @@ protected:
 #ifdef ZH
 	afx_msg void OnDropWaypointButton();
 	afx_msg void OnCenterOnSelectedButton();
-#endif
+#endif // ZH
 	afx_msg void OnMove(int x, int y);
 	virtual BOOL OnInitDialog();
 	afx_msg void OnChangePitchEdit();

@@ -158,11 +158,11 @@ void RebuildHoleBehavior::startRebuildProcess( const ThingTemplate *rebuild, Obj
 #ifdef OG
 	newWorkerRespawnProcess( NULL );
 
-#endif
+#endif // OG
 #ifdef ZH
 	Object *worker = TheGameLogic->findObjectByID(m_workerID);
 	newWorkerRespawnProcess( worker ); //Kill the worker if we have one.
-#endif
+#endif // ZH
 
 } /// end startRebuildProcess
 
@@ -290,14 +290,14 @@ UpdateSleepTime RebuildHoleBehavior::update( void )
 					//which we check when the object dies.
 					reconstructing->setProducer( hole );
 
-#endif
+#endif // ZH
 					// we want to prevent the player from selecting and doing things with this worker
 #ifdef OG
 					worker->setStatus( OBJECT_STATUS_UNSELECTABLE );
-#endif
+#endif // OG
 #ifdef ZH
 					worker->setStatus( MAKE_OBJECT_STATUS_MASK( OBJECT_STATUS_UNSELECTABLE ) );
-#endif
+#endif // ZH
 
 					//
 					// we want to prevent the player and the AI from selecting or targeting the hole
@@ -336,11 +336,11 @@ UpdateSleepTime RebuildHoleBehavior::update( void )
 #ifdef OG
 	if( reconstructing && 
 			BitTest( reconstructing->getStatusBits(), OBJECT_STATUS_UNDER_CONSTRUCTION ) == FALSE )
-#endif
+#endif // OG
 #ifdef ZH
 	if( reconstructing && !reconstructing->getStatusBits().test( OBJECT_STATUS_UNDER_CONSTRUCTION ) )
 
-#endif
+#endif // ZH
 	{
 		// Transfer hole name to new building
 		TheScriptEngine->transferObjectName( hole->getName(), reconstructing );

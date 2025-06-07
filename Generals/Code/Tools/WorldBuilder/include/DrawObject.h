@@ -38,7 +38,7 @@ class WaterRenderObjClass;
 #ifdef ZH
 class MapObject;
 class Render2DClass;
-#endif
+#endif // ZH
 //
 // DrawObject: Draws 3d feedback for tools & objects.
 //
@@ -84,14 +84,14 @@ public:
 	Int freeMapResources(void);
 #ifdef ZH
 	int initData(void);
-#endif
+#endif // ZH
 
 #ifdef OG
 	void setDrawObjects(Bool val, Bool waypoints, Bool poly) { m_drawObjects = val; m_drawWaypoints=waypoints; m_drawPolygonAreas = poly;}	
-#endif
+#endif // OG
 #ifdef ZH
   void setDrawObjects(Bool val, Bool waypoints, Bool poly, Bool bounding, Bool sight, Bool weapon, Bool sound, Bool testart, Bool letterbox) { m_drawObjects = val; m_drawWaypoints=waypoints; m_drawPolygonAreas = poly; m_drawBoundingBoxes = bounding; m_drawSightRanges = sight; m_drawWeaponRanges = weapon; m_drawSoundRanges = sound; m_drawTestArtHighlight = testart, m_drawLetterbox = letterbox;}	
-#endif
+#endif // ZH
 	static void setDoBrushFeedback(Bool val) { m_toolWantsFeedback = val; m_meshFeedback=false;}	
 	static void setDoMeshFeedback(Bool val) { m_meshFeedback = val; }	
 	static void setDoRampFeedback(Bool val) { m_rampFeedback = val; }
@@ -142,7 +142,7 @@ protected:
   Bool                      m_drawSoundRanges;
 	Bool											m_drawTestArtHighlight;
 	Bool											m_drawLetterbox;
-#endif
+#endif // ZH
 
 	DX8VertexBufferClass			*m_vertexFeedback;	///< Vertex buffer for brush feedback.
 	DX8IndexBufferClass				*m_indexFeedback;	///< indices defining a triangle strip for the feedback on terrain
@@ -156,7 +156,7 @@ protected:
 #ifdef ZH
 	Render2DClass							*m_lineRenderer;		//< Used to render 2D lines for bounding boxes.
 	CPoint										m_winSize;				//< Holds the size of the window.
-#endif
+#endif // ZH
 
 protected: // static state vars.
 	static Bool								m_squareFeedback;	///< True for square brush feedback, false for round.
@@ -182,10 +182,10 @@ protected: // static state vars.
 protected:
 #ifdef OG
 	int initData(void);
-#endif
+#endif // OG
 #ifdef ZH
   void addCircleToLineRenderer( const Coord3D & center, Real radius, Real width, unsigned long color, CameraClass* camera );
-#endif
+#endif // ZH
 	Int updateVB(DX8VertexBufferClass	*vertexBufferTile, Int color, Bool doArrow, Bool doDiamond);
 	void updatePolygonVB(PolygonTrigger *pTrig, Bool selected, Bool isOpen);
 	void updateFeedbackVB(void);
@@ -202,7 +202,7 @@ protected:
 	void updateVBWithTestArtHighlight(MapObject *pMapObj, CameraClass* camera);
   void updateVBWithSoundRanges(MapObject *pMapObj, CameraClass* camera);
 	bool worldToScreen(const Coord3D *w, ICoord2D *s, CameraClass* camera);
-#endif
+#endif // ZH
 
 };
 

@@ -685,4 +685,4 @@ BOOL TeamObjectProperties::OnCommand(WPARAM wParam, LPARAM lParam)
 }
 
 
-#endif
+#endif // ZH

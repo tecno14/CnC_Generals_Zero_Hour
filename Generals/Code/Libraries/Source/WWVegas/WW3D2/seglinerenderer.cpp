@@ -28,35 +28,35 @@
  *                                                                                             *
 #ifdef OG
  *                      $Author:: Ian_l                                                       $*
-#endif
+#endif // OG
 #ifdef ZH
  *                      $Author:: Kenny Mitchell                                               * 
-#endif
+#endif // ZH
  *                                                                                             *
 #ifdef OG
  *                     $Modtime:: 7/12/01 3:20p                                               $*
-#endif
+#endif // OG
 #ifdef ZH
  *                     $Modtime:: 06/26/02 4:04p                                             $*
-#endif
+#endif // ZH
  *                                                                                             *
 #ifdef OG
  *                    $Revision:: 3                                                           $*
-#endif
+#endif // OG
 #ifdef ZH
  *                    $Revision:: 5                                                           $*
-#endif
+#endif // ZH
  *                                                                                             *
 #ifdef ZH
  * 06/26/02 KM Matrix name change to avoid MAX conflicts                                       *
-#endif
+#endif // ZH
  *---------------------------------------------------------------------------------------------*
  * Functions:                                                                                  *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 #ifdef OG
 
 #if 1
-#endif
+#endif // OG
 
 #include "seglinerenderer.h"
 #include "ww3d.h"
@@ -69,7 +69,7 @@
 #include "v3_rnd.h"
 #ifdef ZH
 #include "meshgeometry.h"
-#endif
+#endif // ZH
 
 
 /* We have chunking logic which handles N segments at a time. To simplify the subdivision logic,
@@ -90,7 +90,7 @@
 //#pragma MESSAGE("************************************** WARNING, optimization disabled for debugging purposes")
 #endif
 
-#endif
+#endif // ZH
 #define MAX_SEGLINE_POINT_BUFFER_SIZE (1 + SEGLINE_CHUNK_SIZE)
 // This macro depends on the assumption that each line segment is two polys.
 #define MAX_SEGLINE_POLY_BUFFER_SIZE (SEGLINE_CHUNK_SIZE * 2)
@@ -114,16 +114,16 @@ SegLineRendererClass::SegLineRendererClass(void) :
 #ifdef OG
 		Bits(DEFAULT_BITS)
 
-#endif
+#endif // OG
 #ifdef ZH
 		Bits(DEFAULT_BITS),
 		m_vertexBufferSize(0),
 		m_vertexBuffer(NULL)
-#endif
+#endif // ZH
 {
 #ifdef ZH
 	// EMPTY
-#endif
+#endif // ZH
 }
 
 SegLineRendererClass::SegLineRendererClass(const SegLineRendererClass & that) :
@@ -142,12 +142,12 @@ SegLineRendererClass::SegLineRendererClass(const SegLineRendererClass & that) :
 #ifdef OG
 		Bits(DEFAULT_BITS)
 
-#endif
+#endif // OG
 #ifdef ZH
 		Bits(DEFAULT_BITS),
 		m_vertexBufferSize(0),
 		m_vertexBuffer(NULL)
-#endif
+#endif // ZH
 {
 	*this = that;
 }
@@ -170,7 +170,7 @@ SegLineRendererClass & SegLineRendererClass::operator = (const SegLineRendererCl
 		Bits = that.Bits;
 #ifdef ZH
 		// Don't modify m_vertexBufferSize and m_vertexBuffer
-#endif
+#endif // ZH
 	}
 	return *this;
 }
@@ -180,7 +180,7 @@ SegLineRendererClass::~SegLineRendererClass(void)
 	REF_PTR_RELEASE(Texture);
 #ifdef ZH
 	delete [] m_vertexBuffer;
-#endif
+#endif // ZH
 }
 
 void SegLineRendererClass::Init(const W3dEmitterLinePropertiesStruct & props)
@@ -239,7 +239,7 @@ void SegLineRendererClass::Set_Texture_Tile_Factor(float factor)
 		factor = 50.0f;
 		WWDEBUG_SAY(("Texture Tile Factor too large in SegLineRendererClass!\r\n"));
 
-#endif
+#endif // OG
 #ifdef ZH
 	// Care should be taken to avoid tiling a texture too many times over a single polygon;
 	// otherwise performance may be adversely affected.
@@ -248,7 +248,7 @@ void SegLineRendererClass::Set_Texture_Tile_Factor(float factor)
 	if (factor > MAX_LINE_TILING_FACTOR) {
 		WWDEBUG_SAY(("Texture (%s) Tile Factor (%.2f) too large in SegLineRendererClass!\r\n", Get_Texture()->Get_Texture_Name(), TextureTileFactor));
 		factor = MAX_LINE_TILING_FACTOR;
-#endif
+#endif // ZH
 	} else {
 		factor = MAX(factor, 0.0f);
 	}
@@ -272,27 +272,27 @@ void SegLineRendererClass::Render
 #ifdef OG
 	const SphereClass & obj_sphere
 
-#endif
+#endif // OG
 #ifdef ZH
 	const SphereClass & obj_sphere,
 	Vector4 * rgbas
-#endif
+#endif // ZH
 )
 {
 #ifdef OG
 	Matrix4 view;
-#endif
+#endif // OG
 #ifdef ZH
 	Matrix4x4 view;
-#endif
+#endif // ZH
 	DX8Wrapper::Get_Transform(D3DTS_VIEW,view);
 
 #ifdef OG
 	Matrix4 identity(true);
-#endif
+#endif // OG
 #ifdef ZH
 	Matrix4x4 identity(true);
-#endif
+#endif // ZH
 	DX8Wrapper::Set_Transform(D3DTS_WORLD,identity);	
 	DX8Wrapper::Set_Transform(D3DTS_VIEW,identity);	
 
@@ -408,26 +408,26 @@ void SegLineRendererClass::Render
 		float subdiv_tex_v[MAX_SEGLINE_POINT_BUFFER_SIZE];
 #ifdef ZH
 		Vector4 subdiv_rgbas[MAX_SEGLINE_POINT_BUFFER_SIZE];
-#endif
+#endif // ZH
 		unsigned int sub_point_cnt;
 
 #ifdef OG
 		subdivision_util(point_cnt, xformed_pts, base_tex_v, &sub_point_cnt, xformed_subdiv_pts, subdiv_tex_v);
-#endif
+#endif // OG
 #ifdef ZH
 		Vector4 *rgbasPointer = rgbas ? &rgbas[ chidx ] : NULL;
-#endif
+#endif // ZH
 
 #ifdef ZH
 		subdivision_util(point_cnt, xformed_pts, base_tex_v, &sub_point_cnt, xformed_subdiv_pts, subdiv_tex_v, rgbasPointer, subdiv_rgbas);
 
-#endif
+#endif // ZH
 		// Start using subdivided points from now on
 		Vector3 *points = xformed_subdiv_pts;
 		float *tex_v = subdiv_tex_v;
 #ifdef ZH
 		Vector4 *diffuse = subdiv_rgbas;
-#endif
+#endif // ZH
 		point_cnt = sub_point_cnt;
 
 
@@ -478,7 +478,7 @@ void SegLineRendererClass::Render
 			float				TexV;					// Averaged texture V coordinate of points
 #ifdef ZH
 			Vector4			RGBA;					// Averaged RGBA of the points
-#endif
+#endif // ZH
 			bool				Fold;					// Does the line fold over at this intersection?
 			bool				Parallel;			// Edges at this intersection are parallel (or almost-)
 		};
@@ -504,7 +504,7 @@ void SegLineRendererClass::Render
 			{
 				next_point.X += 0.001f;
 			}
-#endif
+#endif // ZH
 
 			// We temporarily store the segment direction in the segment's StartPlane (since it is
 			// used to calculate the StartPlane later).
@@ -589,7 +589,7 @@ void SegLineRendererClass::Render
 		intersection[0][TOP_EDGE].TexV = 0.0f;					// Should never be used
 #ifdef ZH
 		intersection[0][TOP_EDGE].RGBA.Set(0, 0, 0, 0);		// Should never be used
-#endif
+#endif // ZH
 		intersection[0][TOP_EDGE].Fold = true;					// Should never be used
 		intersection[0][TOP_EDGE].Parallel = false;			// Should never be used
 		intersection[0][BOTTOM_EDGE].PointCount = 0;			// Should never be used
@@ -598,7 +598,7 @@ void SegLineRendererClass::Render
 		intersection[0][BOTTOM_EDGE].TexV = 0.0f;				// Should never be used
 #ifdef ZH
 		intersection[0][BOTTOM_EDGE].RGBA.Set(0, 0, 0, 0); // Should never be used
-#endif
+#endif // ZH
 		intersection[0][BOTTOM_EDGE].Direction.Set(1,0,0);	// Should never be used
 		intersection[0][BOTTOM_EDGE].Fold = true;				// Should never be used
 		intersection[0][BOTTOM_EDGE].Parallel = false;		// Should never be used
@@ -610,7 +610,7 @@ void SegLineRendererClass::Render
 		intersection[1][TOP_EDGE].TexV = tex_v[0];
 #ifdef ZH
 		intersection[1][TOP_EDGE].RGBA = diffuse[0];
-#endif
+#endif // ZH
 		intersection[1][TOP_EDGE].Fold = true;
 		intersection[1][TOP_EDGE].Parallel = false;
 		intersection[1][BOTTOM_EDGE].PointCount = 1;
@@ -619,7 +619,7 @@ void SegLineRendererClass::Render
 		intersection[1][BOTTOM_EDGE].TexV = tex_v[0];
 #ifdef ZH
 		intersection[1][BOTTOM_EDGE].RGBA = diffuse[0];
-#endif
+#endif // ZH
 		intersection[1][BOTTOM_EDGE].Fold = true;
 		intersection[1][BOTTOM_EDGE].Parallel = false;
 
@@ -662,7 +662,7 @@ void SegLineRendererClass::Render
 		intersection[last_isec][TOP_EDGE].TexV = tex_v[point_cnt - 1];
 #ifdef ZH
 		intersection[last_isec][TOP_EDGE].RGBA = diffuse[point_cnt - 1];
-#endif
+#endif // ZH
 		intersection[last_isec][TOP_EDGE].Fold = true;
 		intersection[last_isec][TOP_EDGE].Parallel = false;
 		intersection[last_isec][BOTTOM_EDGE].PointCount = 1;
@@ -671,7 +671,7 @@ void SegLineRendererClass::Render
 		intersection[last_isec][BOTTOM_EDGE].TexV = tex_v[point_cnt - 1];
 #ifdef ZH
 		intersection[last_isec][BOTTOM_EDGE].RGBA = diffuse[point_cnt - 1];
-#endif
+#endif // ZH
 		intersection[last_isec][BOTTOM_EDGE].Fold = true;
 		intersection[last_isec][BOTTOM_EDGE].Parallel = false;
 
@@ -718,7 +718,7 @@ void SegLineRendererClass::Render
 			float mid_tex_v = tex_v[iidx - 1];
 #ifdef ZH
 			Vector4 mid_diffuse = diffuse[iidx - 1];
-#endif
+#endif // ZH
 
 			// Initialize misc. fields
 			intersection[iidx][TOP_EDGE].PointCount = 1;
@@ -727,14 +727,14 @@ void SegLineRendererClass::Render
 			intersection[iidx][TOP_EDGE].TexV = mid_tex_v;
 #ifdef ZH
 			intersection[iidx][TOP_EDGE].RGBA = mid_diffuse;
-#endif
+#endif // ZH
 			intersection[iidx][BOTTOM_EDGE].PointCount = 1;
 			intersection[iidx][BOTTOM_EDGE].NextSegmentID = iidx;
 			intersection[iidx][BOTTOM_EDGE].Point = midpoint;
 			intersection[iidx][BOTTOM_EDGE].TexV = mid_tex_v;
 #ifdef ZH
 			intersection[iidx][BOTTOM_EDGE].RGBA = mid_diffuse;
-#endif
+#endif // ZH
 
 			// Intersection calculation: if the top/bottom planes of both adjoining segments are not
 			// very close to being parallel, intersect them to get top/bottom intersection lines. If
@@ -895,7 +895,7 @@ void SegLineRendererClass::Render
 							float new_tex_v = curr_int->TexV * curr_factor + next_int->TexV * next_factor;
 #ifdef ZH
 							Vector4 new_diffuse = curr_int->RGBA * curr_factor + next_int->RGBA * next_factor;
-#endif
+#endif // ZH
 
 							// Calculate new intersection direction by intersecting prev_seg with next_seg
 							bool new_parallel;
@@ -964,7 +964,7 @@ void SegLineRendererClass::Render
 							curr_int->TexV = new_tex_v;
 #ifdef ZH
 							curr_int->RGBA = new_diffuse;
-#endif
+#endif // ZH
 							curr_int->PointCount = new_count;
 							curr_int->NextSegmentID = next_int->NextSegmentID;
 							curr_int->Fold = curr_int->Fold || next_int->Fold;
@@ -993,7 +993,7 @@ void SegLineRendererClass::Render
 						write_int->TexV				= curr_int->TexV;
 #ifdef ZH
 						write_int->RGBA				= curr_int->RGBA;
-#endif
+#endif // ZH
 						write_int->Direction			= curr_int->Direction;
 						write_int->Fold				= curr_int->Fold;
 
@@ -1011,7 +1011,7 @@ void SegLineRendererClass::Render
 						write_int->TexV				= curr_int->TexV;
 #ifdef ZH
 						write_int->RGBA				= curr_int->RGBA;
-#endif
+#endif // ZH
 						write_int->Direction			= curr_int->Direction;
 						write_int->Fold				= curr_int->Fold;
 					}
@@ -1041,11 +1041,11 @@ void SegLineRendererClass::Render
 #ifdef OG
 		VertexFormatXYZDUV1 *vArray=W3DNEWARRAY VertexFormatXYZDUV1[vnum];		
 		Vector3i v_index_array[MAX_SEGLINE_POLY_BUFFER_SIZE];
-#endif
+#endif // OG
 #ifdef ZH
 		VertexFormatXYZDUV1 *vArray = getVertexBuffer(vnum);
 		TriIndex v_index_array[MAX_SEGLINE_POLY_BUFFER_SIZE];
-#endif
+#endif // ZH
 		
 		// Vertex and triangle indices
 		unsigned int vidx = 0;
@@ -1063,7 +1063,7 @@ void SegLineRendererClass::Render
 		vArray[vidx].z = top.Z;
 #ifdef ZH
 		vArray[vidx].diffuse = DX8Wrapper::Convert_Color(intersection[1][TOP_EDGE].RGBA);
-#endif
+#endif // ZH
 		vArray[vidx].u1 = u_values[0] + uv_offset.X;
 		vArray[vidx].v1 = intersection[1][TOP_EDGE].TexV + uv_offset.Y;
 		vidx++;
@@ -1072,7 +1072,7 @@ void SegLineRendererClass::Render
 		vArray[vidx].z = bottom.Z;
 #ifdef ZH
 		vArray[vidx].diffuse = DX8Wrapper::Convert_Color(intersection[1][BOTTOM_EDGE].RGBA);
-#endif
+#endif // ZH
 		vArray[vidx].u1 = u_values[1] + uv_offset.X;
 		vArray[vidx].v1 = intersection[1][BOTTOM_EDGE].TexV + uv_offset.Y;
 		vidx++;
@@ -1128,7 +1128,7 @@ void SegLineRendererClass::Render
 				vArray[vidx].z = top.Z;
 #ifdef ZH
 				vArray[vidx].diffuse = DX8Wrapper::Convert_Color(intersection[top_int_idx][TOP_EDGE].RGBA);
-#endif
+#endif // ZH
 				vArray[vidx].u1 = u_values[0] + uv_offset.X;
 				vArray[vidx].v1 = intersection[top_int_idx][TOP_EDGE].TexV + uv_offset.Y;
 				vidx++;
@@ -1137,7 +1137,7 @@ void SegLineRendererClass::Render
 				vArray[vidx].z = bottom.Z;
 #ifdef ZH
 				vArray[vidx].diffuse = DX8Wrapper::Convert_Color(intersection[bottom_int_idx][BOTTOM_EDGE].RGBA);
-#endif
+#endif // ZH
 				vArray[vidx].u1 = u_values[1] + uv_offset.X;
 				vArray[vidx].v1 = intersection[bottom_int_idx][BOTTOM_EDGE].TexV + uv_offset.Y;
 				vidx++;
@@ -1168,7 +1168,7 @@ void SegLineRendererClass::Render
 					vArray[vidx].z = bottom.Z;
 #ifdef ZH
 					vArray[vidx].diffuse = DX8Wrapper::Convert_Color(intersection[bottom_int_idx][BOTTOM_EDGE].RGBA);
-#endif
+#endif // ZH
 					vArray[vidx].u1 = u_values[1] + uv_offset.X;
 					vArray[vidx].v1 = intersection[bottom_int_idx][BOTTOM_EDGE].TexV + uv_offset.Y;					
 					vidx++;
@@ -1199,7 +1199,7 @@ void SegLineRendererClass::Render
 					vArray[vidx].z = top.Z;
 #ifdef ZH
 					vArray[vidx].diffuse = DX8Wrapper::Convert_Color(intersection[top_int_idx][TOP_EDGE].RGBA);
-#endif
+#endif // ZH
 					vArray[vidx].u1 = u_values[0] + uv_offset.X;
 					vArray[vidx].v1 = intersection[top_int_idx][TOP_EDGE].TexV + uv_offset.Y;
 					vidx++;
@@ -1244,20 +1244,20 @@ void SegLineRendererClass::Render
 #ifdef OG
 		if (!rgba_all) {
 
-#endif
+#endif // OG
 #ifdef ZH
 		// if there's a default color or an rgba array modulate
 		if (!rgba_all || (rgba != 0) ) {
-#endif
+#endif // ZH
 			shader.Set_Primary_Gradient(ShaderClass::GRADIENT_MODULATE);			
 #ifdef OG
 			for (vidx = 0; vidx < vnum; vidx++)	vArray[vidx].diffuse=rgba;
-#endif
+#endif // OG
 			mat=VertexMaterialClass::Get_Preset(VertexMaterialClass::PRELIT_DIFFUSE);
 		} else {
 #ifdef ZH
 			// othewise it's texture only
-#endif
+#endif // ZH
 			shader.Set_Primary_Gradient(ShaderClass::GRADIENT_DISABLE);
 			mat=VertexMaterialClass::Get_Preset(VertexMaterialClass::PRELIT_NODIFFUSE);
 		}
@@ -1287,7 +1287,7 @@ void SegLineRendererClass::Render
 			const unsigned diffuseOffset = fvfinfo.Get_Diffuse_Offset();
 			const unsigned textureOffset = fvfinfo.Get_Tex_Offset(0);
 			const unsigned vbSize = fvfinfo.Get_FVF_Size();
-#endif
+#endif // ZH
 
 			for (i=0; i<vnum; i++)
 			{
@@ -1301,7 +1301,7 @@ void SegLineRendererClass::Render
 				((Vector2*)(vb+fvfinfo.Get_Tex_Offset(0)))->V=vArray[i].v1;				
 				vb+=fvfinfo.Get_FVF_Size();				
 
-#endif
+#endif // OG
 #ifdef ZH
 				Vector3 *vertex = reinterpret_cast<Vector3 *>(vb + verticesOffset);
 				vertex->X = vArray[i].x;
@@ -1312,7 +1312,7 @@ void SegLineRendererClass::Render
 				texture->U = vArray[i].u1;
 				texture->V = vArray[i].v1;
 				vb += vbSize;
-#endif
+#endif // ZH
 			}			
 		} // copy
 		
@@ -1324,7 +1324,7 @@ void SegLineRendererClass::Render
 
 #ifdef ZH
 			try {
-#endif
+#endif // ZH
 			for (i=0; i<tidx; i++)
 			{
 				*inds++=v_index_array[i].I;
@@ -1335,11 +1335,11 @@ void SegLineRendererClass::Render
 			IndexBufferExceptionFunc();
 			} catch(...) {
 				IndexBufferExceptionFunc();
-#endif
+#endif // ZH
 		}
 #ifdef ZH
 		}
-#endif
+#endif // ZH
 		
 		DX8Wrapper::Set_Index_Buffer(ib_access,0);
 		DX8Wrapper::Set_Vertex_Buffer(Verts);				
@@ -1356,7 +1356,7 @@ void SegLineRendererClass::Render
 		REF_PTR_RELEASE(mat);
 #ifdef OG
 		delete [] vArray;
-#endif
+#endif // OG
 
 	}	// Chunking loop
 
@@ -1369,10 +1369,10 @@ void SegLineRendererClass::subdivision_util(unsigned int point_cnt, const Vector
 	const float *base_tex_v, unsigned int *p_sub_point_cnt, Vector3 *xformed_subdiv_pts,
 #ifdef OG
 	float *subdiv_tex_v)
-#endif
+#endif // OG
 #ifdef ZH
 	float *subdiv_tex_v, Vector4 *base_diffuse, Vector4 *subdiv_diffuse)
-#endif
+#endif // ZH
 {
 	// CAUTION: freezing the random offsets will make it more readily apparent that the offsets
 	// are in camera space rather than worldspace.
@@ -1391,7 +1391,7 @@ void SegLineRendererClass::subdivision_util(unsigned int point_cnt, const Vector
 #ifdef ZH
 		Vector4			StartDiffuse;
 		Vector4			EndDiffuse;
-#endif
+#endif // ZH
 		float				Rand;
 		unsigned int	Level;		// Subdivision level
 	};
@@ -1418,7 +1418,7 @@ void SegLineRendererClass::subdivision_util(unsigned int point_cnt, const Vector
 			stack[0].EndDiffuse = stack[0].StartDiffuse;
 		}
 
-#endif
+#endif // ZH
 		stack[0].Rand = NoiseAmplitude;
 		stack[0].Level = 0;
 
@@ -1429,13 +1429,13 @@ void SegLineRendererClass::subdivision_util(unsigned int point_cnt, const Vector
 #ifdef OG
 				subdiv_tex_v[sub_pidx++] = stack[tos].StartTexV;
 
-#endif
+#endif // OG
 #ifdef ZH
 				subdiv_tex_v[sub_pidx] = stack[tos].StartTexV;
 				subdiv_diffuse[sub_pidx] = stack[tos].StartDiffuse;
 
 				sub_pidx = sub_pidx + 1;
-#endif
+#endif // ZH
 
 				// Pop
 				tos--;
@@ -1453,7 +1453,7 @@ void SegLineRendererClass::subdivision_util(unsigned int point_cnt, const Vector
 #ifdef ZH
 				stack[tos + 1].StartDiffuse = stack[tos].StartDiffuse;
 				stack[tos + 1].EndDiffuse = (stack[tos].StartDiffuse + stack[tos].EndDiffuse) * 0.5f;
-#endif
+#endif // ZH
 				stack[tos + 1].Rand = stack[tos].Rand * 0.5f;
 				stack[tos + 1].Level = stack[tos].Level + 1;
 				stack[tos].StartPos = stack[tos + 1].EndPos;
@@ -1471,7 +1471,7 @@ void SegLineRendererClass::subdivision_util(unsigned int point_cnt, const Vector
 #ifdef OG
 	subdiv_tex_v[sub_pidx++] = base_tex_v[point_cnt - 1];
 
-#endif
+#endif // OG
 #ifdef ZH
 	subdiv_tex_v[sub_pidx] = base_tex_v[point_cnt - 1];
 	if (base_diffuse) {
@@ -1479,12 +1479,12 @@ void SegLineRendererClass::subdivision_util(unsigned int point_cnt, const Vector
 	} else {
 		subdiv_diffuse[sub_pidx].Set(Color.X, Color.Y, Color.Z, Opacity);
 	}
-#endif
+#endif // ZH
 
 #ifdef ZH
 	sub_pidx = sub_pidx + 1;
 
-#endif
+#endif // ZH
 	// Output:
 	*p_sub_point_cnt = sub_pidx;
 }
@@ -1495,7 +1495,7 @@ void SegLineRendererClass::Scale(float scale)
 	Width *= scale;
 	NoiseAmplitude *= scale;
 }
-#endif
+#endif // ZH
 
 #ifdef ZH
 VertexFormatXYZDUV1 *SegLineRendererClass::getVertexBuffer(unsigned int number)
@@ -1508,14 +1508,14 @@ VertexFormatXYZDUV1 *SegLineRendererClass::getVertexBuffer(unsigned int number)
 		m_vertexBuffer = W3DNEWARRAY VertexFormatXYZDUV1[numberToAlloc];
 		m_vertexBufferSize = numberToAlloc;
 	}
-#endif
+#endif // ZH
 
 #ifdef OG
 #endif //0
 
-#endif
+#endif // OG
 #ifdef ZH
 	return m_vertexBuffer;
 }
 
-#endif
+#endif // ZH

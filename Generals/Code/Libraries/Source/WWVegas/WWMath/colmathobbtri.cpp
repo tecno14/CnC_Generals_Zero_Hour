@@ -28,17 +28,17 @@
  *                                                                                             *
 #ifdef OG
  *                     $Modtime:: 5/04/01 8:37p                                               $*
-#endif
+#endif // OG
 #ifdef ZH
  *                     $Modtime:: 11/28/01 5:56p                                              $*
-#endif
+#endif // ZH
  *                                                                                             *
 #ifdef OG
  *                    $Revision:: 15                                                          $*
-#endif
+#endif // OG
 #ifdef ZH
  *                    $Revision:: 16                                                          $*
-#endif
+#endif // ZH
  *                                                                                             *
  *---------------------------------------------------------------------------------------------*
  * Functions:                                                                                  *
@@ -539,10 +539,10 @@ static inline void obbtri_compute_contact_normal
 	const BTCollisionStruct &	context,
 #ifdef OG
 	CastResultStruct *			result
-#endif
+#endif // OG
 #ifdef ZH
 	Vector3 *						set_normal
-#endif
+#endif // ZH
 )
 {
 	switch(context.AxisId) 
@@ -553,132 +553,132 @@ static inline void obbtri_compute_contact_normal
 		case AXIS_N:
 #ifdef OG
 			result->Normal = -context.Side * *context.Tri.N;
-#endif
+#endif // OG
 #ifdef ZH
 			*set_normal = -context.Side * *context.Tri.N;
-#endif
+#endif // ZH
 			break;
 		case AXIS_A0:
 #ifdef OG
 			result->Normal = -context.Side * context.A[0];
-#endif
+#endif // OG
 #ifdef ZH
 			*set_normal = -context.Side * context.A[0];
-#endif
+#endif // ZH
 			break;
 		case AXIS_A1:
 #ifdef OG
 			result->Normal = -context.Side * context.A[1];
-#endif
+#endif // OG
 #ifdef ZH
 			*set_normal = -context.Side * context.A[1];
-#endif
+#endif // ZH
 			break;
 		case AXIS_A2:
 #ifdef OG
 			result->Normal = -context.Side * context.A[2];
-#endif
+#endif // OG
 #ifdef ZH
 			*set_normal = -context.Side * context.A[2];
-#endif
+#endif // ZH
 			break;
 		case AXIS_A0E0:
 #ifdef OG
 			result->Normal = -context.Side * context.AxE[0][0];
 			result->Normal.Normalize();
-#endif
+#endif // OG
 #ifdef ZH
 			*set_normal = -context.Side * context.AxE[0][0];
 			set_normal->Normalize();
-#endif
+#endif // ZH
 			break;
 		case AXIS_A1E0:
 #ifdef OG
 			result->Normal = -context.Side * context.AxE[1][0];
 			result->Normal.Normalize();
-#endif
+#endif // OG
 #ifdef ZH
 			*set_normal = -context.Side * context.AxE[1][0];
 			set_normal->Normalize();
-#endif
+#endif // ZH
 			break;
 		case AXIS_A2E0:
 #ifdef OG
 			result->Normal = -context.Side * context.AxE[2][0];
 			result->Normal.Normalize();
-#endif
+#endif // OG
 #ifdef ZH
 			*set_normal = -context.Side * context.AxE[2][0];
 			set_normal->Normalize();
-#endif
+#endif // ZH
 			break;
 		case AXIS_A0E1:
 #ifdef OG
 			result->Normal = -context.Side * context.AxE[0][1];
 			result->Normal.Normalize();
-#endif
+#endif // OG
 #ifdef ZH
 			*set_normal = -context.Side * context.AxE[0][1];
 			set_normal->Normalize();
-#endif
+#endif // ZH
 			break;
 		case AXIS_A1E1:
 #ifdef OG
 			result->Normal = -context.Side * context.AxE[1][1];
 			result->Normal.Normalize();
-#endif
+#endif // OG
 #ifdef ZH
 			*set_normal = -context.Side * context.AxE[1][1];
 			set_normal->Normalize();
-#endif
+#endif // ZH
 			break;
 		case AXIS_A2E1:
 #ifdef OG
 			result->Normal = -context.Side * context.AxE[2][1];
 			result->Normal.Normalize();
-#endif
+#endif // OG
 #ifdef ZH
 			*set_normal = -context.Side * context.AxE[2][1];
 			set_normal->Normalize();
-#endif
+#endif // ZH
 			break;
 		case AXIS_A0E2:
 #ifdef OG
 			result->Normal = -context.Side * context.AxE[0][2];
 			result->Normal.Normalize();
-#endif
+#endif // OG
 #ifdef ZH
 			*set_normal = -context.Side * context.AxE[0][2];
 			set_normal->Normalize();
-#endif
+#endif // ZH
 			break;
 		case AXIS_A1E2:
 #ifdef OG
 			result->Normal = -context.Side * context.AxE[1][2];
 			result->Normal.Normalize();
-#endif
+#endif // OG
 #ifdef ZH
 			*set_normal = -context.Side * context.AxE[1][2];
 			set_normal->Normalize();
-#endif
+#endif // ZH
 			break;
 		case AXIS_A2E2:
 #ifdef OG
 			result->Normal = -context.Side * context.AxE[2][2];
 			result->Normal.Normalize();
-#endif
+#endif // OG
 #ifdef ZH
 			*set_normal = -context.Side * context.AxE[2][2];
 			set_normal->Normalize();
-#endif
+#endif // ZH
 			break;
 	}
 #ifdef OG
 	WWASSERT(result->Normal.Length2() > 0.0f);
-#endif
+#endif // OG
 #ifdef ZH
 	WWASSERT(set_normal->Length2() > 0.0f);
-#endif
+#endif // ZH
 }
 
 
@@ -1192,22 +1192,22 @@ exit:
 
 		Vector3 normal;
 		obbtri_compute_contact_normal(context,&normal);
-#endif
+#endif // ZH
 
 		if (	(WWMath::Fabs(context.MaxFrac - result->Fraction) > WWMATH_EPSILON) ||
 #ifdef OG
 				(Vector3::Dot_Product(*(tri.N),move) < Vector3::Dot_Product(result->Normal,move)) )
-#endif
+#endif // OG
 #ifdef ZH
 				(Vector3::Dot_Product(normal,move) < Vector3::Dot_Product(result->Normal,move)) )
-#endif
+#endif // ZH
 		{
 #ifdef OG
 			obbtri_compute_contact_normal(context,result);
-#endif
+#endif // OG
 #ifdef ZH
 			result->Normal = normal; //obbtri_compute_contact_normal(context,result);
-#endif
+#endif // ZH
 		}
 				
 		result->Fraction = context.MaxFrac;

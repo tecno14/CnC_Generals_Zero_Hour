@@ -61,7 +61,7 @@ enum FormationID
 #ifdef ZH
 #define INVALID_ANGLE -100.0f
 
-#endif
+#endif // ZH
 class INI;
 
 //-------------------------------------------------------------------------------------------------

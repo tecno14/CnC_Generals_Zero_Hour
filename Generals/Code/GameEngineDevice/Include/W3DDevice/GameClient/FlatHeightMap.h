@@ -98,4 +98,4 @@ protected:
 
 #endif  // end __FLAT_HEIGHTMAP_H_
 
-#endif
+#endif // ZH

@@ -66,13 +66,13 @@ public:
 	Real m_damagePercentageToUnits;
 #ifdef ZH
 	Bool m_isBurnedDeathToUnits;		///< Turn off the hardcoded burn death when killing guys in transport
-#endif
+#endif // ZH
 	UnsignedInt m_doorOpenTime;
 	KindOfMaskType m_allowInsideKindOf;			///< objects must have at least one of these kind of bits set to be contained by us
 	KindOfMaskType m_forbidInsideKindOf;		///< objects must have NONE of these kind of bits set to be contained by us
 #ifdef ZH
 	Bool m_weaponBonusPassedToPassengers;		///< Do our passengers get to use our weapon bonuses?
-#endif
+#endif // ZH
  	Bool m_allowAlliesInside;				///< allow allies inside us
  	Bool m_allowEnemiesInside;			///< allow enemies inside us
  	Bool m_allowNeutralInside;			///< allow neutral inside us
@@ -119,7 +119,7 @@ public:
 	virtual Bool isSalvageCrateCollide() const { return false; }
 #ifdef ZH
 	virtual Bool isSabotageBuildingCrateCollide() const { return FALSE; }
-#endif
+#endif // ZH
 
 	// UpdateModule
 	virtual UpdateSleepTime update();				///< called once per frame
@@ -151,22 +151,22 @@ public:
 		
 #ifdef OG
 	virtual void onContaining( Object *obj );		///< object now contains 'obj'
-#endif
+#endif // OG
 #ifdef ZH
 	virtual void onContaining( Object *obj, Bool wasSelected );		///< object now contains 'obj'
-#endif
+#endif // ZH
 	virtual void onRemoving( Object *obj );			///< object no longer contains 'obj'
 	virtual void onSelling();///< Container is being sold.  Open responds by kicking people out
 
 #ifdef OG
 	virtual void orderAllPassengersToExit( CommandSourceType commandSource ); ///< All of the smarts of exiting are in the passenger's AIExit. removeAllFrommContain is a last ditch system call, this is the game Evacuate
 
-#endif
+#endif // OG
 #ifdef ZH
 	virtual void orderAllPassengersToExit( CommandSourceType commandSource, Bool instantly ); ///< All of the smarts of exiting are in the passenger's AIExit. removeAllFrommContain is a last ditch system call, this is the game Evacuate
 	virtual void orderAllPassengersToIdle( CommandSourceType commandSource ); ///< Just like it sounds
 	virtual void orderAllPassengersToHackInternet( CommandSourceType ); ///< Just like it sounds
-#endif
+#endif // ZH
 	virtual void markAllPassengersDetected();										///< Cool game stuff got added to the system calls since this layer didn't exist, so this regains that functionality
 
 	// default OpenContain has unlimited capacity...!
@@ -178,18 +178,18 @@ public:
 #ifdef ZH
 	virtual void killAllContained( void );				///< kill all objects on contain list
   virtual void harmAndForceExitAllContained( DamageInfo *info ); // apply canned damage against those containes 
-#endif
+#endif // ZH
 	virtual Bool isEnclosingContainerFor( const Object *obj ) const;	///< Does this type of Contain Visibly enclose its contents?
 #ifdef OG
 	virtual Bool isPassengerAllowedToFire() const;	///< Hey, can I shoot out of this container?
 
-#endif
+#endif // OG
 #ifdef ZH
 	virtual Bool isPassengerAllowedToFire( ObjectID id = INVALID_ID ) const;	///< Hey, can I shoot out of this container?
 
   virtual void setPassengerAllowedToFire( Bool permission = TRUE ) { m_passengerAllowedToFire = permission; }	///< Hey, can I shoot out of this container?
 
-#endif
+#endif // ZH
 	virtual void setOverrideDestination( const Coord3D * ){} ///< Instead of falling peacefully towards a clear spot, I will now aim here
 	virtual Bool isDisplayedOnControlBar() const {return FALSE;}///< Does this container display its contents on the ControlBar?
 	virtual Int getExtraSlotsInUse( void ) { return 0; }
@@ -227,18 +227,18 @@ public:
 	virtual Bool isGarrisonable() const { return false; }		///< can this unit be Garrisoned? (ick)
 #ifdef ZH
 	virtual Bool isBustable() const { return false; }		///< can this container get busted by a bunkerbuster
-#endif
+#endif // ZH
 	virtual Bool isHealContain() const { return false; } ///< true when container only contains units while healing (not a transport!)
 #ifdef ZH
 	virtual Bool isTunnelContain() const { return FALSE; }
 	virtual Bool isRiderChangeContain() const { return FALSE; }
-#endif
+#endif // ZH
 	virtual Bool isSpecialZeroSlotContainer() const { return false; }
 	virtual Bool isImmuneToClearBuildingAttacks() const { return true; }
 #ifdef ZH
   virtual Bool isSpecialOverlordStyleContainer() const { return false; }
   virtual Bool isAnyRiderAttacking( void ) const;
-#endif
+#endif // ZH
 
 	/**
 		this is used for containers that must do something to allow people to enter or exit...
@@ -254,13 +254,13 @@ public:
 #ifdef OG
 	virtual void processDamageToContained(); ///< Do our % damage to units now.
 
-#endif
+#endif // OG
 #ifdef ZH
 	virtual void processDamageToContained(Real percentDamage); ///< Do our % damage to units now.
 
 	virtual Bool isWeaponBonusPassedToPassengers() const;
 	virtual WeaponBonusConditionFlags getWeaponBonusPassedToPassengers() const;
-#endif
+#endif // ZH
 
 	virtual void enableLoadSounds( Bool enable ) { m_loadSoundsEnabled = enable; }
 
@@ -269,7 +269,7 @@ public:
   virtual Object* getClosestRider ( const Coord3D *pos );
 
   virtual void setEvacDisposition( EvacDisposition disp ) {};
-#endif
+#endif // ZH
 protected:
 
 	virtual void monitorConditionChanges( void );				///< check to see if we need to update our occupant postions from a model change or anything else
@@ -323,7 +323,7 @@ private:
 	Bool								m_loadSoundsEnabled;								///< Don't serialize -- used for disabling sounds during payload creation.
 #ifdef ZH
   Bool                m_passengerAllowedToFire;      ///< Newly promoted from the template data to the module for upgrade overriding access
-#endif
+#endif // ZH
 };
 
 #endif  // end __OPENCONTAIN_H_

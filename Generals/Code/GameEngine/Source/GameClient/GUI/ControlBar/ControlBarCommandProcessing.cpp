@@ -98,7 +98,7 @@ void selectObjectOfType( Object* obj, void* selectObjectsInfo )
 //-------------------------------------------------------------------------------------------------
 //-------------------------------------------------------------------------------------------------
 
-#endif
+#endif // ZH
 //-------------------------------------------------------------------------------------------------
 /** Process a button transition message from the window system that should be for one of
 	* our GUI commands */
@@ -138,15 +138,15 @@ CBCommandStatus ControlBar::processCommandUI( GameWindow *control,
 		DEBUG_CRASH( ("ControlBar::processCommandUI() -- Button activated has no data. Ignoring...") );
 		return CBC_COMMAND_NOT_USED;
 	}
-#endif
+#endif // ZH
 
 	// sanity, we won't process messages if we have no source object, 
 #ifdef OG
 	// unless we're CB_CONTEXT_PURCHASE_SCIENCE or GUI_COMMAND_SPECIAL_POWER_FROM_COMMAND_CENTER
-#endif
+#endif // OG
 #ifdef ZH
 	// unless we're CB_CONTEXT_PURCHASE_SCIENCE or GUI_COMMAND_SPECIAL_POWER_FROM_SHORTCUT
-#endif
+#endif // ZH
 	if( m_currContext != CB_CONTEXT_MULTI_SELECT &&
 			commandButton->getCommandType() != GUI_COMMAND_PURCHASE_SCIENCE &&
 #ifdef OG
@@ -154,13 +154,13 @@ CBCommandStatus ControlBar::processCommandUI( GameWindow *control,
 			(m_currentSelectedDrawable == NULL || 
 			 m_currentSelectedDrawable->getObject() == NULL) )
 
-#endif
+#endif // OG
 #ifdef ZH
 			commandButton->getCommandType() != GUI_COMMAND_SPECIAL_POWER_FROM_SHORTCUT &&
 			commandButton->getCommandType() != GUI_COMMAND_SPECIAL_POWER_CONSTRUCT_FROM_SHORTCUT &&
 			commandButton->getCommandType() != GUI_COMMAND_SELECT_ALL_UNITS_OF_TYPE && 
 			(m_currentSelectedDrawable == NULL || m_currentSelectedDrawable->getObject() == NULL) )
-#endif
+#endif // ZH
 	{
 
 		if( m_currContext != CB_CONTEXT_NONE )
@@ -200,12 +200,12 @@ CBCommandStatus ControlBar::processCommandUI( GameWindow *control,
 #ifdef OG
 			commandButton->getCommandType() != GUI_COMMAND_SPECIAL_POWER_FROM_COMMAND_CENTER)
 
-#endif
+#endif // OG
 #ifdef ZH
 			commandButton->getCommandType() != GUI_COMMAND_SPECIAL_POWER_FROM_SHORTCUT && 
 			commandButton->getCommandType() != GUI_COMMAND_SPECIAL_POWER_CONSTRUCT_FROM_SHORTCUT &&
 			commandButton->getCommandType() != GUI_COMMAND_SELECT_ALL_UNITS_OF_TYPE )
-#endif
+#endif // ZH
 		obj = m_currentSelectedDrawable->getObject();
 
 	//@todo Kris -- Special case code so convoy trucks can detonate nuke trucks -- if other things need this,
@@ -335,7 +335,7 @@ CBCommandStatus ControlBar::processCommandUI( GameWindow *control,
 				TheInGameUI->message( "GUI:UnitMaxedOut" );
 				break;
 			} 
-#endif
+#endif // ZH
 
 #ifdef ZH
 			// tell the UI that we want to build something so we get a building at the cursor
@@ -393,7 +393,7 @@ CBCommandStatus ControlBar::processCommandUI( GameWindow *control,
 
 		}  // end dozer construct
 
-#endif
+#endif // ZH
 		//---------------------------------------------------------------------------------------------
 		case GUI_COMMAND_DOZER_CONSTRUCT_CANCEL:
 		{
@@ -419,7 +419,7 @@ CBCommandStatus ControlBar::processCommandUI( GameWindow *control,
 		{
 #ifdef ZH
 			//
-#endif
+#endif // ZH
 			const ThingTemplate *whatToBuild = commandButton->getThingTemplate();
 
 			// get the "factory" object that is going to make the thing
@@ -697,7 +697,7 @@ CBCommandStatus ControlBar::processCommandUI( GameWindow *control,
 			info.msg = teamMsg;
 			localPlayer->iterateObjects( selectObjectOfType, (void*)&info );
 
-#endif
+#endif // ZH
 			break;
 		}
 
@@ -740,7 +740,7 @@ CBCommandStatus ControlBar::processCommandUI( GameWindow *control,
 #ifdef ZH
       //what if container is subdued... assert a logic failure, perhaps?
 
-#endif
+#endif // ZH
 			// send message to exit
 			GameMessage *exitMsg = TheMessageStream->appendMessage( GameMessage::MSG_EXIT );
 			exitMsg->appendObjectIDArgument( objWantingExit->getID() ); // 0 is the thing inside coming out
@@ -864,40 +864,40 @@ CBCommandStatus ControlBar::processCommandUI( GameWindow *control,
 		//---------------------------------------------------------------------------------------------
 #ifdef OG
 		case GUI_COMMAND_SPECIAL_POWER_FROM_COMMAND_CENTER:
-#endif
+#endif // OG
 #ifdef ZH
 		case GUI_COMMAND_SPECIAL_POWER_FROM_SHORTCUT:
-#endif
+#endif // ZH
 		{
 #ifdef OG
 			Object* cmdCenter = ThePlayerList->getLocalPlayer()->findNaturalCommandCenter();
 			if (cmdCenter == NULL)
 
-#endif
+#endif // OG
 #ifdef ZH
 			const SpecialPowerTemplate *spTemplate = commandButton->getSpecialPowerTemplate();
 			SpecialPowerType spType = spTemplate->getSpecialPowerType();
 
 			Object* obj = ThePlayerList->getLocalPlayer()->findMostReadyShortcutSpecialPowerOfType( spType );
 			if( !obj )
-#endif
+#endif // ZH
 				break;
 
 			// command needs no additional data, send the message
 			GameMessage *msg = TheMessageStream->appendMessage( GameMessage::MSG_DO_SPECIAL_POWER );
 #ifdef OG
 			msg->appendIntegerArgument( commandButton->getSpecialPowerTemplate()->getID() );
-#endif
+#endif // OG
 #ifdef ZH
 			msg->appendIntegerArgument( spTemplate->getID() );
-#endif
+#endif // ZH
 			msg->appendIntegerArgument( commandButton->getOptions() );
 #ifdef OG
 			msg->appendObjectIDArgument( cmdCenter->getID() );
-#endif
+#endif // OG
 #ifdef ZH
 			msg->appendObjectIDArgument( obj->getID() );
-#endif
+#endif // ZH
 			break;
 
 		}  // end special weapon

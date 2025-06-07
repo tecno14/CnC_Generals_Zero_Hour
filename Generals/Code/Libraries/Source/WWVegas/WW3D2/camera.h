@@ -27,30 +27,30 @@
 #ifdef OG
  *                       Author:: Greg_h                                                       *
 
-#endif
+#endif // OG
 #ifdef ZH
  *                    Org Author:: Greg_h                                                       *
  *                                                                                             *
  *                       $Author:: Kenny Mitchell                                               * 
-#endif
+#endif // ZH
  *                                                                                             *
 #ifdef OG
  *                     $Modtime:: 7/31/01 10:52a                                              $*
-#endif
+#endif // OG
 #ifdef ZH
  *                     $Modtime:: 06/26/02 4:04p                                             $*
-#endif
+#endif // ZH
  *                                                                                             *
 #ifdef OG
  *                    $Revision:: 13                                                          $*
-#endif
+#endif // OG
 #ifdef ZH
  *                    $Revision:: 14                                                          $*
-#endif
+#endif // ZH
  *                                                                                             *
 #ifdef ZH
  * 06/26/02 KM Matrix name change to avoid MAX conflicts                                       *
-#endif
+#endif // ZH
  *---------------------------------------------------------------------------------------------*
  * Functions:                                                                                  *
  *   CameraClass::Get_Frustum -- returns the frustum of the camera                             *
@@ -113,10 +113,10 @@ public:
 **
 #ifdef OG
 ** For all of the projection functions (Matrix4, ProjectorClass (used by 
-#endif
+#endif // OG
 #ifdef ZH
 ** For all of the projection functions (Matrix4x4, ProjectorClass (used by 
-#endif
+#endif // ZH
 ** decals and texture projections), and CameraClass) I followed the OpenGL 
 ** convention of passing positive distances for your clip planes even though 
 ** in a right-handed coordinate system your z values are negative after 
@@ -205,18 +205,18 @@ public:
 #ifdef OG
 	void								Get_Projection_Matrix(Matrix4 * set_tm);
 	void								Get_D3D_Projection_Matrix(Matrix4 * set_tm);
-#endif
+#endif // OG
 #ifdef ZH
 	void								Get_Projection_Matrix(Matrix4x4 * set_tm);
 	void								Get_D3D_Projection_Matrix(Matrix4x4 * set_tm);
-#endif
+#endif // ZH
 	void								Get_View_Matrix(Matrix3D * set_tm);
 #ifdef OG
 	const Matrix4 &				Get_Projection_Matrix(void);
-#endif
+#endif // OG
 #ifdef ZH
 	const Matrix4x4 &				Get_Projection_Matrix(void);
-#endif
+#endif // ZH
 	const Matrix3D &				Get_View_Matrix(void);
 
 	// Projecting and Un-Projecting a point
@@ -287,10 +287,10 @@ protected:
 	mutable OBBoxClass			NearClipBBox;					// obbox which bounds the near clip plane
 #ifdef OG
 	mutable Matrix4				ProjectionTransform;
-#endif
+#endif // OG
 #ifdef ZH
 	mutable Matrix4x4				ProjectionTransform;
-#endif
+#endif // ZH
 	mutable Matrix3D				CameraInvTransform;
 };
 

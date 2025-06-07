@@ -53,11 +53,11 @@
 #ifdef OG
 ///#pragma optimize("", off)
 ///#pragma MESSAGE("************************************** WARNING, optimization disabled for debugging purposes")
-#endif
+#endif // OG
 #ifdef ZH
 //#pragma optimize("", off)
 //#pragma MESSAGE("************************************** WARNING, optimization disabled for debugging purposes")
-#endif
+#endif // ZH
 #endif
 
 enum { TEMPLATE_HASH_SIZE = 12288 };
@@ -143,10 +143,10 @@ ThingTemplate *ThingFactory::newTemplate( const AsciiString& name )
 	// if the default template is present, get it and copy over any data to the new template
 #ifdef OG
 	const ThingTemplate *defaultT = findTemplate( AsciiString( "DefaultThingTemplate" ) );
-#endif
+#endif // OG
 #ifdef ZH
 	const ThingTemplate *defaultT = findTemplate( AsciiString( "DefaultThingTemplate" ), FALSE );
-#endif
+#endif // ZH
 	if( defaultT )
 	{
 
@@ -279,10 +279,10 @@ const ThingTemplate *ThingFactory::findByTemplateID( UnsignedShort id )
 //-------------------------------------------------------------------------------------------------
 #ifdef OG
 ThingTemplate *ThingFactory::findTemplateInternal( const AsciiString& name )
-#endif
+#endif // OG
 #ifdef ZH
 ThingTemplate *ThingFactory::findTemplateInternal( const AsciiString& name, Bool check )
-#endif
+#endif // ZH
 {
 	ThingTemplateHashMapIt tIt = m_templateHashMap.find(name);
 
@@ -312,13 +312,13 @@ ThingTemplate *ThingFactory::findTemplateInternal( const AsciiString& name, Bool
 #ifdef OG
 	//DEBUG_LOG(("*** Object template %s not found\n",name.str()));
 
-#endif
+#endif // OG
 #ifdef ZH
 	if( check && name.isNotEmpty() )
 	{
 		DEBUG_CRASH( ("Failed to find thing template %s (case sensitive) This issue has a chance of crashing after you ignore it!", name.str() ) );
 	}
-#endif
+#endif // ZH
 	return NULL;
 
 }  // end getTemplate
@@ -326,10 +326,10 @@ ThingTemplate *ThingFactory::findTemplateInternal( const AsciiString& name, Bool
 //=============================================================================
 #ifdef OG
 Object *ThingFactory::newObject( const ThingTemplate *tmplate, Team *team, ObjectStatusBits statusBits )
-#endif
+#endif // OG
 #ifdef ZH
 Object *ThingFactory::newObject( const ThingTemplate *tmplate, Team *team, ObjectStatusMaskType statusBits )
-#endif
+#endif // ZH
 {
 	if (tmplate == NULL)
 		throw ERROR_BAD_ARG;
@@ -405,10 +405,10 @@ AsciiString TheThingTemplateBeingParsedName;
 	// find existing item if present
 #ifdef OG
 	ThingTemplate *thingTemplate = TheThingFactory->findTemplateInternal( name );
-#endif
+#endif // OG
 #ifdef ZH
 	ThingTemplate *thingTemplate = TheThingFactory->findTemplateInternal( name, FALSE );
-#endif
+#endif // ZH
 	if( !thingTemplate )
 	{
 		// no item is present, create a new one
@@ -462,7 +462,7 @@ AsciiString TheThingTemplateBeingParsedName;
 	{
 		thingTemplate->resolveNames();
 	}
-#endif
+#endif // ZH
 
 #if defined(_DEBUG) || defined(_INTERNAL)
 	TheThingTemplateBeingParsedName.clear();

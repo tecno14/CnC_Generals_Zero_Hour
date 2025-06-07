@@ -41,7 +41,7 @@ void PopulatePlayerTemplateComboBox(Int comboBox, GameWindow *comboArray[], Game
 void PopulateTeamComboBox(Int comboBox, GameWindow *comboArray[], GameInfo *myGame, Bool isObserver = FALSE);
 #ifdef ZH
 void PopulateStartingCashComboBox(GameWindow *comboBox, GameInfo *myGame);
-#endif
+#endif // ZH
 
 void EnableSlotListUpdates( Bool val );
 Bool AreSlotListUpdatesEnabled( void );

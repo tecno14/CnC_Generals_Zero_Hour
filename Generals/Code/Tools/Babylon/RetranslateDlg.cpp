@@ -22,10 +22,10 @@
 #include "stdafx.h"
 #ifdef OG
 #include "noxstring.h"
-#endif
+#endif // OG
 #ifdef ZH
 #include "Babylon.h"
-#endif
+#endif // ZH
 #include "RetranslateDlg.h"
 
 #ifdef _DEBUG

@@ -304,4 +304,4 @@ void ProfileResultFileDOT::Delete(void)
   ProfileFreeMemory(this);
 }
 
-#endif
+#endif // ZH

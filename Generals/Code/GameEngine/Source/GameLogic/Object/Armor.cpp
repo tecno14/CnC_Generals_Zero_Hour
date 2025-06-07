@@ -32,7 +32,7 @@
 
 #ifdef OG
 #define DEFINE_DAMAGE_NAMES						// for DamageNames[]
-#endif
+#endif // OG
 
 #include "Common/INI.h"
 #include "Common/ThingFactory.h"
@@ -74,7 +74,7 @@ Real ArmorTemplate::adjustDamage(DamageType t, Real damage) const
 #ifdef ZH
 	if (t == DAMAGE_SUBDUAL_UNRESISTABLE)
 		return damage;
-#endif
+#endif // ZH
 
 	damage *= m_damageCoefficient[t];
 
@@ -103,10 +103,10 @@ Real ArmorTemplate::adjustDamage(DamageType t, Real damage) const
 
 #ifdef OG
 	DamageType dt = (DamageType)INI::scanIndexList(damageName, TheDamageNames);
-#endif
+#endif // OG
 #ifdef ZH
 	DamageType dt = (DamageType)DamageTypeFlags::getSingleBitFromName(damageName);
-#endif
+#endif // ZH
 	self->m_damageCoefficient[dt] = pct;
 }
 

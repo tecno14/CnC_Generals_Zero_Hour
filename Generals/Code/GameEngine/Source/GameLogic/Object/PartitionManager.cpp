@@ -89,7 +89,7 @@
 #include "common/mapobject.h"
 #endif
 
-#endif
+#endif // ZH
 #ifdef DUMP_PERF_STATS
 	long s_countInClosestObjects = 0;
 	long s_countInClosestObjectsThisFrame = 0;
@@ -1750,10 +1750,10 @@ void PartitionData::addSubPixToCoverage(PartitionCell *cell)
 		CellAndObjectIntersection *coiToUse = NULL;
 #ifdef OG
 		for (Int i = m_coiInUseCount; i; --i, ++coi)
-#endif
+#endif // OG
 #ifdef ZH
 		for (Int i = __min(m_coiInUseCount,m_coiArrayCount); i; --i, ++coi)
-#endif
+#endif // ZH
 		{
 			if (coi->getCell() == cell)
 			{
@@ -2148,7 +2148,7 @@ Int PartitionData::calcMaxCoiForShape(GeometryType geom, Real majorRadius, Real 
 #ifdef OG
 	if (isSmall)
 
-#endif
+#endif // OG
 #ifdef ZH
 
 
@@ -2163,7 +2163,7 @@ Int PartitionData::calcMaxCoiForShape(GeometryType geom, Real majorRadius, Real 
 //		result = 4;
 //	}
 //	else
-#endif
+#endif // ZH
 	{
 #ifdef OG
 		#if defined(_DEBUG) || defined(_INTERNAL)
@@ -2174,7 +2174,7 @@ Int PartitionData::calcMaxCoiForShape(GeometryType geom, Real majorRadius, Real 
 	}
 	else
 	{
-#endif
+#endif // OG
 		switch(geom)
 		{
 			case GEOMETRY_SPHERE:
@@ -2521,11 +2521,11 @@ void PartitionContactList::processContactList()
 #ifdef OG
 		if ((obj->getStatusBits() & OBJECT_STATUS_NO_COLLISIONS) != 0 ||
 				(other->getStatusBits() & OBJECT_STATUS_NO_COLLISIONS) != 0)
-#endif
+#endif // OG
 #ifdef ZH
 		if( obj->getStatusBits().test( OBJECT_STATUS_NO_COLLISIONS ) ||
 				other->getStatusBits().test( OBJECT_STATUS_NO_COLLISIONS ) )
-#endif
+#endif // ZH
 			continue;
 
 		DEBUG_ASSERTCRASH(!(obj->isKindOf(KINDOF_IMMOBILE) && other->isKindOf(KINDOF_IMMOBILE)), 
@@ -2607,10 +2607,10 @@ static void calcHeights(const Region3D& world, Real cellSize, Int x, Int y, Real
 	Real ybase = world.lo.y + (y * cellSize);
 #ifdef OG
 	const Real ROUGH_STEP_SIZE = 2;	// roughly every 2 ft, please
-#endif
+#endif // OG
 #ifdef ZH
 	const Real ROUGH_STEP_SIZE = MAP_XY_FACTOR;	// no point in stepping smaller than grid scale
-#endif
+#endif // ZH
 	Real numSteps = ceilf(cellSize / ROUGH_STEP_SIZE);
 	Real step = cellSize / numSteps;
 	loZ = HUGE_DIST;		// huge positive
@@ -3107,7 +3107,7 @@ ObjectShroudStatus PartitionManager::getPropShroudStatusForPlayer(Int playerInde
 	Int x, y;
 
 	ThePartitionManager->worldToCell( loc->x - m_cellSize*0.5f, loc->y - m_cellSize*0.5f, &x, &y );
-#endif
+#endif // ZH
 
 #ifdef ZH
 	CellShroudStatus cellStat = getShroudStatusForPlayer( playerIndex, x, y );
@@ -3128,7 +3128,7 @@ ObjectShroudStatus PartitionManager::getPropShroudStatusForPlayer(Int playerInde
 	}
 	return OBJECTSHROUD_FOGGED;
 }
-#endif
+#endif // ZH
 
 
 
@@ -3798,7 +3798,7 @@ Bool PartitionManager::tryPosition( const Coord3D *center,
 		if( BitTest(options->flags, FPF_CLEAR_CELLS_ONLY) && cell->getType() != PathfindCell::CELL_CLEAR )
 			return FALSE;
 
-#endif
+#endif // ZH
 	}
 
 	//
@@ -3899,10 +3899,10 @@ Bool PartitionManager::tryPosition( const Coord3D *center,
 		// check for path existence
 #ifdef OG
 		if( ai && TheAI->pathfinder()->quickDoesPathExist( ai->getLocomotorSet(),
-#endif
+#endif // OG
 #ifdef ZH
 		if( ai && TheAI->pathfinder()->clientSafeQuickDoesPathExist( ai->getLocomotorSet(),
-#endif
+#endif // ZH
 																									options->sourceToPathToDest->getPosition(),
 																									&pos ) == FALSE )
 				return FALSE;
@@ -5423,7 +5423,7 @@ Bool PartitionFilterPossibleToAttack::allow(Object *objOther)
 //	UnsignedInt status = objOther->getStatusBits();
 //	if ((status & OBJECT_STATUS_STEALTHED) && !(status & OBJECT_STATUS_DETECTED))
 //		return false;
-#endif
+#endif // OG
 
 	// we should have already filtered out isAbleToAttack!
 #ifdef _DEBUG
@@ -5456,7 +5456,7 @@ Bool PartitionFilterPossibleToEnter::allow(Object *objOther)
 	if( TheActionManager->canEnterObject( m_obj, objOther, m_commandSource, DONT_CHECK_CAPACITY ) )
 		return TRUE;
 	else
-#endif
+#endif // ZH
 	return FALSE;
 }
 
@@ -5469,7 +5469,7 @@ PartitionFilterPossibleToHijack::PartitionFilterPossibleToHijack(const Object *o
 	m_commandSource(commandSource)
 {
 }
-#endif
+#endif // ZH
 
 //-----------------------------------------------------------------------------
 #ifdef ZH
@@ -5488,7 +5488,7 @@ Bool PartitionFilterPossibleToHijack::allow(Object *objOther)
 //-----------------------------------------------------------------------------
 
 //-----------------------------------------------------------------------------
-#endif
+#endif // ZH
 PartitionFilterLastAttackedBy::PartitionFilterLastAttackedBy(Object *obj) 
 {
 	if (obj && obj->getBodyModule()) {
@@ -5520,11 +5520,11 @@ Bool PartitionFilterAcceptByObjectStatus::allow(Object *objOther)
 #ifdef OG
 	UnsignedInt status = objOther->getStatusBits();
 	return ((status & m_mustBeSet) == m_mustBeSet) && ((status & m_mustBeClear) == 0);
-#endif
+#endif // OG
 #ifdef ZH
 	ObjectStatusMaskType status = objOther->getStatusBits();
 	return status.testForAll( m_mustBeSet ) && status.testForNone( m_mustBeClear );
-#endif
+#endif // ZH
 }
 
 
@@ -5539,12 +5539,12 @@ Bool PartitionFilterRejectByObjectStatus::allow(Object *objOther)
 	UnsignedInt status = objOther->getStatusBits();
 	return !(((status & m_mustBeSet) == m_mustBeSet) && ((status & m_mustBeClear) == 0));
 
-#endif
+#endif // OG
 #ifdef ZH
 	ObjectStatusMaskType status = objOther->getStatusBits();
 
 	return !( status.testForAll( m_mustBeSet ) && status.testForNone( m_mustBeClear ) );
-#endif
+#endif // ZH
 }
 
 
@@ -5583,14 +5583,14 @@ Bool PartitionFilterStealthedAndUndetected::allow( Object *objOther )
 	Bool stealthed = objOther->testStatus( OBJECT_STATUS_STEALTHED );
 	Bool detected = objOther->testStatus( OBJECT_STATUS_DETECTED );
 	Bool disguised = objOther->testStatus( OBJECT_STATUS_DISGUISED );
-#endif
+#endif // ZH
 
 #ifdef OG
 	if( BitTest( objOther->getStatusBits(), OBJECT_STATUS_STEALTHED ) && !BitTest( objOther->getStatusBits(), OBJECT_STATUS_DETECTED ) )
-#endif
+#endif // OG
 #ifdef ZH
 	if( stealthed && !detected )
-#endif
+#endif // ZH
 	{
 		if( !objOther->isKindOf( KINDOF_DISGUISER ) )
 		{
@@ -5599,22 +5599,22 @@ Bool PartitionFilterStealthedAndUndetected::allow( Object *objOther )
 		}
 #ifdef OG
 		else
-#endif
+#endif // OG
 #ifdef ZH
 		else if( disguised )
-#endif
+#endif // ZH
 		{
 			//Exception case -- bomb trucks can't be considered stealthed units when they are disguised as the enemy.
 #ifdef OG
 			static NameKeyType key_StealthUpdate = NAMEKEY( "StealthUpdate" );
 			StealthUpdate *update = (StealthUpdate*)objOther->findUpdateModule( key_StealthUpdate );
 
-#endif
+#endif // OG
 #ifdef ZH
       
       StealthUpdate *update = objOther->getStealth();
 
-#endif
+#endif // ZH
 			if( update && update->isDisguised() )
 			{
 				Player *ourPlayer = m_obj->getControllingPlayer();
@@ -5651,10 +5651,10 @@ Bool PartitionFilterStealthedAndUndetected::allow( Object *objOther )
 				Object *member = (*it);
 #ifdef OG
 				if( member && !BitTest( (*it)->getStatusBits(), OBJECT_STATUS_DETECTED ) )
-#endif
+#endif // OG
 #ifdef ZH
 				if( member && !(*it)->getStatusBits().test( OBJECT_STATUS_DETECTED ) )
-#endif
+#endif // ZH
 				{
 					//Finally check the relationship!
 					if( victimApparentController && m_obj->getTeam()->getRelationship( victimApparentController->getDefaultTeam() ) == ENEMIES )

@@ -37,7 +37,7 @@
 #include "GameLogic/Module/DieModule.h"
 #ifdef ZH
 #include "GameLogic/Module/UpgradeModule.h"
-#endif
+#endif // ZH
 #include "GameLogic/Weapon.h"
 #include "GameLogic/Damage.h"
 
@@ -53,12 +53,12 @@ public:
 #ifdef OG
 	Bool m_orientToObject;
 
-#endif
+#endif // OG
 #ifdef ZH
 	UpgradeMuxData				m_upgradeMuxData;
 	Bool									m_orientToObject;
 	Bool									m_initiallyActive;
-#endif
+#endif // ZH
 
 	FXListDieModuleData()
 	{
@@ -66,11 +66,11 @@ public:
 #ifdef OG
 		m_orientToObject = true;
 
-#endif
+#endif // OG
 #ifdef ZH
 		m_orientToObject = TRUE;
 		m_initiallyActive = TRUE; //Patch 1.02 -- Craptacular HACK -- should default to FALSE but only ONE case sets it false out of 847!
-#endif
+#endif // ZH
 	}
 
 	static void buildFieldParse(MultiIniFieldParse& p) 
@@ -81,7 +81,7 @@ public:
 		{
 #ifdef ZH
 			{ "StartsActive",					INI::parseBool, NULL, offsetof( FXListDieModuleData, m_initiallyActive ) },
-#endif
+#endif // ZH
 			{ "DeathFX",							INI::parseFXList,		NULL, offsetof( FXListDieModuleData, m_defaultDeathFX ) },
 			{ "OrientToObject",				INI::parseBool,		NULL, offsetof( FXListDieModuleData, m_orientToObject ) },
 			{ 0, 0, 0, 0 }
@@ -89,17 +89,17 @@ public:
     p.add(dataFieldParse);
 #ifdef ZH
 		p.add(UpgradeMuxData::getFieldParse(), offsetof( FXListDieModuleData, m_upgradeMuxData ));
-#endif
+#endif // ZH
 	}
 };
 
 //-------------------------------------------------------------------------------------------------
 #ifdef OG
 class FXListDie : public DieModule
-#endif
+#endif // OG
 #ifdef ZH
 class FXListDie : public DieModule, public UpgradeMux
-#endif
+#endif // ZH
 {
 
 	MAKE_STANDARD_MODULE_MACRO_WITH_MODULE_DATA( FXListDie, FXListDieModuleData );
@@ -118,7 +118,7 @@ public:
 	virtual UpgradeModuleInterface* getUpgrade() { return this; }
 	virtual DieModuleInterface* getDie() { return this; }
 
-#endif
+#endif // ZH
 	virtual void onDie( const DamageInfo *damageInfo ); 
 #ifdef ZH
 
@@ -154,7 +154,7 @@ protected:
 	
 	virtual Bool isSubObjectsUpgrade() { return false; }
 
-#endif
+#endif // ZH
 
 };
 

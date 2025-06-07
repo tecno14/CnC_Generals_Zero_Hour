@@ -41,25 +41,25 @@
 #ifdef OG
 #include "GameLogic/Module/BodyModule.h"
 
-#endif
+#endif // OG
 #ifdef ZH
 #include "GameLogic/Module/SmartBombTargetHomingUpdate.h"
 #include "GameLogic/Module/GenerateMinefieldBehavior.h"
 #include "GameLogic/Module/DeliverPayloadAIUpdate.h"
 #include "GameLogic/Module/ParachuteContain.h"
-#endif
+#endif // ZH
 #include "GameLogic/Module/ContainModule.h"
 #ifdef OG
 #include "GameLogic/Module/DeliverPayloadAIUpdate.h"
 #include "GameLogic/Module/GenerateMinefieldBehavior.h"
-#endif
+#endif // OG
 #include "GameLogic/Module/PhysicsUpdate.h"
 #ifdef OG
 #include "GameLogic/Module/ParachuteContain.h"
-#endif
+#endif // OG
 #ifdef ZH
 #include "GameLogic/Module/BodyModule.h"
-#endif
+#endif // ZH
 #include "GameLogic/Object.h"
 #include "GameLogic/PartitionManager.h"
 #include "GameLogic/Weapon.h"
@@ -435,22 +435,22 @@ void DeliverPayloadAIUpdate::crc( Xfer *xfer )
 #ifdef OG
 	* 1: Initial version */
 
-#endif
+#endif // OG
 #ifdef ZH
 	* 1: Initial version 
 	* 5: Whoops version.  preOpenDistance just wasn't saved.
 */
-#endif
+#endif // ZH
 // ------------------------------------------------------------------------------------------------
 void DeliverPayloadAIUpdate::xfer( Xfer *xfer )
 {
   // version
 #ifdef OG
   const XferVersion currentVersion = 3;
-#endif
+#endif // OG
 #ifdef ZH
   const XferVersion currentVersion = 5;
-#endif
+#endif // ZH
   XferVersion version = currentVersion;
   xfer->xferVersion( &version, currentVersion );
  
@@ -471,7 +471,7 @@ void DeliverPayloadAIUpdate::xfer( Xfer *xfer )
 #ifdef ZH
 	if( version >= 5 )
 		xfer->xferReal(&data.m_preOpenDistance);
-#endif
+#endif // ZH
 	xfer->xferInt(&data.m_maxAttempts);
 	xfer->xferCoord3D(&data.m_dropOffset);
 	xfer->xferCoord3D(&data.m_dropVariance);
@@ -528,7 +528,7 @@ void DeliverPayloadAIUpdate::xfer( Xfer *xfer )
 	{
 		xfer->xferReal(&m_previousDistanceSqr);
 	}
-#endif
+#endif // ZH
 
 
 }  // end xfer
@@ -659,7 +659,7 @@ StateReturnType ApproachState::update()
       return STATE_FAILURE;
     else
     {
-#endif
+#endif // ZH
 		DEBUG_CRASH(("hmm, bailed from moveto state early... should this be possible?"));
 		ai->aiMoveToPosition( ai->getMoveToPos(), CMD_FROM_AI );
 	}
@@ -667,7 +667,7 @@ StateReturnType ApproachState::update()
 #ifdef ZH
 	}
 
-#endif
+#endif // ZH
 	return STATE_CONTINUE;
 }
 
@@ -816,7 +816,7 @@ StateReturnType DeliveringState::update() // Kick a dude out every so often
 				smthu->SetTargetPosition( *ai->getMoveToPos() );
 			}
 
-#endif
+#endif // ZH
 			if( ai->getData()->m_inheritTransportVelocity )
 			{
 				Coord3D velocity = *owner->getPhysics()->getVelocity();
@@ -1219,7 +1219,7 @@ StateReturnType HeadOffMapState::onEnter() // Give move order out of town
 
   owner->getUnitDirectionVector3D( facingDirectionUponDelivery );
 
-#endif
+#endif // ZH
 	return STATE_CONTINUE;
 }
 
@@ -1255,7 +1255,7 @@ StateReturnType HeadOffMapState::update()
 //
 //  if( TheTerrainLogic->getGroundHeight( pos->x, pos,y ) )
 
-#endif
+#endif // ZH
 
 	return STATE_CONTINUE;
 }

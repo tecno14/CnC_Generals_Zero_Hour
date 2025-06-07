@@ -328,10 +328,10 @@ public:
 	Bool friend_isAnyWeaponInRangeOf(const Object* o) const;
 #ifdef OG
 	TurretTargetType friend_getTurretTarget(Object*& obj, Coord3D& pos) const;
-#endif
+#endif // OG
 #ifdef ZH
 	TurretTargetType friend_getTurretTarget( Object*& obj, Coord3D& pos, Bool clearDeadTargets = TRUE ) const;
-#endif
+#endif // ZH
 	Bool friend_getTargetWasSetByIdleMood() const { return m_targetWasSetByIdleMood; }
 	const Team* friend_getVictimInitialTeam() const { return m_victimInitialTeam; }
 	void friend_checkForIdleMoodTarget();

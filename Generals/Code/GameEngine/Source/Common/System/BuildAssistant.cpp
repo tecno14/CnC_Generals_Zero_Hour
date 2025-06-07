@@ -353,11 +353,11 @@ Object *BuildAssistant::buildObjectNow( Object *constructorObject, const ThingTe
 #ifdef OG
 	// A Null constructorObject is used by the script engine to cheat, so let it slide
  	if( constructorObject && !isPossibleToMakeUnit(constructorObject, what) )
-#endif
+#endif // OG
 #ifdef ZH
 	// A NULL constructor Object means a script built building so let it slide.
 	if( (constructorObject != NULL) && !isPossibleToMakeUnit(constructorObject, what) )
-#endif
+#endif // ZH
  		return NULL;
 
 	// clear out any objects from the building area that are "auto-clearable" when building
@@ -393,17 +393,17 @@ Object *BuildAssistant::buildObjectNow( Object *constructorObject, const ThingTe
 		// is called below, so we need to simulate the proper object creation flow from the start.  Be like Dozer.
 #ifdef OG
 		ObjectStatusBits startingStatus = OBJECT_STATUS_NONE;
-#endif
+#endif // OG
 #ifdef ZH
 		ObjectStatusMaskType startingStatus;
-#endif
+#endif // ZH
 		if( what->isKindOf( KINDOF_STRUCTURE ) )
 #ifdef OG
 			startingStatus = OBJECT_STATUS_UNDER_CONSTRUCTION;
-#endif
+#endif // OG
 #ifdef ZH
 			startingStatus.set( MAKE_OBJECT_STATUS_MASK( OBJECT_STATUS_UNDER_CONSTRUCTION ) );
-#endif
+#endif // ZH
 
 		Object *obj = TheThingFactory->newObject( what, owningPlayer->getDefaultTeam(), startingStatus );
 		obj->setProducer(constructorObject);
@@ -681,10 +681,10 @@ void BuildAssistant::iterateFootprint( const ThingTemplate *build,
 //-------------------------------------------------------------------------------------------------
 #ifdef OG
 Bool BuildAssistant::isLocationClearOfObjects( const Coord3D *worldPos, 
-#endif
+#endif // OG
 #ifdef ZH
 LegalBuildCode BuildAssistant::isLocationClearOfObjects( const Coord3D *worldPos, 
-#endif
+#endif // ZH
 																											 const ThingTemplate *build,
 																											 Real angle,
 																											 Object *builderObject,
@@ -717,7 +717,7 @@ LegalBuildCode BuildAssistant::isLocationClearOfObjects( const Coord3D *worldPos
 						feedbackWithFailure = FALSE; //We want to fail now but without feedback
 					}
 					else
-#endif
+#endif // ZH
 	{
 #ifdef ZH
 						continue;
@@ -725,7 +725,7 @@ LegalBuildCode BuildAssistant::isLocationClearOfObjects( const Coord3D *worldPos
 				}
 			}
 		}
-#endif
+#endif // ZH
 
 #ifdef ZH
 		//Kris: Patch 1.01 - November 5, 2003
@@ -738,7 +738,7 @@ LegalBuildCode BuildAssistant::isLocationClearOfObjects( const Coord3D *worldPos
 			}
 		}
 
-#endif
+#endif // ZH
 		// ignore any kind of class of objects that we will "remove" for building
 		if( isRemovableForConstruction( them ) == TRUE )
 			continue;
@@ -757,13 +757,13 @@ LegalBuildCode BuildAssistant::isLocationClearOfObjects( const Coord3D *worldPos
 		if( them->isKindOf( KINDOF_IMMOBILE ) )	{
 			if (onlyCheckEnemies && builderObject && builderObject->getRelationship( them ) != ENEMIES )	{
 
-#endif
+#endif // OG
 #ifdef ZH
 		if( them->isKindOf( KINDOF_IMMOBILE ) )	
 		{
 			if (onlyCheckEnemies && builderObject && rel != ENEMIES )	
 			{
-#endif
+#endif // ZH
 				continue;
 #ifdef ZH
 			}
@@ -771,13 +771,13 @@ LegalBuildCode BuildAssistant::isLocationClearOfObjects( const Coord3D *worldPos
 			{
 				TheTerrainVisual->addFactionBib( them, TRUE );
 				return LBC_OBJECTS_IN_THE_WAY;
-#endif
+#endif // ZH
 			}
 #ifdef OG
 			TheTerrainVisual->addFactionBib(them, true);
 			return false;
 
-#endif
+#endif // OG
 #ifdef ZH
 			return LBC_GENERIC_FAILURE;
 		}
@@ -791,7 +791,7 @@ LegalBuildCode BuildAssistant::isLocationClearOfObjects( const Coord3D *worldPos
 				return LBC_OBJECTS_IN_THE_WAY;
 			}
 			return LBC_GENERIC_FAILURE;
-#endif
+#endif // ZH
 		}
 
 		//
@@ -803,7 +803,7 @@ LegalBuildCode BuildAssistant::isLocationClearOfObjects( const Coord3D *worldPos
 			TheTerrainVisual->addFactionBib(them, true);
 			return false;
 
-#endif
+#endif // OG
 #ifdef ZH
 		if( builderObject && rel == ENEMIES ) 
 		{
@@ -813,7 +813,7 @@ LegalBuildCode BuildAssistant::isLocationClearOfObjects( const Coord3D *worldPos
 				return LBC_OBJECTS_IN_THE_WAY;
 			}
 			return LBC_GENERIC_FAILURE;
-#endif
+#endif // ZH
 		}
 
 	}  // end for, them
@@ -822,12 +822,12 @@ LegalBuildCode BuildAssistant::isLocationClearOfObjects( const Coord3D *worldPos
 	if (onlyCheckEnemies) {
 		return true;
 
-#endif
+#endif // OG
 #ifdef ZH
 	if (onlyCheckEnemies) 
 	{
 		return LBC_OK;
-#endif
+#endif // ZH
 	}
 	// Check for overlapping exit areas.
 
@@ -893,7 +893,7 @@ LegalBuildCode BuildAssistant::isLocationClearOfObjects( const Coord3D *worldPos
 			}
 		}
 
-#endif
+#endif // ZH
 		// ignore any kind of class of objects that we will "remove" for building
 		if( isRemovableForConstruction( them ) == TRUE )
 			continue;
@@ -929,10 +929,10 @@ LegalBuildCode BuildAssistant::isLocationClearOfObjects( const Coord3D *worldPos
 			TheTerrainVisual->addFactionBib(them, true);
 #ifdef OG
 			return false;
-#endif
+#endif // OG
 #ifdef ZH
 			return LBC_OBJECTS_IN_THE_WAY;
-#endif
+#endif // ZH
 		}
 		if (!checkMyExit && !checkHisExit && !hisExtraWidth && !myExtraWidth) 
 		{
@@ -947,10 +947,10 @@ LegalBuildCode BuildAssistant::isLocationClearOfObjects( const Coord3D *worldPos
 				TheTerrainVisual->addFactionBib(them, true);
 #ifdef OG
 				return false;
-#endif
+#endif // OG
 #ifdef ZH
 				return LBC_OBJECTS_IN_THE_WAY;
-#endif
+#endif // ZH
 			}
 			// Check for overlap of his exit rectangle with my geom info
 			if (checkHisExit && ThePartitionManager->geomCollidesWithGeom(&hisExitPos, hisGeom, them->getOrientation(), 
@@ -958,10 +958,10 @@ LegalBuildCode BuildAssistant::isLocationClearOfObjects( const Coord3D *worldPos
 				TheTerrainVisual->addFactionBib(them, true);
 #ifdef OG
 				return false;
-#endif
+#endif // OG
 #ifdef ZH
 				return LBC_OBJECTS_IN_THE_WAY;
-#endif
+#endif // ZH
 			}
 			// Check both exit rectangles together.
 			if (checkMyExit&&checkHisExit&&ThePartitionManager->geomCollidesWithGeom(&hisExitPos, hisGeom, them->getOrientation(), 
@@ -969,20 +969,20 @@ LegalBuildCode BuildAssistant::isLocationClearOfObjects( const Coord3D *worldPos
 				TheTerrainVisual->addFactionBib(them, true);
 #ifdef OG
 				return false;
-#endif
+#endif // OG
 #ifdef ZH
 				return LBC_OBJECTS_IN_THE_WAY;
-#endif
+#endif // ZH
 			}
 		}
 
 	}  // end for, them
 #ifdef OG
 	return true;
-#endif
+#endif // OG
 #ifdef ZH
 	return LBC_OK;
-#endif
+#endif // ZH
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -1033,18 +1033,18 @@ LegalBuildCode BuildAssistant::isLocationLegalToBuild( const Coord3D *worldPos,
 #ifdef OG
 		if (!isLocationClearOfObjects(worldPos, build, angle, builderObject, NO_OBJECT_OVERLAP, player)) 
 
-#endif
+#endif // OG
 #ifdef ZH
 		LegalBuildCode code = isLocationClearOfObjects(worldPos, build, angle, builderObject, options, player);
 		if( code != LBC_OK )
-#endif
+#endif // ZH
 		{
 #ifdef OG
 			return LBC_OBJECTS_IN_THE_WAY;
-#endif
+#endif // OG
 #ifdef ZH
 			return code;
-#endif
+#endif // ZH
 		}
 
 	}  // end if
@@ -1057,18 +1057,18 @@ LegalBuildCode BuildAssistant::isLocationLegalToBuild( const Coord3D *worldPos,
 #ifdef OG
 		if (!isLocationClearOfObjects(worldPos, build, angle, builderObject, NO_ENEMY_OBJECT_OVERLAP, player)) 
 
-#endif
+#endif // OG
 #ifdef ZH
 		LegalBuildCode code = isLocationClearOfObjects(worldPos, build, angle, builderObject, options, player);
 		if( code != LBC_OK )
-#endif
+#endif // ZH
 		{
 #ifdef OG
 			return LBC_OBJECTS_IN_THE_WAY;
-#endif
+#endif // OG
 #ifdef ZH
 			return code;
-#endif
+#endif // ZH
 		}
 	}  // end if
 
@@ -1103,11 +1103,11 @@ LegalBuildCode BuildAssistant::isLocationLegalToBuild( const Coord3D *worldPos,
 #ifdef OG
 	// if clear path is requestsed check to see if the builder object can get there
 	if( BitTest( options, CLEAR_PATH ) && builderObject )
-#endif
+#endif // OG
 #ifdef ZH
 	// if clear path is requested check to see if the builder object can get there (unless it's a structure)
 	if( BitTest( options, CLEAR_PATH ) && builderObject && !builderObject->isKindOf( KINDOF_IMMOBILE ) )
-#endif
+#endif // ZH
 	{
 		AIUpdateInterface *ai = builderObject->getAIUpdateInterface();
 
@@ -1128,7 +1128,7 @@ LegalBuildCode BuildAssistant::isLocationLegalToBuild( const Coord3D *worldPos,
 		//
 		if( BitTest( options, USE_QUICK_PATHFIND ) )
 		{
-#endif
+#endif // OG
 
 			if( ai->isQuickPathAvailable( worldPos ) == FALSE )
 #ifdef OG
@@ -1139,12 +1139,12 @@ LegalBuildCode BuildAssistant::isLocationLegalToBuild( const Coord3D *worldPos,
 		{
 
 			if( ai->isPathAvailable( worldPos ) == FALSE )
-#endif
+#endif // OG
 				return LBC_NO_CLEAR_PATH;
 #ifdef OG
 
 		}  // end else
-#endif
+#endif // OG
 
 	}  // end if
 
@@ -1211,10 +1211,10 @@ void BuildAssistant::addBibs(const Coord3D *worldPos,
 
 #ifdef OG
 	Real range = build->friend_getVisionRange();
-#endif
+#endif // OG
 #ifdef ZH
 	Real range = build->friend_calcVisionRange();
-#endif
+#endif // ZH
 	range += 3*build->getTemplateGeometryInfo().getMajorRadius();
 
 	PartitionFilterAcceptByKindOf f1(MAKE_KINDOF_MASK(KINDOF_STRUCTURE), KINDOFMASK_NONE);
@@ -1454,7 +1454,7 @@ static void countInProduction( Object *obj, void *userData )
 	if( pui )
 	{
 		ProductionCountData *productionCountData = (ProductionCountData *)userData;
-#endif
+#endif // OG
 
 #ifdef OG
 		// add the count of this type that are in the queue
@@ -1463,7 +1463,7 @@ static void countInProduction( Object *obj, void *userData )
 	}  // end if
 
 }  // end countInProduction
-#endif
+#endif // OG
 
 //-------------------------------------------------------------------------------------------------
 /** This method will check to make sure it is possible to build the requested unit. and
@@ -1481,7 +1481,7 @@ CanMakeType BuildAssistant::canMakeUnit( Object *builder, const ThingTemplate *w
 #ifdef ZH
 
 	ProductionUpdateInterface* pu = builder->getProductionUpdateInterface();
-#endif
+#endif // ZH
 
 #ifdef ZH
 	//If our builder is actually constructing an object via a special power, then allow it if the templates match.
@@ -1500,13 +1500,13 @@ CanMakeType BuildAssistant::canMakeUnit( Object *builder, const ThingTemplate *w
   if ( player && !player->canBuildMoreOfType( whatToBuild ) )
     return CANMAKE_MAXED_OUT_FOR_PLAYER;
   
-#endif
+#endif // ZH
 	if (!isPossibleToMakeUnit(builder, whatToBuild)) 
 		return CANMAKE_NO_PREREQ;
 
 #ifdef OG
 	ProductionUpdateInterface* pu = builder->getProductionUpdateInterface();
-#endif
+#endif // OG
 	if (pu != NULL)
 	{
 		CanMakeType cmt = pu->canQueueCreateUnit(whatToBuild);
@@ -1517,7 +1517,7 @@ CanMakeType BuildAssistant::canMakeUnit( Object *builder, const ThingTemplate *w
 	// make sure we have enough money to build this
 #ifdef OG
 	Player *player = builder->getControllingPlayer();
-#endif
+#endif // OG
 	Money *money = player->getMoney();
 	if( whatToBuild->calcCostToBuild( player ) > money->countMoney() )
 		return CANMAKE_NO_MONEY;
@@ -1543,7 +1543,7 @@ CanMakeType BuildAssistant::canMakeUnit( Object *builder, const ThingTemplate *w
 
 	}
 
-#endif
+#endif // OG
 	// get the command set for the producer object
 	return CANMAKE_OK;
 
@@ -1607,7 +1607,7 @@ void BuildAssistant::clearRemovableForConstruction( const ThingTemplate *whatToB
 	}  // end for, them
 #ifdef ZH
 	TheTerrainVisual->removeTreesAndPropsForConstruction(pos, whatToBuild->getTemplateGeometryInfo(), angle);
-#endif
+#endif // ZH
 
 }  // end clearRemovableForConstruction
 
@@ -1748,10 +1748,10 @@ void BuildAssistant::sellObject( Object *obj )
 	//
 #ifdef OG
 	obj->setStatus( ObjectStatusBits( OBJECT_STATUS_SOLD | OBJECT_STATUS_UNSELECTABLE ) );
-#endif
+#endif // OG
 #ifdef ZH
 	obj->setStatus( MAKE_OBJECT_STATUS_MASK2( OBJECT_STATUS_SOLD, OBJECT_STATUS_UNSELECTABLE ) );
-#endif
+#endif // ZH
 
 	// for everybody, unselect them at this time.  You can't just deselect a drawable.  Selection is a logic property.
 	TheGameLogic->deselectObject(obj, PLAYERMASK_ALL, TRUE);
@@ -1764,10 +1764,10 @@ void BuildAssistant::sellObject( Object *obj )
 	if( draw )
 #ifdef OG
 		draw->setAnimationLoopDuration( (unsigned)(TOTAL_FRAMES_TO_SELL_OBJECT / 2.0f) );
-#endif
+#endif // OG
 #ifdef ZH
 		draw->setAnimationLoopDuration( TOTAL_FRAMES_TO_SELL_OBJECT / 2 );
-#endif
+#endif // ZH
 
 	// We also need to refund all production for the object at start-of-sell time
 	ProductionUpdateInterface *production = obj->getProductionUpdateInterface();

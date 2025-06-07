@@ -708,4 +708,4 @@ WindowMsgHandledType ChallengeMenuSystem( GameWindow *window, UnsignedInt msg, W
 
 	return MSG_HANDLED;
 }
-#endif
+#endif // ZH

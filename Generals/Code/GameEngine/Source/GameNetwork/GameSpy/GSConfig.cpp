@@ -345,7 +345,7 @@ m_qmChannel(0)
 			#if 1
 			m_qmMaps.push_back(mapName);
 			#else
-#endif
+#endif // OG
 			const MapMetaData *md = TheMapCache->findMap(mapName);
 			if (md)
 			{
@@ -353,7 +353,7 @@ m_qmChannel(0)
 			} 
 #ifdef OG
 			#endif
-#endif
+#endif // OG
 		}
 		else if (inQMBot)
 		{

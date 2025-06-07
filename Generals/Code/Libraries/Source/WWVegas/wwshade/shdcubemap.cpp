@@ -328,4 +328,4 @@ void Shd6CubeMapClass::Copy_Vertex_Stream
 }
 
 
-#endif
+#endif // ZH

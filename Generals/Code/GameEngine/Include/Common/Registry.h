@@ -39,7 +39,7 @@
  */
 Bool GetStringFromGeneralsRegistry(AsciiString path, AsciiString key, AsciiString& val);
 /**
-#endif
+#endif // ZH
 	* Get a string from the registry
 	*/
 Bool GetStringFromRegistry(AsciiString path, AsciiString key, AsciiString& val);

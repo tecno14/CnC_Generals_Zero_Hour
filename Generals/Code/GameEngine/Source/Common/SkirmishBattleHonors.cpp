@@ -267,5 +267,5 @@ Bool SkirmishBattleHonors::getChallengeCampaignComplete(Int challenge, GameDiffi
 	key.format("ChallengeCampaign%d_%d", challenge, (int)difficulty);
 	return (getInt(key, 0) != 0);
 }
-#endif
+#endif // ZH
 

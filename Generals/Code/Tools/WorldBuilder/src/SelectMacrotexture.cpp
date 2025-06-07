@@ -79,10 +79,10 @@ BOOL SelectMacrotexture::OnInitDialog()
 
 #ifdef OG
 		strcpy(dirBuf, "..\\Art\\TestModelsHere");
-#endif
+#endif // OG
 #ifdef ZH
 		strcpy(dirBuf, "..\\TestArt");
-#endif
+#endif // ZH
 		int len = strlen(dirBuf);
 
 		if (len > 0 && dirBuf[len - 1] != '\\') {

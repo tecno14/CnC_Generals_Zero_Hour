@@ -90,7 +90,7 @@ static inline Bool IS_IMPASSABLE(PathfindCell::CellType type) {
 	}
 	return false;
 }
-#endif
+#endif // ZH
 
 struct TCheckMovementInfo
 {
@@ -117,7 +117,7 @@ static Int frameToShowObstacles;
 
 static UnsignedInt ZONE_UPDATE_FREQUENCY = 300;
 
-#endif
+#endif // ZH
 //-----------------------------------------------------------------------------------
 PathNode::PathNode() :
 	m_nextOpti(0),
@@ -1445,26 +1445,26 @@ void PathfindCell::setPosUnit(ObjectID unitID, const ICoord2D &pos )
 #ifdef OG
  * Flag this cell as an obstacle, from the given one
 
-#endif
+#endif // OG
 #ifdef ZH
  * Flag this cell as an obstacle, from the given one.
  * Return true if cell was flagged.
-#endif
+#endif // ZH
  */
 #ifdef OG
 void PathfindCell::setTypeAsObstacle( Object *obstacle, Bool isFence, const ICoord2D &pos )
-#endif
+#endif // OG
 #ifdef ZH
 Bool PathfindCell::setTypeAsObstacle( Object *obstacle, Bool isFence, const ICoord2D &pos )
-#endif
+#endif // ZH
 {
 	if (m_type!=PathfindCell::CELL_CLEAR && m_type != PathfindCell::CELL_IMPASSABLE) {
 #ifdef OG
 		return;
-#endif
+#endif // OG
 #ifdef ZH
 		return false;
-#endif
+#endif // ZH
 	}
 
 	Bool isRubble = false;
@@ -1481,10 +1481,10 @@ Bool PathfindCell::setTypeAsObstacle( Object *obstacle, Bool isFence, const ICoo
 		}
 #ifdef OG
 		return;
-#endif
+#endif // OG
 #ifdef ZH
 		return true;
-#endif
+#endif // ZH
 	}
 
 	m_type = PathfindCell::CELL_OBSTACLE ;
@@ -1494,10 +1494,10 @@ Bool PathfindCell::setTypeAsObstacle( Object *obstacle, Bool isFence, const ICoo
 			DEBUG_CRASH(("Not enough PathFindCellInfos in pool."));
 #ifdef OG
 			return;
-#endif
+#endif // OG
 #ifdef ZH
 			return false;
-#endif
+#endif // ZH
 		}
 	}
 	m_info->m_obstacleID = obstacle->getID();
@@ -1505,7 +1505,7 @@ Bool PathfindCell::setTypeAsObstacle( Object *obstacle, Bool isFence, const ICoo
 	m_info->m_obstacleIsTransparent = obstacle->isKindOf(KINDOF_CAN_SEE_THROUGH_STRUCTURE);
 #ifdef ZH
 	return true;
-#endif
+#endif // ZH
 }
 
 /**
@@ -1525,18 +1525,18 @@ void PathfindCell::setType( CellType type )
 #ifdef OG
  * Flag this cell as an obstacle, from the given one
 
-#endif
+#endif // OG
 #ifdef ZH
  * Unflag this cell as an obstacle, from the given one.
  * Return true if this cell was previously flagged as an obstacle by this object. 
-#endif
+#endif // ZH
  */
 #ifdef OG
 void PathfindCell::removeObstacle( Object *obstacle )
-#endif
+#endif // OG
 #ifdef ZH
 Bool PathfindCell::removeObstacle( Object *obstacle )
-#endif
+#endif // ZH
 {
 	if (m_type == PathfindCell::CELL_RUBBLE) {
 		m_type = PathfindCell::CELL_CLEAR;
@@ -1544,24 +1544,24 @@ Bool PathfindCell::removeObstacle( Object *obstacle )
 #ifdef OG
 	if (!m_info) return;
 	if (m_info->m_obstacleID != obstacle->getID()) return;
-#endif
+#endif // OG
 #ifdef ZH
 	if (!m_info) return false;
 	if (m_info->m_obstacleID != obstacle->getID()) return false;
-#endif
+#endif // ZH
 	m_type = PathfindCell::CELL_CLEAR;
 #ifdef OG
 	if (m_info) {
-#endif
+#endif // OG
 		m_info->m_obstacleID = INVALID_ID;
 		releaseInfo();
 #ifdef ZH
 	return true;
-#endif
+#endif // ZH
 	}
 #ifdef OG
 }
-#endif
+#endif // OG
 
 /// put self on "open" list in ascending cost order, return new list
 PathfindCell *PathfindCell::putOnSortedOpenList( PathfindCell *list )
@@ -1760,14 +1760,14 @@ UnsignedInt PathfindCell::costToHierGoal( PathfindCell *goal )
 #ifdef OG
 	DEBUG_ASSERTCRASH(m_info, ("Has to have info."));
 
-#endif
+#endif // OG
 #ifdef ZH
 	if( !m_info )
 	{
 		DEBUG_CRASH( ("Has to have info.") );
 		return 100000; //...patch hack 1.01
 	}
-#endif
+#endif // ZH
 	Int dx = m_info->m_pos.x - goal->getXIndex();
 	Int dy = m_info->m_pos.y - goal->getYIndex();
 	Int cost = REAL_TO_INT_FLOOR(COST_ORTHOGONAL*sqrt(dx*dx + dy*dy) + 0.5f);
@@ -1913,10 +1913,10 @@ inline Bool groundCliff(const PathfindCell &targetCell, const PathfindCell &sour
 
 #ifdef OG
 static void __fastcall resolveBlockZones(Int srcZone, Int targetZone, UnsignedShort *zoneEquivalency, Int sizeOfZE)
-#endif
+#endif // OG
 #ifdef ZH
 static void __fastcall resolveBlockZones(Int srcZone, Int targetZone, zoneStorageType *zoneEquivalency, Int sizeOfZE)
-#endif
+#endif // ZH
 {
 	Int i;
 	// We have two zones being combined now. Keep the lower zone.
@@ -1938,10 +1938,10 @@ static void __fastcall resolveBlockZones(Int srcZone, Int targetZone, zoneStorag
 
 #ifdef OG
 static void __fastcall resolveZones(Int srcZone, Int targetZone, UnsignedShort *zoneEquivalency, Int sizeOfZE)
-#endif
+#endif // OG
 #ifdef ZH
 static void __fastcall resolveZones(Int srcZone, Int targetZone, zoneStorageType *zoneEquivalency, Int sizeOfZE)
-#endif
+#endif // ZH
 {
 	Int i;
 	// We have two zones being combined now. Keep the lower zone.
@@ -1952,10 +1952,10 @@ static void __fastcall resolveZones(Int srcZone, Int targetZone, zoneStorageType
 	DEBUG_ASSERTCRASH(srcZone<sizeOfZE && targetZone<sizeOfZE,  ("Bad resolve zones	."));
 #ifdef OG
 	UnsignedShort finalZone;
-#endif
+#endif // OG
 #ifdef ZH
 	zoneStorageType finalZone;
-#endif
+#endif // ZH
 	if (targetZone<srcZone) {
 		finalZone = zoneEquivalency[targetZone];
 	} else {
@@ -1965,10 +1965,10 @@ static void __fastcall resolveZones(Int srcZone, Int targetZone, zoneStorageType
 	for (i=0; i<sizeOfZE; i++) { 
 #ifdef OG
 		UnsignedShort ze = zoneEquivalency[i];
-#endif
+#endif // OG
 #ifdef ZH
 		zoneStorageType ze = zoneEquivalency[i];
-#endif
+#endif // ZH
 		if (ze == targetZone || ze == srcZone) {
 			zoneEquivalency[i] = finalZone;
 		}
@@ -1977,10 +1977,10 @@ static void __fastcall resolveZones(Int srcZone, Int targetZone, zoneStorageType
 
 #ifdef OG
 static void flattenZones(UnsignedShort *zoneArray, UnsignedShort *zoneHierarchical, Int sizeOfZones)
-#endif
+#endif // OG
 #ifdef ZH
 static void flattenZones(zoneStorageType *zoneArray, zoneStorageType *zoneHierarchical, Int sizeOfZones)
-#endif
+#endif // ZH
 {
 	Int i;
 	for (i=0; i<sizeOfZones; i++) {
@@ -2004,10 +2004,10 @@ static void flattenZones(zoneStorageType *zoneArray, zoneStorageType *zoneHierar
 
 #ifdef OG
 inline void applyZone(PathfindCell &targetCell, const PathfindCell &sourceCell, UnsignedShort *zoneEquivalency, Int sizeOfZE)
-#endif
+#endif // OG
 #ifdef ZH
 inline void applyZone(PathfindCell &targetCell, const PathfindCell &sourceCell, zoneStorageType *zoneEquivalency, Int sizeOfZE)
-#endif
+#endif // ZH
 {
 	DEBUG_ASSERTCRASH(sourceCell.getZone()!=0, ("Unset source zone."));
 	Int srcZone = zoneEquivalency[sourceCell.getZone()];
@@ -2028,10 +2028,10 @@ inline void applyZone(PathfindCell &targetCell, const PathfindCell &sourceCell, 
 inline void applyBlockZone(PathfindCell &targetCell, const PathfindCell &sourceCell,
 #ifdef OG
 													 UnsignedShort *zoneEquivalency, Int firstZone, Int sizeOfZE)
-#endif
+#endif // OG
 #ifdef ZH
 													 zoneStorageType *zoneEquivalency, Int firstZone, Int sizeOfZE)
-#endif
+#endif // ZH
 {	
 	DEBUG_ASSERTCRASH(sourceCell.getZone()>=firstZone && sourceCell.getZone()<firstZone+sizeOfZE, ("Memory overrun - FATAL ERROR."));
 	Int srcZone = zoneEquivalency[sourceCell.getZone()-firstZone];
@@ -2102,10 +2102,10 @@ void ZoneBlock::blockCalculateZones(PathfindCell **map, PathfindLayer layers[], 
 			PathfindCell *cell = &map[i][j];
 #ifdef OG
 			UnsignedShort zone = cell->getZone();
-#endif
+#endif // OG
 #ifdef ZH
 			zoneStorageType zone = cell->getZone();
-#endif
+#endif // ZH
 			if (minZone>zone) minZone=zone;
 			if (maxZone<zone) maxZone=zone;
 		}
@@ -2168,22 +2168,22 @@ void ZoneBlock::blockCalculateZones(PathfindCell **map, PathfindLayer layers[], 
 #ifdef OG
 UnsignedShort ZoneBlock::getEffectiveZone( LocomotorSurfaceTypeMask acceptableSurfaces, 
 																					 Bool crusher, UnsignedShort zone) const
-#endif
+#endif // OG
 #ifdef ZH
 zoneStorageType ZoneBlock::getEffectiveZone( LocomotorSurfaceTypeMask acceptableSurfaces, 
 																					 Bool crusher, zoneStorageType zone) const
-#endif
+#endif // ZH
 {
 #ifdef OG
 	DEBUG_ASSERTCRASH(zone, ("Zone not set"));
 
-#endif
+#endif // OG
 #ifdef ZH
 	if (zone==PathfindZoneManager::UNINITIALIZED_ZONE) {
 		return zone;
 	}
 
-#endif
+#endif // ZH
 	if (acceptableSurfaces&LOCOMOTORSURFACE_AIR) return 1; // air is all zone 1.
 
 	if ( (acceptableSurfaces&LOCOMOTORSURFACE_GROUND) &&
@@ -2264,13 +2264,13 @@ void ZoneBlock::allocateZones(void)
 	m_groundWaterZones = MSGNEW("PathfindZoneInfo") UnsignedShort[m_zonesAllocated];
 	m_groundRubbleZones = MSGNEW("PathfindZoneInfo") UnsignedShort[m_zonesAllocated];
 	m_crusherZones = MSGNEW("PathfindZoneInfo") UnsignedShort[m_zonesAllocated];
-#endif
+#endif // OG
 #ifdef ZH
 	m_groundCliffZones = MSGNEW("PathfindZoneInfo") zoneStorageType [m_zonesAllocated];
 	m_groundWaterZones = MSGNEW("PathfindZoneInfo") zoneStorageType[m_zonesAllocated];
 	m_groundRubbleZones = MSGNEW("PathfindZoneInfo") zoneStorageType[m_zonesAllocated];
 	m_crusherZones = MSGNEW("PathfindZoneInfo") zoneStorageType[m_zonesAllocated];
-#endif
+#endif // ZH
 }
 
 
@@ -2278,10 +2278,10 @@ void ZoneBlock::allocateZones(void)
 PathfindZoneManager::PathfindZoneManager() : m_maxZone(0), 
 #ifdef OG
 m_needToCalculateZones(false), 
-#endif
+#endif // OG
 #ifdef ZH
 m_nextFrameToCalculateZones(0), 
-#endif
+#endif // ZH
 m_groundCliffZones(NULL), 
 m_groundWaterZones(NULL), 
 m_groundRubbleZones(NULL), 
@@ -2369,7 +2369,7 @@ void PathfindZoneManager::allocateZones(void)
 	m_terrainZones = MSGNEW("PathfindZoneInfo") UnsignedShort[m_zonesAllocated];
 	m_crusherZones = MSGNEW("PathfindZoneInfo") UnsignedShort[m_zonesAllocated];
 	m_hierarchicalZones = MSGNEW("PathfindZoneInfo") UnsignedShort[m_zonesAllocated];
-#endif
+#endif // OG
 #ifdef ZH
 	m_groundCliffZones = MSGNEW("PathfindZoneInfo") zoneStorageType[m_zonesAllocated];
 	m_groundWaterZones = MSGNEW("PathfindZoneInfo") zoneStorageType[m_zonesAllocated];
@@ -2377,7 +2377,7 @@ void PathfindZoneManager::allocateZones(void)
 	m_terrainZones = MSGNEW("PathfindZoneInfo") zoneStorageType[m_zonesAllocated];
 	m_crusherZones = MSGNEW("PathfindZoneInfo") zoneStorageType[m_zonesAllocated];
 	m_hierarchicalZones = MSGNEW("PathfindZoneInfo") zoneStorageType[m_zonesAllocated];
-#endif
+#endif // ZH
 }
 
 /* Allocate zone blocks for hierarchical pathfinding.   */
@@ -2398,33 +2398,33 @@ void PathfindZoneManager::allocateBlocks(const IRegion2D &globalBounds)
 
 #ifdef OG
 void PathfindZoneManager::markZonesDirty(void)  ///< Called when the zones need to be recalculated.
-#endif
+#endif // OG
 #ifdef ZH
 void PathfindZoneManager::reset(void)  ///< Called when the map is reset.
-#endif
+#endif // ZH
 {
 #ifdef OG
 	m_needToCalculateZones = true;
 
-#endif
+#endif // OG
 #ifdef ZH
 	freeZones();
 	freeBlocks();
-#endif
+#endif // ZH
 } 
 
 #ifdef OG
 void PathfindZoneManager::reset(void)  ///< Called when the map is reset.
-#endif
+#endif // OG
 #ifdef ZH
 void PathfindZoneManager::markZonesDirty( Bool insert )  ///< Called when the zones need to be recalculated.
-#endif
+#endif // ZH
 {
 #ifdef OG
 	freeZones();
 	freeBlocks();
 
-#endif
+#endif // OG
 #ifdef ZH
 
 	if (TheGameLogic->getFrame()<2) {
@@ -2435,7 +2435,7 @@ void PathfindZoneManager::markZonesDirty( Bool insert )  ///< Called when the zo
 //  	m_nextFrameToCalculateZones = TheGameLogic->getFrame();
 //  else
     m_nextFrameToCalculateZones = MIN( m_nextFrameToCalculateZones, TheGameLogic->getFrame() + ZONE_UPDATE_FREQUENCY );
-#endif
+#endif // ZH
 } 
 
 /**
@@ -2453,7 +2453,7 @@ void PathfindZoneManager::markZonesDirty( Bool insert )  ///< Called when the zo
 static  Bool  s_stopForceCalling = FALSE;
 #endif
 
-#endif
+#endif // ZH
 void PathfindZoneManager::calculateZones( PathfindCell **map, PathfindLayer layers[], const IRegion2D &globalBounds )
 {
 #ifdef DEBUG_QPF
@@ -2462,12 +2462,12 @@ void PathfindZoneManager::calculateZones( PathfindCell **map, PathfindLayer laye
 #ifdef OG
 	double timeToUpdate=0.0f;
 
-#endif
+#endif // OG
 #ifdef ZH
 	static double timeToUpdate = 0.0f;
   static double averageTimeToUpdate = 0.0f;
   static Int updateSamples = 0;
-#endif
+#endif // ZH
 	__int64 endTime64,freq64;
 	QueryPerformanceFrequency((LARGE_INTEGER *)&freq64);
 	QueryPerformanceCounter((LARGE_INTEGER *)&startTime64);
@@ -2479,10 +2479,10 @@ void PathfindZoneManager::calculateZones( PathfindCell **map, PathfindLayer laye
 	const Int maxZones=24000;
 #ifdef OG
 	UnsignedShort zoneEquivalency[maxZones];
-#endif
+#endif // OG
 #ifdef ZH
 	zoneStorageType zoneEquivalency[maxZones];
-#endif
+#endif // ZH
 	Int i, j;
 	for (i=0; i<maxZones; i++) {
 		zoneEquivalency[i] = i;
@@ -2512,14 +2512,14 @@ void PathfindZoneManager::calculateZones( PathfindCell **map, PathfindLayer laye
 			if (bounds.lo.x>bounds.hi.x || bounds.lo.y>bounds.hi.y) {
 				DEBUG_CRASH(("Incorrect bounds calculation. Logic error, fix me. jba."));
 				continue;
-#endif
+#endif // OG
 			}
 #ifdef ZH
 //			if (bounds.lo.x>bounds.hi.x || bounds.lo.y>bounds.hi.y) {
 //				DEBUG_CRASH(("Incorrect bounds calculation. Logic error, fix me. jba."));
 //				continue;
 //			}
-#endif
+#endif // ZH
 			m_zoneBlocks[xBlock][yBlock].setInteractsWithBridge(false);
 			for( j=bounds.lo.y; j<=bounds.hi.y; j++ )	{
 				for( i=bounds.lo.x; i<=bounds.hi.x; i++ )	{
@@ -2544,17 +2544,17 @@ void PathfindZoneManager::calculateZones( PathfindCell **map, PathfindLayer laye
 							DEBUG_CRASH(("Ran out of pathfind zones.  SERIOUS ERROR! jba."));
 							break;
 
-#endif
+#endif // OG
 #ifdef ZH
 //						if (m_maxZone>= maxZones) {
 //							DEBUG_CRASH(("Ran out of pathfind zones.  SERIOUS ERROR! jba."));
 //							break;
 //						}
-#endif
+#endif // ZH
 						}
 #ifdef OG
 					}
-#endif
+#endif // OG
 					if (cell->getConnectLayer() > LAYER_GROUND) {
  						m_zoneBlocks[xBlock][yBlock].setInteractsWithBridge(true);
 					}
@@ -2570,12 +2570,12 @@ void PathfindZoneManager::calculateZones( PathfindCell **map, PathfindLayer laye
 	if (totalZones>maxZones/2) {
 		DEBUG_LOG(("Max zones %d\n", m_maxZone));
 	}
-#endif
+#endif // OG
 #ifdef ZH
 //	if (totalZones>maxZones/2) {
 //		DEBUG_LOG(("Max zones %d\n", m_maxZone));
 //	}
-#endif
+#endif // ZH
 
 	// Collapse the zones into a 1,2,3... sequence, removing collapsed zones.
 	m_maxZone = 1;
@@ -2587,7 +2587,7 @@ void PathfindZoneManager::calculateZones( PathfindCell **map, PathfindLayer laye
 		if (zone == i) {
 			collapsedZones[i] = m_maxZone;
 
-#endif
+#endif // OG
 #ifdef ZH
 
   i = 1;
@@ -2597,19 +2597,19 @@ void PathfindZoneManager::calculateZones( PathfindCell **map, PathfindLayer laye
 		if (zone == i) 
     {
 			collapsedZones[ i ] = m_maxZone;
-#endif
+#endif // ZH
 			++m_maxZone;
 #ifdef OG
 		}	else {
 			collapsedZones[i] = collapsedZones[zone];
-#endif
+#endif // OG
 		}
 #ifdef ZH
     else 
 			collapsedZones[ i ] = collapsedZones[zone];
 
     ++i;
-#endif
+#endif // ZH
 	}
 #ifdef OG
 #ifdef DEBUG_QPF
@@ -2620,7 +2620,7 @@ void PathfindZoneManager::calculateZones( PathfindCell **map, PathfindLayer laye
 #endif
 #endif
 
-#endif
+#endif // OG
 #ifdef ZH
 
 //	for (i=1; i<totalZones; i++) {
@@ -2642,7 +2642,7 @@ void PathfindZoneManager::calculateZones( PathfindCell **map, PathfindLayer laye
 //#endif
 //#endif
 
-#endif
+#endif // ZH
 	// Now map the zones in the map back into the collapsed zones.
 #ifdef OG
 	for( j=globalBounds.lo.y; j<=globalBounds.hi.y; j++ )	{
@@ -2651,7 +2651,7 @@ void PathfindZoneManager::calculateZones( PathfindCell **map, PathfindLayer laye
 			if (map[i][j].getZone()==0) {
 				DEBUG_CRASH(("Zone not set cell %d, %d", i, j));
 
-#endif
+#endif // OG
 #ifdef ZH
 	j=globalBounds.lo.y;
   while( j<=globalBounds.hi.y )	
@@ -2667,11 +2667,11 @@ void PathfindZoneManager::calculateZones( PathfindCell **map, PathfindLayer laye
 			//	DEBUG_CRASH(("Zone not set cell %d, %d", i, j));
 			//}
       ++i;
-#endif
+#endif // ZH
 			}
 #ifdef ZH
     ++j;
-#endif
+#endif // ZH
 		}
 #ifdef OG
 	}
@@ -2679,7 +2679,7 @@ void PathfindZoneManager::calculateZones( PathfindCell **map, PathfindLayer laye
 		Int zone = collapsedZones[layers[i].getZone()];
 		if (zone == 0) {
 
-#endif
+#endif // OG
 #ifdef ZH
 
 //	for( j=globalBounds.lo.y; j<=globalBounds.hi.y; j++ )	{
@@ -2699,7 +2699,7 @@ void PathfindZoneManager::calculateZones( PathfindCell **map, PathfindLayer laye
 		Int zone = collapsedZones[r_thisLayer.getZone()];
 		if (zone == 0) 
     {
-#endif
+#endif // ZH
 			zone = m_maxZone;
 			m_maxZone++;
 		}
@@ -2710,7 +2710,7 @@ void PathfindZoneManager::calculateZones( PathfindCell **map, PathfindLayer laye
 		}
 		layers[i].applyZone();
 		if (!layers[i].isUnused() && !layers[i].isDestroyed()) {
-#endif
+#endif // OG
 #ifdef ZH
 
     r_thisLayer.setZone( zone );
@@ -2718,27 +2718,27 @@ void PathfindZoneManager::calculateZones( PathfindCell **map, PathfindLayer laye
 		
     if (!r_thisLayer.isUnused() && !r_thisLayer.isDestroyed()) 
     {
-#endif
+#endif // ZH
 			ICoord2D ndx;
 #ifdef OG
 			layers[i].getStartCellIndex(&ndx);
-#endif
+#endif // OG
 #ifdef ZH
 			r_thisLayer.getStartCellIndex(&ndx);
-#endif
+#endif // ZH
 			setBridge(ndx.x, ndx.y, true);	
 #ifdef OG
 			layers[i].getEndCellIndex(&ndx);
-#endif
+#endif // OG
 #ifdef ZH
 			r_thisLayer.getEndCellIndex(&ndx);
-#endif
+#endif // ZH
 			setBridge(ndx.x, ndx.y, true);	
 		}
 #ifdef ZH
 
     ++i;
-#endif
+#endif // ZH
 	}
 #ifdef ZH
 
@@ -2762,7 +2762,7 @@ void PathfindZoneManager::calculateZones( PathfindCell **map, PathfindLayer laye
 //		}
 //	}
 
-#endif
+#endif // ZH
 
 	allocateZones();
 #ifdef OG
@@ -2770,7 +2770,7 @@ void PathfindZoneManager::calculateZones( PathfindCell **map, PathfindLayer laye
 	for (xBlock=0; xBlock<xCount; xBlock++) {
 		for (yBlock=0; yBlock<yCount; yBlock++) {
 
-#endif
+#endif // OG
 #ifdef ZH
 
 
@@ -2779,7 +2779,7 @@ void PathfindZoneManager::calculateZones( PathfindCell **map, PathfindLayer laye
   {
 		for (yBlock=0; yBlock<yCount; yBlock++) 
     {
-#endif
+#endif // ZH
 			IRegion2D bounds;
 			bounds.lo.x = globalBounds.lo.x + xBlock*ZONE_BLOCK_SIZE;
 			bounds.lo.y = globalBounds.lo.y + yBlock*ZONE_BLOCK_SIZE;
@@ -2788,11 +2788,11 @@ void PathfindZoneManager::calculateZones( PathfindCell **map, PathfindLayer laye
 #ifdef OG
 			if (bounds.hi.x > globalBounds.hi.x) {
 
-#endif
+#endif // OG
 #ifdef ZH
 			
       if (bounds.hi.x > globalBounds.hi.x) 
-#endif
+#endif // ZH
 				bounds.hi.x = globalBounds.hi.x;
 #ifdef ZH
 			
@@ -2830,13 +2830,13 @@ void PathfindZoneManager::calculateZones( PathfindCell **map, PathfindLayer laye
 	{
     m_groundCliffZones[i] = m_groundWaterZones[i] = m_groundRubbleZones[i] = m_terrainZones[i] = m_crusherZones[i] = m_hierarchicalZones[i] = i;
     i++;
-#endif
+#endif // ZH
 			}
 #ifdef OG
 			if (bounds.hi.y > globalBounds.hi.y) {
 				bounds.hi.y = globalBounds.hi.y;
 
-#endif
+#endif // OG
 #ifdef ZH
 
 
@@ -2988,23 +2988,23 @@ void PathfindZoneManager::calculateZones( PathfindCell **map, PathfindLayer laye
 //			DEBUG_ASSERTCRASH(r_thisCell.getZone() != 0, ("Cleared the zone."));
 
       ++i;
-#endif
+#endif // ZH
 			}
 #ifdef OG
 			if (bounds.lo.x>bounds.hi.x || bounds.lo.y>bounds.hi.y) {
 				DEBUG_CRASH(("Incorrect bounds calculation. Logic error, fix me. jba."));
 				continue;
-#endif
+#endif // OG
 #ifdef ZH
 
     ++j; 
 
-#endif
+#endif // ZH
 			}
 #ifdef OG
 			m_zoneBlocks[xBlock][yBlock].blockCalculateZones(map, layers, bounds);
 
-#endif
+#endif // OG
 #ifdef ZH
 
 
@@ -3026,7 +3026,7 @@ void PathfindZoneManager::calculateZones( PathfindCell **map, PathfindLayer laye
 		  zone = m_hierarchicalZones[i];
 		  m_hierarchicalZones[i] = m_hierarchicalZones[ zone ];
       ++i;
-#endif
+#endif // ZH
 		}
 	}
 
@@ -3039,7 +3039,7 @@ void PathfindZoneManager::calculateZones( PathfindCell **map, PathfindLayer laye
 	flattenZones(m_terrainZones, m_hierarchicalZones, m_maxZone);
 	flattenZones(m_crusherZones, m_hierarchicalZones, m_maxZone);
 
-#endif
+#endif // ZH
 #ifdef DEBUG_QPF
 #if defined(DEBUG_LOGGING) 
 	QueryPerformanceCounter((LARGE_INTEGER *)&endTime64);
@@ -3047,7 +3047,7 @@ void PathfindZoneManager::calculateZones( PathfindCell **map, PathfindLayer laye
 #ifdef OG
 	DEBUG_LOG(("Time to calculate second %f\n", timeToUpdate));
 
-#endif
+#endif // OG
 #ifdef ZH
 
 //	DEBUG_LOG(("Time to calculate zones %f, cells %d\n", timeToUpdate, (globalBounds.hi.x-globalBounds.lo.x)*(globalBounds.hi.y-globalBounds.lo.y)));
@@ -3067,7 +3067,7 @@ void PathfindZoneManager::calculateZones( PathfindCell **map, PathfindLayer laye
 #endif
   }
 
-#endif
+#endif // ZH
 #endif
 #endif
 #ifdef ZH
@@ -3084,7 +3084,7 @@ void PathfindZoneManager::calculateZones( PathfindCell **map, PathfindLayer laye
 				//zone = m_terrainZones[zone];
 				//zone = m_groundCliffZones[zone];
 				zone = m_hierarchicalZones[zone];
-#endif
+#endif // ZH
 
 #ifdef OG
 	// Determine water/ground equivalent zones, and ground/cliff equivalent zones.
@@ -3096,7 +3096,7 @@ void PathfindZoneManager::calculateZones( PathfindCell **map, PathfindLayer laye
 		m_crusherZones[i] = i;
 		m_hierarchicalZones[i] = i;
 
-#endif
+#endif // OG
 #ifdef ZH
 				color.blue = (zone%3) * 0.5f;
 				zone = zone/3;
@@ -3113,7 +3113,7 @@ void PathfindZoneManager::calculateZones( PathfindCell **map, PathfindLayer laye
 	}
 #endif
 	m_nextFrameToCalculateZones = 0xffffffff;
-#endif
+#endif // ZH
 	}
 #ifdef ZH
 
@@ -3124,7 +3124,7 @@ void PathfindZoneManager::calculateZones( PathfindCell **map, PathfindLayer laye
  */
 void PathfindZoneManager::updateZonesForModify(PathfindCell **map, PathfindLayer layers[], const IRegion2D &structureBounds, const IRegion2D &globalBounds )
 {
-#endif
+#endif // ZH
 
 #ifdef OG
 	for( j=globalBounds.lo.y; j<=globalBounds.hi.y; j++ )	{
@@ -3134,7 +3134,7 @@ void PathfindZoneManager::updateZonesForModify(PathfindCell **map, PathfindLayer
 				PathfindLayer *layer = layers + map[i][j].getConnectLayer();
 				resolveZones(map[i][j].getZone(), layer->getZone(), m_hierarchicalZones, m_maxZone);
 
-#endif
+#endif // OG
 #ifdef ZH
 #ifdef DEBUG_QPF
 #if defined(DEBUG_LOGGING) 
@@ -3150,24 +3150,24 @@ void PathfindZoneManager::updateZonesForModify(PathfindCell **map, PathfindLayer
 	bounds.hi.y++;
 	if (bounds.hi.x > globalBounds.hi.x) {
 		bounds.hi.x = globalBounds.hi.x;
-#endif
+#endif // ZH
 			}
 #ifdef OG
 			if (i>globalBounds.lo.x && map[i][j].getZone()!=map[i-1][j].getZone()) {
 				if (map[i][j].getType() == map[i-1][j].getType()) {
 					applyZone(map[i][j], map[i-1][j], m_hierarchicalZones, m_maxZone);
-#endif
+#endif // OG
 #ifdef ZH
 	if (bounds.hi.y > globalBounds.hi.y) {
 		bounds.hi.y = globalBounds.hi.y;
 
-#endif
+#endif // ZH
 				}
 #ifdef OG
 				if (waterGround(map[i][j], map[i-1][j])) {
 					applyZone(map[i][j], map[i-1][j], m_groundWaterZones, m_maxZone);
 
-#endif
+#endif // OG
 #ifdef ZH
 
 	Int xBlock, yBlock;
@@ -3180,7 +3180,7 @@ void PathfindZoneManager::updateZonesForModify(PathfindCell **map, PathfindLayer
 			blockBounds.hi.y = blockBounds.lo.y + ZONE_BLOCK_SIZE - 1; // blockBounds are inclusive.
 			if (blockBounds.hi.x > bounds.hi.x) {
 				blockBounds.hi.x = bounds.hi.x;
-#endif
+#endif // ZH
 				}
 #ifdef OG
 				if (groundRubble(map[i][j], map[i-1][j])) {
@@ -3188,45 +3188,45 @@ void PathfindZoneManager::updateZonesForModify(PathfindCell **map, PathfindLayer
 					Int zone2 = map[i-1][j].getZone();
 					if (m_terrainZones[zone1] != m_terrainZones[zone2]) {
 						//DEBUG_LOG(("Matching terrain zone %d to %d.\n", zone1, zone2));
-#endif
+#endif // OG
 #ifdef ZH
 			if (blockBounds.hi.y > bounds.hi.y) {
 				blockBounds.hi.y = bounds.hi.y;
 
-#endif
+#endif // ZH
 					}
 #ifdef OG
 					applyZone(map[i][j], map[i-1][j], m_groundRubbleZones, m_maxZone);
 
-#endif
+#endif // OG
 #ifdef ZH
 			if (blockBounds.lo.x < bounds.lo.x) {
 				blockBounds.lo.x = bounds.lo.x;
-#endif
+#endif // ZH
 				}
 #ifdef OG
 				if (groundCliff(map[i][j], map[i-1][j])) {
 					applyZone(map[i][j], map[i-1][j], m_groundCliffZones, m_maxZone);
-#endif
+#endif // OG
 #ifdef ZH
 			if (blockBounds.lo.y < bounds.lo.y) {
 				blockBounds.lo.y = bounds.lo.y;
-#endif
+#endif // ZH
 				}
 #ifdef OG
 				if (terrain(map[i][j], map[i-1][j])) {
 					applyZone(map[i][j], map[i-1][j], m_terrainZones, m_maxZone);
-#endif
+#endif // OG
 #ifdef ZH
 			if (blockBounds.lo.x>blockBounds.hi.x || blockBounds.lo.y>blockBounds.hi.y) {
 				continue;
-#endif
+#endif // ZH
 				}
 #ifdef OG
 				if (crusherGround(map[i][j], map[i-1][j])) {
 					applyZone(map[i][j], map[i-1][j], m_crusherZones, m_maxZone);
 
-#endif
+#endif // OG
 #ifdef ZH
 			m_zoneBlocks[xBlock][yBlock].setInteractsWithBridge(false);
 			Int i, j;
@@ -3239,7 +3239,7 @@ void PathfindZoneManager::updateZonesForModify(PathfindCell **map, PathfindLayer
 						if (map[i][j].getType() == map[i-1][j].getType()) {
 							cell->setZone(map[i-1][j].getZone());
 							if (cell->getZone()!=UNINITIALIZED_ZONE) continue;
-#endif
+#endif // ZH
 				}
 			}
 #ifdef OG
@@ -3247,26 +3247,26 @@ void PathfindZoneManager::updateZonesForModify(PathfindCell **map, PathfindLayer
 				if (map[i][j].getType() == map[i][j-1].getType()) {
 					applyZone(map[i][j], map[i][j-1], m_hierarchicalZones, m_maxZone);
 
-#endif
+#endif // OG
 #ifdef ZH
 					if (j>blockBounds.lo.y) {
 						if (cell->getType() == map[i][j-1].getType()) {
 							cell->setZone(map[i][j-1].getZone());
 							if (cell->getZone()!=UNINITIALIZED_ZONE) continue;
-#endif
+#endif // ZH
 				}
 #ifdef OG
 				if (waterGround(map[i][j],map[i][j-1])) {
 					applyZone(map[i][j], map[i][j-1], m_groundWaterZones, m_maxZone);
 
-#endif
+#endif // OG
 #ifdef ZH
 						if (i<blockBounds.hi.x) {
 							if (typesMatch(*cell, map[i+1][j-1]) &&
 									typesMatch(*cell, map[i+1][j])) {
 								cell->setZone(map[i+1][j-1].getZone());
 								if (cell->getZone()!=UNINITIALIZED_ZONE) continue;
-#endif
+#endif // ZH
 				}
 #ifdef OG
 				if (groundRubble(map[i][j], map[i][j-1])) {
@@ -3274,27 +3274,27 @@ void PathfindZoneManager::updateZonesForModify(PathfindCell **map, PathfindLayer
 					Int zone2 = map[i][j-1].getZone();
 					if (m_terrainZones[zone1] != m_terrainZones[zone2]) {
 						//DEBUG_LOG(("Matching terrain zone %d to %d.\n", zone1, zone2));
-#endif
+#endif // OG
 					}
 #ifdef OG
 					applyZone(map[i][j], map[i][j-1], m_groundRubbleZones, m_maxZone);
-#endif
+#endif // OG
 				}
 #ifdef OG
 				if (groundCliff(map[i][j],map[i][j-1])) {
 					applyZone(map[i][j], map[i][j-1], m_groundCliffZones, m_maxZone);
-#endif
+#endif // OG
 				}
 #ifdef OG
 				if (terrain(map[i][j], map[i][j-1])) {
 					applyZone(map[i][j], map[i][j-1], m_terrainZones, m_maxZone);
-#endif
+#endif // OG
 				}
 #ifdef OG
 				if (crusherGround(map[i][j], map[i][j-1])) {
 					applyZone(map[i][j], map[i][j-1], m_crusherZones, m_maxZone);
 
-#endif
+#endif // OG
 #ifdef ZH
 			for( j=blockBounds.hi.y; j>=blockBounds.lo.y; j-- )	{
 				for( i=blockBounds.hi.x; i>=blockBounds.lo.x; i-- )	{
@@ -3304,66 +3304,66 @@ void PathfindZoneManager::updateZonesForModify(PathfindCell **map, PathfindLayer
 						if (map[i][j].getType() == map[i+1][j].getType()) {
 							cell->setZone(map[i+1][j].getZone());
 							if (cell->getZone()!=UNINITIALIZED_ZONE) continue;
-#endif
+#endif // ZH
 				}
 #ifdef OG
 /* No diagonals.  jba.
 				if (i>globalBounds.lo.x) {
 					if (waterGround(map[i][j],map[i-1][j-1])) {
 						applyZone(map[i][j], map[i-1][j-1], m_groundWaterZones, m_maxZone);
-#endif
+#endif // OG
 					}
 #ifdef OG
 					if (groundCliff(map[i][j],map[i-1][j-1])) {
 						applyZone(map[i][j], map[i-1][j-1], m_groundCliffZones, m_maxZone);
 
-#endif
+#endif // OG
 #ifdef ZH
 					if (j<blockBounds.hi.y) {
 						if (cell->getType() == map[i][j+1].getType()) {
 							cell->setZone(map[i][j+1].getZone());
 							if (cell->getZone()!=UNINITIALIZED_ZONE) continue;
-#endif
+#endif // ZH
 					}
 #ifdef OG
 					if (terrain(map[i][j],map[i-1][j-1])) {
 						applyZone(map[i][j], map[i-1][j-1], m_terrainZones, m_maxZone);
 
-#endif
+#endif // OG
 #ifdef ZH
 						if (i<blockBounds.hi.x) {
 							if (typesMatch(*cell, map[i+1][j+1]) &&
 									typesMatch(*cell, map[i+1][j])) {
 								cell->setZone(map[i+1][j+1].getZone());
 								if (cell->getZone()!=UNINITIALIZED_ZONE) continue;
-#endif
+#endif // ZH
 					}
 				}
 #ifdef OG
 */
-#endif
+#endif // OG
 			}
 #ifdef OG
 			DEBUG_ASSERTCRASH(map[i][j].getZone() != 0, ("Cleared the zone."));
-#endif
+#endif // OG
 		}
 	}
 #ifdef OG
 
 	if (m_maxZone >= m_zonesAllocated) {
 		RELEASE_CRASH("Pathfind allocation error - fatal. see jba.");
-#endif
+#endif // OG
 #ifdef ZH
 			//DEBUG_LOG(("Collapsed zones %d\n", m_maxZone));
 
-#endif
+#endif // ZH
 	}
 #ifdef OG
 	for (i=1; i<m_maxZone; i++) {
 		// Flatten hierarchical zones.
 		Int zone = m_hierarchicalZones[i];
 		m_hierarchicalZones[i] = m_hierarchicalZones[zone];
-#endif
+#endif // OG
 	}
 #ifdef OG
 	flattenZones(m_groundCliffZones, m_hierarchicalZones, m_maxZone);
@@ -3372,26 +3372,26 @@ void PathfindZoneManager::updateZonesForModify(PathfindCell **map, PathfindLayer
 	flattenZones(m_terrainZones, m_hierarchicalZones, m_maxZone);
 	flattenZones(m_crusherZones, m_hierarchicalZones, m_maxZone);
 
-#endif
+#endif // OG
 #ifdef DEBUG_QPF
 #if defined(DEBUG_LOGGING) 
 	QueryPerformanceCounter((LARGE_INTEGER *)&endTime64);
 	timeToUpdate = ((double)(endTime64-startTime64) / (double)(freq64));
 #ifdef OG
 	DEBUG_LOG(("Time to calculate zones %f, cells %d\n", timeToUpdate, (globalBounds.hi.x-globalBounds.lo.x)*(globalBounds.hi.y-globalBounds.lo.y)));
-#endif
+#endif // OG
 #ifdef ZH
 	//DEBUG_LOG(("Time to update zones %f, cells %d\n", timeToUpdate, (globalBounds.hi.x-globalBounds.lo.x)*(globalBounds.hi.y-globalBounds.lo.y)));
-#endif
+#endif // ZH
 #endif
 #endif
 #if defined _DEBUG || defined _INTERNAL
 #ifdef OG
 	if (TheGlobalData->m_debugAI && false) 
-#endif
+#endif // OG
 #ifdef ZH
 	if (TheGlobalData->m_debugAI==AI_DEBUG_ZONES) 
-#endif
+#endif // ZH
 	{
 		extern void addIcon(const Coord3D *pos, Real width, Int numFramesDuration, RGBColor color);
 		RGBColor color;
@@ -3399,17 +3399,17 @@ void PathfindZoneManager::updateZonesForModify(PathfindCell **map, PathfindLayer
 		addIcon(NULL, 0, 0, color);
 #ifdef ZH
 		Int i, j;
-#endif
+#endif // ZH
 		for( j=0; j<globalBounds.hi.y; j++ )	{
 			for( i=0; i<globalBounds.hi.x; i++ )	{
 				Int zone = map[i][j].getZone();
 				//zone = m_terrainZones[zone];
 #ifdef OG
 				zone = m_groundCliffZones[zone];
-#endif
+#endif // OG
 #ifdef ZH
 				zone = m_hierarchicalZones[zone];
-#endif
+#endif // ZH
 
 				color.blue = (zone%3) * 0.5f;
 				zone = zone/3;
@@ -3422,17 +3422,17 @@ void PathfindZoneManager::updateZonesForModify(PathfindCell **map, PathfindLayer
 				pos.z = TheTerrainLogic->getLayerHeight( pos.x, pos.y, map[i][j].getLayer() ) + 0.5f;
 #ifdef OG
 				addIcon(&pos, PATHFIND_CELL_SIZE_F*0.8f, 500, color);
-#endif
+#endif // OG
 #ifdef ZH
 				addIcon(&pos, PATHFIND_CELL_SIZE_F*0.8f, 200, color);
-#endif
+#endif // ZH
 			}
 		}
 	}
 #endif
 #ifdef OG
 	m_needToCalculateZones = false;
-#endif
+#endif // OG
 }
 
 //
@@ -3561,10 +3561,10 @@ Bool PathfindZoneManager::interactsWithBridge(Int cellX, Int cellY) const
 //
 #ifdef OG
 UnsignedShort PathfindZoneManager::getBlockZone(LocomotorSurfaceTypeMask acceptableSurfaces, Bool crusher,Int cellX, Int cellY, PathfindCell **map) const
-#endif
+#endif // OG
 #ifdef ZH
 zoneStorageType PathfindZoneManager::getBlockZone(LocomotorSurfaceTypeMask acceptableSurfaces, Bool crusher,Int cellX, Int cellY, PathfindCell **map) const
-#endif
+#endif // ZH
 {
 	PathfindCell *cell = &(map[cellX][cellY]); 
 	Int blockX = cellX/ZONE_BLOCK_SIZE;
@@ -3581,18 +3581,18 @@ zoneStorageType PathfindZoneManager::getBlockZone(LocomotorSurfaceTypeMask accep
 #ifdef OG
 	UnsignedShort zone =  m_zoneBlocks[blockX][blockY].getEffectiveZone(acceptableSurfaces, crusher, cell->getZone());
 	if (zone > m_maxZone) {
-#endif
+#endif // OG
 #ifdef ZH
 	zoneStorageType zone =  m_zoneBlocks[blockX][blockY].getEffectiveZone(acceptableSurfaces, crusher, cell->getZone());
 	if (zone >= m_maxZone) {
-#endif
+#endif // ZH
 		DEBUG_CRASH(("Invalid zone."));
 #ifdef OG
 		return 0;
-#endif
+#endif // OG
 #ifdef ZH
 		return UNINITIALIZED_ZONE;
-#endif
+#endif // ZH
 	}
 	return zone;
 }
@@ -3602,10 +3602,10 @@ zoneStorageType PathfindZoneManager::getBlockZone(LocomotorSurfaceTypeMask accep
 //
 #ifdef OG
 UnsignedShort PathfindZoneManager::getEffectiveTerrainZone(UnsignedShort zone) const
-#endif
+#endif // OG
 #ifdef ZH
 zoneStorageType PathfindZoneManager::getEffectiveTerrainZone(zoneStorageType zone) const
-#endif
+#endif // ZH
 {
 	return m_hierarchicalZones[m_terrainZones[zone]];
 }
@@ -3616,11 +3616,11 @@ zoneStorageType PathfindZoneManager::getEffectiveTerrainZone(zoneStorageType zon
 #ifdef OG
 UnsignedShort PathfindZoneManager::getEffectiveZone( LocomotorSurfaceTypeMask acceptableSurfaces, 
 																										Bool crusher, UnsignedShort zone) const
-#endif
+#endif // OG
 #ifdef ZH
 zoneStorageType PathfindZoneManager::getEffectiveZone( LocomotorSurfaceTypeMask acceptableSurfaces, 
 																										Bool crusher, zoneStorageType zone) const
-#endif
+#endif // ZH
 {
 	//DEBUG_ASSERTCRASH(zone, ("Zone not set"));
 	if (zone>m_maxZone) {
@@ -3768,7 +3768,7 @@ void PathfindLayer::doDebugIcons(void) {
 		flash--;
 		if (flash<1) flash = 20;
 		if (flash < 10) return;
-#endif
+#endif // ZH
 		Bool showCells = TheGlobalData->m_debugAI==AI_DEBUG_CELLS;
 		// show the pathfind grid
 		for( int j=0; j<m_height; j++ )
@@ -3783,11 +3783,11 @@ void PathfindLayer::doDebugIcons(void) {
 #ifdef OG
 				Bool empty = true;
 				
-#endif
+#endif // OG
 #ifdef ZH
 				Bool empty = false;
 				Real size = 0.4f;
-#endif
+#endif // ZH
 				const PathfindCell *cell = &m_layerCells[i][j];
 				if (cell)
 				{
@@ -3802,7 +3802,7 @@ void PathfindLayer::doDebugIcons(void) {
 							empty = false;
 					}	else if (cell->getType() == PathfindCell::CELL_BRIDGE_IMPASSABLE) {
 							color.blue = color.red = 1;
-#endif
+#endif // ZH
 							empty = false;
 					}	else if (cell->getType() == PathfindCell::CELL_CLIFF) {
 							color.red = 1;
@@ -3810,7 +3810,7 @@ void PathfindLayer::doDebugIcons(void) {
 #ifdef ZH
 					}	else {
 							size = 0.2f;
-#endif
+#endif // ZH
 					}	
 				}
 				if (showCells) {
@@ -3838,10 +3838,10 @@ void PathfindLayer::doDebugIcons(void) {
 					loc.z = bridgeHeight;
 #ifdef OG
 					addIcon(&loc, PATHFIND_CELL_SIZE_F*0.8f, 99, color);
-#endif
+#endif // OG
 #ifdef ZH
 					addIcon(&loc, PATHFIND_CELL_SIZE_F*size, 99, color);
-#endif
+#endif // ZH
 				}
 			}
 		}
@@ -3980,10 +3980,10 @@ Bool PathfindLayer::connectsZones(PathfindZoneManager *zm, const LocomotorSet& l
 					if (groundCell) {
 #ifdef OG
 						UnsignedShort zone = zm->getEffectiveZone(locoSet.getValidSurfaces(),
-#endif
+#endif // OG
 #ifdef ZH
 						zoneStorageType zone = zm->getEffectiveZone(locoSet.getValidSurfaces(),
-#endif
+#endif // ZH
 							true, groundCell->getZone());
 						zone = zm->getEffectiveTerrainZone(zone);
 						if (zone == zone1) found1 = true;
@@ -4042,10 +4042,10 @@ void PathfindLayer::classifyCells()
 				}
 #ifdef OG
 				cell->setType(PathfindCell::CELL_IMPASSABLE);
-#endif
+#endif // OG
 #ifdef ZH
 				cell->setType(PathfindCell::CELL_BRIDGE_IMPASSABLE);
-#endif
+#endif // ZH
 			}
 		}
 	}
@@ -4213,10 +4213,10 @@ void PathfindLayer::classifyLayerMapCell( Int i, Int j , PathfindCell *cell, Bri
 		if (bridgeCount!=0) {
 #ifdef OG
 			cell->setType(PathfindCell::CELL_CLIFF); // it's off the bridge.
-#endif
+#endif // OG
 #ifdef ZH
 			cell->setType(PathfindCell::CELL_BRIDGE_IMPASSABLE); // it's off the bridge.
-#endif
+#endif // ZH
 		}
 		
 		// check against the end lines.
@@ -4231,7 +4231,7 @@ void PathfindLayer::classifyLayerMapCell( Int i, Int j , PathfindCell *cell, Bri
 		if (m_bridge->isCellOnSide(&cellBounds)) {
 			cell->setType(PathfindCell::CELL_BRIDGE_IMPASSABLE);
 		} else {
-#endif
+#endif // ZH
 		if (m_bridge->isCellOnEnd(&cellBounds)) {
 			cell->setType(PathfindCell::CELL_CLEAR);
 		}
@@ -4239,7 +4239,7 @@ void PathfindLayer::classifyLayerMapCell( Int i, Int j , PathfindCell *cell, Bri
 		if (m_bridge->isCellOnSide(&cellBounds)) {
 			cell->setType(PathfindCell::CELL_CLIFF);
 		} else {
-#endif
+#endif // OG
 			if (m_bridge->isCellEntryPoint(&cellBounds)) {
 				cell->setType(PathfindCell::CELL_CLEAR);
 				cell->setConnectLayer(LAYER_GROUND);
@@ -4261,10 +4261,10 @@ void PathfindLayer::classifyLayerMapCell( Int i, Int j , PathfindCell *cell, Bri
 				if (!(groundCell->getType()==PathfindCell::CELL_OBSTACLE)) {
 #ifdef OG
 					groundCell->setType(PathfindCell::CELL_IMPASSABLE);
-#endif
+#endif // OG
 #ifdef ZH
 					groundCell->setType(PathfindCell::CELL_BRIDGE_IMPASSABLE);
-#endif
+#endif // ZH
 				}
 			}
 		}
@@ -4343,10 +4343,10 @@ void PathfindLayer::classifyWallMapCell( Int i, Int j , PathfindCell *cell, Obje
 		if (bridgeCount!=0) {
 #ifdef OG
 			cell->setType(PathfindCell::CELL_CLIFF); // it's off the bridge.
-#endif
+#endif // OG
 #ifdef ZH
 			cell->setType(PathfindCell::CELL_BRIDGE_IMPASSABLE); // it's off the bridge.
-#endif
+#endif // ZH
 		}
 		
 	}
@@ -4538,7 +4538,7 @@ void Pathfinder::classifyFence( Object *obj, Bool insert )
 #ifdef OG
 	m_zoneManager.markZonesDirty();
 	
-#endif
+#endif // OG
 	const Coord3D *pos = obj->getPosition();
   Real angle = obj->getOrientation();
  
@@ -4567,7 +4567,7 @@ void Pathfinder::classifyFence( Object *obj, Bool insert )
 	cellBounds.lo.y = REAL_TO_INT_FLOOR((pos->y + 0.5f)/PATHFIND_CELL_SIZE_F);
 	Bool didAnything = false;
 
-#endif
+#endif // ZH
  	for (Int iy = 0; iy < numStepsY; ++iy, tl_x += ydx, tl_y += ydy)
  	{
  		Real x = tl_x;
@@ -4585,7 +4585,7 @@ void Pathfinder::classifyFence( Object *obj, Bool insert )
 #ifdef OG
  					m_map[cx][cy].setTypeAsObstacle( obj, true, pos );
 
-#endif
+#endif // OG
 #ifdef ZH
 					if (m_map[cx][cy].setTypeAsObstacle( obj, true, pos )) {
 						didAnything = true;
@@ -4597,29 +4597,29 @@ void Pathfinder::classifyFence( Object *obj, Bool insert )
 						didAnything = true;
  						m_map[cx][cy].setZone(PathfindZoneManager::UNINITIALIZED_ZONE);
 					}
-#endif
+#endif // ZH
  				}
 #ifdef OG
  				else
  					m_map[cx][cy].removeObstacle(obj);
 
-#endif
+#endif // OG
 #ifdef ZH
 				if (cellBounds.lo.x>cx) cellBounds.lo.x = cx;
  				if (cellBounds.lo.y>cy) cellBounds.lo.y = cy;
  				if (cellBounds.hi.x<cx) cellBounds.hi.x = cx;
  				if (cellBounds.hi.y<cy) cellBounds.hi.y = cy;
-#endif
+#endif // ZH
  			}
 #ifdef ZH
  		}
-#endif
+#endif // ZH
  		}
 #ifdef ZH
 	if (didAnything) {
 		m_zoneManager.markZonesDirty( insert );
 		m_zoneManager.updateZonesForModify(m_map, m_layers, cellBounds, m_extent);
-#endif
+#endif // ZH
  	}
 #if 0 
 	// Perhaps it would make more sense to use the iteratecellsalongpath() provided in this class,
@@ -4698,7 +4698,7 @@ void Pathfinder::classifyObjectFootprint( Object *obj, Bool insert )
     if ( obj->isKindOf( KINDOF_BLAST_CRATER ) ) // since these footprints are permanent, never remove them
       return;
 
-#endif
+#endif // ZH
 		removeUnitFromPathfindMap(obj);
 		if (obj->isKindOf(KINDOF_WALK_ON_TOP_OF_WALL)) { 
 			if (!m_layers[LAYER_WALL].isUnused()) {
@@ -4746,12 +4746,12 @@ void Pathfinder::classifyObjectFootprint( Object *obj, Bool insert )
 	if (obj->getHeightAboveTerrain() > PATHFIND_CELL_SIZE_F) {
 		return; // Don't add bounds that are up in the air.
 
-#endif
+#endif // OG
 #ifdef ZH
 	if (obj->getHeightAboveTerrain() > PATHFIND_CELL_SIZE_F && ( ! obj->isKindOf( KINDOF_BLAST_CRATER ) ) ) 
   {
 		return; // Don't add bounds that are up in the air.... unless a blast crater wants to do just that
-#endif
+#endif // ZH
 	}
 	internal_classifyObjectFootprint(obj, insert);
 }
@@ -4765,7 +4765,7 @@ void Pathfinder::internal_classifyObjectFootprint( Object *obj, Bool insert )
 	cellBounds.lo.y = REAL_TO_INT_FLOOR((pos->y + 0.5f)/PATHFIND_CELL_SIZE_F);
 	cellBounds.hi = cellBounds.lo;
 
-#endif
+#endif // ZH
 	switch(obj->getGeometryInfo().getGeomType())
 	{
 		case GEOMETRY_BOX:
@@ -4773,11 +4773,11 @@ void Pathfinder::internal_classifyObjectFootprint( Object *obj, Bool insert )
 #ifdef OG
 			m_zoneManager.markZonesDirty();
 			const Coord3D *pos = obj->getPosition();
-#endif
+#endif // OG
 #ifdef ZH
 			m_zoneManager.markZonesDirty( insert );
       
-#endif
+#endif // ZH
 			Real angle = obj->getOrientation();
 
 			Real halfsizeX = obj->getGeometryInfo().getMajorRadius();
@@ -4816,7 +4816,7 @@ void Pathfinder::internal_classifyObjectFootprint( Object *obj, Bool insert )
 #ifdef OG
 							m_map[cx][cy].setTypeAsObstacle( obj, false, pos );
 
-#endif
+#endif // OG
 #ifdef ZH
 							if (m_map[cx][cy].setTypeAsObstacle( obj, false, pos )) {
  								m_map[cx][cy].setZone(PathfindZoneManager::UNINITIALIZED_ZONE);
@@ -4826,19 +4826,19 @@ void Pathfinder::internal_classifyObjectFootprint( Object *obj, Bool insert )
 							if (m_map[cx][cy].removeObstacle(obj)) {
  								m_map[cx][cy].setZone(PathfindZoneManager::UNINITIALIZED_ZONE);
 							}
-#endif
+#endif // ZH
 						}
 #ifdef OG
 						else
 							m_map[cx][cy].removeObstacle(obj);
 
-#endif
+#endif // OG
 #ifdef ZH
  						if (cellBounds.lo.x>cx) cellBounds.lo.x = cx;
  						if (cellBounds.lo.y>cy) cellBounds.lo.y = cy;
  						if (cellBounds.hi.x<cx) cellBounds.hi.x = cx;
  						if (cellBounds.hi.y<cy) cellBounds.hi.y = cy;
-#endif
+#endif // ZH
 					}
 				}
 			}
@@ -4850,17 +4850,17 @@ void Pathfinder::internal_classifyObjectFootprint( Object *obj, Bool insert )
 		{
 #ifdef OG
 			m_zoneManager.markZonesDirty();
-#endif
+#endif // OG
 #ifdef ZH
 			m_zoneManager.markZonesDirty( insert );
-#endif
+#endif // ZH
 			// fill in all cells that overlap as obstacle cells
 			/// @todo This is a very inefficient circle-rasterizer
 			ICoord2D topLeft, bottomRight;
 			Coord2D center, delta;
 #ifdef OG
 			const Coord3D *pos = obj->getPosition();
-#endif
+#endif // OG
 			Real radius = obj->getGeometryInfo().getMajorRadius();
 			Real r2, size;
 
@@ -4889,17 +4889,17 @@ void Pathfinder::internal_classifyObjectFootprint( Object *obj, Bool insert )
 						{
 #ifdef OG
 							if (insert)	{
-#endif
+#endif // OG
 #ifdef ZH
 							if (insert) {
-#endif
+#endif // ZH
 								ICoord2D pos;
 								pos.x = i;
 								pos.y = j;
 #ifdef OG
 								m_map[i][j].setTypeAsObstacle( obj, false, pos );
 
-#endif
+#endif // OG
 #ifdef ZH
 								if (m_map[i][j].setTypeAsObstacle( obj, false, pos )) {
  									m_map[i][j].setZone(PathfindZoneManager::UNINITIALIZED_ZONE);
@@ -4908,20 +4908,20 @@ void Pathfinder::internal_classifyObjectFootprint( Object *obj, Bool insert )
 							else {
 								if (m_map[i][j].removeObstacle(obj)) {
  									m_map[i][j].setZone(PathfindZoneManager::UNINITIALIZED_ZONE);
-#endif
+#endif // ZH
 							}
 #ifdef OG
 							else
 								m_map[i][j].removeObstacle( obj );
 
-#endif
+#endif // OG
 #ifdef ZH
 							}
  							if (cellBounds.lo.x>i) cellBounds.lo.x = i;
  							if (cellBounds.lo.y>j) cellBounds.lo.y = j;
  							if (cellBounds.hi.x<i) cellBounds.hi.x = i;
  							if (cellBounds.hi.y<j) cellBounds.hi.y = j;
-#endif
+#endif // ZH
 						}
 					}
 				} // for i
@@ -4932,11 +4932,11 @@ void Pathfinder::internal_classifyObjectFootprint( Object *obj, Bool insert )
 #ifdef OG
 	Region2D bounds;
 
-#endif
+#endif // OG
 #ifdef ZH
 	m_zoneManager.updateZonesForModify(m_map, m_layers, cellBounds, m_extent);
 	
-#endif
+#endif // ZH
 	Int i, j;
 #ifdef OG
 	obj->getGeometryInfo().get2DBounds(*obj->getPosition(), obj->getOrientation(), bounds);
@@ -4945,14 +4945,14 @@ void Pathfinder::internal_classifyObjectFootprint( Object *obj, Bool insert )
 	cellBounds.lo.y = REAL_TO_INT_FLOOR(bounds.lo.y/PATHFIND_CELL_SIZE_F)-1;
 	cellBounds.hi.x = REAL_TO_INT_CEIL(bounds.hi.x/PATHFIND_CELL_SIZE_F)+1;
 	cellBounds.hi.y = REAL_TO_INT_CEIL(bounds.hi.y/PATHFIND_CELL_SIZE_F)+1;
-#endif
+#endif // OG
 #ifdef ZH
 	cellBounds.lo.x -= 2;
 	cellBounds.lo.y -= 2;
 	cellBounds.hi.x += 2;
 	cellBounds.hi.y += 2;
 
-#endif
+#endif // ZH
 	if (cellBounds.lo.x < m_extent.lo.x) {
 		cellBounds.lo.x = m_extent.lo.x;
 	}
@@ -5391,7 +5391,7 @@ Locomotor* Pathfinder::chooseBestLocomotorForPosition(PathfindLayerEnum layer, L
 	if (t == PathfindCell::CELL_BRIDGE_IMPASSABLE) {
 		return LOCOMOTORSURFACE_AIR;
 	}
-#endif
+#endif // ZH
 	if (t==PathfindCell::CELL_CLEAR) {
 		return LOCOMOTORSURFACE_GROUND | LOCOMOTORSURFACE_AIR;
 	}
@@ -5422,7 +5422,7 @@ Bool Pathfinder::validMovementTerrain( PathfindLayerEnum layer, const Locomotor*
 		return false;
 #ifdef OG
 	// Only do terrain, not obstacle cells.  jba.
-#endif
+#endif // OG
 	if (toCell->getType()==PathfindCell::CELL_OBSTACLE) return true;
 	if (toCell->getType()==PathfindCell::CELL_IMPASSABLE) return true;
 	if (toCell->getLayer()!=LAYER_GROUND && toCell->getLayer() == PathfindCell::CELL_CLEAR) {
@@ -5582,7 +5582,7 @@ Bool Pathfinder::checkDestination(const Object *obj, Int cellX, Int cellY, Pathf
 				if (IS_IMPASSABLE(cell->getType())) {
 					return false;
 				}
-#endif
+#endif // ZH
 				if (cell->getFlags() == PathfindCell::NO_UNITS) {
 					continue;  // Nobody is here, so it's ok.
 				} 
@@ -5697,13 +5697,13 @@ Bool Pathfinder::checkForMovement(const Object *obj, TCheckMovementInfo &info)
 							}
 #ifdef ZH
 #if 0
-#endif
+#endif // ZH
 							if (!unit->getAIUpdateInterface()->isIdle()) {
 								return false; // can't path through not-idle units.
 							}
 #ifdef ZH
 #endif
-#endif
+#endif // ZH
 							Bool found = false;
 							Int k;
 							for (k=0; k<numAlly; k++) {
@@ -5861,18 +5861,18 @@ Bool Pathfinder::checkForAdjust(Object *obj, const LocomotorSet& locomotorSet, B
 #ifdef OG
 			pathExists = quickDoesPathExist( locomotorSet, obj->getPosition(), dest);
 			adjustedPathExists = quickDoesPathExist( locomotorSet, obj->getPosition(), &adjustDest);
-#endif
+#endif // OG
 #ifdef ZH
 			pathExists = clientSafeQuickDoesPathExist( locomotorSet, obj->getPosition(), dest);
 			adjustedPathExists = clientSafeQuickDoesPathExist( locomotorSet, obj->getPosition(), &adjustDest);
-#endif
+#endif // ZH
 			if (!pathExists) {	
 #ifdef OG
 				if (quickDoesPathExist( locomotorSet, dest, &adjustDest))	{
-#endif
+#endif // OG
 #ifdef ZH
 				if (clientSafeQuickDoesPathExist( locomotorSet, dest, &adjustDest))	{
-#endif
+#endif // ZH
  					adjustedPathExists = true;
 				}
 			}
@@ -6163,10 +6163,10 @@ Bool Pathfinder::checkForPossible(Bool isCrusher, Int fromZone,  Bool center, co
 	if (!goalCell) return false;
 #ifdef OG
 	if (goalCell->getType() == PathfindCell::CELL_OBSTACLE) return false;
-#endif
+#endif // OG
 #ifdef ZH
 	if (IS_IMPASSABLE(goalCell->getType())) return false;
-#endif
+#endif // ZH
 	Int zone2 =  m_zoneManager.getEffectiveZone(locomotorSet.getValidSurfaces(), isCrusher, goalCell->getZone());
 	if (startingInObstacle) {
 		zone2 = m_zoneManager.getEffectiveTerrainZone(zone2);
@@ -6383,7 +6383,7 @@ void Pathfinder::doDebugIcons(void) {
 							break;
 						case PathfindCell::CELL_BRIDGE_IMPASSABLE:
 							color.blue = color.red = 1;
-#endif
+#endif // ZH
 							empty = false;
 							break;
 						case PathfindCell::CELL_IMPASSABLE:
@@ -6548,7 +6548,7 @@ void Pathfinder::processPathfindQueue(void)
 #ifdef OG
 	if (m_zoneManager.needToCalculateZones()) {
 
-#endif
+#endif // OG
 #ifdef ZH
 
 	if (  
@@ -6558,7 +6558,7 @@ void Pathfinder::processPathfindQueue(void)
 #endif
     m_zoneManager.needToCalculateZones()) 
   {
-#endif
+#endif // ZH
 		m_zoneManager.calculateZones(m_map, m_layers, m_extent);
 		return;
 	}
@@ -6578,11 +6578,11 @@ void Pathfinder::processPathfindQueue(void)
 	m_cumulativeCellsAllocated = 0;	// Number of pathfind cells examined.
 #ifdef ZH
 #ifdef DEBUG_QPF
-#endif
+#endif // ZH
 	Int pathsFound = 0;
 #ifdef ZH
 #endif
-#endif
+#endif // ZH
 	while (m_cumulativeCellsAllocated < PATHFIND_CELLS_PER_FRAME && 
 		m_queuePRTail!=m_queuePRHead) {
 		Object *obj = TheGameLogic->findObjectByID(m_queuedPathfindRequests[m_queuePRHead]);
@@ -6593,11 +6593,11 @@ void Pathfinder::processPathfindQueue(void)
 				ai->doPathfind(this);
 #ifdef ZH
 #ifdef DEBUG_QPF
-#endif
+#endif // ZH
 				pathsFound++;
 #ifdef ZH
 #endif
-#endif
+#endif // ZH
 			}
 		}
 		m_queuePRHead = m_queuePRHead+1;
@@ -6968,39 +6968,39 @@ Int Pathfinder::examineNeighboringCells(PathfindCell *parentCell, PathfindCell *
 #ifdef OG
 			if (info.allyFixedCount) {
 
-#endif
+#endif // OG
 #ifdef ZH
 			if (info.allyFixedCount>0) {
 				Int costFactor = 3*COST_DIAGONAL;
 				if (attackDistance != NO_ATTACK) {
 					costFactor = 3*COST_DIAGONAL;
 				}
-#endif
+#endif // ZH
 				if (canPathThroughUnits) {
 #ifdef OG
 					newCostSoFar += 3*COST_DIAGONAL*info.allyFixedCount;
-#endif
+#endif // OG
 #ifdef ZH
 					newCostSoFar += costFactor;
-#endif
+#endif // ZH
 				}	else {
 					newCell->setBlockedByAlly(true);
 #ifdef OG
 					newCostSoFar += 3*COST_DIAGONAL*info.allyFixedCount;
-#endif
+#endif // OG
 #ifdef ZH
 					newCostSoFar += costFactor;
-#endif
+#endif // ZH
 				}
 			} 
 			Int costRemaining = 0;
 			if (goalCell) {
 #ifdef OG
 				if (attackDistance == 0)  {
-#endif
+#endif // OG
 #ifdef ZH
 				if (attackDistance == NO_ATTACK)  {
-#endif
+#endif // ZH
 					costRemaining = newCell->costToGoal( goalCell );
 				}	else {
 					dx = newCellCoord.x - goalCell->getXIndex();
@@ -7074,10 +7074,10 @@ Path *Pathfinder::findPath( Object *obj, const LocomotorSet& locomotorSet, const
 {
 #ifdef OG
 	if (!quickDoesPathExist(locomotorSet, from, rawTo)) {
-#endif
+#endif // OG
 #ifdef ZH
 	if (!clientSafeQuickDoesPathExist(locomotorSet, from, rawTo)) {
-#endif
+#endif // ZH
 		return NULL;
 	}
 	Bool isHuman = true;
@@ -7551,7 +7551,7 @@ Path *Pathfinder::buildHierachicalPath( const Coord3D *fromPos, PathfindCell *go
 		}
 	}
 
-#endif
+#endif // ZH
 #if defined _DEBUG || defined _INTERNAL
 	if (TheGlobalData->m_debugAI==AI_DEBUG_PATHS)
 	{
@@ -7610,7 +7610,7 @@ struct MADStruct
 #ifdef OG
 		if (otherObj && otherObj->getAI() && !otherObj->getAI()->isMoving()) {
 
-#endif
+#endif // OG
 #ifdef ZH
 		if( otherObj && otherObj->getAI() && !otherObj->getAI()->isMoving() ) 
 		{
@@ -7620,7 +7620,7 @@ struct MADStruct
 			{
 				return 0; // Packing or unpacking objects for example 
 			}
-#endif
+#endif // ZH
 			//DEBUG_LOG(("Moving ally\n"));
 			otherObj->getAI()->aiMoveAwayFromUnit(d->obj, CMD_FROM_AI);
 		}
@@ -8044,11 +8044,11 @@ void Pathfinder::processHierarchicalCell( const ICoord2D &scanCell, const ICoord
 #ifdef OG
 																				 PathfindCell *goalCell, UnsignedShort parentZone, 
 																				 UnsignedShort *examinedZones, Int &numExZones,
-#endif
+#endif // OG
 #ifdef ZH
 																				 PathfindCell *goalCell, zoneStorageType parentZone, 
 																				 zoneStorageType *examinedZones, Int &numExZones,
-#endif
+#endif // ZH
 																				 Bool crusher, Int &cellCount)
 {
 	if (scanCell.x<m_extent.lo.x || scanCell.x>m_extent.hi.x ||
@@ -8057,7 +8057,7 @@ void Pathfinder::processHierarchicalCell( const ICoord2D &scanCell, const ICoord
 		return;
 	}
 	if (parentZone == PathfindZoneManager::UNINITIALIZED_ZONE) {
-#endif
+#endif // ZH
 		return;
 	}
 	if (parentZone == m_zoneManager.getBlockZone(LOCOMOTORSURFACE_GROUND,
@@ -8066,7 +8066,7 @@ void Pathfinder::processHierarchicalCell( const ICoord2D &scanCell, const ICoord
 #ifdef OG
 		if (newCell->hasInfo() && (newCell->getOpen() || newCell->getClosed())) return; // already looked at this one.
 
-#endif
+#endif // OG
 #ifdef ZH
 		if( !newCell->hasInfo() )
 		{
@@ -8076,7 +8076,7 @@ void Pathfinder::processHierarchicalCell( const ICoord2D &scanCell, const ICoord
 		if( newCell->getOpen() || newCell->getClosed() ) 
 			return; // already looked at this one.
 
-#endif
+#endif // ZH
 	  ICoord2D adjacentCell = scanCell;
 		//DEBUG_ASSERTCRASH(parentZone==newCell->getZone(), ("Different zones?"));
 		if (parentZone!=newCell->getZone()) return;
@@ -8090,25 +8090,25 @@ void Pathfinder::processHierarchicalCell( const ICoord2D &scanCell, const ICoord
 		if (adjNewCell->hasInfo() && (adjNewCell->getOpen() || adjNewCell->getClosed())) return; // already looked at this one.
 #ifdef OG
 		UnsignedShort parentGlobalZone = m_zoneManager.getEffectiveZone(LOCOMOTORSURFACE_GROUND, crusher, parentZone);
-#endif
+#endif // OG
 #ifdef ZH
 		zoneStorageType parentGlobalZone = m_zoneManager.getEffectiveZone(LOCOMOTORSURFACE_GROUND, crusher, parentZone);
-#endif
+#endif // ZH
 
 		/// @todo - somehow out of bounds or bogus newZone.
 #ifdef OG
 		UnsignedShort newZone = m_zoneManager.getBlockZone(LOCOMOTORSURFACE_GROUND,
-#endif
+#endif // OG
 #ifdef ZH
 		zoneStorageType newZone = m_zoneManager.getBlockZone(LOCOMOTORSURFACE_GROUND,
-#endif
+#endif // ZH
 							crusher, adjacentCell.x, adjacentCell.y, m_map);
 #ifdef OG
 		UnsignedShort newGlobalZone = m_zoneManager.getEffectiveZone(LOCOMOTORSURFACE_GROUND, crusher, newZone);
-#endif
+#endif // OG
 #ifdef ZH
 		zoneStorageType newGlobalZone = m_zoneManager.getEffectiveZone(LOCOMOTORSURFACE_GROUND, crusher, newZone);
-#endif
+#endif // ZH
 		if (newGlobalZone != parentGlobalZone) {
 			return; // can't step over. jba.
 		}
@@ -8134,7 +8134,7 @@ void Pathfinder::processHierarchicalCell( const ICoord2D &scanCell, const ICoord
 		if( adjNewCell->hasInfo() )
 		{
 
-#endif
+#endif // ZH
 		cellCount++;
 		Int curCost = adjNewCell->costToHierGoal(parentCell);
 		Int remCost = adjNewCell->costToHierGoal(goalCell);
@@ -8152,7 +8152,7 @@ void Pathfinder::processHierarchicalCell( const ICoord2D &scanCell, const ICoord
 		m_openList = adjNewCell->putOnSortedOpenList( m_openList );
 #ifdef ZH
 		}
-#endif
+#endif // ZH
 
 	}
 }
@@ -8258,10 +8258,10 @@ Path *Pathfinder::internal_findHierarchicalPath( Bool isHuman, const LocomotorSu
 
 #ifdef OG
 	UnsignedShort goalBlockZone;
-#endif
+#endif // OG
 #ifdef ZH
 	zoneStorageType goalBlockZone;
-#endif
+#endif // ZH
 	ICoord2D goalBlockNdx;
 	if (goalCell->getLayer()==LAYER_GROUND) {
 		goalBlockZone = m_zoneManager.getBlockZone(locomotorSurface,
@@ -8330,10 +8330,10 @@ Path *Pathfinder::internal_findHierarchicalPath( Bool isHuman, const LocomotorSu
 
 #ifdef OG
 		UnsignedShort parentZone;
-#endif
+#endif // OG
 #ifdef ZH
 		zoneStorageType parentZone;
-#endif
+#endif // ZH
 		if (parentCell->getLayer()==LAYER_GROUND) {
 			parentZone = m_zoneManager.getBlockZone(locomotorSurface,
 				crusher, parentCell->getXIndex(), parentCell->getYIndex(), m_map);
@@ -8493,10 +8493,10 @@ Path *Pathfinder::internal_findHierarchicalPath( Bool isHuman, const LocomotorSu
 		Int i;
 #ifdef OG
 		UnsignedShort examinedZones[PathfindZoneManager::ZONE_BLOCK_SIZE];
-#endif
+#endif // OG
 #ifdef ZH
 		zoneStorageType examinedZones[PathfindZoneManager::ZONE_BLOCK_SIZE];
-#endif
+#endif // ZH
 		Int numExZones = 0;
 		// Left side.
 		if (blockX>0) {
@@ -8765,10 +8765,10 @@ Bool Pathfinder::findBrokenBridge(const LocomotorSet& locoSet,
  */
 #ifdef OG
 Bool Pathfinder::quickDoesPathExist( const LocomotorSet& locomotorSet, 
-#endif
+#endif // OG
 #ifdef ZH
 Bool Pathfinder::clientSafeQuickDoesPathExist( const LocomotorSet& locomotorSet, 
-#endif
+#endif // ZH
 																const Coord3D *from, 
 																const Coord3D *to )
 {
@@ -8778,7 +8778,7 @@ Bool Pathfinder::clientSafeQuickDoesPathExist( const LocomotorSet& locomotorSet,
 	if (!validMovementPosition(false, destinationLayer, locomotorSet, to)) {
 		return false;
 	}
-#endif
+#endif // ZH
 	PathfindLayerEnum fromLayer = TheTerrainLogic->getLayerForDestination(from);
 	Int zone1, zone2;
 
@@ -8797,11 +8797,11 @@ Bool Pathfinder::clientSafeQuickDoesPathExist( const LocomotorSet& locomotorSet,
 			// We are in a building that just got placed, and zones haven't been updated yet. [8/8/2003]
 			// It is better to return a false positive than a false negative. jba.
 			return true;
-#endif
+#endif // ZH
 	}
 #ifdef ZH
 	}
-#endif
+#endif // ZH
 	zone2 =  m_zoneManager.getEffectiveZone(locomotorSet.getValidSurfaces(), false, goalCell->getZone());
 	if (goalCell->getType() == PathfindCell::CELL_OBSTACLE) {
 		doingTerrainZone = true;
@@ -8846,13 +8846,13 @@ Bool Pathfinder::clientSafeQuickDoesPathExistForUI( const LocomotorSet& locomoto
 	PathfindCell *goalCell = getClippedCell(destinationLayer, to);
 	if (goalCell->getType()==PathfindCell::CELL_CLIFF) {
 		return false; // No goals on cliffs.
-#endif
+#endif // ZH
 	}
 #ifdef OG
 	if (!validMovementPosition(false, destinationLayer, locomotorSet, to)) {
 		return false;
 
-#endif
+#endif // OG
 #ifdef ZH
 
 	zone1 = m_zoneManager.getEffectiveZone(locomotorSet.getValidSurfaces(), false, parentCell->getZone()); 
@@ -8880,7 +8880,7 @@ Bool Pathfinder::clientSafeQuickDoesPathExistForUI( const LocomotorSet& locomoto
 		// We are in a building that just got placed, and zones haven't been updated yet. [8/8/2003]
 		// It is better to return a false positive than a false negative. jba.
 		return true;
-#endif
+#endif // ZH
 	}
 	// If the terrain is connected using this locomotor set, we can path somehow.
 	if (zone1 == zone2) {
@@ -9492,10 +9492,10 @@ Path *Pathfinder::findClosestPath( Object *obj, const LocomotorSet& locomotorSet
 				Object* newObstacle = TheGameLogic->findObjectByID(goalCell->getObstacleID());
 #ifdef OG
 				if (newObstacle != NULL && newObstacle->isKindOf(KINDOF_AIRFIELD))
-#endif
+#endif // OG
 #ifdef ZH
 				if (newObstacle != NULL && newObstacle->isKindOf(KINDOF_FS_AIRFIELD))
-#endif
+#endif // ZH
 				{
 					m_ignoreObstacleID = goalCell->getObstacleID();
 					goalOnObstacle = true;
@@ -9575,7 +9575,7 @@ Path *Pathfinder::findClosestPath( Object *obj, const LocomotorSet& locomotorSet
 	//
 #ifdef ZH
 	Bool foundGoal = false;
-#endif
+#endif // ZH
 	while( m_openList != NULL )
 	{
 		Real dx;
@@ -9594,12 +9594,12 @@ Path *Pathfinder::findClosestPath( Object *obj, const LocomotorSet& locomotorSet
 #ifdef OG
 					break;
 
-#endif
+#endif // OG
 #ifdef ZH
 					foundGoal = true;
 					// Continue processing the open list to find a possibly closer cell. jba. [8/25/2003]
 					continue;
-#endif
+#endif // ZH
 				}
 			}
 
@@ -9672,13 +9672,13 @@ Path *Pathfinder::findClosestPath( Object *obj, const LocomotorSet& locomotorSet
 #ifdef ZH
 		// If we haven't already found the goal cell, continue examining. [8/25/2003]
 		if (!foundGoal) {
-#endif
+#endif // ZH
 		// Check to see if we can change layers in this cell.
 		checkChangeLayers(parentCell);
 		count += examineNeighboringCells(parentCell, goalCell, locomotorSet, isHuman, centerInCell, radius, startCellNdx, obj, NO_ATTACK);
 #ifdef ZH
 		}
-#endif
+#endif // ZH
 	}
 
 	if (closesetCell) {
@@ -10471,10 +10471,10 @@ void Pathfinder::changeBridgeState( PathfindLayerEnum layer, Bool repaired)
 	if (m_layers[layer].setDestroyed(!repaired)) {
 #ifdef OG
 		m_zoneManager.markZonesDirty();
-#endif
+#endif // OG
 #ifdef ZH
 		m_zoneManager.markZonesDirty( repaired );
-#endif
+#endif // ZH
 	}
 }
 
@@ -10521,7 +10521,7 @@ void Pathfinder::updateGoal( Object *obj, const Coord3D *newGoalPos, PathfindLay
 #ifdef OG
 	if (!ai->isDoingGroundMovement()) {
 
-#endif
+#endif // OG
 #ifdef ZH
 
 
@@ -10531,13 +10531,13 @@ void Pathfinder::updateGoal( Object *obj, const Coord3D *newGoalPos, PathfindLay
     Bool isUnmannedHelicopter = ( obj->isKindOf( KINDOF_PRODUCED_AT_HELIPAD ) && obj->isDisabledByType( DISABLED_UNMANNED  ) ) ;
     if ( ! isUnmannedHelicopter )
     {
-#endif
+#endif // ZH
 		updateAircraftGoal(obj, newGoalPos);
 		return;
 	}
 #ifdef ZH
 	}
-#endif
+#endif // ZH
 
 	PathfindLayerEnum originalLayer = obj->getDestinationLayer();
 
@@ -10970,11 +10970,11 @@ if (g_UT_startTiming) return false;
 						if( otherObj->testStatus( OBJECT_STATUS_IS_USING_ABILITY ) || otherObj->getAI()->isBusy() )
 						{
 							continue; // Packing or unpacking objects for example
-#endif
+#endif // ZH
 					}
 #ifdef OG
 					if (otherObj && otherObj->getAI() && !otherObj->getAI()->isMoving()) {
-#endif
+#endif // OG
 						//DEBUG_LOG(("Moving ally\n"));
 						otherObj->getAI()->aiMoveAwayFromUnit(obj, CMD_FROM_AI);
 					}
@@ -11578,7 +11578,7 @@ Path *Pathfinder::findAttackPath( const Object *obj, const LocomotorSet& locomot
 #ifdef ZH
 				// put parent cell onto closed list - its evaluation is finished
 				m_closedList = parentCell->putOnClosedList( m_closedList );
-#endif
+#endif // ZH
 				// construct and return path
 #ifdef ZH
 				if (obj->isKindOf(KINDOF_VEHICLE)) {
@@ -11638,11 +11638,11 @@ Path *Pathfinder::findAttackPath( const Object *obj, const LocomotorSet& locomot
 						} 
 					}
 				}
-#endif
+#endif // ZH
 				Path *path = buildActualPath( obj, locomotorSet.getValidSurfaces(), obj->getPosition(), parentCell, centerInCell, false);
 #ifdef OG
 				parentCell->releaseInfo();
-#endif
+#endif // OG
 				if (goalCell->hasInfo() && !goalCell->getClosed() && !goalCell->getOpen()) {
 					goalCell->releaseInfo();
 				}

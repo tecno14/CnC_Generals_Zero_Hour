@@ -44,7 +44,7 @@
 #include "Common/Xfer.h"
 #ifdef ZH
 #include "Common/ThingTemplate.h"
-#endif
+#endif // ZH
 #include "GameLogic/AI.h"
 #include "GameLogic/AIPathfind.h"
 #include "GameLogic/AIGuard.h"
@@ -188,20 +188,20 @@ AIGuardMachine::AIGuardMachine( Object *owner ) :
 	//This breaks deployAI units because they have to completely unpack before realizing that there is a target in range.
 	//So I'm making AI_GUARD_INNER the first state.
 	defineState( AI_GUARD_INNER,						newInstance(AIGuardInnerState)( this ), AI_GUARD_OUTER, AI_GUARD_OUTER, attackAggressors );
-#endif
+#endif // ZH
 	defineState( AI_GUARD_RETURN,						newInstance(AIGuardReturnState)( this ), AI_GUARD_IDLE, AI_GUARD_INNER, attackAggressors );
 	defineState( AI_GUARD_IDLE,							newInstance(AIGuardIdleState)( this ), AI_GUARD_INNER, AI_GUARD_RETURN, attackAggressors );
 #ifdef OG
 	defineState( AI_GUARD_INNER,						newInstance(AIGuardInnerState)( this ), AI_GUARD_OUTER, AI_GUARD_OUTER );
-#endif
+#endif // OG
 	defineState( AI_GUARD_OUTER,						newInstance(AIGuardOuterState)( this ), AI_GUARD_GET_CRATE, AI_GUARD_GET_CRATE );
 	defineState( AI_GUARD_GET_CRATE,				newInstance(AIGuardPickUpCrateState)( this ), AI_GUARD_RETURN, AI_GUARD_RETURN );
 #ifdef OG
 	defineState( AI_GUARD_ATTACK_AGGRESSOR, newInstance(AIGuardAttackAggressorState)( this ), AI_GUARD_RETURN, AI_GUARD_RETURN );
-#endif
+#endif // OG
 #ifdef ZH
 	defineState( AI_GUARD_ATTACK_AGGRESSOR, newInstance(AIGuardAttackAggressorState)( this ), AI_GUARD_INNER, AI_GUARD_INNER );
-#endif
+#endif // ZH
 }
 
 //--------------------------------------------------------------------------------------
@@ -252,7 +252,7 @@ Bool AIGuardMachine::lookForInnerTarget(void)
 	PartitionFilterRelationship					f5(owner, PartitionFilterRelationship::ALLOW_NEUTRAL);
 	PartitionFilterPossibleToEnter			f6(owner, CMD_FROM_AI);
 	PartitionFilterPossibleToHijack			f7(owner, CMD_FROM_AI);
-#endif
+#endif // ZH
 
 	PartitionFilter *filters[16];
 	Int count = 0;
@@ -266,7 +266,7 @@ Bool AIGuardMachine::lookForInnerTarget(void)
 		// Hijack Guard state
 		if (owner->getTemplate()->isHijackGuard())
 		{
-#endif
+#endif // ZH
 	filters[count++] = &f1;
 #ifdef ZH
 			filters[count++] = &f7;
@@ -280,12 +280,12 @@ Bool AIGuardMachine::lookForInnerTarget(void)
 	else
 	{
 		filters[count++] = &f1;
-#endif
+#endif // ZH
 	filters[count++] = &f2;
 #ifdef ZH
 	}
 
-#endif
+#endif // ZH
 	filters[count++] = &filterMapStatus;
 
 	Real visionRange = AIGuardMachine::getStdGuardRange(owner);
@@ -427,7 +427,7 @@ StateReturnType AIGuardInnerState::onEnter( void )
 	// Or try to destroy the target
 	else
 	{
-#endif
+#endif // ZH
 	Object* targetToGuard = getGuardMachine()->findTargetToGuardByID();
 	Coord3D pos = targetToGuard ? *targetToGuard->getPosition() : *getGuardMachine()->getPositionToGuard();
 	Object* nemesis = TheGameLogic->findObjectByID(getGuardMachine()->getNemesisID()) ;
@@ -450,7 +450,7 @@ StateReturnType AIGuardInnerState::onEnter( void )
 		return STATE_CONTINUE;
 #ifdef ZH
 		}
-#endif
+#endif // ZH
 	}
 
 	// if we had no one to attack, we were successful, so go to the next state.
@@ -463,11 +463,11 @@ StateReturnType AIGuardInnerState::update( void )
 #ifdef OG
 	if (m_attackState==NULL) return STATE_SUCCESS;
 
-#endif
+#endif // OG
 #ifdef ZH
 	if (m_attackState)
 	{
-#endif
+#endif // ZH
 	// if the position has moved (IE we're guarding an object), move with it.
 	Object* targetToGuard = getGuardMachine()->findTargetToGuardByID();
 	if (targetToGuard) 
@@ -485,7 +485,7 @@ StateReturnType AIGuardInnerState::update( void )
 
 	return STATE_SUCCESS;
 }
-#endif
+#endif // ZH
 
 //--------------------------------------------------------------------------------------
 void AIGuardInnerState::onExit( StateExitType status )
@@ -505,7 +505,7 @@ void AIGuardInnerState::onExit( StateExitType status )
 		m_enterState = NULL;
 	}
 	
-#endif
+#endif // ZH
 	if (obj->getTeam()) 
 	{
 		obj->getTeam()->setTeamTargetObject(NULL); // clear the target.
@@ -867,17 +867,17 @@ StateReturnType AIGuardAttackAggressorState::onEnter( void )
 	//Don't allow guarding units to leave their guard radius!
 	m_exitConditions.m_center = pos;
 	m_exitConditions.m_radiusSqr = sqr(AIGuardMachine::getStdGuardRange(getMachineOwner()));
-#endif
+#endif // ZH
 	m_exitConditions.m_attackGiveUpFrame = TheGameLogic->getFrame() + TheAI->getAiData()->m_guardChaseUnitFrames;
 	m_exitConditions.m_conditionsToConsider = (ExitConditions::ATTACK_ExitIfExpiredDuration | 
 #ifdef OG
 																						 ExitConditions::ATTACK_ExitIfNoUnitFound);
 
-#endif
+#endif // OG
 #ifdef ZH
 																						 ExitConditions::ATTACK_ExitIfNoUnitFound |
 																						 ExitConditions::ATTACK_ExitIfOutsideRadius );
-#endif
+#endif // ZH
 
 	m_attackState = newInstance(AIAttackState)(getMachine(), true, true, false, &m_exitConditions);
 	m_attackState->getMachine()->setGoalObject(nemesis);

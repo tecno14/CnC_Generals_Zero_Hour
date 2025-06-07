@@ -43,7 +43,7 @@
 #include "light.h"
 #ifdef ZH
 #include "colorspace.h"
-#endif
+#endif // ZH
 
 /*
 ** Constants
@@ -103,7 +103,7 @@ void LightEnvironmentClass::InputLightStruct::Init_From_Point_Or_Spot_Light
 	*/
 #ifdef ZH
 	float atten = 1.0f;
-#endif
+#endif // ZH
 	double atten_start,atten_end;
 	light.Get_Far_Attenuation_Range(atten_start,atten_end);
 #ifdef ZH
@@ -111,12 +111,12 @@ void LightEnvironmentClass::InputLightStruct::Init_From_Point_Or_Spot_Light
 	if (light.Get_Flag(LightClass::FAR_ATTENUATION)) {
 		
 		if (WWMath::Fabs(atten_end - atten_start) < WWMATH_EPSILON) {
-#endif
+#endif // ZH
 	
 #ifdef OG
 	float atten = 1.0f - (dist - atten_start) / (atten_end - atten_start);
 
-#endif
+#endif // OG
 #ifdef ZH
 			/*
 			** Start and end are equal, attenuation is a "step" function
@@ -131,12 +131,12 @@ void LightEnvironmentClass::InputLightStruct::Init_From_Point_Or_Spot_Light
 			** Compute the attenuation
 			*/
 			atten = 1.0f - (dist - atten_start) / (atten_end - atten_start);
-#endif
+#endif // ZH
 	atten = WWMath::Clamp(atten,0.0f,1.0f);
 #ifdef ZH
 		}
 	}
-#endif
+#endif // ZH
 
 
 	if (light.Get_Type() == LightClass::SPOT) {
@@ -160,7 +160,7 @@ void LightEnvironmentClass::InputLightStruct::Init_From_Point_Or_Spot_Light
 #ifdef ZH
 	Ambient *= light.Get_Intensity();  //(gth) CNC3 obey the intensity parameter
 	Diffuse *= light.Get_Intensity();  
-#endif
+#endif // ZH
 
 	m_point = (light.Get_Type() == LightClass::POINT); 
 	m_center = light.Get_Position();
@@ -226,7 +226,7 @@ void LightEnvironmentClass::OutputLightStruct::Init
 	if(Direction.Length2() == 0.0f) {
 		Direction.X = 1.0f;
 	}
-#endif
+#endif // ZH
 }	
 
 
@@ -243,12 +243,12 @@ LightEnvironmentClass::LightEnvironmentClass(void) :
 #ifdef OG
 	OutputAmbient(0,0,0)
 
-#endif
+#endif // OG
 #ifdef ZH
 	OutputAmbient(0,0,0),
 	FillLight(),
 	FillIntensity(0.0f)
-#endif
+#endif // ZH
 {
 }
 
@@ -276,7 +276,7 @@ void LightEnvironmentClass::Add_Light(const LightClass & light)
 		return;
 	}
 
-#endif
+#endif // ZH
 	/*
 	** Compute the equivalent directional + ambient light
 	*/
@@ -286,7 +286,7 @@ void LightEnvironmentClass::Add_Light(const LightClass & light)
 
 	// If we have the fill light set, we also want to the diffuse light to be modified by the intensity of the light source
 	if(FillIntensity) new_light.Diffuse *= light.Get_Intensity();
-#endif
+#endif // ZH
 
 	/*
 	** Add in the ambient component
@@ -303,13 +303,13 @@ void LightEnvironmentClass::Add_Light(const LightClass & light)
 			LightCount++;
 		} else {
 			for (int light_index=0; light_index<LightCount; light_index++) {
-#endif
+#endif // OG
 #ifdef ZH
 
 		// Insert the light into the sorted list of InputLights if it's contribution is greater than the any of the current number of lights
 		for (int light_index=0; light_index < LightCount; light_index++) {
 
-#endif
+#endif // ZH
 				if (new_light.Contribution() > InputLights[light_index].Contribution()) {
 #ifdef ZH
 				
@@ -322,12 +322,12 @@ void LightEnvironmentClass::Add_Light(const LightClass & light)
 				}
 
 				// Add the new light into the InputLights List where it belongs
-#endif
+#endif // ZH
 					InputLights[light_index] = new_light;
 #ifdef OG
 					light_index = MAX_LIGHTS;
 
-#endif
+#endif // OG
 #ifdef ZH
 
 				// Increment the light count if we have not reach the maximum lights limit yet
@@ -335,7 +335,7 @@ void LightEnvironmentClass::Add_Light(const LightClass & light)
 
 				// Since we have inserted a new light, we are done for this function
 				return;
-#endif
+#endif // ZH
 				}
 			}
 #ifdef ZH
@@ -344,7 +344,7 @@ void LightEnvironmentClass::Add_Light(const LightClass & light)
 		if (LightCount < MAX_LIGHTS) {
 			InputLights[LightCount] = new_light;
 			++LightCount;
-#endif
+#endif // ZH
 		}
 	}
 }
@@ -358,7 +358,7 @@ void LightEnvironmentClass::Pre_Render_Update(const Matrix3D & camera_tm)
 	Calculate_Fill_Light();
 
 	/*
-#endif
+#endif // ZH
 	** Transform each light into camera space
 	** and add up the ambient effect of each light
 	*/
@@ -472,5 +472,5 @@ void LightEnvironmentClass::Calculate_Fill_Light(void)
 	Add_Fill_Light();
 }
 
-#endif
+#endif // ZH
 

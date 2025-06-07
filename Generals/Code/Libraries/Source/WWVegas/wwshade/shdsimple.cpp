@@ -325,4 +325,4 @@ void Shd6SimpleClass::Copy_Vertex_Stream
 }
 
 
-#endif
+#endif // ZH

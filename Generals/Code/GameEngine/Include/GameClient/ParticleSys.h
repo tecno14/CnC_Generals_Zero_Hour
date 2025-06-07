@@ -129,12 +129,12 @@ public:
 #ifdef OG
 	Real m_angleX;															///< initial angle around X axis
 	Real m_angleY;															///< initial angle around Y axis
-#endif
+#endif // OG
 	Real m_angleZ;															///< initial angle around Z axis
 #ifdef OG
 	Real m_angularRateX;												///< initial angle around X axis
 	Real m_angularRateY;												///< initial angle around Y axis
-#endif
+#endif // OG
 	Real m_angularRateZ;												///< initial angle around Z axis
 	Real m_angularDamping;											///< angular velocity damping coefficient
 
@@ -180,16 +180,16 @@ public:
 
 #ifdef OG
 	Bool update( void );												///< update this particle's behavior - return false if dead
-#endif
+#endif // OG
 #ifdef ZH
 	inline Bool update( void );												///< update this particle's behavior - return false if dead
-#endif
+#endif // ZH
 	void doWindMotion( void );									///< do wind motion (if present) from particle system
 
 	void applyForce( const Coord3D *force );		///< add the given acceleration
 #ifdef OG
 	void detachDrawable( void ) { m_drawable = NULL; }	///< detach the Drawable pointer from this particle
-#endif
+#endif // OG
 
 	inline const Coord3D *getPosition( void ) { return &m_pos; }
 	inline Real getSize( void ) { return m_size; }
@@ -200,10 +200,10 @@ public:
 
 #ifdef OG
 	Bool isInvisible( void );										///< return true if this particle is invisible
-#endif
+#endif // OG
 #ifdef ZH
 	inline Bool isInvisible( void );										///< return true if this particle is invisible
-#endif
+#endif // ZH
 	inline Bool isCulled (void) {return m_isCulled;}				///< return true if the particle falls off the edge of the screen
 	inline void setIsCulled (Bool enable) { m_isCulled = enable;}		///< set particle to not visible because it's outside view frustum
 
@@ -253,7 +253,7 @@ protected:
 
 #ifdef OG
 	Drawable *				m_drawable;												///< drawable associated with this particle
-#endif
+#endif // OG
 
 	Bool							m_isCulled;														///< status of particle relative to screen bounds
 public:
@@ -284,10 +284,10 @@ static char *ParticleTypeNames[] =
 {
 #ifdef OG
 	"NONE", "PARTICLE", "DRAWABLE", "STREAK", "VOLUME_PARTICLE", NULL
-#endif
+#endif // OG
 #ifdef ZH
 	"NONE", "PARTICLE", "DRAWABLE", "STREAK", "VOLUME_PARTICLE","SMUDGE", NULL
-#endif
+#endif // ZH
 };
 
 static char *EmissionVelocityTypeNames[] =
@@ -341,10 +341,10 @@ public:
 	{
 #ifdef OG
 		INVALID_TYPE=0, PARTICLE, DRAWABLE, STREAK, VOLUME_PARTICLE	 ///< is a particle a 2D-screen-facing particle, or a Drawable, or a Segment in a streak?
-#endif
+#endif // OG
 #ifdef ZH
 		INVALID_TYPE=0, PARTICLE, DRAWABLE, STREAK, VOLUME_PARTICLE, SMUDGE	 ///< is a particle a 2D-screen-facing particle, or a Drawable, or a Segment in a streak?
-#endif
+#endif // ZH
 	}
 	m_particleType;
 
@@ -353,12 +353,12 @@ public:
 #ifdef OG
 	GameClientRandomVariable m_angleX;										///< initial angle around X axis
 	GameClientRandomVariable m_angleY;										///< initial angle around Y axis
-#endif
+#endif // OG
 	GameClientRandomVariable m_angleZ;										///< initial angle around Z axis
 #ifdef OG
 	GameClientRandomVariable m_angularRateX;							///< initial angle around X axis
 	GameClientRandomVariable m_angularRateY;							///< initial angle around Y axis
-#endif
+#endif // OG
 	GameClientRandomVariable m_angularRateZ;							///< initial angle around Z axis
 	GameClientRandomVariable m_angularDamping;						///< angular velocity damping coefficient
 
@@ -588,7 +588,7 @@ public:
 	void rotateLocalTransformZ( Real z );				///< rotate local transform matrix
 #ifdef ZH
   void setSkipParentXfrm(Bool enable) { m_skipParentXfrm = enable; } ///<disable transforming particle system with parent matrix.
-#endif
+#endif // ZH
 		
 	const Coord3D *getDriftVelocity( void ) { return &m_driftVelocity; }	///< get the drift velocity of the system
 
@@ -626,7 +626,7 @@ public:
 	Bool isUsingStreak( void ) { return (m_particleType == STREAK) ? true : false; }
 #ifdef ZH
 	Bool isUsingSmudge( void ) { return (m_particleType == SMUDGE) ? true : false; }
-#endif
+#endif // ZH
 	UnsignedInt getVolumeParticleDepth( void ) { return ( m_particleType == VOLUME_PARTICLE ) ? OPTIMUM_VOLUME_PARTICLE_DEPTH : 0; }
 
 	Bool shouldBillboard( void ) { return !m_isGroundAligned; }
@@ -746,7 +746,7 @@ protected:
 	Bool							m_isSaveable;													///< true if this system should be saved/loaded
 #ifdef ZH
   Bool              m_skipParentXfrm;                     ///< true if this system is already in world space.
-#endif
+#endif // ZH
 
 
 	// the actual particle system data is inherited from ParticleSystemInfo

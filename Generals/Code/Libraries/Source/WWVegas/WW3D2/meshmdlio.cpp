@@ -24,26 +24,26 @@
  *                                                                                             *
 #ifdef OG
  *                     $Archive:: /VSS_Sync/ww3d2/meshmdlio.cpp                               $*
-#endif
+#endif // OG
 #ifdef ZH
  *                     $Archive:: /Commando/Code/ww3d2/meshmdlio.cpp                          $*
-#endif
+#endif // ZH
  *                                                                                             *
  *                       Author:: Greg Hjelstrom                                               *
  *                                                                                             *
 #ifdef OG
  *                     $Modtime:: 8/29/01 7:29p                                               $*
-#endif
+#endif // OG
 #ifdef ZH
  *                     $Modtime:: 1/18/02 3:09p                                               $*
-#endif
+#endif // ZH
  *                                                                                             *
 #ifdef OG
  *                    $Revision:: 22                                                          $*
-#endif
+#endif // OG
 #ifdef ZH
  *                    $Revision:: 27                                                          $*
-#endif
+#endif // ZH
  *                                                                                             *
  *---------------------------------------------------------------------------------------------*
  * Functions:                                                                                  *
@@ -180,19 +180,19 @@ private:
 		LegacyMaterialClass(void) : Name(NULL),VertexMaterialIdx(0),ShaderIdx(0),TextureIdx(0)	{ }
 		~LegacyMaterialClass(void)	{ if (Name) free(Name); }		
 		void		Set_Name(const char * name) { if (Name) free(Name); Name = NULL; if (name) Name = strdup(name); }
-#endif
+#endif // OG
 #ifdef ZH
 		LegacyMaterialClass(void) : VertexMaterialIdx(0),ShaderIdx(0),TextureIdx(0)	{ }
 		~LegacyMaterialClass(void)	{ }		
 		void		Set_Name(const char * name) { Name=name; }
-#endif
+#endif // ZH
 		
 #ifdef OG
 		char *	Name;
-#endif
+#endif // OG
 #ifdef ZH
 		StringClass Name;
-#endif
+#endif // ZH
 		int		VertexMaterialIdx;
 		int		ShaderIdx;
 		int		TextureIdx;
@@ -706,7 +706,7 @@ WW3DErrorType MeshModelClass::read_v3_materials(ChunkLoadClass & cload,MeshLoadC
 				shader.Set_Fog_Func( ShaderClass::FOG_DISABLE );
 			}
 #endif
-#endif
+#endif // OG
 
 			/*
 			** If this shader does alpha blending, the mesh must be sorted.
@@ -855,10 +855,10 @@ WW3DErrorType MeshModelClass::read_per_tri_materials(ChunkLoadClass & cload,Mesh
 
 #ifdef OG
 	Vector3i * polys = get_polys();
-#endif
+#endif // OG
 #ifdef ZH
 	TriIndex * polys = get_polys();
-#endif
+#endif // ZH
 
 	bool multi_mtl = (context->Vertex_Material_Count() > 1);
 	bool multi_tex = (context->Texture_Count() > 1);
@@ -1701,7 +1701,7 @@ void MeshModelClass::post_process()
 		}
 	}
 
-#endif
+#endif // ZH
 	// turn off backface culling if the mesh is supposed to be two-sided
 	if (Get_Flag(MeshGeometryClass::TWO_SIDED)) {
 
@@ -1728,7 +1728,7 @@ void MeshModelClass::post_process()
 	// GRADIENT_MODULATE to GRADIENT_MODULATE2X)
 	if (WW3D::Is_Overbright_Modify_On_Load_Enabled()) {
 		modify_for_overbright();
-#endif
+#endif // ZH
 	}
 }
 
@@ -1835,10 +1835,10 @@ unsigned int MeshModelClass::get_sort_flags(int pass) const
 	}
 #ifdef OG
 	return false;
-#endif
+#endif // OG
 #ifdef ZH
 	return flags;
-#endif
+#endif // ZH
 }
 
 unsigned int MeshModelClass::get_sort_flags(void) const
@@ -1859,7 +1859,7 @@ void MeshModelClass::compute_static_sort_levels(void)
 		SSCAT_ADDITIVE_BF		= (1 << ShaderClass::SSCAT_ADDITIVE),
 #ifdef ZH
 		SSCAT_SCREEN_BF		= (1 << ShaderClass::SSCAT_SCREEN),
-#endif
+#endif // ZH
 		SSCAT_OTHER_BF			= (1 << ShaderClass::SSCAT_OTHER)
 	};
 
@@ -1880,10 +1880,10 @@ void MeshModelClass::compute_static_sort_levels(void)
 
 #ifdef OG
 	case (SSCAT_ADDITIVE_BF | SSCAT_ALPHA_TEST_BF):
-#endif
+#endif // OG
 #ifdef ZH
 	case SSCAT_SCREEN_BF:
-#endif
+#endif // ZH
 		SortLevel = SORT_LEVEL_BIN2;
 		break;
 		
@@ -1899,7 +1899,7 @@ void MeshModelClass::modify_for_overbright(void)
 	// Iterate over all passes
 	int pass_cnt = Get_Pass_Count();
 	for (int pass_idx = 0; pass_idx < pass_cnt; pass_idx++) {
-#endif
+#endif // ZH
 
 #ifdef ZH
 		// First do single shader
@@ -1924,7 +1924,7 @@ void MeshModelClass::modify_for_overbright(void)
 
 }
 
-#endif
+#endif // ZH
 void MeshModelClass::install_materials(MeshLoadContextClass * context)
 {
 	int i;
@@ -1940,7 +1940,7 @@ void MeshModelClass::install_materials(MeshLoadContextClass * context)
 #ifdef OG
 	DefMatDesc->Post_Load_Process (true);
 
-#endif
+#endif // OG
 #ifdef ZH
 	bool lighting_enabled=true;
 	// vertex-lit models need the lighting turned off!
@@ -1948,14 +1948,14 @@ void MeshModelClass::install_materials(MeshLoadContextClass * context)
 		lighting_enabled=false;
 	}
 	DefMatDesc->Post_Load_Process (lighting_enabled,this);
-#endif
+#endif // ZH
 	if (AlternateMatDesc != NULL) {
 #ifdef OG
 		AlternateMatDesc->Post_Load_Process (true);
-#endif
+#endif // OG
 #ifdef ZH
 		AlternateMatDesc->Post_Load_Process (lighting_enabled,this);
-#endif
+#endif // ZH
 	}
 
 	/*
@@ -2455,10 +2455,10 @@ WW3DErrorType MeshModelClass::write_triangles(ChunkSaveClass & csave,MeshSaveCon
 
 #ifdef OG
 	Vector3i	* poly_verts = Poly->Get_Array();
-#endif
+#endif // OG
 #ifdef ZH
 	TriIndex	* poly_verts = Poly->Get_Array();
-#endif
+#endif // ZH
 	Vector4 * poly_eq = (PlaneEq ? PlaneEq->Get_Array() : NULL);
 
 	for (int i=0; i<Get_Polygon_Count(); i++) {

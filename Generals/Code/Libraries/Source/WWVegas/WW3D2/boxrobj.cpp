@@ -28,17 +28,17 @@
  *                                                                                             *
 #ifdef OG
  *                     $Modtime:: 7/05/01 4:11p                                               $*
-#endif
+#endif // OG
 #ifdef ZH
  *                     $Modtime:: 1/19/02 12:57p                                              $*
-#endif
+#endif // ZH
  *                                                                                             *
 #ifdef OG
  *                    $Revision:: 27                                                          $*
-#endif
+#endif // OG
 #ifdef ZH
  *                    $Revision:: 35                                                          $*
-#endif
+#endif // ZH
  *                                                                                             *
  *---------------------------------------------------------------------------------------------*
  * Functions:                                                                                  *
@@ -115,7 +115,7 @@
 #include "visrasterizer.h"
 #ifdef ZH
 #include "meshgeometry.h"
-#endif
+#endif // ZH
 
 
 #define NUM_BOX_VERTS	8
@@ -124,10 +124,10 @@
 // Face Connectivity
 #ifdef OG
 static Vector3i					_BoxFaces[NUM_BOX_FACES] = 
-#endif
+#endif // OG
 #ifdef ZH
 static TriIndex					_BoxFaces[NUM_BOX_FACES] = 
-#endif
+#endif // ZH
 {
 #ifdef OG
 	Vector3i( 0,1,2 ),		// +z faces
@@ -142,7 +142,7 @@ static TriIndex					_BoxFaces[NUM_BOX_FACES] =
 	Vector3i( 4,1,0 ),
 	Vector3i( 3,2,6 ),		// -y faces
 	Vector3i( 3,6,7 )
-#endif
+#endif // OG
 #ifdef ZH
 	TriIndex( 0,1,2 ),		// +z faces
 	TriIndex( 0,2,3 ),		
@@ -156,7 +156,7 @@ static TriIndex					_BoxFaces[NUM_BOX_FACES] =
 	TriIndex( 4,1,0 ),
 	TriIndex( 3,2,6 ),		// -y faces
 	TriIndex( 3,6,7 )
-#endif
+#endif // ZH
 };
 
 // Vertex Positions as a function of the box extents
@@ -218,7 +218,7 @@ BoxRenderObjClass::BoxRenderObjClass(void)
 	Color.Set(1,1,1);
 #ifdef ZH
 	Opacity = 0.25f;
-#endif
+#endif // ZH
 	ObjSpaceCenter.Set(0,0,0);
 	ObjSpaceExtent.Set(1,1,1);
 }
@@ -246,7 +246,7 @@ BoxRenderObjClass::BoxRenderObjClass(const W3dBoxStruct & def)
 	Set_Collision_Type(col_bits<<1);
 #ifdef ZH
 	Opacity = 0.25f;
-#endif
+#endif // ZH
 }
 
 
@@ -399,10 +399,10 @@ void BoxRenderObjClass::Init(void)
 
 #ifdef OG
 	_BoxShader = ShaderClass::_PresetAlphaSolidShader;
-#endif
+#endif // OG
 #ifdef ZH
 	_BoxShader = ShaderClass::_PresetAlphaSolidShader; //_PresetAdditiveSolidShader;
-#endif
+#endif // ZH
 
 	IsInitted = true;
 }
@@ -502,17 +502,17 @@ void BoxRenderObjClass::render_box(RenderInfoClass & rinfo,const Vector3 & cente
 		*/
 #ifdef OG
 		DWORD color = DX8Wrapper::Convert_Color(Color,0.25f);
-#endif
+#endif // OG
 #ifdef ZH
 		DWORD color = DX8Wrapper::Convert_Color(Color,Opacity);
-#endif
+#endif // ZH
 		
 #ifdef OG
 		int buffer_type = BUFFER_TYPE_DYNAMIC_SORTING;
-#endif
+#endif // OG
 #ifdef ZH
 		int buffer_type = BUFFER_TYPE_DYNAMIC_DX8;
-#endif
+#endif // ZH
 
 		DynamicVBAccessClass vbaccess(buffer_type,dynamic_fvf_type,NUM_BOX_VERTS);
 		{
@@ -861,7 +861,7 @@ bool AABoxRenderObjClass::Cast_Ray(RayCollisionTestClass & raytest)
 	if (Is_Animation_Hidden()) return false;
 	if (raytest.Result->StartBad) return false;
 
-#endif
+#endif // ZH
 	if (CollisionMath::Collide(raytest.Ray,CachedBox,raytest.Result)) {
 		raytest.CollidedRenderObj = this;
 		return true;
@@ -888,7 +888,7 @@ bool AABoxRenderObjClass::Cast_AABox(AABoxCollisionTestClass & boxtest)
 #ifdef ZH
 	if (boxtest.Result->StartBad) return false;
 
-#endif
+#endif // ZH
 	if (CollisionMath::Collide(boxtest.Box,boxtest.Move,CachedBox,boxtest.Result)) {
 		boxtest.CollidedRenderObj = this;
 		return true;
@@ -915,7 +915,7 @@ bool AABoxRenderObjClass::Cast_OBBox(OBBoxCollisionTestClass & boxtest)
 #ifdef ZH
 	if (boxtest.Result->StartBad) return false;
 
-#endif
+#endif // ZH
 	if (CollisionMath::Collide(boxtest.Box,boxtest.Move,CachedBox,Vector3(0,0,0),boxtest.Result)) {
 		boxtest.CollidedRenderObj = this;
 		return true;
@@ -1149,11 +1149,11 @@ void OBBoxRenderObjClass::Render(RenderInfoClass & rinfo)
 #ifdef OG
 	Matrix3D tm(Transform);
 	DX8Wrapper::Set_Transform(D3DTS_WORLD,tm);
-#endif
+#endif // OG
 #ifdef ZH
 	DX8Wrapper::Set_Transform(D3DTS_WORLD,Transform);
 
-#endif
+#endif // ZH
 	render_box(rinfo,ObjSpaceCenter,ObjSpaceExtent);
 }
 
@@ -1257,7 +1257,7 @@ bool OBBoxRenderObjClass::Cast_Ray(RayCollisionTestClass & raytest)
 	if (Is_Animation_Hidden()) return false;
 	if (raytest.Result->StartBad) return false;
 
-#endif
+#endif // ZH
 	if (CollisionMath::Collide(raytest.Ray,CachedBox,raytest.Result)) {
 		raytest.CollidedRenderObj = this;
 		return true;
@@ -1284,7 +1284,7 @@ bool OBBoxRenderObjClass::Cast_AABox(AABoxCollisionTestClass & boxtest)
 #ifdef ZH
 	if (boxtest.Result->StartBad) return false;
 
-#endif
+#endif // ZH
 	if (CollisionMath::Collide(boxtest.Box,boxtest.Move,CachedBox,Vector3(0,0,0),boxtest.Result)) {
 		boxtest.CollidedRenderObj = this;
 		return true;
@@ -1311,7 +1311,7 @@ bool OBBoxRenderObjClass::Cast_OBBox(OBBoxCollisionTestClass & boxtest)
 #ifdef ZH
 	if (boxtest.Result->StartBad) return false;
 
-#endif
+#endif // ZH
 	if (CollisionMath::Collide(boxtest.Box,boxtest.Move,CachedBox,Vector3(0,0,0),boxtest.Result)) {
 		boxtest.CollidedRenderObj = this;
 		return true;

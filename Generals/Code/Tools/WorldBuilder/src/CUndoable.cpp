@@ -794,12 +794,12 @@ void DictItemUndoable::Do(void)
 			m_dictToModify[i]->copyPairFrom(m_newDictData, m_key);
 #ifdef ZH
 	}
-#endif
+#endif // ZH
 		MapObjectProps::update();	// ugh, hack to update panel
 		ObjectOptions::update();	// ditto
 #ifdef OG
 	}
-#endif
+#endif // OG
 	if (m_inval && m_pDoc) {
 		WbView3d *p3View = m_pDoc->GetActive3DView();
 		p3View->resetRenderObjects();
@@ -816,12 +816,12 @@ void DictItemUndoable::Undo(void)
 			m_dictToModify[i]->copyPairFrom(m_oldDictData[i], m_key);
 #ifdef ZH
 	}
-#endif
+#endif // ZH
 		MapObjectProps::update();		// ugh, hack to update panel
 		ObjectOptions::update();	// ditto
 #ifdef OG
 	}
-#endif
+#endif // OG
 	if (m_inval && m_pDoc) {
 		WbView3d *p3View = m_pDoc->GetActive3DView();
 		p3View->resetRenderObjects();
@@ -1081,7 +1081,7 @@ void AddPolygonUndoable::Do(void)
 #ifdef ZH
 	// The call to LayersList must be done here because only the WorldBuilder knows about Layers.
 	TheLayersList->addPolygonTriggerToLayersList(m_trigger, m_trigger->getLayerName()); 
-#endif
+#endif // ZH
 	PolygonTrigger::addPolygonTrigger(m_trigger);
 	m_isTriggerInList = true;
 }
@@ -1094,7 +1094,7 @@ void AddPolygonUndoable::Undo(void)
 #ifdef ZH
 	// The call to LayersList must be done here because only the WorldBuilder knows about Layers.
 	TheLayersList->removePolygonTriggerFromLayersList(m_trigger);
-#endif
+#endif // ZH
 	PolygonTrigger::removePolygonTrigger(m_trigger);
 	m_isTriggerInList = false;
 }
@@ -1356,7 +1356,7 @@ void DeletePolygonUndoable::Do(void)
 {
 #ifdef ZH
 	TheLayersList->removePolygonTriggerFromLayersList(m_trigger);
-#endif
+#endif // ZH
 	PolygonTrigger::removePolygonTrigger(m_trigger);
 	m_isTriggerInList = false;
 }
@@ -1369,7 +1369,7 @@ void DeletePolygonUndoable::Undo(void)
 	PolygonTrigger::addPolygonTrigger(m_trigger);
 #ifdef ZH
 	TheLayersList->addPolygonTriggerToLayersList(m_trigger, m_trigger->getLayerName());
-#endif
+#endif // ZH
 	m_isTriggerInList = true;
 #ifdef ZH
 }
@@ -1393,11 +1393,11 @@ MultipleUndoable::~MultipleUndoable(void)
   if ( m_undoableList )
   {
     REF_PTR_RELEASE(m_undoableList);
-#endif
+#endif // ZH
 }
 #ifdef ZH
 }
-#endif
+#endif // ZH
 
 #ifdef ZH
 //
@@ -1406,7 +1406,7 @@ MultipleUndoable::~MultipleUndoable(void)
 void MultipleUndoable::addUndoable( Undoable * undoable )
 {
   undoable->LinkNext( m_undoableList );
-#endif
+#endif // ZH
 
 #ifdef ZH
   REF_PTR_SET( m_undoableList, undoable );
@@ -1463,7 +1463,7 @@ void MultipleUndoable::Redo(void)
     undoable = next;
   }
 }
-#endif
+#endif // ZH
 
 
 

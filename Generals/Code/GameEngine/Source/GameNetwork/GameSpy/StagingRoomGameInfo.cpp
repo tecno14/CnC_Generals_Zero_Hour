@@ -671,10 +671,10 @@ AsciiString GameSpyStagingRoom::generateGameSpyGameResultsPacket( void )
 
 #ifdef OG
 			AsciiString result = "loss", side = "USA";
-#endif
+#endif // OG
 #ifdef ZH
 			AsciiString result = "loss";
-#endif
+#endif // ZH
 			if (disconnected)
 				result = "discon";
 			else if (TheNetwork->sawCRCMismatch())
@@ -684,17 +684,17 @@ AsciiString GameSpyStagingRoom::generateGameSpyGameResultsPacket( void )
 
 #ifdef OG
 			side = p->getPlayerTemplate()->getSide();
-#endif
+#endif // OG
 #ifdef ZH
 			AsciiString side = p->getPlayerTemplate()->getSide();
-#endif
+#endif // ZH
 			if (side == "America")
 #ifdef OG
 				side = "USA";
-#endif
+#endif // OG
 #ifdef ZH
 				side = "USA";  //conform to GameSpy
-#endif
+#endif // ZH
 
 			AsciiString playerStr;
 			playerStr.format("\\player_%d\\%s\\pid_%d\\%d\\team_%d\\%d\\result_%d\\%s\\side_%d\\%s",
@@ -754,10 +754,10 @@ AsciiString GameSpyStagingRoom::generateLadderGameResultsPacket( void )
 	AsciiString tempStr;
 #ifdef OG
 	tempStr.format(",ladderIP=%s,ladderPort=%d", getLadderIP().str(), getLadderPort());
-#endif
+#endif // OG
 #ifdef ZH
 	tempStr.format("ladderIP=%s,ladderPort=%d", getLadderIP().str(), getLadderPort());
-#endif
+#endif // ZH
 	results.concat(tempStr);
 
 	Int playerID = 0;
@@ -796,11 +796,11 @@ AsciiString GameSpyStagingRoom::generateLadderGameResultsPacket( void )
 #ifdef OG
 			playerStr.format(",fps%d=%d,cash%d=%d,capturedTech%d=%d,discon%d=%d,side%d=%s,team%d=%d",
 				playerID, fps, playerID, earnings, playerID, techCaptured, playerID, disconnected, playerID, p[i]->getPlayerTemplate()->getSide().str(), playerID, slot->getTeamNumber());
-#endif
+#endif // OG
 #ifdef ZH
 			playerStr.format(",fps%d=%d,cash%d=%d,capturedTech%d=%d,discon%d=%d,side%d=%s",
 				playerID, fps, playerID, earnings, playerID, techCaptured, playerID, disconnected, playerID, p[i]->getPlayerTemplate()->getSide().str());
-#endif
+#endif // ZH
 			results.concat(playerStr);
 
 			++playerID;

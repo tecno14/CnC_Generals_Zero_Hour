@@ -24,31 +24,31 @@
  *                                                                                             * 
 #ifdef OG
  *                     $Archive:: /Commando/Library/RAMFILE.CPP                               $* 
-#endif
+#endif // OG
 #ifdef ZH
  *                     $Archive:: /Commando/Code/wwlib/ramfile.cpp                            $* 
-#endif
+#endif // ZH
  *                                                                                             * 
 #ifdef OG
  *                      $Author:: Greg_h                                                      $*
-#endif
+#endif // OG
 #ifdef ZH
  *                      $Author:: Ian_l                                                       $*
-#endif
+#endif // ZH
  *                                                                                             * 
 #ifdef OG
  *                     $Modtime:: 7/22/97 11:37a                                              $*
-#endif
+#endif // OG
 #ifdef ZH
  *                     $Modtime:: 10/31/01 2:36p                                              $*
-#endif
+#endif // ZH
  *                                                                                             * 
 #ifdef OG
  *                    $Revision:: 1                                                           $*
-#endif
+#endif // OG
 #ifdef ZH
  *                    $Revision:: 2                                                           $*
-#endif
+#endif // ZH
  *                                                                                             *
  *---------------------------------------------------------------------------------------------* 
  * Functions:                                                                                  * 
@@ -516,5 +516,5 @@ void RAMFileClass::Bias (int start, int length)
 	if (Is_Open()) {
 		Seek (0, SEEK_SET);
 	}
-#endif
+#endif // ZH
 }

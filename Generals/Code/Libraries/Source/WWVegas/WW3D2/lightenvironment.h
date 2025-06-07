@@ -28,28 +28,28 @@
  *                                                                                             *
 #ifdef OG
  *                      $Author:: Naty_h                                                      $*
-#endif
+#endif // OG
 #ifdef ZH
  *                      $Author:: Kenny Mitchell                                              $*
-#endif
+#endif // ZH
  *                                                                                             *
 #ifdef OG
  *                     $Modtime:: 4/01/01 12:01a                                              $*
-#endif
+#endif // OG
 #ifdef ZH
  *                     $Modtime:: 06/27/02 9:23a                                              $*
-#endif
+#endif // ZH
  *                                                                                             *
 #ifdef OG
  *                    $Revision:: 4                                                           $*
-#endif
+#endif // OG
 #ifdef ZH
  *                    $Revision:: 5                                                           $*
-#endif
+#endif // ZH
  *                                                                                             *
 #ifdef ZH
  * 06/27/02 KM Shader system light environment updates                                       *
-#endif
+#endif // ZH
  *---------------------------------------------------------------------------------------------*
  * Functions:                                                                                  *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
@@ -112,7 +112,7 @@ public:
 	void					Add_Fill_Light(void);
 	void					Calculate_Fill_Light(void);
 	void					Set_Fill_Intensity(float intensity)			{ FillIntensity = intensity; }
-#endif
+#endif // ZH
 
 	/*
 	** Accessors 
@@ -139,7 +139,7 @@ public:
 
 #ifdef ZH
 	static int			Get_Max_Lights() { return MAX_LIGHTS; }
-#endif
+#endif // ZH
 	enum { MAX_LIGHTS = 4 };	//Made this public, so other code can tell how many lights are allowed. - MW
 #ifdef ZH
 
@@ -155,7 +155,7 @@ public:
 		}
 		return true;
 	}
-#endif
+#endif // ZH
 
 protected:
 
@@ -195,10 +195,10 @@ protected:
 	Vector3				ObjectCenter;					// center of the object to be lit
 #ifdef OG
 	InputLightStruct	InputLights[MAX_LIGHTS];	// input lights
-#endif
+#endif // OG
 #ifdef ZH
 	InputLightStruct	InputLights[MAX_LIGHTS];	// Sorted list of input lights from the greatest contributor to the least
-#endif
+#endif // ZH
 
 	Vector3				OutputAmbient;					// scene ambient + lights' ambients
 	OutputLightStruct	OutputLights[MAX_LIGHTS];	// ouput lights
@@ -206,7 +206,7 @@ protected:
 #ifdef ZH
 	InputLightStruct 	FillLight;						// Used to store the calculated fill light
 	float					FillIntensity;					// Used to determine how strong the fill light should be
-#endif
+#endif // ZH
 };
 
 

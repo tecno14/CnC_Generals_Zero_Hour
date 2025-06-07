@@ -18,10 +18,10 @@
 
 #ifdef OG
 /* $Header: /VSS_Sync/ww3d2/w3d_file.h 16    8/29/01 9:49p Vss_sync $ */
-#endif
+#endif // OG
 #ifdef ZH
 /* $Header: /Commando/Code/Tools/max2w3d/w3d_file.h 19    9/12/01 2:08p Greg_h $ */
-#endif
+#endif // ZH
 /*********************************************************************************************** 
  ***                            Confidential - Westwood Studios                              *** 
  *********************************************************************************************** 
@@ -30,31 +30,31 @@
  *                                                                                             * 
 #ifdef OG
  *                     $Archive:: /VSS_Sync/ww3d2/w3d_file.h                                  $* 
-#endif
+#endif // OG
 #ifdef ZH
  *                     $Archive:: /Commando/Code/Tools/max2w3d/w3d_file.h                     $* 
-#endif
+#endif // ZH
  *                                                                                             * 
 #ifdef OG
  *                      $Author:: Vss_sync                                                    $* 
-#endif
+#endif // OG
 #ifdef ZH
  *                      $Author:: Greg_h                                                      $* 
-#endif
+#endif // ZH
  *                                                                                             * 
 #ifdef OG
  *                     $Modtime:: 8/29/01 7:29p                                               $* 
-#endif
+#endif // OG
 #ifdef ZH
  *                     $Modtime:: 9/12/01 2:04p                                               $* 
-#endif
+#endif // ZH
  *                                                                                             * 
 #ifdef OG
  *                    $Revision:: 16                                                          $* 
-#endif
+#endif // OG
 #ifdef ZH
  *                    $Revision:: 19                                                          $* 
-#endif
+#endif // ZH
  *                                                                                             * 
  *---------------------------------------------------------------------------------------------* 
  * Functions:                                                                                  * 
@@ -481,7 +481,7 @@ enum {
 #ifdef ZH
 		W3D_CHUNK_EMITTER_BLUR_TIME_KEYFRAMES,						// length of tail for line groups
 		W3D_CHUNK_EMITTER_EXTRA_INFO,										// Extra info for the emitter
-#endif
+#endif // ZH
 
 	W3D_CHUNK_AGGREGATE								=0x00000600,		// description of an aggregate object
 		W3D_CHUNK_AGGREGATE_HEADER,										// general information such as name and version
@@ -532,7 +532,7 @@ enum {
 			W3D_CHUNK_SHDSUBMESH_VERTEX_NORMALS,						// array of normals (array of W3dVectorStruct's)
 			W3D_CHUNK_SHDSUBMESH_TRIANGLES,								// array of 16bit int triplets (vertex indices for each triangle)
 			W3D_CHUNK_SHDSUBMESH_VERTEX_SHADE_INDICES,				// shade indexes for each vertex (array of uint32's)
-#endif
+#endif // ZH
 
 #ifdef ZH
 			W3D_CHUNK_SHDSUBMESH_UV0,										// per-vertex texture coordinates (array of W3dTexCoordStruct's)
@@ -544,7 +544,7 @@ enum {
 
 			W3D_CHUNK_SHDSUBMESH_VERTEX_COLOR,							// per-vertex color
 			W3D_CHUNK_SHDSUBMESH_VERTEX_INFLUENCES,					// byte-per-vertex, WWSkin support
-#endif
+#endif // ZH
 };
 
 
@@ -703,7 +703,7 @@ struct W3dMaterialInfoStruct
 #ifdef ZH
 #define		W3DVERTMAT_STAGE0_MAPPING_GRID_WS_CLASSIC_ENV	0x00130000
 #define		W3DVERTMAT_STAGE0_MAPPING_GRID_WS_ENVIRONMENT	0x00140000
-#endif
+#endif // ZH
 
 #define		W3DVERTMAT_STAGE1_MAPPING_MASK						0x0000FF00
 #define		W3DVERTMAT_STAGE1_MAPPING_UV							0x00000000
@@ -728,7 +728,7 @@ struct W3dMaterialInfoStruct
 #ifdef ZH
 #define		W3DVERTMAT_STAGE1_MAPPING_GRID_WS_CLASSIC_ENV	0x00001300
 #define		W3DVERTMAT_STAGE1_MAPPING_GRID_WS_ENVIRONMENT	0x00001400
-#endif
+#endif // ZH
 
 #define		W3DVERTMAT_PSX_MASK										0xFF000000
 #define		W3DVERTMAT_PSX_TRANS_MASK 								0x07000000
@@ -821,7 +821,7 @@ enum
 #ifdef ZH
 	W3DSHADER_PRIGRADIENT_BUMPENVMAPLUMINANCE,	// environment-mapped bump mapping with luminance control
 	W3DSHADER_PRIGRADIENT_MODULATE2X,				// modulate fragment ARGB by gradient ARGB and multiply RGB by 2
-#endif
+#endif // ZH
 	W3DSHADER_PRIGRADIENT_MAX,							// end of enumeration
 
 	W3DSHADER_SECGRADIENT_DISABLE = 0,				// don't draw secondary gradient (default)
@@ -852,7 +852,7 @@ enum
 	W3DSHADER_DETAILCOLORFUNC_ADDSIGNED2X,			// (local + other - 0.5) * 2
 	W3DSHADER_DETAILCOLORFUNC_SCALE2X,				// local * other * 2
 	W3DSHADER_DETAILCOLORFUNC_MODALPHAADDCOLOR,	// local + localAlpha * other	
-#endif
+#endif // ZH
 	W3DSHADER_DETAILCOLORFUNC_MAX,					// end of enumeration
 
 	W3DSHADER_DETAILALPHAFUNC_DISABLE = 0,			// local (default)
@@ -945,7 +945,7 @@ struct W3dShaderStruct
 	{
 		return !(*this == that);
 	}
-#endif
+#endif // ZH
 };
 
 struct W3dPS2ShaderStruct
@@ -1132,7 +1132,7 @@ typedef enum
 	SURFACE_TYPE_TIBERIUM_WATER_PERMEABLE,
 	SURFACE_TYPE_UNDERWATER_DIRT,
 	SURFACE_TYPE_UNDERWATER_TIBERIUM_DIRT,
-#endif
+#endif // ZH
 
 	SURFACE_TYPE_MAX			// NOTE: if you add a surface type, add it to the SurfaceEffects.INI file!
 } W3D_SURFACE_TYPES;
@@ -1172,7 +1172,7 @@ const char * const SURFACE_TYPE_STRINGS[SURFACE_TYPE_MAX] =
 	"Tiberium Water Permeable",
 	"Underwater Dirt",
 	"Underwater Tiberium Dirt",
-#endif
+#endif // ZH
 };
 
 /////////////////////////////////////////////////////////////////////////////////////////////
@@ -1240,17 +1240,17 @@ const char * const SURFACE_TYPE_STRINGS[SURFACE_TYPE_MAX] =
 #define MAX_SORT_LEVEL						32
 #ifdef OG
 #define SORT_LEVEL_BIN1						10
-#endif
+#endif // OG
 #ifdef ZH
 #define SORT_LEVEL_BIN1						20
-#endif
+#endif // ZH
 #define SORT_LEVEL_BIN2						15
 #ifdef OG
 #define SORT_LEVEL_BIN3						20
-#endif
+#endif // OG
 #ifdef ZH
 #define SORT_LEVEL_BIN3						10
-#endif
+#endif // ZH
 
 struct W3dMeshHeader3Struct
 {
@@ -1854,7 +1854,7 @@ struct W3dEmitterExtraInfoStruct
 {
 	float32				FutureStartTime; // Whether to start a particle in the future or not
 	uint32				Padding[9];
-#endif
+#endif // ZH
 };
 
 struct W3dVolumeRandomizerStruct
@@ -1872,7 +1872,7 @@ struct W3dVolumeRandomizerStruct
 #ifdef ZH
 #define W3D_EMITTER_RENDER_MODE_LINEGRP_TETRA		3
 #define W3D_EMITTER_RENDER_MODE_LINEGRP_PRISM		4
-#endif
+#endif // ZH
 
 #define W3D_EMITTER_FRAME_MODE_1x1						0
 #define W3D_EMITTER_FRAME_MODE_2x2						1
@@ -1975,7 +1975,7 @@ struct W3dEmitterBlurTimeKeyframeStruct
 {
 	float32				Time;
 	float32				BlurTime;
-#endif
+#endif // ZH
 };
 
 
@@ -2274,7 +2274,7 @@ struct W3dShdMeshHeaderStruct
 	W3dVectorStruct		BoxMax;				// Max corner of the bounding box
 	W3dVectorStruct		SphCenter;			// Center of bounding sphere
 	float32					SphRadius;			// Bounding sphere radius
-#endif
+#endif // ZH
 };
 
 #ifdef ZH
@@ -2298,7 +2298,7 @@ struct W3dShdSubMeshHeaderStruct
 	W3dVectorStruct		SphCenter;			// Center of bounding sphere
 	float32					SphRadius;			// Bounding sphere radius
 };
-#endif
+#endif // ZH
 
 /*
 ** Include the obsolete structures and chunk ID's

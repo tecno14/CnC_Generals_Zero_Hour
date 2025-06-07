@@ -41,12 +41,12 @@ class W3DShadowTexture;	//forward reference
 class W3DShadowTextureManager;	//forward reference
 #ifdef OG
 class W3DProjectedShadow; //forward reference
-#endif
+#endif // OG
 class Drawable;	//forward reference
 #ifdef ZH
 class W3DProjectedShadow; //forward reference.
 class TexProjectClass;
-#endif
+#endif // ZH
 
 class W3DProjectedShadowManager	: public ProjectedShadowManager
 {
@@ -72,7 +72,7 @@ class W3DProjectedShadowManager	: public ProjectedShadowManager
 		W3DProjectedShadow	*addShadow( RenderObjClass *robj, Shadow::ShadowTypeInfo *shadowInfo, Drawable *draw);	///<add a new shadow with texture of given name or that of robj.
 #ifdef ZH
 		W3DProjectedShadow	*createDecalShadow( Shadow::ShadowTypeInfo *shadowInfo);	///<add a new shadow with texture of given name or that of robj.
-#endif
+#endif // ZH
 		void removeShadow (W3DProjectedShadow *shadow);
 		void removeAllShadows(void); ///< Remove all shadows.
 		TextureClass *getRenderTarget(void)	{ return m_dynamicRenderTarget;}
@@ -134,6 +134,6 @@ class W3DProjectedShadow	: public Shadow
 		Int		m_flags;			/// custom rendering flags
 		virtual void release(void)	{TheW3DProjectedShadowManager->removeShadow(this);}	///<release shadow from manager
 };
-#endif
+#endif // ZH
 
 #endif	//__W3D_PROJECTED_SHADOW_H_

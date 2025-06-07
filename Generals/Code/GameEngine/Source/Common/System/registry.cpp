@@ -133,15 +133,15 @@ Bool GetStringFromGeneralsRegistry(AsciiString path, AsciiString key, AsciiStrin
 	return getStringFromRegistry(HKEY_CURRENT_USER, fullPath.str(), key.str(), val);
 }
 
-#endif
+#endif // ZH
 Bool GetStringFromRegistry(AsciiString path, AsciiString key, AsciiString& val)
 {
 #ifdef OG
 	AsciiString fullPath = "SOFTWARE\\Electronic Arts\\EA Games\\Generals";
-#endif
+#endif // OG
 #ifdef ZH
 	AsciiString fullPath = "SOFTWARE\\Electronic Arts\\EA Games\\Command and Conquer Generals Zero Hour";
-#endif
+#endif // ZH
 
 	fullPath.concat(path);
 	DEBUG_LOG(("GetStringFromRegistry - looking in %s for key %s\n", fullPath.str(), key.str()));
@@ -157,10 +157,10 @@ Bool GetUnsignedIntFromRegistry(AsciiString path, AsciiString key, UnsignedInt& 
 {
 #ifdef OG
 	AsciiString fullPath = "SOFTWARE\\Electronic Arts\\EA Games\\Generals";
-#endif
+#endif // OG
 #ifdef ZH
 	AsciiString fullPath = "SOFTWARE\\Electronic Arts\\EA Games\\Command and Conquer Generals Zero Hour";
-#endif
+#endif // ZH
 
 	fullPath.concat(path);
 	DEBUG_LOG(("GetUnsignedIntFromRegistry - looking in %s for key %s\n", fullPath.str(), key.str()));
@@ -177,7 +177,7 @@ AsciiString GetRegistryLanguage(void)
 	static Bool cached = FALSE;
 #ifdef ZH
 	// NOTE: static causes a memory leak, but we have to keep it because the value is cached.
-#endif
+#endif // ZH
 	static AsciiString val = "english";
 	if (cached) {
 		return val;

@@ -68,4 +68,4 @@ protected:
 
 #endif  // end __SubdualDamageHelper_H_
 
-#endif
+#endif // ZH

@@ -28,24 +28,24 @@
  *                                                                                             *
 #ifdef OG
  *                      $Author:: Greg_h                                                      $*
-#endif
+#endif // OG
 #ifdef ZH
  *                      $Author:: Jani_p                                                      $*
-#endif
+#endif // ZH
  *                                                                                             *
 #ifdef OG
  *                     $Modtime:: 5/17/01 10:41a                                              $*
-#endif
+#endif // OG
 #ifdef ZH
  *                     $Modtime:: 11/24/01 5:42p                                              $*
-#endif
+#endif // ZH
  *                                                                                             *
 #ifdef OG
  *                    $Revision:: 4                                                           $*
-#endif
+#endif // OG
 #ifdef ZH
  *                    $Revision:: 6                                                           $*
-#endif
+#endif // ZH
  *                                                                                             *
  *---------------------------------------------------------------------------------------------*
  * Functions:                                                                                  *
@@ -68,7 +68,7 @@
 #include "plane.h"
 #ifdef ZH
 #include "meshgeometry.h"
-#endif
+#endif // ZH
 
 
 class CameraClass;
@@ -101,7 +101,7 @@ public:
 
 	void						Enable_Two_Sided_Rendering(bool onoff)		{ TwoSidedRenderingEnabled = onoff; }
 	bool						Is_Two_Sided_Rendering_Enabled(void)		{ return TwoSidedRenderingEnabled; }
-#endif
+#endif // ZH
 
 	enum ModeType { OCCLUDER_MODE = 0, NON_OCCLUDER_MODE };
 	void						Set_Render_Mode(ModeType mode) { RenderMode = mode; }
@@ -132,7 +132,7 @@ protected:
 	ModeType					RenderMode;
 #ifdef ZH
 	bool						TwoSidedRenderingEnabled;
-#endif
+#endif // ZH
 
 	int						ResWidth;
 	int						ResHeight;
@@ -194,7 +194,7 @@ public:
 	void					Enable_Two_Sided_Rendering(bool onoff)		{ IDBuffer.Enable_Two_Sided_Rendering(onoff); }
 	bool					Is_Two_Sided_Rendering_Enabled(void)		{ return IDBuffer.Is_Two_Sided_Rendering_Enabled(); }
 
-#endif
+#endif // ZH
 	void					Set_Resolution(int width,int height);
 	void					Get_Resolution(int * set_width,int * set_height);
 
@@ -214,10 +214,10 @@ public:
 	void					Clear(void)							{ IDBuffer.Clear(); }
 #ifdef OG
 	bool					Render_Triangles(const Vector3 * verts,int vcount,const Vector3i * tris, int tcount,const AABoxClass & bounds);
-#endif
+#endif // OG
 #ifdef ZH
 	bool					Render_Triangles(const Vector3 * verts,int vcount,const TriIndex * tris, int tcount,const AABoxClass & bounds);
-#endif
+#endif // ZH
 	const uint32 *		Get_Pixel_Row(int y,int min_x,int max_x) { return IDBuffer.Get_Pixel_Row(y,min_x,max_x); }
 
 protected:
@@ -228,11 +228,11 @@ protected:
 #ifdef OG
 	bool					Render_Triangles_Clip(const Vector3 * verts,int vcount,const Vector3i * tris, int tcount);
 	bool					Render_Triangles_No_Clip(const Vector3 * verts,int vcount,const Vector3i * tris, int tcount);
-#endif
+#endif // OG
 #ifdef ZH
 	bool					Render_Triangles_Clip(const Vector3 * verts,int vcount,const TriIndex * tris, int tcount);
 	bool					Render_Triangles_No_Clip(const Vector3 * verts,int vcount,const TriIndex * tris, int tcount);
-#endif
+#endif // ZH
 	
 	Matrix3D				ModelTransform;			// AKA "World Transform"
 	CameraClass *		Camera;

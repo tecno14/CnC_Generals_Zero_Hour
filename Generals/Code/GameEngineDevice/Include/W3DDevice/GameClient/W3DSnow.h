@@ -64,4 +64,4 @@ class W3DSnowManager : public SnowManager
 #endif // _W3DSNOW_H_
 
 
-#endif
+#endif // ZH

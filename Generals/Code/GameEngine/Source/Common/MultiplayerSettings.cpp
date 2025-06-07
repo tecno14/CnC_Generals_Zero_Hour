@@ -59,7 +59,7 @@ const FieldParse MultiplayerSettings::m_multiplayerSettingsFieldParseTable[] =
 #ifdef OG
 	{ "InitialCreditsMin",				INI::parseInt,	NULL,	offsetof( MultiplayerSettings, m_initialCreditsMin ) },
 	{ "InitialCreditsMax",				INI::parseInt,	NULL,	offsetof( MultiplayerSettings, m_initialCreditsMax ) },
-#endif
+#endif // OG
 	{ "StartCountdownTimer",			INI::parseInt,	NULL,	offsetof( MultiplayerSettings, m_startCountdownTimerSeconds ) },
 	{ "MaxBeaconsPerPlayer",			INI::parseInt,	NULL,	offsetof( MultiplayerSettings, m_maxBeaconsPerPlayer ) },
 	{ "UseShroud",								INI::parseBool,	NULL,	offsetof( MultiplayerSettings, m_isShroudInMultiplayer ) },
@@ -82,7 +82,7 @@ MultiplayerSettings::MultiplayerSettings()
 	//DID U MEAN m_initialCreditsMax = 10000;?
 	//Initializations inserted
 	m_initialCreditsMax = 10000;
-#endif
+#endif // OG
 	m_maxBeaconsPerPlayer = 3;
 	//
 
@@ -98,7 +98,7 @@ MultiplayerSettings::MultiplayerSettings()
 #ifdef ZH
 
   m_gotDefaultStartingMoney = false;
-#endif
+#endif // ZH
 }  // end MultiplayerSettings
 
 MultiplayerColorDefinition::MultiplayerColorDefinition()
@@ -164,7 +164,7 @@ void MultiplayerSettings::addStartingMoneyChoice( const Money & money, Bool isDe
     m_defaultStartingMoney = money;
     m_gotDefaultStartingMoney = true;
   }
-#endif
+#endif // ZH
 }
 
 MultiplayerColorDefinition * MultiplayerColorDefinition::operator =(const MultiplayerColorDefinition& other)

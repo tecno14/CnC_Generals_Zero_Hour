@@ -100,16 +100,16 @@ public:
 
 	void setChallengeCampaignComplete(Int challenge, GameDifficulty difficulty);
 	Bool getChallengeCampaignComplete(Int challenge, GameDifficulty difficulty) const;
-#endif
+#endif // ZH
 };
 
 void ResetBattleHonorInsertion(void);
 #ifdef OG
 void InsertBattleHonor(GameWindow *list, const Image *image, Bool enabled, Int itemData, Int& row, Int& column, UnicodeString text = UnicodeString::TheEmptyString);
-#endif
+#endif // OG
 #ifdef ZH
 void InsertBattleHonor(GameWindow *list, const Image *image, Bool enabled, Int itemData, Int& row, Int& column, UnicodeString text = UnicodeString::TheEmptyString, Int extra = 0);
-#endif
+#endif // ZH
 void BattleHonorTooltip(GameWindow *window,
 												WinInstanceData *instData,
 												UnsignedInt mouse);

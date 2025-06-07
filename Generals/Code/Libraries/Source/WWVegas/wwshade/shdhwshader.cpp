@@ -510,4 +510,4 @@ void ShdHWVertexShader::Light
 }
 
 
-#endif
+#endif // ZH

@@ -213,10 +213,10 @@ void W3DGameClient::adjustLOD( Int adj )
 	if (WW3D::Get_Texture_Reduction() != TheWritableGlobalData->m_textureReductionFactor)
 #ifdef OG
 	{	WW3D::Set_Texture_Reduction(TheWritableGlobalData->m_textureReductionFactor,6);
-#endif
+#endif // OG
 #ifdef ZH
 	{	WW3D::Set_Texture_Reduction(TheWritableGlobalData->m_textureReductionFactor,32);
-#endif
+#endif // ZH
 		TheGameLODManager->setCurrentTextureReduction(TheWritableGlobalData->m_textureReductionFactor);
 #ifdef ZH
 		if( TheTerrainRenderObject ) 
@@ -233,23 +233,23 @@ void W3DGameClient::notifyTerrainObjectMoved(Object *obj)
 {
 	if (TheTerrainRenderObject) {
 		TheTerrainRenderObject->unitMoved(obj);
-#endif
+#endif // ZH
 	}
 
 #ifdef OG
 //I commented this out because we're no longer using terrain LOD.  So I
 //stole this function and keys to adjust the texture resolution instead. -MW
-#endif
+#endif // OG
 #ifdef ZH
 }  // end setTimeOfDay
 
-#endif
+#endif // ZH
 
 #ifdef OG
 //	if( TheTerrainRenderObject ) 
 //		TheTerrainRenderObject->adjustTerrainLOD( adj );
-#endif
+#endif // OG
 
 #ifdef OG
 }  // end adjustLOD
-#endif
+#endif // OG

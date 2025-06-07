@@ -250,4 +250,4 @@ inline bool RegularExpressionClass::operator != (const RegularExpressionClass &r
 
 
 
-#endif
+#endif // ZH

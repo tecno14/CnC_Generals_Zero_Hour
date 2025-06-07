@@ -27,30 +27,30 @@
 #ifdef OG
  *                       Author:: Greg_h                                                       *
 
-#endif
+#endif // OG
 #ifdef ZH
  *                    Org Author:: Greg_h                                                       *
  *                                                                                             *
  *                       Author : Kenny Mitchell                                               * 
-#endif
+#endif // ZH
  *                                                                                             *
 #ifdef OG
  *                     $Modtime:: 6/29/00 6:51p                                               $*
-#endif
+#endif // OG
 #ifdef ZH
  *                     $Modtime:: 06/26/02 4:04p                                             $*
-#endif
+#endif // ZH
  *                                                                                             *
 #ifdef OG
  *                    $Revision:: 23                                                          $*
-#endif
+#endif // OG
 #ifdef ZH
  *                    $Revision:: 24                                                          $*
-#endif
+#endif // ZH
  *                                                                                             *
 #ifdef ZH
  * 06/26/02 KM Matrix name change to avoid MAX conflicts                                       *
-#endif
+#endif // ZH
  *---------------------------------------------------------------------------------------------*
  * Functions:                                                                                  *
  *   OBBoxClass::Transform -- transform an oriented box                                        *
@@ -111,10 +111,10 @@ public:
 	
 #ifdef OG
 	OBBoxClass(const Vector3 & center,const Vector3 & extent,const Matrix3 & basis) :
-#endif
+#endif // OG
 #ifdef ZH
 	OBBoxClass(const Vector3 & center,const Vector3 & extent,const Matrix3x3 & basis) :
-#endif
+#endif // ZH
 		Basis(basis),
 		Center(center),
 		Extent(extent)
@@ -134,10 +134,10 @@ public:
 
 #ifdef OG
 	Matrix3	Basis;
-#endif
+#endif // OG
 #ifdef ZH
 	Matrix3x3	Basis;
-#endif
+#endif // ZH
 	Vector3	Center;
 	Vector3	Extent;
 
@@ -199,10 +199,10 @@ inline void OBBoxClass::Transform
 	Matrix3D::Transform_Vector(tm,in.Center,&(out->Center));
 #ifdef OG
 	Matrix3::Multiply(tm,in.Basis,&(out->Basis));
-#endif
+#endif // OG
 #ifdef ZH
 	Matrix3x3::Multiply(tm,in.Basis,&(out->Basis));
-#endif
+#endif // ZH
 }
 
 
@@ -231,10 +231,10 @@ inline void OBBoxClass::Compute_Point(float params[3],Vector3 * set_point) const
 
 #ifdef OG
 	Matrix3::Rotate_Vector(Basis,point,set_point);
-#endif
+#endif // OG
 #ifdef ZH
 	Matrix3x3::Rotate_Vector(Basis,point,set_point);
-#endif
+#endif // ZH
 	Vector3::Add(Center,*set_point,set_point);
 }
 

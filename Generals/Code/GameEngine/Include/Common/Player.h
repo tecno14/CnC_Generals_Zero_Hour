@@ -49,7 +49,7 @@
 
 #ifdef ZH
 #include "Common/AcademyStats.h"
-#endif
+#endif // ZH
 #include "Common/Debug.h"
 #include "Common/Energy.h"
 #include "Common/GameType.h"
@@ -66,10 +66,10 @@
 #include "Common/Team.h"
 #ifdef OG
 #include "Common/STLTypedefs.h"
-#endif
+#endif // OG
 #ifdef ZH
 #include "Common/Upgrade.h"
-#endif
+#endif // ZH
 
 // ----------------------------------------------------------------------------------------------
 
@@ -233,7 +233,7 @@ public:
 	inline AsciiString getSide() const { return m_side; }
 #ifdef ZH
 	inline AsciiString getBaseSide() const { return m_baseSide; }
-#endif
+#endif // ZH
 
 	inline const PlayerTemplate* getPlayerTemplate() const { return m_playerTemplate;	}
 	/// return the Player's Handicap sub-object
@@ -280,7 +280,7 @@ public:
   
   // Check MaxSimultaneousOfType
   Bool canBuildMoreOfType( const ThingTemplate *whatToBuild ) const;
-#endif
+#endif // ZH
 
 	/// Difficulty level for this player.
 	GameDifficulty getPlayerDifficulty(void) const;
@@ -307,7 +307,7 @@ public:
 
 	// Counts available shortcut special power of specified type that can fire now.
 	Int countReadyShortcutSpecialPowersOfType( SpecialPowerType spType );
-#endif
+#endif // ZH
 
 	/// return t if the player has the given science, either intrinsically, via specialization, or via capture.
 	Bool hasScience(ScienceType t) const;
@@ -326,11 +326,11 @@ public:
 #ifdef OG
 	Bool hasUpgradeComplete( Int64 testMask );		///< does player have totally done and produced upgrade
 	Int64 getCompletedUpgradeMask() const { return m_upgradesCompleted; }	///< get list of upgrades that are completed
-#endif
+#endif // OG
 #ifdef ZH
 	Bool hasUpgradeComplete( UpgradeMaskType testMask );		///< does player have totally done and produced upgrade
 	UpgradeMaskType getCompletedUpgradeMask() const { return m_upgradesCompleted; }	///< get list of upgrades that are completed
-#endif
+#endif // ZH
 	Bool hasUpgradeInProduction( const UpgradeTemplate *upgradeTemplate );		///< does player have this upgrade in progress right now
 	Upgrade *addUpgrade( const UpgradeTemplate *upgradeTemplate,
 											 UpgradeStatusType status );		///< add upgrade, or update existing upgrade status
@@ -355,11 +355,11 @@ public:
 #ifdef ZH
 
 #endif
-#endif
+#endif // ZH
 
 #ifdef ZH
 #if defined(_DEBUG) || defined(_INTERNAL) || defined(_ALLOW_DEBUG_CHEATS_IN_RELEASE)
-#endif
+#endif // ZH
 	/// No time building cheat key
 	void toggleInstantBuild(){ m_DEMO_instantBuild = !m_DEMO_instantBuild; }
 	Bool buildsInstantly() const { return m_DEMO_instantBuild; }
@@ -463,10 +463,10 @@ public:
 
 #ifdef OG
 	virtual void computeSuperweaponTarget(const SpecialPowerTemplate *power, Coord3D *pos, Int playerNdx, Real weaponRadius); ///< Calculates best pos for weapon given radius.
-#endif
+#endif // OG
 #ifdef ZH
 	virtual Bool computeSuperweaponTarget(const SpecialPowerTemplate *power, Coord3D *pos, Int playerNdx, Real weaponRadius); ///< Calculates best pos for weapon given radius.
-#endif
+#endif // ZH
 
 	/// Get the enemy an ai player is currently focused on.  NOTE - Can be NULL.
 	Player  *getCurrentEnemy( void );
@@ -553,10 +553,10 @@ public:
 		*/	
 #ifdef OG
 	void iterateObjects( ObjectIterateFunc func, void *userData );
-#endif
+#endif // OG
 #ifdef ZH
 	void iterateObjects( ObjectIterateFunc func, void *userData ) const;
-#endif
+#endif // ZH
 
 	/**
 		return this player's "default" team.
@@ -593,16 +593,16 @@ public:
 	/// All of our units are new spied upon; they sight for the given enemy
 #ifdef OG
 	void setUnitsVisionSpied( Bool setting, PlayerIndex byWhom );
-#endif
+#endif // OG
 #ifdef ZH
 	void setUnitsVisionSpied( Bool setting, KindOfMaskType whichUnits, PlayerIndex byWhom );
-#endif
+#endif // ZH
 
 #ifdef OG
 	/// This will be asked by units when they look to get extra people to sight for
 	PlayerMaskType getVisionSpiedMask() const;
 
-#endif
+#endif // OG
 	/// Destroy all of the teams for this player, causing him to DIE.
 	void killPlayer(void);
 
@@ -621,7 +621,7 @@ public:
 	
 	/// Build an instance of a specific building nearest specified team.  Gets passed to aiPlayer.
 	void buildSpecificBuildingNearestTeam( const AsciiString &thingName, const Team *team );
-#endif
+#endif // ZH
 
 	/// Build an upgrade.  Gets passed to aiPlayer.
 	void buildUpgrade(const AsciiString &upgrade);
@@ -638,7 +638,7 @@ public:
 
 	/// Calculates the closest construction zone location based on a template. Gets plassed to aiPlayer
 	Bool calcClosestConstructionZoneLocation( const ThingTemplate *constructTemplate, Coord3D *location );
-#endif
+#endif // ZH
 
 	/// Enable/Disable the construction of units
 	Bool getCanBuildUnits(void) { return m_canBuildUnits; }
@@ -713,7 +713,7 @@ public:
 	//detects a change, and posts a message. When the message gets processed, this value gets set.
 	Bool isLogicalRetaliationModeEnabled() const { return m_logicalRetaliationModeEnabled; }
 	void setLogicalRetaliationModeEnabled( Bool set ) { m_logicalRetaliationModeEnabled = set; }
-#endif
+#endif // ZH
 
 private:
 
@@ -793,7 +793,7 @@ private:
 	AsciiString									m_side;												///< the "side" this player is on
 #ifdef ZH
 	AsciiString									m_baseSide;											///< the base side, GLA, USA, or China
-#endif
+#endif // ZH
 	PlayerType									m_playerType;									///< human/computer control
 	Money												m_money;											///< Player's current wealth
 	Upgrade*										m_upgradeList;								///< list of all upgrades this player has
@@ -807,11 +807,11 @@ private:
 #ifdef OG
 	Int64												m_upgradesInProgress;					///< Bit field of In Production status upgrades
 	Int64												m_upgradesCompleted;					///< Bit field of upgrades completed.  Bits are assigned by UpgradeCenter
-#endif
+#endif // OG
 #ifdef ZH
 	UpgradeMaskType							m_upgradesInProgress;					///< Bit field of in Production status upgrades
 	UpgradeMaskType							m_upgradesCompleted;					///< Bit field of upgrades completed.  Bits are assigned by UpgradeCenter
-#endif
+#endif // ZH
 	Energy											m_energy;											///< current energy production & consumption
 	MissionStats								m_stats;											///< stats about the current mission (units destroyed, etc)
 	BuildListInfo*							m_pBuildList;									///< linked list of buildings for PLAYER_COMPUTER.
@@ -822,11 +822,11 @@ private:
 	ProductionVeterancyMap			m_productionVeterancyLevels;	///< Map to keep track of starting level of produced units
 #ifdef OG
 #if !defined(_PLAYTEST)
-#endif
+#endif // OG
 	AIPlayer*										m_ai;													///< if PLAYER_COMPUTER, the entity that does the thinking
 #ifdef OG
 #endif
-#endif
+#endif // OG
 	Int													m_mpStartIndex;								///< The player's starting index for multiplayer.
 	ResourceGatheringManager*		m_resourceGatheringManager;		///< Keeps track of all Supply Centers and Warehouses
 	TunnelTracker*							m_tunnelSystem;								///< All TunnelContain buildings use this part of me for actual conatinment
@@ -848,7 +848,7 @@ private:
 #ifdef ZH
 	
 	AcademyStats					m_academyStats;				///< Keeps track of various statistics in order to provide advice to the player about how to improve playing.
-#endif
+#endif // ZH
 
 	Bool									m_canBuildUnits;		///< whether the current player is allowed to build units
 	Bool									m_canBuildBase;			///< whether the current player is allowed to build Base buildings
@@ -864,7 +864,7 @@ private:
 #ifdef OG
 	Int										m_visionSpiedBy[MAX_PLAYER_COUNT];  ///< Reference count of having units spied on by players.
 	PlayerMaskType				m_visionSpiedMask;	///< For quick lookup and edge triggered maintenance
-#endif
+#endif // OG
 	
 	Real									m_cashBountyPercent;
 
@@ -876,7 +876,7 @@ private:
 #endif
 
 #if defined(_DEBUG) || defined(_INTERNAL) || defined(_ALLOW_DEBUG_CHEATS_IN_RELEASE)
-#endif
+#endif // ZH
 	Bool									m_DEMO_instantBuild;		///< Can I build anything in one frame?
 #endif
 
@@ -897,7 +897,7 @@ private:
 	Bool									m_isPlayerDead;
 #ifdef ZH
 	Bool									m_logicalRetaliationModeEnabled;
-#endif
+#endif // ZH
 };
 
 #endif // _PLAYER_H_

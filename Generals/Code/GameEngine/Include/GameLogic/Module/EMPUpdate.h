@@ -38,7 +38,7 @@
 #include "GameLogic/Module/DieModule.h"
 #include "GameLogic/Weapon.h"
 
-#endif
+#endif // ZH
 
 //-------------------------------------------------------------------------------------------------
 class EMPUpdateModuleData : public UpdateModuleData
@@ -62,7 +62,7 @@ public:
   KindOfMaskType m_victimKindOf;
   KindOfMaskType m_victimKindOfNot;
 	Bool				m_doesNotAffectMyOwnBuildings;
-#endif
+#endif // ZH
 
 	EMPUpdateModuleData()
 	{
@@ -81,12 +81,12 @@ public:
 		m_effectRadius = 200;
 		m_rejectMask = 0;
 		m_doesNotAffectMyOwnBuildings = FALSE;
-#endif
+#endif // ZH
 
 #ifdef ZH
     m_victimKindOf.clear();
     m_victimKindOfNot.clear();
-#endif
+#endif // ZH
 	}
 
 	static void buildFieldParse(MultiIniFieldParse& p) 
@@ -109,12 +109,12 @@ public:
 			{ "EffectRadius",	INI::parseReal,										NULL, offsetof( EMPUpdateModuleData, m_effectRadius ) },
 			{ "DoesNotAffect", INI::parseBitString32,	TheWeaponAffectsMaskNames, offsetof(EMPUpdateModuleData, m_rejectMask) },
 			{ "DoesNotAffectMyOwnBuildings", INI::parseBool, NULL, offsetof( EMPUpdateModuleData, m_doesNotAffectMyOwnBuildings ) },
-#endif
+#endif // ZH
 
 #ifdef ZH
       { "VictimRequiredKindOf", KindOfMaskType::parseFromINI, NULL, offsetof( EMPUpdateModuleData, m_victimKindOf ) },
 		  { "VictimForbiddenKindOf", KindOfMaskType::parseFromINI, NULL, offsetof( EMPUpdateModuleData, m_victimKindOfNot ) },
-#endif
+#endif // ZH
 
 			{ 0, 0, 0, 0 }
 		};
@@ -182,7 +182,7 @@ public:
 			{ "DisabledDuration",	INI::parseDurationUnsignedInt,	NULL, offsetof( LeafletDropBehaviorModuleData, m_disabledDuration ) },
       { "AffectRadius",     INI::parseReal,                 NULL, offsetof( LeafletDropBehaviorModuleData, m_radius ) },
       { "LeafletFXParticleSystem", INI::parseParticleSystemTemplate,  NULL, offsetof( LeafletDropBehaviorModuleData, m_leafletFXParticleSystem ) },
-#endif
+#endif // ZH
 
 
 #ifdef ZH
@@ -191,7 +191,7 @@ public:
 		};
     p.add(dataFieldParse);
 	}
-#endif
+#endif // ZH
 };
 #ifdef ZH
 
@@ -206,7 +206,7 @@ class LeafletDropBehavior : public UpdateModule,
 	MAKE_STANDARD_MODULE_MACRO_WITH_MODULE_DATA( LeafletDropBehavior, LeafletDropBehaviorModuleData )
 
 public:
-#endif
+#endif // ZH
 
 #ifdef ZH
 	LeafletDropBehavior( Thing *thing, const ModuleData* moduleData );
@@ -227,6 +227,6 @@ protected:
   Bool  m_fxFired; ///< have we done our fx yet
 };
 
-#endif
+#endif // ZH
 #endif // __EMPUPDATE_H_
 

@@ -917,4 +917,4 @@ void ShdSubMeshClass::Get_Deformed_Vertices(Vector3 *dst_vert,const HTreeClass* 
 	get_deformed_vertices(dst_vert,htree);
 }
 
-#endif
+#endif // ZH

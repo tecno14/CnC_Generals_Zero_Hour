@@ -38,7 +38,7 @@
 #include "GameLogic/Module/UpgradeModule.h"
 #ifdef ZH
 #include "GameLogic/Module/UpdateModule.h"
-#endif
+#endif // ZH
 
 //-------------------------------------------------------------------------------------------------
 class GenerateMinefieldBehaviorModuleData : public BehaviorModuleData
@@ -49,7 +49,7 @@ public:
 #ifdef ZH
 	AsciiString						m_mineNameUpgraded;
 	AsciiString						m_mineUpgradeTrigger;
-#endif
+#endif // ZH
 	const FXList*					m_genFX;
 	Real									m_distanceAroundObject;
 	Real									m_minesPerSquareFoot;
@@ -60,7 +60,7 @@ public:
 	Bool									m_alwaysCircular;
 #ifdef ZH
 	Bool									m_upgradable;
-#endif
+#endif // ZH
 	Bool									m_smartBorder;
 	Bool									m_smartBorderSkipInterior;
 
@@ -76,10 +76,10 @@ private:
 //-------------------------------------------------------------------------------------------------
 #ifdef OG
 class GenerateMinefieldBehavior : public BehaviorModule, 
-#endif
+#endif // OG
 #ifdef ZH
 class GenerateMinefieldBehavior : public UpdateModule, 
-#endif
+#endif // ZH
 																	public DieModuleInterface,
 																	public UpgradeMux
 {
@@ -95,17 +95,17 @@ public:
 	// module methods
 #ifdef OG
 	static Int getInterfaceMask() { return (MODULEINTERFACE_DIE) | (MODULEINTERFACE_UPGRADE); }
-#endif
+#endif // OG
 #ifdef ZH
 	static Int getInterfaceMask() { return UpdateModule::getInterfaceMask() | (MODULEINTERFACE_DIE) | (MODULEINTERFACE_UPGRADE); }
-#endif
+#endif // ZH
 
 	// BehaviorModule
 	virtual DieModuleInterface* getDie() { return this; }
 	virtual UpgradeModuleInterface* getUpgrade() { return this; }
 #ifdef ZH
 	virtual UpdateSleepTime update();
-#endif
+#endif // ZH
 
 	// DamageModuleInterface
 	virtual void onDie( const DamageInfo *damageInfo );
@@ -119,10 +119,10 @@ protected:
 
 #ifdef OG
 	virtual void getUpgradeActivationMasks(Int64& activation, Int64& conflicting) const
-#endif
+#endif // OG
 #ifdef ZH
 	virtual void getUpgradeActivationMasks(UpgradeMaskType& activation, UpgradeMaskType& conflicting) const
-#endif
+#endif // ZH
 	{
 		getGenerateMinefieldBehaviorModuleData()->m_upgradeMuxData.getUpgradeActivationMasks(activation, conflicting);
 	}
@@ -135,7 +135,7 @@ protected:
 	{
 		// I can't take it any more.  Let the record show that I think the UpgradeMux multiple inheritence is CRAP.
 		getGenerateMinefieldBehaviorModuleData()->m_upgradeMuxData.muxDataProcessUpgradeRemoval(getObject());
-#endif
+#endif // ZH
 	}
 	virtual Bool requiresAllActivationUpgrades() const
 	{
@@ -150,7 +150,7 @@ private:
 #ifdef ZH
 	Bool								m_upgraded;
 	std::list<ObjectID> m_mineList;
-#endif
+#endif // ZH
 	
 	const Coord3D* getMinefieldTarget() const;
 	void placeMines();

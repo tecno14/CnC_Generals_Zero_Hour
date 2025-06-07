@@ -37,13 +37,13 @@ class ScopedMutex
 #ifdef OG
 			WaitForSingleObject(m_mutex, INFINITE);
 
-#endif
+#endif // OG
 #ifdef ZH
 			DWORD status = WaitForSingleObject(m_mutex, 500);
 			if (status != WAIT_OBJECT_0) {
 				DEBUG_LOG(("ScopedMutex WaitForSingleObject timed out - status %d\n", status));
 			}
-#endif
+#endif // ZH
 		}
 
 		~ScopedMutex()

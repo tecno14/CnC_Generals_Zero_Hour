@@ -789,7 +789,7 @@ DEFINE_KEY(objectSoundAmbientMaxRange)
 */
 DEFINE_KEY(objectSoundAmbientPriority)
 
-#endif
+#endif // ZH
 
 // ---------------------------------------------------------------------------------------
 // well-known keys in Player dicts.

@@ -66,7 +66,7 @@
 #include "GameLogic/SidesList.h"
 #ifdef ZH
 #include "GameLogic/Module/ContainModule.h"
-#endif
+#endif // ZH
 
 
 #ifdef _INTERNAL
@@ -145,13 +145,13 @@ enum { K_SCRIPT_LIST_DATA_VERSION_1 = 1,
 			K_SCRIPT_ACTION_VERSION_1 = 1,
 #ifdef ZH
 			K_SCRIPT_ACTION_VERSION_2 = 2,
-#endif
+#endif // ZH
 			K_SCRIPT_CONDITION_VERSION_1 = 1,
 			K_SCRIPT_CONDITION_VERSION_2 = 2,
 			K_SCRIPT_CONDITION_VERSION_3 = 3,
 #ifdef ZH
 			K_SCRIPT_CONDITION_VERSION_4 = 4,
-#endif
+#endif // ZH
 			K_SCRIPTS_DATA_VERSION_1,
 			end_of_the_enumeration
 };
@@ -695,12 +695,12 @@ void ScriptGroup::crc( Xfer *xfer )
 #ifdef OG
 	* 1: Initial version */
 
-#endif
+#endif // OG
 #ifdef ZH
 	* 1: Initial version 
 	* 2: m_isGroupActive, since it is twiddled by other scripts.  Only its initial state is determined by the map.
 */
-#endif
+#endif // ZH
 // ------------------------------------------------------------------------------------------------
 void ScriptGroup::xfer( Xfer *xfer )
 {
@@ -708,17 +708,17 @@ void ScriptGroup::xfer( Xfer *xfer )
 	// version
 #ifdef OG
 	XferVersion currentVersion = 1;
-#endif
+#endif // OG
 #ifdef ZH
 	XferVersion currentVersion = 2;
-#endif
+#endif // ZH
 	XferVersion version = currentVersion;
 	xfer->xferVersion( &version, currentVersion );
 #ifdef ZH
 
 	if( version >= 2 )
 		xfer->xferBool(&m_isGroupActive);
-#endif
+#endif // ZH
 
 	// count of scripts here
 	UnsignedShort scriptCount = 0;
@@ -1535,7 +1535,7 @@ m_hasWarnings(false),
 m_customData(0),
 #ifdef ZH
 m_customFrame(0),
-#endif
+#endif // ZH
 m_numParms(0),
 m_nextAndCondition(NULL)
 {
@@ -1551,14 +1551,14 @@ m_conditionType(type),
 #ifdef OG
 m_numParms(0)
 
-#endif
+#endif // OG
 #ifdef ZH
 m_hasWarnings(false),
 m_customData(0),
 m_customFrame(0),
 m_numParms(0),
 m_nextAndCondition(NULL)
-#endif
+#endif // ZH
 {
 	Int i;
 	for (i=0; i<MAX_PARMS; i++) {
@@ -1687,17 +1687,17 @@ void Condition::WriteConditionDataChunk(DataChunkOutput &chunkWriter, Condition	
 {
 #ifdef OG
 	/**********ACTION  DATA ***********************/
-#endif
+#endif // OG
 #ifdef ZH
 	/**********Condition  DATA ***********************/
-#endif
+#endif // ZH
 	while (pCondition) {
 #ifdef OG
 		chunkWriter.openDataChunk("Condition", K_SCRIPT_CONDITION_VERSION_3);
-#endif
+#endif // OG
 #ifdef ZH
 		chunkWriter.openDataChunk("Condition", K_SCRIPT_CONDITION_VERSION_4);
-#endif
+#endif // ZH
 			chunkWriter.writeInt(pCondition->m_conditionType);
 #ifdef ZH
 			const ConditionTemplate* ct = TheScriptEngine->getConditionTemplate(pCondition->m_conditionType);
@@ -1707,7 +1707,7 @@ void Condition::WriteConditionDataChunk(DataChunkOutput &chunkWriter, Condition	
 				DEBUG_CRASH(("Invalid condition."));
 				chunkWriter.writeNameKey(NAMEKEY("Bogus"));
 			}
-#endif
+#endif // ZH
 			chunkWriter.writeInt(pCondition->m_numParms);
 			Int i;
 			for (i=0; i<pCondition->m_numParms; i++) {
@@ -1757,7 +1757,7 @@ Bool Condition::ParseConditionDataChunk(DataChunkInput &file, DataChunkInfo *inf
 			pCondition->m_numParms = 0;
 		}
 	}
-#endif
+#endif // ZH
 	pCondition->m_numParms =file.readInt();
 	Int i;
 	for (i=0; i<pCondition->m_numParms; i++) 
@@ -1798,7 +1798,7 @@ Bool Condition::ParseConditionDataChunk(DataChunkInput &file, DataChunkInfo *inf
 		pCondition->m_conditionType = ConditionType::CONDITION_FALSE;
 		pCondition->m_numParms = 0;
 	}
-#endif
+#endif // ZH
 	Condition *pLast = pOr->getFirstAndCondition();
 	while (pLast && pLast->getNext()) {
 		pLast = pLast->getNext();
@@ -1822,13 +1822,13 @@ m_numParameters(0),
 #ifdef OG
 m_name("(placeholder)")
 
-#endif
+#endif // OG
 #ifdef ZH
 #ifdef COUNT_SCRIPT_USAGE
 m_numTimesUsed(0),
 #endif
 m_uiName("UNUSED/(placeholder)/placeholder")
-#endif
+#endif // ZH
 {
 }
 
@@ -1961,7 +1961,7 @@ AsciiString Parameter::getUiText(void) const
 		case PERCENT:
 			uiText.format("%.2f%%", m_real*100.0f);
 			break;
-#endif
+#endif // ZH
 		case COORD3D:
 			getCoord3D(&pos);
 			uiText.format("(%.2f,%.2f,%.2f)", pos.x,pos.y,pos.z);
@@ -2048,7 +2048,7 @@ AsciiString Parameter::getUiText(void) const
         case EVAC_TO_LEFT: uiText.format("left"); break;
         case EVAC_TO_RIGHT: uiText.format("right"); break;
         default :  uiText.format("unspecified"); break;
-#endif
+#endif // ZH
 			}
 			break;
 			
@@ -2240,25 +2240,25 @@ Parameter *Parameter::ReadParameter(DataChunkInput &file)
 #ifdef OG
 		// Need to change the string to an integer
 		for (int i = 0; TheObjectStatusBitNames[i]; ++i) 
-#endif
+#endif // OG
 #ifdef ZH
 		// Need to change the string to an ObjectStatusMaskType
 		for( int i = 0; i < OBJECT_STATUS_COUNT; ++i ) 
-#endif
+#endif // ZH
 		{
 #ifdef OG
 			if (pParm->m_string.compareNoCase(TheObjectStatusBitNames[i]) == 0) 
-#endif
+#endif // OG
 #ifdef ZH
 			if( !pParm->m_string.compareNoCase( ObjectStatusMaskType::getBitNames()[i] ) ) 
-#endif
+#endif // ZH
 			{
 #ifdef OG
 				pParm->setInt(1 << i);
-#endif
+#endif // OG
 #ifdef ZH
 				pParm->setStatus( MAKE_OBJECT_STATUS_MASK( i ) );
-#endif
+#endif // ZH
 				break;
 			}
 		}
@@ -2490,10 +2490,10 @@ void ScriptAction::WriteActionDataChunk(DataChunkOutput &chunkWriter, ScriptActi
 	while (pScriptAction) {
 #ifdef OG
 		chunkWriter.openDataChunk("ScriptAction", K_SCRIPT_ACTION_VERSION_1);
-#endif
+#endif // OG
 #ifdef ZH
 		chunkWriter.openDataChunk("ScriptAction", K_SCRIPT_ACTION_VERSION_2);
-#endif
+#endif // ZH
 			chunkWriter.writeInt(pScriptAction->m_actionType);
 #ifdef ZH
 			const ActionTemplate* at = TheScriptEngine->getActionTemplate(pScriptAction->m_actionType);
@@ -2503,7 +2503,7 @@ void ScriptAction::WriteActionDataChunk(DataChunkOutput &chunkWriter, ScriptActi
 				DEBUG_CRASH(("Invalid action."));
 				chunkWriter.writeNameKey(NAMEKEY("Bogus"));
 			}
-#endif
+#endif // ZH
 			chunkWriter.writeInt(pScriptAction->m_numParms);
 			Int i;
 			for (i=0; i<pScriptAction->m_numParms; i++) {
@@ -2517,10 +2517,10 @@ void ScriptAction::WriteActionDataChunk(DataChunkOutput &chunkWriter, ScriptActi
 /**
 #ifdef OG
 * ScriptAction::ParseActionDataChunk - read an action chunk in a script list.
-#endif
+#endif // OG
 #ifdef ZH
 * ScriptAction::ParseAction - read an action chunk in a script list.
-#endif
+#endif // ZH
 * Format is the newer CHUNKY format.
 *	See ScriptAction::WriteActionDataChunk for the writer.
 *	Input: DataChunkInput 
@@ -2528,15 +2528,15 @@ void ScriptAction::WriteActionDataChunk(DataChunkOutput &chunkWriter, ScriptActi
 */
 #ifdef OG
 Bool ScriptAction::ParseActionDataChunk(DataChunkInput &file, DataChunkInfo *info, void *userData)
-#endif
+#endif // OG
 #ifdef ZH
 ScriptAction *ScriptAction::ParseAction(DataChunkInput &file, DataChunkInfo *info, void *userData)
-#endif
+#endif // ZH
 {
 #ifdef OG
 	Script *pScript = (Script *)userData;
 
-#endif
+#endif // OG
 	ScriptAction	*pScriptAction = newInstance(ScriptAction);
 
 	pScriptAction->m_actionType = (enum ScriptActionType)file.readInt();
@@ -2569,14 +2569,14 @@ ScriptAction *ScriptAction::ParseAction(DataChunkInput &file, DataChunkInfo *inf
 			}
 		}
 	}
-#endif
+#endif // ZH
 #if defined(_DEBUG) || defined(_INTERNAL)
 #ifdef OG
 	const ActionTemplate* at = TheScriptEngine->getActionTemplate(pScriptAction->m_actionType);
-#endif
+#endif // OG
 #ifdef ZH
 	Script *pScript = (Script *)userData;
-#endif
+#endif // ZH
 	if (at && (at->getName().isEmpty() || (at->getName().compareNoCase("(placeholder)") == 0))) {
 		DEBUG_CRASH(("Invalid Script Action found in script '%s'\n", pScript->getName().str()));
 	}
@@ -2587,7 +2587,7 @@ ScriptAction *ScriptAction::ParseAction(DataChunkInput &file, DataChunkInfo *inf
 	at2->m_numTimesUsed++;
 	at2->m_firstMapUsed = TheGlobalData->m_mapName;
 #endif
-#endif
+#endif // ZH
 	pScriptAction->m_numParms =file.readInt();
 	Int i;
 	for (i=0; i<pScriptAction->m_numParms; i++) 
@@ -2685,7 +2685,7 @@ ScriptAction *ScriptAction::ParseAction(DataChunkInput &file, DataChunkInfo *inf
 				pScriptAction->m_numParms = 4;
 				pScriptAction->m_parms[2] = newInstance(Parameter)(Parameter::REAL, 0.0f);
 				pScriptAction->m_parms[3] = newInstance(Parameter)(Parameter::REAL, 0.0f);
-#endif
+#endif // ZH
 	}
 #ifdef ZH
 			break;
@@ -2705,7 +2705,7 @@ ScriptAction *ScriptAction::ParseAction(DataChunkInput &file, DataChunkInfo *inf
 
 			break;
 	}
-#endif
+#endif // ZH
 
 #ifdef ZH
 	if (at->getNumParameters() != pScriptAction->getNumParameters()) {
@@ -2717,12 +2717,12 @@ ScriptAction *ScriptAction::ParseAction(DataChunkInput &file, DataChunkInfo *inf
 	DEBUG_ASSERTCRASH(file.atEndOfChunk(), ("Unexpected data left over."));	
 	return pScriptAction;
 }
-#endif
+#endif // ZH
 
 #ifdef OG
 	/// @todo - Verify read in parameters with current action template.  jba.
 
-#endif
+#endif // OG
 #ifdef ZH
 /**
 * ScriptAction::ParseActionDataChunk - read an action chunk in a script list.
@@ -2737,7 +2737,7 @@ Bool ScriptAction::ParseActionDataChunk(DataChunkInput &file, DataChunkInfo *inf
 
 	ScriptAction	*pScriptAction = ParseAction(file, info, userData);
 
-#endif
+#endif // ZH
 	ScriptAction *pLast = pScript->getAction();
 	while (pLast && pLast->getNext()) 
 	{
@@ -2769,10 +2769,10 @@ void ScriptAction::WriteActionFalseDataChunk(DataChunkOutput &chunkWriter, Scrip
 	while (pScriptAction) {
 #ifdef OG
 		chunkWriter.openDataChunk("ScriptActionFalse", K_SCRIPT_ACTION_VERSION_1);
-#endif
+#endif // OG
 #ifdef ZH
 		chunkWriter.openDataChunk("ScriptActionFalse", K_SCRIPT_ACTION_VERSION_2);
-#endif
+#endif // ZH
 			chunkWriter.writeInt(pScriptAction->m_actionType);
 #ifdef ZH
 			const ActionTemplate* at = TheScriptEngine->getActionTemplate(pScriptAction->m_actionType);
@@ -2782,7 +2782,7 @@ void ScriptAction::WriteActionFalseDataChunk(DataChunkOutput &chunkWriter, Scrip
 				DEBUG_CRASH(("Invalid action."));
 				chunkWriter.writeNameKey(NAMEKEY("Bogus"));
 			}
-#endif
+#endif // ZH
 			chunkWriter.writeInt(pScriptAction->m_numParms);
 			Int i;
 			for (i=0; i<pScriptAction->m_numParms; i++) {
@@ -2806,10 +2806,10 @@ Bool ScriptAction::ParseActionFalseDataChunk(DataChunkInput &file, DataChunkInfo
 
 #ifdef OG
 	ScriptAction	*pScriptAction = newInstance(ScriptAction);
-#endif
+#endif // OG
 #ifdef ZH
 	ScriptAction	*pScriptAction = ParseAction(file, info, userData);
-#endif
+#endif // ZH
 
 #ifdef OG
 	pScriptAction->m_actionType = (enum ScriptActionType)file.readInt();
@@ -2819,7 +2819,7 @@ Bool ScriptAction::ParseActionFalseDataChunk(DataChunkInput &file, DataChunkInfo
 		pScriptAction->m_parms[i] = Parameter::ReadParameter(file);
 	}
 	/// @todo - Verify read in parameters with current action template.  jba.
-#endif
+#endif // OG
 	ScriptAction *pLast = pScript->getFalseAction();
 	while (pLast && pLast->getNext()) {
 		pLast = pLast->getNext();

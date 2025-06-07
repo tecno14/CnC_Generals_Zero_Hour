@@ -24,31 +24,31 @@
  *                                                                                             *
 #ifdef OG
  *                     $Archive:: /VSS_Sync/ww3d2/ww3d.h                                      $*
-#endif
+#endif // OG
 #ifdef ZH
  *                     $Archive:: /Commando/Code/ww3d2/ww3d.h                                 $*
-#endif
+#endif // ZH
  *                                                                                             *
 #ifdef OG
  *                      $Author:: Vss_sync                                                    $*
-#endif
+#endif // OG
 #ifdef ZH
  *                      $Author:: Steve_t                                                     $*
-#endif
+#endif // ZH
  *                                                                                             *
 #ifdef OG
  *                     $Modtime:: 8/29/01 9:39p                                               $*
-#endif
+#endif // OG
 #ifdef ZH
  *                     $Modtime:: 1/02/02 4:17p                                               $*
-#endif
+#endif // ZH
  *                                                                                             *
 #ifdef OG
  *                    $Revision:: 32                                                          $*
-#endif
+#endif // OG
 #ifdef ZH
  *                    $Revision:: 42                                                          $*
-#endif
+#endif // ZH
  *                                                                                             *
  *---------------------------------------------------------------------------------------------*
  * Functions:                                                                                  *
@@ -84,11 +84,11 @@ class		LightEnvironmentClass;
 class		MaterialPassClass;
 #ifdef ZH
 class 	StaticSortListClass;
-#endif
+#endif // ZH
 
 #ifdef ZH
 #define MESH_RENDER_SNAPSHOT_ENABLED
-#endif
+#endif // ZH
 #define SNAPSHOT_SAY(x) if (WW3D::Is_Snapshot_Activated()) { WWDEBUG_SAY(x); }
 //#define SNAPSHOT_SAY(x)
 
@@ -127,7 +127,7 @@ public:
 	enum TextureCompressionModeEnum {
 		TEXTURE_COMPRESSION_DISABLE,
 		TEXTURE_COMPRESSION_ENABLE
-#endif
+#endif // OG
 	};
 
 	enum NPatchesGapFillingModeEnum {
@@ -142,14 +142,14 @@ public:
 		BMP
 	};
 
-#endif
+#endif // ZH
 
 #ifdef OG
 	static WW3DErrorType		Init(void * hwnd, char *defaultpal = NULL);
-#endif
+#endif // OG
 #ifdef ZH
 	static WW3DErrorType		Init(void * hwnd, char *defaultpal = NULL, bool lite = false);
-#endif
+#endif // ZH
 	static WW3DErrorType		Shutdown(void);
 	static bool					Is_Initted(void)								{ return IsInitted; }	
 
@@ -186,7 +186,7 @@ public:
 	static void					Set_Texture_Filter(int filter);
 	static int					Get_Texture_Filter() { return TextureFilter; }
 
-#endif
+#endif // ZH
 	/*
 	** Rendering functions
 	** Each frame should be bracketed by a Begin_Render and End_Render call.  Between these two calls you will
@@ -197,11 +197,11 @@ public:
 #ifdef OG
 	static WW3DErrorType		Begin_Render(bool clear = false,bool clearz = true,const Vector3 & color = Vector3(0,0,0), float dest_alpha=0.0f);
 
-#endif
+#endif // OG
 #ifdef ZH
 	static WW3DErrorType		Begin_Render(bool clear = false,bool clearz = true,const Vector3 & color = Vector3(0,0,0), float dest_alpha=0.0f, void(*network_callback)(void) = NULL);
 
-#endif
+#endif // ZH
 	static WW3DErrorType		Render(const LayerListClass & layerlist);
 	static WW3DErrorType		Render(const LayerClass & layer);
 	static WW3DErrorType		Render(SceneClass * scene,CameraClass * cam,bool clear = false,bool clearz = false,const Vector3 & color = Vector3(0,0,0));
@@ -212,7 +212,7 @@ public:
 #ifdef ZH
 
 	static bool					Is_Rendering( void ) { return( IsRendering ); }
-#endif
+#endif // ZH
 
 	static void Flip_To_Primary(void);
 
@@ -235,10 +235,10 @@ public:
 	*/
 #ifdef OG
 	static void					Make_Screen_Shot( const char * filename = "ScreenShot");
-#endif
+#endif // OG
 #ifdef ZH
 	static void					Make_Screen_Shot( const char * filename = "ScreenShot", const float gamma = 1.3f, const ScreenShotFormatEnum format = TGA);
-#endif
+#endif // ZH
 	static void					Start_Movie_Capture( const char * filename_base = "Movie", float frame_rate = 15);
 	static void					Stop_Movie_Capture( void);
 	static void					Toggle_Movie_Capture( const char * filename_base = "Movie", float frame_rate = 15);
@@ -266,27 +266,27 @@ public:
 	*/
 #ifdef OG
 	static void					Set_Texture_Reduction( int value, int min_mip_levels=1 );
-#endif
+#endif // OG
 #ifdef ZH
 	static void					Set_Texture_Reduction( int value, int min_dim=1 );
-#endif
+#endif // ZH
 	static int					Get_Texture_Reduction( void );
 #ifdef OG
 	static int					Get_Texture_Min_Mip_Levels( void );
 
-#endif
+#endif // OG
 #ifdef ZH
 	static int					Get_Texture_Min_Dimension(void);
 	static void					Enable_Large_Texture_Extra_Reduction(bool onoff);
 	static bool					Is_Large_Texture_Extra_Reduction_Enabled(void);
-#endif
+#endif // ZH
 	static void					_Invalidate_Mesh_Cache();
 	static void					_Invalidate_Textures();
 #ifdef ZH
 
 	static void					Set_Thumbnail_Enabled(bool b) { ThumbnailEnabled=b; }
 	static bool					Get_Thumbnail_Enabled() { return ThumbnailEnabled; }
-#endif
+#endif // ZH
 
 	static void					Enable_Sorting(bool onoff);
 	static bool					Is_Sorting_Enabled(void)					{ return IsSortingEnabled; }
@@ -326,7 +326,7 @@ public:
 	static void					Set_Texture_Compression_Mode (TextureCompressionModeEnum mode);
 	static TextureCompressionModeEnum 	Get_Texture_Compression_Mode () { return (TextureCompressionMode); }
 
-#endif
+#endif // OG
 	static void					Set_NPatches_Gap_Filling_Mode (NPatchesGapFillingModeEnum mode);
 	static NPatchesGapFillingModeEnum 	Get_NPatches_Gap_Filling_Mode () { return (NPatchesGapFillingMode); }
 
@@ -337,10 +337,10 @@ public:
 	static bool					Is_Texturing_Enabled() { return IsTexturingEnabled; }
 #ifdef OG
 	static bool					Is_Coloring_Enabled() { return IsColoringEnabled; }
-#endif
+#endif // OG
 #ifdef ZH
 	static bool					Is_Coloring_Enabled() { return (IsColoringEnabled == 0) ? false : true; }
-#endif
+#endif // ZH
 	static void					Enable_Coloring(unsigned int color);	///<when non-zero color is passed, it will override vertex colors
 
 	static int					Get_Last_Frame_Memory_Allocation_Count() { return LastFrameMemoryAllocations; }
@@ -371,10 +371,10 @@ public:
 	static void					Render_And_Clear_Static_Sort_Lists(RenderInfoClass & rinfo);
 #ifdef OG
 	static void					Override_Current_Static_Sort_Lists(RefRenderObjListClass *sort_list, unsigned int min_sort, unsigned int max_sort);
-#endif
+#endif // OG
 #ifdef ZH
 	static void					Override_Current_Static_Sort_Lists(StaticSortListClass * sort_list);
-#endif
+#endif // ZH
 	static void					Reset_Current_Static_Sort_Lists_To_Default(void);
 #ifdef ZH
 
@@ -385,7 +385,7 @@ public:
 	*/
 	static void					Enable_Overbright_Modify_On_Load(bool onoff)	{ OverbrightModifyOnLoad = onoff; }
 	static bool					Is_Overbright_Modify_On_Load_Enabled(void)	{ return OverbrightModifyOnLoad; }
-#endif
+#endif // ZH
 
 	static bool					Is_Snapshot_Activated()						{ return SnapshotActivated; }
 	static void					Activate_Snapshot(bool b)					{ SnapshotActivated=b; }
@@ -399,7 +399,7 @@ public:
 
 	// Gamma control
 	static void					Set_Gamma(float gamma,float bright,float contrast,bool calibrate=true);
-#endif
+#endif // ZH
 
 private:
 	
@@ -414,7 +414,7 @@ private:
 	static void					Update_Pixel_Center(void);
 #ifdef OG
 	static void					Set_Polygon_Mode(int mode);
-#endif
+#endif // OG
 	static void					Allocate_Debug_Resources(void);
 	static void					Release_Debug_Resources(void);
 
@@ -449,7 +449,7 @@ private:
 #ifdef ZH
 	static bool							OverbrightModifyOnLoad;
 
-#endif
+#endif // ZH
 	static FrameGrabClass *			Movie;
 	static bool							PauseRecord;
 	static bool							RecordNextFrame;
@@ -466,31 +466,31 @@ private:
 #ifdef ZH
 	static int							TextureFilter;
 
-#endif
+#endif // ZH
 	static bool							SnapshotActivated;
 #ifdef ZH
 	static bool							ThumbnailEnabled;
-#endif
+#endif // ZH
 
 	static MeshDrawModeEnum			MeshDrawMode;
 #ifdef OG
 	static TextureThumbnailModeEnum TextureThumbnailMode;
 	static TextureCompressionModeEnum TextureCompressionMode;
-#endif
+#endif // OG
 	static NPatchesGapFillingModeEnum NPatchesGapFillingMode;
 	static unsigned NPatchesLevel;
 	static bool							IsTexturingEnabled;
 #ifdef OG
 	static unsigned int			IsColoringEnabled;
-#endif
+#endif // OG
 #ifdef ZH
 	static bool							IsColoringEnabled;
-#endif
+#endif // ZH
 
 #ifdef ZH
 	static bool							Lite;
 
-#endif
+#endif // ZH
 	// This is the default native screen size which will be set for each
 	// RenderObject on construction. The native screen size is the screen size
 	// at which the object was designed to be viewed, and it is used in the
@@ -509,13 +509,13 @@ private:
 	static RefRenderObjListClass *CurrentStaticSortLists;
 	static unsigned int MinStaticSortLevel;
 	static unsigned int MaxStaticSortLevel;
-#endif
+#endif // OG
 #ifdef ZH
 	// static sort lists to be used temporarily. This is for specialised uses.
 	static StaticSortListClass * DefaultStaticSortLists;
 	static StaticSortListClass * CurrentStaticSortLists;
 
-#endif
+#endif // ZH
 
 	// Memory allocation statistics
 	static int							LastFrameMemoryAllocations;

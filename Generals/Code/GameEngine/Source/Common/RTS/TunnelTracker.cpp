@@ -140,13 +140,13 @@ Object *TunnelTracker::getCurNemesis(void)
 		UnsignedInt status = target->getStatusBits();
 		if( (status & OBJECT_STATUS_STEALTHED) && !(status & OBJECT_STATUS_DETECTED) ) {
 
-#endif
+#endif // OG
 #ifdef ZH
 	if( target->testStatus( OBJECT_STATUS_STEALTHED ) && 
 			!target->testStatus( OBJECT_STATUS_DETECTED ) &&
 			!target->testStatus( OBJECT_STATUS_DISGUISED ) )
 		{
-#endif
+#endif // ZH
 			target = NULL;
 		}
 	}

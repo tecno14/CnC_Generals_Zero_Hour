@@ -56,7 +56,7 @@
 #include "GameLogic/ObjectIter.h"
 #ifdef ZH
 #include "Common/ObjectStatusTypes.h"
-#endif
+#endif // ZH
 #include "Common/KindOf.h"
 #include "Common/Snapshot.h"
 #include "Common/Geometry.h"
@@ -122,7 +122,7 @@ enum FindPositionFlags
 	FPF_USE_HIGHEST_LAYER									= 0x00000080,		// examine pos on highest layer at given xy (rather than on ground layer)
 #ifdef ZH
 	FPF_CLEAR_CELLS_ONLY									= 0x00000100,		// Reject anything that is not PathFindCell::Clear
-#endif
+#endif // ZH
 };
 // ----------------------------------------------------------------------------------------------
 
@@ -665,10 +665,10 @@ private:
 public:
 #ifdef OG
 	enum 
-#endif
+#endif // OG
 #ifdef ZH
 	enum RelationshipAllowTypes
-#endif
+#endif // ZH
 	{
 		ALLOW_ALLIES					= (1<<ALLIES),		///< allow objects that m_obj considers allies
 		ALLOW_ENEMIES					= (1<<ENEMIES),		///< allow objects that m_obj considers enemy 
@@ -790,7 +790,7 @@ public:
 	virtual Bool allow(Object *objOther);
 #if defined(_DEBUG) || defined(_INTERNAL)
 	virtual const char* debugGetName() { return "PartitionFilterPossibleToHijack"; }
-#endif
+#endif // ZH
 #endif
 };
 
@@ -819,17 +819,17 @@ class PartitionFilterAcceptByObjectStatus : public PartitionFilter
 private:
 #ifdef OG
 	UnsignedInt m_mustBeSet, m_mustBeClear;
-#endif
+#endif // OG
 #ifdef ZH
 	ObjectStatusMaskType m_mustBeSet, m_mustBeClear;
-#endif
+#endif // ZH
 public:
 #ifdef OG
 	PartitionFilterAcceptByObjectStatus(UnsignedInt mustBeSet, UnsignedInt mustBeClear) : m_mustBeSet(mustBeSet), m_mustBeClear(mustBeClear) { }
-#endif
+#endif // OG
 #ifdef ZH
 	PartitionFilterAcceptByObjectStatus( ObjectStatusMaskType mustBeSet, ObjectStatusMaskType mustBeClear) : m_mustBeSet(mustBeSet), m_mustBeClear(mustBeClear) { }
-#endif
+#endif // ZH
 	virtual Bool allow(Object *objOther);
 #if defined(_DEBUG) || defined(_INTERNAL)
 	virtual const char* debugGetName() { return "PartitionFilterAcceptByObjectStatus"; }
@@ -846,17 +846,17 @@ class PartitionFilterRejectByObjectStatus : public PartitionFilter
 private:
 #ifdef OG
 	UnsignedInt m_mustBeSet, m_mustBeClear;
-#endif
+#endif // OG
 #ifdef ZH
 	ObjectStatusMaskType m_mustBeSet, m_mustBeClear;
-#endif
+#endif // ZH
 public:
 #ifdef OG
 	PartitionFilterRejectByObjectStatus(UnsignedInt mustBeSet, UnsignedInt mustBeClear) 
-#endif
+#endif // OG
 #ifdef ZH
 	PartitionFilterRejectByObjectStatus( ObjectStatusMaskType mustBeSet, ObjectStatusMaskType mustBeClear ) 
-#endif
+#endif // ZH
 		: m_mustBeSet(mustBeSet), m_mustBeClear(mustBeClear) 
 	{ 
 	}
@@ -1553,7 +1553,7 @@ public:
 #ifdef ZH
 
 	ObjectShroudStatus getPropShroudStatusForPlayer(Int playerIndex, const Coord3D *loc ) const; 
-#endif
+#endif // ZH
 
 	Real getGroundOrStructureHeight(Real posx, Real posy);
 

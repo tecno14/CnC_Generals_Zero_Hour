@@ -35,7 +35,7 @@ extern "C" {
 	int sysinfo(struct sysinfo *info);
 }
 
-#endif
+#endif // ZH
 #else
 #include "win.h"
 #include <process.h>
@@ -148,10 +148,10 @@ void SecureRandomClass::Generate_Seed(void)
 
 #ifdef OG
 #ifdef _UNIX
-#endif
+#endif // OG
 #ifdef ZH
 #ifdef _USE_DEV_RANDOM
-#endif
+#endif // ZH
 	//
 	// On UNIX we've already got a great random number souce.
 	// This should be used only for a seed since it's slow.
@@ -181,7 +181,7 @@ void SecureRandomClass::Generate_Seed(void)
 	int_seeds[5 % int_seed_length]^=info.freeswap;
 	int_seeds[6 % int_seed_length]^=info.procs;
 	int_seeds[7 % int_seed_length]^=info.bufferram;
-#endif
+#endif // ZH
 #else
 
 	//

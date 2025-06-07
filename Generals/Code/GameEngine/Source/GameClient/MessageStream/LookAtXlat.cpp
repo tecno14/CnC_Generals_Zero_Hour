@@ -228,11 +228,11 @@ GameMessageDisposition LookAtTranslator::translateGameMessage(const GameMessage 
 #ifdef OG
 			// disable mouse scrolling in alternate mouse mode, per Harvard 7/15/03
 			if (!TheGlobalData->m_useAlternateMouse && !TheInGameUI->isSelecting() && !m_isScrolling)
-#endif
+#endif // OG
 #ifdef ZH
 			if (!TheInGameUI->isSelecting() && !m_isScrolling)
 
-#endif
+#endif // ZH
 			{
 				setScrolling(SCROLL_RMB);
 			}
@@ -487,7 +487,7 @@ GameMessageDisposition LookAtTranslator::translateGameMessage(const GameMessage 
 
 #ifdef OG
 #if !defined(_PLAYTEST)
-#endif
+#endif // OG
 			//if (TheGlobalData->m_saveCameraInReplay /*&& TheRecorder->getMode() != RECORDERMODETYPE_PLAYBACK *//**/&& (TheGameLogic->isInSinglePlayerGame() || TheGameLogic->isInSkirmishGame())/**/)
 			//if (TheGlobalData->m_saveCameraInReplay && (TheGameLogic->isInMultiplayerGame() || TheGameLogic->isInSinglePlayerGame() || TheGameLogic->isInSkirmishGame()))
 			if (TheGlobalData->m_saveCameraInReplay && (TheGameLogic->isInSinglePlayerGame() || TheGameLogic->isInSkirmishGame()))
@@ -504,7 +504,7 @@ GameMessageDisposition LookAtTranslator::translateGameMessage(const GameMessage 
 			}
 #ifdef OG
 #endif
-#endif
+#endif // OG
 			break;
 		}
 
@@ -553,7 +553,7 @@ GameMessageDisposition LookAtTranslator::translateGameMessage(const GameMessage 
 #endif // #if defined(_ALLOW_DEBUG_CHEATS_IN_RELEASE)
 
 		// ------------------------------------------------------------------------
-#endif
+#endif // ZH
 #if defined(_DEBUG) || defined(_INTERNAL)
 		case GameMessage::MSG_META_DEMO_ENSHROUD:
 		{
@@ -570,10 +570,10 @@ GameMessageDisposition LookAtTranslator::translateGameMessage(const GameMessage 
 		{
 #ifdef OG
 			DEBUG_ASSERTCRASH(!m_isChangingFOV, ("hmm, mismatched m_isChangingFOV"));
-#endif
+#endif // OG
 #ifdef ZH
 			//DEBUG_ASSERTCRASH(!m_isChangingFOV, ("hmm, mismatched m_isChangingFOV"));
-#endif
+#endif // ZH
 			m_isChangingFOV = true;
 			m_anchor = m_currentPos;
 			break;
@@ -586,10 +586,10 @@ GameMessageDisposition LookAtTranslator::translateGameMessage(const GameMessage 
 		{
 #ifdef OG
 			DEBUG_ASSERTCRASH(m_isChangingFOV, ("hmm, mismatched m_isChangingFOV"));
-#endif
+#endif // OG
 #ifdef ZH
 		//	DEBUG_ASSERTCRASH(m_isChangingFOV, ("hmm, mismatched m_isChangingFOV"));
-#endif
+#endif // ZH
 			m_isChangingFOV = false;
 			break;
 		}

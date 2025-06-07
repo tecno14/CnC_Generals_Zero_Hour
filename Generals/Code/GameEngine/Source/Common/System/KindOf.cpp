@@ -72,7 +72,7 @@ const char* KindOfMaskType::s_bitNameList[] =
 	"CASH_GENERATOR",
 #ifdef OG
 	"AIRFIELD",
-#endif
+#endif // OG
 	"DRAWABLE_ONLY",
 	"MP_COUNT_FOR_VICTORY",
 	"REBUILD_HOLE",
@@ -162,14 +162,14 @@ const char* KindOfMaskType::s_bitNameList[] =
 	"CONSERVATIVE_BUILDING",
 	"IGNORE_DOCKING_BONES",
 
-#endif
+#endif // ZH
 	NULL
 };
 
 KindOfMaskType KINDOFMASK_NONE;	// inits to all zeroes
 #ifdef ZH
 KindOfMaskType KINDOFMASK_FS;		// inits to all zeroes
-#endif
+#endif // ZH
 
 #ifdef ZH
 void initKindOfMasks()
@@ -189,5 +189,5 @@ void initKindOfMasks()
 	KINDOFMASK_FS.set( KINDOF_FS_WARFACTORY );
 	KINDOFMASK_FS.set( KINDOF_FS_AIRFIELD );
 }
-#endif
+#endif // ZH
 

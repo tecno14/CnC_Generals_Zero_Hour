@@ -89,7 +89,7 @@
 //Put on ice until later M Lorenzen
 //static UnsignedByte s_cheaterHasBeenSpied = 0;
 
-#endif
+#endif // ZH
 void GameGetColorComponents( Color color,
 														 UnsignedByte *red,
 														 UnsignedByte *green,
@@ -124,7 +124,7 @@ void GameGetColorComponents( Color color,
 //	
 //}  // end GameGetColorComponents
 
-#endif
+#endif // ZH
 void GameGetColorComponentsReal( Color color, Real *red, Real *green, Real *blue, Real *alpha )
 {
 	*alpha	= ((color & 0xFF000000) >> 24) / 255.0f;
@@ -152,7 +152,7 @@ Color GameDarkenColor( Color color, Int percent )
 //  DEBUG_ASSERTCRASH( TheWritableGlobalData->m_cheaterHasBeenSpiedIfMyLowestBitIsTrue == FALSE, ("DIRTY ROTTEN CHEATER"));
 //  //my, but this looks like we just stored an alpha value along with rgb into the global data
 
-#endif
+#endif // ZH
 
 	return GameMakeColor(r,g,b,a);
 }// end GameDarkenColor

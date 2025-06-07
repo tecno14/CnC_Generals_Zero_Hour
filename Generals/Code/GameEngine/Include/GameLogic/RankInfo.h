@@ -51,10 +51,10 @@ public:
 };
 #ifdef OG
 EMPTY_DTOR(RankInfo)
-#endif
+#endif // OG
 #ifdef ZH
 //EMPTY_DTOR(RankInfo)
-#endif
+#endif // ZH
 
 //-------------------------------------------------------------------------------------------------
 class RankInfoStore : public SubsystemInterface
@@ -62,7 +62,7 @@ class RankInfoStore : public SubsystemInterface
 #ifdef ZH
 public:
 	virtual ~RankInfoStore();
-#endif
+#endif // ZH
 
 public:
 	void init();

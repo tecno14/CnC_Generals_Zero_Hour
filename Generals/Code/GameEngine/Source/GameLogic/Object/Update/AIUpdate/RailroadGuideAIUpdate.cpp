@@ -42,7 +42,7 @@
 #ifdef ZH
 #include "GameLogic/AI.h"
 #include "GameLogic/AIPathfind.h"
-#endif
+#endif // ZH
 
 #include "GameClient/Drawable.h"
 #include "GameClient/Statistics.h"
@@ -71,7 +71,7 @@ static const Int INVALID_PATH = -1;
 //#pragma message("IF QA EVER REPRODUCES A DESYNC (BELIEVED FIXED) I'LL NEED TO DEBUG WHILE PLAYING AGAINST")
 //#pragma message("THAT MACHINE WITHOUT QUITTING TO START A DEBUGGABLE VERSION...")
 //#pragma message("THIS WILL BE CORRECTED IN GOOD TIME. JUST TRUST ME, -ML")
-#endif
+#endif // OG
 #endif
 
 
@@ -173,7 +173,7 @@ RailroadBehavior::RailroadBehavior( Thing *thing, const ModuleData *moduleData )
 	m_inTunnel = FALSE;
 #ifdef ZH
   m_held = FALSE;
-#endif
+#endif // ZH
 
 
 	m_conductorState = m_isLocomotive ? ACCELERATE : COAST;
@@ -286,10 +286,10 @@ void RailroadBehavior::onCollide( Object *other, const Coord3D *loc, const Coord
 		{
 #ifdef OG
 			if( ! BitTest( other-> getStatusBits(), OBJECT_STATUS_UNDER_CONSTRUCTION ) )
-#endif
+#endif // OG
 #ifdef ZH
 			if( !other->getStatusBits().test( OBJECT_STATUS_UNDER_CONSTRUCTION ) )
-#endif
+#endif // ZH
 				obj->kill(); // it can only detonate on me if it is ready
 
 			playImpactSound(other, other->getPosition());
@@ -349,7 +349,7 @@ void RailroadBehavior::onCollide( Object *other, const Coord3D *loc, const Coord
 		overlap/= 4;
 #ifdef OG
 	}
-#endif
+#endif // OG
 
 	dlt.scale( overlap);
 	Coord3D newPos;
@@ -359,21 +359,21 @@ void RailroadBehavior::onCollide( Object *other, const Coord3D *loc, const Coord
 	other->setPosition( &newPos );
 #ifdef ZH
 	}
-#endif
+#endif // ZH
 
 #ifdef OG
 	AIUpdateInterface *ai = other->getAI();
 	if ( ai )
 		ai->aiIdle( CMD_FROM_AI );// this eliminates yadda by telling them to stop driving into me
 
-#endif
+#endif // OG
 #ifdef ZH
   if ( m_conductorState == WAIT_AT_STATION || (m_conductorState == COAST && m_pullInfo.speed < modData->m_runningGarrisonSpeedMax) || !m_isLocomotive )
 	{
 //  AIUpdateInterface *ai = other->getAI();
 //	  if ( ai )
 //		  ai->aiIdle( CMD_FROM_AI );// this eliminates yadda by telling them to stop driving into me
-#endif
+#endif // ZH
 
 #ifdef OG
 	//---------------------------
@@ -390,13 +390,13 @@ void RailroadBehavior::onCollide( Object *other, const Coord3D *loc, const Coord
 		}
 		else if ( victimIsInfantry )
 		{
-#endif
+#endif // OG
 			return;//let those trying to board pass through unhindered
 		}
 
 #ifdef OG
 	}
-#endif
+#endif // OG
 
 	//figure out the relative slope between them and me
 	Coord3D delta = *theirLoc;
@@ -688,7 +688,7 @@ void RailroadBehavior::makeAWallOutOfThisTrain( Bool on )
   	TheAI->pathfinder()->createAWallFromMyFootprint( getObject() ); // Temporarily treat this object as an obstacle.
   else
   	TheAI->pathfinder()->removeWallFromMyFootprint( getObject() );  // Undo createAWallFromMyFootprint.
-#endif
+#endif // ZH
 
 
 #ifdef ZH
@@ -708,7 +708,7 @@ void RailroadBehavior::makeAWallOutOfThisTrain( Bool on )
 
 }
 
-#endif
+#endif // ZH
 // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 UpdateSleepTime RailroadBehavior::update( void )
 {
@@ -746,10 +746,10 @@ UpdateSleepTime RailroadBehavior::update( void )
 			conductorPullInfo.speed *= modData->m_braking;
 #ifdef OG
 			if (fabs(conductorPullInfo.speed) < 0.01f)
-#endif
+#endif // OG
 #ifdef ZH
 			if (fabs(conductorPullInfo.speed) < 0.1f)
-#endif
+#endif // ZH
 			{
 				conductorPullInfo.speed = 0;
 				///////////////////////////////////////( &m_hissySteamSound );
@@ -760,7 +760,7 @@ UpdateSleepTime RailroadBehavior::update( void )
 #ifdef ZH
          makeAWallOutOfThisTrain( TRUE );
 
-#endif
+#endif // ZH
 				if ( m_disembark )
 				{
 					disembark();
@@ -773,10 +773,10 @@ UpdateSleepTime RailroadBehavior::update( void )
 			--m_waitAtStationTimer;
 #ifdef OG
 			if ( m_waitAtStationTimer <= 0)
-#endif
+#endif // OG
 #ifdef ZH
 			if ( m_waitAtStationTimer <= 0 && (!m_held) )
-#endif
+#endif // ZH
 			{
 				m_conductorState = ACCELERATE;
 				conductorPullInfo.speed = 0.05f * conductorPullInfo.m_direction;
@@ -786,7 +786,7 @@ UpdateSleepTime RailroadBehavior::update( void )
 
         makeAWallOutOfThisTrain( FALSE );
 
-#endif
+#endif // ZH
 			}
 			else if ( m_waitAtStationTimer == (modData->m_waitAtStationTime/4) )
 			{
@@ -909,10 +909,10 @@ void RailroadBehavior::disembark(void)
 	{
 #ifdef OG
 		contain->orderAllPassengersToExit( CMD_FROM_AI );
-#endif
+#endif // OG
 #ifdef ZH
 		contain->orderAllPassengersToExit( CMD_FROM_AI, FALSE );
-#endif
+#endif // ZH
 	}
 
 	
@@ -1564,7 +1564,7 @@ void RailroadBehavior::crc( Xfer *xfer )
 	* 2: Added... like, everything.	
 #ifdef ZH
 	* 3: m_held script driven flag for hanging out
-#endif
+#endif // ZH
 	**/
 // ------------------------------------------------------------------------------------------------
 void RailroadBehavior::xfer( Xfer *xfer )
@@ -1573,10 +1573,10 @@ void RailroadBehavior::xfer( Xfer *xfer )
 	// version
 #ifdef OG
 	XferVersion currentVersion = 2;
-#endif
+#endif // OG
 #ifdef ZH
 	XferVersion currentVersion = 3;
-#endif
+#endif // ZH
 	XferVersion version = currentVersion;
 	xfer->xferVersion( &version, currentVersion );
 	
@@ -1646,7 +1646,7 @@ void RailroadBehavior::xfer( Xfer *xfer )
 	if( version >= 3 )
 	{
 		xfer->xferBool( &m_held );
-#endif
+#endif // ZH
 	}
 
 

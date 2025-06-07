@@ -81,7 +81,7 @@ enum FilterTypes
 	FT_VIEW_CROSSFADE,				///<filter to apply a cross blend between previous/current views.
 #ifdef ZH
 	FT_VIEW_DEFAULT,				///<default filter mode for default filter.
-#endif
+#endif // ZH
 	FT_MAX
 };
 
@@ -109,7 +109,7 @@ enum FilterModes
 
 #ifdef ZH
 	FM_VIEW_DEFAULT,	//Default filter that's enabled when all others are off.
-#endif
+#endif // ZH
 	
 	// NOTE: This has to be the last entry in this enum.
 	// Add new entries before this one.  jba.

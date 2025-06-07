@@ -97,7 +97,7 @@ struct W3dRingStruct
 #define RING_NUM_LOD	(20)
 #define RING_LOWEST_LOD (10)
 #define RING_HIGHEST_LOD (50)
-#endif
+#endif // ZH
 
 /*
 ** RingRenderObjClass: Procedurally generated render rings
@@ -148,7 +148,7 @@ public:
 	virtual void					Scale(float scale);
 	virtual void					Scale(float scalex, float scaley, float scalez);
 
-#endif
+#endif // ZH
 	virtual void					Set_Hidden(int onoff)				{ RenderObjClass::Set_Hidden (onoff); Update_On_Visibilty (); }
 	virtual void					Set_Visible(int onoff)				{ RenderObjClass::Set_Visible (onoff); Update_On_Visibilty (); }
 	virtual void					Set_Animation_Hidden(int onoff)	{ RenderObjClass::Set_Animation_Hidden (onoff); Update_On_Visibilty (); }
@@ -249,7 +249,7 @@ protected:
 	int						 		CurrentLOD;
 	float								Value[RING_NUM_LOD + 2];// Value array needs # of LODs + 1 (RING_NUM_LOD doesn't include null LOD)
 
-#endif
+#endif // ZH
 	RingColorChannelClass		ColorChannel;
 	RingAlphaChannelClass		AlphaChannel;
 	RingScaleChannelClass		InnerScaleChannel;
@@ -268,7 +268,7 @@ protected:
 
 #ifdef OG
 	int						 		CurrentLOD;
-#endif
+#endif // OG
 	int								TextureTileCount;
 
 	// Current State

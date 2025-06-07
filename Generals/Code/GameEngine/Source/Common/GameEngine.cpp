@@ -71,7 +71,7 @@
 #include "Common/Registry.h"
 #ifdef ZH
 #include "Common/GameCommon.h"	// FOR THE ALLOW_DEBUG_CHEATS_IN_RELEASE #define
-#endif
+#endif // ZH
 
 #include "GameLogic/Armor.h"
 #include "GameLogic/AI.h"
@@ -79,7 +79,7 @@
 #include "GameLogic/CrateSystem.h"
 #ifdef ZH
 #include "GameLogic/Damage.h"
-#endif
+#endif // ZH
 #include "GameLogic/VictoryConditions.h"
 #include "GameLogic/ObjectCreationList.h"
 #include "GameLogic/Weapon.h"
@@ -114,7 +114,7 @@
 #include "GameNetwork/GameSpy/PersistentStorageThread.h"
 #include "Common/Player.h"
 
-#endif
+#endif // OG
 
 #include "Common/Version.h"
 
@@ -237,7 +237,7 @@ GameEngine::~GameEngine()
 	if (TheGameLODManager)
 		delete TheGameLODManager;
 
-#endif
+#endif // ZH
 	Drawable::killStaticImages();
 
 	_Module.Term();
@@ -268,13 +268,13 @@ void GameEngine::init( int argc, char *argv[] )
 
 #ifdef ZH
 #ifdef DEBUG_LOGGING
-#endif
+#endif // ZH
 		if (TheVersion)
 		{
 			DEBUG_LOG(("================================================================================\n"));
 #ifdef OG
 #ifdef DEBUG_LOGGING
-#endif
+#endif // OG
 	#if defined _DEBUG
 			const char *buildType = "Debug";
 	#elif defined _INTERNAL
@@ -282,14 +282,14 @@ void GameEngine::init( int argc, char *argv[] )
 	#else
 #ifdef OG
 	//	const char *buildType = "Release";
-#endif
+#endif // OG
 #ifdef ZH
 			const char *buildType = "Release";
-#endif
+#endif // ZH
 	#endif
 #ifdef OG
 #endif // DEBUG_LOGGING
-#endif
+#endif // OG
 			DEBUG_LOG(("Generals version %s (%s)\n", TheVersion->getAsciiVersion().str(), buildType));
 			DEBUG_LOG(("Build date: %s\n", TheVersion->getAsciiBuildTime().str()));
 			DEBUG_LOG(("Build location: %s\n", TheVersion->getAsciiBuildLocation().str()));
@@ -298,7 +298,7 @@ void GameEngine::init( int argc, char *argv[] )
 		}
 #ifdef ZH
 #endif
-#endif
+#endif // ZH
 		
 #ifdef ZH
 	#if defined(PERF_TIMERS) || defined(DUMP_PERF_STATS)
@@ -317,7 +317,7 @@ void GameEngine::init( int argc, char *argv[] )
   char Buf[256];//////////////////////////////////////////////////////////////////////
 	#endif//////////////////////////////////////////////////////////////////////////////
 		
-#endif
+#endif // ZH
 		m_maxFPS = DEFAULT_MAX_FPS;
 
 		TheSubsystemList = MSGNEW("GameEngineSubsystem") SubsystemInterfaceList;
@@ -336,7 +336,7 @@ void GameEngine::init( int argc, char *argv[] )
 		//SKU's shipped with two INIZH.big files. One properly in the Run directory and the other in Run\INI\Data.
 		//We need to toast the latter in order for the game to patch properly.
 		DeleteFile( "Data\\INI\\INIZH.big" );
-#endif
+#endif // ZH
 
 		// not part of the subsystem list, because it should normally never be reset!
 		TheNameKeyGenerator = MSGNEW("GameEngineSubsystem") NameKeyGenerator;
@@ -350,7 +350,7 @@ void GameEngine::init( int argc, char *argv[] )
 	DEBUG_LOG(("%s", Buf));////////////////////////////////////////////////////////////////////////////
 	#endif/////////////////////////////////////////////////////////////////////////////////////////////
 
-#endif
+#endif // ZH
 		// not part of the subsystem list, because it should normally never be reset!
 		TheCommandList = MSGNEW("GameEngineSubsystem") CommandList;
 		TheCommandList->init();
@@ -363,7 +363,7 @@ void GameEngine::init( int argc, char *argv[] )
 	DEBUG_LOG(("%s", Buf));////////////////////////////////////////////////////////////////////////////
 	#endif/////////////////////////////////////////////////////////////////////////////////////////////
 
-#endif
+#endif // ZH
 		XferCRC xferCRC;
 		xferCRC.open("lightCRC");
 
@@ -378,7 +378,7 @@ void GameEngine::init( int argc, char *argv[] )
 	DEBUG_LOG(("%s", Buf));////////////////////////////////////////////////////////////////////////////
 	#endif/////////////////////////////////////////////////////////////////////////////////////////////
 
-#endif
+#endif // ZH
 		initSubsystem(TheArchiveFileSystem, "TheArchiveFileSystem", createArchiveFileSystem(), NULL); // this MUST come after TheLocalFileSystem creation
 #ifdef ZH
 
@@ -389,7 +389,7 @@ void GameEngine::init( int argc, char *argv[] )
 	DEBUG_LOG(("%s", Buf));////////////////////////////////////////////////////////////////////////////
 	#endif/////////////////////////////////////////////////////////////////////////////////////////////
 
-#endif
+#endif // ZH
 		initSubsystem(TheWritableGlobalData, "TheWritableGlobalData", MSGNEW("GameEngineSubsystem") GlobalData(), &xferCRC, "Data\\INI\\Default\\GameData.ini", "Data\\INI\\GameData.ini");
 #ifdef ZH
 
@@ -401,7 +401,7 @@ void GameEngine::init( int argc, char *argv[] )
 	DEBUG_LOG(("%s", Buf));////////////////////////////////////////////////////////////////////////////
 	#endif/////////////////////////////////////////////////////////////////////////////////////////////
 
-#endif
+#endif // ZH
 
 	#if defined(_DEBUG) || defined(_INTERNAL)
 		// If we're in Debug or Internal, load the Debug info as well.
@@ -430,7 +430,7 @@ void GameEngine::init( int argc, char *argv[] )
 		PerfGather::initPerfDump("AAAPerfStats", PerfGather::PERF_NETTIME);
 	#endif
 
-#endif
+#endif // OG
 		// read the water settings from INI (must do prior to initing GameClient, apparently)
 		ini.load( AsciiString( "Data\\INI\\Default\\Water.ini" ), INI_LOAD_OVERWRITE, &xferCRC );
 		ini.load( AsciiString( "Data\\INI\\Water.ini" ), INI_LOAD_OVERWRITE, &xferCRC );
@@ -438,7 +438,7 @@ void GameEngine::init( int argc, char *argv[] )
 		ini.load( AsciiString( "Data\\INI\\Default\\Weather.ini" ), INI_LOAD_OVERWRITE, &xferCRC );
 		ini.load( AsciiString( "Data\\INI\\Weather.ini" ), INI_LOAD_OVERWRITE, &xferCRC );
 
-#endif
+#endif // ZH
 
 #ifdef ZH
 
@@ -449,7 +449,7 @@ void GameEngine::init( int argc, char *argv[] )
 	DEBUG_LOG(("%s", Buf));////////////////////////////////////////////////////////////////////////////
 	#endif/////////////////////////////////////////////////////////////////////////////////////////////
 
-#endif
+#endif // ZH
 #ifdef DEBUG_CRC
 		initSubsystem(TheDeepCRCSanityCheck, "TheDeepCRCSanityCheck", MSGNEW("GameEngineSubystem") DeepCRCSanityCheck, NULL, NULL, NULL, NULL);
 #endif // DEBUG_CRC
@@ -463,7 +463,7 @@ void GameEngine::init( int argc, char *argv[] )
 	DEBUG_LOG(("%s", Buf));////////////////////////////////////////////////////////////////////////////
 	#endif/////////////////////////////////////////////////////////////////////////////////////////////
 
-#endif
+#endif // ZH
 		initSubsystem(TheScienceStore,"TheScienceStore", MSGNEW("GameEngineSubsystem") ScienceStore(), &xferCRC, "Data\\INI\\Default\\Science.ini", "Data\\INI\\Science.ini");
 		initSubsystem(TheMultiplayerSettings,"TheMultiplayerSettings", MSGNEW("GameEngineSubsystem") MultiplayerSettings(), &xferCRC, "Data\\INI\\Default\\Multiplayer.ini", "Data\\INI\\Multiplayer.ini");
 		initSubsystem(TheTerrainTypes,"TheTerrainTypes", MSGNEW("GameEngineSubsystem") TerrainTypeCollection(), &xferCRC, "Data\\INI\\Default\\Terrain.ini", "Data\\INI\\Terrain.ini");
@@ -477,7 +477,7 @@ void GameEngine::init( int argc, char *argv[] )
   startTime64 = endTime64;//Reset the clock ////////////////////////////////////////////////////////
 	DEBUG_LOG(("%s", Buf));////////////////////////////////////////////////////////////////////////////
 	#endif/////////////////////////////////////////////////////////////////////////////////////////////
-#endif
+#endif // ZH
 		initSubsystem(TheAudio,"TheAudio", createAudioManager(), NULL);
 		if (!TheAudio->isMusicAlreadyLoaded())
 			setQuitting(TRUE);
@@ -490,7 +490,7 @@ void GameEngine::init( int argc, char *argv[] )
 	DEBUG_LOG(("%s", Buf));////////////////////////////////////////////////////////////////////////////
 	#endif/////////////////////////////////////////////////////////////////////////////////////////////
 
-#endif
+#endif // ZH
 		initSubsystem(TheFunctionLexicon,"TheFunctionLexicon", createFunctionLexicon(), NULL);
 		initSubsystem(TheModuleFactory,"TheModuleFactory", createModuleFactory(), NULL);
 		initSubsystem(TheMessageStream,"TheMessageStream", createMessageStream(), NULL);
@@ -509,7 +509,7 @@ void GameEngine::init( int argc, char *argv[] )
 	#endif/////////////////////////////////////////////////////////////////////////////////////////////
     
     
-#endif
+#endif // ZH
 		initSubsystem(TheFXListStore,"TheFXListStore", MSGNEW("GameEngineSubsystem") FXListStore(), &xferCRC, "Data\\INI\\Default\\FXList.ini", "Data\\INI\\FXList.ini");
 		initSubsystem(TheWeaponStore,"TheWeaponStore", MSGNEW("GameEngineSubsystem") WeaponStore(), &xferCRC, NULL, "Data\\INI\\Weapon.ini");
 		initSubsystem(TheObjectCreationListStore,"TheObjectCreationListStore", MSGNEW("GameEngineSubsystem") ObjectCreationListStore(), &xferCRC, "Data\\INI\\Default\\ObjectCreationList.ini", "Data\\INI\\ObjectCreationList.ini");
@@ -528,7 +528,7 @@ void GameEngine::init( int argc, char *argv[] )
 	DEBUG_LOG(("%s", Buf));////////////////////////////////////////////////////////////////////////////
 	#endif/////////////////////////////////////////////////////////////////////////////////////////////
 
-#endif
+#endif // ZH
 		initSubsystem(TheThingFactory,"TheThingFactory", createThingFactory(), &xferCRC, "Data\\INI\\Default\\Object.ini", NULL, "Data\\INI\\Object");
 #ifdef ZH
 
@@ -540,7 +540,7 @@ void GameEngine::init( int argc, char *argv[] )
 	#endif/////////////////////////////////////////////////////////////////////////////////////////////
     
     
-#endif
+#endif // ZH
 		initSubsystem(TheUpgradeCenter,"TheUpgradeCenter", MSGNEW("GameEngineSubsystem") UpgradeCenter, &xferCRC, "Data\\INI\\Default\\Upgrade.ini", "Data\\INI\\Upgrade.ini");
 		initSubsystem(TheGameClient,"TheGameClient", createGameClient(), NULL);
 #ifdef ZH
@@ -554,7 +554,7 @@ void GameEngine::init( int argc, char *argv[] )
 	#endif/////////////////////////////////////////////////////////////////////////////////////////////
 
 	
-#endif
+#endif // ZH
 		initSubsystem(TheAI,"TheAI", MSGNEW("GameEngineSubsystem") AI(), &xferCRC,  "Data\\INI\\Default\\AIData.ini", "Data\\INI\\AIData.ini");
 		initSubsystem(TheGameLogic,"TheGameLogic", createGameLogic(), NULL);
 		initSubsystem(TheTeamFactory,"TheTeamFactory", MSGNEW("GameEngineSubsystem") TeamFactory(), NULL);
@@ -572,7 +572,7 @@ void GameEngine::init( int argc, char *argv[] )
   startTime64 = endTime64;//Reset the clock ////////////////////////////////////////////////////////
 	DEBUG_LOG(("%s", Buf));////////////////////////////////////////////////////////////////////////////
 	#endif/////////////////////////////////////////////////////////////////////////////////////////////
-#endif
+#endif // ZH
 
 		AsciiString fname;
 		fname.format("Data\\%s\\CommandMap.ini", GetRegistryLanguage().str());
@@ -585,7 +585,7 @@ void GameEngine::init( int argc, char *argv[] )
 
 #if defined(_ALLOW_DEBUG_CHEATS_IN_RELEASE)
 		ini.load("Data\\INI\\CommandMapDemo.ini", INI_LOAD_MULTIFILE, NULL);
-#endif
+#endif // ZH
 #endif
 
 		initSubsystem(TheActionManager,"TheActionManager", MSGNEW("GameEngineSubsystem") ActionManager(), NULL);
@@ -604,7 +604,7 @@ void GameEngine::init( int argc, char *argv[] )
 	DEBUG_LOG(("%s", Buf));////////////////////////////////////////////////////////////////////////////
 	#endif/////////////////////////////////////////////////////////////////////////////////////////////
 
-#endif
+#endif // ZH
 		xferCRC.close();
 		TheWritableGlobalData->m_iniCRC = xferCRC.getCRC();
 		DEBUG_LOG(("INI CRC is 0x%8.8X\n", TheGlobalData->m_iniCRC));
@@ -635,34 +635,34 @@ void GameEngine::init( int argc, char *argv[] )
 
 
 #if !defined(_INTERNAL) && !defined(_DEBUG)
-#endif
+#endif // ZH
 		AsciiString dirName;
 #ifdef OG
 		dirName = TheArchiveFileSystem->getArchiveFilenameForFile("generalsb.sec");
 		if (dirName.compareNoCase("gensec.big") != 0)
 
-#endif
+#endif // OG
 #ifdef ZH
     dirName = TheArchiveFileSystem->getArchiveFilenameForFile("generalsbzh.sec");
 
     if (dirName.compareNoCase("genseczh.big") != 0)
-#endif
+#endif // ZH
 		{
 #ifdef OG
 			DEBUG_LOG(("generalsb.sec was not found in gensec.big - it was in '%s'\n", dirName.str()));
-#endif
+#endif // OG
 #ifdef ZH
 			DEBUG_LOG(("generalsbzh.sec was not found in genseczh.big - it was in '%s'\n", dirName.str()));
-#endif
+#endif // ZH
 			m_quitting = TRUE;
 		}
 		
 #ifdef OG
 		dirName = TheArchiveFileSystem->getArchiveFilenameForFile("generalsa.sec");
-#endif
+#endif // OG
 #ifdef ZH
 		dirName = TheArchiveFileSystem->getArchiveFilenameForFile("generalsazh.sec");
-#endif
+#endif // ZH
 		const char *noPath = dirName.reverseFind('\\');
 		if (noPath) {
 			dirName = noPath + 1;
@@ -670,22 +670,22 @@ void GameEngine::init( int argc, char *argv[] )
 
 #ifdef OG
 		if (dirName.compareNoCase("music.big") != 0)
-#endif
+#endif // OG
 #ifdef ZH
 		if (dirName.compareNoCase("musiczh.big") != 0)
-#endif
+#endif // ZH
 		{
 #ifdef OG
 			DEBUG_LOG(("generalsa.sec was not found in music.big - it was in '%s'\n", dirName.str()));
-#endif
+#endif // OG
 #ifdef ZH
 			DEBUG_LOG(("generalsazh.sec was not found in musiczh.big - it was in '%s'\n", dirName.str()));
-#endif
+#endif // ZH
 			m_quitting = TRUE;
 		}
 #ifdef ZH
 #endif
-#endif
+#endif // ZH
 
 		// initialize the MapCache
 		TheMapCache = MSGNEW("GameEngineSubsystem") MapCache;
@@ -700,7 +700,7 @@ void GameEngine::init( int argc, char *argv[] )
 	DEBUG_LOG(("%s", Buf));////////////////////////////////////////////////////////////////////////////
 	#endif/////////////////////////////////////////////////////////////////////////////////////////////
 
-#endif
+#endif // ZH
 		if (TheGlobalData->m_buildMapCache)
 		{
 			// just quit, since the map cache has already updated
@@ -713,7 +713,7 @@ void GameEngine::init( int argc, char *argv[] )
 		
 #ifdef OG
 #if !defined(_PLAYTEST)
-#endif
+#endif // OG
 		// This allows us to run a map/reply from the command line
 		if (TheGlobalData->m_initialFile.isEmpty() == FALSE)
 		{
@@ -743,7 +743,7 @@ void GameEngine::init( int argc, char *argv[] )
 		}
 #ifdef OG
 #endif
-#endif
+#endif // OG
 
 		// 
 		if (TheMapCache && TheGlobalData->m_shellMapOn)
@@ -763,10 +763,10 @@ void GameEngine::init( int argc, char *argv[] )
 
 #ifdef OG
 		initDisabledMasks();
-#endif
+#endif // OG
 #ifdef ZH
 		//initDisabledMasks();
-#endif
+#endif // ZH
 
 	}
 	catch (ErrorCode ec)
@@ -794,11 +794,11 @@ void GameEngine::init( int argc, char *argv[] )
 
 #ifdef ZH
 	initKindOfMasks();
-#endif
+#endif // ZH
 	initDisabledMasks();
 #ifdef ZH
 	initDamageTypeFlags();
-#endif
+#endif // ZH
 
 	TheSubsystemList->resetAll();
 	HideControlBar();
@@ -977,7 +977,7 @@ void GameEngine::execute( void )
 		  if ( ! (TheGlobalData->m_TiVOFastMode && TheGameLogic->isInReplayGame()))
 		#endif
           {
-#endif
+#endif // ZH
 					// limit the framerate
 					DWORD now = timeGetTime();
 					DWORD limit = (1000.0f/m_maxFPS)-1;
@@ -994,7 +994,7 @@ void GameEngine::execute( void )
 
           }        
         
-#endif
+#endif // ZH
 				}
 			}
 
@@ -1147,7 +1147,7 @@ void GameEngine::checkAbnormalQuitting(void)
 			pref.write();
 		}
 	}
-#endif
+#endif // OG
 }
 
 //-------------------------------------------------------------------------------------------------

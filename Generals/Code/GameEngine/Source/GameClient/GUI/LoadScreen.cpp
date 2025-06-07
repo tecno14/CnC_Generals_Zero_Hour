@@ -54,7 +54,7 @@
 //#pragma optimize("", off)
 //#pragma message("************************************** WARNING, optimization disabled for debugging purposes")
 #endif
-#endif
+#endif // OG
 
 //-----------------------------------------------------------------------------
 // USER INCLUDES //////////////////////////////////////////////////////////////
@@ -63,23 +63,23 @@
 #ifdef OG
 #include "Common/MultiplayerSettings.h"
 
-#endif
+#endif // OG
 #ifdef ZH
 #include "Common/AudioAffect.h"
 #include "Common/AudioEventRTS.h"
 #include "Common/AudioHandleSpecialValues.h"
 #include "Common/GameAudio.h"
-#endif
+#endif // ZH
 #include "Common/GameEngine.h"
 #ifdef ZH
 #include "Common/GameLOD.h"
-#endif
+#endif // ZH
 #include "Common/GameState.h"
 #ifdef ZH
 #include "Common/MultiplayerSettings.h"
 #include "Common/Player.h"
 #include "Common/PlayerList.h"
-#endif
+#endif // ZH
 #include "Common/PlayerTemplate.h"
 #ifdef OG
 #include "Common/PlayerList.h"
@@ -93,12 +93,12 @@
 #include "GameClient/LoadScreen.h"
 #include "GameClient/Shell.h"
 #include "GameClient/GameWindowManager.h"
-#endif
+#endif // OG
 #ifdef ZH
 #include "GameClient/CampaignManager.h"
 #include "GameClient/Display.h"
 
-#endif
+#endif // ZH
 #include "GameClient/GadgetProgressBar.h"
 #include "GameClient/GadgetStaticText.h"
 #include "GameClient/GameText.h"
@@ -106,44 +106,44 @@
 #include "GameClient/Display.h"
 #include "GameClient/WindowLayout.h"
 
-#endif
+#endif // OG
 #ifdef ZH
 #include "GameClient/GameWindowManager.h"
 #include "GameClient/GameWindowTransitions.h"
 #include "GameClient/LoadScreen.h"
 #include "GameClient/MapUtil.h"
-#endif
+#endif // ZH
 #include "GameClient/Mouse.h"
 #ifdef ZH
 #include "GameClient/Shell.h"
-#endif
+#endif // ZH
 #include "GameClient/VideoPlayer.h"
 #ifdef OG
 #include "GameClient/MapUtil.h"
 
-#endif
+#endif // OG
 #ifdef ZH
 #include "GameClient/WindowLayout.h"
 #include "GameClient/WindowVideoManager.h"
 #include "GameClient/ChallengeGenerals.h"
-#endif
+#endif // ZH
 #include "GameLogic/FPUControl.h"
 #include "GameLogic/GameLogic.h"
 #ifdef OG
 #include "GameNetwork/NetworkInterface.h"
-#endif
+#endif // OG
 #include "GameNetwork/GameSpy/PeerDefs.h"
 #include "GameNetwork/GameSpy/PersistentStorageThread.h"
 #ifdef OG
 #include "GameClient/CampaignManager.h"
-#endif
+#endif // OG
 #ifdef ZH
 #include "GameNetwork/NetworkInterface.h"
-#endif
+#endif // ZH
 #include "GameNetwork/RankPointValue.h"
 #ifdef OG
 #include "GameClient/GameWindowTransitions.h"
-#endif
+#endif // OG
 
 //-----------------------------------------------------------------------------
 // DEFINES ////////////////////////////////////////////////////////////////////
@@ -186,7 +186,7 @@ enum{
 #ifdef ZH
 FRAME_TITLES_START = 20,
 FRAME_TELETYPE_START = 24,
-#endif
+#endif // ZH
 FRAME_FUDGE_ADD = 30,
 #ifdef ZH
 FRAME_PORTRAITS_START = 35,
@@ -199,13 +199,13 @@ FRAME_INNER_BACKDROP_ALPHA_SHOW = 80,
 FRAME_INNER_CIRCLE_LINE_HIDE = 81,
 FRAME_VS_ANIM_START = 98,
 FRAME_RIGHT_VOICE = 140,
-#endif
+#endif // ZH
 };
 #ifdef ZH
 
 static const Int TELETYPE_UPDATE_FREQ = 2; // how many frames between teletype updates
 
-#endif
+#endif // ZH
 //-----------------------------------------------------------------------------
 // LoadScreen Class 
 //-----------------------------------------------------------------------------
@@ -231,7 +231,7 @@ void LoadScreen::update( Int percent )
 	if (TheGameEngine->getQuitting())
 		return;	//don't bother with any of this if the player is exiting game.
 
-#endif
+#endif // ZH
 	TheWindowManager->update();
 	TheDisplay->update();
 	// redraw all views, update the GUI
@@ -931,7 +931,7 @@ void ChallengeLoadScreen::activatePieces( Int frame, const GeneralPersona *gener
 
 	// update the teletype readout
 	if (frame > FRAME_TELETYPE_START && (frame % TELETYPE_UPDATE_FREQ) == 0)
-#endif
+#endif // ZH
 	{
 #ifdef ZH
 		textPosNameLeft = updateTeletypeText( 1, m_bioNameEntryLeft, TheGameText->fetch(generalPlayer->getBioName()), textPosNameLeft);
@@ -1022,7 +1022,7 @@ void ChallengeLoadScreen::init( GameInfo *game )
 	m_videoBuffer = TheDisplay->createVideoBuffer();
 	if (m_videoBuffer == NULL || !m_videoBuffer->allocate(	m_videoStream->width(), m_videoStream->height() ))
 	{
-#endif
+#endif // ZH
 		delete m_videoBuffer;
 		m_videoBuffer = NULL;
 
@@ -1044,7 +1044,7 @@ void ChallengeLoadScreen::init( GameInfo *game )
 	m_portraitMovieLeft = TheWindowManager->winGetWindowFromId( m_loadScreen, namekey );
 	namekey = TheNameKeyGenerator->nameToKey( AsciiString("ChallengeLoadScreen.wnd:PortraitMovieRight"));
 	m_portraitMovieRight = TheWindowManager->winGetWindowFromId( m_loadScreen, namekey );
-#endif
+#endif // ZH
 	
 #ifdef ZH
 //	namekey = TheNameKeyGenerator->nameToKey( AsciiString("ChallengeLoadScreen.wnd:ReticleCrosshairs"));
@@ -1112,7 +1112,7 @@ void ChallengeLoadScreen::init( GameInfo *game )
 	m_wndVideoManager = NEW WindowVideoManager;
 	m_wndVideoManager->init();
 
-#endif
+#endif // ZH
 	if(TheGameLODManager && TheGameLODManager->didMemPass())
 	{
 		Int progressUpdateCount = m_videoStream->frameCount() / FRAME_FUDGE_ADD;
@@ -1138,7 +1138,7 @@ void ChallengeLoadScreen::init( GameInfo *game )
 			m_videoStream->frameRender(m_videoBuffer);
 #ifdef OG
 			moveWindows( m_videoStream->frameIndex());
-#endif
+#endif // OG
 			m_videoStream->frameNext();
 
 			if(m_videoBuffer)
@@ -1146,12 +1146,12 @@ void ChallengeLoadScreen::init( GameInfo *game )
 #ifdef OG
 			if(m_videoStream->frameIndex() % progressUpdateCount == 0)
 
-#endif
+#endif // OG
 #ifdef ZH
 
 			Int frame = m_videoStream->frameIndex();
 			if(frame % progressUpdateCount == 0)
-#endif
+#endif // ZH
 			{
 				shiftedPercent++;
 				if(shiftedPercent >0)
@@ -1164,7 +1164,7 @@ void ChallengeLoadScreen::init( GameInfo *game )
 #ifdef OG
 				GadgetStaticTextSetText(m_percent, per);
 			
-#endif
+#endif // OG
 			}
 			TheWindowManager->update();
 
@@ -1172,18 +1172,18 @@ void ChallengeLoadScreen::init( GameInfo *game )
 			//TheShell->update();
 			//TheDisplay->update();
 
-#endif
+#endif // OG
 #ifdef ZH
 			activatePieces(frame, generalPlayer, generalOpponent);
 			m_wndVideoManager->update();
 
-#endif
+#endif // ZH
 			// redraw all views, update the GUI
 			TheDisplay->draw();
 #ifdef ZH
 
 			TheAudio->update();
-#endif
+#endif // ZH
 		}
 	}
 	else
@@ -1210,11 +1210,11 @@ void ChallengeLoadScreen::init( GameInfo *game )
 		{
 			GadgetStaticTextSetText(m_objectiveLines[i], m_unicodeObjectiveLines[i]);
 		}
-#endif
+#endif // OG
 #ifdef ZH
 		activatePiecesMinSpec(generalPlayer, generalOpponent);
 
-#endif
+#endif // ZH
 		
 		Int delay = mission->m_voiceLength * 1000;
 		Int begin = timeGetTime();
@@ -1233,7 +1233,7 @@ void ChallengeLoadScreen::init( GameInfo *game )
 
 #ifdef ZH
 		m_wndVideoManager->update();
-#endif
+#endif // ZH
 		TheWindowManager->update();
 		TheDisplay->draw();
 	}
@@ -1241,26 +1241,26 @@ void ChallengeLoadScreen::init( GameInfo *game )
 #ifdef OG
 	m_percent->winHide(TRUE);
 
-#endif
+#endif // OG
 #ifdef ZH
 
 	
 	AudioEventRTS event( generalOpponent->getRandomTauntSound() );
 	TheAudio->addAudioEvent( &event );
 
-#endif
+#endif // ZH
 	m_ambientLoopHandle = TheAudio->addAudioEvent(&m_ambientLoop);
 #ifdef ZH
 	TheAudio->update();
-#endif
+#endif // ZH
 }
 
 #ifdef OG
 void SinglePlayerLoadScreen::reset( void )
-#endif
+#endif // OG
 #ifdef ZH
 void ChallengeLoadScreen::reset( void )
-#endif
+#endif // ZH
 {
  setLoadScreen(NULL);
  m_progressBar = NULL;
@@ -1268,10 +1268,10 @@ void ChallengeLoadScreen::reset( void )
 
 #ifdef OG
 void SinglePlayerLoadScreen::update( Int percent )
-#endif
+#endif // OG
 #ifdef ZH
 void ChallengeLoadScreen::update( Int percent )
-#endif
+#endif // ZH
 {
 	percent = (percent + FRAME_FUDGE_ADD)/1.3;
 	UnicodeString per;
@@ -1280,7 +1280,7 @@ void ChallengeLoadScreen::update( Int percent )
 	GadgetProgressBarSetProgress(m_progressBar, percent);
 #ifdef OG
 	GadgetStaticTextSetText(m_percent, per);
-#endif
+#endif // OG
 	
 	// Do this last!
 	LoadScreen::update( percent );
@@ -1288,10 +1288,10 @@ void ChallengeLoadScreen::update( Int percent )
 
 #ifdef OG
 void SinglePlayerLoadScreen::setProgressRange( Int min, Int max )
-#endif
+#endif // OG
 #ifdef ZH
 void ChallengeLoadScreen::setProgressRange( Int min, Int max )
-#endif
+#endif // ZH
 {
 
 }
@@ -1454,7 +1454,7 @@ MultiPlayerLoadScreen::~MultiPlayerLoadScreen( void )
 	m_portraitLocalGeneral = NULL;
 	m_featuresLocalGeneral = NULL;
 	m_nameLocalGeneral = NULL;
-#endif
+#endif // ZH
 
 	TheAudio->removeAudioEvent( AHSV_StopTheMusicFade );
 //	TheAudio->stopAudio( AudioAffect_Music );
@@ -1477,7 +1477,7 @@ void MultiPlayerLoadScreen::init( GameInfo *game )
 #ifdef OG
 	const Image *loadScreenImage = TheMappedImageCollection->findImageByName(pt->getLoadScreen());
 
-#endif
+#endif // OG
 #ifdef ZH
 //	const Image *loadScreenImage = TheMappedImageCollection->findImageByName(pt->getLoadScreen());
 
@@ -1502,7 +1502,7 @@ void MultiPlayerLoadScreen::init( GameInfo *game )
 			portrait = TheMappedImageCollection->findImageByName("SNFactionLogoLg_China");
 		else
 			DEBUG_ASSERTCRASH(NULL, ("Unexpected player template"));
-#endif
+#endif // ZH
 
 #ifdef ZH
 		localName = pt->getDisplayName();
@@ -1514,7 +1514,7 @@ void MultiPlayerLoadScreen::init( GameInfo *game )
 	GadgetStaticTextSetText( m_featuresLocalGeneral, TheGameText->fetch( features.isEmpty() ? AsciiString( "GUI:PlayerObserver" ) : pt->getGeneralFeatures() ) );
 	m_nameLocalGeneral = TheWindowManager->winGetWindowFromId( m_loadScreen,TheNameKeyGenerator->nameToKey( "MultiplayerLoadScreen.wnd:LocalGeneralName"));
 	GadgetStaticTextSetText( m_nameLocalGeneral, localName );
-#endif
+#endif // ZH
 
 	AsciiString musicName = pt->getLoadScreenMusic();
 	if ( ! musicName.isEmpty() )
@@ -1532,11 +1532,11 @@ void MultiPlayerLoadScreen::init( GameInfo *game )
 #ifdef OG
 	if(loadScreenImage)
 		m_loadScreen->winSetEnabledImage(0, loadScreenImage);
-#endif
+#endif // OG
 #ifdef ZH
 //	if(loadScreenImage)
 //		m_loadScreen->winSetEnabledImage(0, loadScreenImage);
-#endif
+#endif // ZH
 	//DEBUG_ASSERTCRASH(TheNetwork, ("Where the Heck is the Network!!!!"));
 	//DEBUG_LOG(("NumPlayers %d\n", TheNetwork->getNumPlayers()));
 
@@ -1585,7 +1585,7 @@ void MultiPlayerLoadScreen::init( GameInfo *game )
 #ifdef OG
 		GadgetProgressBarSetEnabledBarColor(m_progressBars[netSlot],houseColor );
 
-#endif
+#endif // OG
 #ifdef ZH
 
 		// format the progress bar to house colors
@@ -1595,7 +1595,7 @@ void MultiPlayerLoadScreen::init( GameInfo *game )
 		if (! houseImage)
 			houseImage = TheMappedImageCollection->findImageByName("LoadingBar_Progress");
 		m_progressBars[netSlot]->winSetEnabledImage( 6, houseImage );
-#endif
+#endif // ZH
 
 		UnicodeString name = slot->getName();
 		GadgetStaticTextSetText(m_playerNames[netSlot], name );
@@ -1766,7 +1766,7 @@ GameSlot *lSlot = game->getSlot(game->getLocalSlotNum());
 	if(loadScreenImage)
 		m_loadScreen->winSetEnabledImage(0, loadScreenImage);
 
-#endif
+#endif // OG
 #ifdef ZH
 //	const Image *loadScreenImage = TheMappedImageCollection->findImageByName(pt->getLoadScreen());
 //	if(loadScreenImage)
@@ -1803,7 +1803,7 @@ GameSlot *lSlot = game->getSlot(game->getLocalSlotNum());
 	GadgetStaticTextSetText( m_featuresLocalGeneral, TheGameText->fetch( features.isEmpty() ? AsciiString( "GUI:PlayerObserver" ) : pt->getGeneralFeatures() ) );
 	m_nameLocalGeneral = TheWindowManager->winGetWindowFromId( m_loadScreen,TheNameKeyGenerator->nameToKey( "GameSpyLoadScreen.wnd:LocalGeneralName"));
 	GadgetStaticTextSetText( m_nameLocalGeneral, localName );
-#endif
+#endif // ZH
 
 	GameWindow *teamWin[MAX_SLOTS];
 	for (Int i = 0; i < MAX_SLOTS; ++i)
@@ -1880,7 +1880,7 @@ GameSlot *lSlot = game->getSlot(game->getLocalSlotNum());
 #ifdef OG
 		GadgetProgressBarSetEnabledBarColor(m_progressBars[netSlot],houseColor );
 
-#endif
+#endif // OG
 #ifdef ZH
 
 		// format the progress bar to house colors
@@ -1890,7 +1890,7 @@ GameSlot *lSlot = game->getSlot(game->getLocalSlotNum());
 		if (! houseImage)
 			houseImage = TheMappedImageCollection->findImageByName("LoadingBar_Progress");
 		m_progressBars[netSlot]->winSetEnabledImage( 6, houseImage );
-#endif
+#endif // ZH
 
 		UnicodeString name = slot->getName();
 		GadgetStaticTextSetText(m_playerNames[netSlot], name );

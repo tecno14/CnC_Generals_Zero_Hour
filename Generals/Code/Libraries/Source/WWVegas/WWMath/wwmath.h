@@ -154,7 +154,7 @@ static float		Floor(float val) { return floorf(val); }
 static bool			Fast_Is_Float_Positive(const float & val);
 #ifdef ZH
 static bool			Is_Power_Of_2(const unsigned int val);
-#endif
+#endif // ZH
 
 static float		Random_Float(void);
 static float		Random_Float(float min,float max);
@@ -162,7 +162,7 @@ static float		Clamp(float val, float min = 0.0f, float max = 1.0f);
 static double		Clamp(double val, double min = 0.0f, double max = 1.0f);
 #ifdef ZH
 static int			Clamp_Int(int val, int min_val, int max_val);
-#endif
+#endif // ZH
 static float		Wrap(float val, float min = 0.0f, float max = 1.0f);
 static double		Wrap(double val, double min = 0.0f, double max = 1.0f);
 static float		Min(float a, float b);
@@ -170,7 +170,7 @@ static float		Max(float a, float b);
 #ifdef ZH
 
 static int			Float_As_Int(const float f) { return *((int*)&f); }
-#endif
+#endif // ZH
 
 static float		Lerp(float a, float b, float lerp );
 static double		Lerp(double a, double b, float lerp );
@@ -205,7 +205,7 @@ WWINLINE bool WWMath::Fast_Is_Float_Positive(const float & val)
 WWINLINE bool WWMath::Is_Power_Of_2(const unsigned int val)
 {
 	return !((val)&val-1);
-#endif
+#endif // ZH
 }
 
 WWINLINE float WWMath::Random_Float(float min,float max) 
@@ -232,7 +232,7 @@ WWINLINE int WWMath::Clamp_Int(int val, int min_val, int max_val)
 {
 	if(val < min_val) return min_val;
 	if(val > max_val) return max_val;
-#endif
+#endif // ZH
 	return val;
 }
 

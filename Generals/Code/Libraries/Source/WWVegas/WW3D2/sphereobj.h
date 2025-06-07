@@ -28,17 +28,17 @@
  *                                                                                             *
 #ifdef OG
  *                     $Modtime:: 5/05/01 6:28p                                               $*
-#endif
+#endif // OG
 #ifdef ZH
  *                     $Modtime:: 11/24/01 6:21p                                              $*
-#endif
+#endif // ZH
  *                                                                                             *
 #ifdef OG
  *                    $Revision:: 6                                                           $*
-#endif
+#endif // OG
 #ifdef ZH
  *                    $Revision:: 7                                                           $*
-#endif
+#endif // ZH
  *                                                                                             *
  *---------------------------------------------------------------------------------------------*
  * Functions:                                                                                  *
@@ -62,7 +62,7 @@
 #include "prim_anim.h"
 #ifdef ZH
 #include "meshgeometry.h"
-#endif
+#endif // ZH
 
 class TextureClass;
 
@@ -209,10 +209,10 @@ private:
 
 #ifdef OG
 	Vector3i	*tri_poly;		// array of triangle poly's, vertex indices  (can be discard if switched to strips + fans)
-#endif
+#endif // OG
 #ifdef ZH
 	TriIndex	*tri_poly;		// array of triangle poly's, vertex indices  (can be discard if switched to strips + fans)
-#endif
+#endif // ZH
 
 };
 
@@ -239,7 +239,7 @@ SphereMeshClass::Set_DCG (bool is_additive, int index, float value)
 #define SPHERE_NUM_LOD		(10)
 #define SPHERE_LOWEST_LOD	(7)
 #define SPHERE_HIGHEST_LOD (17)
-#endif
+#endif // ZH
 
 /*
 ** SphereRenderObjClass: Procedurally generated render spheres
@@ -291,7 +291,7 @@ public:
 
 	virtual void					Scale(float scale);
 	virtual void					Scale(float scalex, float scaley, float scalez);
-#endif
+#endif // ZH
 	virtual void					Set_Hidden(int onoff)				{ RenderObjClass::Set_Hidden (onoff); Update_On_Visibilty (); }
 	virtual void					Set_Visible(int onoff)				{ RenderObjClass::Set_Visible (onoff); Update_On_Visibilty (); }
 	virtual void					Set_Animation_Hidden(int onoff)	{ RenderObjClass::Set_Animation_Hidden (onoff); Update_On_Visibilty (); }
@@ -319,26 +319,26 @@ public:
 	void							 	Set_Alpha(float alpha)						{ Alpha = alpha; }
 	void							 	Set_Scale(const Vector3 & scale)			{ Scale = scale; }
 	void								Set_Vector(const AlphaVectorStruct &v)	{ Vector = v; }
-#endif
+#endif // OG
 #ifdef ZH
 	void							 	Set_Color(const Vector3 & color)			{ CurrentColor = color; }
 	void							 	Set_Alpha(float alpha)						{ CurrentAlpha = alpha; }
 	void							 	Set_Scale(const Vector3 & scale)			{ CurrentScale = scale; }
 	void								Set_Vector(const AlphaVectorStruct &v)	{ CurrentVector = v; }
-#endif
+#endif // ZH
 
 #ifdef OG
 	const Vector3 &				Get_Color(void) const	{ return Color; }
 	float								Get_Alpha(void) const	{ return Alpha; }
 	const Vector3 &				Get_Scale(void) const	{ return Scale; }
 	const AlphaVectorStruct &	Get_Vector(void) const	{ return Vector; }
-#endif
+#endif // OG
 #ifdef ZH
 	const Vector3 &				Get_Color(void) const	{ return CurrentColor; }
 	float								Get_Alpha(void) const	{ return CurrentAlpha; }
 	const Vector3 &				Get_Scale(void) const	{ return CurrentScale; }
 	const AlphaVectorStruct &	Get_Vector(void) const	{ return CurrentVector; }
-#endif
+#endif // ZH
 
 	Vector3							Get_Default_Color(void) const;
 	float								Get_Default_Alpha(void) const;
@@ -402,7 +402,7 @@ protected:
 	int						 		CurrentLOD;
 	float								Value[SPHERE_NUM_LOD + 2];// Value array needs # of LODs + 1 (RING_NUM_LOD doesn't include null LOD)
 
-#endif
+#endif // ZH
 	SphereColorChannelClass		ColorChannel;
 	SphereAlphaChannelClass		AlphaChannel;
 	SphereScaleChannelClass		ScaleChannel;
@@ -419,20 +419,20 @@ protected:
 #ifdef OG
 	int						 		CurrentLOD;
 
-#endif
+#endif // OG
 	// Current State
 #ifdef OG
 	Vector3					 		Color;
 	float								Alpha;
 	Vector3							Scale;
 	AlphaVectorStruct				Vector;
-#endif
+#endif // OG
 #ifdef ZH
 	Vector3					 		CurrentColor;
 	float								CurrentAlpha;
 	Vector3							CurrentScale;
 	AlphaVectorStruct				CurrentVector;
-#endif
+#endif // ZH
 
 	Quaternion						Orientation;
 

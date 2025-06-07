@@ -136,4 +136,4 @@ private:
 
 #endif //__ANIMATEDSOUNDMGR_H
 
-#endif
+#endif // ZH

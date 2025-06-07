@@ -24,31 +24,31 @@
  *                                                                                             * 
 #ifdef OG
  *                     $Archive:: /VSS_Sync/wwlib/trim.cpp                                    $* 
-#endif
+#endif // OG
 #ifdef ZH
  *                     $Archive:: /Commando/Code/wwlib/trim.cpp                               $* 
-#endif
+#endif // ZH
  *                                                                                             * 
 #ifdef OG
  *                      $Author:: Vss_sync                                                    $*
-#endif
+#endif // OG
 #ifdef ZH
  *                      $Author:: Denzil_l                                                    $*
-#endif
+#endif // ZH
  *                                                                                             * 
 #ifdef OG
  *                     $Modtime:: 8/29/01 10:24p                                              $*
-#endif
+#endif // OG
 #ifdef ZH
  *                     $Modtime:: 11/08/01 11:35a                                             $*
-#endif
+#endif // ZH
  *                                                                                             * 
 #ifdef OG
  *                    $Revision:: 3                                                           $*
-#endif
+#endif // OG
 #ifdef ZH
  *                    $Revision:: 4                                                           $*
-#endif
+#endif // ZH
  *                                                                                             *
  *---------------------------------------------------------------------------------------------* 
  * Functions:                                                                                  * 
@@ -59,7 +59,7 @@
 #ifdef OG
 #include	<ctype.h>
 #include	<stddef.h>
-#endif
+#endif // OG
 #include	<string.h>
 
 #ifdef _UNIX
@@ -83,20 +83,20 @@
  *=============================================================================================*/
 #ifdef OG
 char * strtrim(char * buffer)
-#endif
+#endif // OG
 #ifdef ZH
 char* strtrim(char* buffer)
-#endif
+#endif // ZH
 {
 #ifdef OG
 	if (buffer != NULL) {
 
-#endif
+#endif // OG
 #ifdef ZH
 	if (buffer) {
 		/* Strip leading white space from the string. */
 		char* source = buffer;
-#endif
+#endif // ZH
 
 #ifdef OG
 		/*
@@ -105,12 +105,12 @@ char* strtrim(char* buffer)
 		char * source = buffer;
 		while (isspace(*source)) {
 			source++;
-#endif
+#endif // OG
 #ifdef ZH
 		while ((*source != 0) && ((unsigned char)*source <= 32)) {
 			++source;
 
-#endif
+#endif // ZH
 		}
 		if (source != buffer) {
 			strcpy(buffer, source);
@@ -122,13 +122,13 @@ char* strtrim(char* buffer)
 		*/
 		for (int index = strlen(buffer)-1; index >= 0; index--) {
 			if (isspace(buffer[index])) {
-#endif
+#endif // OG
 #ifdef ZH
 		/* Clip trailing white space from the string. */
 		for (int index = strlen(buffer) - 1; index >= 0; --index) {
 			if ((*source != 0) && ((unsigned char)buffer[index] <= 32)) {
 
-#endif
+#endif // ZH
 				buffer[index] = '\0';
 			} else {
 				break;
@@ -138,29 +138,29 @@ char* strtrim(char* buffer)
 #ifdef OG
 	return(buffer);
 
-#endif
+#endif // OG
 #ifdef ZH
 
 	return buffer;
-#endif
+#endif // ZH
 }
 
 #ifdef OG
 wchar_t * wcstrim(wchar_t * buffer)
-#endif
+#endif // OG
 #ifdef ZH
 wchar_t* wcstrim(wchar_t* buffer)
-#endif
+#endif // ZH
 {
 #ifdef OG
 	if (buffer != NULL) {
 
-#endif
+#endif // OG
 #ifdef ZH
 	if (buffer) {
 		/* Strip leading white space from the string. */
 		wchar_t* source = buffer;
-#endif
+#endif // ZH
 
 #ifdef OG
 		/*
@@ -169,12 +169,12 @@ wchar_t* wcstrim(wchar_t* buffer)
 		wchar_t * source = buffer;
 		while (iswspace(*source)) {
 			source++;
-#endif
+#endif // OG
 #ifdef ZH
 		while ((*source != 0) && ((unsigned int)*source <= 32)) {
 			++source;
 
-#endif
+#endif // ZH
 		}
 		if (source != buffer) {
 			wcscpy(buffer, source);
@@ -186,13 +186,13 @@ wchar_t* wcstrim(wchar_t* buffer)
 		*/
 		for (int index = wcslen(buffer)-1; index >= 0; index--) {
 			if (iswspace(buffer[index])) {
-#endif
+#endif // OG
 #ifdef ZH
 		/* Clip trailing white space from the string. */
 		for (int index = wcslen(buffer) - 1; index >= 0; --index) {
 			if ((*source != 0) && ((unsigned int)buffer[index] <= 32)) {
 
-#endif
+#endif // ZH
 				buffer[index] = L'\0';
 			} else {
 				break;
@@ -202,11 +202,11 @@ wchar_t* wcstrim(wchar_t* buffer)
 #ifdef OG
 	return(buffer);
 
-#endif
+#endif // OG
 #ifdef ZH
 
 	return buffer;
-#endif
+#endif // ZH
 }
 
 

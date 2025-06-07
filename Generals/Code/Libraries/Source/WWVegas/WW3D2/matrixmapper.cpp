@@ -28,28 +28,28 @@
  *                                                                                             *
 #ifdef OG
  *                      $Author:: Greg_h                                                      $*
-#endif
+#endif // OG
 #ifdef ZH
  *                      $Author:: Kenny Mitchell                                               * 
-#endif
+#endif // ZH
  *                                                                                             *
 #ifdef OG
  *                     $Modtime:: 6/21/01 10:32a                                              $*
-#endif
+#endif // OG
 #ifdef ZH
  *                     $Modtime:: 06/26/02 4:04p                                             $*
-#endif
+#endif // ZH
  *                                                                                             *
 #ifdef OG
  *                    $Revision:: 10                                                          $*
-#endif
+#endif // OG
 #ifdef ZH
  *                    $Revision:: 11                                                          $*
-#endif
+#endif // ZH
  *                                                                                             *
 #ifdef ZH
  * 06/26/02 KM Matrix name change to avoid MAX conflicts                                       *
-#endif
+#endif // ZH
  *---------------------------------------------------------------------------------------------*
  * Functions:                                                                                  *
  *   MatrixMapperClass::MatrixMapperClass -- Constructor                                       *
@@ -60,7 +60,7 @@
  *   MatrixMapperClass::isActive -- check if this mapper should be active                      *
  *   MatrixMapperClass::process -- process the given VertexPipe                                *
 
-#endif
+#endif // OG
 #ifdef ZH
  *   MatrixMapperClass::Apply -- Apply texture mapper to render states and texture stage states*
  *   MatrixMapperClass::Calculate_Texture_Matrix -- Calculate texture matrix                   *
@@ -70,7 +70,7 @@
  *   CompositeMatrixMapperClass::~CompositeMatrixMapperClass -- Destructor                     *
  *   CompositeMatrixMapperClass::Apply -- Apply texture mapper to render states and ts states  *
  *   CompositeMatrixMapperClass::Calculate_Texture_Matrix -- Calculate texture matrix          *
-#endif
+#endif // ZH
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
 
@@ -97,17 +97,17 @@ MatrixMapperClass::MatrixMapperClass(int stage) :
 	Flags(0),
 #ifdef ZH
 	Type(ORTHO_PROJECTION),
-#endif
+#endif // ZH
 	ViewToTexture(true),
 	ViewToPixel(true),
 #ifdef ZH
 	ViewSpaceProjectionNormal(0.0f, 0.0f, 0.0f),
-#endif
+#endif // ZH
 	GradientUCoord(0.5f)
 {	
 #ifdef OG
 	ViewSpaceProjectionNormal = Vector3(0.0f,0.0f,0.0f);
-#endif
+#endif // OG
 }
 
 /***********************************************************************************************
@@ -126,10 +126,10 @@ void MatrixMapperClass::Set_Texture_Transform(const Matrix3D & view_to_texture,f
 {
 #ifdef OG
 	ViewToTexture = Matrix4(view_to_texture);
-#endif
+#endif // OG
 #ifdef ZH
 	ViewToTexture = Matrix4x4(view_to_texture);
-#endif
+#endif // ZH
 	Update_View_To_Pixel_Transform(texsize);
 }
 
@@ -147,10 +147,10 @@ void MatrixMapperClass::Set_Texture_Transform(const Matrix3D & view_to_texture,f
  *=============================================================================================*/
 #ifdef OG
 void	MatrixMapperClass::Set_Texture_Transform(const Matrix4 & view_to_texture,float texsize)
-#endif
+#endif // OG
 #ifdef ZH
 void	MatrixMapperClass::Set_Texture_Transform(const Matrix4x4 & view_to_texture,float texsize)
-#endif
+#endif // ZH
 {
 	ViewToTexture=view_to_texture;	
 
@@ -265,15 +265,15 @@ void MatrixMapperClass::Compute_Texture_Coordinate(const Vector3 & point,Vector3
  * HISTORY:                                                                                    *
  *   11/05/01     NH : Created comment block.                                                  *
  *=============================================================================================*/
-#endif
+#endif // ZH
 void MatrixMapperClass::Apply(int uv_array_index)
 {
 #ifdef OG
 	Matrix4 m;
-#endif
+#endif // OG
 #ifdef ZH
 	Matrix4x4 m;
-#endif
+#endif // ZH
 
 	switch (Type) 
 	{
@@ -285,11 +285,11 @@ void MatrixMapperClass::Apply(int uv_array_index)
 #ifdef OG
 		DX8Wrapper::Set_DX8_Texture_Stage_State(uv_array_index,D3DTSS_TEXCOORDINDEX,D3DTSS_TCI_CAMERASPACEPOSITION);		
 		DX8Wrapper::Set_DX8_Texture_Stage_State(uv_array_index,D3DTSS_TEXTURETRANSFORMFLAGS,D3DTTFF_COUNT2);
-#endif
+#endif // OG
 #ifdef ZH
 		DX8Wrapper::Set_DX8_Texture_Stage_State(Stage,D3DTSS_TEXCOORDINDEX,D3DTSS_TCI_CAMERASPACEPOSITION);		
 		DX8Wrapper::Set_DX8_Texture_Stage_State(Stage,D3DTSS_TEXTURETRANSFORMFLAGS,D3DTTFF_COUNT2);
-#endif
+#endif // ZH
 		break;
 	case PERSPECTIVE_PROJECTION:
 		/*
@@ -302,11 +302,11 @@ void MatrixMapperClass::Apply(int uv_array_index)
 #ifdef OG
 		DX8Wrapper::Set_DX8_Texture_Stage_State(uv_array_index,D3DTSS_TEXCOORDINDEX,D3DTSS_TCI_CAMERASPACEPOSITION);		
 		DX8Wrapper::Set_DX8_Texture_Stage_State(uv_array_index,D3DTSS_TEXTURETRANSFORMFLAGS,D3DTTFF_PROJECTED|D3DTTFF_COUNT3);
-#endif
+#endif // OG
 #ifdef ZH
 		DX8Wrapper::Set_DX8_Texture_Stage_State(Stage,D3DTSS_TEXCOORDINDEX,D3DTSS_TCI_CAMERASPACEPOSITION);		
 		DX8Wrapper::Set_DX8_Texture_Stage_State(Stage,D3DTSS_TEXTURETRANSFORMFLAGS,D3DTTFF_PROJECTED|D3DTTFF_COUNT3);
-#endif
+#endif // ZH
 		break;
 	case DEPTH_GRADIENT:
 		/*
@@ -321,11 +321,11 @@ void MatrixMapperClass::Apply(int uv_array_index)
 #ifdef OG
 		DX8Wrapper::Set_DX8_Texture_Stage_State(uv_array_index,D3DTSS_TEXCOORDINDEX,D3DTSS_TCI_CAMERASPACEPOSITION);
 		DX8Wrapper::Set_DX8_Texture_Stage_State(uv_array_index,D3DTSS_TEXTURETRANSFORMFLAGS,D3DTTFF_COUNT2);
-#endif
+#endif // OG
 #ifdef ZH
 		DX8Wrapper::Set_DX8_Texture_Stage_State(Stage,D3DTSS_TEXCOORDINDEX,D3DTSS_TCI_CAMERASPACEPOSITION);
 		DX8Wrapper::Set_DX8_Texture_Stage_State(Stage,D3DTSS_TEXTURETRANSFORMFLAGS,D3DTTFF_COUNT2);
-#endif
+#endif // ZH
 		break;
 	case NORMAL_GRADIENT:
 		/*
@@ -340,11 +340,11 @@ void MatrixMapperClass::Apply(int uv_array_index)
 #ifdef OG
 		DX8Wrapper::Set_DX8_Texture_Stage_State(uv_array_index,D3DTSS_TEXCOORDINDEX,D3DTSS_TCI_CAMERASPACENORMAL);		
 		DX8Wrapper::Set_DX8_Texture_Stage_State(uv_array_index,D3DTSS_TEXTURETRANSFORMFLAGS,D3DTTFF_COUNT2);
-#endif
+#endif // OG
 #ifdef ZH
 		DX8Wrapper::Set_DX8_Texture_Stage_State(Stage,D3DTSS_TEXCOORDINDEX,D3DTSS_TCI_CAMERASPACENORMAL);		
 		DX8Wrapper::Set_DX8_Texture_Stage_State(Stage,D3DTSS_TEXTURETRANSFORMFLAGS,D3DTTFF_COUNT2);
-#endif
+#endif // ZH
 		break;
 #ifdef ZH
 	}
@@ -478,7 +478,7 @@ void CompositeMatrixMapperClass::Apply(int uv_array_index)
 	} else {
 		MatrixMapperClass::Apply(uv_array_index);
 	}
-#endif
+#endif // ZH
 	}
 #ifdef ZH
 
@@ -504,7 +504,7 @@ void CompositeMatrixMapperClass::Calculate_Texture_Matrix(Matrix4x4 &tex_matrix)
 		// Apply() function.
 		Matrix4x4 int_mat;
 		InternalMapper->Calculate_Texture_Matrix(int_mat);
-#endif
+#endif // ZH
 
 #ifdef ZH
 			// We need to modify the view-to-pixel matrix to produce q (third texture coordinate values)
@@ -520,7 +520,7 @@ void CompositeMatrixMapperClass::Calculate_Texture_Matrix(Matrix4x4 &tex_matrix)
 			tmp[1] = ViewToPixel[1];
 			tmp[2] = ViewToPixel[3];
 			tmp[3] = ViewToPixel[3];
-#endif
+#endif // ZH
 
 #ifdef ZH
 		// We multiply the matrices in this order so the camera position, transformed by ViewToPixel
@@ -529,5 +529,5 @@ void CompositeMatrixMapperClass::Calculate_Texture_Matrix(Matrix4x4 &tex_matrix)
 	} else {
 		MatrixMapperClass::Calculate_Texture_Matrix(tex_matrix);
 	}
-#endif
+#endif // ZH
 }

@@ -31,7 +31,7 @@
 #include "Common/Xfer.h"
 #ifdef ZH
 #include "Common/Player.h"
-#endif
+#endif // ZH
 #include "GameClient/ControlBar.h"
 #include "GameLogic/Module/CommandSetUpgrade.h"
 #include "GameLogic/Object.h"
@@ -48,7 +48,7 @@ void CommandSetUpgradeModuleData::buildFieldParse(MultiIniFieldParse& p)
 #ifdef ZH
 		{ "CommandSetAlt",	INI::parseAsciiString,	NULL, offsetof( CommandSetUpgradeModuleData, m_newCommandSetAlt ) },
 		{ "TriggerAlt",			INI::parseAsciiString,	NULL, offsetof( CommandSetUpgradeModuleData, m_triggerAlt ) },
-#endif
+#endif // ZH
 		{ 0, 0, 0, 0 }
 	};
   p.add(dataFieldParse);
@@ -103,7 +103,7 @@ void CommandSetUpgrade::upgradeImplementation( )
 		}
 	}
 
-#endif
+#endif // ZH
 	obj->setCommandSetStringOverride( getCommandSetUpgradeModuleData()->m_newCommandSet );
 	TheControlBar->markUIDirty();// Refresh the UI in case we are selected
 }

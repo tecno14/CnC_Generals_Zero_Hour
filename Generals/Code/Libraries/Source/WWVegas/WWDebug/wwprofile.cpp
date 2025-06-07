@@ -26,30 +26,30 @@
  *                                                                                             *
 #ifdef OG
  *                      $Author:: Tom_s                                                       $*
-#endif
+#endif // OG
 #ifdef ZH
  *                      $Author:: Jani_p                                                      $*
-#endif
+#endif // ZH
  *                                                                                             *
 #ifdef OG
  *                     $Modtime:: 6/29/01 3:10p                                               $*
-#endif
+#endif // OG
 #ifdef ZH
  *                     $Modtime:: 4/01/02 10:30a                                              $*
-#endif
+#endif // ZH
  *                                                                                             *
 #ifdef OG
  *                    $Revision:: 14                                                          $*
-#endif
+#endif // OG
 #ifdef ZH
  *                    $Revision:: 20                                                          $*
-#endif
+#endif // ZH
  *                                                                                             *
  *---------------------------------------------------------------------------------------------*
  *   WWProfile_Get_Ticks -- Retrieves the cpu performance counter                              *
 #ifdef OG
  *   WWProfile_Get_Tick_Rate -- returns the clock frequency of the cpu                         *
-#endif
+#endif // OG
  *   WWProfileHierachyNodeClass::WWProfileHierachyNodeClass -- Constructor                     *
  *   WWProfileHierachyNodeClass::~WWProfileHierachyNodeClass -- Destructor                     *
  *   WWProfileHierachyNodeClass::Get_Sub_Node -- Searches for a child node by name (pointer)   *
@@ -71,7 +71,7 @@
 #include "wwprofile.h"
 #ifdef ZH
 #include "fastallocator.h"
-#endif
+#endif // ZH
 #include "wwdebug.h"
 #include <windows.h>
 #ifdef ZH
@@ -83,13 +83,13 @@
 #include "cpudetect.h"
 #include "hashtemplate.h"
 #include <stdio.h>
-#endif
+#endif // ZH
 
 #ifdef ZH
 static SimpleDynVecClass<WWProfileHierachyNodeClass*> ProfileCollectVector;
 static double TotalFrameTimes;
 static bool ProfileCollecting;
-#endif
+#endif // ZH
 
 #ifdef ZH
 static HashTemplateClass<StringClass, unsigned> ProfileStringHash;
@@ -108,7 +108,7 @@ WWINLINE double WWProfile_Get_Inv_Processor_Ticks_Per_Second(void)
 	return 0.001;
 #endif
 }
-#endif
+#endif // ZH
 
 /***********************************************************************************************
  * WWProfile_Get_Ticks -- Retrieves the cpu performance counter                                *
@@ -127,10 +127,10 @@ inline void WWProfile_Get_Ticks(_int64 * ticks)
 #ifdef _UNIX
 #ifdef OG
 	*ticks = 0;
-#endif
+#endif // OG
 #ifdef ZH
        *ticks = TIMEGETTIME();
-#endif
+#endif // ZH
 #else 
 	__asm
 	{
@@ -138,7 +138,7 @@ inline void WWProfile_Get_Ticks(_int64 * ticks)
 		push ecx;
 #ifdef ZH
 		push eax;
-#endif
+#endif // ZH
 		mov ecx,ticks;
 		_emit 0Fh
 		_emit 31h
@@ -146,7 +146,7 @@ inline void WWProfile_Get_Ticks(_int64 * ticks)
 		mov [ecx+4],edx;
 #ifdef ZH
 		pop eax;
-#endif
+#endif // ZH
 		pop ecx;
 		pop edx;
 #ifdef OG
@@ -177,12 +177,12 @@ inline float WWProfile_Get_Tick_Rate(void)
 		__int64 curr_rate = 0;
 		::QueryPerformanceFrequency ((LARGE_INTEGER *)&curr_rate);
 		_CPUFrequency = (float)curr_rate;
-#endif
+#endif // OG
 	} 
 #ifdef OG
 	
 	return _CPUFrequency;
-#endif
+#endif // OG
 #endif
 }
 
@@ -220,11 +220,11 @@ WWProfileHierachyNodeClass::WWProfileHierachyNodeClass( const char * name, WWPro
 	if (!ProfileStringHash.Get(name, ProfileStringID)) {
 		ProfileStringID=ProfileStringCount++;
 		ProfileStringHash.Insert(name,ProfileStringID);
-#endif
+#endif // ZH
 }
 #ifdef ZH
 }
-#endif
+#endif // ZH
 
 #ifdef ZH
 WWProfileHierachyNodeClass::WWProfileHierachyNodeClass( unsigned id, WWProfileHierachyNodeClass * parent ) :
@@ -241,7 +241,7 @@ WWProfileHierachyNodeClass::WWProfileHierachyNodeClass( unsigned id, WWProfileHi
 	Reset();
 }
 
-#endif
+#endif // ZH
 
 /***********************************************************************************************
  * WWProfileHierachyNodeClass::~WWProfileHierachyNodeClass -- Destructor                       *
@@ -293,14 +293,14 @@ void WWProfileHierachyNodeClass::Write_To_File(FileClass* file,int recursion)
 	}
 	if (Child) {
 		Child->Write_To_File(file,recursion+1);
-#endif
+#endif // ZH
 }
 #ifdef ZH
 	if (Sibling) {
 		Sibling->Write_To_File(file,recursion);
 	}
 }
-#endif
+#endif // ZH
 
 #ifdef ZH
 void WWProfileHierachyNodeClass::Add_To_String_Compact(StringClass& string,int recursion)
@@ -323,7 +323,7 @@ void WWProfileHierachyNodeClass::Add_To_String_Compact(StringClass& string,int r
 		Sibling->Add_To_String_Compact(string,recursion);
 	}
 }
-#endif
+#endif // ZH
 
 /***********************************************************************************************
  * WWProfileHierachyNodeClass::Get_Sub_Node -- Searches for a child node by name (pointer)     *
@@ -433,11 +433,11 @@ bool	WWProfileHierachyNodeClass::Return( void )
 //				WWDEBUG_SAY(( "WWProfile of %s took %f seconds\n", Name, sec ));
 //			}
 			TotalTime += sec;
-#endif
+#endif // OG
 #ifdef ZH
 			TotalTime += float(double(time)*WWProfile_Get_Inv_Processor_Ticks_Per_Second());
 
-#endif
+#endif // ZH
 		}
 	}
 	return RecursionCounter == 0;
@@ -451,12 +451,12 @@ bool	WWProfileHierachyNodeClass::Return( void )
 ***************************************************************************************************/
 #ifdef ZH
 bool									WWProfileManager::IsProfileEnabled=false;
-#endif
+#endif // ZH
 WWProfileHierachyNodeClass		WWProfileManager::Root( "Root", NULL );
 WWProfileHierachyNodeClass	*	WWProfileManager::CurrentNode = &WWProfileManager::Root;
 #ifdef ZH
 WWProfileHierachyNodeClass	*	WWProfileManager::CurrentRootNode = &WWProfileManager::Root;
-#endif
+#endif // ZH
 int									WWProfileManager::FrameCounter = 0;
 __int64								WWProfileManager::ResetTime = 0;
 
@@ -500,20 +500,20 @@ void	WWProfileManager::Start_Root_Profile( const char * name )
 {
 	if (::GetCurrentThreadId() != ThreadID) {
 		return;
-#endif
+#endif // ZH
 }
 
 #ifdef ZH
 	if (name != CurrentRootNode->Get_Name()) {
 		CurrentRootNode = CurrentRootNode->Get_Sub_Node( name );
 	}
-#endif
+#endif // ZH
 
 #ifdef ZH
 	CurrentRootNode->Call();
 }
 
-#endif
+#endif // ZH
 /***********************************************************************************************
  * WWProfileManager::Stop_Profile -- Stop timing and record the results.                       *
  *                                                                                             *
@@ -550,7 +550,7 @@ void	WWProfileManager::Stop_Root_Profile( void )
 	// be profiling a recursive function)
 	if (CurrentRootNode->Return()) {
 		CurrentRootNode = CurrentRootNode->Get_Parent();
-#endif
+#endif // ZH
 	}
 }
 
@@ -605,7 +605,7 @@ void WWProfileManager::Increment_Frame_Counter( void )
 		Reset();
 	}
 
-#endif
+#endif // ZH
 	FrameCounter++;
 }
 
@@ -630,10 +630,10 @@ float WWProfileManager::Get_Time_Since_Reset( void )
 
 #ifdef OG
 	return (float)time / WWProfile_Get_Tick_Rate();
-#endif
+#endif // OG
 #ifdef ZH
 	return float(double(time) * WWProfile_Get_Inv_Processor_Ticks_Per_Second());
-#endif
+#endif // ZH
 }
 
 
@@ -773,7 +773,7 @@ unsigned Read_Int(char* memory,unsigned pos,unsigned maxpos,unsigned& number)
 		else break;
 	}
 	return pos;
-#endif
+#endif // ZH
 }
 
 #ifdef ZH
@@ -878,7 +878,7 @@ static unsigned Read_Frame(char* memory,unsigned pos,unsigned maxpos,WWProfileHi
 
 			// Read time
 			pos=Read_Float(memory,pos,maxpos,time);
-#endif
+#endif // ZH
 
 #ifdef ZH
 			StringClass name="Unknown";
@@ -967,7 +967,7 @@ void WWProfileManager::Load_Profile_Log(const char* filename, WWProfileHierachyI
 	}
 }
 
-#endif
+#endif // ZH
 /***********************************************************************************************
  * WWProfileManager::Get_In_Order_Iterator -- Creates an "in-order" iterator for the profile t *
  *                                                                                             *
@@ -1120,10 +1120,10 @@ WWTimeItClass::~WWTimeItClass( void )
 #ifdef WWDEBUG
 #ifdef OG
 	float time = End / WWProfile_Get_Tick_Rate(); 
-#endif
+#endif // OG
 #ifdef ZH
 	float time = End * WWProfile_Get_Inv_Processor_Ticks_Per_Second();
-#endif
+#endif // ZH
 	WWDEBUG_SAY(( "*** WWTIMEIT *** %s took %1.9f\n", Name, time )); 
 #endif
 }
@@ -1148,7 +1148,7 @@ WWMeasureItClass::~WWMeasureItClass( void )
 #ifdef OG
 	*PResult = End / WWProfile_Get_Tick_Rate(); 
 
-#endif
+#endif // OG
 #ifdef ZH
 	*PResult = End  * WWProfile_Get_Inv_Processor_Ticks_Per_Second();
 }
@@ -1254,5 +1254,5 @@ WWProfileHierachyInfoClass::~WWProfileHierachyInfoClass( void )
 {
 	delete Child;
 	delete Sibling;
-#endif
+#endif // ZH
 }

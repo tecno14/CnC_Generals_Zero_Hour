@@ -113,10 +113,10 @@ bool GetStringFromRegistry(std::string path, std::string key, std::string& val)
 {
 #ifdef OG
 	std::string fullPath = "SOFTWARE\\Electronic Arts\\EA Games\\Generals";
-#endif
+#endif // OG
 #ifdef ZH
 	std::string fullPath = "SOFTWARE\\Electronic Arts\\EA Games\\Command and Conquer Generals Zero Hour";
-#endif
+#endif // ZH
 
 	fullPath.append(path);
 	if (getStringFromRegistry(HKEY_LOCAL_MACHINE, fullPath.c_str(), key.c_str(), val))
@@ -131,10 +131,10 @@ bool GetUnsignedIntFromRegistry(std::string path, std::string key, unsigned int&
 {
 #ifdef OG
 	std::string fullPath = "SOFTWARE\\Electronic Arts\\EA Games\\Generals";
-#endif
+#endif // OG
 #ifdef ZH
 	std::string fullPath = "SOFTWARE\\Electronic Arts\\EA Games\\Command and Conquer Generals Zero Hour";
-#endif
+#endif // ZH
 
 	fullPath.append(path);
 	if (getUnsignedIntFromRegistry(HKEY_LOCAL_MACHINE, fullPath.c_str(), key.c_str(), val))
@@ -149,10 +149,10 @@ bool SetStringInRegistry( std::string path, std::string key, std::string val)
 {
 #ifdef OG
 	std::string fullPath = "SOFTWARE\\Electronic Arts\\EA Games\\Generals";
-#endif
+#endif // OG
 #ifdef ZH
 	std::string fullPath = "SOFTWARE\\Electronic Arts\\EA Games\\Command and Conquer Generals Zero Hour";
-#endif
+#endif // ZH
 	fullPath.append(path);
 
 	if (setStringInRegistry( HKEY_LOCAL_MACHINE, fullPath, key, val))
@@ -165,10 +165,10 @@ bool SetUnsignedIntInRegistry( std::string path, std::string key, unsigned int v
 {
 #ifdef OG
 	std::string fullPath = "SOFTWARE\\Electronic Arts\\EA Games\\Generals";
-#endif
+#endif // OG
 #ifdef ZH
 	std::string fullPath = "SOFTWARE\\Electronic Arts\\EA Games\\Command and Conquer Generals Zero Hour";
-#endif
+#endif // ZH
 	fullPath.append(path);
 
 	if (setUnsignedIntInRegistry( HKEY_LOCAL_MACHINE, fullPath, key, val))

@@ -29,30 +29,30 @@
 
 #ifdef ZH
 #include "Common/BuildAssistant.h"
-#endif
+#endif // ZH
 #include "Common/GameAudio.h"
 #include "Common/Player.h"
 #include "Common/PlayerList.h"
 #ifdef ZH
 #include "Common/SpecialPower.h"
-#endif
+#endif // ZH
 #include "Common/ThingTemplate.h"
 #ifdef OG
 #include "Common/BuildAssistant.h"
-#endif
+#endif // OG
 
 #ifdef OG
 #include "GameLogic/Object.h"
 #include "GameLogic/GameLogic.h"
 
-#endif
+#endif // OG
 #include "GameClient/CommandXlat.h"
 #ifdef OG
 #include "GameClient/PlaceEventTranslator.h"
-#endif
+#endif // OG
 #ifdef ZH
 #include "GameClient/ControlBar.h"
-#endif
+#endif // ZH
 #include "GameClient/Drawable.h"
 #include "GameClient/Eva.h"
 #ifdef ZH
@@ -63,7 +63,7 @@
 
 #include "GameLogic/Module/ProductionUpdate.h"
 
-#endif
+#endif // ZH
 
 #ifdef ZH
 #ifdef _INTERNAL
@@ -72,7 +72,7 @@
 //#pragma MESSAGE("************************************** WARNING, optimization disabled for debugging purposes")
 #endif
 
-#endif
+#endif // ZH
 //-------------------------------------------------------------------------------------------------
 PlaceEventTranslator::PlaceEventTranslator() : m_frameOfUpButton(-1)
 {
@@ -253,12 +253,12 @@ GameMessageDisposition PlaceEventTranslator::translateGameMessage(const GameMess
 #ifdef OG
 																												 BuildAssistant::SHROUD_REVEALED, 
 
-#endif
+#endif // OG
 #ifdef ZH
 																												 BuildAssistant::SHROUD_REVEALED |
 																												 BuildAssistant::IGNORE_STEALTHED |
 																												 BuildAssistant::FAIL_STEALTHED_WITHOUT_FEEDBACK,
-#endif
+#endif // ZH
 																												 builderObj, NULL );
 				if( lbc == LBC_OK )
 #ifdef ZH
@@ -271,7 +271,7 @@ GameMessageDisposition PlaceEventTranslator::translateGameMessage(const GameMess
 						{
 							const CommandButton *commandButton = puInterface->getSpecialPowerConstructionCommandButton();
 							if( commandButton )
-#endif
+#endif // ZH
 				{
 #ifdef ZH
 								//If we get this far, then we aren't going to really build the object using the production update
@@ -287,13 +287,13 @@ GameMessageDisposition PlaceEventTranslator::translateGameMessage(const GameMess
 								
 								// get out of pending placement mode, this will also clear the arrow anchor status
 								TheInGameUI->placeBuildAvailable( NULL, NULL );
-#endif
+#endif // ZH
 
 #ifdef OG
 					/** @todo Do not send local player id as argument once we have player ids
 					tied into all messages automatically */
 
-#endif
+#endif // OG
 #ifdef ZH
 								// used the input
 								disp = DESTROY_MESSAGE;
@@ -302,7 +302,7 @@ GameMessageDisposition PlaceEventTranslator::translateGameMessage(const GameMess
 							}
 						}
 					}
-#endif
+#endif // ZH
 
 					// create the right kind of message
 					if( isLineBuild )

@@ -137,10 +137,10 @@ BattlePlanUpdateModuleData::BattlePlanUpdateModuleData()
 BattlePlanUpdate::BattlePlanUpdate( Thing *thing, const ModuleData* moduleData ) : 
 #ifdef OG
 	UpdateModule( thing, moduleData ),
-#endif
+#endif // OG
 #ifdef ZH
 	SpecialPowerUpdateModule( thing, moduleData ),
-#endif
+#endif // ZH
 	m_bonuses(NULL)
 {
 	const BattlePlanUpdateModuleData *data = getBattlePlanUpdateModuleData();
@@ -271,20 +271,20 @@ void BattlePlanUpdate::onObjectCreated()
 //-------------------------------------------------------------------------------------------------
 #ifdef OG
 void BattlePlanUpdate::initiateIntentToDoSpecialPower(const SpecialPowerTemplate *specialPowerTemplate, const Object *targetObj, const Coord3D *targetPos, UnsignedInt commandOptions, Int locationCount )
-#endif
+#endif // OG
 #ifdef ZH
 Bool BattlePlanUpdate::initiateIntentToDoSpecialPower(const SpecialPowerTemplate *specialPowerTemplate, const Object *targetObj, const Coord3D *targetPos, const Waypoint *way, UnsignedInt commandOptions )
-#endif
+#endif // ZH
 {
 	if( m_specialPowerModule->getSpecialPowerTemplate() != specialPowerTemplate )
 	{
 		//Check to make sure our modules are connected.
 #ifdef OG
 		return;
-#endif
+#endif // OG
 #ifdef ZH
 		return FALSE;
-#endif
+#endif // ZH
 	}
 
 	//Set the desired status based on the command button option!
@@ -309,7 +309,7 @@ Bool BattlePlanUpdate::initiateIntentToDoSpecialPower(const SpecialPowerTemplate
 
 	getObject()->getControllingPlayer()->getAcademyStats()->recordBattlePlanSelected();
 	return TRUE;
-#endif
+#endif // ZH
 }
 
 Bool BattlePlanUpdate::isPowerCurrentlyInUse( const CommandButton *command ) const
@@ -558,11 +558,11 @@ void BattlePlanUpdate::setStatus( TransitionStatus newStatus )
 #ifdef OG
 			createVisionObject();
 
-#endif
+#endif // OG
 #ifdef ZH
 			//this is now handled with ShroudRevealToAllRange in thingTemplate
 			//createVisionObject();
-#endif
+#endif // ZH
 
 			switch( m_currentPlan )
 			{

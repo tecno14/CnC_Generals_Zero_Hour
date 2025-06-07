@@ -128,4 +128,4 @@ protected:
 
 #endif  // end __W3DTERRAIN_BUFFER_H_
 
-#endif
+#endif // ZH

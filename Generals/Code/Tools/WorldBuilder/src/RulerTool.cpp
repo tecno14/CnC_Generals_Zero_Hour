@@ -186,4 +186,4 @@ Real RulerTool::getLength(void)
 	return (0.0f);
 }
 
-#endif
+#endif // ZH

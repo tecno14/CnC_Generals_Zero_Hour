@@ -615,4 +615,4 @@ void Shd6LegacyW3DClass::Copy_Vertex_Stream
 }
 
 
-#endif
+#endif // ZH

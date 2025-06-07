@@ -705,10 +705,10 @@ Quaternion Build_Quaternion(const Matrix3D & mat)
 
 #ifdef OG
 Quaternion Build_Quaternion(const Matrix3 & mat)
-#endif
+#endif // OG
 #ifdef ZH
 Quaternion Build_Quaternion(const Matrix3x3 & mat)
-#endif
+#endif // ZH
 {
 	float tr,s;
 	int i,j,k;
@@ -754,10 +754,10 @@ Quaternion Build_Quaternion(const Matrix3x3 & mat)
 
 #ifdef OG
 Quaternion Build_Quaternion(const Matrix4 & mat)
-#endif
+#endif // OG
 #ifdef ZH
 Quaternion Build_Quaternion(const Matrix4x4 & mat)
-#endif
+#endif // ZH
 {
 	float tr,s;
 	int i,j,k;
@@ -814,17 +814,17 @@ Quaternion Build_Quaternion(const Matrix4x4 & mat)
  *=============================================================================================*/
 #ifdef OG
 Matrix3	Build_Matrix3(const Quaternion & q)
-#endif
+#endif // OG
 #ifdef ZH
 Matrix3x3 Build_Matrix3(const Quaternion & q)
-#endif
+#endif // ZH
 {
 #ifdef OG
 	Matrix3 m;
-#endif
+#endif // OG
 #ifdef ZH
 	Matrix3x3 m;
-#endif
+#endif // ZH
 
 	m[0][0] = (float)(1.0 - 2.0 * (q[1] * q[1] + q[2] * q[2]));
 	m[0][1] = (float)(2.0 * (q[0] * q[1] - q[2] * q[3]));
@@ -843,17 +843,17 @@ Matrix3x3 Build_Matrix3(const Quaternion & q)
 
 #ifdef OG
 Matrix4 Build_Matrix4(const Quaternion & q)
-#endif
+#endif // OG
 #ifdef ZH
 Matrix4x4 Build_Matrix4(const Quaternion & q)
-#endif
+#endif // ZH
 {
 #ifdef OG
 	Matrix4 m;
-#endif
+#endif // OG
 #ifdef ZH
 	Matrix4x4 m;
-#endif
+#endif // ZH
 
 	// initialize the rotation sub-matrix
 	m[0][0] = (float)(1.0 - 2.0 * (q[1] * q[1] + q[2] * q[2]));

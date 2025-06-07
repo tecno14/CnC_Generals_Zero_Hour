@@ -39,7 +39,7 @@
 #include "GameClient/Drawable.h"
 #ifdef ZH
 #include "GameClient/Eva.h"
-#endif
+#endif // ZH
 #include "GameClient/GameText.h"
 #include "GameClient/InGameUI.h"
 #include "GameClient/ParticleSys.h"
@@ -135,10 +135,10 @@ Bool PartitionFilterStealthedOrStealthGarrisoned::allow( Object *objOther)
 
 #ifdef OG
 	if( objOther->getStatusBits() & OBJECT_STATUS_STEALTHED )
-#endif
+#endif // OG
 #ifdef ZH
 	if( objOther->getStatusBits().test( OBJECT_STATUS_STEALTHED ) )
-#endif
+#endif // ZH
 		return TRUE;
 
 	ContainModuleInterface *contain = objOther->getContain();
@@ -218,11 +218,11 @@ UpdateSleepTime StealthDetectorUpdate::update( void )
 #ifdef OG
 		static NameKeyType key_StealthUpdate = NAMEKEY("StealthUpdate");
 		StealthUpdate* stealth = (StealthUpdate *)them->findUpdateModule(key_StealthUpdate);
-#endif
+#endif // OG
 #ifdef ZH
 		StealthUpdate* stealth = them->getStealth();
 
-#endif
+#endif // ZH
 		if ( stealth ) 
 		{
 
@@ -245,7 +245,7 @@ UpdateSleepTime StealthDetectorUpdate::update( void )
 #ifdef OG
 					//
 
-#endif
+#endif // OG
 #ifdef ZH
 					//Kris: Aug 18, 2003 -- This whole system is no longer viable with the inclusion of so many
 					//stealth units. It's possible to get spammed hundreds of times in a row in MD_GLA02 because
@@ -254,22 +254,22 @@ UpdateSleepTime StealthDetectorUpdate::update( void )
 					doFeedback = TheRadar->tryEvent( RADAR_EVENT_STEALTH_DISCOVERED, them->getPosition() );
 					//OLD CODE:
 					/*
-#endif
+#endif // ZH
 					// do a radar event, for mines we only make events if there weren't other
 					// mine events within close proximity and time to other mines
 					//
 #ifdef OG
 					if( them->isKindOf( KINDOF_MINE ) )
-#endif
+#endif // OG
 #ifdef ZH
 					if( them->isKindOf( KINDOF_MINE ) || them->isKindOf( KINDOF_BOOBY_TRAP ) || them->isKindOf( KINDOF_DEMOTRAP ) )
-#endif
+#endif // ZH
 						doFeedback = TheRadar->tryEvent( RADAR_EVENT_STEALTH_DISCOVERED, them->getPosition() );
 					else
  						TheRadar->createEvent( them->getPosition(), RADAR_EVENT_STEALTH_DISCOVERED );
 #ifdef ZH
 					*/
-#endif
+#endif // ZH
 
 					// do audio and UI message if we need to do feedback
 					if( doFeedback )
@@ -288,7 +288,7 @@ UpdateSleepTime StealthDetectorUpdate::update( void )
             {
               TheEva->setShouldPlay( message );
             }
-#endif
+#endif // ZH
 					}  // end if				 
 
 				}  // end if
@@ -305,10 +305,10 @@ UpdateSleepTime StealthDetectorUpdate::update( void )
 					//
 #ifdef OG
 					if( them->isKindOf( KINDOF_MINE ) )
-#endif
+#endif // OG
 #ifdef ZH
 					if( them->isKindOf( KINDOF_MINE ) || them->isKindOf( KINDOF_BOOBY_TRAP ) || them->isKindOf( KINDOF_DEMOTRAP ) )
-#endif
+#endif // ZH
 						doFeedback = TheRadar->tryEvent( RADAR_EVENT_STEALTH_NEUTRALIZED, them->getPosition() );
 					else
  						TheRadar->createEvent( them->getPosition(), RADAR_EVENT_STEALTH_NEUTRALIZED );
@@ -331,7 +331,7 @@ UpdateSleepTime StealthDetectorUpdate::update( void )
             {
               TheEva->setShouldPlay( message );
             }
-#endif
+#endif // ZH
 					}  // end if
 				
 				}  // end if
@@ -348,10 +348,10 @@ UpdateSleepTime StealthDetectorUpdate::update( void )
 			{
 #ifdef OG
 				theirDraw->setHeatVisionOpacity( 1.0f );
-#endif
+#endif // OG
 #ifdef ZH
 				theirDraw->setSecondMaterialPassOpacity( 1.0f );
-#endif
+#endif // ZH
 			}
 
 			if (data->m_IRGridParticleSysTmpl)
@@ -386,11 +386,11 @@ UpdateSleepTime StealthDetectorUpdate::update( void )
 #ifdef OG
 					static NameKeyType key_StealthUpdate = NAMEKEY("StealthUpdate");
 					StealthUpdate* stealth = (StealthUpdate *)rider->findUpdateModule(key_StealthUpdate);
-#endif
+#endif // OG
 #ifdef ZH
           StealthUpdate *stealth = rider->getStealth();
 
-#endif
+#endif // ZH
 					if ( stealth ) 
 					{
 						// we have found someone
@@ -410,25 +410,25 @@ UpdateSleepTime StealthDetectorUpdate::update( void )
 
   const Player *localPlayer = ThePlayerList->getLocalPlayer();
 
-#endif
+#endif // ZH
 	//Make sure the detector is visible to the local player before we add effects or sounds.
 #ifdef OG
 	if (data->m_IRGridParticleSysTmpl && self->getShroudedStatus(ThePlayerList->getLocalPlayer()->getPlayerIndex()) <= OBJECTSHROUD_PARTIAL_CLEAR)
 
-#endif
+#endif // OG
 #ifdef ZH
 	if ( self->getShroudedStatus( localPlayer->getPlayerIndex() ) <= OBJECTSHROUD_PARTIAL_CLEAR )
 	{
     if ( self->testStatus( OBJECT_STATUS_STEALTHED ) == FALSE || self->getControllingPlayer() == localPlayer )
-#endif
+#endif // ZH
 	{
 		Drawable *myDraw = self->getDrawable();
 #ifdef OG
 		Coord3D bonePosition = {-1.66f,5.5f,15};//@todo use bone position
-#endif
+#endif // OG
 #ifdef ZH
 		  Coord3D bonePosition = {-1.66f,5.5f,15};
-#endif
+#endif // ZH
 		if (myDraw)
 			myDraw->getPristineBonePositions( data->m_IRParticleSysBone.str(), 0, &bonePosition, NULL, 1);
 
@@ -479,7 +479,7 @@ UpdateSleepTime StealthDetectorUpdate::update( void )
 #ifdef ZH
 
     }
-#endif
+#endif // ZH
 
 	} // end if doIRFX
 

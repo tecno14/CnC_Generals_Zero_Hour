@@ -28,28 +28,28 @@
  *                                                                                             *
 #ifdef OG
  *                      $Author:: Hector_y                                                    $*
-#endif
+#endif // OG
 #ifdef ZH
  *                       Author : Kenny Mitchell                                               * 
-#endif
+#endif // ZH
  *                                                                                             *
 #ifdef OG
  *                     $Modtime:: 4/25/01 1:37p                                               $*
-#endif
+#endif // OG
 #ifdef ZH
  *                     $Modtime:: 06/27/02 1:27p                                              $*
-#endif
+#endif // ZH
  *                                                                                             *
 #ifdef OG
  *                    $Revision:: 4                                                           $*
-#endif
+#endif // OG
 #ifdef ZH
  *                    $Revision:: 5                                                           $*
-#endif
+#endif // ZH
  *                                                                                             *
 #ifdef ZH
  * 06/27/02 KM Texture class abstraction																			*
-#endif
+#endif // ZH
  *---------------------------------------------------------------------------------------------*
  * Functions:                                                                                  *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
@@ -86,12 +86,12 @@ typedef MultiListIterator<DX8PolygonRendererClass>		DX8PolygonRendererListIterat
 class DX8TextureTrackerClass;
 typedef MultiListClass<DX8TextureTrackerClass>			DX8TextureTrackerList;
 typedef MultiListIterator<DX8TextureTrackerClass>		DX8TextureTrackerListIterator;
-#endif
+#endif // OG
 #ifdef ZH
 class TextureTrackerClass;
 typedef MultiListClass<TextureTrackerClass>				TextureTrackerList;
 typedef MultiListIterator<TextureTrackerClass>			TextureTrackerListIterator;
-#endif
+#endif // ZH
 
 
 #endif //DX8LIST_H

@@ -28,17 +28,17 @@
  *                                                                                             *
 #ifdef OG
  *                     $Modtime:: 5/14/01 10:07a                                              $*
-#endif
+#endif // OG
 #ifdef ZH
  *                     $Modtime:: 1/15/02 5:57p                                               $*
-#endif
+#endif // ZH
  *                                                                                             *
 #ifdef OG
  *                    $Revision:: 3                                                           $*
-#endif
+#endif // OG
 #ifdef ZH
  *                    $Revision:: 4                                                           $*
-#endif
+#endif // ZH
  *                                                                                             *
  *---------------------------------------------------------------------------------------------*
  * Functions:                                                                                  *
@@ -54,7 +54,7 @@
 #ifdef ZH
 #if noWWAUDIO // (gth) removing dependency on WWAUDIO
 
-#endif
+#endif // ZH
 #include "rendobj.h"
 #include "wwstring.h"
 #include "proto.h"
@@ -196,10 +196,10 @@ public:
 	void								Set_Name (const char *name)			{ Name = name; }	
 #ifdef OG
 	SoundRenderObjDefClass *	Clone (void) const						{ return W3DNEW SoundRenderObjDefClass (*this); }
-#endif
+#endif // OG
 #ifdef ZH
 	SoundRenderObjDefClass *	Clone (void) const						{ return NEW_REF( SoundRenderObjDefClass, (*this,"SoundRenderObjDefClass::Clone") ); }
-#endif
+#endif // ZH
 
 	//
 	//	Initialization
@@ -295,7 +295,7 @@ extern SoundRenderObjLoaderClass		_SoundRenderObjLoader;
 
 #ifdef ZH
 #endif //noWWAUDIO (gth) removing dependency on wwaudio
-#endif
+#endif // ZH
 
 #endif //__SOUNDROBJ_H
 

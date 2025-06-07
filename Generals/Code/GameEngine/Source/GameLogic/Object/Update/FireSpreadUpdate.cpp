@@ -121,10 +121,10 @@ UpdateSleepTime FireSpreadUpdate::update( void )
 
 #ifdef OG
 	if( (me->getStatusBits() & OBJECT_STATUS_AFLAME) == 0 )
-#endif
+#endif // OG
 #ifdef ZH
 	if( !me->getStatusBits().test( OBJECT_STATUS_AFLAME ) )
-#endif
+#endif // ZH
 		return UPDATE_SLEEP_FOREVER;		// not on fire -- sleep forever
 	{
 		ObjectCreationList::create( d->m_oclEmbers, getObject(), NULL );
@@ -169,10 +169,10 @@ void FireSpreadUpdate::startFireSpreading()
 {
 #ifdef OG
 	if ((getObject()->getStatusBits() & OBJECT_STATUS_AFLAME) == 0)
-#endif
+#endif // OG
 #ifdef ZH
 	if( !getObject()->getStatusBits().test( OBJECT_STATUS_AFLAME ) )
-#endif
+#endif // ZH
 		return;	// sorry, must be on fire
 
 	setWakeFrame(getObject(), UPDATE_SLEEP(calcNextSpreadDelay()));

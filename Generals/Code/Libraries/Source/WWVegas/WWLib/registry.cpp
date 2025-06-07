@@ -26,24 +26,24 @@
  *                                                                                             *
 #ifdef OG
  *                      $Author:: Patrick                                                     $*
-#endif
+#endif // OG
 #ifdef ZH
  *                      $Author:: Steve_t                                                     $*
-#endif
+#endif // ZH
  *                                                                                             *
 #ifdef OG
  *                     $Modtime:: 8/16/01 11:40a                                              $*
-#endif
+#endif // OG
 #ifdef ZH
  *                     $Modtime:: 11/27/01 2:03p                                              $*
-#endif
+#endif // ZH
  *                                                                                             *
 #ifdef OG
  *                    $Revision:: 10                                                          $*
-#endif
+#endif // OG
 #ifdef ZH
  *                    $Revision:: 14                                                          $*
-#endif
+#endif // ZH
  *                                                                                             *
  *---------------------------------------------------------------------------------------------*
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
@@ -53,7 +53,7 @@
 #include "rawfile.h"
 #include "ini.h"
 #include "inisup.h"
-#endif
+#endif // ZH
 #include <assert.h>
 #include <windows.h>
 
@@ -62,7 +62,7 @@
 
 bool RegistryClass::IsLocked = false;
 
-#endif
+#endif // ZH
 
 #ifdef ZH
 bool RegistryClass::Exists(const char* sub_key)
@@ -78,16 +78,16 @@ bool RegistryClass::Exists(const char* sub_key)
 	return false;
 }
 
-#endif
+#endif // ZH
 /*
 **
 */
 #ifdef OG
 RegistryClass::RegistryClass( const char * sub_key ) :
-#endif
+#endif // OG
 #ifdef ZH
 RegistryClass::RegistryClass( const char * sub_key, bool create ) :
-#endif
+#endif // ZH
 	IsValid( false )
 {
 #ifdef ZH
@@ -97,7 +97,7 @@ RegistryClass::RegistryClass( const char * sub_key, bool create ) :
 	LONG result = -1;
 
 	if (create && !IsLocked) {
-#endif
+#endif // ZH
 	DWORD disposition;
 #ifdef OG
 	HKEY	key;
@@ -106,7 +106,7 @@ RegistryClass::RegistryClass( const char * sub_key, bool create ) :
 			0, NULL, 0, KEY_ALL_ACCESS, NULL,
 			&key, &disposition ) == ERROR_SUCCESS) {
 
-#endif
+#endif // OG
 #ifdef ZH
 		result = RegCreateKeyEx(HKEY_LOCAL_MACHINE, sub_key, 0, NULL, 0,
 			KEY_ALL_ACCESS, NULL, &key, &disposition);
@@ -115,7 +115,7 @@ RegistryClass::RegistryClass( const char * sub_key, bool create ) :
 	}
 
 	if (ERROR_SUCCESS == result) {
-#endif
+#endif // ZH
 		IsValid = true;
 		Key = (int)key;
 	}
@@ -149,7 +149,7 @@ void	RegistryClass::Set_Int( const char * name, int value )
 	if (IsLocked) {
 		return;
 	}
-#endif
+#endif // ZH
 	if (::RegSetValueEx( (HKEY)Key, name, 0, REG_DWORD, (LPBYTE)&value, sizeof( DWORD ) ) != 
 			ERROR_SUCCESS) {
 	}
@@ -187,7 +187,7 @@ void	RegistryClass::Set_Float( const char * name, float value )
 	if (IsLocked) {
 		return;
 	}
-#endif
+#endif // ZH
 	if (::RegSetValueEx( (HKEY)Key, name, 0, REG_DWORD, (LPBYTE)&value, sizeof( DWORD ) ) != 
 			ERROR_SUCCESS) {
 	}
@@ -224,7 +224,7 @@ void	RegistryClass::Set_Bin( const char * name, const void *buffer, int buffer_s
 	if (IsLocked) {
 		return;
 	}
-#endif
+#endif // ZH
 	::RegSetValueEx( (HKEY)Key, name, 0, REG_BINARY, (LPBYTE)buffer, buffer_size );	
 	return ;
 }
@@ -281,7 +281,7 @@ void	RegistryClass::Set_String( const char * name, const char *value )
 	if (IsLocked) {
 		return;
 	}
-#endif
+#endif // ZH
 	if (::RegSetValueEx( (HKEY)Key, name, 0, REG_SZ, (LPBYTE)value, size ) != 
 		ERROR_SUCCESS ) {
 	}
@@ -316,7 +316,7 @@ void	RegistryClass::Delete_Value( const char * name)
 	if (IsLocked) {
 		return;
 	}
-#endif
+#endif // ZH
 	::RegDeleteValue( (HKEY)Key, name );
 	return ;
 }
@@ -327,7 +327,7 @@ void	RegistryClass::Deleta_All_Values( void )
 	if (IsLocked) {
 		return;
 	}
-#endif
+#endif // ZH
 	//
 	//	Build a list of the values in this key
 	//
@@ -386,7 +386,7 @@ void	RegistryClass::Set_String( const WCHAR * name, const WCHAR *value )
 	if (IsLocked) {
 		return;
 	}
-#endif
+#endif // ZH
 	::RegSetValueExW ( (HKEY)Key, name, 0, REG_SZ, (LPBYTE)value, size );
 	return ;
 #ifdef ZH
@@ -561,7 +561,7 @@ void RegistryClass::Save_Registry(const char *filename, char *path)
 	INIClass ini;
 	Save_Registry_Tree(path, &ini);
 	ini.Save(file);
-#endif
+#endif // ZH
 }
 #ifdef ZH
 
@@ -759,4 +759,4 @@ void RegistryClass::Delete_Registry_Tree(char *path)
 	}
 }
 
-#endif
+#endif // ZH

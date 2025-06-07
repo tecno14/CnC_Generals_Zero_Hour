@@ -116,4 +116,4 @@ private:
 
 #endif //SHDBUMPSPEC_H
 
-#endif
+#endif // ZH

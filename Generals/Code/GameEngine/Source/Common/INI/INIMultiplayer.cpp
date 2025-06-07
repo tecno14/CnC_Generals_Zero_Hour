@@ -107,5 +107,5 @@ void INI::parseMultiplayerStartingMoneyChoiceDefinition( INI* ini )
   
   TheMultiplayerSettings->addStartingMoneyChoice( settings.money, settings.isDefault );
 }
-#endif
+#endif // ZH
 

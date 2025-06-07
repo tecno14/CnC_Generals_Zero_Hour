@@ -33,11 +33,11 @@
 
 #ifdef OG
 #define DEFINE_DAMAGE_NAMES
-#endif
+#endif // OG
 #include "Common/INI.h"
 #ifdef ZH
 #include "Common/Player.h"
-#endif
+#endif // ZH
 #include "Common/ThingTemplate.h"
 #include "Common/Xfer.h"
 #include "GameClient/FXList.h"
@@ -53,12 +53,12 @@ FXListDie::FXListDie( Thing *thing, const ModuleData* moduleData ) : DieModule( 
 #ifdef ZH
 {
 	if( getFXListDieModuleData()->m_initiallyActive )
-#endif
+#endif // ZH
 {
 #ifdef ZH
 		giveSelfUpgrade();
 	}
-#endif
+#endif // ZH
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -76,7 +76,7 @@ void FXListDie::onDie( const DamageInfo *damageInfo )
 #ifdef ZH
 	if (!isUpgradeActive())
 		return;
-#endif
+#endif // ZH
 	if (!isDieApplicable(damageInfo))
 		return;
 	const FXListDieModuleData* d = getFXListDieModuleData();
@@ -94,14 +94,14 @@ void FXListDie::onDie( const DamageInfo *damageInfo )
 		return;
 	}
 
-#endif
+#endif // ZH
 	if (d->m_defaultDeathFX)
 	{
 #ifdef OG
 		// if the object has any ambient sound(s), kill 'em now.
 		TheAudio->stopAllAmbientsBy(getObject());
 		
-#endif
+#endif // OG
 		if (d->m_orientToObject)
 		{
 			Object *damageDealer = TheGameLogic->findObjectByID( damageInfo->in.m_sourceID );

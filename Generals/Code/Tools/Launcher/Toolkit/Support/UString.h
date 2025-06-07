@@ -140,12 +140,12 @@ class UString
 		const WChar* Get(void) const {
 			return (mData != NULL) ? mData : reinterpret_cast<const WChar*>(L"");
 		}
-#endif
+#endif // OG
 #ifdef ZH
 		const WChar* Get(void) const
 			{return (mData != NULL) ? mData : L"";}
 
-#endif
+#endif // ZH
 
 		//! Assignment operator
 		UString operator=(const Char* s)

@@ -35,7 +35,7 @@
 #include "Common/BitFlagsIO.h"
 #include "Common/ThingFactory.h"
 #include "Common/ThingTemplate.h"
-#endif
+#endif // ZH
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -93,7 +93,7 @@ void initDamageTypeFlags()
 {
 	SET_ALL_DAMAGE_TYPE_BITS( DAMAGE_TYPE_FLAGS_ALL );
 }
-#endif
+#endif // ZH
 
 // ------------------------------------------------------------------------------------------------
 /** Xfer method
@@ -122,12 +122,12 @@ void DamageInfo::xfer( Xfer *xfer )
 #ifdef OG
 	* 1: Initial version */
 
-#endif
+#endif // OG
 #ifdef ZH
 	* 1: Initial version 
 	* 2: Damage FX override
 */
-#endif
+#endif // ZH
 // ------------------------------------------------------------------------------------------------
 void DamageInfoInput::xfer( Xfer *xfer )
 {
@@ -135,10 +135,10 @@ void DamageInfoInput::xfer( Xfer *xfer )
 	// version
 #ifdef OG
 	XferVersion currentVersion = 1;
-#endif
+#endif // OG
 #ifdef ZH
 	XferVersion currentVersion = 3;
-#endif
+#endif // ZH
 	XferVersion version = currentVersion;
 	xfer->xferVersion( &version, currentVersion );
 
@@ -155,7 +155,7 @@ void DamageInfoInput::xfer( Xfer *xfer )
 	// damage FX Override
 	if( version >= 2 )
 		xfer->xferUser( &m_damageFXOverride, sizeof( DamageType ) );
-#endif
+#endif // ZH
 
 	// death type
 	xfer->xferUser( &m_deathType, sizeof( DeathType ) );
@@ -186,7 +186,7 @@ void DamageInfoInput::xfer( Xfer *xfer )
 			m_sourceTemplate = TheThingFactory->findTemplate( thingString );
 		}
 	}
-#endif
+#endif // ZH
 
 }  // end xfer
 

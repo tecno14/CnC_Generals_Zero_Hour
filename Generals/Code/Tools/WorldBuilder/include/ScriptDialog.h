@@ -86,16 +86,16 @@ public:
 public:
 #ifdef OG
 	static void updateWarnings(void);
-#endif
+#endif // OG
 #ifdef ZH
 	static void updateWarnings(Bool forceUpdate=false);
-#endif
+#endif // ZH
 	static void updateScriptWarning(Script *pScript);
 #ifdef ZH
 
 	static void patchScriptParametersForGC(Script *pScript);
 	static void ScriptDialog::checkParametersForGC(void);
-#endif
+#endif // ZH
 
 	/// To allow CSDTreeCtrl access to these member functions of ScriptDialog
 	Script *friend_getCurScript(void);
@@ -111,7 +111,7 @@ protected:
 #ifdef ZH
 	Bool m_autoUpdateWarnings;	///< flag whether we should updateWarnings on script editor actions.
 
-#endif
+#endif // ZH
 	HTREEITEM m_dragItem;
 
 	MapObject *m_firstReadObject;
@@ -160,7 +160,7 @@ protected:
 	afx_msg void OnVerify();
 	afx_msg void OnPatchGC();
 	afx_msg void OnAutoVerify();
-#endif
+#endif // ZH
 	afx_msg void OnSave();
 	afx_msg void OnLoad();
 	afx_msg void OnDblclkScriptTree(NMHDR* pNMHDR, LRESULT* pResult);

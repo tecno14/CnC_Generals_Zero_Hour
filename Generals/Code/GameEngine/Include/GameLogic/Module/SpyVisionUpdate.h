@@ -40,7 +40,7 @@
 #include "GameLogic/Module/UpgradeModule.h"
 
 class Player;
-#endif
+#endif // ZH
 
 //-------------------------------------------------------------------------------------------------
 class SpyVisionUpdateModuleData : public UpdateModuleData
@@ -48,7 +48,7 @@ class SpyVisionUpdateModuleData : public UpdateModuleData
 public:
 #ifdef ZH
 	UpgradeMuxData	m_upgradeMuxData;
-#endif
+#endif // ZH
 
 #ifdef ZH
 	Bool						m_needsUpgrade;
@@ -57,7 +57,7 @@ public:
 	UnsignedInt			m_selfPoweredInterval;
 	KindOfMaskType	m_spyOnKindof;
 
-#endif
+#endif // ZH
 	SpyVisionUpdateModuleData()
 	{
 #ifdef ZH
@@ -67,13 +67,13 @@ public:
 		m_selfPoweredInterval = 0;
 		m_spyOnKindof = KINDOFMASK_NONE;
 		m_spyOnKindof.flip();
-#endif
+#endif // ZH
 	}
 
 #ifdef OG
 	static void buildFieldParse(MultiIniFieldParse& p);
 
-#endif
+#endif // OG
 #ifdef ZH
 	static void buildFieldParse(MultiIniFieldParse& p) 
 	{
@@ -91,17 +91,17 @@ public:
 		p.add(dataFieldParse);
 		p.add(UpgradeMuxData::getFieldParse(), offsetof( SpyVisionUpdateModuleData, m_upgradeMuxData ));
 	}
-#endif
+#endif // ZH
 };
 
 //-------------------------------------------------------------------------------------------------
 //-------------------------------------------------------------------------------------------------
 #ifdef OG
 class SpyVisionUpdate : public UpdateModule
-#endif
+#endif // OG
 #ifdef ZH
 class SpyVisionUpdate : public UpdateModule, public UpgradeMux
-#endif
+#endif // ZH
 {
 
 	MEMORY_POOL_GLUE_WITH_USERLOOKUP_CREATE( SpyVisionUpdate, "SpyVisionUpdate" )
@@ -117,7 +117,7 @@ public:
 
 	// module methods
 	static Int getInterfaceMask() { return UpdateModule::getInterfaceMask() | MODULEINTERFACE_UPGRADE; }
-#endif
+#endif // ZH
 	virtual void onDelete( void );
 #ifdef ZH
 	virtual void onCapture( Player *oldOwner, Player *newOwner );
@@ -127,7 +127,7 @@ public:
 	virtual UpgradeModuleInterface* getUpgrade() { return this; }
 
 	//Update module
-#endif
+#endif // ZH
 	virtual UpdateSleepTime update( void );
 
 	void activateSpyVision( UnsignedInt duration );
@@ -135,7 +135,7 @@ public:
 
 	void setDisabledUntilFrame( UnsignedInt frame );
 	UnsignedInt getDisabledUntilFrame() const { return m_disabledUntilFrame; }
-#endif
+#endif // ZH
 
 #ifdef ZH
 protected:
@@ -163,22 +163,22 @@ protected:
 	inline Bool isUpgradeActive() const { return isAlreadyUpgraded(); }
 	virtual Bool isSubObjectsUpgrade() { return false; }
 
-#endif
+#endif // ZH
 private:
 
 #ifdef OG
 	void doActivationWork( Bool setting );
-#endif
+#endif // OG
 #ifdef ZH
 	void doActivationWork( Player *playerToSetFor, Bool setting );
-#endif
+#endif // ZH
 
 	UnsignedInt m_deactivateFrame;
 #ifdef ZH
 	UnsignedInt m_disabledUntilFrame; //sabotaged, emp'd, etc.
 	Bool m_currentlyActive;
 	Bool m_resetTimersNextUpdate;
-#endif
+#endif // ZH
 };
 
 #endif 

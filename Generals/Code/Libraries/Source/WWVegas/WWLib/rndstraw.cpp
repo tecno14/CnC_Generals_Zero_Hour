@@ -320,4 +320,4 @@ int RandomStraw::Get(void * source, int slen)
 	return(total);
 }
 
-#endif
+#endif // ZH

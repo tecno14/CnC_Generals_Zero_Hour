@@ -98,4 +98,4 @@ int SHAStraw::Result(void * result) const
 	return(SHA.Result(result));
 }
 
-#endif
+#endif // ZH

@@ -86,7 +86,7 @@ class WaterTransparencySetting : public Overridable
 		RGBColor m_radarColor;
 		Bool m_additiveBlend;
 		AsciiString m_standingWaterTexture;
-#endif
+#endif // ZH
 		
 		AsciiString m_skyboxTextureN;
 		AsciiString m_skyboxTextureE;
@@ -109,7 +109,7 @@ class WaterTransparencySetting : public Overridable
 			m_standingWaterTexture = "TWWater01.tga";
 			m_additiveBlend = FALSE;
 
-#endif
+#endif // ZH
 			m_skyboxTextureN = "TSMorningN.tga";
 			m_skyboxTextureE = "TSMorningE.tga";
 			m_skyboxTextureS = "TSMorningS.tga";

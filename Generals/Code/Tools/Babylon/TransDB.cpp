@@ -25,11 +25,11 @@
 #ifdef OG
 #include "noxstringdlg.h"
 #include "noxstring.h"
-#endif
+#endif // OG
 #ifdef ZH
 #include "Babylondlg.h"
 #include "Babylon.h"
-#endif
+#endif // ZH
 #include "assert.h"
 #include "bin.h"
 #include "list.h"
@@ -154,10 +154,10 @@ TransDB::	~TransDB ( )
 
 #ifdef OG
 void					TransDB::AddLabel		( NoxLabel *label )
-#endif
+#endif // OG
 #ifdef ZH
 void					TransDB::AddLabel		( BabylonLabel *label )
-#endif
+#endif // ZH
 {
 	ListNode	*node = new ListNode ();
 
@@ -173,10 +173,10 @@ void					TransDB::AddLabel		( BabylonLabel *label )
 
 #ifdef OG
 void					TransDB::AddText		( NoxText *text )
-#endif
+#endif // OG
 #ifdef ZH
 void					TransDB::AddText		( BabylonText *text )
-#endif
+#endif // ZH
 {
 
 	text_bin->Add ( text, text->Get() );
@@ -189,10 +189,10 @@ void					TransDB::AddText		( BabylonText *text )
 
 #ifdef OG
 void					TransDB::AddObsolete		( NoxText *text )
-#endif
+#endif // OG
 #ifdef ZH
 void					TransDB::AddObsolete		( BabylonText *text )
-#endif
+#endif // ZH
 {
 	ListNode	*node = new ListNode ();
 
@@ -215,10 +215,10 @@ void					TransDB::AddObsolete		( BabylonText *text )
 
 #ifdef OG
 void					TransDB::RemoveLabel ( NoxLabel *label )
-#endif
+#endif // OG
 #ifdef ZH
 void					TransDB::RemoveLabel ( BabylonLabel *label )
-#endif
+#endif // ZH
 {
 	ListNode *node;
 
@@ -234,10 +234,10 @@ void					TransDB::RemoveLabel ( BabylonLabel *label )
 
 #ifdef OG
 void					TransDB::RemoveText ( NoxText *text )
-#endif
+#endif // OG
 #ifdef ZH
 void					TransDB::RemoveText ( BabylonText *text )
-#endif
+#endif // ZH
 {
 	text_bin->Remove ( text );
 	text_id_bin->Remove ( text );
@@ -245,10 +245,10 @@ void					TransDB::RemoveText ( BabylonText *text )
 
 #ifdef OG
 void					TransDB::RemoveObsolete ( NoxText *text )
-#endif
+#endif // OG
 #ifdef ZH
 void					TransDB::RemoveObsolete ( BabylonText *text )
-#endif
+#endif // ZH
 {
 	ListNode *node;
 
@@ -267,10 +267,10 @@ int					TransDB::NumLabelsChanged ( void )
 {
 #ifdef OG
 	NoxLabel	*label;
-#endif
+#endif // OG
 #ifdef ZH
 	BabylonLabel	*label;
-#endif
+#endif // ZH
 	ListSearch sh;
 	int changed = 0;
 
@@ -297,10 +297,10 @@ int					TransDB::NumLabels ( void )
 
 #ifdef OG
 NoxLabel*			TransDB::FirstLabel	( ListSearch& sh )
-#endif
+#endif // OG
 #ifdef ZH
 BabylonLabel*			TransDB::FirstLabel	( ListSearch& sh )
-#endif
+#endif // ZH
 {
 	ListNode *node;
 
@@ -308,10 +308,10 @@ BabylonLabel*			TransDB::FirstLabel	( ListSearch& sh )
 	{
 #ifdef OG
 		return (NoxLabel *) node->Item ();
-#endif
+#endif // OG
 #ifdef ZH
 		return (BabylonLabel *) node->Item ();
-#endif
+#endif // ZH
 	}
 
 	return NULL;
@@ -319,10 +319,10 @@ BabylonLabel*			TransDB::FirstLabel	( ListSearch& sh )
 
 #ifdef OG
 NoxLabel*			TransDB::NextLabel		( ListSearch& sh)
-#endif
+#endif // OG
 #ifdef ZH
 BabylonLabel*			TransDB::NextLabel		( ListSearch& sh)
-#endif
+#endif // ZH
 {
 	ListNode *node;
 
@@ -330,10 +330,10 @@ BabylonLabel*			TransDB::NextLabel		( ListSearch& sh)
 	{
 #ifdef OG
 		return (NoxLabel *) node->Item ();
-#endif
+#endif // OG
 #ifdef ZH
 		return (BabylonLabel *) node->Item ();
-#endif
+#endif // ZH
 	}
 
 	return NULL;
@@ -341,10 +341,10 @@ BabylonLabel*			TransDB::NextLabel		( ListSearch& sh)
 
 #ifdef OG
 NoxText*			TransDB::FirstObsolete	( ListSearch& sh )
-#endif
+#endif // OG
 #ifdef ZH
 BabylonText*			TransDB::FirstObsolete	( ListSearch& sh )
-#endif
+#endif // ZH
 {
 	ListNode *node;
 
@@ -352,10 +352,10 @@ BabylonText*			TransDB::FirstObsolete	( ListSearch& sh )
 	{
 #ifdef OG
 		return (NoxText *) node->Item ();
-#endif
+#endif // OG
 #ifdef ZH
 		return (BabylonText *) node->Item ();
-#endif
+#endif // ZH
 	}
 
 	return NULL;
@@ -363,10 +363,10 @@ BabylonText*			TransDB::FirstObsolete	( ListSearch& sh )
 
 #ifdef OG
 NoxText*			TransDB::NextObsolete		( ListSearch& sh)
-#endif
+#endif // OG
 #ifdef ZH
 BabylonText*			TransDB::NextObsolete		( ListSearch& sh)
-#endif
+#endif // ZH
 {
 	ListNode *node;
 
@@ -374,10 +374,10 @@ BabylonText*			TransDB::NextObsolete		( ListSearch& sh)
 	{
 #ifdef OG
 		return (NoxText *) node->Item ();
-#endif
+#endif // OG
 #ifdef ZH
 		return (BabylonText *) node->Item ();
-#endif
+#endif // ZH
 	}
 
 	return NULL;
@@ -385,55 +385,55 @@ BabylonText*			TransDB::NextObsolete		( ListSearch& sh)
 
 #ifdef OG
 NoxLabel*			TransDB::FindLabel		( OLECHAR *name )
-#endif
+#endif // OG
 #ifdef ZH
 BabylonLabel*			TransDB::FindLabel		( OLECHAR *name )
-#endif
+#endif // ZH
 {
 #ifdef OG
 	return (NoxLabel *) label_bin->Get ( name );
-#endif
+#endif // OG
 #ifdef ZH
 	return (BabylonLabel *) label_bin->Get ( name );
-#endif
+#endif // ZH
 }
 
 #ifdef OG
 NoxText*			TransDB::FindText		( OLECHAR *text )
-#endif
+#endif // OG
 #ifdef ZH
 BabylonText*			TransDB::FindText		( OLECHAR *text )
-#endif
+#endif // ZH
 {
 
 #ifdef OG
 	return (NoxText *) text_bin->Get ( text );
-#endif
+#endif // OG
 #ifdef ZH
 	return (BabylonText *) text_bin->Get ( text );
-#endif
+#endif // ZH
 }
 
 #ifdef OG
 NoxText*			TransDB::FindSubText		( OLECHAR *pattern, int item )
-#endif
+#endif // OG
 #ifdef ZH
 BabylonText*			TransDB::FindSubText		( OLECHAR *pattern, int item )
-#endif
+#endif // ZH
 {
 #ifdef OG
 	NoxLabel	*label;
-#endif
+#endif // OG
 #ifdef ZH
 	BabylonLabel	*label;
-#endif
+#endif // ZH
 	ListSearch sh;
 #ifdef OG
 	NoxText		*text;
-#endif
+#endif // OG
 #ifdef ZH
 	BabylonText		*text;
-#endif
+#endif // ZH
 	ListSearch sh_text;
 	int plen = wcslen ( pattern );
 
@@ -468,65 +468,65 @@ BabylonText*			TransDB::FindSubText		( OLECHAR *pattern, int item )
 
 #ifdef OG
 NoxText*			TransDB::FindText		( int id )
-#endif
+#endif // OG
 #ifdef ZH
 BabylonText*			TransDB::FindText		( int id )
-#endif
+#endif // ZH
 {
 
 #ifdef OG
 	return (NoxText *) text_id_bin->Get ( id );
-#endif
+#endif // OG
 #ifdef ZH
 	return (BabylonText *) text_id_bin->Get ( id );
-#endif
+#endif // ZH
 }
 
 #ifdef OG
 NoxText*			TransDB::FindNextText		( void )
-#endif
+#endif // OG
 #ifdef ZH
 BabylonText*			TransDB::FindNextText		( void )
-#endif
+#endif // ZH
 {
 
 #ifdef OG
 	return (NoxText *) text_bin->GetNext ( );
-#endif
+#endif // OG
 #ifdef ZH
 	return (BabylonText *) text_bin->GetNext ( );
-#endif
+#endif // ZH
 }
 
 #ifdef OG
 NoxText*			TransDB::FindObsolete		( OLECHAR *name )
-#endif
+#endif // OG
 #ifdef ZH
 BabylonText*			TransDB::FindObsolete		( OLECHAR *name )
-#endif
+#endif // ZH
 {
 #ifdef OG
 	return (NoxText *) obsolete_bin->Get ( name );
-#endif
+#endif // OG
 #ifdef ZH
 	return (BabylonText *) obsolete_bin->Get ( name );
-#endif
+#endif // ZH
 }
 
 #ifdef OG
 NoxText*			TransDB::FindNextObsolete		( void )
-#endif
+#endif // OG
 #ifdef ZH
 BabylonText*			TransDB::FindNextObsolete		( void )
-#endif
+#endif // ZH
 {
 
 #ifdef OG
 	return (NoxText *) obsolete_bin->GetNext ( );
-#endif
+#endif // OG
 #ifdef ZH
 	return (BabylonText *) obsolete_bin->GetNext ( );
-#endif
+#endif // ZH
 
 }
 
@@ -536,11 +536,11 @@ int					TransDB::Clear				( void )
 #ifdef OG
 	NoxLabel *label;
 	NoxText *text;
-#endif
+#endif // OG
 #ifdef ZH
 	BabylonLabel *label;
 	BabylonText *text;
-#endif
+#endif // ZH
 	ListNode *node;
 	int count = 0;
 
@@ -554,10 +554,10 @@ int					TransDB::Clear				( void )
 		node->Remove ();
 #ifdef OG
 		label = (NoxLabel *) node->Item ();
-#endif
+#endif // OG
 #ifdef ZH
 		label = (BabylonLabel *) node->Item ();
-#endif
+#endif // ZH
 		count++;
 		delete label;
 		delete node;
@@ -568,10 +568,10 @@ int					TransDB::Clear				( void )
 		node->Remove ();
 #ifdef OG
 		text = (NoxText *) node->Item ();
-#endif
+#endif // OG
 #ifdef ZH
 		text = (BabylonText *) node->Item ();
-#endif
+#endif // ZH
 		count++;
 		delete text;
 		delete node;
@@ -599,10 +599,10 @@ void					TransDB::ClearChanges				( void )
 	ListSearch sh;
 #ifdef OG
 	NoxLabel *label;
-#endif
+#endif // OG
 #ifdef ZH
 	BabylonLabel *label;
-#endif
+#endif // ZH
 
 	label = FirstLabel ( sh );
 	while ( label )
@@ -613,10 +613,10 @@ void					TransDB::ClearChanges				( void )
 
 #ifdef OG
 	NoxText *text = FirstObsolete ( sh );
-#endif
+#endif // OG
 #ifdef ZH
 	BabylonText *text = FirstObsolete ( sh );
-#endif
+#endif // ZH
 	while ( text )
 	{
 		text->ClearChanges ();
@@ -631,10 +631,10 @@ void					TransDB::ClearProcessed				( void )
 	ListSearch sh;
 #ifdef OG
 	NoxLabel *label;
-#endif
+#endif // OG
 #ifdef ZH
 	BabylonLabel *label;
-#endif
+#endif // ZH
 
 	label = FirstLabel ( sh );
 	while ( label )
@@ -650,10 +650,10 @@ void					TransDB::ClearMatched				( void )
 	ListSearch sh;
 #ifdef OG
 	NoxLabel *label;
-#endif
+#endif // OG
 #ifdef ZH
 	BabylonLabel *label;
-#endif
+#endif // ZH
 
 	label = FirstLabel ( sh );
 	while ( label )
@@ -672,11 +672,11 @@ void					TransDB::AddToTree		( CTreeCtrl *tc, HTREEITEM parent, int changes, voi
 #ifdef OG
 	NoxLabel		*label;
 	NoxText			*txt;
-#endif
+#endif // OG
 #ifdef ZH
 	BabylonLabel		*label;
 	BabylonText			*txt;
-#endif
+#endif // ZH
 	
 	sprintf ( buffer, "%s%c  (%d/%d)",name, ChangedSymbol(), NumLabelsChanged(), NumLabels() );
 	item = tc->InsertItem ( buffer, parent );
@@ -741,10 +741,10 @@ TransDB*			TransDB::Next				( void )
 
 #ifdef OG
 void NoxLabel::init ( void )
-#endif
+#endif // OG
 #ifdef ZH
 void BabylonLabel::init ( void )
-#endif
+#endif // ZH
 {
 	db = NULL;
 	comment = NULL;
@@ -755,10 +755,10 @@ void BabylonLabel::init ( void )
 
 #ifdef OG
 NoxLabel::NoxLabel ( void )
-#endif
+#endif // OG
 #ifdef ZH
 BabylonLabel::BabylonLabel ( void )
-#endif
+#endif // ZH
 {
 	init ();
 	name = new OLEString ( );
@@ -772,10 +772,10 @@ BabylonLabel::BabylonLabel ( void )
 
 #ifdef OG
 NoxLabel::~NoxLabel ( )
-#endif
+#endif // OG
 #ifdef ZH
 BabylonLabel::~BabylonLabel ( )
-#endif
+#endif // ZH
 {
 	Clear ();
 	delete name;
@@ -787,10 +787,10 @@ BabylonLabel::~BabylonLabel ( )
 
 #ifdef OG
 void					NoxLabel::Remove			( void )
-#endif
+#endif // OG
 #ifdef ZH
 void					BabylonLabel::Remove			( void )
-#endif
+#endif // ZH
 {
 	if ( db )
 	{
@@ -800,10 +800,10 @@ void					BabylonLabel::Remove			( void )
 
 #ifdef OG
 void					NoxLabel::RemoveText ( NoxText *txt )
-#endif
+#endif // OG
 #ifdef ZH
 void					BabylonLabel::RemoveText ( BabylonText *txt )
-#endif
+#endif // ZH
 {
 	ListNode *node;
 
@@ -820,10 +820,10 @@ void					BabylonLabel::RemoveText ( BabylonText *txt )
 
 #ifdef OG
 void					NoxLabel::AddText			( NoxText *new_text )
-#endif
+#endif // OG
 #ifdef ZH
 void					BabylonLabel::AddText			( BabylonText *new_text )
-#endif
+#endif // ZH
 {
 	TransDB *db = DB();
 	ListNode	*node = new ListNode ();
@@ -839,18 +839,18 @@ void					BabylonLabel::AddText			( BabylonText *new_text )
 
 #ifdef OG
 int					NoxLabel::Clear				( void )
-#endif
+#endif // OG
 #ifdef ZH
 int					BabylonLabel::Clear				( void )
-#endif
+#endif // ZH
 {
 	ListSearch sh;
 #ifdef OG
 	NoxText *txt;
-#endif
+#endif // OG
 #ifdef ZH
 	BabylonText *txt;
-#endif
+#endif // ZH
 	ListNode *node;
 	int count = 0;
 
@@ -859,10 +859,10 @@ int					BabylonLabel::Clear				( void )
 		node->Remove ();
 #ifdef OG
 		txt = (NoxText *) node->Item ();
-#endif
+#endif // OG
 #ifdef ZH
 		txt = (BabylonText *) node->Item ();
-#endif
+#endif // ZH
 		delete txt;
 		delete node;
 		count++;
@@ -878,19 +878,19 @@ int					BabylonLabel::Clear				( void )
 
 #ifdef OG
 NoxLabel*			NoxLabel::Clone				( void )
-#endif
+#endif // OG
 #ifdef ZH
 BabylonLabel*			BabylonLabel::Clone				( void )
-#endif
+#endif // ZH
 {
 #ifdef OG
 	NoxLabel *clone = new NoxLabel();
 	NoxText *txt;
-#endif
+#endif // OG
 #ifdef ZH
 	BabylonLabel *clone = new BabylonLabel();
 	BabylonText *txt;
-#endif
+#endif // ZH
 	ListSearch sh;
 
 	clone->SetName ( Name());
@@ -914,10 +914,10 @@ BabylonLabel*			BabylonLabel::Clone				( void )
 
 #ifdef OG
 NoxText*			NoxLabel::FirstText		( ListSearch& sh )
-#endif
+#endif // OG
 #ifdef ZH
 BabylonText*			BabylonLabel::FirstText		( ListSearch& sh )
-#endif
+#endif // ZH
 {
 	ListNode *node;
 
@@ -925,10 +925,10 @@ BabylonText*			BabylonLabel::FirstText		( ListSearch& sh )
 	{
 #ifdef OG
 		return (NoxText *) node->Item ();
-#endif
+#endif // OG
 #ifdef ZH
 		return (BabylonText *) node->Item ();
-#endif
+#endif // ZH
 	}
 
 	return NULL;
@@ -936,10 +936,10 @@ BabylonText*			BabylonLabel::FirstText		( ListSearch& sh )
 
 #ifdef OG
 NoxText*			NoxLabel::NextText		( ListSearch& sh)
-#endif
+#endif // OG
 #ifdef ZH
 BabylonText*			BabylonLabel::NextText		( ListSearch& sh)
-#endif
+#endif // ZH
 {
 	ListNode *node;
 
@@ -947,10 +947,10 @@ BabylonText*			BabylonLabel::NextText		( ListSearch& sh)
 	{
 #ifdef OG
 		return (NoxText *) node->Item ();
-#endif
+#endif // OG
 #ifdef ZH
 		return (BabylonText *) node->Item ();
-#endif
+#endif // ZH
 	}
 
 	return NULL;
@@ -959,18 +959,18 @@ BabylonText*			BabylonLabel::NextText		( ListSearch& sh)
 
 #ifdef OG
 NoxText*			NoxLabel::FindText ( OLECHAR *find_text )
-#endif
+#endif // OG
 #ifdef ZH
 BabylonText*			BabylonLabel::FindText ( OLECHAR *find_text )
-#endif
+#endif // ZH
 {
 	ListSearch sh;
 #ifdef OG
 	NoxText *txt;
-#endif
+#endif // OG
 #ifdef ZH
 	BabylonText *txt;
-#endif
+#endif // ZH
 
 	txt = FirstText ( sh );
 
@@ -989,17 +989,17 @@ BabylonText*			BabylonLabel::FindText ( OLECHAR *find_text )
 
 #ifdef OG
 void					NoxLabel::SetDB				( TransDB *new_db )
-#endif
+#endif // OG
 #ifdef ZH
 void					BabylonLabel::SetDB				( TransDB *new_db )
-#endif
+#endif // ZH
 {
 #ifdef OG
 	NoxText *ntext;
-#endif
+#endif // OG
 #ifdef ZH
 	BabylonText *ntext;
-#endif
+#endif // ZH
 	ListSearch sh;
 
 	db = new_db;
@@ -1018,17 +1018,17 @@ void					BabylonLabel::SetDB				( TransDB *new_db )
 
 #ifdef OG
 void					NoxLabel::ClearChanges				( void )
-#endif
+#endif // OG
 #ifdef ZH
 void					BabylonLabel::ClearChanges				( void )
-#endif
+#endif // ZH
 {
 #ifdef OG
 	NoxText *ntext;
-#endif
+#endif // OG
 #ifdef ZH
 	BabylonText *ntext;
-#endif
+#endif // ZH
 	ListSearch sh;
 
 	ntext = FirstText ( sh );
@@ -1046,17 +1046,17 @@ void					BabylonLabel::ClearChanges				( void )
 
 #ifdef OG
 void					NoxLabel::ClearProcessed				( void )
-#endif
+#endif // OG
 #ifdef ZH
 void					BabylonLabel::ClearProcessed				( void )
-#endif
+#endif // ZH
 {
 #ifdef OG
 	NoxText *ntext;
-#endif
+#endif // OG
 #ifdef ZH
 	BabylonText *ntext;
-#endif
+#endif // ZH
 	ListSearch sh;
 
 	ntext = FirstText ( sh );
@@ -1074,17 +1074,17 @@ void					BabylonLabel::ClearProcessed				( void )
 
 #ifdef OG
 void					NoxLabel::ClearMatched				( void )
-#endif
+#endif // OG
 #ifdef ZH
 void					BabylonLabel::ClearMatched				( void )
-#endif
+#endif // ZH
 {
 #ifdef OG
 	NoxText *ntext;
-#endif
+#endif // OG
 #ifdef ZH
 	BabylonText *ntext;
-#endif
+#endif // ZH
 	ListSearch sh;
 
 	ntext = FirstText ( sh );
@@ -1102,17 +1102,17 @@ void					BabylonLabel::ClearMatched				( void )
 
 #ifdef OG
 int					NoxLabel::AllMatched				( void )
-#endif
+#endif // OG
 #ifdef ZH
 int					BabylonLabel::AllMatched				( void )
-#endif
+#endif // ZH
 {
 #ifdef OG
 	NoxText *ntext;
-#endif
+#endif // OG
 #ifdef ZH
 	BabylonText *ntext;
-#endif
+#endif // ZH
 	ListSearch sh;
 
 	ntext = FirstText ( sh );
@@ -1132,10 +1132,10 @@ int					BabylonLabel::AllMatched				( void )
 
 #ifdef OG
 NoxText::NoxText( void )
-#endif
+#endif // OG
 #ifdef ZH
 BabylonText::BabylonText( void )
-#endif
+#endif // ZH
 {
 	init ();
 	text = new OLEString (  );
@@ -1145,39 +1145,39 @@ BabylonText::BabylonText( void )
 
 #ifdef OG
 int NoxText::IsSent ( void )
-#endif
+#endif // OG
 #ifdef ZH
 int BabylonText::IsSent ( void )
-#endif
+#endif // ZH
 {
 	return sent;
 }
 
 #ifdef OG
 void NoxText::Sent ( int val )
-#endif
+#endif // OG
 #ifdef ZH
 void BabylonText::Sent ( int val )
-#endif
+#endif // ZH
 {
 	sent = val;
 }
 
 #ifdef OG
 void					NoxLabel::AddToTree		( CTreeCtrl *tc, HTREEITEM parent, int changes )
-#endif
+#endif // OG
 #ifdef ZH
 void					BabylonLabel::AddToTree		( CTreeCtrl *tc, HTREEITEM parent, int changes )
-#endif
+#endif // ZH
 {
 	HTREEITEM		litem;
 	ListSearch	sh;
 #ifdef OG
 	NoxText			*txt;
-#endif
+#endif // OG
 #ifdef ZH
 	BabylonText			*txt;
-#endif
+#endif // ZH
 
 	sprintf ( buffer, "%s%c", NameSB(), ChangedSymbol() );
 																							 
@@ -1235,10 +1235,10 @@ void					BabylonLabel::AddToTree		( CTreeCtrl *tc, HTREEITEM parent, int changes
 
 #ifdef OG
 void NoxText::init ( void )
-#endif
+#endif // OG
 #ifdef ZH
 void BabylonText::init ( void )
-#endif
+#endif // ZH
 {
 	db = NULL;
 	label = NULL;
@@ -1255,10 +1255,10 @@ void BabylonText::init ( void )
 
 #ifdef OG
 NoxText::~NoxText( )
-#endif
+#endif // OG
 #ifdef ZH
 BabylonText::~BabylonText( )
-#endif
+#endif // ZH
 {
 	Clear();
 	delete text;
@@ -1268,10 +1268,10 @@ BabylonText::~BabylonText( )
 
 #ifdef OG
 void					NoxText::SetDB				( TransDB *new_db )
-#endif
+#endif // OG
 #ifdef ZH
 void					BabylonText::SetDB				( TransDB *new_db )
-#endif
+#endif // ZH
 {
 	Translation *trans;
 	ListSearch sh;
@@ -1301,10 +1301,10 @@ void					BabylonText::SetDB				( TransDB *new_db )
 
 #ifdef OG
 void					NoxText::Remove			( void )
-#endif
+#endif // OG
 #ifdef ZH
 void					BabylonText::Remove			( void )
-#endif
+#endif // ZH
 {
 	if ( label )
 	{
@@ -1314,10 +1314,10 @@ void					BabylonText::Remove			( void )
 
 #ifdef OG
 int						NoxText::IsDialog ( void )
-#endif
+#endif // OG
 #ifdef ZH
 int						BabylonText::IsDialog ( void )
-#endif
+#endif // ZH
 {
 
 	return strcmp (WaveSB(), "" );
@@ -1326,10 +1326,10 @@ int						BabylonText::IsDialog ( void )
 
 #ifdef OG
 int						NoxText::DialogIsValid ( const char *path, LangID langid, int check )
-#endif
+#endif // OG
 #ifdef ZH
 int						BabylonText::DialogIsValid ( const char *path, LangID langid, int check )
-#endif
+#endif // ZH
 {
 	LANGINFO	*linfo;
 	CWaveInfo *winfo;
@@ -1386,10 +1386,10 @@ int						BabylonText::DialogIsValid ( const char *path, LangID langid, int check
 
 #ifdef OG
 int						NoxText::ValidateDialog ( const char *path, LangID langid )
-#endif
+#endif // OG
 #ifdef ZH
 int						BabylonText::ValidateDialog ( const char *path, LangID langid )
-#endif
+#endif // ZH
 {
 	WIN32_FIND_DATA info;
 	HANDLE	handle;
@@ -1439,10 +1439,10 @@ int						BabylonText::ValidateDialog ( const char *path, LangID langid )
 
 #ifdef OG
 int						NoxText::DialogIsPresent ( const char *path, LangID langid )
-#endif
+#endif // OG
 #ifdef ZH
 int						BabylonText::DialogIsPresent ( const char *path, LangID langid )
-#endif
+#endif // ZH
 {
 			
 	WIN32_FIND_DATA info;
@@ -1466,10 +1466,10 @@ int						BabylonText::DialogIsPresent ( const char *path, LangID langid )
 
 #ifdef OG
 void					NoxText::AddTranslation			( Translation *trans )
-#endif
+#endif // OG
 #ifdef ZH
 void					BabylonText::AddTranslation			( Translation *trans )
-#endif
+#endif // ZH
 {
 	ListNode	*node = new ListNode ();
 
@@ -1484,10 +1484,10 @@ void					BabylonText::AddTranslation			( Translation *trans )
 
 #ifdef OG
 Translation*			NoxText::FirstTranslation		( ListSearch& sh )
-#endif
+#endif // OG
 #ifdef ZH
 Translation*			BabylonText::FirstTranslation		( ListSearch& sh )
-#endif
+#endif // ZH
 {
 	ListNode *node;
 
@@ -1501,10 +1501,10 @@ Translation*			BabylonText::FirstTranslation		( ListSearch& sh )
 
 #ifdef OG
 Translation*			NoxText::NextTranslation		( ListSearch& sh)
-#endif
+#endif // OG
 #ifdef ZH
 Translation*			BabylonText::NextTranslation		( ListSearch& sh)
-#endif
+#endif // ZH
 {
 	ListNode *node;
 
@@ -1518,10 +1518,10 @@ Translation*			BabylonText::NextTranslation		( ListSearch& sh)
 
 #ifdef OG
 Translation*			NoxText::GetTranslation		( LangID langid )
-#endif
+#endif // OG
 #ifdef ZH
 Translation*			BabylonText::GetTranslation		( LangID langid )
-#endif
+#endif // ZH
 {
 	ListSearch sh;
 	Translation *trans;
@@ -1544,10 +1544,10 @@ Translation*			BabylonText::GetTranslation		( LangID langid )
 
 #ifdef OG
 int					NoxText::Clear				( void )
-#endif
+#endif // OG
 #ifdef ZH
 int					BabylonText::Clear				( void )
-#endif
+#endif // ZH
 {
 	ListSearch sh;
 	Translation *trans;
@@ -1572,17 +1572,17 @@ int					BabylonText::Clear				( void )
 
 #ifdef OG
 NoxText*			NoxText::Clone				( void )
-#endif
+#endif // OG
 #ifdef ZH
 BabylonText*			BabylonText::Clone				( void )
-#endif
+#endif // ZH
 {
 #ifdef OG
 	NoxText *clone = new NoxText();
-#endif
+#endif // OG
 #ifdef ZH
 	BabylonText *clone = new BabylonText();
-#endif
+#endif // ZH
 	Translation *trans;
 	ListSearch sh;
 
@@ -1604,10 +1604,10 @@ BabylonText*			BabylonText::Clone				( void )
 
 #ifdef OG
 void					NoxText::ClearChanges				( void )
-#endif
+#endif // OG
 #ifdef ZH
 void					BabylonText::ClearChanges				( void )
-#endif
+#endif // ZH
 {
 	Translation *trans;
 	ListSearch sh;
@@ -1627,10 +1627,10 @@ void					BabylonText::ClearChanges				( void )
 
 #ifdef OG
 void					NoxText::ClearProcessed				( void )
-#endif
+#endif // OG
 #ifdef ZH
 void					BabylonText::ClearProcessed				( void )
-#endif
+#endif // ZH
 {
 	Translation *trans;
 	ListSearch sh;
@@ -1650,10 +1650,10 @@ void					BabylonText::ClearProcessed				( void )
 
 #ifdef OG
 void					NoxText::ClearMatched				( void )
-#endif
+#endif // OG
 #ifdef ZH
 void					BabylonText::ClearMatched				( void )
-#endif
+#endif // ZH
 {
 	Translation *trans;
 	ListSearch sh;
@@ -1673,10 +1673,10 @@ void					BabylonText::ClearMatched				( void )
 
 #ifdef OG
 void					NoxText::AssignID ( void )
-#endif
+#endif // OG
 #ifdef ZH
 void					BabylonText::AssignID ( void )
-#endif
+#endif // ZH
 {
 	if ( id != -1 )
 	{
@@ -1690,10 +1690,10 @@ void					BabylonText::AssignID ( void )
 
 #ifdef OG
 void					NoxText::Set ( OLECHAR *string )
-#endif
+#endif // OG
 #ifdef ZH
 void					BabylonText::Set ( OLECHAR *string )
-#endif
+#endif // ZH
 {
 	if ( db )
 	{
@@ -1712,10 +1712,10 @@ void					BabylonText::Set ( OLECHAR *string )
 
 #ifdef OG
 void					NoxText::Set ( char *string )
-#endif
+#endif // OG
 #ifdef ZH
 void					BabylonText::Set ( char *string )
-#endif
+#endif // ZH
 {
 	if ( db )
 	{
@@ -1734,10 +1734,10 @@ void					BabylonText::Set ( char *string )
 
 #ifdef OG
 void					NoxText::InvalidateAllWaves			( void  )
-#endif
+#endif // OG
 #ifdef ZH
 void					BabylonText::InvalidateAllWaves			( void  )
-#endif
+#endif // ZH
 { 
 	Translation *trans;
 	ListSearch sh;
@@ -1757,10 +1757,10 @@ void					BabylonText::InvalidateAllWaves			( void  )
 
 #ifdef OG
 void					NoxText::InvalidateWave			( void )
-#endif
+#endif // OG
 #ifdef ZH
 void					BabylonText::InvalidateWave			( void )
-#endif
+#endif // ZH
 { 
 
 	WaveInfo.SetValid ( FALSE );
@@ -1769,10 +1769,10 @@ void					BabylonText::InvalidateWave			( void )
 
 #ifdef OG
 void					NoxText::InvalidateWave			( LangID langid  )
-#endif
+#endif // OG
 #ifdef ZH
 void					BabylonText::InvalidateWave			( LangID langid  )
-#endif
+#endif // ZH
 { 
 
 	WaveInfo.SetValid ( FALSE );
@@ -1795,10 +1795,10 @@ void					BabylonText::InvalidateWave			( LangID langid  )
 
 #ifdef OG
 void					NoxText::AddToTree		( CTreeCtrl *tc, HTREEITEM parent, int changes )
-#endif
+#endif // OG
 #ifdef ZH
 void					BabylonText::AddToTree		( CTreeCtrl *tc, HTREEITEM parent, int changes )
-#endif
+#endif // ZH
 {
 	HTREEITEM		item;
 	ListSearch	sh;
@@ -1917,10 +1917,10 @@ int Translation::TooLong ( int maxlen )
 
 #ifdef OG
 int Translation::ValidateFormat ( NoxText *ntext )
-#endif
+#endif // OG
 #ifdef ZH
 int Translation::ValidateFormat ( BabylonText *ntext )
-#endif
+#endif // ZH
 {
 	return SameFormat ( text->Get(), ntext->Get ());
 
@@ -1928,17 +1928,17 @@ int Translation::ValidateFormat ( BabylonText *ntext )
 
 #ifdef OG
 int TransDB::Warnings ( CNoxstringDlg *dlg )
-#endif
+#endif // OG
 #ifdef ZH
 int TransDB::Warnings ( CBabylonDlg *dlg )
-#endif
+#endif // ZH
 {
 #ifdef OG
 	NoxLabel *label;
-#endif
+#endif // OG
 #ifdef ZH
 	BabylonLabel *label;
-#endif
+#endif // ZH
 	ListSearch sh_label;
 	int count = 0;
 	int warnings = 0;
@@ -1961,11 +1961,11 @@ int TransDB::Warnings ( CBabylonDlg *dlg )
 #ifdef OG
 		NoxText *text;
 		NoxText *existing_text;
-#endif
+#endif // OG
 #ifdef ZH
 		BabylonText *text;
 		BabylonText *existing_text;
-#endif
+#endif // ZH
 		ListSearch sh_text;
 
 		text = label->FirstText ( sh_text );
@@ -2030,19 +2030,19 @@ int TransDB::Warnings ( CBabylonDlg *dlg )
 
 #ifdef OG
 int TransDB::Errors ( CNoxstringDlg *dlg )
-#endif
+#endif // OG
 #ifdef ZH
 int TransDB::Errors ( CBabylonDlg *dlg )
-#endif
+#endif // ZH
 {
 #ifdef OG
 	NoxLabel *label;
 	NoxLabel *existing_label;
-#endif
+#endif // OG
 #ifdef ZH
 	BabylonLabel *label;
 	BabylonLabel *existing_label;
-#endif
+#endif // ZH
 	ListSearch sh_label;
 	Bin	*tbin = new Bin ();
 	int count = 0;
@@ -2067,11 +2067,11 @@ int TransDB::Errors ( CBabylonDlg *dlg )
 #ifdef OG
 		NoxText *text;
 		NoxText *existing_text;
-#endif
+#endif // OG
 #ifdef ZH
 		BabylonText *text;
 		BabylonText *existing_text;
-#endif
+#endif // ZH
 		ListSearch sh_text;
 
 		if ( !MultiTextAllowed () && label->NumStrings () > 1 )
@@ -2107,10 +2107,10 @@ int TransDB::Errors ( CBabylonDlg *dlg )
 		{
 #ifdef OG
 				if ( ( existing_text = (NoxText *) tbin->Get ( text->Get () )))
-#endif
+#endif // OG
 #ifdef ZH
 				if ( ( existing_text = (BabylonText *) tbin->Get ( text->Get () )))
-#endif
+#endif // ZH
 				{
 					errors++;
 					if ( dlg )
@@ -2174,10 +2174,10 @@ void TransDB::VerifyDialog( LangID langid, void (*cb) (void) )
 {
 #ifdef OG
 	NoxLabel *label;
-#endif
+#endif // OG
 #ifdef ZH
 	BabylonLabel *label;
-#endif
+#endif // ZH
 	ListSearch sh_label;
 	int count = 0;
 	LANGINFO *linfo = GetLangInfo ( langid );
@@ -2188,10 +2188,10 @@ void TransDB::VerifyDialog( LangID langid, void (*cb) (void) )
 	{
 #ifdef OG
 		NoxText *text;
-#endif
+#endif // OG
 #ifdef ZH
 		BabylonText *text;
-#endif
+#endif // ZH
 		ListSearch sh_text;
 
 		text = label->FirstText ( sh_text );
@@ -2222,10 +2222,10 @@ void TransDB::InvalidateDialog( LangID langid )
 {
 #ifdef OG
 	NoxLabel *label;
-#endif
+#endif // OG
 #ifdef ZH
 	BabylonLabel *label;
-#endif
+#endif // ZH
 	ListSearch sh_label;
 
 	label = FirstLabel ( sh_label );
@@ -2234,10 +2234,10 @@ void TransDB::InvalidateDialog( LangID langid )
 	{
 #ifdef OG
 		NoxText *text;
-#endif
+#endif // OG
 #ifdef ZH
 		BabylonText *text;
-#endif
+#endif // ZH
 		ListSearch sh_text;
 
 		text = label->FirstText ( sh_text );
@@ -2261,10 +2261,10 @@ int TransDB::ReportDialog( DLGREPORT *report, LangID langid, void (*print) ( con
 {
 #ifdef OG
 	NoxLabel *label;
-#endif
+#endif // OG
 #ifdef ZH
 	BabylonLabel *label;
-#endif
+#endif // ZH
 	ListSearch sh_label;
 	int count = 0;
 	DLGREPORT _info;
@@ -2286,10 +2286,10 @@ int TransDB::ReportDialog( DLGREPORT *report, LangID langid, void (*print) ( con
 	{
 #ifdef OG
 		NoxText *text;
-#endif
+#endif // OG
 #ifdef ZH
 		BabylonText *text;
-#endif
+#endif // ZH
 		ListSearch sh_text;
 
 		text = label->FirstText ( sh_text );
@@ -2342,10 +2342,10 @@ int TransDB::ReportTranslations( TRNREPORT *report, LangID langid, void (*print)
 {
 #ifdef OG
 	NoxLabel *label;
-#endif
+#endif // OG
 #ifdef ZH
 	BabylonLabel *label;
-#endif
+#endif // ZH
 	ListSearch sh_label;
 	int count = 0;
 	int first_error = FALSE;
@@ -2365,10 +2365,10 @@ int TransDB::ReportTranslations( TRNREPORT *report, LangID langid, void (*print)
 	{
 #ifdef OG
 		NoxText *text;
-#endif
+#endif // OG
 #ifdef ZH
 		BabylonText *text;
-#endif
+#endif // ZH
 		ListSearch sh_text;
 		int maxlen = label->MaxLen ();
 

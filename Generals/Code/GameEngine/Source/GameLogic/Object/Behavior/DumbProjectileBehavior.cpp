@@ -33,7 +33,7 @@
 #include "Common/GameState.h"
 #ifdef ZH
 #include "Common/Player.h"
-#endif
+#endif // ZH
 #include "Common/ThingTemplate.h"
 #include "Common/RandomValue.h"
 #include "Common/Xfer.h"
@@ -129,7 +129,7 @@ DumbProjectileBehavior::DumbProjectileBehavior( Thing *thing, const ModuleData* 
 #ifdef ZH
 
   m_hasDetonated = FALSE;
-#endif
+#endif // ZH
 } 
 
 //-------------------------------------------------------------------------------------------------
@@ -516,7 +516,7 @@ Bool DumbProjectileBehavior::projectileHandleCollision( Object *other )
 #ifdef ZH
 					getObject()->getControllingPlayer()->getAcademyStats()->recordClearedGarrisonedBuilding();
 
-#endif
+#endif // ZH
 					// don't do the normal explosion; just destroy ourselves & return
 					TheGameLogic->destroyObject(getObject());
 					
@@ -533,10 +533,10 @@ Bool DumbProjectileBehavior::projectileHandleCollision( Object *other )
 	// mark ourself as "no collisions" (since we might still exist in slow death mode)
 #ifdef OG
 	getObject()->setStatus(OBJECT_STATUS_NO_COLLISIONS);
-#endif
+#endif // OG
 #ifdef ZH
 	getObject()->setStatus( MAKE_OBJECT_STATUS_MASK( OBJECT_STATUS_NO_COLLISIONS ) );
-#endif
+#endif // ZH
 	return true;
 }
 
@@ -547,7 +547,7 @@ void DumbProjectileBehavior::detonate()
   if ( m_hasDetonated )
     return;
 
-#endif
+#endif // ZH
 	Object* obj = getObject();
 	if (m_detonationWeaponTmpl)
 	{
@@ -586,7 +586,7 @@ void DumbProjectileBehavior::detonate()
   
   m_hasDetonated = TRUE; 
 
-#endif
+#endif // ZH
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -650,12 +650,12 @@ UpdateSleepTime DumbProjectileBehavior::update()
 #ifdef OG
 	if (d->m_orientToFlightPath && (!d->m_tumbleRandomly) && m_currentFlightPathStep > 0)
 
-#endif
+#endif // OG
 #ifdef ZH
 	if (d->m_orientToFlightPath && (!d->m_tumbleRandomly) )
   {
     if ( m_currentFlightPathStep > 0)
-#endif
+#endif // ZH
 	{
 	// this seems reasonable; however, if this object has a PhysicsBehavior on it, this calc will be wrong, 
 	// since Physics is applying gravity, which we duly ignore, but the prevPos won't be what we expect.
@@ -677,19 +677,19 @@ UpdateSleepTime DumbProjectileBehavior::update()
     {
 		  Coord3D prevPos = m_flightPath[0];
 		  Coord3D curPos = m_flightPath[1];
-#endif
+#endif // ZH
 
 #ifdef ZH
 		  Vector3 curDir(curPos.x - prevPos.x, curPos.y - prevPos.y, curPos.z - prevPos.z);
 		  curDir.Normalize();	// buildTransformMatrix wants it this way
-#endif
+#endif // ZH
 		Matrix3D orientMtx;
 		orientMtx.buildTransformMatrix(Vector3(flightStep.x, flightStep.y, flightStep.z), curDir);
 		getObject()->setTransformMatrix(&orientMtx);
 #ifdef ZH
     }
 
-#endif
+#endif // ZH
 	}
 	else
 	{

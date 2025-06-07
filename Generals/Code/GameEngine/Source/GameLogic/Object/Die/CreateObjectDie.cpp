@@ -32,7 +32,7 @@
 #define DEFINE_OBJECT_STATUS_NAMES
 #ifdef ZH
 #include "GameLogic/Module/AIUpdate.h"
-#endif
+#endif // ZH
 #include "Common/ThingFactory.h"
 #include "Common/Xfer.h"
 #include "GameLogic/GameLogic.h"
@@ -47,7 +47,7 @@
 //#pragma optimize("", off)
 //#pragma MESSAGE("************************************** WARNING, optimization disabled for debugging purposes")
 #endif
-#endif
+#endif // ZH
 
 // ------------------------------------------------------------------------------------------------
 // ------------------------------------------------------------------------------------------------
@@ -57,7 +57,7 @@ CreateObjectDieModuleData::CreateObjectDieModuleData()
 	m_ocl = NULL;
 #ifdef ZH
 	m_transferPreviousHealth = FALSE;
-#endif
+#endif // ZH
 
 }
 
@@ -72,7 +72,7 @@ CreateObjectDieModuleData::CreateObjectDieModuleData()
 		{ "CreationList",	INI::parseObjectCreationList,		NULL,											offsetof( CreateObjectDieModuleData, m_ocl ) },
 #ifdef ZH
 		{ "TransferPreviousHealth", INI::parseBool, NULL	,offsetof( CreateObjectDieModuleData, m_transferPreviousHealth ) },
-#endif
+#endif // ZH
 		{ 0, 0, 0, 0 }
 	};
 	p.add(dataFieldParse);
@@ -103,7 +103,7 @@ void CreateObjectDie::onDie( const DamageInfo * damageInfo )
 {
 #ifdef ZH
 	const CreateObjectDieModuleData *data = getCreateObjectDieModuleData();
-#endif
+#endif // ZH
 	if (!isDieApplicable(damageInfo))
 		return;
 
@@ -111,12 +111,12 @@ void CreateObjectDie::onDie( const DamageInfo * damageInfo )
 #ifdef ZH
 
 	Object *newObject = ObjectCreationList::create( data->m_ocl, getObject(), damageDealer );
-#endif
+#endif // ZH
 
 #ifdef OG
 	ObjectCreationList::create(getCreateObjectDieModuleData()->m_ocl, getObject(), damageDealer);
 
-#endif
+#endif // OG
 #ifdef ZH
 	//If we're transferring previous health, we're transfering the last known
 	//health before we died. In the case of the sneak attack tunnel network, it
@@ -163,7 +163,7 @@ void CreateObjectDie::onDie( const DamageInfo * damageInfo )
 	}
 
 	
-#endif
+#endif // ZH
 }  // end onDie
 
 // ------------------------------------------------------------------------------------------------

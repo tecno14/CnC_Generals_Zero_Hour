@@ -46,7 +46,7 @@
 #include "GameLogic/Weapon.h"
 #ifdef ZH
 #include "GameLogic/LogicRandomValue.h"
-#endif
+#endif // ZH
 
 const Real DEFAULT_MASS = 1.0f;
 #ifdef ZH
@@ -55,7 +55,7 @@ const Real DEFAULT_SHOCK_YAW = 0.05f;
 const Real DEFAULT_SHOCK_PITCH = 0.025f;
 const Real DEFAULT_SHOCK_ROLL = 0.025f;
 
-#endif
+#endif // ZH
 const Real DEFAULT_FORWARD_FRICTION = 0.15f;
 const Real DEFAULT_LATERAL_FRICTION = 0.15f;
 const Real DEFAULT_Z_FRICTION = 0.8f;
@@ -70,7 +70,7 @@ const Real MAX_FRICTION = 0.99f;
 #ifdef ZH
 const Real STUN_RELIEF_EPSILON = 0.5f;
 
-#endif
+#endif // ZH
 #include "Common/CRCDebug.h"
 
 const Int MOTIVE_FRAMES = LOGICFRAMES_PER_SECOND / 3;
@@ -125,7 +125,7 @@ PhysicsBehaviorModuleData::PhysicsBehaviorModuleData()
 	m_shockMaxPitch = DEFAULT_SHOCK_PITCH;
 	m_shockMaxRoll = DEFAULT_SHOCK_ROLL;
 	
-#endif
+#endif // ZH
 	m_forwardFriction = DEFAULT_FORWARD_FRICTION;
 	m_lateralFriction = DEFAULT_LATERAL_FRICTION;
 	m_ZFriction = DEFAULT_Z_FRICTION;
@@ -182,7 +182,7 @@ static void parseFrictionPerSec( INI* ini, void * /*instance*/, void *store, con
 		{ "ShockMaxYaw",				INI::parsePositiveNonZeroReal,		NULL, offsetof( PhysicsBehaviorModuleData, m_shockMaxYaw ) },
 		{ "ShockMaxPitch",			INI::parsePositiveNonZeroReal,		NULL, offsetof( PhysicsBehaviorModuleData, m_shockMaxPitch ) },
 		{ "ShockMaxRoll",				INI::parsePositiveNonZeroReal,		NULL, offsetof( PhysicsBehaviorModuleData, m_shockMaxRoll ) },
-#endif
+#endif // ZH
 
 		{ "ForwardFriction",			parseFrictionPerSec,		NULL, offsetof( PhysicsBehaviorModuleData, m_forwardFriction ) },
 		{ "LateralFriction",			parseFrictionPerSec,		NULL, offsetof( PhysicsBehaviorModuleData, m_lateralFriction ) },
@@ -406,7 +406,7 @@ void PhysicsBehavior::applyRandomRotation()
 	randomModifier = GameLogicRandomValue(-1.0f, 1.0f);
 	m_rollRate += getPhysicsBehaviorModuleData()->m_shockMaxRoll * randomModifier;
 
-#endif
+#endif // ZH
 #ifdef SLEEPY_PHYSICS
 	if (getFlag(IS_IN_UPDATE))
 	{
@@ -465,7 +465,7 @@ void PhysicsBehavior::applyFrictionalForces()
 #ifdef OG
 	if (getFlag(APPLY_FRICTION2D_WHEN_AIRBORNE) || !getObject()->isSignificantlyAboveTerrain()) 
 
-#endif
+#endif // OG
 #ifdef ZH
 	//Are we a plane that is taxiing on a deck with a height offset?
 	Bool deckTaxiing = getObject()->testStatus( OBJECT_STATUS_DECK_HEIGHT_OFFSET ) 
@@ -473,7 +473,7 @@ void PhysicsBehavior::applyFrictionalForces()
 										 && getObject()->getAI()->getCurLocomotorSetType() == LOCOMOTORSET_TAXIING;
 
 	if (getFlag(APPLY_FRICTION2D_WHEN_AIRBORNE) || !getObject()->isSignificantlyAboveTerrain() || deckTaxiing ) 
-#endif
+#endif // ZH
 	{
 		applyYPRDamping(1.0f - DEFAULT_LATERAL_FRICTION);
 
@@ -558,7 +558,7 @@ Bool PhysicsBehavior::handleBounce(Real oldZ, Real newZ, Real groundZ, Coord3D* 
 		if(bounceForce->z > 0.0f)
 		{
 			testStunnedUnitForDestruction();
-#endif
+#endif // ZH
 		return true;
 #ifdef ZH
 		}
@@ -566,11 +566,11 @@ Bool PhysicsBehavior::handleBounce(Real oldZ, Real newZ, Real groundZ, Coord3D* 
 		{
 			setAllowBouncing(m_originalAllowBounce);
 			return false;
-#endif
+#endif // ZH
 	}
 #ifdef ZH
 	}
-#endif
+#endif // ZH
 	else
 	{
 		bounceForce->zero();
@@ -731,7 +731,7 @@ UpdateSleepTime PhysicsBehavior::update()
 
     }
 
-#endif
+#endif // ZH
 		if (getFlag(HAS_PITCHROLLYAW))
 		{
 
@@ -791,7 +791,7 @@ UpdateSleepTime PhysicsBehavior::update()
 		{
 			groundZ += obj->getCarrierDeckHeight(); 
 		}
-#endif
+#endif // ZH
 		gotBounceForce = handleBounce(oldPosZ, mtx.Get_Z_Translation(), groundZ, &bounceForce);
 
 		// remember our z-vel prior to doing ground-slam adjustment
@@ -820,7 +820,7 @@ UpdateSleepTime PhysicsBehavior::update()
 				obj->clearModelConditionState(MODELCONDITION_STUNNED_FLAILING);
 				obj->setModelConditionState(MODELCONDITION_STUNNED);
 			}
-#endif
+#endif // ZH
 		}
 		else if (mtx.Get_Z_Translation() > groundZ) 
 		{
@@ -851,11 +851,11 @@ UpdateSleepTime PhysicsBehavior::update()
 		}
 		else 
 		{
-#endif
+#endif // ZH
 		obj->setTransformMatrix(&mtx);
 #ifdef ZH
 		}
-#endif
+#endif // ZH
 	} // if not held
 
 	// reset the acceleration for accumulation next frame
@@ -915,7 +915,7 @@ UpdateSleepTime PhysicsBehavior::update()
 				damageInfo.in.m_amount = damageAmt;	
 #ifdef ZH
         damageInfo.in.m_shockWaveAmount = 0.0f;
-#endif
+#endif // ZH
 				obj->attemptDamage( &damageInfo );
 				//DEBUG_LOG(("Dealing %f (%f %f) points of falling damage to %s!\n",damageAmt,damageInfo.out.m_actualDamageDealt, damageInfo.out.m_actualDamageClipped,obj->getTemplate()->getName().str()));
 
@@ -1851,7 +1851,7 @@ void PhysicsBehavior::testStunnedUnitForDestruction(void)
 		obj->kill();
 		return;
 	}
-#endif
+#endif // ZH
 }
 
 // ------------------------------------------------------------------------------------------------

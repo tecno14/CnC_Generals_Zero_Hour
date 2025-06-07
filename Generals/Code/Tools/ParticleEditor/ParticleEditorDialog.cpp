@@ -1344,16 +1344,16 @@ void DebugWindowDialog::performUpdate( IN Bool toUI )
 			if (toUI) {
 #ifdef OG
 				sprintf(buff, FORMAT_STRING, m_particleSystem->m_angleX.getMinimumValue());
-#endif
+#endif // OG
 #ifdef ZH
 				sprintf(buff, FORMAT_STRING, 0.0f);
-#endif
+#endif // ZH
 				pWnd->SetWindowText(buff);
 #ifdef OG
 			} else {
 				pWnd->GetWindowText(buff, ARBITRARY_BUFF_SIZE - 1);
 				m_particleSystem->m_angleX.m_low = atof(buff);
-#endif
+#endif // OG
 			}
 		}
 
@@ -1362,16 +1362,16 @@ void DebugWindowDialog::performUpdate( IN Bool toUI )
 			if (toUI) {
 #ifdef OG
 				sprintf(buff, FORMAT_STRING, m_particleSystem->m_angleY.getMinimumValue());
-#endif
+#endif // OG
 #ifdef ZH
 				sprintf(buff, FORMAT_STRING, 0.0f);
-#endif
+#endif // ZH
 				pWnd->SetWindowText(buff);
 #ifdef OG
 			} else {
 				pWnd->GetWindowText(buff, ARBITRARY_BUFF_SIZE - 1);
 				m_particleSystem->m_angleY.m_low = atof(buff);	
-#endif
+#endif // OG
 			}
 		}
 
@@ -1391,16 +1391,16 @@ void DebugWindowDialog::performUpdate( IN Bool toUI )
 			if (toUI) {
 #ifdef OG
 				sprintf(buff, FORMAT_STRING, m_particleSystem->m_angleX.getMaximumValue());
-#endif
+#endif // OG
 #ifdef ZH
 				sprintf(buff, FORMAT_STRING, 0.0f);
-#endif
+#endif // ZH
 				pWnd->SetWindowText(buff);
 #ifdef OG
 			} else {
 				pWnd->GetWindowText(buff, ARBITRARY_BUFF_SIZE - 1);
 				m_particleSystem->m_angleX.m_high = atof(buff);	
-#endif
+#endif // OG
 			}
 		}
 
@@ -1409,16 +1409,16 @@ void DebugWindowDialog::performUpdate( IN Bool toUI )
 			if (toUI) {
 #ifdef OG
 				sprintf(buff, FORMAT_STRING, m_particleSystem->m_angleY.getMaximumValue());
-#endif
+#endif // OG
 #ifdef ZH
 				sprintf(buff, FORMAT_STRING, 0.0f);
-#endif
+#endif // ZH
 				pWnd->SetWindowText(buff);
 #ifdef OG
 			} else {
 				pWnd->GetWindowText(buff, ARBITRARY_BUFF_SIZE - 1);
 				m_particleSystem->m_angleY.m_high = atof(buff);	
-#endif
+#endif // OG
 			}
 		}
 
@@ -1438,16 +1438,16 @@ void DebugWindowDialog::performUpdate( IN Bool toUI )
 			if (toUI) {
 #ifdef OG
 				sprintf(buff, FORMAT_STRING, m_particleSystem->m_angularRateX.getMinimumValue());
-#endif
+#endif // OG
 #ifdef ZH
 				sprintf(buff, FORMAT_STRING, 0.0f);
-#endif
+#endif // ZH
 				pWnd->SetWindowText(buff);
 #ifdef OG
 			} else {
 				pWnd->GetWindowText(buff, ARBITRARY_BUFF_SIZE - 1);
 				m_particleSystem->m_angularRateX.m_low = atof(buff);	
-#endif
+#endif // OG
 			}
 		}
 
@@ -1456,16 +1456,16 @@ void DebugWindowDialog::performUpdate( IN Bool toUI )
 			if (toUI) {
 #ifdef OG
 				sprintf(buff, FORMAT_STRING, m_particleSystem->m_angularRateY.getMinimumValue());
-#endif
+#endif // OG
 #ifdef ZH
 				sprintf(buff, FORMAT_STRING, 0.0f);
-#endif
+#endif // ZH
 				pWnd->SetWindowText(buff);
 #ifdef OG
 			} else {
 				pWnd->GetWindowText(buff, ARBITRARY_BUFF_SIZE - 1);
 				m_particleSystem->m_angularRateY.m_low = atof(buff);	
-#endif
+#endif // OG
 			}
 		}
 
@@ -1485,16 +1485,16 @@ void DebugWindowDialog::performUpdate( IN Bool toUI )
 			if (toUI) {
 #ifdef OG
 				sprintf(buff, FORMAT_STRING, m_particleSystem->m_angularRateX.getMaximumValue());
-#endif
+#endif // OG
 #ifdef ZH
 				sprintf(buff, FORMAT_STRING, 0.0f);
-#endif
+#endif // ZH
 				pWnd->SetWindowText(buff);
 #ifdef OG
 			} else {
 				pWnd->GetWindowText(buff, ARBITRARY_BUFF_SIZE - 1);
 				m_particleSystem->m_angularRateX.m_high = atof(buff);	
-#endif
+#endif // OG
 			}
 		}
 
@@ -1503,16 +1503,16 @@ void DebugWindowDialog::performUpdate( IN Bool toUI )
 			if (toUI) {
 #ifdef OG
 				sprintf(buff, FORMAT_STRING, m_particleSystem->m_angularRateY.getMaximumValue());
-#endif
+#endif // OG
 #ifdef ZH
 				sprintf(buff, FORMAT_STRING, 0.0f);
-#endif
+#endif // ZH
 				pWnd->SetWindowText(buff);
 #ifdef OG
 			} else {
 				pWnd->GetWindowText(buff, ARBITRARY_BUFF_SIZE - 1);
 				m_particleSystem->m_angularRateY.m_high = atof(buff);	
-#endif
+#endif // OG
 			}
 		}
 

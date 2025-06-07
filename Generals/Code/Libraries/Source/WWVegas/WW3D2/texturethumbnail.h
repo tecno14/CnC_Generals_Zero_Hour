@@ -18,7 +18,7 @@
 
 #ifdef ZH
 // 08/07/02 KM Texture class redesign (revisited)
-#endif
+#endif // ZH
 #ifndef TEXTURETHUMBNAIL_H
 #define TEXTURETHUMBNAIL_H
 
@@ -32,14 +32,14 @@
 #include "hashtemplate.h"
 #include "dllist.h"
 #include "ww3dformat.h"
-#endif
+#endif // ZH
 
 #ifdef ZH
 #define GLOBAL_THUMBNAIL_MANAGER_FILENAME "global.th6"
 
 class ThumbnailManagerClass;
 
-#endif
+#endif // ZH
 // ----------------------------------------------------------------------------
 
 class ThumbnailClass
@@ -47,7 +47,7 @@ class ThumbnailClass
 #ifdef ZH
 	friend ThumbnailManagerClass;
 
-#endif
+#endif // ZH
 	StringClass Name;
 	unsigned char* Bitmap;
 	unsigned Width;
@@ -58,7 +58,7 @@ class ThumbnailClass
 	unsigned OriginalTextureMipLevelCount;
 	WW3DFormat OriginalTextureFormat;
 	unsigned long DateTime;
-#endif
+#endif // ZH
 	bool Allocated;	// if true, destructor will free the memory
 #ifdef ZH
 	ThumbnailManagerClass* Manager;
@@ -79,18 +79,18 @@ class ThumbnailClass
 		ThumbnailManagerClass* manager,
 		const StringClass& filename);
 	~ThumbnailClass();
-#endif
+#endif // ZH
 public:
 #ifdef OG
 	ThumbnailClass(const char* name, unsigned char* bitmap, unsigned w, unsigned h, bool allocated);
 	ThumbnailClass(const StringClass& filename);
 	~ThumbnailClass();
-#endif
+#endif // OG
 
 	unsigned char* Peek_Bitmap() { return Bitmap; }
 #ifdef ZH
 	WW3DFormat Get_Format() { return WW3D_FORMAT_A4R4G4B4; }
-#endif
+#endif // ZH
 	unsigned Get_Width() const { return Width; }
 	unsigned Get_Height() const { return Height; }
 #ifdef ZH
@@ -99,19 +99,19 @@ public:
 	unsigned Get_Original_Texture_Mip_Level_Count() const { return OriginalTextureMipLevelCount; }
 	WW3DFormat Get_Original_Texture_Format() const { return OriginalTextureFormat; }
 	unsigned long Get_Date_Time() const { return DateTime; }
-#endif
+#endif // ZH
 	const StringClass& Get_Name() const { return Name; }
 #ifdef ZH
 
 };
 
 // ----------------------------------------------------------------------------
-#endif
+#endif // ZH
 
 #ifdef OG
 	static ThumbnailClass* Peek_Instance(const StringClass& name);
 
-#endif
+#endif // OG
 #ifdef ZH
 class ThumbnailManagerClass : public DLNodeClass<ThumbnailManagerClass>
 {
@@ -156,7 +156,7 @@ public:
 	void Enable_Per_Texture_Time_Stamp(bool enable) { PerTextureTimeStampUsed=enable; }
 
 	static void Pre_Init(bool display_message_box);
-#endif
+#endif // ZH
 	static void Init();
 	static void Deinit();
 };

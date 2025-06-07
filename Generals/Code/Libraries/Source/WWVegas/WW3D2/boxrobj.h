@@ -28,17 +28,17 @@
  *                                                                                             *
 #ifdef OG
  *                     $Modtime:: 2/19/01 1:11p                                               $*
-#endif
+#endif // OG
 #ifdef ZH
  *                     $Modtime:: 10/11/01 2:24p                                              $*
-#endif
+#endif // ZH
  *                                                                                             *
 #ifdef OG
  *                    $Revision:: 5                                                           $*
-#endif
+#endif // OG
 #ifdef ZH
  *                    $Revision:: 6                                                           $*
-#endif
+#endif // ZH
  *                                                                                             *
  *---------------------------------------------------------------------------------------------*
  * Functions:                                                                                  *
@@ -98,7 +98,7 @@ public:
 	void									Set_Color(const Vector3 & color);
 #ifdef ZH
 	void									Set_Opacity(float opacity) { Opacity = opacity; }
-#endif
+#endif // ZH
 
 	static void							Init(void);
 	static void							Shutdown(void);
@@ -124,7 +124,7 @@ protected:
 	Vector3								ObjSpaceExtent;
 #ifdef ZH
 	float									Opacity;
-#endif
+#endif // ZH
 
 	static bool							IsInitted;
 	static int							DisplayMask;

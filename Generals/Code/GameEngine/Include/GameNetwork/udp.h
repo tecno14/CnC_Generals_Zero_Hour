@@ -126,10 +126,10 @@ class UDP
 
 #ifdef ZH
 #ifdef DEBUG_LOGGING
-#endif
+#endif // ZH
 AsciiString GetWSAErrorString( Int error );
 #ifdef ZH
 #endif
-#endif
+#endif // ZH
 
 #endif

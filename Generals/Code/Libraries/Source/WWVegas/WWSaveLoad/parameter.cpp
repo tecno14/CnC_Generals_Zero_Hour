@@ -27,26 +27,26 @@
 #ifdef OG
  *                       Author:: Patrick Smith                                                *
 
-#endif
+#endif // OG
 #ifdef ZH
  *                   Org Author:: Patrick Smith                                                *
  *                                                                                             *
  *                       Author:: Kenny Mitchell                                                *
-#endif
+#endif // ZH
  *                                                                                             *
 #ifdef OG
  *                     $Modtime:: 7/16/01 11:18a                                              $*
-#endif
+#endif // OG
 #ifdef ZH
  *                     $Modtime:: 5/29/02 11:00a                                              $*
-#endif
+#endif // ZH
  *                                                                                             *
 #ifdef OG
  *                    $Revision:: 32                                                          $*
-#endif
+#endif // OG
 #ifdef ZH
  *                    $Revision:: 33                                                          $*
-#endif
+#endif // ZH
  *                                                                                             *
  *---------------------------------------------------------------------------------------------*
  * Functions:                                                                                  *
@@ -127,7 +127,7 @@ ParameterClass::Construct (Type type, void *data, const char *name)
 
 		case TYPE_TEXTURE_FILENAME:
 			new_param = new TextureFilenameParameterClass ((StringClass *)data);
-#endif
+#endif // ZH
 			new_param->Set_Name (name);
 			break;
 
@@ -451,7 +451,7 @@ TextureFilenameParameterClass::TextureFilenameParameterClass (const TextureFilen
 	Show_Alpha(false),
 	Show_Texture(false)
 {
-#endif
+#endif // ZH
 }
 
 #ifdef ZH
@@ -466,14 +466,14 @@ void TextureFilenameParameterClass::Copy_Value (const ParameterClass &src)
 	{
 		Set_String (((FilenameParameterClass &)src).Get_String ());
 	}
-#endif
+#endif // ZH
 
 #ifdef ZH
 	StringParameterClass::Copy_Value (src);
 	return ;
 }
 
-#endif
+#endif // ZH
 
 //*******************************************************************************************//
 //
@@ -932,11 +932,11 @@ DefParameterClass::operator= (const DefParameterClass &src)
 //MW: Had to comment out next line to remove infinite loop warning on
 //latest VC++.
 //	DefParameterClass::operator= (src);
-#endif
+#endif // OG
 #ifdef ZH
 	ParameterClass::operator= (src);
 
-#endif
+#endif // ZH
 	return *this;
 }
 

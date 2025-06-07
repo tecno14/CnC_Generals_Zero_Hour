@@ -120,7 +120,7 @@ public:
 #ifdef ZH
 	Bool doDumpUpdate(void) {return m_dumpUpdate;}
 	Bool doDumpDraw(void) {return m_dumpDraw;}
-#endif
+#endif // ZH
 	static Real getTotalTime(void) {return s_msConsumed;}
 	static void clearTotalTime(void) {s_msConsumed = 0;}
 protected:
@@ -133,7 +133,7 @@ protected:
 #ifdef ZH
 	Bool m_dumpUpdate;
 	Bool m_dumpDraw;
-#endif
+#endif // ZH
 #else 
 	inline void UPDATE(void) {update();}
 	inline void DRAW(void) {draw();}

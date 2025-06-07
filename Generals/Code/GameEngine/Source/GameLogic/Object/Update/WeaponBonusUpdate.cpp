@@ -206,4 +206,4 @@ void WeaponBonusUpdate::loadPostProcess( void )
 
 }  // end loadPostProcess
 
-#endif
+#endif // ZH

@@ -51,7 +51,7 @@ public:
 	static Bool isForcedIntoBusyState( State *thisState, void* userData );
 #ifdef ZH
 	static Bool ownerPlayerCommanded( State *thisState, void* userData );
-#endif
+#endif // ZH
 
 protected:
 	// snapshot interface
@@ -91,10 +91,10 @@ public:
 	RegroupingState( StateMachine *machine ) : State( machine, "RegroupingState" ) {}
 #ifdef OG
 	virtual StateReturnType update(){ return STATE_CONTINUE;}// Nothing to do but wait for a transition
-#endif
+#endif // OG
 #ifdef ZH
 	virtual StateReturnType update();
-#endif
+#endif // ZH
 	virtual StateReturnType onEnter();// Will tell me to aiMove back to base.
 	virtual void onExit(StateExitType status);
 };
@@ -188,7 +188,7 @@ public:
 	virtual UnsignedInt getActionDelayForDock( Object *dock ) = 0;
 #ifdef ZH
 	virtual Int getUpgradedSupplyBoost() const = 0;
-#endif
+#endif // ZH
 };
 
 //-------------------------------------------------------------------------------------------------
@@ -228,7 +228,7 @@ public:
 	virtual UnsignedInt getActionDelayForDock( Object *dock );
 #ifdef ZH
 	virtual Int getUpgradedSupplyBoost() const { return 0; }
-#endif
+#endif // ZH
 
 	virtual UpdateSleepTime update();
 

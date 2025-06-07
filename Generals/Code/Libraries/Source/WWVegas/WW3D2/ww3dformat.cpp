@@ -28,28 +28,28 @@
  *                                                                                             *
 #ifdef OG
  *                      $Author:: Jani_p                                                      $*
-#endif
+#endif // OG
 #ifdef ZH
  *                       Author : Kenny Mitchell                                               * 
-#endif
+#endif // ZH
  *                                                                                             *
 #ifdef OG
  *                     $Modtime:: 8/20/01 11:51a                                              $*
-#endif
+#endif // OG
 #ifdef ZH
  *                     $Modtime:: 06/27/02 1:27p                                              $*
-#endif
+#endif // ZH
  *                                                                                             *
 #ifdef OG
  *                    $Revision:: 5                                                           $*
-#endif
+#endif // OG
 #ifdef ZH
  *                    $Revision:: 14                                                          $*
-#endif
+#endif // ZH
  *                                                                                             *
 #ifdef ZH
  * 06/27/02 KM Z Format support																						*
-#endif
+#endif // ZH
  *---------------------------------------------------------------------------------------------*
  * Functions:                                                                                  *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
@@ -115,7 +115,7 @@ void Get_WW3D_Format_Name(WW3DFormat format, StringClass& name)
 	case WW3D_FORMAT_DXT5: name="DXT5"; break;
 	}
 }
-#endif
+#endif // ZH
 
 #ifdef ZH
 //**********************************************************************************************
@@ -144,7 +144,7 @@ void Get_WW3D_ZFormat_Name(WW3DZFormat format, StringClass& name)
 	}
 }
 
-#endif
+#endif // ZH
 // extract the luminance from the RGB using the CIE 709 standard
 unsigned char RGB_to_CIEY(Vector4 color)
 {
@@ -304,7 +304,7 @@ void Get_WW3D_Format(WW3DFormat& dest_format,WW3DFormat& src_format,unsigned& sr
 
 void Get_WW3D_Format(WW3DFormat& src_format,unsigned& src_bpp,const Targa& targa)
 {
-#endif
+#endif // ZH
 	// Guess the format from the TGA Header bits:
 	src_format = WW3D_FORMAT_UNKNOWN;
 	src_bpp=0;
@@ -322,22 +322,22 @@ void Get_WW3D_Format(WW3DFormat& src_format,unsigned& src_bpp,const Targa& targa
 			WWDEBUG_SAY(("TextureClass: Targa has unsupported bitdepth(%i)\n",targa.Header.PixelDepth));
 #ifdef OG
 			WWASSERT(0);
-#endif
+#endif // OG
 #ifdef ZH
 //			WWASSERT(0);
-#endif
+#endif // ZH
 			break;
 #ifdef OG
 	}
 	dest_format=src_format;
 	if ((dest_format==WW3D_FORMAT_P8) || (dest_format==WW3D_FORMAT_L8)) {
 		dest_format=WW3D_FORMAT_X8R8G8B8;
-#endif
+#endif // OG
 	}
 #ifdef OG
 	dest_format=Get_Valid_Texture_Format(dest_format,false);	// No compressed destination format if reading from targa...
 
-#endif
+#endif // OG
 }
 
 // ----------------------------------------------------------------------------
@@ -355,12 +355,12 @@ WW3DFormat Get_Valid_Texture_Format(WW3DFormat format, bool is_compression_allow
 	if (!DX8Caps::Support_DXTC() || 
 		!is_compression_allowed || 
 		WW3D::Get_Texture_Compression_Mode()==WW3D::TEXTURE_COMPRESSION_DISABLE) {
-#endif
+#endif // OG
 #ifdef ZH
 	if (!DX8Wrapper::Get_Current_Caps()->Support_DXTC() || 
 		!is_compression_allowed) {
 
-#endif
+#endif // ZH
 		switch (format) {
 		case WW3D_FORMAT_DXT1: format=WW3D_FORMAT_R8G8B8; break;
 		case WW3D_FORMAT_DXT2:
@@ -377,11 +377,11 @@ WW3DFormat Get_Valid_Texture_Format(WW3DFormat format, bool is_compression_allow
 #ifdef OG
 			if (!DX8Caps::Support_Texture_Format(WW3D_FORMAT_DXT1) && DX8Caps::Support_Texture_Format(WW3D_FORMAT_DXT2)) {
 
-#endif
+#endif // OG
 #ifdef ZH
 			if (!DX8Wrapper::Get_Current_Caps()->Support_Texture_Format(WW3D_FORMAT_DXT1) && 
 				DX8Wrapper::Get_Current_Caps()->Support_Texture_Format(WW3D_FORMAT_DXT2)) {
-#endif
+#endif // ZH
 				format=WW3D_FORMAT_DXT2;
 			}
 			break;
@@ -391,10 +391,10 @@ WW3DFormat Get_Valid_Texture_Format(WW3DFormat format, bool is_compression_allow
 		case WW3D_FORMAT_DXT5:
 #ifdef OG
 			if (!DX8Caps::Support_Texture_Format(format)) format=WW3D_FORMAT_A8R8G8B8;
-#endif
+#endif // OG
 #ifdef ZH
 			if (!DX8Wrapper::Get_Current_Caps()->Support_Texture_Format(format)) format=WW3D_FORMAT_A8R8G8B8;
-#endif
+#endif // ZH
 			break;
 		}
 	}
@@ -407,7 +407,7 @@ WW3DFormat Get_Valid_Texture_Format(WW3DFormat format, bool is_compression_allow
 #ifdef ZH
 	if (WW3D::Get_Texture_Bitdepth()==16) bits=16;
 
-#endif
+#endif // ZH
 	// if the device bitdepth is 16, don't allow 32 bit textures
 	if (bits<=16) {
 		switch (format) {
@@ -430,42 +430,42 @@ WW3DFormat Get_Valid_Texture_Format(WW3DFormat format, bool is_compression_allow
 	// Fallback if the hardware doesn't support the texture format
 #ifdef OG
 	if (!DX8Caps::Support_Texture_Format(format)) {
-#endif
+#endif // OG
 #ifdef ZH
 	if (!DX8Wrapper::Get_Current_Caps()->Support_Texture_Format(format)) {
-#endif
+#endif // ZH
 		format=WW3D_FORMAT_A8R8G8B8;
 #ifdef OG
 		if (!DX8Caps::Support_Texture_Format(format)) {
-#endif
+#endif // OG
 #ifdef ZH
 		if (!DX8Wrapper::Get_Current_Caps()->Support_Texture_Format(format)) {
-#endif
+#endif // ZH
 			format=WW3D_FORMAT_A4R4G4B4;
 #ifdef OG
 			if (!DX8Caps::Support_Texture_Format(format)) {
-#endif
+#endif // OG
 #ifdef ZH
 			if (!DX8Wrapper::Get_Current_Caps()->Support_Texture_Format(format)) {
-#endif
+#endif // ZH
 				// If still no luck, try non-alpha formats
 #ifdef OG
 				format=WW3D_FORMAT_A8R8G8B8;
 				if (!DX8Caps::Support_Texture_Format(format)) {
 
-#endif
+#endif // OG
 #ifdef ZH
 
 				format=WW3D_FORMAT_X8R8G8B8;
 				if (!DX8Wrapper::Get_Current_Caps()->Support_Texture_Format(format)) {
-#endif
+#endif // ZH
 					format=WW3D_FORMAT_R5G6B5;
 #ifdef OG
 					if (!DX8Caps::Support_Texture_Format(format)) {
-#endif
+#endif // OG
 #ifdef ZH
 					if (!DX8Wrapper::Get_Current_Caps()->Support_Texture_Format(format)) {
-#endif
+#endif // ZH
 						WWASSERT_PRINT(0,("No valid texture format found"));
 					}
 				}
@@ -482,25 +482,25 @@ unsigned Get_Bytes_Per_Pixel(WW3DFormat format)
 	case WW3D_FORMAT_X8R8G8B8:
 #ifdef ZH
 	case WW3D_FORMAT_X8L8V8U8:
-#endif
+#endif // ZH
 	case WW3D_FORMAT_A8R8G8B8: return 4;
 	case WW3D_FORMAT_R8G8B8: return 3;
 #ifdef ZH
 	case WW3D_FORMAT_A1R5G5B5:
-#endif
+#endif // ZH
 	case WW3D_FORMAT_A4R4G4B4:
 #ifdef OG
 	case WW3D_FORMAT_A1R5G5B5:
 
-#endif
+#endif // OG
 #ifdef ZH
 	case WW3D_FORMAT_U8V8:
 	case WW3D_FORMAT_L6V5U5:
-#endif
+#endif // ZH
 	case WW3D_FORMAT_R5G6B5: return 2;
 #ifdef ZH
 	case WW3D_FORMAT_R3G3B2:
-#endif
+#endif // ZH
 	case WW3D_FORMAT_L8:
 	case WW3D_FORMAT_A8:
 	case WW3D_FORMAT_P8: return 1;
@@ -551,4 +551,4 @@ unsigned Get_Num_Stencil_Bits(WW3DZFormat zformat)
 	};
 	return 0;
 };
-#endif
+#endif // ZH

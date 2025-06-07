@@ -34,7 +34,7 @@
 #include "GameLogic/Module/StealthUpgrade.h"
 #ifdef ZH
 #include "GameLogic/Module/SpawnBehavior.h"
-#endif
+#endif // ZH
 #include "GameLogic/Object.h"
 
 //-------------------------------------------------------------------------------------------------
@@ -57,7 +57,7 @@ void StealthUpgrade::upgradeImplementation( )
 #ifdef OG
 	me->setStatus( OBJECT_STATUS_CAN_STEALTH );
 
-#endif
+#endif // OG
 #ifdef ZH
 	me->setStatus( MAKE_OBJECT_STATUS_MASK( OBJECT_STATUS_CAN_STEALTH ) );
 	
@@ -70,7 +70,7 @@ void StealthUpgrade::upgradeImplementation( )
 			sbInterface->giveSlavesStealthUpgrade( TRUE );
 		}
 	}
-#endif
+#endif // ZH
 }
 
 // ------------------------------------------------------------------------------------------------

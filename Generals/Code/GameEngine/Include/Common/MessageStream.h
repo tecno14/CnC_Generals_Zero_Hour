@@ -227,7 +227,7 @@ public:
 		MSG_META_SELECT_ALL,                        ///< selects all units across screen
 #ifdef ZH
 		MSG_META_SELECT_ALL_AIRCRAFT,								///< selects all air units just like select all
-#endif
+#endif // ZH
 		MSG_META_SCATTER,														///< selected units scatter
 		MSG_META_STOP,															///< selected units stop
 		MSG_META_DEPLOY,														///< selected units 'deploy'
@@ -274,7 +274,7 @@ public:
 		MSG_META_TOGGLE_FAST_FORWARD_REPLAY,	      ///< Toggle the fast forward feature
 		MSG_META_DEMO_INSTANT_QUIT,									///< bail out of game immediately
 
-#endif
+#endif // ZH
 
 #ifdef ZH
 #if defined(_ALLOW_DEBUG_CHEATS_IN_RELEASE)//may be defined in GameCommon.h
@@ -301,7 +301,7 @@ public:
 
 #endif
 
-#endif
+#endif // ZH
 		// META items that are really for debug/demo/development use only...
 		// They do not get built into RELEASE builds.
 #if defined(_DEBUG) || defined(_INTERNAL)
@@ -314,7 +314,7 @@ public:
 		MSG_META_DEMO_PLAY_CAMEO_MOVIE,							///< Play a movie in the cameo spot
 #ifdef OG
 		MSG_META_DEMO_INSTANT_QUIT,									///< bail out of game immediately
-#endif
+#endif // OG
 		MSG_META_DEMO_TOGGLE_SPECIAL_POWER_DELAYS,	///< Toggle special power delays on/off
 		MSG_META_DEMO_BATTLE_CRY,										///< battle cry
 		MSG_META_DEMO_SWITCH_TEAMS,									///< switch local control to another team
@@ -364,14 +364,14 @@ public:
 		MSG_META_DEBUG_SHOW_EXTENTS,								///< show object extents
 #ifdef ZH
     MSG_META_DEBUG_SHOW_AUDIO_LOCATIONS,	  		///< show audio objects and radii
-#endif
+#endif // ZH
 		MSG_META_DEBUG_SHOW_HEALTH,									///< show object health
 		MSG_META_DEBUG_GIVE_VETERANCY,							///< give a veterancy level to selected objects
 		MSG_META_DEBUG_TAKE_VETERANCY,							///< take a veterancy level from selected objects
 		MSG_META_DEMO_TOGGLE_AI_DEBUG,							///< show/hide the ai debug stats
 #ifdef ZH
 		MSG_META_DEMO_TOGGLE_SUPPLY_CENTER_PLACEMENT, ///<start/stop dumping to file all thoughts about placing SupplyCenters
-#endif
+#endif // ZH
 		MSG_META_DEMO_TOGGLE_CAMERA_DEBUG,					///< show/hide the camera debug stats
 		MSG_META_DEMO_TOGGLE_AVI,										///< start capturing video
 		MSG_META_DEMO_TOGGLE_BW_VIEW,								///< enable/disable black & white camera mode
@@ -426,7 +426,7 @@ public:
 		MSG_META_DEBUG_OBJECT_ID_PERFORMANCE,				///< Run a mess of ObjectID lookups to see performance
 		MSG_META_DEBUG_DRAWABLE_ID_PERFORMANCE,			///< Run a mess of DrawableID lookups to see performance
 		MSG_META_DEBUG_SLEEPY_UPDATE_PERFORMANCE,		///< Peek at the size of the sleepy update vector
-#endif
+#endif // ZH
 
 		MSG_META_DEBUG_WIN,													///< Instant Win
 		MSG_META_DEMO_TOGGLE_DEBUG_STATS,						///< show/hide the debug stats
@@ -435,17 +435,17 @@ public:
 
 #ifdef OG
 #if defined(_INTERNAL) || defined(_DEBUG) || defined(_PLAYTEST)
-#endif
+#endif // OG
 #ifdef ZH
 #if defined(_INTERNAL) || defined(_DEBUG)
-#endif
+#endif // ZH
 		MSG_META_DEMO_TOGGLE_AUDIODEBUG,						///< show/hide the audio debug info
 #ifdef OG
 #endif//defined(_INTERNAL) || defined(_DEBUG) || defined(_PLAYTEST)
-#endif
+#endif // OG
 #ifdef ZH
 #endif//defined(_INTERNAL) || defined(_DEBUG)
-#endif
+#endif // ZH
 #ifdef DUMP_PERF_STATS
 		MSG_META_DEMO_PERFORM_STATISTICAL_DUMP,			///< dump performance stats for this frame to StatisticsDump.txt
 #endif//DUMP_PERF_STATS
@@ -479,7 +479,7 @@ public:
 		MSG_HIJACK_HINT,								///< if clicked, selected unit(s) will attempt to take over vehicle.
 #ifdef ZH
 		MSG_SABOTAGE_HINT,
-#endif
+#endif // ZH
 		MSG_FIREBOMB_HINT,								///< throw a molotov cocktail
 		MSG_CONVERT_TO_CARBOMB_HINT,								///< if clicked, selected unit(s) will attempt to convert clicked object into a carbomb.
 		MSG_CAPTUREBUILDING_HINT,
@@ -620,16 +620,16 @@ public:
 		MSG_SET_MINE_CLEARING_DETAIL,								///< CRC from the logic passed around in a network game :)
 #ifdef ZH
 		MSG_ENABLE_RETALIATION_MODE,								///< Turn retaliation mode on or off for the specified player.
-#endif
+#endif // ZH
 
 		MSG_BEGIN_DEBUG_NETWORK_MESSAGES = 1900,		///< network messages that exist only in debug/internal builds. all grouped separately.
 
 #ifdef OG
 #if defined(_DEBUG) || defined(_INTERNAL)
-#endif
+#endif // OG
 #ifdef ZH
 #if defined(_DEBUG) || defined(_INTERNAL) || defined(_ALLOW_DEBUG_CHEATS_IN_RELEASE)
-#endif
+#endif // ZH
 		// all debug/internal-only messages must go here.
 		MSG_DEBUG_KILL_SELECTION,
 		MSG_DEBUG_HURT_OBJECT,

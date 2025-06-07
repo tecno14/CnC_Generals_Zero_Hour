@@ -28,24 +28,24 @@
  *                                                                                             *
 #ifdef OG
  *                      $Author:: Jani_p                                                      $*
-#endif
+#endif // OG
 #ifdef ZH
  *                      $Author:: Greg_h                                                      $*
-#endif
+#endif // ZH
  *                                                                                             *
 #ifdef OG
  *                     $Modtime:: 7/10/01 7:47p                                               $*
-#endif
+#endif // OG
 #ifdef ZH
  *                     $Modtime:: 1/18/02 3:08p                                               $*
-#endif
+#endif // ZH
  *                                                                                             *
 #ifdef OG
  *                    $Revision:: 12                                                          $*
-#endif
+#endif // OG
 #ifdef ZH
  *                    $Revision:: 14                                                          $*
-#endif
+#endif // ZH
  *                                                                                             *
  *---------------------------------------------------------------------------------------------*
  * Functions:                                                                                  *
@@ -69,7 +69,7 @@ class UVBufferClass;
 class TextureClass;
 #ifdef ZH
 class MeshModelClass;
-#endif
+#endif // ZH
 
 /**
 ** MeshMatDescClass - This class encapsulates all of the material description data for a mesh.
@@ -123,7 +123,7 @@ public:
 	Vector2 *					Get_UV_Array_By_Index(int index, bool create = true);
 #ifdef OG
 //	Vector3i *					Get_UVIndex_Array (int pass = 0, bool create = true);
-#endif
+#endif // OG
 	
 	unsigned*					Get_DCG_Array(int pass);
 	unsigned*					Get_DIG_Array(int pass);
@@ -168,7 +168,7 @@ public:
 	bool							Has_UV(int pass,int stage)					{ return UVSource[pass][stage] != -1; }
 #ifdef OG
 //	bool							Has_UVIndex(int pass)						{ return UVIndex[pass] != NULL; }
-#endif
+#endif // OG
 	bool							Has_Color_Array(int array)					{ return ColorArray[array] != NULL; }
 	
 	bool							Has_Texture_Data(int pass,int stage)	{ return (Texture[pass][stage] != NULL) || (TextureArray[pass][stage] != NULL); }
@@ -204,10 +204,10 @@ public:
 	*/
 #ifdef OG
 	void							Post_Load_Process(bool enable_lighting = true);
-#endif
+#endif // OG
 #ifdef ZH
 	void							Post_Load_Process(bool enable_lighting = true,MeshModelClass * parent = NULL);
-#endif
+#endif // ZH
 	void							Disable_Lighting(void);
 
 	/*
@@ -223,7 +223,7 @@ protected:
 	void							Disable_Backface_Culling(void);
 #ifdef ZH
 	void							Delete_Pass(int pass);
-#endif
+#endif // ZH
 
 	int													PassCount;
 	int													VertexCount;
@@ -234,7 +234,7 @@ protected:
 	int													UVSource[MAX_PASSES][MAX_TEX_STAGES];
 #ifdef OG
 //	ShareBufferClass<Vector3i> *					UVIndex[MAX_PASSES];
-#endif
+#endif // OG
 
 	// vertex color arrays, we support two arrays: each can only be used on the 
 	// first pass.
@@ -264,13 +264,13 @@ protected:
 ** and the textures (one uses our ref-counting system, the other uses surrender's).  So, here are
 ** two quick and dirty ref-counted arrays of ref-counted pointers...  Get and Peek work like normal, and
 ** all non-NULL pointers will be released when the buffer is destroyed.
-#endif
+#endif // OG
 #ifdef ZH
 ** This is a ShareBufferClass of pointers to vertex materials.  Should be written as a template...
 ** Get and Peek work like normal, and all non-NULL pointers will be released when the buffer 
 ** is destroyed.
 
-#endif
+#endif // ZH
 */
 class MatBufferClass : public ShareBufferClass < VertexMaterialClass * >
 {
@@ -294,10 +294,10 @@ private:
 ** This is a ShareBufferClass of pointers to textures.  Works just like MatBufferClass but with 
 #ifdef OG
 ** srTextureIFace's...
-#endif
+#endif // OG
 #ifdef ZH
 ** TextureClass's...
-#endif
+#endif // ZH
 */
 class TexBufferClass : public ShareBufferClass < TextureClass * >
 {
@@ -412,7 +412,7 @@ inline Vector3i * MeshMatDescClass::Get_UVIndex_Array (int pass, bool create)
 	return NULL;
 }
 */
-#endif
+#endif // OG
 inline unsigned* MeshMatDescClass::Get_DCG_Array(int pass)
 {
 	WWASSERT(pass >= 0);

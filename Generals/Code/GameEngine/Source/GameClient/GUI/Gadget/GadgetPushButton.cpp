@@ -60,7 +60,7 @@
 //#pragma optimize("", off)
 //#pragma MESSAGE("************************************** WARNING, optimization disabled for debugging purposes")
 #endif
-#endif
+#endif // ZH
 // DEFINES ////////////////////////////////////////////////////////////////////
 
 // PRIVATE TYPES //////////////////////////////////////////////////////////////
@@ -86,7 +86,7 @@ static Bool buttonTriggersOnMouseDown(GameWindow *window)
 	return onDown;
 }
 
-#endif
+#endif // ZH
 // GadgetPushButtonInput ======================================================
 /** Handle input for push button */
 //=============================================================================
@@ -195,7 +195,7 @@ WindowMsgHandledType GadgetPushButtonInput( GameWindow *window,
 #ifdef OG
 				TheWindowManager->winSendSystemMsg( instData->getOwner(), GBM_SELECTED,
 																						(WindowMsgData)window, mData1 );
-#endif
+#endif // OG
 
 			}  // end if
 			else
@@ -212,7 +212,7 @@ WindowMsgHandledType GadgetPushButtonInput( GameWindow *window,
 																						(WindowMsgData)window, mData1 );
 			}
 
-#endif
+#endif // ZH
 			break;
 		}  // end left down
 
@@ -231,12 +231,12 @@ WindowMsgHandledType GadgetPushButtonInput( GameWindow *window,
 #ifdef ZH
 				if (!buttonTriggersOnMouseDown(window)) {
 					// If it didn't trigger on mouse down, trigger on the mouse up. jba  [8/6/2003]
-#endif
+#endif // ZH
 				TheWindowManager->winSendSystemMsg( instData->getOwner(), GBM_SELECTED,
 																						(WindowMsgData)window, mData1 );
 #ifdef ZH
 				}
-#endif
+#endif // ZH
 
 				BitClear( instData->m_state, WIN_STATE_SELECTED );
 

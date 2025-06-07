@@ -25,33 +25,33 @@
 #ifdef OG
  *                     $Archive:: /VSS_Sync/ww3d2/rendobj.h                                   $*
 
-#endif
+#endif // OG
 #ifdef ZH
  *                     $Archive:: /Commando/Code/ww3d2/rendobj.h                              $*
  *                                                                                             *
  *                   Org Author:: Greg Hjelstrom                                               *
-#endif
+#endif // ZH
  *                                                                                             *
 #ifdef OG
  *                       Author:: Greg Hjelstrom                                               *
-#endif
+#endif // OG
 #ifdef ZH
  *                       Author : Kenny Mitchell                                               * 
-#endif
+#endif // ZH
  *                                                                                             *
 #ifdef OG
  *                     $Modtime:: 8/29/01 7:29p                                               $*
-#endif
+#endif // OG
 #ifdef ZH
  *                     $Modtime:: 06/27/02 9:23a                                              $*
-#endif
+#endif // ZH
  *                                                                                             *
  *                    $Revision:: 14                                                          $*
  *                                                                                             *
 #ifdef ZH
  * 06/27/02 KM Shader system classid addition                                       *
  * 07/01/02 KM Coltype enum change to avoid MAX conflicts									   *
-#endif
+#endif // ZH
  *---------------------------------------------------------------------------------------------*
  * Functions:                                                                                  *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
@@ -188,7 +188,7 @@ private:
 };
 
 // RenderObjClass definition
-#endif
+#endif // ZH
 class RenderObjClass : public RefCountClass , public PersistClass, public MultiListObjectClass
 {
 public:
@@ -254,7 +254,7 @@ public:
 		CLASSID_LAND,
 #ifdef ZH
 		CLASSID_SHDMESH,				// mesh class that uses the scaleable shader system
-#endif
+#endif // ZH
 		CLASSID_LAST		= 0x0000FFFF
 	};
 
@@ -263,10 +263,10 @@ public:
 	RenderObjClass & RenderObjClass::operator = (const RenderObjClass &);
 #ifdef OG
 	virtual ~RenderObjClass(void)																					{ }
-#endif
+#endif // OG
 #ifdef ZH
 	virtual ~RenderObjClass(void)																					{ if (RenderHook) delete RenderHook; }
-#endif
+#endif // ZH
 
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -347,7 +347,7 @@ public:
 	virtual int						Add_Sub_Object_To_Bone(RenderObjClass * subobj,const char * bname);
 #ifdef ZH
 	virtual int						Remove_Sub_Objects_From_Bone(int boneindex);
-#endif
+#endif // ZH
 	virtual int						Remove_Sub_Objects_From_Bone(const char * bname);
 
 	// This is public only so objects can recursively call this on their sub-objects
@@ -482,10 +482,10 @@ public:
 	virtual void					Scale(float scalex, float scaley, float scalez)						{ };
 #ifdef OG
  	virtual void					Set_ObjectScale(float scale) { ObjectScale=scale;}	//set's a scale factor that's factored into transform matrix.
-#endif
+#endif // OG
 #ifdef ZH
  	virtual void					Set_ObjectScale(float scale) { ObjectScale=scale;}	//set's a scale factor that's factored into transform matrix.									{ScaleFactor=scale; };
-#endif
+#endif // ZH
 	const float						Get_ObjectScale( void ) const { return ObjectScale; };
  	void							Set_ObjectColor(unsigned int color) { ObjectColor=color;}	//the color that was used to modify the asset for player team color (for Generals). -MW
 	const unsigned int				Get_ObjectColor( void ) const { return ObjectColor; };
@@ -503,7 +503,7 @@ public:
   //	virtual int						Is_VisibleWithCheatSpy(void) const								{ return ((Bits&=~0x80) & (IS_VISIBLE); }
 //	virtual void					Set_VisibleWithCheatSpy(int onoff)								{ if (onoff) { Bits |= IS_VISIBLE|0x80; } else { Bits &= ~IS_VISIBLE; } }
 
-#endif
+#endif // ZH
 	virtual int						Is_Hidden(void) const														{ return !(Bits & IS_NOT_HIDDEN); }
 	virtual void					Set_Hidden(int onoff)														{ if (onoff) { Bits &= ~IS_NOT_HIDDEN; } else { Bits |= IS_NOT_HIDDEN; } }
 	virtual int						Is_Animation_Hidden(void) const											{ return !(Bits & IS_NOT_ANIMATION_HIDDEN); }
@@ -521,12 +521,12 @@ public:
 
 	virtual int						Get_Collision_Type(void) const											{ return (Bits & COLLISION_TYPE_MASK); }
 	virtual void					Set_Collision_Type(int type)												{ Bits &= ~COLLISION_TYPE_MASK; Bits |= (type & COLLISION_TYPE_MASK) | COLLISION_TYPE_ALL; }
-#endif
+#endif // OG
 #ifdef ZH
 	virtual int						Get_Collision_Type(void) const											{ return (Bits & COLL_TYPE_MASK); }
 	virtual void					Set_Collision_Type(int type)												{ Bits &= ~COLL_TYPE_MASK; Bits |= (type & COLL_TYPE_MASK) | COLL_TYPE_ALL; }
 
-#endif
+#endif // ZH
    virtual bool					Is_Complete(void)																{ return false; }
 	virtual bool					Is_In_Scene(void)																{ return Scene != NULL; }
 	virtual float					Get_Native_Screen_Size(void) const										{ return NativeScreenSize; }
@@ -545,7 +545,7 @@ public:
 	void								Set_Is_Self_Shadowed()														{ Bits|=IS_SELF_SHADOWED; }
 	void								Unset_Is_Self_Shadowed()													{ Bits&=~IS_SELF_SHADOWED; }
 	int								Is_Self_Shadowed() const													{ return (Bits&IS_SELF_SHADOWED); }
-#endif
+#endif // ZH
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	// Persistant object save-load interface
@@ -558,7 +558,7 @@ public:
 	// Application-specific render hook:
 	RenderHookClass *				Get_Render_Hook(void) { return RenderHook; }
 	void								Set_Render_Hook(RenderHookClass *hook) { if (RenderHook) delete RenderHook; RenderHook = hook; }
-#endif
+#endif // ZH
 
 protected:
 
@@ -575,10 +575,10 @@ protected:
 	{
 #ifdef OG
 		COLLISION_TYPE_MASK =		0x000000FF,
-#endif
+#endif // OG
 #ifdef ZH
 		COLL_TYPE_MASK =		0x000000FF, 
-#endif
+#endif // ZH
 
 		IS_VISIBLE =					0x00000100,
 		IS_NOT_HIDDEN =				0x00000200,
@@ -588,10 +588,10 @@ protected:
 		IS_TRANSLUCENT =				0x00004000,			// is additive or alpha blended on any poly
 #ifdef OG
 		//IS_VERTEX_PROCESSOR =		0x00008000,			// is or has a vertex processor, OBSOLETE!
-#endif
+#endif // OG
 #ifdef ZH
 		IGNORE_LOD_COST =				0x00008000,			// used to define if we should ignore object from LOD calculations
-#endif
+#endif // ZH
 		SUBOBJS_MATCH_LOD =			0x00010000,			// force sub-objects to have same LOD level
 		SUBOBJ_TRANSFORMS_DIRTY =	0x00020000,			// my sub-objects need me to update their transform
 		IS_ALPHA = 0x00040000,	// added for Generals so we can default these meshes not to cast shadows. -MW
@@ -599,20 +599,20 @@ protected:
 		IS_ADDITIVE = 0x00080000,	//added for Generals so we quickly determine what type of blending is on the mesh. -MW
 		
 
-#endif
+#endif // OG
 #ifdef ZH
 		IS_ADDITIVE = 0x00100000,	//added for Generals so we quickly determine what type of blending is on the mesh. -MW
 		IS_SELF_SHADOWED =			0x00080000,			// the mesh is self shadowed
 		IS_CHEATER =            0x00100000,// the new cheat spy code uses these bits, since nothing else now does
-#endif
+#endif // ZH
 		IS_REALLY_VISIBLE =			IS_VISIBLE | IS_NOT_HIDDEN | IS_NOT_ANIMATION_HIDDEN,
       IS_NOT_HIDDEN_AT_ALL =     IS_NOT_HIDDEN | IS_NOT_ANIMATION_HIDDEN,
 #ifdef OG
 		DEFAULT_BITS =					COLLISION_TYPE_ALL | IS_NOT_HIDDEN | IS_NOT_ANIMATION_HIDDEN,
-#endif
+#endif // OG
 #ifdef ZH
 		DEFAULT_BITS =					COLL_TYPE_ALL | IS_NOT_HIDDEN | IS_NOT_ANIMATION_HIDDEN,
-#endif
+#endif // ZH
 	};
 
 	mutable unsigned long		Bits;
@@ -630,7 +630,7 @@ protected:
 #ifdef ZH
 
 	RenderHookClass *				RenderHook;
-#endif
+#endif // ZH
 	
 	friend class SceneClass;
 	friend class RenderObjProxyClass;

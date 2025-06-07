@@ -984,4 +984,4 @@ void BufferIOFileClass::Close(void)
 }
 
 
-#endif
+#endif // ZH

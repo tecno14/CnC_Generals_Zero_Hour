@@ -26,33 +26,33 @@
  *                                                                                             *
 #ifdef OG
  *                       Author:: Greg Hjelstrom                                               *
-#endif
+#endif // OG
 #ifdef ZH
  *                   Org Author:: Greg Hjelstrom                                               *
-#endif
+#endif // ZH
  *                                                                                             *
 #ifdef OG
  *                     $Modtime:: 6/14/01 9:42a                                               $*
-#endif
+#endif // OG
 #ifdef ZH
  *                       Author:: Kenny Mitchell                                               *
-#endif
+#endif // ZH
  *                                                                                             *
 #ifdef OG
  *                    $Revision:: 3                                                           $*
-#endif
+#endif // OG
 #ifdef ZH
  *                     $Modtime:: 6/26/02 2:58p                                               $*
-#endif
+#endif // ZH
  *                                                                                             *
 #ifdef ZH
  *                    $Revision:: 4                                                           $*
  *                                                                                             *
-#endif
+#endif // ZH
  *---------------------------------------------------------------------------------------------*
 #ifdef ZH
  * 06/26/02 KM Integrating shader system
-#endif
+#endif // ZH
  * Functions:                                                                                  *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
@@ -120,7 +120,7 @@ public:
 	// Uniformly scale the AABTree
 	void						Scale(float scale);
 
-#endif
+#endif // ZH
 	int						Get_Node_Count(void) { return NodeCount; }
 	int						Get_Poly_Count(void) { return PolyCount; }
 	int						Compute_Ram_Size(void);
@@ -137,7 +137,7 @@ public:
 #ifdef ZH
 	void						Set_Mesh(MeshGeometryClass * mesh);
 
-#endif
+#endif // ZH
 private:
 	
 	AABTreeClass &			operator = (const AABTreeClass & that);
@@ -149,7 +149,7 @@ private:
 	void						Reset(void);
 #ifdef OG
 	void						Set_Mesh(MeshGeometryClass * mesh);
-#endif
+#endif // OG
 	void						Update_Bounding_Boxes(void);
 	void						Update_Min_Max(int index,Vector3 & min,Vector3 & max);
 

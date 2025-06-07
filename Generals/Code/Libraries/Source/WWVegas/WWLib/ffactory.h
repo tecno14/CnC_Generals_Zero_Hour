@@ -26,24 +26,24 @@
  *                                                                                             * 
 #ifdef OG
  *                      $Author:: Jani_p                                                      $*
-#endif
+#endif // OG
 #ifdef ZH
  *                      $Author:: Steve_t                                                     $*
-#endif
+#endif // ZH
  *                                                                                             * 
 #ifdef OG
  *                     $Modtime:: 8/24/01 11:50a                                              $*
-#endif
+#endif // OG
 #ifdef ZH
  *                     $Modtime:: 9/07/01 5:30p                                               $*
-#endif
+#endif // ZH
  *                                                                                             * 
 #ifdef OG
  *                    $Revision:: 13                                                          $*
-#endif
+#endif // OG
 #ifdef ZH
  *                    $Revision:: 14                                                          $*
-#endif
+#endif // ZH
  *                                                                                             *
  *---------------------------------------------------------------------------------------------* 
  * Functions:                                                                                  * 
@@ -79,7 +79,7 @@ class	FileFactoryClass {
 public:
 #ifdef ZH
 	virtual ~FileFactoryClass(void){};
-#endif
+#endif // ZH
 	virtual FileClass * Get_File( char const *filename ) = 0;
 	virtual void Return_File( FileClass *file ) = 0;
 };
@@ -161,7 +161,7 @@ public:
 	void						Set_Strip_Path( bool set )									{ IsStripPath = set; }
 #ifdef ZH
 	void						Reset_Sub_Directory( void )								{ SubDirectory = ""; }
-#endif
+#endif // ZH
 
 protected:
 	StringClass				SubDirectory;
@@ -179,10 +179,10 @@ extern RawFileFactoryClass	*	_TheWritingFileFactory;
 #ifdef OG
 //extern SimpleFileFactoryClass	*	_TheSimpleFileFactory;
 
-#endif
+#endif // OG
 #ifdef ZH
 // (gth) re-enabling this because w3d view uses it
 extern SimpleFileFactoryClass	*	_TheSimpleFileFactory;
-#endif
+#endif // ZH
 
 #endif

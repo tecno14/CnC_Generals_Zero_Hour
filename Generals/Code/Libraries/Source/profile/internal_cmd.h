@@ -61,4 +61,4 @@ public:
 
 #endif // INTERNAL_CMD_H
 
-#endif
+#endif // ZH

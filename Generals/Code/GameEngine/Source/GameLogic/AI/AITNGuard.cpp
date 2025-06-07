@@ -582,7 +582,7 @@ StateReturnType AITNGuardReturnState::onEnter( void )
 			return STATE_FAILURE; // Fail to return goes to inner attack state.	
 		}
 	}
-#endif
+#endif // ZH
 // no, no, no, don't do this in onEnter, unless you like really slow maps. (srj)
 //	if (getGuardMachine()->lookForInnerTarget()) 
 //		return STATE_FAILURE; // early termination because we found a target.

@@ -77,7 +77,7 @@ public:
 	UnicodeString m_displayName;
 #ifdef ZH
 	AsciiString m_nameLookupTag;
-#endif
+#endif // ZH
 	Region3D m_extent;
 	Int m_numPlayers;
 	Bool m_isMultiplayer;
@@ -134,7 +134,7 @@ AsciiString getDefaultMap( Bool isMultiplayer );											/// Find a valid map
 #ifdef ZH
 AsciiString getDefaultOfficialMap();
 Bool isOfficialMap( AsciiString mapName );
-#endif
+#endif // ZH
 Bool parseMapPreviewChunk(DataChunkInput &file, DataChunkInfo *info, void *userData);
 void findDrawPositions( Int startX, Int startY, Int width, Int height, Region3D extent,
 															 ICoord2D *ul, ICoord2D *lr );

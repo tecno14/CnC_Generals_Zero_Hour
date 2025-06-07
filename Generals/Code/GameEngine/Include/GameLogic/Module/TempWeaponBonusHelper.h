@@ -72,4 +72,4 @@ protected:
 
 #endif  // end __TempWeaponBonusHelper_H_
 
-#endif
+#endif // ZH

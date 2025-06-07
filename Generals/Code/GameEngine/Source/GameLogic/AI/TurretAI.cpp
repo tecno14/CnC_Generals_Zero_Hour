@@ -468,7 +468,7 @@ Bool TurretAI::isWeaponSlotOkToFire(WeaponSlotType wslot) const
   if( getOwner()->getAI()->areTurretsLinked() )
     return TRUE;
 
-#endif
+#endif // ZH
 	return isWeaponSlotOnTurret(wslot);
 }
 
@@ -523,10 +523,10 @@ Bool TurretAI::isWeaponSlotOnTurret(WeaponSlotType wslot) const
 //----------------------------------------------------------------------------------------------------------
 #ifdef OG
 TurretTargetType TurretAI::friend_getTurretTarget(Object*& obj, Coord3D& pos) const
-#endif
+#endif // OG
 #ifdef ZH
 TurretTargetType TurretAI::friend_getTurretTarget( Object*& obj, Coord3D& pos, Bool clearDeadTargets ) const
-#endif
+#endif // ZH
 {
 	obj = NULL;
 	pos.zero();
@@ -539,7 +539,7 @@ TurretTargetType TurretAI::friend_getTurretTarget( Object*& obj, Coord3D& pos, B
 #ifdef ZH
 		if( clearDeadTargets )
 		{
-#endif
+#endif // ZH
 		if (obj == NULL || obj->isEffectivelyDead())
 		{
 			m_turretStateMachine->setGoalObject(NULL);
@@ -547,7 +547,7 @@ TurretTargetType TurretAI::friend_getTurretTarget( Object*& obj, Coord3D& pos, B
 			m_targetWasSetByIdleMood = false;
 #ifdef ZH
 			}
-#endif
+#endif // ZH
 		}
 	}
 	else if (m_target == TARGET_POSITION)
@@ -585,17 +585,17 @@ void TurretAI::setTurretTargetObject( Object *victim, Bool forceAttacking )
 	if (!victim || 
 				victim->isEffectivelyDead() ||
 				!isOwnersCurWeaponOnTurret())
-#endif
+#endif // OG
 #ifdef ZH
 	if( !victim || victim->isEffectivelyDead() ||	!isOwnersCurWeaponOnTurret() )
 	{
 		if( !getOwner()->getAI()->areTurretsLinked() )
-#endif
+#endif // ZH
 	{
 		victim = NULL;
 #ifdef ZH
 		}
-#endif
+#endif // ZH
 	}
 
 	if (victim == NULL)
@@ -637,11 +637,11 @@ void TurretAI::setTurretTargetPosition( const Coord3D* pos )
 #ifdef ZH
 		if( !getOwner()->getAI()->areTurretsLinked() )
 		{
-#endif
+#endif // ZH
 		pos = NULL;
 #ifdef ZH
 		}
-#endif
+#endif // ZH
 	}
 
 	// remove self as targeter before doing anything else.
@@ -687,7 +687,7 @@ Bool TurretAI::isTurretInNaturalPosition() const
   if( this->getOwner()->testStatus( OBJECT_STATUS_UNDER_CONSTRUCTION))
     return true;//ML so that under-construction base-defenses do not re-center while under construction
 
-#endif
+#endif // ZH
 	if( getNaturalTurretAngle() == getTurretAngle() && 
 			getNaturalTurretPitch() == getTurretPitch() )
 	{
@@ -1255,7 +1255,7 @@ StateReturnType TurretAIRecenterTurretState::update()
   if( getMachineOwner()->testStatus( OBJECT_STATUS_UNDER_CONSTRUCTION))
     return STATE_CONTINUE;//ML so that under-construction base-defenses do not re-center while under construction
 
-#endif
+#endif // ZH
 	TurretAI* turret = getTurretAI();
 	Bool angleAligned = turret->friend_turnTowardsAngle(turret->getNaturalTurretAngle(), 0.5f, 0.0f);
 	Bool pitchAligned = turret->friend_turnTowardsPitch(turret->getNaturalTurretPitch(), 0.5f);
@@ -1409,7 +1409,7 @@ StateReturnType TurretAIIdleScanState::update()
 
   if( getMachineOwner()->testStatus( OBJECT_STATUS_UNDER_CONSTRUCTION))
     return STATE_CONTINUE;//ML so that under-construction base-defenses do not idle-scan while under construction
-#endif
+#endif // ZH
 
 	Bool angleAligned = getTurretAI()->friend_turnTowardsAngle(getTurretAI()->getNaturalTurretAngle() + m_desiredAngle, 0.5f, 0.0f);
 	Bool pitchAligned = getTurretAI()->friend_turnTowardsPitch(getTurretAI()->getNaturalTurretPitch(), 0.5f);

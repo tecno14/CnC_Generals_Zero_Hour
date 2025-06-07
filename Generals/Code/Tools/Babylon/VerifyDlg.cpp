@@ -22,10 +22,10 @@
 #include "stdafx.h"
 #ifdef OG
 #include "noxstring.h"
-#endif
+#endif // OG
 #ifdef ZH
 #include "Babylon.h"
-#endif
+#endif // ZH
 #include "VerifyDlg.h"
 
 #ifdef _DEBUG
@@ -42,10 +42,10 @@ static char THIS_FILE[] = __FILE__;
 
 #ifdef OG
 VerifyDlg::VerifyDlg( NoxText *ntext, LangID langid,  const char *path, CWnd* pParent /*=NULL*/)
-#endif
+#endif // OG
 #ifdef ZH
 VerifyDlg::VerifyDlg( BabylonText *ntext, LangID langid,  const char *path, CWnd* pParent /*=NULL*/)
-#endif
+#endif // ZH
 	: CDialog(VerifyDlg::IDD, pParent)
 {
 	//{{AFX_DATA_INIT(VerifyDlg)
@@ -54,10 +54,10 @@ VerifyDlg::VerifyDlg( BabylonText *ntext, LangID langid,  const char *path, CWnd
 
 #ifdef OG
 	nox_text = ntext;
-#endif
+#endif // OG
 #ifdef ZH
 	babylon_text = ntext;
-#endif
+#endif // ZH
 	linfo = GetLangInfo ( langid );
 	sprintf ( wavefile, "%s%s\\%s%s.wav", path, linfo->character, ntext->WaveSB(), linfo->character  );
 }
@@ -109,27 +109,27 @@ BOOL VerifyDlg::OnInitDialog()
 	wave->SetWindowText ( wavefile );
 #ifdef OG
 	SetDlgItemText ( IDC_TEXT_TITLE, (nox_text->Label()->NameSB()));
-#endif
+#endif // OG
 #ifdef ZH
 	SetDlgItemText ( IDC_TEXT_TITLE, (babylon_text->Label()->NameSB()));
-#endif
+#endif // ZH
 	if ( linfo->langid == LANGID_US )
 	{
 #ifdef OG
 		text->SetWindowText ( nox_text->GetSB ());
-#endif
+#endif // OG
 #ifdef ZH
 		text->SetWindowText ( babylon_text->GetSB ());
-#endif
+#endif // ZH
 	}
 	else
 	{
 #ifdef OG
 		Translation *trans = nox_text->GetTranslation ( linfo->langid );
-#endif
+#endif // OG
 #ifdef ZH
 		Translation *trans = babylon_text->GetTranslation ( linfo->langid );
-#endif
+#endif // ZH
 
 		if ( trans )
 		{

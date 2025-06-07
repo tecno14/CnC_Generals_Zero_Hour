@@ -97,7 +97,7 @@
 
 #define dont_ALLOW_ALT_F4
 
-#endif
+#endif // ZH
 #if defined(_DEBUG) || defined(_INTERNAL)
 /*non-static*/ Real TheSkateDistOverride = 0.0f;
 
@@ -192,12 +192,12 @@ static CanAttackResult canObjectForceAttack( Object *obj, const Object *victim, 
 #ifdef OG
 		if( result != ATTACKRESULT_POSSIBLE && result != ATTACKRESULT_POSSIBLE_AFTER_MOVING && obj->isKindOf( KINDOF_SPAWNS_ARE_THE_WEAPONS ) )
 
-#endif
+#endif // OG
 #ifdef ZH
     if ( obj->isKindOf( KINDOF_SPAWNS_ARE_THE_WEAPONS ) )
     {
       if( result != ATTACKRESULT_POSSIBLE && result != ATTACKRESULT_POSSIBLE_AFTER_MOVING )
-#endif
+#endif // ZH
 		{
 			SpawnBehaviorInterface *spawnInterface = obj->getSpawnBehaviorInterface();
 			if( spawnInterface )
@@ -221,12 +221,12 @@ static CanAttackResult canObjectForceAttack( Object *obj, const Object *victim, 
           {
             result = rider->getAbleToAttackSpecificObject( ATTACK_NEW_TARGET_FORCED, victim, CMD_FROM_PLAYER );
             if( result != ATTACKRESULT_NOT_POSSIBLE )
-#endif
+#endif // ZH
 		return result;
 #ifdef ZH
           }
         }
-#endif
+#endif // ZH
 	}
 #ifdef ZH
 
@@ -235,7 +235,7 @@ static CanAttackResult canObjectForceAttack( Object *obj, const Object *victim, 
 		
     return result;
 	}
-#endif
+#endif // ZH
 	else 
 	{
 		//Almost every combat unit can force attack a position. The exceptions include stationary units
@@ -255,7 +255,7 @@ static CanAttackResult canObjectForceAttack( Object *obj, const Object *victim, 
 #ifdef OG
 						testObj = obj;
 
-#endif
+#endif // OG
 #ifdef ZH
 						testObj = slave;
 					}
@@ -272,18 +272,18 @@ static CanAttackResult canObjectForceAttack( Object *obj, const Object *victim, 
               if ( rider )
                 testObj = rider;
             }
-#endif
+#endif // ZH
 					}
 				}
 			}
 #ifdef OG
 			//Now evaluate the testObj to see if it is capable of force attacking the pos.
 			result = testObj->getAbleToUseWeaponAgainstTarget( ATTACK_NEW_TARGET, victim, pos, CMD_FROM_PLAYER );
-#endif
+#endif // OG
 #ifdef ZH
 			//Now evaluate the testObj again to see if it is capable of force attacking the pos.
 			result = testObj->getAbleToUseWeaponAgainstTarget( ATTACK_NEW_TARGET, NULL, pos, CMD_FROM_PLAYER );
-#endif
+#endif // ZH
 			return result;
 		}
 	}
@@ -407,7 +407,7 @@ void pickAndPlayUnitVoiceResponse( const DrawableList *list, GameMessage::Type m
 #ifdef ZH
 				{
 					if( obj->getRelationship( target ) == ENEMIES )
-#endif
+#endif // ZH
 				{
 #ifdef ZH
 						//Saboteurs
@@ -415,11 +415,11 @@ void pickAndPlayUnitVoiceResponse( const DrawableList *list, GameMessage::Type m
 					}
 					else
 					{
-#endif
+#endif // ZH
 					soundToPlayPtr = templ->getPerUnitSound( "VoiceGarrison" );
 #ifdef ZH
 					}
-#endif
+#endif // ZH
 				}
 				// order matters: we want to know if I consider it to be an ally, not vice versa
 				else if( target && obj->getRelationship(target) != ALLIES )
@@ -492,7 +492,7 @@ void pickAndPlayUnitVoiceResponse( const DrawableList *list, GameMessage::Type m
 						if (obj->isKindOf(KINDOF_INFANTRY) && obj->isKindOf(KINDOF_DOZER) && obj->isKindOf(KINDOF_HARVESTER)) // Only Workers fit all 3 
 						{
 							soundToPlayPtr = templ->getPerUnitSound( "VoiceMoveUpgraded" );
-#endif
+#endif // ZH
 							objectWithSound = obj;
 							skip = true;
 						}
@@ -1119,7 +1119,7 @@ GameMessage::Type CommandTranslator::issueSpecialPowerCommand( const CommandButt
 			msg->appendLocationArgument( *pos );
 #ifdef ZH
 			msg->appendRealArgument( INVALID_ANGLE ); //We don't use the angle (unless we're using a construction special in PlaceEventTranslator).
-#endif
+#endif // ZH
 			//Object in way.... some specials care, others don't
 			ObjectID targetID = (target && target->getObject()) ? target->getObject()->getID() : INVALID_ID;
 			msg->appendObjectIDArgument( targetID );
@@ -1172,11 +1172,11 @@ GameMessage::Type CommandTranslator::issueSpecialPowerCommand( const CommandButt
 			// creating a new team so pass in true
 			teamMsg->appendBooleanArgument( TRUE );
 			teamMsg->appendObjectIDArgument( obj->getID() );
-#endif
+#endif // ZH
 		
 #ifdef ZH
 			TheInGameUI->selectDrawable( obj->getDrawable() );
-#endif
+#endif // ZH
 		}
 	}
 	
@@ -1475,12 +1475,12 @@ GameMessage::Type CommandTranslator::evaluateContextCommand( Drawable *draw,
 		(BitTest(obj->getStatusBits(), OBJECT_STATUS_MASKED) && 
 		!obj->isKindOf(KINDOF_SHRUBBERY) && !obj->isKindOf(KINDOF_FORCEATTACKABLE)) 
 	)
-#endif
+#endif // OG
 #ifdef ZH
 			obj->getStatusBits().test( OBJECT_STATUS_MASKED ) && 
 			!obj->isKindOf(KINDOF_SHRUBBERY) && !obj->isKindOf(KINDOF_FORCEATTACKABLE) ) 
 
-#endif
+#endif // ZH
 	{
 		//Nulling out the draw and obj pointer will force the remainder of this code to evaluate 
 		//a position interaction.
@@ -1521,10 +1521,10 @@ GameMessage::Type CommandTranslator::evaluateContextCommand( Drawable *draw,
 	if( TheInGameUI->areSelectedObjectsControllable() 
 #ifdef OG
 			|| (command && command->getCommandType() == GUI_COMMAND_SPECIAL_POWER_FROM_COMMAND_CENTER))
-#endif
+#endif // OG
 #ifdef ZH
 			|| (command && command->getCommandType() == GUI_COMMAND_SPECIAL_POWER_FROM_SHORTCUT))
-#endif
+#endif // ZH
 	{
 		GameMessage *hintMessage;
 
@@ -1554,10 +1554,10 @@ GameMessage::Type CommandTranslator::evaluateContextCommand( Drawable *draw,
 				|| command->getCommandType() == GUI_COMMAND_SPECIAL_POWER
 #ifdef OG
 				|| command->getCommandType() == GUI_COMMAND_SPECIAL_POWER_FROM_COMMAND_CENTER))
-#endif
+#endif // OG
 #ifdef ZH
 				|| command->getCommandType() == GUI_COMMAND_SPECIAL_POWER_FROM_SHORTCUT))
-#endif
+#endif // ZH
 		{
 			if( obj && obj->isKindOf( KINDOF_SHRUBBERY ) && !BitTest( command->getOptions(), ALLOW_SHRUBBERY_TARGET ) )
 			{
@@ -1626,7 +1626,7 @@ GameMessage::Type CommandTranslator::evaluateContextCommand( Drawable *draw,
 					break;
 				case GUICOMMANDMODE_SABOTAGE_BUILDING:
 					currentlyValid = TheInGameUI->canSelectedObjectsDoAction( InGameUI::ACTIONTYPE_SABOTAGE_BUILDING, obj, InGameUI::SELECTION_ANY );
-#endif
+#endif // ZH
 					break;
 #ifdef ALLOW_SURRENDER
 				case GUICOMMANDMODE_PICK_UP_PRISONER:
@@ -1635,21 +1635,21 @@ GameMessage::Type CommandTranslator::evaluateContextCommand( Drawable *draw,
 #endif
 #ifdef OG
 				case GUI_COMMAND_SPECIAL_POWER_FROM_COMMAND_CENTER:
-#endif
+#endif // OG
 #ifdef ZH
 				case GUI_COMMAND_SPECIAL_POWER_FROM_SHORTCUT:
-#endif
+#endif // ZH
 				{
 #ifdef OG
 					Object* cmdCenter = ThePlayerList->getLocalPlayer()->findNaturalCommandCenter();
 					if (cmdCenter)
 						currentlyValid = TheInGameUI->canSelectedObjectsDoSpecialPower( command, obj, pos, InGameUI::SELECTION_ANY, command->getOptions(), cmdCenter );
-#endif
+#endif // OG
 #ifdef ZH
 					Object* unit = ThePlayerList->getLocalPlayer()->findMostReadyShortcutSpecialPowerOfType( command->getSpecialPowerTemplate()->getSpecialPowerType() );
 					if( unit )
 						currentlyValid = TheInGameUI->canSelectedObjectsDoSpecialPower( command, obj, pos, InGameUI::SELECTION_ANY, command->getOptions(), unit );
-#endif
+#endif // ZH
 					else
 						currentlyValid = false;
 					break;
@@ -1675,7 +1675,7 @@ GameMessage::Type CommandTranslator::evaluateContextCommand( Drawable *draw,
 						case GUICOMMANDMODE_HIJACK_VEHICLE:
 #ifdef ZH
 						case GUICOMMANDMODE_SABOTAGE_BUILDING:
-#endif
+#endif // ZH
 							msgType = createEnterMessage( draw, type );
 							break;
 #ifdef ALLOW_SURRENDER
@@ -1685,21 +1685,21 @@ GameMessage::Type CommandTranslator::evaluateContextCommand( Drawable *draw,
 #endif
 #ifdef OG
 						case GUI_COMMAND_SPECIAL_POWER_FROM_COMMAND_CENTER:
-#endif
+#endif // OG
 #ifdef ZH
 						case GUI_COMMAND_SPECIAL_POWER_FROM_SHORTCUT:
-#endif
+#endif // ZH
 						{
 #ifdef OG
 							Object* cmdCenter = ThePlayerList->getLocalPlayer()->findNaturalCommandCenter();
 							if (cmdCenter)
 								msgType = issueSpecialPowerCommand( command, type, draw, pos, cmdCenter );
-#endif
+#endif // OG
 #ifdef ZH
 							Object* unit = ThePlayerList->getLocalPlayer()->findMostReadyShortcutSpecialPowerOfType( command->getSpecialPowerTemplate()->getSpecialPowerType() );
 							if( unit )
 								msgType = issueSpecialPowerCommand( command, type, draw, pos, unit );
-#endif
+#endif // ZH
 							break;
 						}
 						case GUI_COMMAND_SPECIAL_POWER://lorenzen
@@ -1760,7 +1760,7 @@ GameMessage::Type CommandTranslator::evaluateContextCommand( Drawable *draw,
 				}
 			}
 		}
-#endif
+#endif // ZH
 		
 		// ********************************************************************************************
 		else if( TheInGameUI->canSelectedObjectsOverrideSpecialPowerDestination( pos, InGameUI::SELECTION_ANY, SPECIAL_INVALID ) )
@@ -2025,7 +2025,7 @@ GameMessage::Type CommandTranslator::evaluateContextCommand( Drawable *draw,
 			}  // end else
 
 		}  // end else if
-#endif
+#endif // ZH
 		// ********************************************************************************************
 		else if( draw && !TheInGameUI->isInForceAttackMode() && canSelectionSalvage(obj) )
 		{
@@ -2347,12 +2347,12 @@ GameMessage::Type CommandTranslator::evaluateContextCommand( Drawable *draw,
 #ifdef OG
 					if( ai && ai->isQuickPathAvailable( pos ) ) 
 
-#endif
+#endif // OG
 #ifdef ZH
 					if( ai )
           {
             if ( ai->isQuickPathAvailable( pos ) ) 
-#endif
+#endif // ZH
 					{ 
 						validQuickPath = TRUE;
 						break;
@@ -2369,7 +2369,7 @@ GameMessage::Type CommandTranslator::evaluateContextCommand( Drawable *draw,
 						    validQuickPath = TRUE;// yeah, not really quick, but you know...
 						    break;
               }
-#endif
+#endif // ZH
 				}
 			}
 
@@ -2377,7 +2377,7 @@ GameMessage::Type CommandTranslator::evaluateContextCommand( Drawable *draw,
 				}
 			}
 
-#endif
+#endif // ZH
 			if( type == DO_COMMAND || type == EVALUATE_ONLY )
 			{
 				// issue command
@@ -2456,10 +2456,10 @@ GameMessageDisposition CommandTranslator::translateGameMessage(const GameMessage
 
 #ifdef OG
 			TheInGameUI->selectMatchingUnits();
-#endif
+#endif // OG
 #ifdef ZH
 			TheInGameUI->selectUnitsMatchingCurrentSelection();
-#endif
+#endif // ZH
 
 			disp = DESTROY_MESSAGE;
 			break;
@@ -2494,10 +2494,10 @@ GameMessageDisposition CommandTranslator::translateGameMessage(const GameMessage
 					}
 #ifdef OG
 					else if( object && object->isMobile() && object->isLocallyControlled() && !object->isContained() && !object->isKindOf( KINDOF_DRONE ) )
-#endif
+#endif // OG
 #ifdef ZH
 					else if( object && object->isMobile() && object->isLocallyControlled() && !object->isContained() && !object->isKindOf( KINDOF_NO_SELECT ) )
-#endif
+#endif // ZH
 					{
 						// create a new group.
 						GameMessage *teamMsg = TheMessageStream->appendMessage( GameMessage::MSG_CREATE_SELECTED_GROUP );
@@ -2547,10 +2547,10 @@ GameMessageDisposition CommandTranslator::translateGameMessage(const GameMessage
 							const Object *tempObject = temp->getObject();
 #ifdef OG
 							if( tempObject && tempObject->isMobile() && tempObject->isLocallyControlled() && !tempObject->isContained() && !tempObject->isKindOf( KINDOF_DRONE ) )
-#endif
+#endif // OG
 #ifdef ZH
 							if( tempObject && tempObject->isMobile() && tempObject->isLocallyControlled() && !tempObject->isContained() && !tempObject->isKindOf( KINDOF_NO_SELECT ) )
-#endif
+#endif // ZH
 							{
 								newDrawable = temp;
 								break;
@@ -2610,10 +2610,10 @@ GameMessageDisposition CommandTranslator::translateGameMessage(const GameMessage
 					}
 #ifdef OG
 					else if( object && object->isMobile() && object->isLocallyControlled() && !object->isContained() && !object->isKindOf( KINDOF_DRONE ) )
-#endif
+#endif // OG
 #ifdef ZH
 					else if( object && object->isMobile() && object->isLocallyControlled() && !object->isContained() && !object->isKindOf( KINDOF_NO_SELECT ) )
-#endif
+#endif // ZH
 					{
 						// create a new group.
 						GameMessage *teamMsg = TheMessageStream->appendMessage( GameMessage::MSG_CREATE_SELECTED_GROUP );
@@ -2664,10 +2664,10 @@ GameMessageDisposition CommandTranslator::translateGameMessage(const GameMessage
 							if( tempObject && temp->getNextDrawable() == selectedDrawable && !temp->isSelected() 
 #ifdef OG
 								&& tempObject->isMobile() && tempObject->isLocallyControlled() && !tempObject->isContained() && !tempObject->isKindOf( KINDOF_DRONE ) )
-#endif
+#endif // OG
 #ifdef ZH
 								&& tempObject->isMobile() && tempObject->isLocallyControlled() && !tempObject->isContained() && !tempObject->isKindOf( KINDOF_NO_SELECT ) )
-#endif
+#endif // ZH
 							{
 								newDrawable = temp;
 								break;
@@ -3027,7 +3027,7 @@ GameMessageDisposition CommandTranslator::translateGameMessage(const GameMessage
 			const DrawableList *drawList = TheInGameUI->getAllSelectedDrawables();
 			Drawable *draw;
 			for( DrawableListCIt it = drawList->begin(); it != drawList->end(); ++it )
-#endif
+#endif // ZH
 		{
 #ifdef ZH
 				draw = *it;
@@ -3049,7 +3049,7 @@ GameMessageDisposition CommandTranslator::translateGameMessage(const GameMessage
 			break;
 
 /*
-#endif
+#endif // ZH
 			TheInGameUI->deselectAllDrawables();
 
 			GameMessage *teamMsg = TheMessageStream->appendMessage( GameMessage::MSG_CREATE_SELECTED_GROUP );
@@ -3100,7 +3100,7 @@ GameMessageDisposition CommandTranslator::translateGameMessage(const GameMessage
 				{
 					TheInGameUI->deselectDrawable(draw);
 				}*/
-#endif
+#endif // OG
 
 				draw = draw->getNextDrawable();
 			}
@@ -3114,7 +3114,7 @@ GameMessageDisposition CommandTranslator::translateGameMessage(const GameMessage
 			break;
 #ifdef ZH
 */
-#endif
+#endif // ZH
 
 		}  // end select all
 
@@ -3175,13 +3175,13 @@ GameMessageDisposition CommandTranslator::translateGameMessage(const GameMessage
 		case GameMessage::MSG_META_CHAT_ALLIES:
 #ifdef OG
 #if !defined(_PLAYTEST)
-#endif
+#endif // OG
 			if (TheGameLogic->isInMultiplayerGame() && !TheGameLogic->isInReplayGame())
 #ifdef OG
 #else
 			if (TheGameLogic->isInMultiplayerGame())
 #endif
-#endif
+#endif // OG
 			{
 				Player *localPlayer = ThePlayerList->getLocalPlayer();
 				if (localPlayer && localPlayer->isPlayerActive() || !TheGlobalData->m_netMinPlayers)
@@ -3197,13 +3197,13 @@ GameMessageDisposition CommandTranslator::translateGameMessage(const GameMessage
 		case GameMessage::MSG_META_CHAT_EVERYONE:
 #ifdef OG
 #if !defined(_PLAYTEST)
-#endif
+#endif // OG
 			if (TheGameLogic->isInMultiplayerGame() && !TheGameLogic->isInReplayGame())
 #ifdef OG
 #else
 			if (TheGameLogic->isInMultiplayerGame())
 #endif
-#endif
+#endif // OG
 			{
 				Player *localPlayer = ThePlayerList->getLocalPlayer();
 				if (localPlayer && localPlayer->isPlayerActive() || !TheGlobalData->m_netMinPlayers)
@@ -3230,7 +3230,7 @@ GameMessageDisposition CommandTranslator::translateGameMessage(const GameMessage
 		case GameMessage::MSG_META_PLACE_BEACON:
 #ifdef OG
 #if !defined(_PLAYTEST)
-#endif
+#endif // OG
 			if (TheGameLogic->isInMultiplayerGame() && !TheGameLogic->isInReplayGame() &&
 				ThePlayerList->getLocalPlayer()->isPlayerActive() &&
 				(TheGlobalData->m_netMinPlayers==0 || TheGameInfo->isMultiPlayer()))
@@ -3238,7 +3238,7 @@ GameMessageDisposition CommandTranslator::translateGameMessage(const GameMessage
 #else
 			if (TheGameLogic->isInMultiplayerGame() && ThePlayerList->getLocalPlayer()->isPlayerActive() && TheGameInfo->isMultiPlayer())
 #endif
-#endif
+#endif // OG
 			{
 				Int count;
 				const ThingTemplate *thing = TheThingFactory->findTemplate( ThePlayerList->getLocalPlayer()->getPlayerTemplate()->getBeaconTemplate() );
@@ -3257,13 +3257,13 @@ GameMessageDisposition CommandTranslator::translateGameMessage(const GameMessage
 		case GameMessage::MSG_META_REMOVE_BEACON:
 #ifdef OG
 #if !defined(_PLAYTEST)
-#endif
+#endif // OG
 			if (TheGameLogic->isInMultiplayerGame() && !TheGameLogic->isInReplayGame())
 #ifdef OG
 #else
 			if (TheGameLogic->isInMultiplayerGame())
 #endif
-#endif
+#endif // OG
 			{
 				TheMessageStream->appendMessage( GameMessage::MSG_REMOVE_BEACON );
 			}
@@ -3597,14 +3597,14 @@ GameMessageDisposition CommandTranslator::translateGameMessage(const GameMessage
 
 				disp = DESTROY_MESSAGE;
 			}
-#endif
+#endif // ZH
 			break;
 #ifdef ZH
 
 		}  // end clear message text
 
 #endif
-#endif
+#endif // ZH
 			
 		//-----------------------------------------------------------------------------------------
 		case GameMessage::MSG_META_BEGIN_FORCEMOVE:
@@ -3622,10 +3622,10 @@ GameMessageDisposition CommandTranslator::translateGameMessage(const GameMessage
 		case GameMessage::MSG_META_BEGIN_WAYPOINTS:
 #ifdef OG
 			DEBUG_ASSERTCRASH( !TheInGameUI->isInWaypointMode(), ("Setting m_waypointMode but it's already set!") );
-#endif
+#endif // OG
 #ifdef ZH
 //			DEBUG_ASSERTCRASH( !TheInGameUI->isInWaypointMode(), ("Setting m_waypointMode but it's already set!") );
-#endif
+#endif // ZH
 			TheInGameUI->setWaypointMode( true );
 			break;
 
@@ -3643,10 +3643,10 @@ GameMessageDisposition CommandTranslator::translateGameMessage(const GameMessage
 		case GameMessage::MSG_META_END_WAYPOINTS:
 #ifdef OG
 			DEBUG_ASSERTCRASH( TheInGameUI->isInWaypointMode(), ("Clearing m_waypointMode but it's already clear!") );
-#endif
+#endif // OG
 #ifdef ZH
 //			DEBUG_ASSERTCRASH( TheInGameUI->isInWaypointMode(), ("Clearing m_waypointMode but it's already clear!") );
-#endif
+#endif // ZH
 			TheInGameUI->setWaypointMode( false );
 			break;
 
@@ -3750,10 +3750,10 @@ GameMessageDisposition CommandTranslator::translateGameMessage(const GameMessage
 			if( TheInGameUI->getSelectCount() > 0 
 #ifdef OG
 					|| (command && command->getCommandType() == GUI_COMMAND_SPECIAL_POWER_FROM_COMMAND_CENTER) ) // If something is selected
-#endif
+#endif // OG
 #ifdef ZH
 					|| (command && command->getCommandType() == GUI_COMMAND_SPECIAL_POWER_FROM_SHORTCUT) ) // If something is selected
-#endif
+#endif // ZH
 			{
 				/// @todo This as well as the one in GameMessage::MSG_DRAWABLE_PICKED below should possibly have a generalized CanAttack instead of simply checking isEnemyOf
 				Drawable *draw = TheGameClient->findDrawableByID( msg->getArgument( 0 )->drawableID );
@@ -3830,7 +3830,7 @@ GameMessageDisposition CommandTranslator::translateGameMessage(const GameMessage
 				TheInGameUI->placeBuildAvailable( NULL, NULL );
 			}
 
-#endif
+#endif // ZH
  			break;
  		}
  
@@ -3855,7 +3855,7 @@ GameMessageDisposition CommandTranslator::translateGameMessage(const GameMessage
 			}
 			//intentional fall through
 		}
-#endif
+#endif // ZH
  		case GameMessage::MSG_MOUSE_RIGHT_CLICK:
  		{
  			// right click is only actioned here if we're in alternate mouse mode
@@ -3880,10 +3880,10 @@ GameMessageDisposition CommandTranslator::translateGameMessage(const GameMessage
 				Bool controllable = TheInGameUI->areSelectedObjectsControllable()
 #ifdef OG
 														|| (command && command->getCommandType() == GUI_COMMAND_SPECIAL_POWER_FROM_COMMAND_CENTER);
-#endif
+#endif // OG
 #ifdef ZH
 														|| (command && command->getCommandType() == GUI_COMMAND_SPECIAL_POWER_FROM_SHORTCUT);
-#endif
+#endif // ZH
 				if (isPoint && controllable)
 				{
 					UnsignedInt pickType = getPickTypesForContext( TheInGameUI->isInForceAttackMode() );
@@ -3925,7 +3925,7 @@ GameMessageDisposition CommandTranslator::translateGameMessage(const GameMessage
 			}
 			//intentional fall through
 		}
-#endif
+#endif // ZH
 		case GameMessage::MSG_MOUSE_LEFT_CLICK:
 		{
 			Bool isPoint = (msg->getArgument(0)->pixelRegion.height() == 0 && msg->getArgument(0)->pixelRegion.width() == 0);
@@ -3945,17 +3945,17 @@ GameMessageDisposition CommandTranslator::translateGameMessage(const GameMessage
 			const CommandButton *command = TheInGameUI->getGUICommand();
 #ifdef OG
 			// maintain this as the set of GUI button initiated commands that require a left click action in alt mouse mode
-#endif
+#endif // OG
 #ifdef ZH
 			// maintain this as the list of GUI button initiated commands that fire with left click in alt mouse mode
-#endif
+#endif // ZH
  			Bool isFiringGUICommand = (command	&& (command->getCommandType() == GUI_COMMAND_SPECIAL_POWER
 #ifdef OG
  												|| command->getCommandType() == GUI_COMMAND_SPECIAL_POWER_FROM_COMMAND_CENTER
-#endif
+#endif // OG
 #ifdef ZH
   												|| command->getCommandType() == GUI_COMMAND_SPECIAL_POWER_FROM_SHORTCUT
-#endif
+#endif // ZH
 												|| command->getCommandType() == GUI_COMMAND_FIRE_WEAPON
 												|| command->getCommandType() == GUI_COMMAND_COMBATDROP
 												|| command->getCommandType() == GUICOMMANDMODE_HIJACK_VEHICLE
@@ -3968,10 +3968,10 @@ GameMessageDisposition CommandTranslator::translateGameMessage(const GameMessage
 			Bool controllable = TheInGameUI->areSelectedObjectsControllable()
 #ifdef OG
 													|| (command && command->getCommandType() == GUI_COMMAND_SPECIAL_POWER_FROM_COMMAND_CENTER);
-#endif
+#endif // OG
 #ifdef ZH
 													|| (command && command->getCommandType() == GUI_COMMAND_SPECIAL_POWER_FROM_SHORTCUT);
-#endif
+#endif // ZH
 			if (isPoint && controllable)
 			{
 				UnsignedInt pickType = getPickTypesForContext( TheInGameUI->isInForceAttackMode() );
@@ -4002,15 +4002,15 @@ GameMessageDisposition CommandTranslator::translateGameMessage(const GameMessage
 		//------------------------------------------------------------------------- BEGIN DEMO MESSAGES
 		//------------------------------------------------------------------------------- DEMO MESSAGES
 		//-----------------------------------------------------------------------------------------
-#endif
+#endif // OG
 #ifdef ZH
 #ifdef ALLOW_ALT_F4
 
-#endif
+#endif // ZH
 		case GameMessage::MSG_META_DEMO_INSTANT_QUIT:
 #ifdef ZH
     {
-#endif
+#endif // ZH
 			if (TheGameLogic->isInGame())
 			{
 				if (TheRecorder->getMode() == RECORDERMODETYPE_RECORD)
@@ -4027,18 +4027,18 @@ GameMessageDisposition CommandTranslator::translateGameMessage(const GameMessage
 #endif
 
 		//------------------------------------------------------------------------------- DEMO MESSAGES
-#endif
+#endif // ZH
 
 #ifdef ZH
 #if defined(_DEBUG) || defined(_INTERNAL)
 		//------------------------------------------------------------------------- BEGIN DEMO MESSAGES
 		//------------------------------------------------------------------------- BEGIN DEMO MESSAGES
 		//------------------------------------------------------------------------- BEGIN DEMO MESSAGES
-#endif
+#endif // ZH
 		//------------------------------------------------------------------------------- DEMO MESSAGES
 #ifdef ZH
 		//-----------------------------------------------------------------------------------------
-#endif
+#endif // ZH
 		//-----------------------------------------------------------------------------------------
 		case GameMessage::MSG_META_DEMO_SWITCH_TEAMS:
 		{
@@ -4433,7 +4433,7 @@ GameMessageDisposition CommandTranslator::translateGameMessage(const GameMessage
 #ifdef ZH
 		{
 			if ( !TheGameLogic->isInMultiplayerGame() )
-#endif
+#endif // ZH
 		{
 			const DrawableList *list = TheInGameUI->getAllSelectedDrawables();
 			for (DrawableListCIt it = list->begin(); it != list->end(); ++it) 
@@ -4474,7 +4474,7 @@ GameMessageDisposition CommandTranslator::translateGameMessage(const GameMessage
 			disp = DESTROY_MESSAGE;
 #ifdef ZH
 			}
-#endif
+#endif // ZH
 			break;
 		}
 
@@ -4712,14 +4712,14 @@ GameMessageDisposition CommandTranslator::translateGameMessage(const GameMessage
 #ifdef ZH
 		{
 			if ( !TheGameLogic->isInMultiplayerGame() )
-#endif
+#endif // ZH
 		{
 			Player *localPlayer = ThePlayerList->getLocalPlayer();
 			Money *money = localPlayer->getMoney();
 			money->deposit( 10000 );
 #ifdef ZH
 			}
-#endif
+#endif // ZH
 			break;
 		}
 
@@ -4884,7 +4884,7 @@ GameMessageDisposition CommandTranslator::translateGameMessage(const GameMessage
 
 		//------------------------------------------------------------------------------- DEMO MESSAGES
 		//-----------------------------------------------------------------------------------------
-#endif
+#endif // ZH
 		case GameMessage::MSG_META_DEMO_GIVE_SCIENCEPURCHASEPOINTS:
 		{
 			Player *player = ThePlayerList->getLocalPlayer();
@@ -5086,7 +5086,7 @@ GameMessageDisposition CommandTranslator::translateGameMessage(const GameMessage
       TheWritableGlobalData->m_showAudioLocations = 1 - TheGlobalData->m_showAudioLocations;
       TheInGameUI->message( UnicodeString( L"Show AudioLocations %s" ),
                             TheGlobalData->m_showAudioLocations ? L"ON" : L"OFF" );
-#endif
+#endif // ZH
 			break;
 
 		//------------------------------------------------------------------------------- DEMO MESSAGES
@@ -5234,10 +5234,10 @@ GameMessageDisposition CommandTranslator::translateGameMessage(const GameMessage
 
 #ifdef OG
 		//------------------------------------------------------------------------PLAYTEST DEMO MESSAGES
-#endif
+#endif // OG
 #ifdef ZH
 		//------------------------------------------------------------------------DEMO MESSAGES
-#endif
+#endif // ZH
 		//-----------------------------------------------------------------------------------------
 		case GameMessage::MSG_META_DEMO_TOGGLE_DEBUG_STATS:
 		{
@@ -5255,7 +5255,7 @@ GameMessageDisposition CommandTranslator::translateGameMessage(const GameMessage
 		case GameMessage::MSG_META_DEBUG_SLEEPY_UPDATE_PERFORMANCE:
 		{
 			TheInGameUI->message( UnicodeString(L"Number of Sleepy Modules: %d."), TheGameLogic->getNumberSleepyUpdates() );
-#endif
+#endif // ZH
 			break;
 #ifdef ZH
 		}
@@ -5273,12 +5273,12 @@ GameMessageDisposition CommandTranslator::translateGameMessage(const GameMessage
 			{
 				Object *objPtr = TheGameLogic->findObjectByID((ObjectID)testindex);
 				objPtr++;
-#endif
+#endif // ZH
 		}
 #ifdef ZH
 			QueryPerformanceCounter((LARGE_INTEGER *)&endTime64);
 			double timeToUpdate = ((double)(endTime64-startTime64) / (double)(freq64));
-#endif
+#endif // ZH
 
 #ifdef ZH
 			TheInGameUI->message( UnicodeString(L"Time to run %d ObjectID lookups is %f.  Next index is %d."), numberLookups, timeToUpdate, (Int)TheGameLogic->getObjectIDCounter() );
@@ -5360,7 +5360,7 @@ GameMessageDisposition CommandTranslator::translateGameMessage(const GameMessage
 			break;
 		}
 
-#endif
+#endif // ZH
 		//--------------------------------------------------------------------------- END DEMO MESSAGES
 		//--------------------------------------------------------------------------- END DEMO MESSAGES
 		//--------------------------------------------------------------------------- END DEMO MESSAGES
@@ -5368,17 +5368,17 @@ GameMessageDisposition CommandTranslator::translateGameMessage(const GameMessage
 
 #ifdef OG
 		//------------------------------------------------------------------------PLAYTEST DEMO MESSAGES
-#endif
+#endif // OG
 #ifdef ZH
 		//------------------------------------------------------------------------DEMO MESSAGES
-#endif
+#endif // ZH
 		//-----------------------------------------------------------------------------------------
 #ifdef OG
 #if defined(_INTERNAL) || defined(_DEBUG) || defined(_PLAYTEST)
-#endif
+#endif // OG
 #ifdef ZH
 #if defined(_INTERNAL) || defined(_DEBUG) 
-#endif
+#endif // ZH
 		case GameMessage::MSG_META_DEMO_TOGGLE_AUDIODEBUG:
 		{
 			if (TheDisplay->getDebugDisplayCallback() == AudioDebugDisplay)
@@ -5391,18 +5391,18 @@ GameMessageDisposition CommandTranslator::translateGameMessage(const GameMessage
 
 #ifdef OG
 #endif//defined(_INTERNAL) || defined(_DEBUG) || defined(_PLAYTEST)
-#endif
+#endif // OG
 #ifdef ZH
 #endif//defined(_INTERNAL) || defined(_DEBUG) 
-#endif
+#endif // ZH
 		
 #ifdef DUMP_PERF_STATS
 #ifdef OG
 		//------------------------------------------------------------------------PLAYTEST DEMO MESSAGES
-#endif
+#endif // OG
 #ifdef ZH
 		//------------------------------------------------------------------------DEMO MESSAGES
-#endif
+#endif // ZH
 		//-----------------------------------------------------------------------------------------
 		case GameMessage::MSG_META_DEMO_PERFORM_STATISTICAL_DUMP:
 			//Dump performance statistics for this frame.

@@ -33,7 +33,7 @@
 #include "Common/BitFlags.h"
 #ifdef ZH
 #include "Common/BitFlagsIO.h"
-#endif
+#endif // ZH
 #include "Common/SpecialPowerType.h"
 
 typedef BitFlags<SPECIALPOWER_COUNT>	SpecialPowerMaskType;

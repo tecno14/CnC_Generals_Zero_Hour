@@ -47,7 +47,7 @@
 #include "GameClient/CampaignManager.h"
 #ifdef ZH
 #include "GameClient/ChallengeGenerals.h"
-#endif
+#endif // ZH
 #include "GameClient/CommandXlat.h"
 #include "GameClient/ControlBar.h"
 #include "GameClient/Diplomacy.h"
@@ -77,7 +77,7 @@
 #include "GameClient/Shell.h"
 #ifdef ZH
 #include "GameClient/Snow.h"
-#endif
+#endif // ZH
 #include "GameClient/TerrainVisual.h"
 #include "GameClient/View.h"
 #include "GameClient/VideoPlayer.h"
@@ -181,7 +181,7 @@ GameClient::~GameClient()
 
 	delete TheChallengeGenerals;
 	TheChallengeGenerals = NULL;
-#endif
+#endif // ZH
 
 	// delete the shell
 	delete TheShell;
@@ -248,7 +248,7 @@ GameClient::~GameClient()
 	delete TheSnowManager;
 	TheSnowManager = NULL;
 
-#endif
+#endif // ZH
 }  // end ~GameClient
 
 //-------------------------------------------------------------------------------------------------
@@ -386,7 +386,7 @@ void GameClient::init( void )
  		TheChallengeGenerals->init();
  	}
 
-#endif
+#endif // ZH
 	TheHotKeyManager = MSGNEW("GameClientSubsystem") HotKeyManager;
 	if( TheHotKeyManager ) {
 		TheHotKeyManager->init();
@@ -450,7 +450,7 @@ void GameClient::init( void )
 		TheSnowManager->setName("TheSnowManager");
 	}
 
-#endif
+#endif // ZH
 #ifdef PERF_TIMERS
 	TheGraphDraw = new GraphDraw;
 #endif
@@ -466,14 +466,14 @@ void GameClient::reset( void )
 	m_drawableHash.clear();
 	m_drawableHash.resize(DRAWABLE_HASH_SIZE);
 
-#endif
+#endif // OG
 #ifdef ZH
 //	m_drawableHash.clear();
 //	m_drawableHash.resize(DRAWABLE_HASH_SIZE);
 
 	m_drawableVector.clear();
 	m_drawableVector.resize(DRAWABLE_HASH_SIZE, NULL);
-#endif
+#endif // ZH
 	
 	// need to reset the in game UI to clear drawables before they are destroyed
 	TheInGameUI->reset();
@@ -494,7 +494,7 @@ void GameClient::reset( void )
 #ifdef ZH
 	if (TheSnowManager)
 		TheSnowManager->reset();
-#endif
+#endif // ZH
 
 	// clear any drawable TOC we might have
 	m_drawableTOC.clear();
@@ -555,10 +555,10 @@ void GameClient::update( void )
 	{
 #ifdef OG
 		if( playSizzle)
-#endif
+#endif // OG
 #ifdef ZH
 		if( playSizzle && TheGlobalData->m_playSizzle )
-#endif
+#endif // ZH
 		{
 			TheWritableGlobalData->m_allowExitOutOfMovies = TRUE;
 			if(TheGameLODManager && TheGameLODManager->didMemPass())
@@ -611,7 +611,7 @@ void GameClient::update( void )
 	//Update snow particles.
 	if (TheSnowManager)
 		TheSnowManager->UPDATE();
-#endif
+#endif // ZH
 
 	// update animation 2d collection
 	TheAnim2DCollection->UPDATE();
@@ -648,7 +648,7 @@ void GameClient::update( void )
     else
       TheInGameUI->setCameraTrackingDrawable( FALSE );
   }
-#endif
+#endif // ZH
 	
 	if(TheGlobalData->m_playIntro || TheGlobalData->m_afterIntro)
 	{
@@ -768,10 +768,10 @@ void GameClient::update( void )
 		TheParticleSystemManager->setLocalPlayerIndex(localPlayerIndex);
 #ifdef OG
 		TheParticleSystemManager->update();
-#endif
+#endif // OG
 #ifdef ZH
 //		TheParticleSystemManager->update();
-#endif
+#endif // ZH
 
 	}  // end if
 
@@ -841,7 +841,7 @@ void GameClient::updateFakeDrawables(void)
 	for( Drawable *draw = getDrawableList(); draw; draw = draw->getNextDrawable() )
 	{
 		const Object *object=draw->getObject();
-#endif
+#endif // ZH
 
 #ifdef OG
 /** -----------------------------------------------------------------------------------------------
@@ -851,11 +851,11 @@ void GameClient::updateFakeDrawables(void)
  * instead of pointers to "attach" objects to each other.
  */
 Drawable* GameClient::findDrawableByID( const DrawableID id )
-#endif
+#endif // OG
 #ifdef ZH
 		if( object && object->isKindOf( KINDOF_FS_FAKE ) )
 
-#endif
+#endif // ZH
 {
 #ifdef OG
 	DrawablePtrHashIt it = m_drawableHash.find(id);
@@ -863,7 +863,7 @@ Drawable* GameClient::findDrawableByID( const DrawableID id )
 		// no such drawable	
 		return NULL;
 
-#endif
+#endif // OG
 #ifdef ZH
 			Relationship rel=ThePlayerList->getLocalPlayer()->getRelationship(object->getTeam());
 			if (rel == ALLIES || rel == NEUTRAL)
@@ -871,12 +871,12 @@ Drawable* GameClient::findDrawableByID( const DrawableID id )
 			else
 				draw->setTerrainDecal(TERRAIN_DECAL_NONE);
 		}
-#endif
+#endif // ZH
 	}
 #ifdef OG
 
 	return (*it).second;
-#endif
+#endif // OG
 }
 
 /** -----------------------------------------------------------------------------------------------
@@ -891,7 +891,7 @@ void GameClient::destroyDrawable( Drawable *draw )
 
 	// detach this Drawable from any particle system that may be using it
 	draw->detachFromParticleSystem();
-#endif
+#endif // OG
 
 	// remove from the master list
 	draw->removeFromList(&m_drawableList);
@@ -932,7 +932,7 @@ void GameClient::addDrawableToLookupTable(Drawable *draw )
 #ifdef OG
 	m_drawableHash[ draw->getID() ] = draw;
 
-#endif
+#endif // OG
 #ifdef ZH
 //	m_drawableHash[ draw->getID() ] = draw;
 	DrawableID newID = draw->getID();
@@ -940,7 +940,7 @@ void GameClient::addDrawableToLookupTable(Drawable *draw )
 		m_drawableVector.resize(m_drawableVector.size() * 2, NULL);
 
 	m_drawableVector[ newID ] = draw;
-#endif
+#endif // ZH
 
 }  // end addDrawableToLookupTable
 
@@ -958,11 +958,11 @@ void GameClient::removeDrawableFromLookupTable( Drawable *draw )
 #ifdef OG
 	m_drawableHash.erase( draw->getID() );
 
-#endif
+#endif // OG
 #ifdef ZH
 //	m_drawableHash.erase( draw->getID() );
 	m_drawableVector[ draw->getID() ] = NULL;
-#endif
+#endif // ZH
 
 }  // end removeDrawableFromLookupTable
 

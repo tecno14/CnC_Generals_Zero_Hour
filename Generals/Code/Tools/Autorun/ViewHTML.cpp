@@ -82,13 +82,13 @@ bool ViewHTML(const char* url, bool wait, CallbackHook& callback)
 #ifdef ZH
 	// JFS: Fixed so that it would go to the temp folder which was crashing
 	// on limited users.
-#endif
+#endif // ZH
 	//--------------------------------------------------------------------------
 	char tempPath[MAX_PATH];
 #ifdef OG
 	GetWindowsDirectory(tempPath, MAX_PATH);
 	
-#endif
+#endif // OG
 	char filename1[MAX_PATH];
 	char filename2[MAX_PATH];
 #ifdef ZH
@@ -101,7 +101,7 @@ bool ViewHTML(const char* url, bool wait, CallbackHook& callback)
 			return false;
 	}
 
-#endif
+#endif // ZH
 	GetTempFileName(tempPath, "WS", 0, filename1);
 
 	strcpy( filename2, filename1 );

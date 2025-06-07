@@ -49,7 +49,7 @@ CommandList *TheCommandList = NULL;
 //#pragma MESSAGE("************************************** WARNING, optimization disabled for debugging purposes")
 #endif
 
-#endif
+#endif // ZH
 //------------------------------------------------------------------------------------------------
 // GameMessage
 //
@@ -337,7 +337,7 @@ AsciiString GameMessage::getCommandTypeAsAsciiString(GameMessage::Type t)
 	CHECK_IF(MSG_META_SELECT_ALL)
 #ifdef ZH
 	CHECK_IF(MSG_META_SELECT_ALL_AIRCRAFT)
-#endif
+#endif // ZH
 	CHECK_IF(MSG_META_SCATTER)
 	CHECK_IF(MSG_META_STOP)
 	CHECK_IF(MSG_META_DEPLOY)
@@ -405,7 +405,7 @@ AsciiString GameMessage::getCommandTypeAsAsciiString(GameMessage::Type t)
     CHECK_IF(MSG_META_TOGGLE_FAST_FORWARD_REPLAY)
     
     
-#endif
+#endif // ZH
 #if defined(_DEBUG) || defined(_INTERNAL)
 	CHECK_IF(MSG_META_DEMO_TOGGLE_BEHIND_BUILDINGS)
 	CHECK_IF(MSG_META_DEMO_TOGGLE_LETTERBOX)
@@ -416,7 +416,7 @@ AsciiString GameMessage::getCommandTypeAsAsciiString(GameMessage::Type t)
 	CHECK_IF(MSG_META_DEMO_PLAY_CAMEO_MOVIE)
 #ifdef OG
 	CHECK_IF(MSG_META_DEMO_INSTANT_QUIT)
-#endif
+#endif // OG
 	CHECK_IF(MSG_META_DEMO_TOGGLE_SPECIAL_POWER_DELAYS)
 	CHECK_IF(MSG_META_DEMO_BATTLE_CRY)
 	CHECK_IF(MSG_META_DEMO_SWITCH_TEAMS)
@@ -466,14 +466,14 @@ AsciiString GameMessage::getCommandTypeAsAsciiString(GameMessage::Type t)
 	CHECK_IF(MSG_META_DEBUG_SHOW_EXTENTS)
 #ifdef ZH
   CHECK_IF(MSG_META_DEBUG_SHOW_AUDIO_LOCATIONS)
-#endif
+#endif // ZH
 	CHECK_IF(MSG_META_DEBUG_SHOW_HEALTH)
 	CHECK_IF(MSG_META_DEBUG_GIVE_VETERANCY)
 	CHECK_IF(MSG_META_DEBUG_TAKE_VETERANCY)
 	CHECK_IF(MSG_META_DEMO_TOGGLE_AI_DEBUG)
 #ifdef ZH
 	CHECK_IF(MSG_META_DEMO_TOGGLE_SUPPLY_CENTER_PLACEMENT)
-#endif
+#endif // ZH
 	CHECK_IF(MSG_META_DEMO_TOGGLE_CAMERA_DEBUG)
 	CHECK_IF(MSG_META_DEMO_TOGGLE_AVI)
 	CHECK_IF(MSG_META_DEMO_TOGGLE_BW_VIEW)
@@ -525,7 +525,7 @@ AsciiString GameMessage::getCommandTypeAsAsciiString(GameMessage::Type t)
 	CHECK_IF(MSG_META_DEBUG_OBJECT_ID_PERFORMANCE)
 	CHECK_IF(MSG_META_DEBUG_DRAWABLE_ID_PERFORMANCE)
 	CHECK_IF(MSG_META_DEBUG_SLEEPY_UPDATE_PERFORMANCE)
-#endif
+#endif // ZH
 	CHECK_IF(MSG_META_DEBUG_WIN)
 	CHECK_IF(MSG_META_DEMO_TOGGLE_DEBUG_STATS)
 #endif // defined(_DEBUG) || defined(_INTERNAL)
@@ -533,17 +533,17 @@ AsciiString GameMessage::getCommandTypeAsAsciiString(GameMessage::Type t)
 
 #ifdef OG
 #if defined(_INTERNAL) || defined(_DEBUG) || defined(_PLAYTEST)
-#endif
+#endif // OG
 #ifdef ZH
 #if defined(_INTERNAL) || defined(_DEBUG)
-#endif
+#endif // ZH
 	CHECK_IF(MSG_META_DEMO_TOGGLE_AUDIODEBUG)
 #ifdef OG
 #endif//defined(_INTERNAL) || defined(_DEBUG) || defined(_PLAYTEST)
-#endif
+#endif // OG
 #ifdef ZH
 #endif//defined(_INTERNAL) || defined(_DEBUG)
-#endif
+#endif // ZH
 #ifdef DUMP_PERF_STATS
 	CHECK_IF(MSG_META_DEMO_PERFORM_STATISTICAL_DUMP)
 #endif//DUMP_PERF_STATS
@@ -571,7 +571,7 @@ AsciiString GameMessage::getCommandTypeAsAsciiString(GameMessage::Type t)
 	CHECK_IF(MSG_HIJACK_HINT)
 #ifdef ZH
 	CHECK_IF(MSG_SABOTAGE_HINT)
-#endif
+#endif // ZH
 	CHECK_IF(MSG_FIREBOMB_HINT)
 	CHECK_IF(MSG_CONVERT_TO_CARBOMB_HINT)
 	CHECK_IF(MSG_CAPTUREBUILDING_HINT)
@@ -703,7 +703,7 @@ AsciiString GameMessage::getCommandTypeAsAsciiString(GameMessage::Type t)
 	CHECK_IF(MSG_SET_MINE_CLEARING_DETAIL)
 #ifdef ZH
 	CHECK_IF(MSG_ENABLE_RETALIATION_MODE)
-#endif
+#endif // ZH
 	return commandName;
 }
 
@@ -1035,7 +1035,7 @@ Bool isInvalidDebugCommand( GameMessage::Type t )
 		{
 #ifdef OG
 		case GameMessage::MSG_META_DEMO_INSTANT_QUIT:
-#endif
+#endif // OG
 		case GameMessage::MSG_META_DEMO_SWITCH_TEAMS:
 		case GameMessage::MSG_META_DEMO_SWITCH_TEAMS_BETWEEN_CHINA_USA:
 		case GameMessage::MSG_META_DEMO_KILL_ALL_ENEMIES:

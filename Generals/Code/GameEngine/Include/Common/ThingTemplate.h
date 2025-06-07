@@ -115,7 +115,7 @@ enum ThingTemplateAudioType
 #ifdef OG
 	TTAUDIO_soundDie,									///< Sound when unit is dieing
 	TTAUDIO_soundCrush,								///< Sound when unit is crushed
-#endif
+#endif // OG
 	TTAUDIO_soundAmbient,							///< Ambient sound for unit during normal status. Also the default sound
 	TTAUDIO_soundAmbientDamaged,			///< Ambient sound for unit if damaged. Corresponds to body info damage
 	TTAUDIO_soundAmbientReallyDamaged,///< Ambient sound for unit if badly damaged.
@@ -128,7 +128,7 @@ enum ThingTemplateAudioType
 #ifdef OG
 	TTAUDIO_soundDieFire,							///< Sound when unit dies by fire. NOTE: Replaces soundDie if present and unit dies by fire.
 	TTAUDIO_soundDieToxin,						///< Sound when unit dies by Toxin. NOTE: Replaces soundDie if present and unit dies by fire.
-#endif
+#endif // OG
 	TTAUDIO_soundEnter,								///< Sound when another unit enters me.
 	TTAUDIO_soundExit,								///< Sound when another unit exits me.
 	TTAUDIO_soundPromotedVeteran,			///< Sound when unit gets promoted to Veteran level
@@ -252,12 +252,12 @@ enum ModuleParseMode
 #ifdef OG
 	MODULEPARSE_INHERITABLE
 
-#endif
+#endif // OG
 #ifdef ZH
 	MODULEPARSE_INHERITABLE,
   MODULEPARSE_OVERRIDEABLE_BY_LIKE_KIND,
 
-#endif
+#endif // ZH
 };
 
 //-------------------------------------------------------------------------------------------------
@@ -274,14 +274,14 @@ private:
 		Bool inheritable;
 #ifdef ZH
     Bool overrideableByLikeKind;
-#endif
+#endif // ZH
 
 #ifdef OG
 		Nugget(const AsciiString& n, const AsciiString& moduleTag, const ModuleData* d, Int i, Bool inh) 
-#endif
+#endif // OG
 #ifdef ZH
 		Nugget(const AsciiString& n, const AsciiString& moduleTag, const ModuleData* d, Int i, Bool inh, Bool oblk) 
-#endif
+#endif // ZH
 		: first(n), 
 			m_moduleTag(moduleTag), 
 			second(d), 
@@ -290,11 +290,11 @@ private:
 #ifdef OG
 			inheritable(inh)
 
-#endif
+#endif // OG
 #ifdef ZH
 			inheritable(inh),
       overrideableByLikeKind(oblk)
-#endif
+#endif // ZH
 		{ 
 		}
 
@@ -307,10 +307,10 @@ public:
 
 #ifdef OG
 	void addModuleInfo(ThingTemplate *thingTemplate, const AsciiString& name, const AsciiString& moduleTag, const ModuleData* data, Int interfaceMask, Bool inheritable);
-#endif
+#endif // OG
 #ifdef ZH
 	void addModuleInfo( ThingTemplate *thingTemplate, const AsciiString& name, const AsciiString& moduleTag, const ModuleData* data, Int interfaceMask, Bool inheritable, Bool overrideableByLikeKind = FALSE );
-#endif
+#endif // ZH
 	const ModuleInfo::Nugget *ModuleInfo::getNuggetWithTag( const AsciiString& tag ) const;
 
 	Int getCount() const 
@@ -372,10 +372,10 @@ public:
 	Bool clearModuleDataWithTag(const AsciiString& tagToClear, AsciiString& clearedModuleNameOut);
 #ifdef OG
 	Bool clearCopiedFromDefaultEntries(Int interfaceMask);
-#endif
+#endif // OG
 #ifdef ZH
 	Bool clearCopiedFromDefaultEntries(Int interfaceMask, const AsciiString &name, const ThingTemplate *fullTemplate );
-#endif
+#endif // ZH
 	Bool clearAiModuleInfo();
 };
 
@@ -467,14 +467,14 @@ public:
 	Real friend_getVisionRange() const { return m_visionRange; }  ///< get vision range
 	Real friend_getShroudClearingRange() const { return m_shroudClearingRange; }  ///< get vision range for Shroud ONLY (Design requested split)
 
-#endif
+#endif // OG
 #ifdef ZH
 	Real friend_calcVisionRange() const { return m_visionRange; }  ///< get vision range
 	Real friend_calcShroudClearingRange() const { return m_shroudClearingRange; }  ///< get vision range for Shroud ONLY (Design requested split)
 	
 	//This one is okay to check directly... because it doesn't get effected by bonuses.
 	Real getShroudRevealToAllRange() const { return m_shroudRevealToAllRange; }
-#endif
+#endif // ZH
 	
 	// This function is only for use by the AIUpdateModuleData::parseLocomotorSet function.
 	AIUpdateModuleData *friend_getAIModuleInfo(void);
@@ -506,7 +506,7 @@ public:
 #ifdef ZH
 	Bool isEnterGuard() const{return m_enterGuard; }
 	Bool isHijackGuard() const{return m_hijackGuard; }
-#endif
+#endif // ZH
 
 	const AudioEventRTS *getVoiceSelect() const								{ return getAudio(TTAUDIO_voiceSelect); }
 	const AudioEventRTS *getVoiceGroupSelect() const					{ return getAudio(TTAUDIO_voiceGroupSelect); }
@@ -535,7 +535,7 @@ public:
 #ifdef OG
 	const AudioEventRTS *getSoundDie() const									{ return getAudio(TTAUDIO_soundDie); }
 	const AudioEventRTS *getSoundCrush() const								{ return getAudio(TTAUDIO_soundCrush); }
-#endif
+#endif // OG
 	const AudioEventRTS *getSoundAmbient() const							{ return getAudio(TTAUDIO_soundAmbient); }
 	const AudioEventRTS *getSoundAmbientDamaged() const				{ return getAudio(TTAUDIO_soundAmbientDamaged); }
 	const AudioEventRTS *getSoundAmbientReallyDamaged() const	{ return getAudio(TTAUDIO_soundAmbientReallyDamaged); }
@@ -548,7 +548,7 @@ public:
 #ifdef OG
 	const AudioEventRTS *getSoundDieFire() const							{ return getAudio(TTAUDIO_soundDieFire); }
 	const AudioEventRTS *getSoundDieToxin() const							{ return getAudio(TTAUDIO_soundDieToxin); }
-#endif
+#endif // OG
 	const AudioEventRTS *getSoundEnter() const								{ return getAudio(TTAUDIO_soundEnter); }
 	const AudioEventRTS *getSoundExit() const									{ return getAudio(TTAUDIO_soundExit); }
 	const AudioEventRTS *getSoundPromotedVeteran() const			{ return getAudio(TTAUDIO_soundPromotedVeteran); }
@@ -558,7 +558,7 @@ public:
 #ifdef ZH
 
   Bool hasSoundAmbient() const                              { return hasAudio(TTAUDIO_soundAmbient); }
-#endif
+#endif // ZH
 
 	const AudioEventRTS *getPerUnitSound(const AsciiString& soundName) const;
 	const FXList* getPerUnitFX(const AsciiString& fxName) const;
@@ -567,7 +567,7 @@ public:
 #ifdef OG
 	UnsignedInt getMaxSimultaneousOfType() const			{ return m_maxSimultaneousOfType; }
 
-#endif
+#endif // OG
 #ifdef ZH
 	
   //-------------------------------------------------------------------------------------------------
@@ -578,7 +578,7 @@ public:
   //-------------------------------------------------------------------------------------------------
   NameKeyType getMaxSimultaneousLinkKey() const { return m_maxSimultaneousLinkKey; }
   UnsignedInt getMaxSimultaneousOfType() const;
-#endif
+#endif // ZH
 
 	void validate();
 
@@ -681,7 +681,7 @@ public:
 #ifdef ZH
 
 	const WeaponTemplateSetVector& getWeaponTemplateSets(void) const {return m_weaponTemplateSets;}
-#endif
+#endif // ZH
 
 protected:
 
@@ -696,7 +696,7 @@ protected:
 	const AudioEventRTS* getAudio(ThingTemplateAudioType t) const { return m_audioarray.m_audio[t] ? &m_audioarray.m_audio[t]->m_event : &s_audioEventNoSound; }
 #ifdef ZH
   Bool hasAudio(ThingTemplateAudioType t) const { return m_audioarray.m_audio[t] != NULL; }
-#endif
+#endif // ZH
 
 	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	/** Table for parsing the object fields */
@@ -719,7 +719,7 @@ protected:
   static void OverrideableByLikeKind(INI *ini, void *instance, void *store, const void *userData);
 
   static void parseMaxSimultaneous(INI *ini, void *instance, void *store, const void *userData);
-#endif
+#endif // ZH
 
 	Bool removeModuleInfo(const AsciiString& moduleToRemove, AsciiString& clearedModuleNameOut);
 
@@ -785,7 +785,7 @@ private:
 	Real					m_shroudClearingRange;				///< Since So many things got added to "Seeing" functionality, we need to split this part out.
 #ifdef ZH
 	Real					m_shroudRevealToAllRange;			///< When > zero, the shroud gets revealed to all players.
-#endif
+#endif // ZH
 	Real					m_placementViewAngle;				///< when placing buildings this will be the angle of the building when "floating" at the mouse
 	Real					m_factoryExitWidth;					///< when placing buildings this will be the width of the reserved exit area on the right side.
 	Real					m_factoryExtraBibWidth;					///< when placing buildings this will be the width of the reserved exit area on the right side.
@@ -804,7 +804,7 @@ private:
 	UnsignedInt		m_occlusionDelay;							///< delay after object creation before building occlusion is allowed.
 #ifdef ZH
   NameKeyType   m_maxSimultaneousLinkKey;     ///< If this is not NAMEKEY_INVALID, it indicates that all the templates which have the same name key should be counted as the same "type" when looking at getMaxSimultaneousOfType().
-#endif
+#endif // ZH
 
 	// ---- Short-sized things
 	UnsignedShort		m_templateID;									///< id for net (etc.) transmission purposes
@@ -816,7 +816,7 @@ private:
 	// ---- Bool-sized things
 #ifdef ZH
   Bool          m_maxSimultaneousDeterminedBySuperweaponRestriction; ///< If true, override value in m_maxSimultaneousOfType with value from GameInfo::getSuperweaponRestriction()
-#endif
+#endif // ZH
 	Bool					m_isPrerequisite;							///< Is this thing considered in a prerequisite for any other thing?
 	Bool					m_isBridge;										///< True if this model is a bridge.
  	Bool					m_isBuildFacility;						///< is this the build facility for something? (calculated based on other template's prereqs)
@@ -824,7 +824,7 @@ private:
 #ifdef ZH
 	Bool          m_enterGuard;									///< Whether or not I can enter objects when guarding
 	Bool          m_hijackGuard;								///< Whether or not I can hijack objects when guarding
-#endif
+#endif // ZH
 	Bool					m_isForbidden;								///< useful when overriding in <mapfile>.ini
 	Bool					m_armorCopiedFromDefault;
 	Bool					m_weaponsCopiedFromDefault;

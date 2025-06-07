@@ -708,10 +708,10 @@ void AABTreeCullSystemClass::Load(ChunkLoadClass & cload)
 	if (cload.Cur_Chunk_ID() != AABTREE_CHUNK_VERSION) {
 #ifdef OG
 		WWDEBUG_ERROR(("Attempting to read an obsolete AAB-Tree!"));
-#endif
+#endif // OG
 #ifdef ZH
 		WWDEBUG_SAY(("Attempting to read an obsolete AAB-Tree!"));
-#endif
+#endif // ZH
 		cload.Close_Chunk();
 		return;
 	}
@@ -722,10 +722,10 @@ void AABTreeCullSystemClass::Load(ChunkLoadClass & cload)
 	if (version != AABTREE_CURRENT_VERSION) {
 #ifdef OG
 		WWDEBUG_ERROR(("Attempting to read an obsolete AAB-Tree!"));
-#endif
+#endif // OG
 #ifdef ZH
 		WWDEBUG_SAY(("Attempting to read an obsolete AAB-Tree!"));
-#endif
+#endif // ZH
 		cload.Close_Chunk();
 		return;
 	}

@@ -145,4 +145,4 @@ extern ObjectStatusMaskType OBJECT_STATUS_MASK_NONE;	// inits to all zeroes
 
 #endif /* __OBJECT_STATUS_TYPES_H */
 
-#endif
+#endif // ZH

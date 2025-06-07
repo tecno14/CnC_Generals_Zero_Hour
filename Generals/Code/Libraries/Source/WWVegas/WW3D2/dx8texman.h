@@ -28,28 +28,28 @@
  *                                                                                             *
 #ifdef OG
  *                      $Author:: Jani_p                                                      $*
-#endif
+#endif // OG
 #ifdef ZH
  *                       Author : Kenny Mitchell                                               * 
-#endif
+#endif // ZH
  *                                                                                             *
 #ifdef OG
  *                     $Modtime:: 7/26/01 5:12p                                               $*
-#endif
+#endif // OG
 #ifdef ZH
  *                     $Modtime:: 06/27/02 1:27p                                              $*
-#endif
+#endif // ZH
  *                                                                                             *
 #ifdef OG
  *                    $Revision:: 3                                                           $*
-#endif
+#endif // OG
 #ifdef ZH
  *                    $Revision:: 4                                                           $*
-#endif
+#endif // ZH
  *                                                                                             *
 #ifdef ZH
  * 06/27/02 KM Texture class abstraction																			*
-#endif
+#endif // ZH
  *---------------------------------------------------------------------------------------------*
  * Functions:                                                                                  *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
@@ -73,14 +73,14 @@ class DX8TextureManagerClass;
 
 #ifdef OG
 class DX8TextureTrackerClass : public MultiListObjectClass
-#endif
+#endif // OG
 #ifdef ZH
 class TextureTrackerClass : public MultiListObjectClass
-#endif
+#endif // ZH
 {
 #ifdef OG
 friend DX8TextureManagerClass;
-#endif
+#endif // OG
 public:
 #ifdef OG
 	DX8TextureTrackerClass(unsigned int w, unsigned int h, WW3DFormat format,
@@ -88,7 +88,7 @@ public:
 		TextureClass *tex):
 	Width(w),
 
-#endif
+#endif // OG
 #ifdef ZH
 	TextureTrackerClass
 	(
@@ -98,15 +98,15 @@ public:
 		TextureBaseClass *tex
 	)
 	: Width(w),
-#endif
+#endif // ZH
 	Height(h),
 #ifdef OG
 	Format(format),
-#endif
+#endif // OG
 	Mip_level_count(count),
 #ifdef OG
 	RenderTarget(rt),
-#endif
+#endif // OG
 	Texture(tex)	
 #ifdef ZH
 	{
@@ -115,23 +115,23 @@ public:
 	virtual void Recreate() const =0;
 
 	void Release()
-#endif
+#endif // ZH
 	{
 #ifdef ZH
 		Texture->Set_D3D_Base_Texture(NULL);
-#endif
+#endif // ZH
 	}
 #ifdef OG
 private:
 
-#endif
+#endif // OG
 #ifdef ZH
 
 	TextureBaseClass* Get_Texture() const { return Texture; }
 
 protected:
 
-#endif
+#endif // ZH
 	unsigned int Width;
 	unsigned int Height;
 #ifdef ZH
@@ -173,16 +173,16 @@ public:
 	}
 
 private:
-#endif
+#endif // ZH
 	WW3DFormat Format;
 #ifdef OG
 	TextureClass::MipCountType Mip_level_count;
-#endif
+#endif // OG
 	bool RenderTarget;
 #ifdef OG
 	TextureClass *Texture;
 
-#endif
+#endif // OG
 #ifdef ZH
 };
 
@@ -219,7 +219,7 @@ public:
 
 private:
 	WW3DZFormat ZFormat;
-#endif
+#endif // ZH
 };
 
 class DX8TextureManagerClass
@@ -229,20 +229,20 @@ public:
 #ifdef OG
 	static void Add(DX8TextureTrackerClass *track);
 	static void Remove(TextureClass *tex);
-#endif
+#endif // OG
 #ifdef ZH
 	static void Add(TextureTrackerClass *track);
 	static void Remove(TextureBaseClass *tex);
-#endif
+#endif // ZH
 	static void Release_Textures();
 	static void Recreate_Textures();
 private:
 #ifdef OG
 	static DX8TextureTrackerList Managed_Textures;
-#endif
+#endif // OG
 #ifdef ZH
 	static TextureTrackerList Managed_Textures;
-#endif
+#endif // ZH
 };
 
 #endif // ifdef TEXTUREMANAGER

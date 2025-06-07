@@ -24,7 +24,7 @@
 #include <memory.h>
 #ifdef ZH
 #include <stdio.h>
-#endif
+#endif // ZH
 
 static unsigned char RC4_Temp_Byte;
 #define RC4_SWAP_BYTE(a,b) RC4_Temp_Byte=a; a=b; b=RC4_Temp_Byte
@@ -87,7 +87,7 @@ static unsigned char RC4_Table_Init[]={
 	250, 251, 252, 253, 254,
 	255
 };
-#endif
+#endif // ZH
 
 //
 // Don't rely on this to zero the key
@@ -116,27 +116,27 @@ void RC4Class::Prepare_Key(const unsigned char *key_data_ptr, int key_data_len)
 			break;
 
 		default:
-#endif
+#endif // ZH
 {
 	unsigned char index1;
 	unsigned char index2;
 	unsigned char *state;
 #ifdef OG
 	int counter;
-#endif
+#endif // OG
 #ifdef ZH
 			unsigned short	counter;
-#endif
+#endif // ZH
 
 	state = &Key.State[0];
 #ifdef OG
 	for (counter = 0; counter < 256; counter++)
 		state[counter] = (unsigned char)counter;
-#endif
+#endif // OG
 #ifdef ZH
 			memcpy(state, RC4_Table_Init, 256);
 
-#endif
+#endif // ZH
 	Key.X = 0;
 	Key.Y = 0;
 	index1 = 0;
@@ -144,10 +144,10 @@ void RC4Class::Prepare_Key(const unsigned char *key_data_ptr, int key_data_len)
 	for (counter = 0; counter < 256; counter++) {
 #ifdef OG
 		index2 = (unsigned char)(key_data_ptr[index1] + state[counter] + index2);
-#endif
+#endif // OG
 #ifdef ZH
 				index2 = (key_data_ptr[index1] + state[counter] + index2);
-#endif
+#endif // ZH
 		RC4_SWAP_BYTE(state[counter], state[index2]);
 		index1 = (unsigned char)((index1 + 1) % key_data_len);
 #ifdef ZH
@@ -161,11 +161,11 @@ void RC4Class::Print_State(void) {
 	state = &Key.State[0];
 	for (int i=0; i<256; i+=5) {
 		printf("	%3d	%3d	%3d	%3d	%3d\n",state[i], state[i+1], state[i+2], state[i+3], state[i+4]);
-#endif
+#endif // ZH
 	}
 #ifdef ZH
 	printf("X = %d		Y = %d\n\n",Key.X,Key.Y);
-#endif
+#endif // ZH
 }
 
 
@@ -182,11 +182,11 @@ void RC4Class::RC4(unsigned char *buffer_ptr, int buffer_len)
 #ifdef OG
 	int counter;
 
-#endif
+#endif // OG
 #ifdef ZH
 	unsigned char *buffer_end=buffer_ptr+buffer_len;
 	unsigned char *buffer_cur=buffer_ptr;
-#endif
+#endif // ZH
 
 	x = Key.X;
 	y = Key.Y;
@@ -194,21 +194,21 @@ void RC4Class::RC4(unsigned char *buffer_ptr, int buffer_len)
 	state = &Key.State[0];
 #ifdef OG
 	for (counter = 0; counter < buffer_len; counter++) {
-#endif
+#endif // OG
 #ifdef ZH
 	while(buffer_cur != buffer_end) {
-#endif
+#endif // ZH
 		x++;
 		y = (unsigned char)(y + state[x]);
 		RC4_SWAP_BYTE(state[x], state[y]);
 #ifdef OG
 		buffer_ptr[counter] ^= state[(state[x] + state[y]) & 255];
 
-#endif
+#endif // OG
 #ifdef ZH
 		*buffer_cur ^= state[(state[x] + state[y]) & 255];
 		++buffer_cur;
-#endif
+#endif // ZH
 	}
 	Key.X = x;
 	Key.Y = y;
@@ -281,5 +281,5 @@ void RC4Class::Prepare_Key_16bytes(const unsigned char *key_data_ptr)
 		++index1;
 		index1 &= 0x0F;
 	}
-#endif
+#endif // ZH
 }

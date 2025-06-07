@@ -27,10 +27,10 @@
 // Used to set detail levels of various game systems.
 #ifdef OG
 //  Steven Johnson Wilczynski, Sept 2002
-#endif
+#endif // OG
 #ifdef ZH
 //  Steven Johnson, Sept 2002
-#endif
+#endif // ZH
 //
 //
 ///////////////////////////////////////////////////////////////////////////////
@@ -171,7 +171,7 @@ const char* ModelConditionFlags::s_bitNameList[] =
 	"JAMMED",
 	"ARMORSET_CRATEUPGRADE_ONE",
 	"ARMORSET_CRATEUPGRADE_TWO",
-#endif
+#endif // ZH
 
 #ifdef ZH
 	"USER_1",	
@@ -179,7 +179,7 @@ const char* ModelConditionFlags::s_bitNameList[] =
 	
 	"DISGUISED",
 	
-#endif
+#endif // ZH
 	NULL
 };
  
@@ -194,7 +194,7 @@ const char* ArmorSetFlags::s_bitNameList[] =
 	"SECOND_LIFE",
 	"CRATE_UPGRADE_ONE",
 	"CRATE_UPGRADE_TWO",
-#endif
+#endif // ZH
 
 	NULL
 };

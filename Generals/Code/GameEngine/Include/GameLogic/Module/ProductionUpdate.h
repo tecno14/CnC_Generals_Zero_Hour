@@ -179,7 +179,7 @@ public:
 	virtual const CommandButton* getSpecialPowerConstructionCommandButton() const = 0;
 	virtual void setSpecialPowerConstructionCommandButton( const CommandButton *commandButton ) = 0;
 
-#endif
+#endif // ZH
 };
 
 //-------------------------------------------------------------------------------------------------
@@ -240,7 +240,7 @@ public:
 	virtual const CommandButton* getSpecialPowerConstructionCommandButton() const { return m_specialPowerConstructionCommandButton; }
 	virtual void setSpecialPowerConstructionCommandButton( const CommandButton *commandButton ) { m_specialPowerConstructionCommandButton = commandButton; }
 
-#endif
+#endif // ZH
 	// DieModuleInterface
 	virtual void onDie( const DamageInfo *damageInfo );
 
@@ -262,7 +262,7 @@ protected:
 
 #ifdef ZH
 	const CommandButton *m_specialPowerConstructionCommandButton; ///< In a mode to construct a specific building via a special power. (NO NEED TO SAVE DATA ON THIS FIELD)
-#endif
+#endif // ZH
 	ProductionEntry*		m_productionQueue;							///< queue of things we want to build
 	ProductionEntry*		m_productionQueueTail;					///< tail pointer for m_productionQueue
 	ProductionID				m_uniqueID;											///< unique ID counter for producing units

@@ -84,4 +84,4 @@ extern TGAToDXTClass _TGAToDXTConverter;
 #endif //0
 
 #endif
-#endif
+#endif // ZH

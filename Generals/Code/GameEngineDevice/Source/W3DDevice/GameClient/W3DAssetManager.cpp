@@ -71,7 +71,7 @@
 #include "Common/GlobalData.h"
 #ifdef ZH
 #include "Common/GameCommon.h"
-#endif
+#endif // ZH
 
 #ifdef _INTERNAL
 // for occasional debugging...
@@ -198,16 +198,16 @@ TextureClass *	W3DAssetManager::Get_Texture
 }
 
 #if 0	//this function is obsolete in latest C&C3 drop.  Use the one above.
-#endif
+#endif // ZH
 //---------------------------------------------------------------------
 TextureClass *W3DAssetManager::Get_Texture(
 	const char * filename,
 #ifdef OG
 	TextureClass::MipCountType mip_level_count,
-#endif
+#endif // OG
 #ifdef ZH
 	MipCountType mip_level_count,
-#endif
+#endif // ZH
 	WW3DFormat texture_format,
 	bool allow_compression
 )
@@ -257,10 +257,10 @@ TextureClass *W3DAssetManager::Get_Texture(
 //		}
 #ifdef OG
 #if defined(_DEBUG) || defined(_INTERNAL)
-#endif
+#endif // OG
 #ifdef ZH
 #if defined(_DEBUG) || defined(_INTERNAL) || defined(_ALLOW_DEBUG_CHEATS_IN_RELEASE)
-#endif
+#endif // ZH
 		if (TheGlobalData->m_preloadReport)
 		{	
 			//loading a new asset and app is requesting a log of all loaded assets.
@@ -286,7 +286,7 @@ TextureClass *W3DAssetManager::Get_Texture(
 #ifdef ZH
 
 #endif
-#endif
+#endif // ZH
 
 //---------------------------------------------------------------------
 RenderObjClass * W3DAssetManager::Create_Render_Obj(const char* name)
@@ -686,10 +686,10 @@ TextureClass * W3DAssetManager::Recolor_Texture_One_Time(TextureClass *texture, 
 	if (!texture->Is_Initialized())	
 #ifdef OG
 		TextureLoader::Request_High_Priority_Loading(texture, (TextureClass::MipCountType)texture->Get_Mip_Level_Count());
-#endif
+#endif // OG
 #ifdef ZH
 		TextureLoader::Request_Foreground_Loading(texture);
-#endif
+#endif // ZH
 
 	SurfaceClass::SurfaceDescription desc;
 	SurfaceClass *newsurf, *oldsurf;
@@ -717,7 +717,7 @@ TextureClass * W3DAssetManager::Recolor_Texture_One_Time(TextureClass *texture, 
 	newtex->Set_Mip_Mapping(texture->Get_Mip_Mapping());
 	newtex->Set_U_Addr_Mode(texture->Get_U_Addr_Mode());
 	newtex->Set_V_Addr_Mode(texture->Get_V_Addr_Mode());
-#endif
+#endif // OG
 #ifdef ZH
 	TextureClass * newtex=NEW_REF(TextureClass,(newsurf,(MipCountType)texture->Get_Mip_Level_Count()));
 	newtex->Get_Filter().Set_Mag_Filter(texture->Get_Filter().Get_Mag_Filter());
@@ -725,7 +725,7 @@ TextureClass * W3DAssetManager::Recolor_Texture_One_Time(TextureClass *texture, 
 	newtex->Get_Filter().Set_Mip_Mapping(texture->Get_Filter().Get_Mip_Mapping());
 	newtex->Get_Filter().Set_U_Addr_Mode(texture->Get_Filter().Get_U_Addr_Mode());
 	newtex->Get_Filter().Set_V_Addr_Mode(texture->Get_Filter().Get_V_Addr_Mode());
-#endif
+#endif // ZH
 
 	char newname[512];	
 	Munge_Texture_Name(newname, name, color);
@@ -891,7 +891,7 @@ RenderObjClass * W3DAssetManager::Create_Render_Obj(
 		if (reallyscale)
 			rendobj->Scale(scale);	//this also makes it unique
 
-#endif
+#endif // ZH
 		Make_Unique(rendobj,reallyscale,reallycolor);
 		if (reallytexture)
 		{	
@@ -904,7 +904,7 @@ RenderObjClass * W3DAssetManager::Create_Render_Obj(
 #ifdef OG
 		if (reallyscale)
 			rendobj->Scale(scale);
-#endif
+#endif // OG
 
 		if (reallycolor)
 			Recolor_Asset(rendobj,color);
@@ -1278,7 +1278,7 @@ void W3DAssetManager::Make_Mesh_Unique(RenderObjClass *robj, Bool geometry, Bool
 		//Create unique data for this mesh
 #ifdef ZH
 		if (!geometry)	//scaling geometry automatically makes it unique so not needed here.
-#endif
+#endif // ZH
 		mesh->Make_Unique();
 		
 		MeshModelClass * model = mesh->Get_Model();
@@ -1296,7 +1296,7 @@ void W3DAssetManager::Make_Mesh_Unique(RenderObjClass *robj, Bool geometry, Bool
 		{
 			// make geometry unique		
 			model->Make_Geometry_Unique();		
-#endif
+#endif // OG
 		}
 
 		REF_PTR_RELEASE(model);

@@ -50,7 +50,7 @@ class Thing;
 class W3DModelDrawModuleData;	// ugh, hack (srj)
 #ifdef ZH
 class W3DTreeDrawModuleData; // ugh, hack (srj)
-#endif
+#endif // ZH
 struct FieldParse;
 
 // TYPES //////////////////////////////////////////////////////////////////////////////////////////
@@ -118,7 +118,7 @@ public:
 #ifdef ZH
 	// ugh, hack
 	virtual const W3DTreeDrawModuleData* getAsW3DTreeDrawModuleData() const { return NULL; }
-#endif
+#endif // ZH
 	virtual StaticGameLODLevel getMinimumRequiredGameLOD() const { return (StaticGameLODLevel)0;}
 
 	static void buildFieldParse(MultiIniFieldParse& p) 
@@ -257,7 +257,7 @@ public:
 	virtual void onCapture( Player *oldOwner, Player *newOwner ) { }
 #ifdef ZH
 	virtual void onDisabledEdge( Bool nowDisabled ) { }
-#endif
+#endif // ZH
 
 protected:
 

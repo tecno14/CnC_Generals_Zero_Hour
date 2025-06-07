@@ -49,11 +49,11 @@
 
 #ifdef ZH
 #if defined(_DEBUG) || defined(_INTERNAL)
-#endif
+#endif // ZH
 #define NO_DEBUG_SUPPLY_STATE
 #ifdef ZH
 #endif
-#endif
+#endif // ZH
 
 #ifdef DEBUG_SUPPLY_STATE
 static const char* statenames[] =
@@ -71,7 +71,7 @@ enum {
 	REGROUP_SUCCESS_DISTANCE_SQUARED = 225
 };
 
-#endif
+#endif // ZH
 //-------------------------------------------------------------------------------------------------
 //-------------------------------------------------------------------------------------------------
 //-------------------------------------------------------------------------------------------------
@@ -431,11 +431,11 @@ SupplyTruckStateMachine::SupplyTruckStateMachine( Object *owner ) : StateMachine
 #ifdef OG
 		StateConditionInfo(ownerIdle, ST_IDLE, NULL),
 		StateConditionInfo(ownerDocking, ST_DOCKING, NULL),
-#endif
+#endif // OG
 #ifdef ZH
 		StateConditionInfo(ownerPlayerCommanded, ST_BUSY, NULL),
 
-#endif
+#endif // ZH
 		StateConditionInfo(NULL, NULL, NULL)	// keep last
 	};
 
@@ -510,7 +510,7 @@ TheInGameUI->DEBUG_addFloatingText("entering wanting state", getMachineOwner()->
 	// So a force means one try at the wanting state, then back to normal.
 	update->setForceWantingState(false);
 
-#endif
+#endif // ZH
 	return STATE_CONTINUE;
 }
 
@@ -595,12 +595,12 @@ TheInGameUI->DEBUG_addFloatingText("entering regrouping state", getMachineOwner(
 	// If we are forced to regroup, and we have boxes, we want to wait for the player to
 	// rebuild a supply center & go to it. 
 	Bool wanting = numBoxes > 0;
-#endif
+#endif // OG
 
 #ifdef OG
 	update->setForceWantingState( wanting );
 
-#endif
+#endif // OG
 	Object *destinationObject = NULL;
 	
 	KindOfMaskType kindof;
@@ -631,7 +631,7 @@ TheInGameUI->DEBUG_addFloatingText("entering regrouping state", getMachineOwner(
 
 	if( ThePartitionManager->getDistanceSquared(owner, destinationObject, FROM_BOUNDINGSPHERE_2D) < REGROUP_SUCCESS_DISTANCE_SQUARED )
 		return STATE_CONTINUE; // Don't say Success so we don't spin the machine.  After one update we'll go back.
-#endif
+#endif // ZH
 
 	Coord3D destination;
 	FindPositionOptions fpOptions;
@@ -658,7 +658,7 @@ StateReturnType RegroupingState::update()
 }
 
 //-------------------------------------------------------------------------------------------------
-#endif
+#endif // ZH
 void RegroupingState::onExit(StateExitType status)
 {
 #ifdef DEBUG_SUPPLY_STATE
@@ -792,7 +792,7 @@ TheInGameUI->DEBUG_addFloatingText(tmp, owner->getPosition(), GameMakeColor(255,
 #ifdef DEBUG_SUPPLY_STATE
 AsciiString tmp;
 tmp.format("ownerPlayerCommanded returns true (%s)",statenames[thisState->getID()]);
-#endif
+#endif // ZH
 TheInGameUI->DEBUG_addFloatingText(tmp, owner->getPosition(), GameMakeColor(255, 0, 0, 255));
 #endif
 		return true;

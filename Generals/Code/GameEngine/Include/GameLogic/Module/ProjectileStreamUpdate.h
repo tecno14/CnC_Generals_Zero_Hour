@@ -59,10 +59,10 @@ public:
 
 #ifdef OG
 	void addProjectile( ObjectID sourceID, ObjectID newID );	///< This projectile was just shot, so keep track of it.
-#endif
+#endif // OG
 #ifdef ZH
 	void addProjectile( ObjectID sourceID, ObjectID newID, ObjectID victimID, const Coord3D *victimPos );	///< This projectile was just shot, so keep track of it.
-#endif
+#endif // ZH
 	void getAllPoints( Vector3 *points, Int *count );					///< unroll circlular array and write down all projectile positions
 	void setPosition( const Coord3D *newPosition );						///< I need to exist at the place I want to draw since only (near) on screen Drawables get updated
 
@@ -82,7 +82,7 @@ protected:
 	
 	ObjectID m_targetObject;///< Need to insert a hole if target changes, so track target ID and target position
 	Coord3D m_targetPosition;
-#endif
+#endif // ZH
 };
 
 

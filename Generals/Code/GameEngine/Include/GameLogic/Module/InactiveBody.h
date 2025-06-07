@@ -60,16 +60,16 @@ public:
 
 #ifdef OG
 	void onVeterancyLevelChanged( VeterancyLevel oldLevel, VeterancyLevel newLevel ) { /* nothing */ }
-#endif
+#endif // OG
 #ifdef ZH
 	void onVeterancyLevelChanged( VeterancyLevel oldLevel, VeterancyLevel newLevel, Bool provideFeedback ) { /* nothing */ }
-#endif
+#endif // ZH
 
 	virtual void setArmorSetFlag(ArmorSetType ast) { /* nothing */ }
 	virtual void clearArmorSetFlag(ArmorSetType ast) { /* nothing */ }
 #ifdef ZH
 	virtual Bool testArmorSetFlag(ArmorSetType ast){ return FALSE; }
-#endif
+#endif // ZH
 
 	virtual void internalChangeHealth( Real delta );
 

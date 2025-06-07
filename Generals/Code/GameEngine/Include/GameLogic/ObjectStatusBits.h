@@ -107,4 +107,4 @@ static const char *TheObjectStatusBitNames[] =
 
 #endif /* __OBJECTSTATUSBITS_H__ */
 
-#endif
+#endif // OG

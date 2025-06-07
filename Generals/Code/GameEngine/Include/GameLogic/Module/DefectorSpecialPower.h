@@ -78,10 +78,10 @@ public:
 	virtual void doSpecialPowerAtObject( Object *obj, UnsignedInt commandOptions );
 #ifdef OG
 	virtual void doSpecialPowerAtLocation( const Coord3D *loc, UnsignedInt commandOptions );
-#endif
+#endif // OG
 #ifdef ZH
 	virtual void doSpecialPowerAtLocation( const Coord3D *loc, Real angle, UnsignedInt commandOptions );
-#endif
+#endif // ZH
 
 protected:
 

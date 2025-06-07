@@ -44,7 +44,7 @@
 #define TIMEGETTIME SystemTime.Get
 #ifdef ZH
 #define MS_TIMER_SECOND 1000
-#endif
+#endif // ZH
 
 /*
 ** Class that just wraps around timeGetTime()

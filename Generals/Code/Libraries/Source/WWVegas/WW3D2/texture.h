@@ -26,33 +26,33 @@
  *                                                                                             *
 #ifdef OG
  *                      $Author:: Jani_p                                                      $*
-#endif
+#endif // OG
 #ifdef ZH
  *                  $Org Author:: Jani_p                                                      $*
-#endif
+#endif // ZH
  *                                                                                             *
 #ifdef OG
  *                     $Modtime:: 8/17/01 9:41a                                               $*
 
-#endif
+#endif // OG
 #ifdef ZH
  *                       Author : Kenny Mitchell                                               * 
  *                                                                                             * 
  *                     $Modtime:: 08/05/02 1:27p                                              $*
-#endif
+#endif // ZH
  *                                                                                             *
 #ifdef OG
  *                    $Revision:: 35                                                          $*
-#endif
+#endif // OG
 #ifdef ZH
  *                    $Revision:: 46                                                          $*
-#endif
+#endif // ZH
  *                                                                                             *
 #ifdef ZH
  * 05/16/02 KM Base texture class to abstract major texture types, e.g. 3d, z, cube, etc.
  * 06/27/02 KM Texture class abstraction																			*
  * 08/05/02 KM Texture class redesign (revisited)
-#endif
+#endif // ZH
  *---------------------------------------------------------------------------------------------*
  * Functions:                                                                                  *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
@@ -74,7 +74,7 @@
 #ifdef ZH
 #include "vector3.h"
 #include "texturefilter.h"
-#endif
+#endif // ZH
 
 #ifdef ZH
 struct IDirect3DBaseTexture8;
@@ -82,21 +82,21 @@ struct IDirect3DTexture8;
 struct IDirect3DCubeTexture8;
 struct IDirect3DVolumeTexture8;
 
-#endif
+#endif // ZH
 class DX8Wrapper;
 #ifdef OG
 struct IDirect3DTexture8;
-#endif
+#endif // OG
 class TextureLoader;
 class LoaderThreadClass;
 #ifdef OG
 class DX8TextureManagerClass;
-#endif
+#endif // OG
 class TextureLoadTaskClass;
 #ifdef ZH
 class CubeTextureClass;
 class VolumeTextureClass;
-#endif
+#endif // ZH
 
 #ifdef OG
 /*************************************************************************
@@ -108,11 +108,11 @@ class VolumeTextureClass;
 **
 *************************************************************************/
 class TextureClass : public W3DMPO, public RefCountClass
-#endif
+#endif // OG
 #ifdef ZH
 class TextureBaseClass : public RefCountClass
 
-#endif
+#endif // ZH
 {
 #ifdef OG
 	W3DMPO_GLUE(TextureClass)
@@ -121,25 +121,25 @@ class TextureBaseClass : public RefCountClass
 	friend TextureLoader;
 	friend LoaderThreadClass;
 	friend DX8TextureManagerClass;
-#endif
+#endif // OG
 #ifdef ZH
 	friend class TextureLoader;
 	friend class LoaderThreadClass;
 	friend class DX8TextureTrackerClass;  //(gth) so it can call Poke_Texture, 
 	friend class DX8ZTextureTrackerClass;
 
-#endif
+#endif // ZH
 
 	public:
 
 #ifdef OG
 		enum PoolType {
 
-#endif
+#endif // OG
 #ifdef ZH
 	enum PoolType 
 	{
-#endif
+#endif // ZH
 			POOL_DEFAULT=0,
 			POOL_MANAGED,
 			POOL_SYSTEMMEM
@@ -152,7 +152,7 @@ class TextureBaseClass : public RefCountClass
 			FILTER_TYPE_BEST,
 			FILTER_TYPE_DEFAULT,
 			FILTER_TYPE_COUNT
-#endif
+#endif // OG
 #ifdef ZH
 	enum TexAssetType
 	{
@@ -160,7 +160,7 @@ class TextureBaseClass : public RefCountClass
 		TEX_CUBEMAP,
 		TEX_VOLUME
 
-#endif
+#endif // ZH
 		};
 
 #ifdef OG
@@ -187,29 +187,29 @@ class TextureBaseClass : public RefCountClass
 
 		// Create texture with desired height, width and format.
 		TextureClass(
-#endif
+#endif // OG
 #ifdef ZH
 	// base constructor for derived classes
 	TextureBaseClass
 	(
 
-#endif
+#endif // ZH
 			unsigned width, 
 			unsigned height, 
 #ifdef OG
 			WW3DFormat format,
-#endif
+#endif // OG
 			MipCountType mip_level_count=MIP_LEVELS_ALL,
 			PoolType pool=POOL_MANAGED,
 #ifdef OG
 			bool rendertarget=false);
 
-#endif
+#endif // OG
 #ifdef ZH
 		bool rendertarget=false,
 		bool reducible=true
 	);
-#endif
+#endif // ZH
 
 #ifdef OG
 		// Create texture from a file. If format is specified the texture is converted to that format.
@@ -226,34 +226,34 @@ class TextureBaseClass : public RefCountClass
 		TextureClass(
 			SurfaceClass *surface, 
 			MipCountType mip_level_count=MIP_LEVELS_ALL);		
-#endif
+#endif // OG
 #ifdef ZH
 	virtual ~TextureBaseClass();
 
-#endif
+#endif // ZH
 
 #ifdef OG
 		TextureClass(IDirect3DTexture8* d3d_texture);
-#endif
+#endif // OG
 #ifdef ZH
 	virtual TexAssetType Get_Asset_Type() const=0;
-#endif
+#endif // ZH
 
 #ifdef OG
 		virtual ~TextureClass(void);
 
-#endif
+#endif // OG
 		// Names
 		void	Set_Texture_Name(const char * name);
 		void	Set_Full_Path(const char * path)			{ FullPath = path; }
 #ifdef OG
 		const char * Get_Texture_Name(void) const		{ return Name; }
 		const char * Get_Full_Path(void) const			{ if (FullPath.Is_Empty ()) return Name; return FullPath; }
-#endif
+#endif // OG
 #ifdef ZH
 	const StringClass& Get_Texture_Name(void) const		{ return Name; }
 	const StringClass& Get_Full_Path(void) const			{ if (FullPath.Is_Empty ()) return Name; return FullPath; }
-#endif
+#endif // ZH
 
 		unsigned Get_ID() const { return texture_id; }	// Each textrure has a unique id
 
@@ -261,19 +261,19 @@ class TextureBaseClass : public RefCountClass
 #ifdef OG
 		unsigned int Get_Mip_Level_Count(void);
 
-#endif
+#endif // OG
 #ifdef ZH
 	unsigned int Get_Mip_Level_Count(void) const
 	{
 		return MipLevelCount;
 	}
-#endif
+#endif // ZH
 
 #ifdef OG
 		// Get surface description of a Mip level (defaults to the highest-resolution one)
 		void Get_Level_Description(SurfaceClass::SurfaceDescription &surface_desc, unsigned int level = 0);
 
-#endif
+#endif // OG
 #ifdef ZH
 	// Note! Width and Height may be zero and may change if texture uses mipmaps
 	int Get_Width() const
@@ -284,19 +284,19 @@ class TextureBaseClass : public RefCountClass
 	{
 		return Height; 
 	}
-#endif
+#endif // ZH
 
 #ifdef OG
 		// Get the surface of one of the mipmap levels (defaults to highest-resolution one)
 		SurfaceClass *Get_Surface_Level(unsigned int level = 0);
 
-#endif
+#endif // OG
 #ifdef ZH
 	// Time, after which the texture is invalidated if not used. Set to zero to indicate infinite.
 	// Time is in milliseconds.
 	void Set_Inactivation_Time(unsigned time) { InactivationTime=time; }
 	int Get_Inactivation_Time() const { return InactivationTime; }
-#endif
+#endif // ZH
 
 		// Texture priority affects texture management and caching.
 		unsigned int Get_Priority(void);
@@ -316,23 +316,23 @@ class TextureBaseClass : public RefCountClass
 		TxtAddrMode Get_V_Addr_Mode(void) const { return VAddressMode; }
 		void Set_U_Addr_Mode(TxtAddrMode mode) { UAddressMode=mode; }
 		void Set_V_Addr_Mode(TxtAddrMode mode) { VAddressMode=mode; }
-#endif
+#endif // OG
 #ifdef ZH
 	// Debug utility functions for returning the texture memory usage
 	virtual unsigned Get_Texture_Memory_Usage() const=0;
 
-#endif
+#endif // ZH
 
 #ifdef OG
 		// Debug utility functions for returning the texture memory usage
 		unsigned Get_Texture_Memory_Usage() const;
-#endif
+#endif // OG
 		bool Is_Initialized() const { return Initialized; }
 		bool Is_Lightmap() const { return IsLightmap; }
 		bool Is_Procedural() const { return IsProcedural; }
 #ifdef ZH
 	bool Is_Reducible() const { return IsReducible; } //can texture be reduced in resolution for LOD purposes?
-#endif
+#endif // ZH
 
 		static int _Get_Total_Locked_Surface_Size();
 		static int _Get_Total_Texture_Size();
@@ -350,11 +350,11 @@ class TextureBaseClass : public RefCountClass
 		static void _Set_Default_Min_Filter(FilterType filter);
 		static void _Set_Default_Mag_Filter(FilterType filter);
 		static void _Set_Default_Mip_Filter(FilterType filter);
-#endif
+#endif // OG
 #ifdef ZH
 	virtual void Init()=0;
 
-#endif
+#endif // ZH
 
 		// This utility function processes the texture reduction (used during rendering)
 		void Invalidate();
@@ -363,18 +363,18 @@ class TextureBaseClass : public RefCountClass
 	// texture accessors (dx8)
 	IDirect3DBaseTexture8 *Peek_D3D_Base_Texture() const;
 	void Set_D3D_Base_Texture(IDirect3DBaseTexture8* tex);
-#endif
+#endif // ZH
 
 #ifdef OG
 		IDirect3DTexture8 *Peek_DX8_Texture()
 		{
 			return D3DTexture;
 		}
-#endif
+#endif // OG
 #ifdef ZH
 	PoolType Get_Pool() const { return Pool; }
 
-#endif
+#endif // ZH
 
 		bool Is_Missing_Texture();
 
@@ -382,7 +382,7 @@ class TextureBaseClass : public RefCountClass
 		bool Is_Dirty() { WWASSERT(Pool==POOL_DEFAULT); return Dirty; };
 #ifdef ZH
 	void Set_Dirty() { WWASSERT(Pool==POOL_DEFAULT); Dirty=true; }
-#endif
+#endif // ZH
 		void Clean() { Dirty=false; };
 #ifdef ZH
 
@@ -390,14 +390,14 @@ class TextureBaseClass : public RefCountClass
 	const Vector3& Get_HSV_Shift() { return HSVShift; }
 
 	bool Is_Compression_Allowed() const { return IsCompressionAllowed; }
-#endif
+#endif // ZH
 
 		unsigned Get_Reduction() const;
 #ifdef OG
 		WW3DFormat Get_Texture_Format() const { return TextureFormat; }
 		bool Is_Compression_Allowed() const { return IsCompressionAllowed; }
 
-#endif
+#endif // OG
 #ifdef ZH
 
 	// Background texture loader will call this when texture has been loaded
@@ -424,13 +424,13 @@ class TextureBaseClass : public RefCountClass
 	IDirect3DTexture8* Peek_D3D_Texture() const { return (IDirect3DTexture8*)Peek_D3D_Base_Texture(); }
 	IDirect3DVolumeTexture8* Peek_D3D_VolumeTexture() const { return (IDirect3DVolumeTexture8*)Peek_D3D_Base_Texture(); }
 	IDirect3DCubeTexture8* Peek_D3D_CubeTexture() const { return (IDirect3DCubeTexture8*)Peek_D3D_Base_Texture(); }
-#endif
+#endif // ZH
 
 	protected:
 #ifdef OG
 		// Apply this texture's settings into D3D
 		virtual void Apply(unsigned int stage);
-#endif
+#endif // OG
 		void Load_Locked_Surface();
 #ifdef ZH
 	void Poke_Texture(IDirect3DBaseTexture8* tex) { D3DTexture = tex; }
@@ -447,27 +447,27 @@ class TextureBaseClass : public RefCountClass
 	unsigned ExtendedInactivationTime;	// This is set by the engine, if needed
 	unsigned LastInactivationSyncTime;
 	mutable unsigned LastAccessed;
-#endif
+#endif // ZH
 
 #ifdef OG
 		void Init();
 
-#endif
+#endif // OG
 #ifdef ZH
 	// If this is non-zero, the texture will have a hue shift done at the next init (this
 	// value should only be changed by Set_HSV_Shift() function, which also invalidates the
 	// texture).
 	Vector3 HSVShift;	
-#endif
+#endif // ZH
 
 #ifdef OG
 		// Apply a Null texture's settings into D3D
 		static void Apply_Null(unsigned int stage);
-#endif
+#endif // OG
 #ifdef ZH
 	int Width;
 	int Height;
-#endif
+#endif // ZH
 
 #ifdef OG
 		// State not contained in the Direct3D texture object:
@@ -476,21 +476,21 @@ class TextureBaseClass : public RefCountClass
 		FilterType MipMapFilter;
 		TxtAddrMode UAddressMode;
 		TxtAddrMode VAddressMode;
-#endif
+#endif // OG
 #ifdef ZH
 private:
 
-#endif
+#endif // ZH
 
 		// Direct3D texture object
 #ifdef OG
 		IDirect3DTexture8 *D3DTexture;
 		bool Initialized;
-#endif
+#endif // OG
 #ifdef ZH
 	IDirect3DBaseTexture8 *D3DTexture;
 
-#endif
+#endif // ZH
 
 		// Name
 		StringClass Name;
@@ -561,7 +561,7 @@ public:
 	);		
 
 	TextureClass(IDirect3DBaseTexture8* d3d_texture);
-#endif
+#endif // ZH
 
 #ifdef OG
 		// NOTE: Since "texture wrapping" (NOT TEXTURE WRAP MODE - THIS IS
@@ -570,7 +570,7 @@ public:
 		// it for now. Later (probably when we implement world-oriented
 		// environment maps) we will consider where to put it.
 
-#endif
+#endif // OG
 #ifdef ZH
 	// defualt constructors for derived classes (cube & vol)
 	TextureClass
@@ -606,52 +606,52 @@ public:
 	virtual unsigned Get_Texture_Memory_Usage() const;
 
 	virtual TextureClass* As_TextureClass() { return this; }
-#endif
+#endif // ZH
 
 #ifdef OG
 		// For debug purposes the texture sets this true if it is a lightmap texture
 		bool IsLightmap;
 		bool IsProcedural;
 		bool IsCompressionAllowed;
-#endif
+#endif // OG
 #ifdef ZH
 protected:
 
-#endif
+#endif // ZH
 
 #ifdef OG
 		unsigned LastAccessed;
 		WW3DFormat TextureFormat;
-#endif
+#endif // OG
 #ifdef ZH
 	WW3DFormat				TextureFormat;
 
-#endif
+#endif // ZH
 
 #ifdef OG
 		// Support for self-managed textures
 
-#endif
+#endif // OG
 #ifdef ZH
 	// legacy
 	TextureFilterClass	Filter;
 };
-#endif
+#endif // ZH
 
 #ifdef OG
 		PoolType Pool;
 		bool Dirty;
-#endif
+#endif // OG
 #ifdef ZH
 class ZTextureClass : public TextureBaseClass
 {
-#endif
+#endif // ZH
 public:
 #ifdef OG
 		MipCountType MipLevelCount;
 		TextureLoadTaskClass* TextureLoadTask;
 
-#endif
+#endif // OG
 #ifdef ZH
 	// Create a z texture with desired height, width and format
 	ZTextureClass
@@ -669,12 +669,12 @@ public:
 
 	virtual void Init() {}
 
-#endif
+#endif // ZH
 		// Background texture loader will call this when texture has been loaded
 #ifdef OG
 		void Apply_New_Surface(bool initialized);	// If the parameter is true, the texture will be flagged as initialised
 
-#endif
+#endif // OG
 #ifdef ZH
 	virtual void Apply_New_Surface(IDirect3DBaseTexture8* tex, bool initialized, bool disable_auto_invalidation = false);	// If the parameter is true, the texture will be flagged as initialised
 
@@ -730,16 +730,16 @@ public:
 	virtual TexAssetType Get_Asset_Type() const { return TEX_CUBEMAP; }
 
 	virtual CubeTextureClass* As_CubeTextureClass() { return this; }
-#endif
+#endif // ZH
 
 };
 
 #ifdef OG
 class BumpmapTextureClass : public TextureClass
-#endif
+#endif // OG
 #ifdef ZH
 class VolumeTextureClass : public TextureClass
-#endif
+#endif // ZH
 {
 public:
 #ifdef OG
@@ -747,7 +747,7 @@ public:
 	BumpmapTextureClass(TextureClass* texture);
 	virtual ~BumpmapTextureClass();
 
-#endif
+#endif // OG
 #ifdef ZH
 	// Create texture with desired height, width and format.
 	VolumeTextureClass
@@ -793,7 +793,7 @@ public:
 protected:
 
 	int Depth;
-#endif
+#endif // ZH
 };
 
 // Utility functions for loading and saving texture descriptions from/to W3D files

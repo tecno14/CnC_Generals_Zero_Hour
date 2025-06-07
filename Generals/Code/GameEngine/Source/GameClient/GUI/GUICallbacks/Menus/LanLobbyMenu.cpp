@@ -267,7 +267,7 @@ void LANPreferences::setStartingCash( const Money & startingCash )
   (*this)[startingCashKey] = option;
 }
 
-#endif
+#endif // ZH
 // PRIVATE DATA ///////////////////////////////////////////////////////////////////////////////////
 
 

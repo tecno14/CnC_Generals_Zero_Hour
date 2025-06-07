@@ -2578,4 +2578,4 @@ void CAboutDlg::OnButton1()
 }
 
 
-#endif
+#endif // ZH

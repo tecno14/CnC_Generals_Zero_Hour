@@ -98,12 +98,12 @@
 #include "GameLogic/Module/BattlePlanUpdate.h"
 #ifdef ZH
 #include "GameLogic/Module/ProductionUpdate.h"
-#endif
+#endif // ZH
 #include "GameLogic/VictoryConditions.h"
 
 #ifdef ZH
 #include "GameNetwork/GameInfo.h"
-#endif
+#endif // ZH
 
 #ifdef _INTERNAL
 // for occasional debugging...
@@ -319,11 +319,11 @@ Player::Player( Int playerIndex )
 	m_pBuildList = NULL;
 #ifdef OG
 #if !defined(_PLAYTEST)
-#endif
+#endif // OG
 	m_ai = NULL;
 #ifdef OG
 #endif
-#endif
+#endif // OG
 	m_resourceGatheringManager = NULL;
 	m_defaultTeam = NULL;
 	m_radarCount = 0;
@@ -335,12 +335,12 @@ Player::Player( Int playerIndex )
 #ifdef OG
 	m_upgradesInProgress = 0;
 	m_upgradesCompleted = 0;
-#endif
+#endif // OG
 	m_tunnelSystem = NULL;
 	m_playerTemplate = NULL;
 #ifdef OG
 	m_visionSpiedMask = PLAYERMASK_NONE;
-#endif
+#endif // OG
 	m_battlePlanBonuses = NULL;
 	m_skillPointsModifier = 1.0f;
 	//Added By Sadullah 
@@ -355,7 +355,7 @@ Player::Player( Int playerIndex )
 	m_side = 0;
 #ifdef ZH
 	m_baseSide = 0;
-#endif
+#endif // ZH
 	m_skillPoints = 0;
 	Int i;
 	m_upgradeList = NULL;
@@ -369,7 +369,7 @@ Player::Player( Int playerIndex )
 		m_attackedBy[i] = false;
 #ifdef OG
 		m_visionSpiedBy[i] = 0;
-#endif
+#endif // OG
 	}
 	m_attackedFrame = 0;
 
@@ -415,7 +415,7 @@ void Player::init(const PlayerTemplate* pt)
 
 #ifdef OG
 #if !defined(_PLAYTEST)
-#endif
+#endif // OG
 	if (m_ai)
 	{
 		m_ai->deleteInstance();
@@ -423,7 +423,7 @@ void Player::init(const PlayerTemplate* pt)
 	m_ai = NULL;
 #ifdef OG
 #endif
-#endif
+#endif // OG
 
 	if( m_resourceGatheringManager )
 	{
@@ -466,7 +466,7 @@ void Player::init(const PlayerTemplate* pt)
 #endif
 
 #if defined(_DEBUG) || defined(_INTERNAL) || defined(_ALLOW_DEBUG_CHEATS_IN_RELEASE)
-#endif
+#endif // ZH
 	m_DEMO_instantBuild = FALSE;
 #endif
 
@@ -475,7 +475,7 @@ void Player::init(const PlayerTemplate* pt)
 		m_side = pt->getSide();
 #ifdef ZH
 		m_baseSide = pt->getBaseSide();
-#endif
+#endif // ZH
 		m_productionCostChanges = pt->getProductionCostChanges();
 		m_productionTimeChanges = pt->getProductionTimeChanges();
 		m_productionVeterancyLevels = pt->getProductionVeterancyLevels();
@@ -495,16 +495,16 @@ void Player::init(const PlayerTemplate* pt)
         m_money = TheGameInfo->getStartingCash();
       }
       else
-#endif
+#endif // ZH
 		{
 #ifdef OG
 			m_money.deposit( TheGlobalData->m_defaultStartingCash, FALSE );
 
-#endif
+#endif // OG
 #ifdef ZH
   			m_money = TheGlobalData->m_defaultStartingCash;
       }
-#endif
+#endif // ZH
 		}
 
 		m_playerDisplayName.clear();
@@ -521,7 +521,7 @@ void Player::init(const PlayerTemplate* pt)
 		m_side = "";
 #ifdef ZH
 		m_baseSide = "";
-#endif
+#endif // ZH
 		m_productionCostChanges.clear();
 		m_productionTimeChanges.clear();
 		m_productionVeterancyLevels.clear();
@@ -570,13 +570,13 @@ void Player::init(const PlayerTemplate* pt)
 #ifdef ZH
 
 	getAcademyStats()->init( this );
-#endif
+#endif // ZH
 
 #ifdef ZH
 	//Always off at the beginning of a game! Only GameLogic::update has
 	//the power to turn it on. Don't want to cause desyncs!
 	m_logicalRetaliationModeEnabled = FALSE;
-#endif
+#endif // ZH
 }
 
 //=============================================================================
@@ -758,12 +758,12 @@ void Player::update()
 {
 #ifdef OG
 #if !defined(_PLAYTEST)
-#endif
+#endif // OG
 	if (m_ai)
 		m_ai->update();
 #ifdef OG
 #endif
-#endif
+#endif // OG
 
 	// Allow the teams this player owns to update themselves.
 #ifdef OG
@@ -771,36 +771,36 @@ void Player::update()
 	for (PlayerTeamList::iterator it = m_playerTeamPrototypes.begin(); it != m_playerTeamPrototypes.end(); ++it) {
 		for (DLINK_ITERATOR<Team> iter = (*it)->iterate_TeamInstanceList(); !iter.done(); iter.advance()) {
 
-#endif
+#endif // OG
 #ifdef ZH
 	for( PlayerTeamList::iterator it = m_playerTeamPrototypes.begin(); it != m_playerTeamPrototypes.end(); ++it ) 
 	{
 		for( DLINK_ITERATOR<Team> iter = (*it)->iterate_TeamInstanceList(); !iter.done(); iter.advance() ) 
 		{
-#endif
+#endif // ZH
 			Team *team = iter.cur();
 #ifdef OG
 			if (!team) {
 
-#endif
+#endif // OG
 #ifdef ZH
 			if( !team ) 
 			{
-#endif
+#endif // ZH
 				continue;
 #ifdef ZH
 			}
 			team->updateGenericScripts();
-#endif
+#endif // ZH
 			}
 #ifdef ZH
 	}
-#endif
+#endif // ZH
 
 #ifdef OG
 			team->updateGenericScripts();
 
-#endif
+#endif // OG
 #ifdef ZH
 	if( m_energy.getPowerSabotagedTillFrame() != 0 && TheGameLogic->getFrame() > m_energy.getPowerSabotagedTillFrame() )
 	{
@@ -828,7 +828,7 @@ void Player::update()
 					msg->appendBooleanArgument( TheGlobalData->m_clientRetaliationModeEnabled );
 				}
 			}
-#endif
+#endif // ZH
 		}
 	}
 }
@@ -838,12 +838,12 @@ void Player::newMap()
 {
 #ifdef OG
 #if !defined(_PLAYTEST)
-#endif
+#endif // OG
 	if (m_ai)
 		m_ai->newMap();
 #ifdef OG
 #endif
-#endif
+#endif // OG
 }
 
 //=============================================================================
@@ -853,7 +853,7 @@ void Player::setPlayerType(PlayerType t, Bool skirmish)
 
 #ifdef OG
 #if !defined(_PLAYTEST)
-#endif
+#endif // OG
 	if (m_ai)
 	{
 		m_ai->deleteInstance();
@@ -872,7 +872,7 @@ void Player::setPlayerType(PlayerType t, Bool skirmish)
 	}
 #ifdef OG
 #endif
-#endif
+#endif // OG
 }
 
 //=============================================================================
@@ -998,35 +998,35 @@ void Player::initFromDict(const Dict* d)
 #ifdef OG
 		if (exists) {
 
-#endif
+#endif // OG
 #ifdef ZH
 		if (exists) 
 		{
-#endif
+#endif // ZH
 			difficulty = (GameDifficulty) diffInt;
 		}
 #ifdef OG
 #if !defined(_PLAYTEST)
 		if (m_ai) {
-#endif
+#endif // OG
 #ifdef ZH
 		if (m_ai) 
 		{
-#endif
+#endif // ZH
 			m_ai->setAIDifficulty(difficulty);
 		}
 #ifdef OG
 #endif
-#endif
+#endif // OG
 
 #ifdef OG
 		if (!found) {
 
-#endif
+#endif // OG
 #ifdef ZH
 		if (!found) 
 		{
-#endif
+#endif // ZH
 			DEBUG_CRASH(("Could not find skirmish player for side %s", mySide.str()));
 		} else {
 			m_playerName = qualTemplatePlayerName;
@@ -1132,11 +1132,11 @@ void Player::initFromDict(const Dict* d)
 		m_attackedBy[i] = false;
 #ifdef OG
 		m_visionSpiedBy[i] = 0;
-#endif
+#endif // OG
 	}
 #ifdef OG
 	m_visionSpiedMask = PLAYERMASK_NONE;
-#endif
+#endif // OG
 
 	Int c = d->getInt(TheKey_playerColor, &exists);
 	if (exists)
@@ -1180,10 +1180,10 @@ void Player::becomingTeamMember(Object *obj, Bool yes)
 	// energy production/consumption hooks, note we ignore things that are UNDER_CONSTRUCTION
 #ifdef OG
 	if( BitTest( obj->getStatusBits(), OBJECT_STATUS_UNDER_CONSTRUCTION ) == FALSE )
-#endif
+#endif // OG
 #ifdef ZH
 	if( !obj->getStatusBits().test( OBJECT_STATUS_UNDER_CONSTRUCTION ) )
-#endif
+#endif // ZH
 	{
 		obj->friend_adjustPowerForPlayer(yes);
 	}  // end if
@@ -1266,12 +1266,12 @@ void Player::becomingLocalPlayer(Bool yes)
 						static NameKeyType key_StealthUpdate = NAMEKEY( "StealthUpdate" );
 						StealthUpdate *update = (StealthUpdate*)object->findUpdateModule( key_StealthUpdate );
 
-#endif
+#endif // OG
 #ifdef ZH
             
             StealthUpdate *update = object->getStealth();
 
-#endif
+#endif // ZH
 						if( update && update->isDisguised() )
 						{
 							Player *disguisedPlayer = ThePlayerList->getNthPlayer( update->getDisguisedPlayerIndex() );
@@ -1303,7 +1303,7 @@ void Player::becomingLocalPlayer(Bool yes)
 
 		if( TheControlBar )
 			TheControlBar->markUIDirty();
-#endif
+#endif // ZH
 	}
 	else
 	{
@@ -1322,11 +1322,11 @@ Bool Player::isSkirmishAIPlayer( void )
 #else
 	return FALSE;
 #endif
-#endif
+#endif // OG
 #ifdef ZH
 	return m_ai ? m_ai->isSkirmishAI() : false; 
 
-#endif
+#endif // ZH
 }
 
 
@@ -1336,23 +1336,23 @@ Bool Player::isSkirmishAIPlayer( void )
  */
 #ifdef OG
 void Player::computeSuperweaponTarget(const SpecialPowerTemplate *power, Coord3D *retPos, Int playerNdx, Real weaponRadius)
-#endif
+#endif // OG
 #ifdef ZH
 Bool Player::computeSuperweaponTarget(const SpecialPowerTemplate *power, Coord3D *retPos, Int playerNdx, Real weaponRadius)
-#endif
+#endif // ZH
 {
 	if (m_ai) {
 #ifdef OG
 		m_ai->computeSuperweaponTarget(power, retPos, playerNdx, weaponRadius);
-#endif
+#endif // OG
 #ifdef ZH
 		return m_ai->computeSuperweaponTarget(power, retPos, playerNdx, weaponRadius);
-#endif
+#endif // ZH
 	}
 #ifdef ZH
 
   return FALSE;
-#endif
+#endif // ZH
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -1362,13 +1362,13 @@ Player  *Player::getCurrentEnemy( void )
 {
 #ifdef OG
 #if !defined(_PLAYTEST)
-#endif
+#endif // OG
 	return m_ai?m_ai->getAiEnemy():NULL; 
 #ifdef OG
 #else
 	return NULL;
 #endif
-#endif
+#endif // OG
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -1377,7 +1377,7 @@ Player  *Player::getCurrentEnemy( void )
 		if he has none, return null. 
 		if he has multiple, return one arbitrarily. */
 
-#endif
+#endif // OG
 #ifdef ZH
 // PlayerObjectFindInfo is used to find a player's object. For example, we iterate through
 // to find a player's command center, or a specific building capable of firing the specified
@@ -1385,25 +1385,25 @@ Player  *Player::getCurrentEnemy( void )
 //
 // if he has none, return null. 
 // if he has multiple, return one arbitrarily. 
-#endif
+#endif // ZH
 //-------------------------------------------------------------------------------------------------
 
 #ifdef OG
 	struct FCCInfo
 
-#endif
+#endif // OG
 #ifdef ZH
 //-------------------------------------------------------------------------------------------------
 // Iterator data struct
 //-------------------------------------------------------------------------------------------------
 struct PlayerObjectFindInfo
-#endif
+#endif // ZH
 	{
 		Player* player;
 #ifdef OG
 		Object* cmdCenter;
 
-#endif
+#endif // OG
 #ifdef ZH
 	Object* obj;
 	SpecialPowerType spType;
@@ -1411,7 +1411,7 @@ struct PlayerObjectFindInfo
 	UnsignedInt lowestReadyFrame;
 	UnsignedInt highestPercentage;
 	UnsignedInt numReady;
-#endif
+#endif // ZH
 	};
 
 #ifdef ZH
@@ -1419,7 +1419,7 @@ struct PlayerObjectFindInfo
 // Iterator function
 // Find the first available command center that is naturally ours (not captured from enemy).
 //-------------------------------------------------------------------------------------------------
-#endif
+#endif // ZH
 	static void doFindCommandCenter(Object* obj, void* userData)
 	{
 		if (!obj)
@@ -1427,17 +1427,17 @@ struct PlayerObjectFindInfo
 
 #ifdef OG
 		FCCInfo* info = (FCCInfo*)userData;
-#endif
+#endif // OG
 #ifdef ZH
 	PlayerObjectFindInfo* info = (PlayerObjectFindInfo*)userData;
-#endif
+#endif // ZH
 
 #ifdef OG
 		if (info->cmdCenter == NULL 
-#endif
+#endif // OG
 #ifdef ZH
 	if (info->obj == NULL 
-#endif
+#endif // ZH
 				&& obj->isKindOf(KINDOF_COMMANDCENTER)
 				&& obj->getTemplate()->getDefaultOwningSide() == info->player->getSide()
 				&& !obj->testStatus(OBJECT_STATUS_UNDER_CONSTRUCTION)
@@ -1553,12 +1553,12 @@ static void doCountSpecialPowersReady( Object *obj, void *userData )
 					readyFrame = UINT_MAX - 10;
 
 				if( readyFrame < TheGameLogic->getFrame())
-#endif
+#endif // ZH
 		{
 #ifdef OG
 			info->cmdCenter = obj;
 
-#endif
+#endif // OG
 #ifdef ZH
 					//This special power is ready now and matches, so simply return the
 					//first one.
@@ -1656,36 +1656,36 @@ static void doFindExistingObjectWithThingTemplate( Object *obj, void *userData )
 		{
 			//We found one.
 			info->obj = obj;
-#endif
+#endif // ZH
 		}
 	}
 #ifdef ZH
 }
-#endif
+#endif // ZH
 
 #ifdef ZH
 //-------------------------------------------------------------------------------------------------
-#endif
+#endif // ZH
 Object* Player::findNaturalCommandCenter()
 {
 #ifdef OG
 	FCCInfo info;
-#endif
+#endif // OG
 #ifdef ZH
 	PlayerObjectFindInfo info;
-#endif
+#endif // ZH
 	info.player = this;
 #ifdef OG
 	info.cmdCenter = NULL;
-#endif
+#endif // OG
 #ifdef ZH
 	info.obj = NULL;
-#endif
+#endif // ZH
 	iterateObjects(doFindCommandCenter, &info);
 #ifdef OG
 	return info.cmdCenter;
 
-#endif
+#endif // OG
 #ifdef ZH
 	return info.obj;
 }
@@ -1761,7 +1761,7 @@ Int Player::countReadyShortcutSpecialPowersOfType( SpecialPowerType spType )
 	info.numReady = 0;
 	iterateObjects( doCountSpecialPowersReady, &info );
 	return info.numReady;
-#endif
+#endif // ZH
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -1771,17 +1771,17 @@ GameDifficulty Player::getPlayerDifficulty(void) const
 #ifdef ZH
 {
 	if (m_ai) 
-#endif
+#endif // ZH
 {
 #ifdef OG
 #if !defined(_PLAYTEST)
 	if (m_ai) {
-#endif
+#endif // OG
 		return m_ai->getAIDifficulty();
 	}
 #ifdef OG
 #endif
-#endif
+#endif // OG
 	return TheScriptEngine->getGlobalDifficulty();
 }
 
@@ -1792,13 +1792,13 @@ Bool Player::checkBridges(Object *unit, Waypoint *way)
 {
 #ifdef OG
 #if !defined(_PLAYTEST)
-#endif
+#endif // OG
 	return m_ai?m_ai->checkBridges(unit, way):false; 
 #ifdef OG
 #else
 	return FALSE;
 #endif
-#endif
+#endif // OG
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -1808,13 +1808,13 @@ Bool Player::getAiBaseCenter(Coord3D *pos)
 {
 #ifdef OG
 #if !defined(_PLAYTEST)
-#endif
+#endif // OG
 	return m_ai?m_ai->getBaseCenter(pos):false; 
 #ifdef OG
 #else
 	return FALSE;
 #endif
-#endif
+#endif // OG
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -1825,16 +1825,16 @@ void Player::repairStructure(ObjectID structureID)
 #ifdef OG
 #if !defined(_PLAYTEST)
 	if (m_ai) {
-#endif
+#endif // OG
 #ifdef ZH
 	if (m_ai) 
 	{
-#endif
+#endif // ZH
 		m_ai->repairStructure(structureID); 
 	}
 #ifdef OG
 #endif
-#endif
+#endif // OG
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -1851,13 +1851,13 @@ void Player::onUnitCreated( Object *factory, Object *unit )
 
 #ifdef OG
 #if !defined(_PLAYTEST)
-#endif
+#endif // OG
 	// ai notification callback
 	if( m_ai )
 		m_ai->onUnitProduced( factory, unit );
 #ifdef OG
 #endif
-#endif
+#endif // OG
 }  // end onUnitCreated
 
 
@@ -1945,13 +1945,13 @@ void Player::onStructureConstructionComplete( Object *builder, Object *structure
 
 #ifdef OG
 #if !defined(_PLAYTEST)
-#endif
+#endif // OG
 	// ai notification callback
 	if( m_ai )
 		m_ai->onStructureProduced( builder, structure );
 #ifdef OG
 #endif
-#endif
+#endif // OG
 
 	// the GUI needs to re-evaluate the information being displayed to the user now
 	if( TheControlBar )
@@ -1962,14 +1962,14 @@ void Player::onStructureConstructionComplete( Object *builder, Object *structure
 #ifdef OG
 	if (localPlayer == structure->getControllingPlayer() || localPlayer->getRelationship(structure->getTeam()) != ENEMIES) 
 		return;
-#endif
+#endif // OG
 
 #ifdef OG
 	// We need to play some EVA sounds.
 	if (structure->hasSpecialPower(SPECIAL_PARTICLE_UPLINK_CANNON))
 		TheEva->setShouldPlay(EVA_SuperweaponDetected_ParticleCannon);
 
-#endif
+#endif // OG
 #ifdef ZH
 	if( structure->hasSpecialPower( SPECIAL_PARTICLE_UPLINK_CANNON ) || 
 			structure->hasSpecialPower( SUPW_SPECIAL_PARTICLE_UPLINK_CANNON ) ||
@@ -1989,13 +1989,13 @@ void Player::onStructureConstructionComplete( Object *builder, Object *structure
       TheEva->setShouldPlay(EVA_SuperweaponDetected_Enemy_ParticleCannon);
     }
   }
-#endif
+#endif // ZH
 
 #ifdef OG
 	if (structure->hasSpecialPower(SPECIAL_NEUTRON_MISSILE))
 		TheEva->setShouldPlay(EVA_SuperweaponDetected_Nuke);
 
-#endif
+#endif // OG
 #ifdef ZH
 	if( structure->hasSpecialPower( SPECIAL_NEUTRON_MISSILE ) || 
 			structure->hasSpecialPower( NUKE_SPECIAL_NEUTRON_MISSILE ) || 
@@ -2015,13 +2015,13 @@ void Player::onStructureConstructionComplete( Object *builder, Object *structure
       TheEva->setShouldPlay(EVA_SuperweaponDetected_Enemy_Nuke);
     }
   }
-#endif
+#endif // ZH
 		
 	if (structure->hasSpecialPower(SPECIAL_SCUD_STORM))
 #ifdef OG
 		TheEva->setShouldPlay(EVA_SuperweaponDetected_ScudStorm);
 
-#endif
+#endif // OG
 #ifdef ZH
   {
     if ( localPlayer == structure->getControllingPlayer() )
@@ -2038,7 +2038,7 @@ void Player::onStructureConstructionComplete( Object *builder, Object *structure
       TheEva->setShouldPlay(EVA_SuperweaponDetected_Enemy_ScudStorm);
     }
   }
-#endif
+#endif // ZH
 }  // end onStructureConstructionComplete
 
 //=============================================================================
@@ -2087,10 +2087,10 @@ void Player::healAllObjects()
 //=============================================================================
 #ifdef OG
 void Player::iterateObjects( ObjectIterateFunc func, void *userData )
-#endif
+#endif // OG
 #ifdef ZH
 void Player::iterateObjects( ObjectIterateFunc func, void *userData ) const
-#endif
+#endif // ZH
 {
 	for (PlayerTeamList::const_iterator it = m_playerTeamPrototypes.begin(); 
 			 it != m_playerTeamPrototypes.end(); ++it)
@@ -2606,13 +2606,13 @@ void Player::setUnitsShouldIdleOrResume(Bool idle)
 //=============================================================================
 void Player::sellEverythingUnderTheSun(void)
 
-#endif
+#endif // OG
 #ifdef ZH
 //-------------------------------------------------------------------------------
 void sellBuildings( Object *obj, void *userData )
 {
   if( obj->isFactionStructure() || obj->isKindOf( KINDOF_COMMANDCENTER ) || obj->isKindOf( KINDOF_FS_POWER ) )
-#endif
+#endif // ZH
 {
 #ifdef OG
 	for (PlayerTeamList::iterator it = m_playerTeamPrototypes.begin(); 
@@ -2621,11 +2621,11 @@ void sellBuildings( Object *obj, void *userData )
 			Team *team = iter.cur();
 			if (!team) {
 				continue;
-#endif
+#endif // OG
 #ifdef ZH
     TheBuildAssistant->sellObject( obj );
 
-#endif
+#endif // ZH
 			}
 #ifdef OG
 			
@@ -2633,7 +2633,7 @@ void sellBuildings( Object *obj, void *userData )
 				Object *obj = iterObj.cur();
 				if (!obj) {
 					continue;
-#endif
+#endif // OG
 				}
 
 #ifdef OG
@@ -2641,18 +2641,18 @@ void sellBuildings( Object *obj, void *userData )
 				TheBuildAssistant->sellObject( obj );
 			}			
 
-#endif
+#endif // OG
 #ifdef ZH
 //=============================================================================
 void Player::sellEverythingUnderTheSun()
 {
   iterateObjects( sellBuildings, NULL );
-#endif
+#endif // ZH
 		}
 #ifdef OG
 	}
 }
-#endif
+#endif // OG
 
 
 //=============================================================================
@@ -2674,18 +2674,18 @@ void Player::buildSpecificTeam( TeamPrototype *teamProto)
 #ifdef ZH
 {
 	if (m_ai) 
-#endif
+#endif // ZH
 {
 #ifdef OG
 #if !defined(_PLAYTEST)
 	if (m_ai) {
-#endif
+#endif // OG
 		// Do a priority build.
 		m_ai->buildSpecificAITeam(teamProto, true);
 	}
 #ifdef OG
 #endif
-#endif
+#endif // OG
 }
 
 //=============================================================================
@@ -2694,17 +2694,17 @@ void Player::buildBaseDefense(Bool flank)
 #ifdef OG
 #if !defined(_PLAYTEST)
 	if (m_ai) {
-#endif
+#endif // OG
 #ifdef ZH
 	if (m_ai) 
 	{
-#endif
+#endif // ZH
 		// Do a priority build.
 		m_ai->buildAIBaseDefense(flank);
 	}
 #ifdef OG
 #endif
-#endif
+#endif // OG
 }
 
 //=============================================================================
@@ -2713,17 +2713,17 @@ void Player::buildBaseDefenseStructure(const AsciiString &thingName, Bool flank)
 #ifdef OG
 #if !defined(_PLAYTEST)
 	if (m_ai) {
-#endif
+#endif // OG
 #ifdef ZH
 	if (m_ai) 
 	{
-#endif
+#endif // ZH
 		// Do a priority build.
 		m_ai->buildAIBaseDefenseStructure(thingName, flank);
 	}
 #ifdef OG
 #endif
-#endif
+#endif // OG
 }
 
 //=============================================================================
@@ -2731,18 +2731,18 @@ void Player::buildSpecificBuilding(const AsciiString &thingName)
 #ifdef ZH
 {
 	if (m_ai) 
-#endif
+#endif // ZH
 {
 #ifdef OG
 #if !defined(_PLAYTEST)
 	if (m_ai) {
-#endif
+#endif // OG
 		// Do a priority build.
 		m_ai->buildSpecificAIBuilding(thingName);
 	}
 #ifdef OG
 #endif
-#endif
+#endif // OG
 }
 
 //=============================================================================
@@ -2750,12 +2750,12 @@ void Player::buildBySupplies(Int minimumCash, const AsciiString &thingName)
 #ifdef ZH
 {
 	if (m_ai) 
-#endif
+#endif // ZH
 {
 #ifdef OG
 #if !defined(_PLAYTEST)
 	if (m_ai) {
-#endif
+#endif // OG
 		m_ai->buildBySupplies(minimumCash, thingName);
 #ifdef ZH
 	}
@@ -2767,11 +2767,11 @@ void Player::buildSpecificBuildingNearestTeam( const AsciiString &thingName, con
 	if( m_ai )
 	{
 		m_ai->buildSpecificBuildingNearestTeam( thingName, team );
-#endif
+#endif // ZH
 	}
 #ifdef OG
 #endif
-#endif
+#endif // OG
 }
 
 //=============================================================================
@@ -2780,16 +2780,16 @@ void Player::buildUpgrade( const AsciiString &upgrade)
 #ifdef OG
 #if !defined(_PLAYTEST)
 	if (m_ai) {
-#endif
+#endif // OG
 #ifdef ZH
 	if (m_ai) 
 	{
-#endif
+#endif // ZH
 		m_ai->buildUpgrade(upgrade);
 	}
 #ifdef OG
 #endif
-#endif
+#endif // OG
 }
 
 //=============================================================================
@@ -2798,11 +2798,11 @@ void Player::recruitSpecificTeam( TeamPrototype *teamProto, Real recruitRadius)
 #ifdef OG
 #if !defined(_PLAYTEST)
 	if (m_ai) {
-#endif
+#endif // OG
 #ifdef ZH
 	if (m_ai) 
 	{
-#endif
+#endif // ZH
 		// Do a priority build.
 		m_ai->recruitSpecificAITeam(teamProto, recruitRadius);
 #ifdef ZH
@@ -2817,16 +2817,16 @@ Bool Player::calcClosestConstructionZoneLocation( const ThingTemplate *construct
 	if( m_ai )
 	{
 		return m_ai->calcClosestConstructionZoneLocation( constructTemplate, location );
-#endif
+#endif // ZH
 	}
 #ifdef OG
 #endif
 
-#endif
+#endif // OG
 #ifdef ZH
 
   return FALSE;
-#endif
+#endif // ZH
 }
 
 //=============================================================================
@@ -3019,7 +3019,7 @@ Bool Player::attemptToPurchaseScience(ScienceType science)
 		TheControlBar->markUIDirty();
 	}
 
-#endif
+#endif // ZH
 	return true;
 }
 
@@ -3308,12 +3308,12 @@ Bool Player::canBuildMoreOfType( const ThingTemplate *whatToBuild ) const
     iterateObjects( countExisting, &typeCountData );
     if( typeCountData.count >= maxSimultaneousOfType )
       return false;
-#endif
+#endif // ZH
 }
 #ifdef ZH
   return true;
 }
-#endif
+#endif // ZH
 
 //=============================================================================
 Bool Player::canBuild(const ThingTemplate *tmplate) const
@@ -3358,7 +3358,7 @@ Bool Player::canBuild(const ThingTemplate *tmplate) const
 
   if ( !canBuildMoreOfType( tmplate ) )
     return false;
-#endif
+#endif // ZH
 
 	return true;
 }
@@ -3394,11 +3394,11 @@ void Player::deleteUpgradeList( void )
 #ifdef OG
 	m_upgradesInProgress = 0;
 	m_upgradesCompleted = 0;
-#endif
+#endif // OG
 #ifdef ZH
 	m_upgradesInProgress.clear();
 	m_upgradesCompleted.clear();
-#endif
+#endif // ZH
 
 }  // end deleteUpgradeList
 
@@ -3424,10 +3424,10 @@ Bool Player::hasUpgradeComplete( const UpgradeTemplate *upgradeTemplate )
 {
 #ifdef OG
 	Int64 testMask = upgradeTemplate->getUpgradeMask();
-#endif
+#endif // OG
 #ifdef ZH
 	UpgradeMaskType testMask = upgradeTemplate->getUpgradeMask();
-#endif
+#endif // ZH
 	return hasUpgradeComplete( testMask );
 } 
 
@@ -3438,17 +3438,17 @@ Bool Player::hasUpgradeComplete( const UpgradeTemplate *upgradeTemplate )
 //=================================================================================================
 #ifdef OG
 Bool Player::hasUpgradeComplete( Int64 testMask )
-#endif
+#endif // OG
 #ifdef ZH
 Bool Player::hasUpgradeComplete( UpgradeMaskType testMask )
-#endif
+#endif // ZH
 {
 #ifdef OG
 	return BitTest( m_upgradesCompleted, testMask );
-#endif
+#endif // OG
 #ifdef ZH
 	return m_upgradesCompleted.testForAll( testMask );
-#endif
+#endif // ZH
 }
 
 //=================================================================================================
@@ -3459,11 +3459,11 @@ Bool Player::hasUpgradeInProduction( const UpgradeTemplate *upgradeTemplate )
 #ifdef OG
 	Int64 testMask = upgradeTemplate->getUpgradeMask();
 	return BitTest( m_upgradesInProgress, testMask );
-#endif
+#endif // OG
 #ifdef ZH
 	UpgradeMaskType testMask = upgradeTemplate->getUpgradeMask();
 	return m_upgradesInProgress.testForAll( testMask );
-#endif
+#endif // ZH
 }
 
 //=================================================================================================
@@ -3495,29 +3495,29 @@ Upgrade *Player::addUpgrade( const UpgradeTemplate *upgradeTemplate, UpgradeStat
 	// Update our Bitmasks
 #ifdef OG
 	Int64 newMask = upgradeTemplate->getUpgradeMask();
-#endif
+#endif // OG
 #ifdef ZH
 	UpgradeMaskType newMask = upgradeTemplate->getUpgradeMask();
-#endif
+#endif // ZH
 	if( status == UPGRADE_STATUS_IN_PRODUCTION )
 	{
 #ifdef OG
 		BitSet( m_upgradesInProgress, newMask );
-#endif
+#endif // OG
 #ifdef ZH
 		m_upgradesInProgress.set( newMask );
-#endif
+#endif // ZH
 	}
 	else if( status == UPGRADE_STATUS_COMPLETE )
 	{
 #ifdef OG
 		BitClear( m_upgradesInProgress, newMask );
 		BitSet( m_upgradesCompleted, newMask );
-#endif
+#endif // OG
 #ifdef ZH
 		m_upgradesInProgress.clear( newMask );
 		m_upgradesCompleted.set( newMask );
-#endif
+#endif // ZH
 		onUpgradeCompleted( upgradeTemplate );
 	}
 
@@ -3527,7 +3527,7 @@ Upgrade *Player::addUpgrade( const UpgradeTemplate *upgradeTemplate, UpgradeStat
 		TheControlBar->markUIDirty();
 	}
 
-#endif
+#endif // ZH
 	return u;
 
 }  // end addUpgrade
@@ -3586,12 +3586,12 @@ void Player::removeUpgrade( const UpgradeTemplate *upgradeTemplate )
 		Int64 oldMask = upgradeTemplate->getUpgradeMask();
 		BitClear( m_upgradesInProgress, oldMask );
 		BitClear( m_upgradesCompleted, oldMask );
-#endif
+#endif // OG
 #ifdef ZH
 		UpgradeMaskType oldMask = upgradeTemplate->getUpgradeMask();
 		m_upgradesInProgress.clear( oldMask );
 		m_upgradesCompleted.clear( oldMask );
-#endif
+#endif // ZH
 
 		if( upgrade->getStatus() == UPGRADE_STATUS_COMPLETE )
 			onUpgradeRemoved();
@@ -3602,7 +3602,7 @@ void Player::removeUpgrade( const UpgradeTemplate *upgradeTemplate )
 		TheControlBar->markUIDirty();
 	}
 
-#endif
+#endif // ZH
 	}  // end if
 
 }  // end removeUpgrade
@@ -4163,11 +4163,11 @@ void Player::processSelectTeamGameMessage(Int hotkeyNum, GameMessage *msg) {
 #ifdef OG
 	for (Int i = 0; i < numObjs; ++i) {
 
-#endif
+#endif // OG
 #ifdef ZH
 	for (Int i = 0; i < numObjs; ++i) 
 	{
-#endif
+#endif // ZH
 		m_currentSelection->addObject(objectList[i]);
 #ifdef ZH
 	}
@@ -4175,7 +4175,7 @@ void Player::processSelectTeamGameMessage(Int hotkeyNum, GameMessage *msg) {
 	if( numObjs > 0 )
 	{
 		getAcademyStats()->recordControlGroupsUsed();
-#endif
+#endif // ZH
 	}
 }
 
@@ -4382,11 +4382,11 @@ Bool Player::getAttackedBy( Int playerNdx ) const
 #ifdef OG
 static void callHandleShroud( Object *obj, void * )
 
-#endif
+#endif // OG
 #ifdef ZH
 // Little wrapper function so I can use it in iterateObjects, which is cool.
 struct VisionSpiedStruct
-#endif
+#endif // ZH
 {
 #ifdef OG
 	// I feel I have to disapprove of the naming of this gathering of cell functions.  It is called by death,
@@ -4394,32 +4394,32 @@ struct VisionSpiedStruct
 	if( obj )
 		obj->handlePartitionCellMaintenance();
 }
-#endif
+#endif // OG
 #ifdef ZH
 	Bool setting;
 	KindOfMaskType whichUnits;
 	PlayerIndex byWhom;
 };
 
-#endif
+#endif // ZH
 
 #ifdef OG
 // ------------------------------------------------------------------------------------------------
 void Player::setUnitsVisionSpied( Bool setting, PlayerIndex byWhom )
-#endif
+#endif // OG
 #ifdef ZH
 static void iterator_setUnitsVisionSpied( Object *obj, void * voidData)
 
-#endif
+#endif // ZH
 {
 #ifdef OG
 	Bool needRefresh = FALSE; // If this setting is an edge trigger on the reference count, I need 
 	// to tell all of my guys to handleShroud so they will start/stop looking for the new team.
-#endif
+#endif // OG
 #ifdef ZH
 	VisionSpiedStruct *data = (VisionSpiedStruct *)voidData;
 
-#endif
+#endif // ZH
 
 #ifdef OG
 	if( setting )
@@ -4444,14 +4444,14 @@ static void iterator_setUnitsVisionSpied( Object *obj, void * voidData)
 				BitSet( workingMask, ( 1 << i ) );
 			else
 				BitClear( workingMask, ( 1 << i ) );
-#endif
+#endif // OG
 #ifdef ZH
 	// I feel I have to disapprove of the naming of this gathering of cell functions.  It is called by death,
 	// alliance change, containment, spy change, and dynamic view range as well as partition cell change.
 	if( obj && obj->isAnyKindOf(data->whichUnits) )
 		obj->setVisionSpied(data->setting, data->byWhom);
 
-#endif
+#endif // ZH
 		}
 
 #ifdef OG
@@ -4461,19 +4461,19 @@ static void iterator_setUnitsVisionSpied( Object *obj, void * voidData)
 	}
 }
 
-#endif
+#endif // OG
 // ------------------------------------------------------------------------------------------------
 #ifdef OG
 PlayerMaskType Player::getVisionSpiedMask() const
-#endif
+#endif // OG
 #ifdef ZH
 void Player::setUnitsVisionSpied( Bool setting, KindOfMaskType whichUnits, PlayerIndex byWhom )
-#endif
+#endif // ZH
 {
 #ifdef OG
 	return m_visionSpiedMask;
 
-#endif
+#endif // OG
 #ifdef ZH
 	VisionSpiedStruct data;
 	data.setting = setting;
@@ -4481,7 +4481,7 @@ void Player::setUnitsVisionSpied( Bool setting, KindOfMaskType whichUnits, Playe
 	data.byWhom = byWhom;
 	// Being spied is now a property of the unit, not us, since we can spy only a portion of the enemy.
 	iterateObjects( iterator_setUnitsVisionSpied, &data );
-#endif
+#endif // ZH
 }
 
 // ------------------------------------------------------------------------------------------------
@@ -4535,7 +4535,7 @@ void Player::crc( Xfer *xfer )
 	// People have reported memory hacking their points.  That would work since
 	// buttons are authoritative, and these points just unhided buttons.
 	// Same cheat principle as pulling NeedScience off your Generals buttons.
-#endif
+#endif // OG
 	xfer->xferInt( &m_skillPoints );
 	xfer->xferInt( &m_sciencePurchasePoints );
 	
@@ -4759,7 +4759,7 @@ void Player::xfer( Xfer *xfer )
 
 #ifdef OG
 #if !defined(_PLAYTEST)
-#endif
+#endif // OG
 	// ai player data
 	Bool aiPlayerPresent = m_ai ? TRUE : FALSE;
 	xfer->xferBool( &aiPlayerPresent );
@@ -4777,7 +4777,7 @@ void Player::xfer( Xfer *xfer )
 	Bool aiPlayerPresent = FALSE;
 	xfer->xferBool( &aiPlayerPresent );
 #endif
-#endif
+#endif // OG
 
 	// resource gathering manager
 	Bool resourceGatheringManagerPresent = m_resourceGatheringManager ? TRUE : FALSE;
@@ -4917,7 +4917,7 @@ void Player::xfer( Xfer *xfer )
 	// vision spied by mask
 	xfer->xferUser( &m_visionSpiedMask, sizeof( PlayerMaskType ) );
 
-#endif
+#endif // OG
 	// cash bounty percent
 	xfer->xferReal( &m_cashBountyPercent );
 

@@ -80,4 +80,4 @@ public:
 
 #endif __RULEROPTIONS_H_
 
-#endif
+#endif // ZH

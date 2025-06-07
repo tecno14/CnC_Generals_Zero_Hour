@@ -30,17 +30,17 @@
  *                                                                                             *
 #ifdef OG
  *                     $Modtime:: 8/23/01 11:46a                                              $*
-#endif
+#endif // OG
 #ifdef ZH
  *                     $Modtime:: 11/09/01 6:51p                                              $*
-#endif
+#endif // ZH
  *                                                                                             *
 #ifdef OG
  *                    $Revision:: 6                                                           $*
-#endif
+#endif // OG
 #ifdef ZH
  *                    $Revision:: 8                                                           $*
-#endif
+#endif // ZH
  *                                                                                             *
  *---------------------------------------------------------------------------------------------*
  * Functions:                                                                                  *
@@ -57,7 +57,7 @@
 #ifdef ZH
 #define LOG_MEMORY	// Comment this out to disable memlog compiling in
 
-#endif
+#endif // ZH
 class MemLogClass;
 
 /**
@@ -85,7 +85,7 @@ enum
 	MEM_RENDERER,			// dx8 renderer
 	MEM_NETWORK,
 	MEM_BINK,
-#endif
+#endif // ZH
 
 	MEM_COUNT
 };
@@ -115,7 +115,7 @@ public:
 #ifdef ZH
 	static void				Enable_Memory_Log(bool enable) { IsMemoryLogEnabled=enable; }
 	static bool				Is_Memory_Log_Enabled() { return IsMemoryLogEnabled; }
-#endif
+#endif // ZH
 
 	/*
 	** Accessors to the current memory map
@@ -145,7 +145,7 @@ public:
 
 #ifdef ZH
 	static void				Init();
-#endif
+#endif // ZH
 protected:
 
 	/*
@@ -158,12 +158,12 @@ protected:
 #ifdef OG
 	static void __cdecl Release_Log(void);
 
-#endif
+#endif // OG
 #ifdef ZH
 	static void  Release_Log(void);
 
 	static bool IsMemoryLogEnabled;
-#endif
+#endif // ZH
 
 	friend class WWMemorySampleClass;
 };
@@ -180,13 +180,13 @@ class WWMemorySampleClass
 {
 #ifdef ZH
 	bool category_push;
-#endif
+#endif // ZH
 public:
 #ifdef OG
 	WWMemorySampleClass(int category)		{ WWMemoryLogClass::Push_Active_Category(category); }
 	~WWMemorySampleClass(void)					{ WWMemoryLogClass::Pop_Active_Category(); }
 
-#endif
+#endif // OG
 #ifdef ZH
 	WWMemorySampleClass(int category) : category_push(WWMemoryLogClass::Is_Memory_Log_Enabled())
 	{
@@ -201,7 +201,7 @@ public:
 			WWMemoryLogClass::Pop_Active_Category();
 		}
 	}
-#endif
+#endif // ZH
 };
 
 
@@ -212,10 +212,10 @@ public:
 */
 #ifdef OG
 #ifdef WWDEBUG
-#endif
+#endif // OG
 #ifdef ZH
 #ifdef USE_MEMLOG
-#endif
+#endif // ZH
 #define	WWMEMLOG( category )					WWMemorySampleClass _memsample( category )
 #else
 #define	WWMEMLOG( category )

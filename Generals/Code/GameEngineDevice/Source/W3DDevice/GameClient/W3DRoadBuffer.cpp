@@ -128,7 +128,7 @@ static Int xpSign(const Vector2 &v1, const Vector2 &v2) {
 #ifdef ZH
 static Bool s_dynamic = false;
 
-#endif
+#endif // ZH
 //-----------------------------------------------------------------------------
 //         Private Class                                               
 //-----------------------------------------------------------------------------
@@ -185,37 +185,37 @@ void RoadType::loadTexture(AsciiString path, Int ID)
 #ifdef OG
 	m_roadTexture = pMgr->Get_Texture(path.str(), TextureClass::MIP_LEVELS_3); 
 
-#endif
+#endif // OG
 #ifdef ZH
 	m_roadTexture = pMgr->Get_Texture(path.str(), MIP_LEVELS_3);
 	//Hack to disable texture reduction
 	//m_roadTexture = pMgr->Get_Texture(path.str(), MIP_LEVELS_3, WW3D_FORMAT_UNKNOWN,true,TextureBaseClass::TEX_REGULAR, false);
-#endif
+#endif // ZH
 
 #ifdef OG
 	m_roadTexture->Set_Mip_Mapping( TextureClass::FILTER_TYPE_BEST );
-#endif
+#endif // OG
 #ifdef ZH
 	m_roadTexture->Get_Filter().Set_Mip_Mapping( TextureFilterClass::FILTER_TYPE_BEST );
-#endif
+#endif // ZH
 
 #ifdef OG
 	m_roadTexture->Set_U_Addr_Mode(TextureClass::TEXTURE_ADDRESS_REPEAT);
 	m_roadTexture->Set_V_Addr_Mode(TextureClass::TEXTURE_ADDRESS_REPEAT);
-#endif
+#endif // OG
 #ifdef ZH
 	m_roadTexture->Get_Filter().Set_U_Addr_Mode(TextureFilterClass::TEXTURE_ADDRESS_REPEAT);
 	m_roadTexture->Get_Filter().Set_V_Addr_Mode(TextureFilterClass::TEXTURE_ADDRESS_REPEAT);
-#endif
+#endif // ZH
 
 #ifdef OG
 	m_vertexRoad=NEW_REF(DX8VertexBufferClass,(DX8_FVF_XYZDUV1,TheGlobalData->m_maxRoadVertex+4,DX8VertexBufferClass::USAGE_DYNAMIC));
 	m_indexRoad=NEW_REF(DX8IndexBufferClass,(TheGlobalData->m_maxRoadIndex+4, DX8IndexBufferClass::USAGE_DYNAMIC));
-#endif
+#endif // OG
 #ifdef ZH
 	m_vertexRoad=NEW_REF(DX8VertexBufferClass,(DX8_FVF_XYZDUV1,TheGlobalData->m_maxRoadVertex+4, (s_dynamic?DX8VertexBufferClass::USAGE_DYNAMIC:DX8VertexBufferClass::USAGE_DEFAULT)));
 	m_indexRoad=NEW_REF(DX8IndexBufferClass,(TheGlobalData->m_maxRoadIndex+4, (s_dynamic?DX8IndexBufferClass::USAGE_DYNAMIC:DX8IndexBufferClass::USAGE_DEFAULT)));
-#endif
+#endif // ZH
 	m_numRoadVertices=0;
 	m_numRoadIndices=0;
 
@@ -238,20 +238,20 @@ void RoadType::loadTestTexture(void)
 #ifdef OG
 		m_roadTexture = NEW_REF(TextureClass, (m_texturePath.str(), m_texturePath.str(), TextureClass::MIP_LEVELS_3));
 		m_roadTexture->Set_Mip_Mapping( TextureClass::FILTER_TYPE_BEST );
-#endif
+#endif // OG
 #ifdef ZH
 		m_roadTexture = NEW_REF(TextureClass, (m_texturePath.str(), m_texturePath.str(), MIP_LEVELS_3));
 		m_roadTexture->Get_Filter().Set_Mip_Mapping( TextureFilterClass::FILTER_TYPE_BEST );
-#endif
+#endif // ZH
 
 #ifdef OG
 		m_roadTexture->Set_U_Addr_Mode(TextureClass::TEXTURE_ADDRESS_REPEAT);
 		m_roadTexture->Set_V_Addr_Mode(TextureClass::TEXTURE_ADDRESS_REPEAT);
-#endif
+#endif // OG
 #ifdef ZH
 		m_roadTexture->Get_Filter().Set_U_Addr_Mode(TextureFilterClass::TEXTURE_ADDRESS_REPEAT);
 		m_roadTexture->Get_Filter().Set_V_Addr_Mode(TextureFilterClass::TEXTURE_ADDRESS_REPEAT);
-#endif
+#endif // ZH
 	}
 }
 #endif
@@ -264,7 +264,7 @@ void RoadType::loadTestTexture(void)
 #ifdef OG
 RoadSegment::RoadSegment(void)
 
-#endif
+#endif // OG
 #ifdef ZH
 RoadSegment::RoadSegment(void) :
 m_curveRadius(0.0f),
@@ -278,14 +278,14 @@ m_vb(NULL),
 m_numIndex(0),
 m_ib(NULL),
 m_bounds(Vector3(0.0f, 0.0f, 0.0f), 1.0f)
-#endif
+#endif // ZH
 {
 #ifdef OG
 	m_numVertex = 0;
 	m_vb = NULL;
 	m_numIndex = 0;
 	m_ib = NULL;
-#endif
+#endif // OG
 }
 
 //=============================================================================
@@ -395,18 +395,18 @@ void RoadSegment::updateSegLighting(void)
 	Int i;
 #ifdef ZH
 	Int borderSizeInLine=TheTerrainRenderObject->getMap()->getBorderSizeInline();
-#endif
+#endif // ZH
 	for (i=0; i<m_numVertex; i++) {
 		Int x = m_vb[i].x/MAP_XY_FACTOR+0.5;
 		Int y = m_vb[i].y/MAP_XY_FACTOR+0.5;
 #ifdef OG
 		x += TheTerrainRenderObject->getMap()->getBorderSize();
 		y += TheTerrainRenderObject->getMap()->getBorderSize();
-#endif
+#endif // OG
 #ifdef ZH
 		x += borderSizeInLine;
 		y += borderSizeInLine;
-#endif
+#endif // ZH
 		m_vb[i].diffuse = (255<<24)|TheTerrainRenderObject->getStaticDiffuse(x, y);
 	}
 }
@@ -861,11 +861,11 @@ void W3DRoadBuffer::loadLit4PtSection(RoadSegment *pRoad, UnsignedShort *ib, Ver
 	}
 	if (pRoad->m_pt1.loc.X - pRoad->m_scale/2 > this->m_maxX &&
 		pRoad->m_pt2.loc.X - pRoad->m_scale/2 > this->m_maxX) {
-#endif
+#endif // OG
 #ifdef ZH
 	if (!pRoad->m_visible) {
 
-#endif
+#endif // ZH
 		return;
 	}
 #ifdef OG
@@ -879,7 +879,7 @@ void W3DRoadBuffer::loadLit4PtSection(RoadSegment *pRoad, UnsignedShort *ib, Ver
 		return;
 	}
 
-#endif
+#endif // OG
 	Int numLights = 0;
 	const Int maxLights = 8;
 	LightClass *lights[maxLights];
@@ -1323,11 +1323,11 @@ void W3DRoadBuffer::loadRoadsInVertexAndIndexBuffers()
 #ifdef OG
 	DX8IndexBufferClass::WriteLockClass lockIdxBuffer(m_roadTypes[m_curRoadType].getIB());
 	DX8VertexBufferClass::WriteLockClass lockVtxBuffer(m_roadTypes[m_curRoadType].getVB());
-#endif
+#endif // OG
 #ifdef ZH
 	DX8IndexBufferClass::WriteLockClass lockIdxBuffer(m_roadTypes[m_curRoadType].getIB(), s_dynamic?D3DLOCK_DISCARD:0);
 	DX8VertexBufferClass::WriteLockClass lockVtxBuffer(m_roadTypes[m_curRoadType].getVB(), s_dynamic?D3DLOCK_DISCARD:0);
-#endif
+#endif // ZH
 	vb=(VertexFormatXYZDUV1*)lockVtxBuffer.Get_Vertex_Array();
 	ib = lockIdxBuffer.Get_Index_Array();
 	// Add to the index buffer & vertex buffer.
@@ -1338,7 +1338,7 @@ void W3DRoadBuffer::loadRoadsInVertexAndIndexBuffers()
 	TCorner corner;
 #ifdef ZH
 	try {
-#endif
+#endif // ZH
 	for (corner = SEGMENT; corner < NUM_JOINS; corner = (TCorner)(corner+1)) {
 		for (curRoad=0; curRoad<m_numRoads; curRoad++) {
 			if (m_roads[curRoad].m_type == corner) {
@@ -1351,7 +1351,7 @@ void W3DRoadBuffer::loadRoadsInVertexAndIndexBuffers()
 	} catch(...) {
 		IndexBufferExceptionFunc();
 	}
-#endif
+#endif // ZH
 	this->m_roadTypes[m_curRoadType].setNumVertices(m_curNumRoadVertices);
 	this->m_roadTypes[m_curRoadType].setNumIndices(m_curNumRoadIndices);
 #ifdef ZH
@@ -1394,14 +1394,14 @@ Bool W3DRoadBuffer::visibilityChanged(const IRegion2D &bounds)
 		}
 		if (newVis != curVis) {
 			visChanged = true;
-#endif
+#endif // ZH
 }
 #ifdef ZH
 		m_roads[curRoad].m_visible = newVis;
 	}		
 	return visChanged;
 }
-#endif
+#endif // ZH
 
 //=============================================================================
 // W3DRoadBuffer::loadLitRoadsInVertexAndIndexBuffers
@@ -1430,7 +1430,7 @@ void W3DRoadBuffer::loadLitRoadsInVertexAndIndexBuffers(RefRenderObjListIterator
 		TCorner corner;
 #ifdef ZH
 		try {
-#endif
+#endif // ZH
 		for (corner = SEGMENT; corner < NUM_JOINS; corner = (TCorner)(corner+1)) {
 			for (curRoad=0; curRoad<m_numRoads; curRoad++) {
 				if (m_roads[curRoad].m_type == corner) {
@@ -1442,11 +1442,11 @@ void W3DRoadBuffer::loadLitRoadsInVertexAndIndexBuffers(RefRenderObjListIterator
 		IndexBufferExceptionFunc();
 		} catch(...) {
 			IndexBufferExceptionFunc();
-#endif
+#endif // ZH
 	}
 #ifdef ZH
 	}
-#endif
+#endif // ZH
 	this->m_roadTypes[m_curRoadType].setNumVertices(m_curNumRoadVertices);
 	this->m_roadTypes[m_curRoadType].setNumIndices(m_curNumRoadIndices);
 }
@@ -1465,11 +1465,11 @@ void W3DRoadBuffer::loadRoadSegment(UnsignedShort *ib, VertexFormatXYZDUV1 *vb, 
 	// Throw out segs out of view.
 	if (pRoad->m_pt1.loc.X + pRoad->m_scale/2 < this->m_minX &&
 		pRoad->m_pt2.loc.X + pRoad->m_scale/2 < this->m_minX) {
-#endif
+#endif // OG
 #ifdef ZH
 	if (!pRoad->m_visible) {
 
-#endif
+#endif // ZH
 		return;
 	}
 #ifdef OG
@@ -1486,7 +1486,7 @@ void W3DRoadBuffer::loadRoadSegment(UnsignedShort *ib, VertexFormatXYZDUV1 *vb, 
 		pRoad->m_pt2.loc.Y - pRoad->m_scale/2 > this->m_maxY) {
 		return;
 	}
-#endif
+#endif // OG
 	Int curVertex = m_curNumRoadVertices;
 	if (curVertex+pRoad->GetNumVertex() >= m_maxRoadVertex) return;
 	if (m_curNumRoadIndices+pRoad->GetNumIndex() >= m_maxRoadIndex) return;
@@ -3314,7 +3314,7 @@ void W3DRoadBuffer::clearAllRoads(void)
 #ifdef ZH
 		m_roadTypes[i].setNumVertices(0);
 		m_roadTypes[i].setNumIndices(0);
-#endif
+#endif // ZH
 	}
 }
 //=============================================================================
@@ -3348,7 +3348,7 @@ void W3DRoadBuffer::loadRoads()
 	preloadRoadsInVertexAndIndexBuffers();
 #ifdef ZH
 	m_updateBuffers = true;
-#endif
+#endif // ZH
 	//ticks = ::GetTickCount() - ticks;
 	//char buf[256];
 	//sprintf(buf, "%d road segs, %d milisec.\n", m_numRoads, ticks);
@@ -3390,7 +3390,7 @@ void W3DRoadBuffer::updateLighting(void)
 	{
 		return;
 	}
-#endif
+#endif // ZH
 	Int curRoad;
 	// Do road segments.
 	for (curRoad=0; curRoad<m_numRoads; curRoad++) {
@@ -3398,7 +3398,7 @@ void W3DRoadBuffer::updateLighting(void)
 	}		
 #ifdef ZH
 	m_updateBuffers = true;
-#endif
+#endif // ZH
 }
 
 #ifdef ZH
@@ -3406,7 +3406,7 @@ void W3DRoadBuffer::updateLighting(void)
 // W3DRoadBuffer::updateCenter
 //=============================================================================
 /** Sets the flag to reload the vertex buffer. */
-#endif
+#endif // ZH
 //=============================================================================
 #ifdef ZH
 void W3DRoadBuffer::updateCenter(void)
@@ -3415,7 +3415,7 @@ void W3DRoadBuffer::updateCenter(void)
 }
 
 //=============================================================================
-#endif
+#endif // ZH
 // W3DRoadBuffer::drawRoads
 //=============================================================================
 /** Draws the roads.   */
@@ -3429,7 +3429,7 @@ void W3DRoadBuffer::drawRoads(CameraClass * camera, TextureClass *cloudTexture, 
 	m_minY = minY*MAP_XY_FACTOR;
 	m_maxY = maxY*MAP_XY_FACTOR;
 
-#endif
+#endif // OG
 #ifdef ZH
 	IRegion2D bounds;
 	bounds.lo.x = minX*MAP_XY_FACTOR;
@@ -3446,7 +3446,7 @@ void W3DRoadBuffer::drawRoads(CameraClass * camera, TextureClass *cloudTexture, 
 #ifdef LOG_STATS
 	Int polys = 0;
 #endif
-#endif
+#endif // ZH
 
 	Int i;
 
@@ -3461,11 +3461,11 @@ void W3DRoadBuffer::drawRoads(CameraClass * camera, TextureClass *cloudTexture, 
 #ifdef OG
 	if (cloudTexture)
 	{	st=W3DShaderManager::ST_ROAD_BASE_NOISE1;
-#endif
+#endif // OG
 #ifdef ZH
 	if (cloudTexture) {	
 		st=W3DShaderManager::ST_ROAD_BASE_NOISE1;
-#endif
+#endif // ZH
 		if (noiseTexture)
 			st=W3DShaderManager::ST_ROAD_BASE_NOISE12;
 	}
@@ -3489,7 +3489,7 @@ void W3DRoadBuffer::drawRoads(CameraClass * camera, TextureClass *cloudTexture, 
 		}
 	}
 	m_updateBuffers = false;
-#endif
+#endif // ZH
 
 	for (stacking=0; stacking <= maxStacking; stacking++) {
 		for (i=0; i<m_maxRoadTypes; i++) {
@@ -3500,17 +3500,17 @@ void W3DRoadBuffer::drawRoads(CameraClass * camera, TextureClass *cloudTexture, 
 			m_curRoadType = i;
 #ifdef OG
 			loadRoadsInVertexAndIndexBuffers();
-#endif
+#endif // OG
 #ifdef ZH
 			if (loadBuffers) loadRoadsInVertexAndIndexBuffers();
-#endif
+#endif // ZH
 			if (m_roadTypes[i].getNumIndices() == 0) continue;
 			if (wireframe) {
 				m_roadTypes[i].applyTexture();
 				DX8Wrapper::Set_Texture(0,NULL);
 #ifdef OG
 				DX8Wrapper::Set_Shader(detailShader); // shows clipping.
-#endif
+#endif // OG
 			} else {
 				m_roadTypes[i].applyTexture();
 			}
@@ -3527,7 +3527,7 @@ void W3DRoadBuffer::drawRoads(CameraClass * camera, TextureClass *cloudTexture, 
 #ifdef LOG_STATS
 				polys += m_roadTypes[i].getNumIndices()/3;
 #endif
-#endif
+#endif // ZH
 			}
 
 			if (!wireframe)	//shader was applied at least once?
@@ -3540,7 +3540,7 @@ void W3DRoadBuffer::drawRoads(CameraClass * camera, TextureClass *cloudTexture, 
 		DEBUG_LOG(("Road poly count %d\n", polys));
 	}
 #endif
-#endif
+#endif // ZH
 
 #if 0
 	// Need to use a separate set of index & vertex buffers for this.  jba.

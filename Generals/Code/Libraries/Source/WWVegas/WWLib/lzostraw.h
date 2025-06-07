@@ -103,4 +103,4 @@ class LZOStraw : public Straw
 
 #endif
 
-#endif
+#endif // ZH

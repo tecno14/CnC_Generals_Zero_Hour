@@ -26,24 +26,24 @@
  *                                                                                             *
 #ifdef OG
  *                      $Author:: Patrick                                                     $*
-#endif
+#endif // OG
 #ifdef ZH
  *                      $Author:: Jani_p                                                      $*
-#endif
+#endif // ZH
  *                                                                                             *
 #ifdef OG
  *                     $Modtime:: 8/22/01 12:24p                                              $*
-#endif
+#endif // OG
 #ifdef ZH
  *                     $Modtime:: 1/16/02 11:40a                                              $*
-#endif
+#endif // ZH
  *                                                                                             *
 #ifdef OG
  *                    $Revision:: 47                                                          $*
-#endif
+#endif // OG
 #ifdef ZH
  *                    $Revision:: 49                                                          $*
-#endif
+#endif // ZH
  *                                                                                             *
  *---------------------------------------------------------------------------------------------*
  * Functions:                                                                                  *
@@ -78,7 +78,7 @@
 #include <string.h>
 #ifdef ZH
 #include <new.h>
-#endif
+#endif // ZH
 
 #ifdef _MSC_VER
 #pragma warning (disable : 4702) // unreachable code, happens with some uses of these templates
@@ -235,10 +235,10 @@ VectorClass<T>::~VectorClass(void)
 template<class T>
 #ifdef OG
 VectorClass<T>::VectorClass(VectorClass<T> const & vector) :
-#endif
+#endif // OG
 #ifdef ZH
 VectorClass<T>::VectorClass(VectorClass<T> const & vec) :
-#endif
+#endif // ZH
 	Vector(0),
 	VectorMax(0),
 	IsValid(true),
@@ -246,10 +246,10 @@ VectorClass<T>::VectorClass(VectorClass<T> const & vec) :
 {
 #ifdef OG
 	*this = vector;
-#endif
+#endif // OG
 #ifdef ZH
 	*this = vec;
-#endif
+#endif // ZH
 }
 
 
@@ -261,10 +261,10 @@ VectorClass<T>::VectorClass(VectorClass<T> const & vec) :
  *                                                                                             *
 #ifdef OG
  * INPUT:   vector   -- The rvalue vector to copy into the lvalue one.                         *
-#endif
+#endif // OG
 #ifdef ZH
  * INPUT:   vec   -- The rvalue vector to copy into the lvalue one.                            *
-#endif
+#endif // ZH
  *                                                                                             *
  * OUTPUT:  Returns with reference to the newly copied vector.                                 *
  *                                                                                             *
@@ -276,24 +276,24 @@ VectorClass<T>::VectorClass(VectorClass<T> const & vec) :
 template<class T>
 #ifdef OG
 VectorClass<T> & VectorClass<T>::operator =(VectorClass<T> const & vector)
-#endif
+#endif // OG
 #ifdef ZH
 VectorClass<T> & VectorClass<T>::operator =(VectorClass<T> const & vec)
-#endif
+#endif // ZH
 {
 #ifdef OG
 	if (this != &vector) {
-#endif
+#endif // OG
 #ifdef ZH
 	if (this != &vec) {
-#endif
+#endif // ZH
 		Clear();
 #ifdef OG
 		VectorMax = vector.Length();
-#endif
+#endif // OG
 #ifdef ZH
 		VectorMax = vec.Length();
-#endif
+#endif // ZH
 		if (VectorMax) {
 			Vector = W3DNEWARRAY T[VectorMax];
 			if (Vector) {
@@ -301,10 +301,10 @@ VectorClass<T> & VectorClass<T>::operator =(VectorClass<T> const & vec)
 				for (int index = 0; index < VectorMax; index++) {
 #ifdef OG
 					Vector[index] = vector[index];
-#endif
+#endif // OG
 #ifdef ZH
 					Vector[index] = vec[index];
-#endif
+#endif // ZH
 				}
 			}
 		} else {
@@ -335,24 +335,24 @@ VectorClass<T> & VectorClass<T>::operator =(VectorClass<T> const & vec)
 template<class T>
 #ifdef OG
 bool VectorClass<T>::operator == (VectorClass<T> const & vector) const
-#endif
+#endif // OG
 #ifdef ZH
 bool VectorClass<T>::operator == (VectorClass<T> const & vec) const
-#endif
+#endif // ZH
 {
 #ifdef OG
 	if (VectorMax == vector.Length()) {
-#endif
+#endif // OG
 #ifdef ZH
 	if (VectorMax == vec.Length()) {
-#endif
+#endif // ZH
 		for (int index = 0; index < VectorMax; index++) {
 #ifdef OG
 			if (Vector[index] != vector[index]) {
-#endif
+#endif // OG
 #ifdef ZH
 			if (Vector[index] != vec[index]) {
-#endif
+#endif // ZH
 				return(false);
 			}
 		}
@@ -570,7 +570,7 @@ class DynamicVectorClass : public VectorClass<T>
 		void Reset_Active(void) { ActiveCount = 0; }
 #ifdef ZH
 		void Set_Active(int count)	{ ActiveCount = count; }
-#endif
+#endif // ZH
 
 		// Fetch number of "allocated" vector objects.
 		int Count(void) const {return(ActiveCount);};
@@ -587,7 +587,7 @@ class DynamicVectorClass : public VectorClass<T>
 		bool Delete(int index);
 #ifdef ZH
 		bool Delete_Index(int index);		// Added to explictly call delete by index
-#endif
+#endif // ZH
 
 		// Deletes all objects in the vector.
 		void Delete_All(void);
@@ -960,7 +960,7 @@ bool DynamicVectorClass<T>::Delete_Index(int index)
 }
 
 template<class T>
-#endif
+#endif // ZH
 void DynamicVectorClass<T>::Delete_All(void) 
 {
 	int len = VectorMax;
@@ -995,11 +995,11 @@ T * DynamicVectorClass<T>::Uninitialized_Add(void)
 #ifdef OG
 		if ((IsAllocated || !VectorMax) && GrowthStep > 0) {
 
-#endif
+#endif // OG
 #ifdef ZH
 //		if ((IsAllocated || !VectorMax) && GrowthStep > 0) {
 		if (GrowthStep > 0) {
-#endif
+#endif // ZH
 			if (!Resize(Length() + GrowthStep)) {
 
 				/*
@@ -1058,7 +1058,7 @@ class BooleanVectorClass
 		void Init(unsigned size, unsigned char * array);
 #ifdef ZH
 		void Init(unsigned size);
-#endif
+#endif // ZH
 
 		// Fetch number of boolean objects in vector.
 		int Length(void) {return BitCount;};

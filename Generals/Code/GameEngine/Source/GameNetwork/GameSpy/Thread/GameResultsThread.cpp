@@ -223,7 +223,7 @@ static WrapHTTP( const std::string& hostname, std::string& results )
 	results = szHdr + results;
 } //WrapHTTP
 
-#endif
+#endif // OG
 //-------------------------------------------------------------------------
 
 void GameResultsThreadClass::Thread_Function()
@@ -293,7 +293,7 @@ void GameResultsThreadClass::Thread_Function()
 
 #ifdef ZH
 #ifdef DEBUG_LOGGING
-#endif
+#endif // ZH
 #define CASE(x) case (x): return #x;
 
 static const char *getWSAErrorString( Int error )
@@ -361,7 +361,7 @@ static const char *getWSAErrorString( Int error )
 
 #ifdef ZH
 #endif
-#endif
+#endif // ZH
 //-------------------------------------------------------------------------
 
 Int GameResultsThreadClass::sendGameResults( UnsignedInt IP, UnsignedShort port, const std::string& results )

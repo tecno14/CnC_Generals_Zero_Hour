@@ -165,16 +165,16 @@ Bool ActionManager::canGetRepairedAt( const Object *obj, const Object *repairDes
 	if( !obj->isMobile() )
 		return FALSE;
 
-#endif
+#endif // ZH
 	// nothing can be done with things that are under construction
 #ifdef OG
 	if( BitTest( obj->getStatusBits(), OBJECT_STATUS_UNDER_CONSTRUCTION ) == TRUE ||
 			BitTest( repairDest->getStatusBits(), OBJECT_STATUS_UNDER_CONSTRUCTION ) == TRUE )
-#endif
+#endif // OG
 #ifdef ZH
 	if( obj->getStatusBits().test( OBJECT_STATUS_UNDER_CONSTRUCTION ) ||
 			repairDest->getStatusBits().test( OBJECT_STATUS_UNDER_CONSTRUCTION ) )
-#endif
+#endif // ZH
 		return FALSE;
 
 	// Can't get repaired at something being sold
@@ -192,10 +192,10 @@ Bool ActionManager::canGetRepairedAt( const Object *obj, const Object *repairDes
 		if( !obj->isAboveTerrain() ||
 #ifdef OG
 					repairDest->isKindOf( KINDOF_AIRFIELD ) == FALSE )
-#endif
+#endif // OG
 #ifdef ZH
 					repairDest->isKindOf( KINDOF_FS_AIRFIELD ) == FALSE )
-#endif
+#endif // ZH
 			return FALSE;
 	}
 	else
@@ -237,11 +237,11 @@ Bool ActionManager::canTransferSuppliesAt( const Object *obj, const Object *tran
 #ifdef OG
 	if( BitTest( obj->getStatusBits(), OBJECT_STATUS_UNDER_CONSTRUCTION ) == TRUE ||
 			BitTest( transferDest->getStatusBits(), OBJECT_STATUS_UNDER_CONSTRUCTION ) == TRUE )
-#endif
+#endif // OG
 #ifdef ZH
 	if( obj->getStatusBits().test( OBJECT_STATUS_UNDER_CONSTRUCTION ) ||
 			transferDest->getStatusBits().test( OBJECT_STATUS_UNDER_CONSTRUCTION ) )
-#endif
+#endif // ZH
 		return FALSE;
 
 	// Can't transfer at something being sold
@@ -368,11 +368,11 @@ Bool ActionManager::canGetHealedAt( const Object *obj, const Object *healDest, C
 #ifdef OG
 	if( BitTest( obj->getStatusBits(), OBJECT_STATUS_UNDER_CONSTRUCTION ) == TRUE ||
 			BitTest( healDest->getStatusBits(), OBJECT_STATUS_UNDER_CONSTRUCTION ) == TRUE )
-#endif
+#endif // OG
 #ifdef ZH
 	if( obj->getStatusBits().test( OBJECT_STATUS_UNDER_CONSTRUCTION ) ||
 			healDest->getStatusBits().test( OBJECT_STATUS_UNDER_CONSTRUCTION ) )
-#endif
+#endif // ZH
 		return FALSE;
 
 	// Can't get healed at something being sold
@@ -438,11 +438,11 @@ Bool ActionManager::canRepairObject( const Object *obj, const Object *objectToRe
 #ifdef OG
 	if( BitTest( obj->getStatusBits(), OBJECT_STATUS_UNDER_CONSTRUCTION ) == TRUE ||
 			BitTest( objectToRepair->getStatusBits(), OBJECT_STATUS_UNDER_CONSTRUCTION ) == TRUE )
-#endif
+#endif // OG
 #ifdef ZH
 	if( obj->getStatusBits().test( OBJECT_STATUS_UNDER_CONSTRUCTION ) ||
 			objectToRepair->getStatusBits().test( OBJECT_STATUS_UNDER_CONSTRUCTION ) )
-#endif
+#endif // ZH
 		return FALSE;
 
 	// we cannot manually repair things that are regeneration holes
@@ -504,11 +504,11 @@ Bool ActionManager::canResumeConstructionOf( const Object *obj,
 #ifdef OG
 	if( BitTest( objectBeingConstructed->getStatusBits(), 
 							 OBJECT_STATUS_UNDER_CONSTRUCTION ) == FALSE )
-#endif
+#endif // OG
 #ifdef ZH
 	if( !objectBeingConstructed->getStatusBits().test( OBJECT_STATUS_UNDER_CONSTRUCTION ) )
 
-#endif
+#endif // ZH
 		return FALSE;
 
 	// dead things can do nothing
@@ -586,11 +586,11 @@ Bool ActionManager::canEnterObject( const Object *obj, const Object *objectToEnt
 #ifdef OG
 	if( BitTest( obj->getStatusBits(), OBJECT_STATUS_UNDER_CONSTRUCTION ) == TRUE ||
 			BitTest( objectToEnter->getStatusBits(), OBJECT_STATUS_UNDER_CONSTRUCTION ) == TRUE )
-#endif
+#endif // OG
 #ifdef ZH
 	if( obj->getStatusBits().test( OBJECT_STATUS_UNDER_CONSTRUCTION ) ||
 			objectToEnter->getStatusBits().test( OBJECT_STATUS_UNDER_CONSTRUCTION ) )
-#endif
+#endif // ZH
 	{
 		return FALSE;
 	}
@@ -610,7 +610,7 @@ Bool ActionManager::canEnterObject( const Object *obj, const Object *objectToEnt
   if (objectToEnter->isDisabledByType( DISABLED_SUBDUED ))
     return FALSE; // a microwave tank has soldered the doors shut
 
-#endif
+#endif // ZH
 	if( obj->isKindOf( KINDOF_STRUCTURE ) || obj->isKindOf( KINDOF_IMMOBILE ) )
 	{
 		//Structures or immobiles can't garrison
@@ -624,29 +624,29 @@ Bool ActionManager::canEnterObject( const Object *obj, const Object *objectToEnt
 		if( !obj->isKindOf( KINDOF_REJECT_UNMANNED ) )
 		{
 			//But only if it's allowed to.
-#endif
+#endif // ZH
 		return TRUE;
 #ifdef ZH
 		}
-#endif
+#endif // ZH
 	}
 
 	// Special case for aircraft.
 #ifdef OG
 	if( obj->isKindOf( KINDOF_AIRCRAFT ) && objectToEnter->isKindOf( KINDOF_AIRFIELD ) )
 
-#endif
+#endif // OG
 #ifdef ZH
 	if( obj->isKindOf( KINDOF_AIRCRAFT ) && objectToEnter->isKindOf( KINDOF_FS_AIRFIELD ) )
 	{
 		if( obj->getStatusBits().test( OBJECT_STATUS_DECK_HEIGHT_OFFSET ) && obj->getCarrierDeckHeight() >= obj->getPosition()->z )
-#endif
+#endif // ZH
 	{
 #ifdef ZH
 			return FALSE;
 		}
 
-#endif
+#endif // ZH
 		if (!obj->isAboveTerrain())
 			return FALSE;
 		
@@ -813,14 +813,14 @@ CanAttackResult ActionManager::getCanAttackObject( const Object *obj, const Obje
 				}
 			}
 			if( !anyValidWeapon )
-#endif
+#endif // ZH
 	{
 #ifdef ZH
 				return ATTACKRESULT_NOT_POSSIBLE;
 			}
 		}
 
-#endif
+#endif // ZH
 		if( result == ATTACKRESULT_INVALID_SHOT && obj->isKindOf( KINDOF_DOZER ) )
 		{
 			//For the case of dozers, we don't ever want to see an attack cursor
@@ -865,7 +865,7 @@ CanAttackResult ActionManager::getCanAttackObject( const Object *obj, const Obje
         {
           result = rider->getAbleToAttackSpecificObject( attackType, objectToAttack, commandSource );
           if( result != ATTACKRESULT_NOT_POSSIBLE )
-#endif
+#endif // ZH
 					return result;
 				}
 			}
@@ -919,7 +919,7 @@ Bool ActionManager::canHijackVehicle( const Object *obj, const Object *objectToH
 	int foo = 10;
 	++foo;
 
-#endif
+#endif // OG
 	// sanity
 	if( obj == NULL || objectToHijack == NULL )
 	{
@@ -957,7 +957,7 @@ Bool ActionManager::canHijackVehicle( const Object *obj, const Object *objectToH
 	//{
 	//	return FALSE;
 	//}
-#endif
+#endif // OG
 	
 	//Kris -- Hijackers can no longer hijack any aircraft.
 	if( objectToHijack->isKindOf( KINDOF_AIRCRAFT ) )
@@ -973,7 +973,7 @@ Bool ActionManager::canHijackVehicle( const Object *obj, const Object *objectToH
 //	{
 //		return FALSE;
 //	}
-#endif
+#endif // OG
 #ifdef ZH
 	//Can't hijack a drone type.
 	if( objectToHijack->isKindOf( KINDOF_DRONE ) )
@@ -981,7 +981,7 @@ Bool ActionManager::canHijackVehicle( const Object *obj, const Object *objectToH
 		return FALSE;
 	}
 
-#endif
+#endif // ZH
 
 	// last, see if we'd like to collide with 'objectToHijack' 
 	for (BehaviorModule** m = obj->getBehaviorModules(); *m; ++m)
@@ -1011,7 +1011,7 @@ Bool ActionManager::canSabotageBuilding( const Object *obj, const Object *object
 
 	//Make sure it's alive.
 	if( objectToSabotage->isEffectivelyDead() )
-#endif
+#endif // ZH
 		{
 #ifdef ZH
 		return FALSE;
@@ -1039,7 +1039,7 @@ Bool ActionManager::canSabotageBuilding( const Object *obj, const Object *object
 
 		if( collide->wouldLikeToCollideWith( objectToSabotage ) && collide->isSabotageBuildingCrateCollide() )
 		{
-#endif
+#endif // ZH
 			return TRUE;
 		}
 	}
@@ -1164,12 +1164,12 @@ Bool ActionManager::canCaptureBuilding( const Object *obj, const Object *objectT
 	UnsignedInt status = objectToCapture->getStatusBits();
 	if ((status & OBJECT_STATUS_STEALTHED) && !(status & OBJECT_STATUS_DETECTED))
 
-#endif
+#endif // OG
 #ifdef ZH
 	if( objectToCapture->testStatus( OBJECT_STATUS_STEALTHED ) && 
 			!objectToCapture->testStatus( OBJECT_STATUS_DETECTED ) &&
 			!objectToCapture->testStatus( OBJECT_STATUS_DISGUISED ) )
-#endif
+#endif // ZH
 	{
 		return FALSE;
 	}
@@ -1261,12 +1261,12 @@ Bool ActionManager::canDisableVehicleViaHacking( const Object *obj, const Object
 		UnsignedInt status = objectToHack->getStatusBits();
 		if( status & OBJECT_STATUS_STEALTHED && !(status & OBJECT_STATUS_DETECTED) )
 
-#endif
+#endif // OG
 #ifdef ZH
 	if( objectToHack->testStatus( OBJECT_STATUS_STEALTHED ) && 
 			!objectToHack->testStatus( OBJECT_STATUS_DETECTED ) &&
 			!objectToHack->testStatus( OBJECT_STATUS_DISGUISED ) )
-#endif
+#endif // ZH
 		{
 			return FALSE;
 		}
@@ -1362,10 +1362,10 @@ Bool ActionManager::canStealCashViaHacking( const Object *obj, const Object *obj
 
 #ifdef OG
 	if( BitTest( objectToHack->getStatusBits(), OBJECT_STATUS_UNDER_CONSTRUCTION ) == TRUE )
-#endif
+#endif // OG
 #ifdef ZH
 	if( objectToHack->getStatusBits().test( OBJECT_STATUS_UNDER_CONSTRUCTION ) )
-#endif
+#endif // ZH
 	{
 		return FALSE;
 	}
@@ -1390,11 +1390,11 @@ Bool ActionManager::canStealCashViaHacking( const Object *obj, const Object *obj
 #ifdef OG
 		UnsignedInt status = objectToHack->getStatusBits();
 		if( status & OBJECT_STATUS_UNDER_CONSTRUCTION )
-#endif
+#endif // OG
 #ifdef ZH
 		if( objectToHack->getStatusBits().test( OBJECT_STATUS_UNDER_CONSTRUCTION ) )
 
-#endif
+#endif // ZH
 		{
 			return FALSE;
 		}
@@ -1409,12 +1409,12 @@ Bool ActionManager::canStealCashViaHacking( const Object *obj, const Object *obj
 #ifdef OG
 		if( status & OBJECT_STATUS_STEALTHED && !(status & OBJECT_STATUS_DETECTED) )
 
-#endif
+#endif // OG
 #ifdef ZH
 	if( objectToHack->testStatus( OBJECT_STATUS_STEALTHED ) && 
 			!objectToHack->testStatus( OBJECT_STATUS_DETECTED ) &&
 			!objectToHack->testStatus( OBJECT_STATUS_DISGUISED ) )
-#endif
+#endif // ZH
 		{
 			return FALSE;
 		}
@@ -1489,12 +1489,12 @@ Bool ActionManager::canDisableBuildingViaHacking( const Object *obj, const Objec
 	UnsignedInt status = objectToHack->getStatusBits();
 	if( (status & OBJECT_STATUS_STEALTHED) && !(status & OBJECT_STATUS_DETECTED) )
 
-#endif
+#endif // OG
 #ifdef ZH
 	if( objectToHack->testStatus( OBJECT_STATUS_STEALTHED ) && 
 			!objectToHack->testStatus( OBJECT_STATUS_DETECTED ) &&
 			!objectToHack->testStatus( OBJECT_STATUS_DISGUISED ) )
-#endif
+#endif // ZH
 	{
 		return FALSE;
 	}
@@ -1552,7 +1552,7 @@ Bool ActionManager::canSnipeVehicle( const Object *obj, const Object *objectToSn
 		
 		//Can't be a drone type.
 		if( objectToSnipe->isKindOf( KINDOF_DRONE ) )
-#endif
+#endif // ZH
 		{
 			return FALSE;
 		}
@@ -1562,10 +1562,10 @@ Bool ActionManager::canSnipeVehicle( const Object *obj, const Object *objectToSn
 		{
 #ifdef OG
 			return false;
-#endif
+#endif // OG
 #ifdef ZH
 			return FALSE;
-#endif
+#endif // ZH
 		}
 
 		//Make sure the vehicle is manned!
@@ -1588,7 +1588,7 @@ inline Bool isPointOnMap( const Coord3D  *testPos )
 	TheTerrainLogic->getExtent( &mapRegion );
 	return mapRegion.isInRegionNoZ( testPos );
 
-#endif
+#endif // ZH
 }
 
 // ------------------------------------------------------------------------------------------------
@@ -1622,11 +1622,11 @@ Bool ActionManager::canDoSpecialPowerAtLocation( const Object *obj, const Coord3
 			case SPECIAL_PARADROP_AMERICA:
 #ifdef ZH
 			case INFA_SPECIAL_PARADROP_AMERICA:
-#endif
+#endif // ZH
 			case SPECIAL_CRATE_DROP:
 #ifdef ZH
 			case SPECIAL_TANK_PARADROP:
-#endif
+#endif // ZH
 			{
 				if( TheTerrainLogic->isUnderwater( loc->x, loc->y ) )
 					return FALSE;
@@ -1639,12 +1639,12 @@ Bool ActionManager::canDoSpecialPowerAtLocation( const Object *obj, const Coord3
 			case SPECIAL_DAISY_CUTTER:
 #ifdef ZH
 			case AIRF_SPECIAL_DAISY_CUTTER:
-#endif
+#endif // ZH
 			case SPECIAL_PARADROP_AMERICA:
 #ifdef ZH
 			case SPECIAL_TANK_PARADROP:
 			case INFA_SPECIAL_PARADROP_AMERICA:
-#endif
+#endif // ZH
 			case SPECIAL_CARPET_BOMB:
 #ifdef ZH
 			case SPECIAL_CHINA_CARPET_BOMB:
@@ -1653,11 +1653,11 @@ Bool ActionManager::canDoSpecialPowerAtLocation( const Object *obj, const Coord3
 			case EARLY_SPECIAL_CHINA_CARPET_BOMB:
 			case AIRF_SPECIAL_CARPET_BOMB:
 			case SUPR_SPECIAL_CRUISE_MISSILE:
-#endif
+#endif // ZH
 			case SPECIAL_CLUSTER_MINES:
 #ifdef ZH
 			case NUKE_SPECIAL_CLUSTER_MINES:
-#endif
+#endif // ZH
 			case SPECIAL_EMP_PULSE:
 			case SPECIAL_CRATE_DROP:
 			case SPECIAL_NAPALM_STRIKE:
@@ -1669,7 +1669,7 @@ Bool ActionManager::canDoSpecialPowerAtLocation( const Object *obj, const Coord3
 #ifdef ZH
 			case NUKE_SPECIAL_NEUTRON_MISSILE:
 			case SUPW_SPECIAL_NEUTRON_MISSILE:
-#endif
+#endif // ZH
 			case SPECIAL_SCUD_STORM:
 #ifdef ALLOW_DEMORALIZE
 			case SPECIAL_DEMORALIZE:
@@ -1679,28 +1679,28 @@ Bool ActionManager::canDoSpecialPowerAtLocation( const Object *obj, const Coord3
 			case AIRF_SPECIAL_A10_THUNDERBOLT_STRIKE:
 			case SPECIAL_SPECTRE_GUNSHIP:
 			case AIRF_SPECIAL_SPECTRE_GUNSHIP:
-#endif
+#endif // ZH
 			case SPECIAL_REPAIR_VEHICLES:
 #ifdef ZH
 			case EARLY_SPECIAL_REPAIR_VEHICLES:
       case SPECIAL_GPS_SCRAMBLER:  
 			case SLTH_SPECIAL_GPS_SCRAMBLER:
-#endif
+#endif // ZH
 			case SPECIAL_ARTILLERY_BARRAGE:
 #ifdef ZH
 			case SPECIAL_FRENZY:
 			case EARLY_SPECIAL_FRENZY:
-#endif
+#endif // ZH
 			case SPECIAL_PARTICLE_UPLINK_CANNON:
 #ifdef ZH
 			case SUPW_SPECIAL_PARTICLE_UPLINK_CANNON:
 			case LAZR_SPECIAL_PARTICLE_UPLINK_CANNON:
-#endif
+#endif // ZH
 			case SPECIAL_CLEANUP_AREA:
 #ifdef ZH
 			case SPECIAL_SNEAK_ATTACK:
 			case SPECIAL_BATTLESHIP_BOMBARDMENT:
-#endif
+#endif // ZH
 				//Don't allow "damaging" special powers in shrouded areas, but Fogged are okay.
 				return ThePartitionManager->getShroudStatusForPlayer( obj->getControllingPlayer()->getPlayerIndex(), loc ) != CELLSHROUD_SHROUDED;
 
@@ -1712,16 +1712,16 @@ Bool ActionManager::canDoSpecialPowerAtLocation( const Object *obj, const Coord3
 
         //These specials can be used anywhere!
         return isPointOnMap( loc );
-#endif
+#endif // ZH
 			case SPECIAL_LAUNCH_BAIKONUR_ROCKET:
 #ifdef OG
 				//These specials can be used anywhere!
 				return true;
-#endif
+#endif // OG
 #ifdef ZH
 			  return TRUE;
 
-#endif
+#endif // ZH
 
 			//These special powers require object targets!
 			case SPECIAL_MISSILE_DEFENDER_LASER_GUIDED_MISSILES:
@@ -1729,7 +1729,7 @@ Bool ActionManager::canDoSpecialPowerAtLocation( const Object *obj, const Coord3
 			case SPECIAL_TANKHUNTER_TNT_ATTACK:
 #ifdef ZH
 			case SPECIAL_BOOBY_TRAP:
-#endif
+#endif // ZH
 			case SPECIAL_CASH_HACK:
 			case SPECIAL_DEFECTOR:
 			case SPECIAL_BLACKLOTUS_CAPTURE_BUILDING:
@@ -1797,7 +1797,7 @@ Bool ActionManager::canDoSpecialPowerAtObject( const Object *obj, const Object *
 				}
 				return FALSE;
 
-#endif
+#endif // ZH
 			case SPECIAL_TANKHUNTER_TNT_ATTACK:
 				if( target->isKindOf( KINDOF_STRUCTURE ) || (target->isKindOf( KINDOF_VEHICLE ) && !target->isKindOf(KINDOF_AIRCRAFT)) )
 				{
@@ -1816,7 +1816,7 @@ Bool ActionManager::canDoSpecialPowerAtObject( const Object *obj, const Object *
 				return FALSE;
 			}
 
-#endif
+#endif // ZH
 			case SPECIAL_MISSILE_DEFENDER_LASER_GUIDED_MISSILES:
 				//Can only use laser guided missiles on vehicles!
 				if( target->isKindOf( KINDOF_VEHICLE ) && r == ENEMIES )
@@ -1861,10 +1861,10 @@ Bool ActionManager::canDoSpecialPowerAtObject( const Object *obj, const Object *
 					//Can't cash hack a building that's under construction.
 #ifdef OG
 					if( BitTest( target->getStatusBits(), OBJECT_STATUS_UNDER_CONSTRUCTION ) )
-#endif
+#endif // OG
 #ifdef ZH
 					if( target->getStatusBits().test( OBJECT_STATUS_UNDER_CONSTRUCTION ) )
-#endif
+#endif // ZH
 					{
 						return FALSE;
 					}
@@ -1880,13 +1880,13 @@ Bool ActionManager::canDoSpecialPowerAtObject( const Object *obj, const Object *
 #ifdef OG
 				if( target->isKindOf( KINDOF_VEHICLE ) && !target->isKindOf( KINDOF_AIRCRAFT ) && !target->isKindOf( KINDOF_BOAT ) )
 
-#endif
+#endif // OG
 #ifdef ZH
 				if( target->isKindOf( KINDOF_VEHICLE ) 
 						&& !target->isKindOf( KINDOF_AIRCRAFT ) 
 						&& !target->isKindOf( KINDOF_BOAT ) 
 						&& !target->isKindOf( KINDOF_CLIFF_JUMPER ) )
-#endif
+#endif // ZH
 				{
 					//Don't allow it to disguise as another bomb truck -- that's just plain dumb.
 					//if( target->getTemplate() != obj->getTemplate() )
@@ -1926,12 +1926,12 @@ Bool ActionManager::canDoSpecialPowerAtObject( const Object *obj, const Object *
 			case SPECIAL_DAISY_CUTTER:
 #ifdef ZH
 			case AIRF_SPECIAL_DAISY_CUTTER:
-#endif
+#endif // ZH
 			case SPECIAL_PARADROP_AMERICA:
 #ifdef ZH
 			case SPECIAL_TANK_PARADROP:
 			case INFA_SPECIAL_PARADROP_AMERICA:
-#endif
+#endif // ZH
 			case SPECIAL_CARPET_BOMB:
 #ifdef ZH
 			case SPECIAL_CHINA_CARPET_BOMB:
@@ -1940,11 +1940,11 @@ Bool ActionManager::canDoSpecialPowerAtObject( const Object *obj, const Object *
 			case EARLY_SPECIAL_CHINA_CARPET_BOMB:
 			case AIRF_SPECIAL_CARPET_BOMB:
 			case SUPR_SPECIAL_CRUISE_MISSILE:
-#endif
+#endif // ZH
 			case SPECIAL_CLUSTER_MINES:
 #ifdef ZH
 			case NUKE_SPECIAL_CLUSTER_MINES:
-#endif
+#endif // ZH
 			case SPECIAL_EMP_PULSE:
 			case SPECIAL_CRATE_DROP:
 			case SPECIAL_NAPALM_STRIKE:
@@ -1954,7 +1954,7 @@ Bool ActionManager::canDoSpecialPowerAtObject( const Object *obj, const Object *
 #ifdef ZH
 			case NUKE_SPECIAL_NEUTRON_MISSILE:
 			case SUPW_SPECIAL_NEUTRON_MISSILE:
-#endif
+#endif // ZH
 			case SPECIAL_DETONATE_DIRTY_NUKE:
 			case SPECIAL_BLACK_MARKET_NUKE:
 			case SPECIAL_ANTHRAX_BOMB:
@@ -1967,32 +1967,32 @@ Bool ActionManager::canDoSpecialPowerAtObject( const Object *obj, const Object *
 			case AIRF_SPECIAL_A10_THUNDERBOLT_STRIKE:
       case SPECIAL_SPECTRE_GUNSHIP:
 			case AIRF_SPECIAL_SPECTRE_GUNSHIP:
-#endif
+#endif // ZH
 			case SPECIAL_ARTILLERY_BARRAGE:
 #ifdef ZH
 			case SPECIAL_FRENZY:
 			case EARLY_SPECIAL_FRENZY:
-#endif
+#endif // ZH
 			case SPECIAL_REPAIR_VEHICLES:
 #ifdef ZH
 			case EARLY_SPECIAL_REPAIR_VEHICLES:
       case SPECIAL_GPS_SCRAMBLER:
 			case SLTH_SPECIAL_GPS_SCRAMBLER:
-#endif
+#endif // ZH
 			case SPECIAL_PARTICLE_UPLINK_CANNON:
 			case SPECIAL_CHANGE_BATTLE_PLANS:
 			case SPECIAL_CLEANUP_AREA:
 			case SPECIAL_LAUNCH_BAIKONUR_ROCKET:
 #ifdef ZH
 			case SPECIAL_SNEAK_ATTACK:
-#endif
+#endif // ZH
 				return false;
 
 			case SPECIAL_REMOTE_CHARGES:
 			case SPECIAL_TIMED_CHARGES:
 #ifdef ZH
 			case SPECIAL_HELIX_NAPALM_BOMB:
-#endif
+#endif // ZH
 			{
 				if( target->isEffectivelyDead() ||
 						target->isKindOf( KINDOF_BRIDGE ) ||
@@ -2076,11 +2076,11 @@ Bool ActionManager::canDoSpecialPower( const Object *obj, const SpecialPowerTemp
 			case SPECIAL_TANKHUNTER_TNT_ATTACK:
 #ifdef ZH
 			case SPECIAL_BOOBY_TRAP:
-#endif
+#endif // ZH
 			case SPECIAL_DAISY_CUTTER:
 #ifdef ZH
 			case AIRF_SPECIAL_DAISY_CUTTER:
-#endif
+#endif // ZH
 			case SPECIAL_PARADROP_AMERICA:
 #ifdef ZH
 			case SPECIAL_TANK_PARADROP:
@@ -2094,14 +2094,14 @@ Bool ActionManager::canDoSpecialPower( const Object *obj, const SpecialPowerTemp
 			case SUPR_SPECIAL_CRUISE_MISSILE:
 			case SPECIAL_CLUSTER_MINES:
 			case NUKE_SPECIAL_CLUSTER_MINES:
-#endif
+#endif // ZH
 			case SPECIAL_NAPALM_STRIKE:
 			case SPECIAL_TERROR_CELL:
 			case SPECIAL_NEUTRON_MISSILE:
 #ifdef ZH
 			case NUKE_SPECIAL_NEUTRON_MISSILE:
 			case SUPW_SPECIAL_NEUTRON_MISSILE:
-#endif
+#endif // ZH
 			case SPECIAL_BLACK_MARKET_NUKE:
 			case SPECIAL_ANTHRAX_BOMB:
 			case SPECIAL_SPY_SATELLITE:
@@ -2114,19 +2114,19 @@ Bool ActionManager::canDoSpecialPower( const Object *obj, const SpecialPowerTemp
 			case AIRF_SPECIAL_A10_THUNDERBOLT_STRIKE:
       case SPECIAL_SPECTRE_GUNSHIP:
 			case AIRF_SPECIAL_SPECTRE_GUNSHIP:
-#endif
+#endif // ZH
 			case SPECIAL_ARTILLERY_BARRAGE:
 #ifdef ZH
 			case SPECIAL_FRENZY:
 			case EARLY_SPECIAL_FRENZY:
-#endif
+#endif // ZH
 			case SPECIAL_DISGUISE_AS_VEHICLE:
 			case SPECIAL_REPAIR_VEHICLES:
 #ifdef ZH
 			case EARLY_SPECIAL_REPAIR_VEHICLES:
       case SPECIAL_GPS_SCRAMBLER:
 			case SLTH_SPECIAL_GPS_SCRAMBLER:
-#endif
+#endif // ZH
 			case SPECIAL_PARTICLE_UPLINK_CANNON:
 			case SPECIAL_CASH_BOUNTY:
  			case SPECIAL_CLEANUP_AREA:
@@ -2135,7 +2135,7 @@ Bool ActionManager::canDoSpecialPower( const Object *obj, const SpecialPowerTemp
 			case SPECIAL_SNEAK_ATTACK:
 			case SPECIAL_EMP_PULSE:
 			case SPECIAL_CASH_HACK:
-#endif
+#endif // ZH
 				//These all require object or location targets.
 				return false;
 
@@ -2143,7 +2143,7 @@ Bool ActionManager::canDoSpecialPower( const Object *obj, const SpecialPowerTemp
 			case SPECIAL_CIA_INTELLIGENCE:
 #ifdef ZH
 			case SPECIAL_COMMUNICATIONS_DOWNLOAD:
-#endif
+#endif // ZH
 			case SPECIAL_DETONATE_DIRTY_NUKE:
 			case SPECIAL_CHANGE_BATTLE_PLANS:
 			case SPECIAL_LAUNCH_BAIKONUR_ROCKET:
@@ -2181,10 +2181,10 @@ Bool ActionManager::canFireWeaponAtObject( const Object *obj, const Object *targ
 	{
 #ifdef OG
 		return false;
-#endif
+#endif // OG
 #ifdef ZH
 		return FALSE;
-#endif
+#endif // ZH
 	}
 
 	//Make sure we have the right weapon.
@@ -2193,10 +2193,10 @@ Bool ActionManager::canFireWeaponAtObject( const Object *obj, const Object *targ
 	{
 #ifdef OG
 		return false;
-#endif
+#endif // OG
 #ifdef ZH
 		return FALSE;
-#endif
+#endif // ZH
 	}
 
 #ifdef OG
@@ -2205,7 +2205,7 @@ Bool ActionManager::canFireWeaponAtObject( const Object *obj, const Object *targ
 	//	return canSnipeVehicle( obj, target, commandSource );
 	//}
 
-#endif
+#endif // OG
 #ifdef ZH
 	Bool sniper = FALSE;
 	if( weapon->getDamageType() == DAMAGE_KILLPILOT )
@@ -2216,19 +2216,19 @@ Bool ActionManager::canFireWeaponAtObject( const Object *obj, const Object *targ
 		}
 		sniper = TRUE;
 	}
-#endif
+#endif // ZH
 
 #ifdef OG
 	CanAttackResult result = obj->getAbleToAttackSpecificObject( ATTACK_NEW_TARGET, target, commandSource );
 
-#endif
+#endif // OG
 #ifdef ZH
 	CanAttackResult result;
 	if( sniper )
 		result = obj->getAbleToAttackSpecificObject( ATTACK_NEW_TARGET, target, commandSource, slot );
 	else
 		result = obj->getAbleToAttackSpecificObject( ATTACK_NEW_TARGET, target, commandSource );
-#endif
+#endif // ZH
 	
 	if( result == ATTACKRESULT_POSSIBLE || result == ATTACKRESULT_POSSIBLE_AFTER_MOVING )
 	{

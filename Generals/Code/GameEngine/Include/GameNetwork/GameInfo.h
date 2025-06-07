@@ -34,7 +34,7 @@
 #include "Common/Snapshot.h"
 #ifdef ZH
 #include "Common/Money.h"
-#endif
+#endif // ZH
 #include "GameNetwork/NetworkDefs.h"
 #include "GameNetwork/FirewallHelper.h"
 
@@ -199,7 +199,7 @@ public:
 #ifdef ZH
 	inline Int getUseStats( void ) const;		///< Does this game count towards gamespy stats?
 	inline void setUseStats( Int useStats );
-#endif
+#endif // ZH
 
 #ifdef ZH
   inline UnsignedShort getSuperweaponRestriction( void ) const; ///< Get any optional limits on superweapons
@@ -207,7 +207,7 @@ public:
   inline const Money & getStartingCash(void) const; 
   void setStartingCash( const Money & startingCash );
 
-#endif
+#endif // ZH
 	void setSlotPointer( Int index, GameSlot *slot );	///< Set the slot info pointer
 
 	void setLocalIP( UnsignedInt ip ) { m_localIP =ip; }	///< Set the local IP
@@ -239,7 +239,7 @@ public:
 
   inline Bool oldFactionsOnly(void) const;
   inline void setOldFactionsOnly( Bool oldFactionsOnly );
-#endif
+#endif // ZH
 
 protected:
 	Int m_preorderMask;
@@ -263,7 +263,7 @@ protected:
   Money         m_startingCash;
   UnsignedShort m_superweaponRestriction;
   Bool m_oldFactionsOnly; // Only USA, China, GLA -- not USA Air Force General, GLA Toxic General, et al
-#endif
+#endif // ZH
 };
 
 extern GameInfo *TheGameInfo;
@@ -286,7 +286,7 @@ const Money&GameInfo::getStartingCash( void ) const         { return m_startingC
 UnsignedShort GameInfo::getSuperweaponRestriction( void ) const { return m_superweaponRestriction; }
 Bool        GameInfo::oldFactionsOnly(void) const           { return m_oldFactionsOnly; }
 void        GameInfo::setOldFactionsOnly( Bool oldFactionsOnly ) { m_oldFactionsOnly = oldFactionsOnly; }
-#endif
+#endif // ZH
 
 AsciiString GameInfoToAsciiString( const GameInfo *game );
 Bool ParseAsciiStringToGameInfo( GameInfo *game, AsciiString options );
@@ -319,6 +319,6 @@ public:
 extern SkirmishGameInfo *TheSkirmishGameInfo;
 #ifdef ZH
 extern SkirmishGameInfo *TheChallengeGameInfo;
-#endif
+#endif // ZH
 
 #endif // __GAMEINFO_H__

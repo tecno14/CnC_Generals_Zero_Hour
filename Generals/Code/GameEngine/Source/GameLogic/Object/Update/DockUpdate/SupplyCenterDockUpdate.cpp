@@ -44,14 +44,14 @@
 //#pragma MESSAGE("************************************** WARNING, optimization disabled for debugging purposes")
 #endif
 
-#endif
+#endif // ZH
 // ------------------------------------------------------------------------------------------------
 // ------------------------------------------------------------------------------------------------
 SupplyCenterDockUpdateModuleData::SupplyCenterDockUpdateModuleData( void )
 {
 #ifdef ZH
 	m_grantTemporaryStealthFrames = 0;
-#endif
+#endif // ZH
 }
 
 // ------------------------------------------------------------------------------------------------
@@ -65,7 +65,7 @@ SupplyCenterDockUpdateModuleData::SupplyCenterDockUpdateModuleData( void )
 	{
 #ifdef ZH
 		{ "GrantTemporaryStealth",		INI::parseDurationUnsignedInt,  NULL, offsetof( SupplyCenterDockUpdateModuleData, m_grantTemporaryStealthFrames ) },
-#endif
+#endif // ZH
 		{ 0, 0, 0, 0 }
 	};
 
@@ -95,7 +95,7 @@ Bool SupplyCenterDockUpdate::action( Object* docker, Object *drone )
 {
 #ifdef ZH
 	const SupplyCenterDockUpdateModuleData *data = getSupplyCenterDockUpdateModuleData();
-#endif
+#endif // ZH
 	SupplyTruckAIInterface* supplyTruckAI = NULL;
 	if( docker->getAIUpdateInterface() == NULL )
 		return FALSE;
@@ -114,7 +114,7 @@ Bool SupplyCenterDockUpdate::action( Object* docker, Object *drone )
 	
 	// Add money boost from upgrades that give extra money
 	value += supplyTruckAI->getUpgradedSupplyBoost();
-#endif
+#endif // ZH
 	
 	if( value > 0 )
 	{
@@ -143,7 +143,7 @@ Bool SupplyCenterDockUpdate::action( Object* docker, Object *drone )
 			}
 		}
 	}
-#endif
+#endif // ZH
 		
 #ifdef ZH
 	Bool displayMoney = value > 0 ? TRUE : FALSE;
@@ -159,7 +159,7 @@ Bool SupplyCenterDockUpdate::action( Object* docker, Object *drone )
 	if( displayMoney )
 	{
 		// OY LOOK!  I AM USING LOCAL PLAYER.  Do not put anything other than TheInGameUI->addFloatingText in the block this controls!!!
-#endif
+#endif // ZH
 		// Setup info for adding a floating text
 		Coord3D pos;
 		const Coord3D *dockerPos;

@@ -235,4 +235,4 @@ LZO_EXTERN(int) _lzo_config_check(void);
 vi:ts=4
 */
 
-#endif
+#endif // ZH

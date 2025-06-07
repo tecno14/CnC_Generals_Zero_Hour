@@ -87,4 +87,4 @@ typedef struct tThreadInfoType {
 #endif	//_MSC_VER
 
 #endif	//EXCEPT_H
-#endif
+#endif // ZH

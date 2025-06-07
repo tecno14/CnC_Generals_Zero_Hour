@@ -46,13 +46,13 @@
 //#ifndef _DEBUG
 //#define _DEBUG
 //#endif
-#endif
+#endif // OG
 #ifdef ZH
 #ifndef _DEBUG
 #define _DEBUG
 #endif
 
-#endif
+#endif // ZH
 
 /*************************************************************************/
 /*_$                      External References                            */

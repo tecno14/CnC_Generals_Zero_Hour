@@ -25,38 +25,38 @@
 #ifdef OG
  *                     $Archive:: /VSS_Sync/ww3d2/ww3d.cpp                                    $*
 
-#endif
+#endif // OG
 #ifdef ZH
  *                     $Archive:: /Commando/Code/ww3d2/ww3d.cpp                               $*
  *                                                                                             *
  *                   Org Author:: Greg_h                                                       *
-#endif
+#endif // ZH
  *                                                                                             *
 #ifdef OG
  *                       Author:: Greg_h                                                       *
-#endif
+#endif // OG
 #ifdef ZH
  *                       Author : Kenny Mitchell                                               * 
-#endif
+#endif // ZH
  *                                                                                             *
 #ifdef OG
  *                     $Modtime:: 8/29/01 7:29p                                               $*
-#endif
+#endif // OG
 #ifdef ZH
  *								$Modtime:: 08/05/02 10:03a                                             $*
-#endif
+#endif // ZH
  *                                                                                             *
 #ifdef OG
  *                    $Revision:: 82                                                          $*
-#endif
+#endif // OG
 #ifdef ZH
  *                    $Revision:: 98                                                          $*
-#endif
+#endif // ZH
  *                                                                                             *
 #ifdef ZH
  * 07/01/02 KM Scalable shader library integration				                               *
  * 08/05/02 KM Texture class redesign 
-#endif
+#endif // ZH
  *---------------------------------------------------------------------------------------------*
  * Functions:                                                                                  *
  *   WW3D::Init -- Initialize the WW3D Library                                                 *
@@ -79,7 +79,7 @@
  *   WW3D::Get_Ext_Swap_Interval -- Queries the swap interval the device is aiming sync for.   *
 #ifdef OG
  *   WW3D::Set_Polygon_Mode -- set the drawing mode                                            *
-#endif
+#endif // OG
  *   WW3D::Get_Polygon_Mode -- returns the current rendering mode                              *
  *   WW3D::Set_Collision_Box_Display_Mask -- control rendering of collision boxes              *
  *   WW3D::Get_Collision_Box_Display_Mask -- returns the current display mask for collision bo *
@@ -146,11 +146,11 @@
 #ifdef ZH
 #include "animatedsoundmgr.h"
 #include "static_sort_list.h"
-#endif
+#endif // ZH
 
 #ifdef ZH
 #include "shdlib.h"
-#endif
+#endif // ZH
 
 #ifndef _UNIX
 #include "framgrab.h"
@@ -218,7 +218,7 @@ bool														WW3D::MungeSortOnLoad = false;
 #ifdef ZH
 
 bool														WW3D::OverbrightModifyOnLoad = false;
-#endif
+#endif // ZH
 
 FrameGrabClass *										WW3D::Movie = NULL;
 bool														WW3D::PauseRecord;
@@ -236,12 +236,12 @@ RefRenderObjListClass *								WW3D::DefaultStaticSortLists = NULL;
 RefRenderObjListClass *								WW3D::CurrentStaticSortLists = NULL;
 unsigned int											WW3D::MinStaticSortLevel = 1;	// The 0 list is not used
 unsigned int											WW3D::MaxStaticSortLevel = MAX_SORT_LEVEL;
-#endif
+#endif // OG
 #ifdef ZH
 StaticSortListClass *								WW3D::DefaultStaticSortLists = NULL;
 StaticSortListClass *								WW3D::CurrentStaticSortLists = NULL;
 
-#endif
+#endif // ZH
 
 
 VertexMaterialClass *								WW3D::DefaultDebugMaterial  = NULL;
@@ -254,33 +254,33 @@ bool														WW3D::ExposePrelit = false;
 bool														WW3D::SnapshotActivated=false;
 #ifdef ZH
 bool														WW3D::ThumbnailEnabled=true;
-#endif
+#endif // ZH
 
 WW3D::MeshDrawModeEnum								WW3D::MeshDrawMode = MESH_DRAW_MODE_OLD;
 #ifdef OG
 WW3D::TextureThumbnailModeEnum					WW3D::TextureThumbnailMode = TEXTURE_THUMBNAIL_MODE_ON;
 WW3D::TextureCompressionModeEnum					WW3D::TextureCompressionMode = TEXTURE_COMPRESSION_ENABLE;
-#endif
+#endif // OG
 WW3D::NPatchesGapFillingModeEnum					WW3D::NPatchesGapFillingMode = NPATCHES_GAP_FILLING_ENABLED;
 unsigned													WW3D::NPatchesLevel=1;
 bool														WW3D::IsTexturingEnabled=true;
 #ifdef OG
 unsigned int										WW3D::IsColoringEnabled=0x00000000;
-#endif
+#endif // OG
 #ifdef ZH
 bool										WW3D::IsColoringEnabled=false;
-#endif
+#endif // ZH
 
 static HWND												_Hwnd = NULL;		// Not a member to hide windows from WW3D users
 static int												_TextureReduction = 0;
 #ifdef OG
 static int												_TextureMinMipLevels = 1;
 
-#endif
+#endif // OG
 #ifdef ZH
 static int												_TextureMinDim = 1;
 static bool												_LargeTextureExtraReductionEnabled = false;
-#endif
+#endif // ZH
 int														WW3D::LastFrameMemoryAllocations;
 int														WW3D::LastFrameMemoryFrees;
 
@@ -289,7 +289,7 @@ int														WW3D::TextureFilter = 0;
 
 bool														WW3D::Lite = false;
 
-#endif
+#endif // ZH
 /**********************************************************************************
 **
 **  WW3D Static Functions
@@ -305,7 +305,7 @@ void WW3D::Set_Texture_Compression_Mode(TextureCompressionModeEnum mode)
 	}
 }
 
-#endif
+#endif // OG
 void WW3D::Set_NPatches_Gap_Filling_Mode(NPatchesGapFillingModeEnum mode)
 {
 	if (NPatchesGapFillingMode!=mode) {
@@ -332,7 +332,7 @@ void WW3D::Set_Texture_Thumbnail_Mode (TextureThumbnailModeEnum mode)
 	}
 }
 
-#endif
+#endif // OG
 /***********************************************************************************************
  * WW3D::Init -- Initialize the WW3D Library                                                   *
  *                                                                                             *
@@ -347,17 +347,17 @@ void WW3D::Set_Texture_Thumbnail_Mode (TextureThumbnailModeEnum mode)
  *=============================================================================================*/
 #ifdef OG
 WW3DErrorType WW3D::Init(void *hwnd, char *defaultpal)
-#endif
+#endif // OG
 #ifdef ZH
 WW3DErrorType WW3D::Init(void *hwnd, char *defaultpal, bool lite)
-#endif
+#endif // ZH
 {
 	assert(IsInitted == false);
 	WWDEBUG_SAY(("WW3D::Init hwnd = %p\n",hwnd));
 	_Hwnd = (HWND)hwnd;
 #ifdef ZH
 	Lite = lite;
-#endif
+#endif // ZH
 
 	/*
 	** Initialize d3d, this also enumerates the available devices and resolutions.
@@ -367,14 +367,14 @@ WW3DErrorType WW3D::Init(void *hwnd, char *defaultpal, bool lite)
 	if (!DX8Wrapper::Init(_Hwnd))
 		return WW3D_ERROR_INITIALIZATION_FAILED;
 
-#endif
+#endif // OG
 #ifdef ZH
 	WWDEBUG_SAY(("Init DX8Wrapper\n"));
 	if (!DX8Wrapper::Init(_Hwnd, lite)) {
 		return(WW3D_ERROR_INITIALIZATION_FAILED);
 	}
 	WWDEBUG_SAY(("Allocate Debug Resources\n"));
-#endif
+#endif // ZH
 	Allocate_Debug_Resources();
 
  	MMRESULT r=timeBeginPeriod(1);
@@ -386,7 +386,7 @@ WW3DErrorType WW3D::Init(void *hwnd, char *defaultpal, bool lite)
 #ifdef ZH
 	if (!lite) {
 		WWDEBUG_SAY(("Init Dazzles\n"));
-#endif
+#endif // ZH
 	FileClass * dazzle_ini_file = _TheFileFactory->Get_File(DAZZLE_INI_FILENAME);
 	if (dazzle_ini_file) {
 		INIClass dazzle_ini(*dazzle_ini_file);
@@ -395,17 +395,17 @@ WW3DErrorType WW3D::Init(void *hwnd, char *defaultpal, bool lite)
 	}
 #ifdef ZH
 	}
-#endif
+#endif // ZH
 	/*
 	** Initialize the default static sort lists
 	** Note that DefaultStaticSortLists[0] is unused.
 	*/
 #ifdef OG
 	DefaultStaticSortLists = W3DNEWARRAY RefRenderObjListClass[MAX_SORT_LEVEL + 1];
-#endif
+#endif // OG
 #ifdef ZH
 	DefaultStaticSortLists = W3DNEW DefaultStaticSortListClass();
-#endif
+#endif // ZH
 	Reset_Current_Static_Sort_Lists_To_Default();
 
 #ifdef ZH
@@ -414,12 +414,12 @@ WW3DErrorType WW3D::Init(void *hwnd, char *defaultpal, bool lite)
 	*/
 	if (!lite) {
 		AnimatedSoundMgrClass::Initialize ();
-#endif
+#endif // ZH
 	IsInitted = true;
 #ifdef ZH
 	}
 	WWDEBUG_SAY(("WW3D Init completed\n"));
-#endif
+#endif // ZH
 	return WW3D_ERROR_OK;
 }
 
@@ -440,10 +440,10 @@ WW3DErrorType WW3D::Shutdown(void)
 {
 #ifdef OG
 	assert(IsInitted == true);
-#endif
+#endif // OG
 #ifdef ZH
 	assert(Lite || IsInitted == true);
-#endif
+#endif // ZH
 //	WWDEBUG_SAY(("WW3D::Shutdown\n"));
 
 #ifdef WW3D_DX8
@@ -465,11 +465,11 @@ WW3DErrorType WW3D::Shutdown(void)
 	*/
 #ifdef ZH
 	if (!Lite) {
-#endif
+#endif // ZH
 	DazzleRenderObjClass::Deinit ();
 #ifdef ZH
 	}
-#endif
+#endif // ZH
 
 	/*
 	** Release all of our assets
@@ -482,11 +482,11 @@ WW3DErrorType WW3D::Shutdown(void)
 	DX8TextureManagerClass::Shutdown();
 #ifdef ZH
 	if (!Lite) {
-#endif
+#endif // ZH
 	DX8Wrapper::Shutdown();
 #ifdef ZH
 	}
-#endif
+#endif // ZH
 
 	/*
 	** Clear the default static sort lists
@@ -496,14 +496,14 @@ WW3DErrorType WW3D::Shutdown(void)
 
 	/*
 	** Release the animation-triggered sound data
-#endif
+#endif // ZH
 	*/
 #ifdef OG
 	delete [] DefaultStaticSortLists;
-#endif
+#endif // OG
 #ifdef ZH
 	AnimatedSoundMgrClass::Shutdown ();
-#endif
+#endif // ZH
 
 	IsInitted = false;
 	return WW3D_ERROR_OK;
@@ -883,7 +883,7 @@ void WW3D::_Invalidate_Textures()
 #ifdef ZH
 	if (!WW3DAssetManager::Get_Instance()) return;
 
-#endif
+#endif // ZH
 	TextureLoader::Flush_Pending_Load_Tasks();
 
 	HashTemplateIterator<StringClass,TextureClass*> ite(WW3DAssetManager::Get_Instance()->Texture_Hash());
@@ -905,7 +905,7 @@ void WW3D::Set_Texture_Filter(int texture_filter)
 	TextureFilterClass::_Init_Filters((TextureFilterClass::TextureFilterMode)TextureFilter);
 }
 
-#endif
+#endif // ZH
 /***********************************************************************************************
  * WW3D::Begin_Render -- mark the start of rendering for a new frame                           *
  *                                                                                             *
@@ -920,17 +920,17 @@ void WW3D::Set_Texture_Filter(int texture_filter)
  *=============================================================================================*/
 #ifdef OG
 WW3DErrorType WW3D::Begin_Render(bool clear,bool clearz,const Vector3 & color, float dest_alpha)
-#endif
+#endif // OG
 #ifdef ZH
 WW3DErrorType WW3D::Begin_Render(bool clear,bool clearz,const Vector3 & color, float dest_alpha, void(*network_callback)(void))
-#endif
+#endif // ZH
 {
 #ifdef ZH
 	if (!IsInitted) {
 		return(WW3D_ERROR_OK);
 	}
 
-#endif
+#endif // ZH
 	WWPROFILE("WW3D::Begin_Render");
 	WWASSERT(IsInitted);
 	HRESULT hr;
@@ -940,7 +940,7 @@ WW3DErrorType WW3D::Begin_Render(bool clear,bool clearz,const Vector3 & color, f
 	SNAPSHOT_SAY(("========== WW3D::Begin_Render ============\r\n"));
 	SNAPSHOT_SAY(("==========================================\r\n\r\n"));
 
-#endif
+#endif // ZH
 	if (DX8Wrapper::_Get_D3D_Device8() && (hr=DX8Wrapper::_Get_D3D_Device8()->TestCooperativeLevel()) != D3D_OK)
 	{
         // If the device was lost, do not render until we get it back
@@ -963,10 +963,10 @@ WW3DErrorType WW3D::Begin_Render(bool clear,bool clearz,const Vector3 & color, f
 
 #ifdef OG
 	TextureLoader::Update();
-#endif
+#endif // OG
 #ifdef ZH
 	TextureLoader::Update(network_callback);
-#endif
+#endif // ZH
 //	TextureClass::_Reset_Time_Stamp();
 	DynamicVBAccessClass::_Reset(true);
 	DynamicIBAccessClass::_Reset(true);
@@ -1024,7 +1024,7 @@ WW3DErrorType WW3D::Render(const LayerListClass &LayerList)
 		return(WW3D_ERROR_OK);
 	}
 
-#endif
+#endif // ZH
 	WWASSERT(IsRendering);
 
 	LayerClass *layer = LayerList.Last();
@@ -1060,7 +1060,7 @@ WW3DErrorType WW3D::Render(const LayerClass &Layer)
 	if (!IsInitted) {
 		return(WW3D_ERROR_OK);
 	}
-#endif
+#endif // ZH
 
 	WWASSERT(IsRendering);
 	return Render(Layer.Scene, Layer.Camera, Layer.Clear, Layer.ClearZ, Layer.ClearColor);
@@ -1087,7 +1087,7 @@ WW3DErrorType WW3D::Render(SceneClass * scene,CameraClass * cam,bool clear,bool 
 		return(WW3D_ERROR_OK);
 	}
 
-#endif
+#endif // ZH
 	WWPROFILE("WW3D::Render");
 	WWMEMLOG(MEM_GAMEDATA);
 	WWASSERT(IsInitted);
@@ -1124,11 +1124,11 @@ WW3DErrorType WW3D::Render(SceneClass * scene,CameraClass * cam,bool clear,bool 
 #ifdef OG
 	Vector3 ambient = scene->Get_Ambient_Light();
 	DX8Wrapper::Set_DX8_Render_State(D3DRS_AMBIENT, DX8Wrapper::Convert_Color(ambient,0.0f));
-#endif
+#endif // OG
 #ifdef ZH
 	DX8Wrapper::Set_Ambient(scene->Get_Ambient_Light());
 
-#endif
+#endif // ZH
 
 	// render the scene
 
@@ -1164,7 +1164,7 @@ WW3DErrorType WW3D::Render(
 		return(WW3D_ERROR_OK);
 	}
 
-#endif
+#endif // ZH
 	WWPROFILE("WW3D::Render");
 	WWASSERT(IsInitted);
 	WWASSERT(IsRendering);
@@ -1215,14 +1215,14 @@ WW3DErrorType WW3D::Render(
  *   4/17/2001  gth : Created.                                                                 *
 #ifdef ZH
  * 07/01/02 KM Scalable shader library integration				                               *
-#endif
+#endif // ZH
  *=============================================================================================*/
 void WW3D::Flush(RenderInfoClass & rinfo)
 {
 	TheDX8MeshRenderer.Flush();
 #ifdef ZH
 	SHD_FLUSH;
-#endif
+#endif // ZH
 	WW3D::Render_And_Clear_Static_Sort_Lists(rinfo);	//draws things like water
 
 	SortingRendererClass::Flush();
@@ -1249,17 +1249,17 @@ WW3DErrorType WW3D::End_Render(bool flip_frame)
 		return(WW3D_ERROR_OK);
 	}
 
-#endif
+#endif // ZH
 	WWPROFILE("WW3D::End_Render");
 
 #ifdef OG
 	assert(IsRendering);
 	assert(IsInitted);
-#endif
+#endif // OG
 #ifdef ZH
 	WWASSERT(IsRendering);
 	WWASSERT(IsInitted);
-#endif
+#endif // ZH
 
 	// If sorting renderer flush isn't called from within any of the render functions
 	// the sorting arrays will overflow!
@@ -1270,18 +1270,18 @@ WW3DErrorType WW3D::End_Render(bool flip_frame)
 #ifdef ZH
 	{
 		WWPROFILE("DX8Wrapper::End_Scene");
-#endif
+#endif // ZH
 	DX8Wrapper::End_Scene(flip_frame);
 #ifdef ZH
 	}
-#endif
+#endif // ZH
 
 	FrameCount++;
 
 #ifdef ZH
 	{
 		WWPROFILE("End_Statistics");
-#endif
+#endif // ZH
 	Debug_Statistics::End_Statistics();
 #ifdef ZH
 	}
@@ -1290,7 +1290,7 @@ WW3DErrorType WW3D::End_Render(bool flip_frame)
 	SNAPSHOT_SAY(("========== WW3D::End_Render ==============\r\n"));
 	SNAPSHOT_SAY(("==========================================\r\n\r\n"));
 
-#endif
+#endif // ZH
 	Activate_Snapshot(false);
 #ifdef ZH
 	
@@ -1298,7 +1298,7 @@ WW3DErrorType WW3D::End_Render(bool flip_frame)
 	// matrices for example) across multiple frames.  So even though this is slightly
 	// less "optimal", lets just reset the caches each frame.
 	DX8Wrapper::Invalidate_Cached_Render_States();
-#endif
+#endif // ZH
 
 	return WW3D_ERROR_OK;
 }
@@ -1477,10 +1477,10 @@ void WW3D::Normalize_Coordinates(int x, int y, float &fx, float &fy)
  *=============================================================================================*/
 #ifdef OG
 void WW3D::Make_Screen_Shot( const char * filename_base )
-#endif
+#endif // OG
 #ifdef ZH
 void WW3D::Make_Screen_Shot( const char * filename_base , const float gamma, const ScreenShotFormatEnum format)
-#endif
+#endif // ZH
 {
 
 	WWASSERT(!IsRendering);
@@ -1501,7 +1501,7 @@ void WW3D::Make_Screen_Shot( const char * filename_base , const float gamma, con
 			return;
 			break;
 	}
-#endif
+#endif // ZH
 
 	static int frame_number = 1;
 
@@ -1509,10 +1509,10 @@ void WW3D::Make_Screen_Shot( const char * filename_base , const float gamma, con
 	while (!done) {
 #ifdef OG
 		sprintf( filename, "%s%.2d.tga", filename_base, frame_number++);
-#endif
+#endif // OG
 #ifdef ZH
 		sprintf( filename, "%s%.2d.%s", filename_base, frame_number++, ext);
-#endif
+#endif // ZH
 		FileClass*file=_TheFileFactory->Get_File( filename );
 		if ( file ) {
 			file->Open();
@@ -1537,7 +1537,7 @@ void WW3D::Make_Screen_Shot( const char * filename_base , const float gamma, con
 		gamma_lut[i] = (unsigned char) (256.0f * powf(i / 256.0f, recip));
 	}
 
-#endif
+#endif // ZH
 	// Lock front buffer and copy
 
 	IDirect3DSurface8 *fb;
@@ -1559,10 +1559,10 @@ void WW3D::Make_Screen_Shot( const char * filename_base , const float gamma, con
 
 #ifdef OG
 	char *image=W3DNEWARRAY char[3*width*height];
-#endif
+#endif // OG
 #ifdef ZH
 	unsigned char *image=W3DNEWARRAY unsigned char[3*width*height];
-#endif
+#endif // ZH
 
 	for (y=0; y<height; y++)
 	{
@@ -1577,12 +1577,12 @@ void WW3D::Make_Screen_Shot( const char * filename_base , const float gamma, con
 			image[index]=*((char *) lrect.pBits + index2+2);
 			image[index+1]=*((char *) lrect.pBits + index2+1);
 			image[index+2]=*((char *) lrect.pBits + index2+0);
-#endif
+#endif // OG
 #ifdef ZH
 			image[index]   = gamma_lut[*((unsigned char *) lrect.pBits + index2+2)];
 			image[index+1] = gamma_lut[*((unsigned char *) lrect.pBits + index2+1)];
 			image[index+2] = gamma_lut[*((unsigned char *) lrect.pBits + index2+0)];
-#endif
+#endif // ZH
 		}
 	}
 
@@ -1592,7 +1592,7 @@ void WW3D::Make_Screen_Shot( const char * filename_base , const float gamma, con
 	switch (format) {
 		case TGA:
 			{
-#endif
+#endif // ZH
 	Targa targ;
 	memset(&targ.Header,0,sizeof(targ.Header));
 	targ.Header.Width=width;
@@ -1601,18 +1601,18 @@ void WW3D::Make_Screen_Shot( const char * filename_base , const float gamma, con
 	targ.Header.ImageType=TGA_TRUECOLOR;
 #ifdef OG
 	targ.SetImage(image);
-#endif
+#endif // OG
 #ifdef ZH
 				targ.SetImage((char *) image);
-#endif
+#endif // ZH
 	targ.YFlip();
 
 #ifdef OG
 	RawFileClass*file=(RawFileClass*)_TheWritingFileFactory->Get_File( filename );
-#endif
+#endif // OG
 #ifdef ZH
 				FileClass*file=_TheWritingFileFactory->Get_File( filename );
-#endif
+#endif // ZH
 	if ( file ) {
 		file->Create();
 		file->Close();
@@ -1637,7 +1637,7 @@ void WW3D::Make_Screen_Shot( const char * filename_base , const float gamma, con
 				header.biXPelsPerMeter = 0xB12;
 				header.biYPelsPerMeter = 0xB12;
 				int len = ((width * 24 +31) & ~31) /8;
-#endif
+#endif // ZH
 
 #ifdef ZH
 				memset(&fileheader, 0, sizeof(BITMAPFILEHEADER));
@@ -1675,7 +1675,7 @@ void WW3D::Make_Screen_Shot( const char * filename_base , const float gamma, con
 			break;
 	}
 
-#endif
+#endif // ZH
 	delete [] image;
 }
 
@@ -1981,26 +1981,26 @@ float	WW3D::Get_Movie_Capture_Frame_Rate( void )
  *=============================================================================================*/
 #ifdef OG
 void	WW3D::Set_Texture_Reduction( int value, int min_mip_levels )
-#endif
+#endif // OG
 #ifdef ZH
 void	WW3D::Set_Texture_Reduction( int value, int minDim )
-#endif
+#endif // ZH
 {
 #ifdef ZH
 	if (_TextureReduction != value || _TextureMinDim != minDim) {
-#endif
+#endif // ZH
 	_TextureReduction=value;
 #ifdef OG
 	_TextureMinMipLevels=min_mip_levels;
-#endif
+#endif // OG
 #ifdef ZH
 		_TextureMinDim=minDim;
-#endif
+#endif // ZH
 	_Invalidate_Textures();
 }
 #ifdef ZH
 }
-#endif
+#endif // ZH
 
 
 void WW3D::Enable_Texturing(bool b)
@@ -2014,10 +2014,10 @@ void WW3D::Enable_Coloring(unsigned int color)
 {
 #ifdef OG
 	IsColoringEnabled = color;
-#endif
+#endif // OG
 #ifdef ZH
 	IsColoringEnabled = (color == 0) ? false : true;
-#endif
+#endif // ZH
 }
 
 /***********************************************************************************************
@@ -2052,7 +2052,7 @@ int	WW3D::Get_Texture_Reduction( void )
 #ifdef OG
 int	WW3D::Get_Texture_Min_Mip_Levels( void )
 
-#endif
+#endif // OG
 #ifdef ZH
 int	WW3D::Get_Texture_Min_Dimension( void )
 {
@@ -2068,14 +2068,14 @@ void WW3D::Enable_Large_Texture_Extra_Reduction(bool onoff)
 }
 
 bool WW3D::Is_Large_Texture_Extra_Reduction_Enabled(void)
-#endif
+#endif // ZH
 {
 #ifdef OG
 	return _TextureMinMipLevels;
-#endif
+#endif // OG
 #ifdef ZH
 	return _LargeTextureExtraReductionEnabled;
-#endif
+#endif // ZH
 }
 
 /***********************************************************************************************
@@ -2186,15 +2186,15 @@ WW3DErrorType WW3D::On_Deactivate_App(void)
 #ifdef OG
 #ifdef WW3D_DX8
 	assert(!IsRendering);
-#endif
+#endif // OG
 #ifdef ZH
 	_Invalidate_Textures();
 	_Invalidate_Mesh_Cache();
-#endif
+#endif // ZH
 
 #ifdef OG
 	if ( Gerd == NULL )
-#endif
+#endif // OG
 		return WW3D_ERROR_OK;
 #ifdef OG
 
@@ -2207,7 +2207,7 @@ WW3DErrorType WW3D::On_Deactivate_App(void)
 	Gerd->closeWindow();
 #endif //WW3D_DX8
 	return WW3D_ERROR_OK;
-#endif
+#endif // OG
 }
 
 
@@ -2230,7 +2230,7 @@ WW3DErrorType WW3D::On_Activate_App(void)
 	}
 
 #endif //WW3D_DX8
-#endif
+#endif // OG
 	return WW3D_ERROR_OK;
 }
 
@@ -2282,11 +2282,11 @@ void WW3D::Add_To_Static_Sort_List(RenderObjClass *robj, unsigned int sort_level
 
 	CurrentStaticSortLists[sort_level].Add_Tail(robj, false);
 
-#endif
+#endif // OG
 #ifdef ZH
 	CurrentStaticSortLists->Add_To_List(robj, sort_level);
 
-#endif
+#endif // ZH
 }
 
 void WW3D::Render_And_Clear_Static_Sort_Lists(RenderInfoClass & rinfo)
@@ -2310,11 +2310,11 @@ void WW3D::Render_And_Clear_Static_Sort_Lists(RenderInfoClass & rinfo)
 		}
 		if (render) TheDX8MeshRenderer.Flush();
 	}
-#endif
+#endif // OG
 #ifdef ZH
 	CurrentStaticSortLists->Render_And_Clear(rinfo);
 
-#endif
+#endif // ZH
 	AreStaticSortListsEnabled = old_enable;
 }
 
@@ -2328,30 +2328,30 @@ void WW3D::Enable_Sorting(bool onoff)
 
 #ifdef OG
 void WW3D::Override_Current_Static_Sort_Lists(RefRenderObjListClass *sort_list, unsigned int min_sort, unsigned int max_sort)
-#endif
+#endif // OG
 #ifdef ZH
 void WW3D::Override_Current_Static_Sort_Lists(StaticSortListClass * sort_list)
-#endif
+#endif // ZH
 {
 #ifdef ZH
 	if (sort_list) {
-#endif
+#endif // ZH
 	CurrentStaticSortLists = sort_list;
 #ifdef OG
 	if (min_sort <= max_sort) {
 		MinStaticSortLevel = min_sort;
 		MaxStaticSortLevel = max_sort;
-#endif
+#endif // OG
 	} else {
 #ifdef OG
 		WWASSERT(0);
 		MinStaticSortLevel = max_sort;
 		MaxStaticSortLevel = min_sort;
-#endif
+#endif // OG
 #ifdef ZH
 		WWASSERT(sort_list);
 
-#endif
+#endif // ZH
 	}
 }
 
@@ -2361,7 +2361,7 @@ void WW3D::Reset_Current_Static_Sort_Lists_To_Default(void)
 #ifdef OG
 	MinStaticSortLevel = 1;	// The 0 list is not used
 	MaxStaticSortLevel = MAX_SORT_LEVEL;
-#endif
+#endif // OG
 }
 
 #ifdef ZH
@@ -2369,4 +2369,4 @@ void WW3D::Set_Gamma(float gamma,float bright,float contrast,bool calibrate)
 {
 	DX8Wrapper::Set_Gamma(gamma,bright,contrast,calibrate);
 }
-#endif
+#endif // ZH

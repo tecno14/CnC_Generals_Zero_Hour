@@ -55,20 +55,20 @@
 #ifdef ZH
 #include "GameClient/CampaignManager.h"
 
-#endif
+#endif // ZH
 #include "Common/INI.h"
 #include "Common/Xfer.h"
 #ifdef OG
 #include "GameClient/CampaignManager.h"
-#endif
+#endif // OG
 #ifdef ZH
 #include "GameClient/ChallengeGenerals.h"//For TheChallengeGenerals, so I can save it too.
-#endif
+#endif // ZH
 #include "GameClient/GameClient.h"
 #ifdef ZH
 #include "GameNetwork/GameInfo.h" //For Challenge Info.  It and Skirmish info are in the wrong place it seems.
 
-#endif
+#endif // ZH
 //-----------------------------------------------------------------------------
 // DEFINES ////////////////////////////////////////////////////////////////////
 //-----------------------------------------------------------------------------
@@ -82,7 +82,7 @@ CampaignManager *TheCampaignManager = NULL;
 //#pragma MESSAGE("************************************** WARNING, optimization disabled for debugging purposes")
 #endif
 
-#endif
+#endif // ZH
 
 const FieldParse CampaignManager::m_campaignFieldParseTable[] = 
 {
@@ -94,7 +94,7 @@ const FieldParse CampaignManager::m_campaignFieldParseTable[] =
 #ifdef ZH
 	{ "IsChallengeCampaign",			INI::parseBool,				NULL, offsetof( Campaign, m_isChallengeCampaign ) },
 	{ "PlayerFaction",		INI::parseAsciiString,					NULL, offsetof( Campaign, m_playerFactionName ) },
-#endif
+#endif // ZH
 
 	{ NULL,										NULL,													NULL, 0 }  // keep this last
 
@@ -134,11 +134,11 @@ void INI::parseCampaignDefinition( INI *ini )
 #ifdef OG
 Campaign::Campaign( void )
 
-#endif
+#endif // OG
 #ifdef ZH
 Campaign::Campaign( void ):
 	m_isChallengeCampaign(FALSE)
-#endif
+#endif // ZH
 {
 	m_missions.clear();
 	m_firstMission.clear();
@@ -247,7 +247,7 @@ CampaignManager::CampaignManager( void )
 	m_difficulty = DIFFICULTY_NORMAL;
 #ifdef ZH
 	m_xferChallengeGeneralsPlayerTemplateNum = 0;
-#endif
+#endif // ZH
 }
 
 //-----------------------------------------------------------------------------
@@ -400,7 +400,7 @@ void CampaignManager::parseMissionPart( INI* ini, void *instance, void *store, c
 			{ "UnitNames2",				INI::parseAsciiString,				NULL, offsetof( Mission, m_unitNames[2] ) },
 #ifdef ZH
 			{ "GeneralName",			INI::parseAsciiString,			NULL, offsetof( Mission, m_generalName)	},
-#endif
+#endif // ZH
 			{ "LocationNameLabel",INI::parseAsciiString,				NULL, offsetof( Mission, m_locationNameLabel ) },
 			{ "VoiceLength",			INI::parseInt ,								NULL, offsetof( Mission, m_voiceLength ) },
 
@@ -446,12 +446,12 @@ Campaign *CampaignManager::newCampaign(AsciiString name)
 #ifdef OG
 	* 2: Added RankPoints Saving*/
 
-#endif
+#endif // OG
 #ifdef ZH
 	* 2: Added RankPoints Saving
 	* 4: Need to have Challenge info in Mission saves as well as normal saves
 */
-#endif
+#endif // ZH
 // ------------------------------------------------------------------------------------------------
 void CampaignManager::xfer( Xfer *xfer )
 {
@@ -459,10 +459,10 @@ void CampaignManager::xfer( Xfer *xfer )
 	// version
 #ifdef OG
 	const XferVersion currentVersion = 3;
-#endif
+#endif // OG
 #ifdef ZH
 	const XferVersion currentVersion = 5;
-#endif
+#endif // ZH
 	XferVersion version = currentVersion;
 	xfer->xferVersion( &version, currentVersion );
 
@@ -520,7 +520,7 @@ void CampaignManager::xfer( Xfer *xfer )
 			}
 		}
 	}
-#endif
+#endif // ZH
 
 #ifdef ZH
 	if( version >= 5 )
@@ -533,7 +533,7 @@ void CampaignManager::xfer( Xfer *xfer )
 		m_xferChallengeGeneralsPlayerTemplateNum = playerTemplateNum;
 	}
 
-#endif
+#endif // ZH
 }  // end xfer
 #ifdef ZH
 
@@ -547,7 +547,7 @@ void CampaignManager::loadPostProcess( void )
 
 	TheChallengeGenerals->setCurrentPlayerTemplateNum(m_xferChallengeGeneralsPlayerTemplateNum);
 }
-#endif
+#endif // ZH
 
 //-----------------------------------------------------------------------------
 // PRIVATE FUNCTIONS //////////////////////////////////////////////////////////

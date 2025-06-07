@@ -77,10 +77,10 @@ Bool ConvertToCarBombCrateCollide::isValidToExecute( const Object *other ) const
 
 #ifdef OG
 	if ( other->getStatusBits() & OBJECT_STATUS_IS_CARBOMB )
-#endif
+#endif // OG
 #ifdef ZH
 	if( other->getStatusBits().test( OBJECT_STATUS_IS_CARBOMB ) )
-#endif
+#endif // ZH
 	{
 		return FALSE;// oops, sorry, I'll convert the next one.
 	}
@@ -133,7 +133,7 @@ Bool ConvertToCarBombCrateCollide::executeCrateBehavior( Object *other )
 		}
 	}
 
-#endif
+#endif // ZH
 	other->setWeaponSetFlag( WEAPONSET_CARBOMB );
 
 	FXList::doFXObj( getConvertToCarBombCrateCollideModuleData()->m_fxList, other );
@@ -149,10 +149,10 @@ Bool ConvertToCarBombCrateCollide::executeCrateBehavior( Object *other )
 	other->setShroudClearingRange(getObject()->getShroudClearingRange());
 #ifdef OG
 	other->setStatus( OBJECT_STATUS_IS_CARBOMB );
-#endif
+#endif // OG
 #ifdef ZH
 	other->setStatus( MAKE_OBJECT_STATUS_MASK( OBJECT_STATUS_IS_CARBOMB ) );
-#endif
+#endif // ZH
 
 	ExperienceTracker *exp = other->getExperienceTracker();
 	if (exp)

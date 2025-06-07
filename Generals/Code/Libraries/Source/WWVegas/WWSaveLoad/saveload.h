@@ -28,17 +28,17 @@
  *                                                                                             *
 #ifdef OG
  *                     $Modtime:: 4/16/01 4:35p                                               $*
-#endif
+#endif // OG
 #ifdef ZH
  *                     $Modtime:: 9/19/01 4:13p                                               $*
-#endif
+#endif // ZH
  *                                                                                             *
 #ifdef OG
  *                    $Revision:: 11                                                          $*
-#endif
+#endif // OG
 #ifdef ZH
  *                    $Revision:: 12                                                          $*
-#endif
+#endif // ZH
  *                                                                                             *
  *---------------------------------------------------------------------------------------------*
  * Functions:                                                                                  *
@@ -161,11 +161,11 @@ public:
 #ifdef OG
 	static bool		Post_Load_Processing (void);
 
-#endif
+#endif // OG
 #ifdef ZH
 	static bool		Post_Load_Processing (void(*network_callback)(void));
 
-#endif
+#endif // ZH
 	/*
 	** Look up the persist factory for a given chunk id
 	*/

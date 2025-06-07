@@ -174,4 +174,4 @@ void DIB8Class::Clear(unsigned char color)
 }
 
 
-#endif
+#endif // ZH

@@ -35,10 +35,10 @@
 // Comment out the following line to disable copy protection checks
 #ifdef OG
 //#define DO_COPY_PROTECTION
-#endif
+#endif // OG
 #ifdef ZH
 #define DO_COPY_PROTECTION
-#endif
+#endif // ZH
 
 #ifdef DO_COPY_PROTECTION
 

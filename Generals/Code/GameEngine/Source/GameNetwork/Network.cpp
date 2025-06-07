@@ -634,10 +634,10 @@ void Network::processFrameSynchronizedNetCommand(NetCommandRef *msg) {
 		processRunAheadCommand(netmsg);
 #ifdef OG
 		DEBUG_LOG_LEVEL(DEBUG_LEVEL_NET, ("command to set run ahead to %d and frame rate to %d on frame %d actually executed on frame %d\n", netmsg->getRunAhead(), netmsg->getFrameRate(), netmsg->getExecutionFrame(), TheGameLogic->getFrame()));
-#endif
+#endif // OG
 #ifdef ZH
 		DEBUG_LOG(("command to set run ahead to %d and frame rate to %d on frame %d actually executed on frame %d\n", netmsg->getRunAhead(), netmsg->getFrameRate(), netmsg->getExecutionFrame(), TheGameLogic->getFrame()));
-#endif
+#endif // ZH
 	}
 	else if (cmdMsg->getNetCommandType() == NETCOMMANDTYPE_DESTROYPLAYER) {
 		NetDestroyPlayerCommandMsg *netmsg = (NetDestroyPlayerCommandMsg *)cmdMsg;
@@ -939,7 +939,7 @@ void Network::quitGame() {
 	// Blow up / Transfer your units when you quit.  Like a normal quit menu quit.
 	GameMessage *msg = TheMessageStream->appendMessage(GameMessage::MSG_SELF_DESTRUCT);
 	msg->appendBooleanArgument(TRUE);
-#endif
+#endif // ZH
 
 	TheMessageStream->appendMessage(GameMessage::MSG_CLEAR_GAME_DATA);
 	m_localStatus = NETLOCALSTATUS_POSTGAME;

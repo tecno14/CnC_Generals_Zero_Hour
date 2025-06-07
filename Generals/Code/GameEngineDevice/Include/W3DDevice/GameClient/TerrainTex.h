@@ -49,21 +49,21 @@ protected:
 	virtual void Apply(unsigned int stage);
 #ifdef OG
 	int update256(WorldHeightMap *htMap);///< Sets the pixels, and returns the actual height of the texture.
-#endif
+#endif // OG
 
 public:
 #ifdef ZH
 		/// Create texture for a height map.
 		TerrainTextureClass(int height);
 
-#endif
+#endif // ZH
 		/// Create texture for a height map.
 #ifdef OG
 		TerrainTextureClass(int height, MipCountType mipLevelCount = MIP_LEVELS_3 );
-#endif
+#endif // OG
 #ifdef ZH
 		TerrainTextureClass(int height, int width);
-#endif
+#endif // ZH
 
 		// just use default destructor. ~TerrainTextureClass(void);
 public:
@@ -71,7 +71,7 @@ public:
 #ifdef ZH
 	Bool updateFlat(WorldHeightMap *htMap, Int xCell, Int yCell, Int cellWidth, Int pixelsPerCell); ///< Sets the pixels.
 	void setLOD(Int LOD);
-#endif
+#endif // ZH
 };
 
 

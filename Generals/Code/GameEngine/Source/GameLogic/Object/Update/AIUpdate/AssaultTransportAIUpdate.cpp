@@ -453,11 +453,11 @@ void AssaultTransportAIUpdate::retrieveMembers()
 				//This contained member is healthy so order him to exit to start fighting!
 #ifdef ZH
 				if (ai->getAIStateType() != AI_ENTER) {
-#endif
+#endif // ZH
 				ai->aiEnter( getObject(), CMD_FROM_AI );
 #ifdef ZH
 				} 
-#endif
+#endif // ZH
 			}
 		}
 	}

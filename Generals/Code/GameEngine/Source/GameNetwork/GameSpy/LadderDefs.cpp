@@ -177,7 +177,7 @@ static LadderInfo *parseLadder(AsciiString raw)
 					lad->validFactions.push_back("China");
 					lad->validFactions.push_back("GLA");
 
-#endif
+#endif // OG
 #ifdef ZH
 					lad->validFactions.clear();
 					Int numTemplates = ThePlayerTemplateStore->getPlayerTemplateCount();
@@ -190,7 +190,7 @@ static LadderInfo *parseLadder(AsciiString raw)
 						if (pt->isPlayableSide()  &&  pt->getSide().compare("Boss") != 0 )
 							lad->validFactions.push_back(pt->getSide());
 					}
-#endif
+#endif // ZH
 				}
 				else
 				{

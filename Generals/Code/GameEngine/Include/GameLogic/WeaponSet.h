@@ -37,7 +37,7 @@
 #include "Common/Snapshot.h"
 #ifdef ZH
 #include "GameLogic/Damage.h"
-#endif
+#endif // ZH
 
 //-------------------------------------------------------------------------------------------------
 class INI;
@@ -87,7 +87,7 @@ static const LookupListRec TheWeaponSlotTypeNamesLookupList[] =
 
 //Purpose: Whenever you change a weaponset, the model condition state associated with it
 //will be properly set exclusively.
-#endif
+#endif // ZH
 static const ModelConditionFlagType TheWeaponSetTypeToModelConditionTypeMap[WEAPONSET_COUNT] =
 {
 #ifdef OG
@@ -98,7 +98,7 @@ static const ModelConditionFlagType TheWeaponSetTypeToModelConditionTypeMap[WEAP
 	MODELCONDITION_WEAPONSET_CRATEUPGRADE_ONE,
 	MODELCONDITION_WEAPONSET_CRATEUPGRADE_TWO
 
-#endif
+#endif // OG
 #ifdef ZH
 	/*WEAPONSET_VETERAN*/								MODELCONDITION_WEAPONSET_VETERAN,		
 	/*WEAPONSET_ELITE*/									MODELCONDITION_WEAPONSET_ELITE,
@@ -117,7 +117,7 @@ static const ModelConditionFlagType TheWeaponSetTypeToModelConditionTypeMap[WEAP
 	/*WEAPONSET_RIDER6*/								MODELCONDITION_RIDER6,
 	/*WEAPONSET_RIDER7*/								MODELCONDITION_RIDER7,
 	/*WEAPONSET_RIDER8*/								MODELCONDITION_RIDER8,
-#endif
+#endif // ZH
 };
 #endif
 
@@ -221,10 +221,10 @@ private:
 	Int												m_totalAntiMask;						///< anti mask of all current weapons
 #ifdef OG
 	UnsignedInt								m_totalDamageTypeMask;			///< damagetype mask of all current weapons
-#endif
+#endif // OG
 #ifdef ZH
 	DamageTypeFlags						m_totalDamageTypeMask;			///< damagetype mask of all current weapons
-#endif
+#endif // ZH
 	Bool											m_hasPitchLimit;
 	Bool											m_hasDamageWeapon;
 
@@ -249,11 +249,11 @@ public:
 #ifdef OG
 	Bool hasWeaponToDealDamageType(DamageType typeToDeal) const { return (m_totalDamageTypeMask & (1 << typeToDeal)) != 0; }
 	Bool hasSingleDamageType(DamageType typeToDeal) const { return m_totalDamageTypeMask == (1 << typeToDeal); }
-#endif
+#endif // OG
 #ifdef ZH
 	Bool hasWeaponToDealDamageType(DamageType typeToDeal) const { return m_totalDamageTypeMask.test(typeToDeal); }
 	Bool hasSingleDamageType(DamageType typeToDeal) const { return (m_totalDamageTypeMask.test(typeToDeal) && (m_totalDamageTypeMask.count() == 1) ); }
-#endif
+#endif // ZH
 	Bool isCurWeaponLocked() const { return m_curWeaponLockedStatus != NOT_LOCKED; }
 	Weapon* getCurWeapon() { return m_weapons[m_curWeapon]; }
 	const Weapon* getCurWeapon() const { return m_weapons[m_curWeapon]; }
@@ -264,7 +264,7 @@ public:
 	void weaponSetOnWeaponBonusChange(const Object *source);
 	UnsignedInt getMostPercentReadyToFireAnyWeapon() const;
 	inline UnsignedInt getNthCommandSourceMask( WeaponSlotType n ) const { return m_curWeaponTemplateSet ? m_curWeaponTemplateSet->getNthCommandSourceMask( n ) : NULL; } 
-#endif
+#endif // ZH
 
 	Bool setWeaponLock( WeaponSlotType weaponSlot, WeaponLockType lockType );
 	void releaseWeaponLock(WeaponLockType lockType);
@@ -282,19 +282,19 @@ public:
 	*/
 #ifdef OG
 	CanAttackResult getAbleToAttackSpecificObject( AbleToAttackType t, const Object* obj, const Object* victim, CommandSourceType commandSource ) const;
-#endif
+#endif // OG
 #ifdef ZH
 	CanAttackResult getAbleToAttackSpecificObject( AbleToAttackType t, const Object* obj, const Object* victim, CommandSourceType commandSource, WeaponSlotType specificSlot = (WeaponSlotType)-1 ) const;
-#endif
+#endif // ZH
 
 	//When calling this function, all conditions must be validated to the point where we have decided that we wish to attack the object (faction checks, etc).
 	//Now, we are determining if the attack itself is able to be performed!
 #ifdef OG
 	CanAttackResult getAbleToUseWeaponAgainstTarget( AbleToAttackType attackType, const Object *source, const Object *victim, const Coord3D *pos, CommandSourceType commandSource ) const;
-#endif
+#endif // OG
 #ifdef ZH
 	CanAttackResult getAbleToUseWeaponAgainstTarget( AbleToAttackType attackType, const Object *source, const Object *victim, const Coord3D *pos, CommandSourceType commandSource, WeaponSlotType specificSlot = (WeaponSlotType)-1 ) const;
-#endif
+#endif // ZH
 
 	/**
 		Selects the best weapon for the given target, and sets it as the current weapon.

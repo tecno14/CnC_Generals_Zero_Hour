@@ -99,4 +99,4 @@ class DefaultStaticSortListClass : public StaticSortListClass
 #endif //STATIC_SORT_LIST_H
 
 
-#endif
+#endif // ZH

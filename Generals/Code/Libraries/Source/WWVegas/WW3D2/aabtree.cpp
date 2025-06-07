@@ -28,17 +28,17 @@
  *                                                                                             *
 #ifdef OG
  *                     $Modtime:: 6/14/01 9:42a                                               $*
-#endif
+#endif // OG
 #ifdef ZH
  *                     $Modtime:: 11/24/01 5:34p                                              $*
-#endif
+#endif // ZH
  *                                                                                             *
 #ifdef OG
  *                    $Revision:: 3                                                           $*
-#endif
+#endif // OG
 #ifdef ZH
  *                    $Revision:: 4                                                           $*
-#endif
+#endif // ZH
  *                                                                                             *
  *---------------------------------------------------------------------------------------------*
  * Functions:                                                                                  *
@@ -79,7 +79,7 @@
 #include "meshgeometry.h"
 #ifdef OG
 #include "camera.h"
-#endif
+#endif // OG
 #include "coltest.h"
 #include "inttest.h"
 #include "colmathinlines.h"
@@ -258,7 +258,7 @@ void AABTreeClass::Scale(float f)
 		Nodes[i].Max*=f;
 	}
 }
-#endif
+#endif // ZH
 
 /***********************************************************************************************
  * AABTreeClass::Build_Tree_Recursive -- Initializes this tree from the given builder          *
@@ -396,10 +396,10 @@ void AABTreeClass::Generate_OBBox_APT_Recursive(CullNodeStruct * node,OBBoxAPTCo
 			const Vector3 * loc = Mesh->Get_Vertex_Array();
 #ifdef OG
 			const Vector3i * polys = Mesh->Get_Polygon_Array();
-#endif
+#endif // OG
 #ifdef ZH
 			const TriIndex * polys = Mesh->Get_Polygon_Array();
-#endif
+#endif // ZH
 #if (!OPTIMIZE_PLANEEQ_RAM)
 			const Vector4 * norms = Mesh->Get_Plane_Array();
 #endif
@@ -496,10 +496,10 @@ void AABTreeClass::Generate_OBBox_APT_Recursive(CullNodeStruct * node, OBBoxRayA
 			const Vector3 * loc = Mesh->Get_Vertex_Array();
 #ifdef OG
 			const Vector3i * polys = Mesh->Get_Polygon_Array();
-#endif
+#endif // OG
 #ifdef ZH
 			const TriIndex * polys = Mesh->Get_Polygon_Array();
-#endif
+#endif // ZH
 #if (!OPTIMIZE_PLANEEQ_RAM)
 			const Vector4 * norms = Mesh->Get_Plane_Array();
 #endif
@@ -779,10 +779,10 @@ bool AABTreeClass::Cast_Ray_To_Polys(CullNodeStruct * node,RayCollisionTestClass
 		const Vector3 * loc = Mesh->Get_Vertex_Array();
 #ifdef OG
 		const Vector3i * polyverts = Mesh->Get_Polygon_Array();
-#endif
+#endif // OG
 #ifdef ZH
 		const TriIndex * polyverts = Mesh->Get_Polygon_Array();
-#endif
+#endif // ZH
 #if (!OPTIMIZE_PLANEEQ_RAM)
 		const Vector4 * norms = Mesh->Get_Plane_Array();
 #endif
@@ -858,10 +858,10 @@ int AABTreeClass::Cast_Semi_Infinite_Axis_Aligned_Ray_To_Polys(CullNodeStruct * 
 		const Vector3 * loc = Mesh->Get_Vertex_Array();
 #ifdef OG
 		const Vector3i * polyverts = Mesh->Get_Polygon_Array();
-#endif
+#endif // OG
 #ifdef ZH
 		const TriIndex * polyverts = Mesh->Get_Polygon_Array();
-#endif
+#endif // ZH
 		const Vector4 * plane = Mesh->Get_Plane_Array();
 		int poly0 = node->Get_Poly0();
 		int polycount = node->Get_Poly_Count();
@@ -908,10 +908,10 @@ bool AABTreeClass::Cast_AABox_To_Polys(CullNodeStruct * node,AABoxCollisionTestC
 		const Vector3 * loc = Mesh->Get_Vertex_Array();
 #ifdef OG
 		const Vector3i * polyverts = Mesh->Get_Polygon_Array();
-#endif
+#endif // OG
 #ifdef ZH
 		const TriIndex * polyverts = Mesh->Get_Polygon_Array();
-#endif
+#endif // ZH
 #if (!OPTIMIZE_PLANEEQ_RAM)
 		const Vector4 * norms = Mesh->Get_Plane_Array();
 #endif
@@ -977,10 +977,10 @@ bool AABTreeClass::Cast_OBBox_To_Polys(CullNodeStruct * node,OBBoxCollisionTestC
 		const Vector3 * loc = Mesh->Get_Vertex_Array();
 #ifdef OG
 		const Vector3i * polyverts = Mesh->Get_Polygon_Array();
-#endif
+#endif // OG
 #ifdef ZH
 		const TriIndex * polyverts = Mesh->Get_Polygon_Array();
-#endif
+#endif // ZH
 #if (!OPTIMIZE_PLANEEQ_RAM)
 		const Vector4 * norms = Mesh->Get_Plane_Array();
 #endif
@@ -1050,10 +1050,10 @@ bool AABTreeClass::Intersect_OBBox_With_Polys
 		const Vector3 * loc = Mesh->Get_Vertex_Array();
 #ifdef OG
 		const Vector3i * polyverts = Mesh->Get_Polygon_Array();
-#endif
+#endif // OG
 #ifdef ZH
 		const TriIndex * polyverts = Mesh->Get_Polygon_Array();
-#endif
+#endif // ZH
 #if (!OPTIMIZE_PLANEEQ_RAM)
 		const Vector4 * norms = Mesh->Get_Plane_Array();
 #endif
@@ -1176,10 +1176,10 @@ void AABTreeClass::Update_Min_Max(int poly_index,Vector3 & min,Vector3 & max)
 
 #ifdef OG
 		const Vector3i * polyverts = Mesh->Get_Polygon_Array() + poly_index;
-#endif
+#endif // OG
 #ifdef ZH
 		const TriIndex * polyverts = Mesh->Get_Polygon_Array() + poly_index;
-#endif
+#endif // ZH
 		const Vector3 * point = Mesh->Get_Vertex_Array() + (*polyverts)[vert_index];
 
 		if (point->X  < min.X) min.X = point->X;

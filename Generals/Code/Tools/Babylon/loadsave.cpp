@@ -25,17 +25,17 @@
 #include "TransDB.h"
 #ifdef OG
 #include "noxstringdlg.h"
-#endif
+#endif // OG
 #ifdef ZH
 #include "Babylondlg.h"
-#endif
+#endif // ZH
 
 #ifdef OG
 #define FORM_NOXDB			MakeID ('N','X','D','B')
-#endif
+#endif // OG
 #ifdef ZH
 #define FORM_BABYLONDB			MakeID ('N','X','D','B')
-#endif
+#endif // ZH
 #define FORM_LABEL			MakeID ('N','L','B','L')
 #define FORM_TEXT				MakeID ('N','T','X','T')
 #define FORM_TRANS			MakeID ('N','T','R','N')
@@ -173,10 +173,10 @@ error:
 
 #ifdef OG
 static int writeTextForm ( IFF_FILE *iff, NoxText *text )
-#endif
+#endif // OG
 #ifdef ZH
 static int writeTextForm ( IFF_FILE *iff, BabylonText *text )
-#endif
+#endif // ZH
 {
 			TXINFO		txinfo;
 			WVINFO		wvinfo;
@@ -226,19 +226,19 @@ error:
 
 #ifdef OG
 int WriteMainDB(TransDB *db, const char *filename, CNoxstringDlg *dlg )
-#endif
+#endif // OG
 #ifdef ZH
 int WriteMainDB(TransDB *db, const char *filename, CBabylonDlg *dlg )
-#endif
+#endif // ZH
 {
 #ifdef OG
 	NoxText *text;
 	NoxLabel *label;
-#endif
+#endif // OG
 #ifdef ZH
 	BabylonText *text;
 	BabylonLabel *label;
-#endif
+#endif // ZH
 	ListSearch sh_label;
 	ListSearch sh_text;
 	int count = 0;
@@ -259,10 +259,10 @@ int WriteMainDB(TransDB *db, const char *filename, CBabylonDlg *dlg )
 
 #ifdef OG
 	if ( !IFF_NewForm ( iff, FORM_NOXDB ) )
-#endif
+#endif // OG
 #ifdef ZH
 	if ( !IFF_NewForm ( iff, FORM_BABYLONDB ) )
-#endif
+#endif // ZH
 	{
 		goto error;
 	}
@@ -373,11 +373,11 @@ int LoadMainDB(TransDB *db, const char *filename, void (*cb) (void) )
 #ifdef OG
 	NoxLabel	*label = NULL;
 	NoxText		*text = NULL;
-#endif
+#endif // OG
 #ifdef ZH
 	BabylonLabel	*label = NULL;
 	BabylonText		*text = NULL;
-#endif
+#endif // ZH
 	Translation *trans = NULL;
 	int count = 0;
 	IFF_FILE	*iff = NULL;
@@ -392,10 +392,10 @@ int LoadMainDB(TransDB *db, const char *filename, void (*cb) (void) )
 
 #ifdef OG
 	if ( !IFF_NextForm ( iff ) || iff->FormID != FORM_NOXDB )
-#endif
+#endif // OG
 #ifdef ZH
 	if ( !IFF_NextForm ( iff ) || iff->FormID != FORM_BABYLONDB )
-#endif
+#endif // ZH
 	{
 		goto error;
 	}
@@ -451,10 +451,10 @@ int LoadMainDB(TransDB *db, const char *filename, void (*cb) (void) )
 
 #ifdef OG
 				if ( ! (label = new NoxLabel ()))
-#endif
+#endif // OG
 #ifdef ZH
 				if ( ! (label = new BabylonLabel ()))
-#endif
+#endif // ZH
 				{
 					goto error;
 				}
@@ -511,10 +511,10 @@ int LoadMainDB(TransDB *db, const char *filename, void (*cb) (void) )
 
 #ifdef OG
 				if ( ! (text = new NoxText ()))
-#endif
+#endif // OG
 #ifdef ZH
 				if ( ! (text = new BabylonText ()))
-#endif
+#endif // ZH
 				{
 					goto error;
 				}
@@ -680,10 +680,10 @@ int	GetLabelCountDB ( char *filename )
 
 #ifdef OG
 	if ( !IFF_NextForm ( iff ) || iff->FormID != FORM_NOXDB )
-#endif
+#endif // OG
 #ifdef ZH
 	if ( !IFF_NextForm ( iff ) || iff->FormID != FORM_BABYLONDB )
-#endif
+#endif // ZH
 	{
 		goto error;
 	}

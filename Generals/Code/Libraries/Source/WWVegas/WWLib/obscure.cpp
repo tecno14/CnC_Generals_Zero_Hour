@@ -233,4 +233,4 @@ long Obfuscate(char const * string)
 
 
 
-#endif
+#endif // ZH

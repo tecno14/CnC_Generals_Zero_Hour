@@ -46,7 +46,7 @@
 class MapObject;
 #ifdef ZH
 class PolygonTrigger;
-#endif
+#endif // ZH
 
 // TYPE DEFINES ///////////////////////////////////////////////////////////////
 typedef std::list<MapObject*> ListMapObjectPtr;
@@ -55,7 +55,7 @@ typedef ListMapObjectPtr::iterator ListMapObjectPtrIt;
 
 typedef std::list<PolygonTrigger*> ListPolygonTriggerPtr;
 typedef ListPolygonTriggerPtr::iterator ListPolygonTriggerPtrIt;
-#endif
+#endif // ZH
 
 struct Layer
 {
@@ -63,7 +63,7 @@ struct Layer
 	ListMapObjectPtr objectsInLayer;
 #ifdef ZH
 	ListPolygonTriggerPtr polygonTriggersInLayer;
-#endif
+#endif // ZH
 	Bool show;
 };
 
@@ -101,16 +101,16 @@ class LayersList : public CDialog
 		void addMapObjectToLayersList(IN MapObject *objToAdd, AsciiString layerToAddTo = AsciiString(TheDefaultLayerName.c_str()));
 #ifdef ZH
 		void addPolygonTriggerToLayersList(IN PolygonTrigger *triggerToAdd, AsciiString layerToAddTo = AsciiString(TheDefaultLayerName.c_str()));
-#endif
+#endif // ZH
 		AsciiString removeMapObjectFromLayersList(IN MapObject *objToRemove);
 #ifdef ZH
 		AsciiString removePolygonTriggerFromLayersList(IN PolygonTrigger *triggerToRemove);
-#endif
+#endif // ZH
 
 		void changeMapObjectLayer(IN MapObject *objToChange, AsciiString layerToPlaceOn);
 #ifdef ZH
 		void changePolygonTriggerLayer(IN PolygonTrigger *triggerToChange, AsciiString layerToPlaceOn);
-#endif
+#endif // ZH
 
 		void addLayerNamed(IN AsciiString layerToAdd);
 		void removeLayerNamed(IN AsciiString layerToRemove);
@@ -133,7 +133,7 @@ class LayersList : public CDialog
 		static Bool findAndSelectPolygonTrigger(AsciiString selectedItemAsciiString);
 		static void unselectAllMapObjects(void);
 		static void unselectAllPolygonTriggers(void);
-#endif
+#endif // ZH
 		
 #ifdef ZH
 	public:
@@ -144,7 +144,7 @@ class LayersList : public CDialog
 		static std::string TheActiveLayerName;
 		static const std::string TheUnmutableDefaultLayerName;
 
-#endif
+#endif // ZH
 	protected:
 		AsciiString mCurrentlyEditingLabel;
 		ListLayer mLayers;
@@ -153,7 +153,7 @@ class LayersList : public CDialog
 		Bool m_performUpdates;
 #ifdef ZH
 		Bool m_activatedLayer;
-#endif
+#endif // ZH
 
 
 		HTREEITEM findTreeLayerNamed(const AsciiString& nameToFind);
@@ -165,7 +165,7 @@ class LayersList : public CDialog
 		static std::string TheDefaultNewLayerName;
 		static const std::string TheUnmutableDefaultLayerName;
 
-#endif
+#endif // OG
 		// This function takes an MapObject, and does one of the following: 
 		// 1) Return true if the MapObject can be found, and 
 		//    layerIt points to a valid layer iterator in which the MapObject was found 
@@ -174,7 +174,7 @@ class LayersList : public CDialog
 		Bool findMapObjectAndList(IN MapObject *MapObjectToFind, OUT ListLayerIt *layerIt = NULL, OUT ListMapObjectPtrIt *MapObjectIt = NULL);
 #ifdef ZH
 		Bool findPolygonTriggerAndList(IN PolygonTrigger *PolygonTriggerToFind, OUT ListLayerIt *layerIt = NULL, OUT ListPolygonTriggerPtrIt *PolygonTriggerIt = NULL);
-#endif
+#endif // ZH
 		
 		// This function takes a layer name, and does one of the following:
 		// 1) Return true if the layer can be found, and 
@@ -185,13 +185,13 @@ class LayersList : public CDialog
 		void addMapObjectToLayer(IN MapObject *objToAdd, IN ListLayerIt *layerIt);
 #ifdef ZH
 		void addPolygonTriggerToLayer(IN PolygonTrigger *objToAdd, IN ListLayerIt *layerIt);
-#endif
+#endif // ZH
 		void removeMapObjectFromLayer(IN MapObject *objToRemove, IN ListLayerIt *layerIt = NULL, IN ListMapObjectPtrIt *MapObjectIt = NULL);
 #ifdef ZH
 		void removePolygonTriggerFromLayer(IN PolygonTrigger *triggerToRemove, IN ListLayerIt *layerIt = NULL, IN ListPolygonTriggerPtrIt *PolygonTriggerIt = NULL);
 		void updateObjectRenderFlags(IN ListLayerIt *layerIt);
 		void updateTreeImages();
-#endif
+#endif // ZH
 
 	protected:
 		virtual void OnOK();
@@ -206,12 +206,12 @@ class LayersList : public CDialog
 		afx_msg void OnMergeViewSelection(UINT commandID);
 #ifdef ZH
 		afx_msg void OnSelectActiveLayer();
-#endif
+#endif // ZH
 
 		
 #ifdef ZH
 		afx_msg void OnSelectLayerObject();
-#endif
+#endif // ZH
 		afx_msg void OnNewLayer();
 		afx_msg void OnDeleteLayer();
 		afx_msg void OnHideShowLayer();

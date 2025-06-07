@@ -47,7 +47,7 @@ public:
 	UnsignedInt m_maxDelay;
 	Bool m_isCreateAtEdge; ///< Otherwise, it is created on top of myself
 
-#endif
+#endif // OG
 #ifdef ZH
 
 	struct FactionOCLInfo
@@ -64,7 +64,7 @@ public:
 	UnsignedInt									m_maxDelay;
 	Bool												m_isCreateAtEdge;				///< Otherwise, it is created on top of myself
 	Bool												m_isFactionTriggered;		///< Faction has to be present before update will happen
-#endif
+#endif // ZH
 
 	OCLUpdateModuleData();
 
@@ -94,7 +94,7 @@ public:
 #ifdef ZH
 	void resetTimer(); ///< added for sabotage purposes.
 	virtual DisabledMaskType getDisabledTypesToProcess() const { return DISABLEDMASK_ALL; }
-#endif
+#endif // ZH
 
 protected:
 	
@@ -103,7 +103,7 @@ protected:
 #ifdef ZH
 	Bool						m_isFactionNeutral;
 	Color						m_currentPlayerColor;
-#endif
+#endif // ZH
 
 	Bool shouldCreate();
 	void setNextCreationFrame();

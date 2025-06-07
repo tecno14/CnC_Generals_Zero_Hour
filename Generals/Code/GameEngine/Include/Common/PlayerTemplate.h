@@ -87,7 +87,7 @@ public:
 	inline AsciiString getSide() const { return m_side; }
 #ifdef ZH
 	inline AsciiString getBaseSide() const  { return m_baseSide; }
-#endif
+#endif // ZH
 
 	/// return the tech tree for the player.
 	inline const Handicap *getHandicap() const { return &m_handicap; }
@@ -121,14 +121,14 @@ public:
 	const Image *getGeneralImage( void ) const;
 	inline const AsciiString getTooltip() const { return m_tooltip; }
 	inline const AsciiString getGeneralFeatures( void ) const { return m_strGeneralFeatures; }
-#endif
+#endif // ZH
 	
 #ifdef ZH
 	AsciiString getMedallionNormal() const { return m_strMedallionNormal; }
 	AsciiString getMedallionHilite() const { return m_strMedallionHilite; }
 	AsciiString getMedallionSelected() const { return m_strMedallionSelected; }
 	
-#endif
+#endif // ZH
 	const ScienceVec& getIntrinsicSciences() const { return m_intrinsicSciences; }
 	Int getIntrinsicSciencePurchasePoints() const { return m_intrinsicSPP; }
 	AsciiString getPurchaseScienceCommandSetRank1( void ) const {return m_purchaseScienceCommandSetRank1;	}
@@ -142,11 +142,11 @@ public:
 	AsciiString getLoadScreenMusic( void ) const {return m_loadScreenMusic;	}
 #ifdef ZH
 	AsciiString getScoreScreenMusic() const { return m_scoreScreenMusic; }
-#endif
+#endif // ZH
 	
 #ifdef ZH
   inline Bool isOldFaction( void ) const { return m_oldFaction; }
-#endif
+#endif // ZH
 
 	static const FieldParse* getFieldParse();
 
@@ -165,10 +165,10 @@ private:
 	UnicodeString		m_displayName;
 #ifdef OG
 	AsciiString			m_side;
-#endif
+#endif // OG
 #ifdef ZH
 	AsciiString			m_side, m_baseSide;
-#endif
+#endif // ZH
 	Handicap				m_handicap;						///< initial baseline for Player capabilities
 	Money						m_money;							///< starting credits, if any
 	RGBColor				m_preferredColor;			///< our preferred starting color
@@ -189,12 +189,12 @@ private:
 #ifdef ZH
 	AsciiString				m_scoreScreenMusic;									///< the score screen music we want to play
 	AsciiString				m_tooltip;								///< The tooltip describing this player template
-#endif
+#endif // ZH
 	Bool							m_observer;
 	Bool							m_playableSide;
 #ifdef ZH
   Bool              m_oldFaction;                       ///< Faction existed in the original Generals
-#endif
+#endif // ZH
 
 	Int								m_intrinsicSPP;
 
@@ -210,7 +210,7 @@ private:
 	AsciiString			m_sideIconImage;				///< The little icon we show on game info screens for the sides
 #ifdef ZH
 	AsciiString			m_generalImage;				///< The icon overlayed on the rank image in My Persona
-#endif
+#endif // ZH
 
 	AsciiString			m_beaconTemplate;				///< ThingTemplate name for beacons
 #ifdef ZH
@@ -219,7 +219,7 @@ private:
 	AsciiString m_strMedallionNormal;
 	AsciiString m_strMedallionHilite;
 	AsciiString m_strMedallionSelected;
-#endif
+#endif // ZH
 };
 
 // ----------------------------------------------------------------------------------------------
@@ -244,7 +244,7 @@ public:
 	inline Int getPlayerTemplateCount() const { return m_playerTemplates.size(); }
 #ifdef ZH
 	Int getTemplateNumByName(AsciiString name) const;
-#endif
+#endif // ZH
 	
 	// This function will fill outStringList with all the sides found in all the templates
 	void getAllSideStrings(AsciiStringList *outStringList);	

@@ -28,17 +28,17 @@
  *                                                                                             *
 #ifdef OG
  *                     $Modtime:: 7/09/99 1:37p                                               $*
-#endif
+#endif // OG
 #ifdef ZH
  *                     $Modtime:: 11/02/01 1:21p                                              $*
-#endif
+#endif // ZH
  *                                                                                             *
 #ifdef OG
  *                    $Revision:: 7                                                           $*
-#endif
+#endif // OG
 #ifdef ZH
  *                    $Revision:: 8                                                           $*
-#endif
+#endif // ZH
  *                                                                                             *
  *---------------------------------------------------------------------------------------------*
  * Functions:                                                                                  *
@@ -88,7 +88,7 @@ class ResourceFileClass : public FileClass
 		virtual void Error(int error, int canretry = false, char const * filename=NULL);
 #ifdef ZH
 		virtual void Bias(int start, int length=-1) {}
-#endif
+#endif // ZH
 
 		virtual unsigned char *Peek_Data(void) const					{ return FileBytes; }
 

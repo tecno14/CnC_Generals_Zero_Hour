@@ -28,17 +28,17 @@
  *                                                                                             *
 #ifdef OG
  *                     $Modtime:: 8/28/01 7:33p                                               $*
-#endif
+#endif // OG
 #ifdef ZH
  *                     $Modtime:: 12/10/01 2:37p                                              $*
-#endif
+#endif // ZH
  *                                                                                             *
 #ifdef OG
  *                    $Revision:: 33                                                          $*
-#endif
+#endif // OG
 #ifdef ZH
  *                    $Revision:: 35                                                          $*
-#endif
+#endif // ZH
  *                                                                                             *
  *---------------------------------------------------------------------------------------------*
  * Functions:                                                                                  *
@@ -255,12 +255,12 @@ DefinitionMgrClass::Find_Typed_Definition (const char *name, uint32 class_id, bo
 	StringClass lower_case_name(name,true);
 	_strlwr(lower_case_name.Peek_Buffer());
 	DynamicVectorClass<DefinitionClass*>* defs = DefinitionHash->Get(lower_case_name);
-#endif
+#endif // ZH
 
 #ifdef OG
 	StringClass name_string(name,true);
 	DynamicVectorClass<DefinitionClass*>* defs = DefinitionHash->Get(name_string);
-#endif
+#endif // OG
 	if (defs) {
 		for (int i=0;i<defs->Length();++i) {
 			DefinitionClass* curr_def=(*defs)[i];
@@ -303,10 +303,10 @@ DefinitionMgrClass::Find_Typed_Definition (const char *name, uint32 class_id, bo
 							defs=W3DNEW DynamicVectorClass<DefinitionClass*>;
 #ifdef OG
 							DefinitionHash->Insert(name_string,defs);
-#endif
+#endif // OG
 #ifdef ZH
 							DefinitionHash->Insert(lower_case_name,defs);
-#endif
+#endif // ZH
 						}
 						defs->Add(definition);
 						break;
@@ -893,18 +893,18 @@ DefinitionMgrClass::Get_New_ID (uint32 class_id)
 
 #ifdef OG
 	uint32 new_id = idrange_start;
-#endif
+#endif // OG
 #ifdef ZH
 	uint32 new_id = idrange_start + 1;
-#endif
+#endif // ZH
 
 	//
 #ifdef OG
 	//	Loop through all the definition objects
-#endif
+#endif // OG
 #ifdef ZH
 	//	Try to find the first empty slot in this ID range
-#endif
+#endif // ZH
 	//
 	for (int index = 0; index < _DefinitionCount; index ++) {
 		DefinitionClass *definition = _SortedDefinitionArray[index];
@@ -932,39 +932,39 @@ DefinitionMgrClass::Get_New_ID (uint32 class_id)
 					if (next_definition != NULL && next_definition->Get_ID () > (curr_id + 1)) {
 						is_ok = true;
 					}
-#endif
+#endif // ZH
 				
 #ifdef ZH
 				} else {
 					is_ok = true;
 				}
 
-#endif
+#endif // ZH
 				//
 #ifdef OG
 				//	Take the largest ID in the range
-#endif
+#endif // OG
 #ifdef ZH
 				//	Return the new ID
-#endif
+#endif // ZH
 				//
 #ifdef OG
 				new_id = max (new_id, curr_id);
 
-#endif
+#endif // OG
 #ifdef ZH
 				if (is_ok) {
 					new_id = curr_id + 1;
 					break;
 				}
-#endif
+#endif // ZH
 			}
 		}
 	}
 	
 #ifdef OG
 	new_id ++;
-#endif
+#endif // OG
 	return new_id;
 }
 

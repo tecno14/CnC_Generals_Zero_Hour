@@ -55,7 +55,7 @@ enum ArmorSetType
 	ARMORSET_SECOND_LIFE = 5,	///< Body Module has marked us as on our second life
 	ARMORSET_CRATE_UPGRADE_ONE, ///< Just like weaponset type from salvage.
 	ARMORSET_CRATE_UPGRADE_TWO, 
-#endif
+#endif // ZH
 
 	ARMORSET_COUNT			///< keep last, please
 };

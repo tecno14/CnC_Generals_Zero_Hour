@@ -78,7 +78,7 @@ public:
   Bool isHandOfGodSelectionMode( void) { return m_HandOfGodSelectionMode; };
 #endif
 
-#endif
+#endif // ZH
 };	
 
 Bool CanSelectDrawable( const Drawable *draw, Bool dragSelecting );

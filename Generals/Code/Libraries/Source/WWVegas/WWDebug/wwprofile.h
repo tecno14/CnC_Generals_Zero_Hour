@@ -26,24 +26,24 @@
  *                                                                                             *
 #ifdef OG
  *                      $Author:: Tom_s                                                       $*
-#endif
+#endif // OG
 #ifdef ZH
  *                      $Author:: Jani_p                                                      $*
-#endif
+#endif // ZH
  *                                                                                             *
 #ifdef OG
  *                     $Modtime:: 6/29/01 3:10p                                               $*
-#endif
+#endif // OG
 #ifdef ZH
  *                     $Modtime:: 3/25/02 2:05p                                               $*
-#endif
+#endif // ZH
  *                                                                                             *
 #ifdef OG
  *                    $Revision:: 8                                                           $*
-#endif
+#endif // OG
 #ifdef ZH
  *                    $Revision:: 14                                                          $*
-#endif
+#endif // ZH
  *                                                                                             *
  *---------------------------------------------------------------------------------------------*
  * Functions:                                                                                  *
@@ -55,14 +55,14 @@
 #ifdef ZH
 
 //#define ENABLE_TIME_AND_MEMORY_LOG
-#endif
+#endif // ZH
 
 #ifndef WWPROFILE_H
 #define WWPROFILE_H
 #ifdef ZH
 
 #include "wwstring.h"
-#endif
+#endif // ZH
 
 #ifdef _UNIX
 typedef signed long long __int64;
@@ -77,7 +77,7 @@ typedef signed long long _int64;
 
 extern unsigned WWProfile_Get_System_Time();	// timeGetTime() wrapper
 class FileClass;
-#endif
+#endif // ZH
 			
 /*
 ** A node in the WWProfile Hierarchy Tree
@@ -88,7 +88,7 @@ public:
 	WWProfileHierachyNodeClass( const char * name, WWProfileHierachyNodeClass * parent );
 #ifdef ZH
 	WWProfileHierachyNodeClass( unsigned id, WWProfileHierachyNodeClass * parent );
-#endif
+#endif // ZH
 	~WWProfileHierachyNodeClass( void );
 
 	WWProfileHierachyNodeClass * Get_Sub_Node( const char * name );
@@ -102,7 +102,7 @@ public:
 	void Set_Sibling( WWProfileHierachyNodeClass *node )			{ Sibling=node; }
 	void Set_Child( WWProfileHierachyNodeClass *node )			{ Child=node; }
 
-#endif
+#endif // ZH
 	void								Reset( void );
 	void								Call( void );
 	bool								Return( void );
@@ -113,14 +113,14 @@ public:
 #ifdef ZH
 	void								Set_Total_Calls(int calls) { TotalCalls=calls; }
 	void								Set_Total_Time(float time) { TotalTime=time; }
-#endif
+#endif // ZH
 
 #ifdef ZH
 	WWProfileHierachyNodeClass* Clone_Hierarchy(WWProfileHierachyNodeClass* parent);
 	void								Write_To_File(FileClass* file,int recursion);
 	void								Add_To_String_Compact(StringClass& string,int recursion);
 
-#endif
+#endif // ZH
 protected:
 
 	const char *					Name;
@@ -130,7 +130,7 @@ protected:
 	int								RecursionCounter;
 #ifdef ZH
 	unsigned						ProfileStringID;
-#endif
+#endif // ZH
 
 	WWProfileHierachyNodeClass *	Parent;
 	WWProfileHierachyNodeClass *	Child;
@@ -169,7 +169,7 @@ protected:
 	WWProfileHierachyInfoClass *	Sibling;
 };
 
-#endif
+#endif // ZH
 /*
 ** An iterator to navigate through the tree
 */
@@ -236,7 +236,7 @@ public:
 	WWINLINE static	void					Enable_Profile(bool enable) { IsProfileEnabled=enable; }
 	WWINLINE static	bool					Is_Profile_Enabled() { return IsProfileEnabled; }
 
-#endif
+#endif // ZH
 	static	void								Start_Profile( const char * name );
 	static	void								Stop_Profile( void );
 
@@ -244,7 +244,7 @@ public:
 	static	void								Start_Root_Profile( const char * name );
 	static	void								Stop_Root_Profile( void );
 
-#endif
+#endif // ZH
 	static	void								Reset( void );
 	static	void								Increment_Frame_Counter( void );
 	static	int								Get_Frame_Count_Since_Reset( void )		{ return FrameCounter; }
@@ -262,19 +262,19 @@ public:
 	static	void								End_Collecting(const char* filename);
 
 	static	void								Load_Profile_Log(const char* filename, WWProfileHierachyInfoClass**& array, unsigned& count);
-#endif
+#endif // ZH
 
 private:
 	static	WWProfileHierachyNodeClass		Root;
 	static	WWProfileHierachyNodeClass *	CurrentNode;
 #ifdef ZH
 	static	WWProfileHierachyNodeClass *	CurrentRootNode;
-#endif
+#endif // ZH
 	static	int									FrameCounter;
 	static	__int64								ResetTime;
 #ifdef ZH
 	static	bool									IsProfileEnabled;
-#endif
+#endif // ZH
 
 	friend	class		WWProfileInOrderIterator;
 };
@@ -288,41 +288,41 @@ class	WWProfileSampleClass {
 #ifdef ZH
 	bool IsRoot;
 	bool Enabled;
-#endif
+#endif // ZH
 public:
 #ifdef OG
 	WWProfileSampleClass( const char * name )		
-#endif
+#endif // OG
 #ifdef ZH
 	WWProfileSampleClass( const char * name, bool is_root )		 : IsRoot(is_root), Enabled(WWProfileManager::Is_Profile_Enabled())
-#endif
+#endif // ZH
 	{ 
 #ifdef OG
 		WWProfileManager::Start_Profile( name ); 
 
-#endif
+#endif // OG
 #ifdef ZH
 		if (Enabled) {
 			if (IsRoot) WWProfileManager::Start_Root_Profile( name ); 
 			else WWProfileManager::Start_Profile( name ); 
-#endif
+#endif // ZH
 	}
 #ifdef ZH
 	}
-#endif
+#endif // ZH
 	
 	~WWProfileSampleClass( void )					
 	{ 
 #ifdef OG
 		WWProfileManager::Stop_Profile(); 
 
-#endif
+#endif // OG
 #ifdef ZH
 		if (Enabled) {
 			if (IsRoot) WWProfileManager::Stop_Root_Profile(); 
 			else WWProfileManager::Stop_Profile(); 
 		}
-#endif
+#endif // ZH
 	}
 };
 
@@ -330,17 +330,17 @@ public:
 #ifdef WWDEBUG
 #define	WWPROFILE( name )						WWProfileSampleClass _wwprofile( name )
 
-#endif
+#endif // OG
 #ifdef ZH
 #ifdef ENABLE_WWPROFILE
 #define	WWPROFILE( name )						WWProfileSampleClass _wwprofile( name, false )
 #define	WWROOTPROFILE( name )				WWProfileSampleClass _wwprofile( name, true )
-#endif
+#endif // ZH
 #else
 #define	WWPROFILE( name )
 #ifdef ZH
 #define	WWROOTPROFILE( name )
-#endif
+#endif // ZH
 #endif
 
 
@@ -358,10 +358,10 @@ private:
 
 #ifdef OG
 #ifdef WWDEBUG
-#endif
+#endif // OG
 #ifdef ZH
 #ifdef ENABLE_WWPROFILE
-#endif
+#endif // ZH
 #define	WWTIMEIT( name )	WWTimeItClass _wwtimeit( name )
 #else
 #define	WWTIMEIT( name )
@@ -372,7 +372,7 @@ private:
 /*
 #ifdef OG
 ** TSS 06/27/01
-#endif
+#endif // OG
 ** WWMeasureItClass is like WWTimeItClass, but it pokes the result into the given float, 
 ** and can be used in the release build.
 */
@@ -419,6 +419,6 @@ struct WWMemoryAndTimeLog
 	~WWMemoryAndTimeLog();
 	void Log_Intermediate(const char* text);
 };
-#endif
+#endif // ZH
 
 #endif	// WWPROFILE_H

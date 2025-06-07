@@ -24,38 +24,38 @@
  *                                                                                             *
 #ifdef OG
  *                     $Archive:: /VSS_Sync/ww3d2/camera.cpp                                  $*
-#endif
+#endif // OG
 #ifdef ZH
  *                     $Archive:: /Commando/Code/ww3d2/camera.cpp                             $*
-#endif
+#endif // ZH
  *                                                                                             *
 #ifdef OG
  *                       Author:: Greg_h                                                       *
-#endif
+#endif // OG
 #ifdef ZH
  *                    Org Author:: Greg_h                                                       *
-#endif
+#endif // ZH
  *                                                                                             *
 #ifdef OG
  *                     $Modtime:: 8/29/01 7:29p                                               $*
 
-#endif
+#endif // OG
 #ifdef ZH
  *                       $Author:: Kenny Mitchell                                               * 
  *                                                                                             * 
  *                     $Modtime:: 06/26/02 4:04p                                             $*
-#endif
+#endif // ZH
  *                                                                                             *
 #ifdef OG
  *                    $Revision:: 22                                                          $*
-#endif
+#endif // OG
 #ifdef ZH
  *                    $Revision:: 24                                                          $*
-#endif
+#endif // ZH
  *                                                                                             *
 #ifdef ZH
  * 06/26/02 KM Matrix name change to avoid MAX conflicts                                       *
-#endif
+#endif // ZH
  *---------------------------------------------------------------------------------------------*
  * Functions:                                                                                  *
  *   CameraClass::CameraClass -- constructor                                                   *
@@ -758,17 +758,17 @@ void CameraClass::Apply(void)
 
 #ifdef OG
 	Matrix4 d3dprojection;
-#endif
+#endif // OG
 #ifdef ZH
 	Matrix4x4 d3dprojection;
-#endif
+#endif // ZH
 	Get_D3D_Projection_Matrix(&d3dprojection);
 #ifdef OG
 	DX8Wrapper::Set_Transform(D3DTS_PROJECTION,d3dprojection);
-#endif
+#endif // OG
 #ifdef ZH
 	DX8Wrapper::Set_Projection_Transform_With_Z_Bias(d3dprojection,ZNear,ZFar);
-#endif
+#endif // ZH
 	DX8Wrapper::Set_Transform(D3DTS_VIEW,CameraInvTransform);
 }
 
@@ -804,10 +804,10 @@ float CameraClass::Get_Aspect_Ratio(void) const
 
 #ifdef OG
 void CameraClass::Get_Projection_Matrix(Matrix4 * set_tm)
-#endif
+#endif // OG
 #ifdef ZH
 void CameraClass::Get_Projection_Matrix(Matrix4x4 * set_tm)
-#endif
+#endif // ZH
 {
 	WWASSERT(set_tm != NULL);
 	
@@ -817,10 +817,10 @@ void CameraClass::Get_Projection_Matrix(Matrix4x4 * set_tm)
 
 #ifdef OG
 void CameraClass::Get_D3D_Projection_Matrix(Matrix4 * set_tm)
-#endif
+#endif // OG
 #ifdef ZH
 void CameraClass::Get_D3D_Projection_Matrix(Matrix4x4 * set_tm)
-#endif
+#endif // ZH
 {
 	WWASSERT(set_tm != NULL);
 	Update_Frustum();
@@ -849,10 +849,10 @@ void CameraClass::Get_View_Matrix(Matrix3D * set_tm)
 
 #ifdef OG
 const Matrix4 & CameraClass::Get_Projection_Matrix(void)
-#endif
+#endif // OG
 #ifdef ZH
 const Matrix4x4 & CameraClass::Get_Projection_Matrix(void)
-#endif
+#endif // ZH
 {
 	Update_Frustum();
 	return ProjectionTransform;

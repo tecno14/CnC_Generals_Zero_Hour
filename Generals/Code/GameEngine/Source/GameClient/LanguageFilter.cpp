@@ -61,10 +61,10 @@ void LanguageFilter::init() {
 	wchar_t word[128];
 #ifdef OG
 	while (readWord(file1, (UnsignedShort*)word)) {
-#endif
+#endif // OG
 #ifdef ZH
 	while (readWord(file1, word)) {
-#endif
+#endif // ZH
 		Int wordLen = wcslen(word);
 		if (wordLen == 0) {
 			continue;

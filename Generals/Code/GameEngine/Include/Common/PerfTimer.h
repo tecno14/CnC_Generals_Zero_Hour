@@ -98,11 +98,11 @@ public:
 #ifdef OG
 	PerfGather( const char *identifier );
 
-#endif
+#endif // OG
 #ifdef ZH
 	// If net only (default), subtract perf timers running inside. [8/12/2003]
 	PerfGather( const char *identifier, Bool netOnly=true );
-#endif
+#endif // ZH
 	virtual ~PerfGather( );
 
 	__forceinline void startTimer();
@@ -145,7 +145,7 @@ private:
 	Bool					m_ignore;
 #ifdef ZH
 	Bool					m_netTimeOnly;
-#endif
+#endif // ZH
 };
 
 //-------------------------------------------------------------------------------------------------
@@ -183,13 +183,13 @@ void PerfGather::stopTimer()
 		(*m_activeHead)->m_runningTimeGross -= (s_stopStartOverhead);
 #ifdef ZH
 		if ((*m_activeHead)->m_netTimeOnly) {
-#endif
+#endif // ZH
 		(*m_activeHead)->m_runningTimeNet -= (runTime + s_stopStartOverhead);
 	}
 }
 #ifdef ZH
 }
-#endif
+#endif // ZH
 
 //-------------------------------------------------------------------------------------------------
 //-------------------------------------------------------------------------------------------------
@@ -252,7 +252,7 @@ AutoPerfGatherIgnore::~AutoPerfGatherIgnore()
 //-------------------------------------------------------------------------------------------------
 #ifdef ZH
 #define DECLARE_TOTAL_PERF_TIMER(id)					static PerfGather s_##id(#id, false); 
-#endif
+#endif // ZH
 #define DECLARE_PERF_TIMER(id)					static PerfGather s_##id(#id); 
 #define USE_PERF_TIMER(id)							AutoPerfGather a_##id(s_##id);
 #define IGNORE_PERF_TIMER(id)						AutoPerfGatherIgnore a_##id(s_##id);
@@ -339,7 +339,7 @@ extern void StatMetricsDisplay( DebugDisplayInterface *dd, void *, FILE *fp );
 	#define DECLARE_PERF_TIMER(id)					
 #ifdef ZH
 	#define  DECLARE_TOTAL_PERF_TIMER(id)					
-#endif
+#endif // ZH
 	#define USE_PERF_TIMER(id)
 	#define IGNORE_PERF_TIMER(id)	
 

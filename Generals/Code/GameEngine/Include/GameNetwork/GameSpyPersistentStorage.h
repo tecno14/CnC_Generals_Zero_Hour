@@ -62,4 +62,4 @@ extern GameSpyPlayerInfoInterface *TheGameSpyPlayerInfo;
 
 #endif // __GAMESPYPersistentStorage_H__
 
-#endif
+#endif // OG

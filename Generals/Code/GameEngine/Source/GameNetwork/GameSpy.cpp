@@ -1417,4 +1417,4 @@ void GameSpyChat::login(AsciiString loginName, AsciiString password, AsciiString
 	}
 }
 
-#endif
+#endif // OG

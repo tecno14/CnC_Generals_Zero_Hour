@@ -59,7 +59,7 @@ enum WeaponSetType
 	WEAPONSET_RIDER6,
 	WEAPONSET_RIDER7,
 	WEAPONSET_RIDER8,
-#endif
+#endif // ZH
 
 	WEAPONSET_COUNT			///< keep last, please
 };

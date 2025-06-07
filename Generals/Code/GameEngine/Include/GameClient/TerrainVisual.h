@@ -36,7 +36,7 @@
 #include "Common/Snapshot.h"
 #ifdef ZH
 #include "Common/MapObject.h"
-#endif
+#endif // ZH
 
 // FORWARD REFERENCES /////////////////////////////////////////////////////////////////////////////
 class TerrainType;
@@ -97,7 +97,7 @@ struct SeismicSimulationNode
     callbackFilter= ssn.callbackFilter;
     m_life        = ssn.m_life;
     m_magnitude   = ssn.m_magnitude;
-#endif
+#endif // ZH
 
 #ifdef ZH
   }
@@ -158,7 +158,7 @@ class DomeStyleSeismicFilter : public SeismicSimulationFilterBase
   virtual Real applyGravityCallback( Real velocityIn );
 };
 
-#endif
+#endif // ZH
 //-------------------------------------------------------------------------------------------------
 /** LOD values for terrain, keep this in sync with TerrainLODNames[] */
 //-------------------------------------------------------------------------------------------------
@@ -274,11 +274,11 @@ public:
 		const GeometryInfo& geom,
 		Real angle
 	) = 0;
-#endif
+#endif // ZH
 
 #ifdef ZH
 	virtual void addProp(const ThingTemplate *tt, const Coord3D *pos, Real angle) = 0;
-#endif
+#endif // ZH
 
 	//
 	// Modify height.
@@ -300,7 +300,7 @@ public:
   ////////////////////////////////////////////////////
   ////////////////////////////////////////////////////
 
-#endif
+#endif // ZH
 	
 	/// Replace the skybox texture
 	virtual void replaceSkyboxTextures(const AsciiString *oldTexName[NumSkyboxTextures], const AsciiString *newTexName[NumSkyboxTextures])=0;

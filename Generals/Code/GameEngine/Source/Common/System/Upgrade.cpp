@@ -32,7 +32,7 @@
 
 #ifdef OG
 #define DEFINE_UPGRADE_TYPE_NAMES
-#endif
+#endif // OG
 #define DEFINE_VETERANCY_NAMES
 #include "Common/Upgrade.h"
 #include "Common/Player.h"
@@ -48,7 +48,7 @@ const char *TheUpgradeTypeNames[] =
 	NULL
 };
 
-#endif
+#endif // ZH
 // PUBLIC /////////////////////////////////////////////////////////////////////////////////////////
 class UpgradeCenter *TheUpgradeCenter = NULL;
 
@@ -121,10 +121,10 @@ const FieldParse UpgradeTemplate::m_upgradeFieldParseTable[] =
 	{ "DisplayName",				INI::parseAsciiString,		NULL, offsetof( UpgradeTemplate, m_displayNameLabel ) },
 #ifdef OG
 	{ "Type",								INI::parseIndexList,			UpgradeTypeNames, offsetof( UpgradeTemplate, m_type ) },
-#endif
+#endif // OG
 #ifdef ZH
 	{ "Type",								INI::parseIndexList,			TheUpgradeTypeNames, offsetof( UpgradeTemplate, m_type ) },
-#endif
+#endif // ZH
 	{ "BuildTime",					INI::parseReal,						NULL, offsetof( UpgradeTemplate, m_buildTime ) },
 	{ "BuildCost",					INI::parseInt,						NULL, offsetof( UpgradeTemplate, m_cost ) },
 	{ "ButtonImage",				INI::parseAsciiString,		NULL, offsetof( UpgradeTemplate, m_buttonImageName ) },
@@ -132,7 +132,7 @@ const FieldParse UpgradeTemplate::m_upgradeFieldParseTable[] =
 	{ "UnitSpecificSound",	INI::parseAudioEventRTS,	NULL, offsetof( UpgradeTemplate, m_unitSpecificSound ) }, 
 #ifdef ZH
 	{ "AcademyClassify",		INI::parseIndexList,			TheAcademyClassificationTypeNames, offsetof( UpgradeTemplate, m_academyClassificationType ) },
-#endif
+#endif // ZH
 	{ NULL,						NULL,												 NULL, 0 }  // keep this last
 
 };
@@ -150,13 +150,13 @@ UpgradeTemplate::UpgradeTemplate( void )
 	m_buildTime = 0.0f;
 #ifdef OG
 	m_upgradeMask = 0;
-#endif
+#endif // OG
 	m_next = NULL;
 	m_prev = NULL;
 	m_buttonImage = NULL;
 #ifdef ZH
 	m_academyClassificationType = ACT_NONE;
-#endif
+#endif // ZH
 
 }  // end UpgradeTemplate
 
@@ -174,10 +174,10 @@ Int UpgradeTemplate::calcTimeToBuild( Player *player ) const
 {
 #ifdef OG
 #if defined(_DEBUG) || defined(_INTERNAL)
-#endif
+#endif // OG
 #ifdef ZH
 #if defined(_DEBUG) || defined(_INTERNAL) || defined(_ALLOW_DEBUG_CHEATS_IN_RELEASE)
-#endif
+#endif // ZH
 	if( player->buildsInstantly() )
 	{
 		return 1;
@@ -398,19 +398,19 @@ UpgradeTemplate *UpgradeCenter::newUpgrade( const AsciiString& name )
 #ifdef OG
 	Int64 newMask = 1i64 << m_nextTemplateMaskBit;
 
-#endif
+#endif // OG
 #ifdef ZH
 	UpgradeMaskType newMask;
 	newMask.set( m_nextTemplateMaskBit );
 	//Int64 newMask = 1i64 << m_nextTemplateMaskBit;
-#endif
+#endif // ZH
 	m_nextTemplateMaskBit++;
 #ifdef OG
 	DEBUG_ASSERTCRASH( m_nextTemplateMaskBit < 64, ("Can't have over 64 types of Upgrades and have a Bitfield function.") );
-#endif
+#endif // OG
 #ifdef ZH
 	DEBUG_ASSERTCRASH( m_nextTemplateMaskBit < UPGRADE_MAX_COUNT, ("Can't have over %d types of Upgrades and have a Bitfield function.", UPGRADE_MAX_COUNT) );
-#endif
+#endif // ZH
 	newUpgrade->friend_setUpgradeMask( newMask );
 
 	// link upgrade

@@ -68,7 +68,7 @@ GenerateMinefieldBehaviorModuleData::GenerateMinefieldBehaviorModuleData()
 	m_mineNameUpgraded.clear();
 	m_mineUpgradeTrigger.clear();
 
-#endif
+#endif // ZH
 	m_genFX = NULL;
 	m_distanceAroundObject = TheGlobalData->m_standardMinefieldDistance;
 	m_minesPerSquareFoot = TheGlobalData->m_standardMinefieldDensity;
@@ -77,7 +77,7 @@ GenerateMinefieldBehaviorModuleData::GenerateMinefieldBehaviorModuleData()
 	m_alwaysCircular = false;
 #ifdef ZH
 	m_upgradable = false;
-#endif
+#endif // ZH
 	m_smartBorder = false;
 	m_smartBorderSkipInterior = true;
 	m_randomJitter = 0.0f;
@@ -94,7 +94,7 @@ GenerateMinefieldBehaviorModuleData::GenerateMinefieldBehaviorModuleData()
 #ifdef ZH
 		{ "UpgradedMineName", INI::parseAsciiString,	NULL, offsetof( GenerateMinefieldBehaviorModuleData, m_mineNameUpgraded ) },
 		{ "UpgradedTriggeredBy", INI::parseAsciiString,	NULL, offsetof( GenerateMinefieldBehaviorModuleData, m_mineUpgradeTrigger ) },
-#endif
+#endif // ZH
 		{ "GenerationFX", INI::parseFXList,	NULL, offsetof( GenerateMinefieldBehaviorModuleData, m_genFX ) },
 		{ "DistanceAroundObject", INI::parseReal, NULL, offsetof( GenerateMinefieldBehaviorModuleData, m_distanceAroundObject ) },
 		{ "MinesPerSquareFoot", INI::parseReal, NULL, offsetof( GenerateMinefieldBehaviorModuleData, m_minesPerSquareFoot ) },
@@ -105,7 +105,7 @@ GenerateMinefieldBehaviorModuleData::GenerateMinefieldBehaviorModuleData()
 		{ "AlwaysCircular", INI::parseBool, NULL, offsetof(GenerateMinefieldBehaviorModuleData, m_alwaysCircular) },
 #ifdef ZH
 		{ "Upgradable", INI::parseBool, NULL, offsetof(GenerateMinefieldBehaviorModuleData, m_upgradable) },
-#endif
+#endif // ZH
 		{ "RandomJitter", INI::parsePercentToReal, NULL, offsetof(GenerateMinefieldBehaviorModuleData, m_randomJitter) },
 		{ "SkipIfThisMuchUnderStructure", INI::parsePercentToReal, NULL, offsetof(GenerateMinefieldBehaviorModuleData, m_skipIfThisMuchUnderStructure) },
 		{ 0, 0, 0, 0 }
@@ -120,10 +120,10 @@ GenerateMinefieldBehaviorModuleData::GenerateMinefieldBehaviorModuleData()
 //-------------------------------------------------------------------------------------------------
 #ifdef OG
 GenerateMinefieldBehavior::GenerateMinefieldBehavior( Thing *thing, const ModuleData* moduleData ) : BehaviorModule( thing, moduleData )
-#endif
+#endif // OG
 #ifdef ZH
 GenerateMinefieldBehavior::GenerateMinefieldBehavior( Thing *thing, const ModuleData* moduleData ) : UpdateModule( thing, moduleData )
-#endif
+#endif // ZH
 {
 	m_target.zero();
 	m_generated = false;
@@ -131,7 +131,7 @@ GenerateMinefieldBehavior::GenerateMinefieldBehavior( Thing *thing, const Module
 #ifdef ZH
 	m_upgraded = false;
 	m_mineList.clear();
-#endif
+#endif // ZH
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -140,7 +140,7 @@ GenerateMinefieldBehavior::~GenerateMinefieldBehavior( void )
 {
 #ifdef ZH
 	m_mineList.clear();
-#endif
+#endif // ZH
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -251,7 +251,7 @@ Object* GenerateMinefieldBehavior::placeMineAt(const Coord3D& pt, const ThingTem
 			break;
 #ifdef ZH
 		}
-#endif
+#endif // ZH
 		}
 #ifdef ZH
 
@@ -259,7 +259,7 @@ Object* GenerateMinefieldBehavior::placeMineAt(const Coord3D& pt, const ThingTem
 	if (mine && d->m_upgradable)
 	{
 		m_mineList.push_back(mine->getID());
-#endif
+#endif // ZH
 	}
 
 	return mine;
@@ -408,7 +408,7 @@ void GenerateMinefieldBehavior::placeMines()
 #ifdef OG
 	const ThingTemplate* mineTemplate = TheThingFactory->findTemplate(d->m_mineName);
 
-#endif
+#endif // OG
 #ifdef ZH
 	const ThingTemplate* mineTemplate = 0;
 
@@ -417,7 +417,7 @@ void GenerateMinefieldBehavior::placeMines()
 	else
 		mineTemplate = TheThingFactory->findTemplate(d->m_mineName);
 
-#endif
+#endif // ZH
 	if (!mineTemplate)
 	{
 		DEBUG_CRASH(("mine %s not found\n",d->m_mineName.str()));
@@ -515,7 +515,7 @@ UpdateSleepTime GenerateMinefieldBehavior::update()
 						}
 					}
 					m_mineList.clear();
-#endif
+#endif // ZH
 
 #ifdef ZH
 					// Place new mines down (Replace old ones that we removed
@@ -523,7 +523,7 @@ UpdateSleepTime GenerateMinefieldBehavior::update()
 					placeMines();
 				}
 			}
-#endif
+#endif // ZH
 }
 
 #ifdef ZH
@@ -533,7 +533,7 @@ UpdateSleepTime GenerateMinefieldBehavior::update()
 	return UPDATE_SLEEP_FOREVER;
 }
 
-#endif
+#endif // ZH
 // ------------------------------------------------------------------------------------------------
 /** CRC */
 // ------------------------------------------------------------------------------------------------
@@ -573,7 +573,7 @@ void GenerateMinefieldBehavior::xfer( Xfer *xfer )
 #ifdef ZH
 	xfer->xferBool( &m_upgraded );
 	
-#endif
+#endif // ZH
 	xfer->xferCoord3D( &m_target );
 #ifdef ZH
 
@@ -607,7 +607,7 @@ void GenerateMinefieldBehavior::xfer( Xfer *xfer )
 			m_mineList.push_back(objectID);
 		}  // end for, i
 	}  // end else, load
-#endif
+#endif // ZH
 
 }  // end xfer
 

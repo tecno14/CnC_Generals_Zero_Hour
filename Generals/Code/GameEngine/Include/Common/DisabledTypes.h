@@ -37,7 +37,7 @@
 #include "Common/BitFlags.h"
 #ifdef ZH
 #include "Common/BitFlagsIO.h"
-#endif
+#endif // ZH
 
 //-------------------------------------------------------------------------------------------------
 /** Kind of flags for determining groups of things that belong together
@@ -58,7 +58,7 @@ enum DisabledType
   DISABLED_AWESTRUCK,
   DISABLED_BRAINWASHED, 
 	DISABLED_SUBDUED,			///< Temporarily shut down by Subdual damage
-#endif
+#endif // ZH
 	//These ones are specificially for scripts to enable/reenable!
 	DISABLED_SCRIPT_DISABLED,
 	DISABLED_SCRIPT_UNDERPOWERED,
@@ -67,7 +67,7 @@ enum DisabledType
 #ifdef ZH
 	
 	DISABLED_ANY = 65535		///< Do not use this value for setting disabled types (read-only)
-#endif
+#endif // ZH
 };
 
 typedef BitFlags<DISABLED_COUNT>	DisabledMaskType;
@@ -119,7 +119,7 @@ inline void FLIP_DISABLEDMASK(DisabledMaskType& m)
 // defined in Common/System/DisabledTypes.cpp
 #ifdef OG
 extern const char *TheDisabledNames[];
-#endif
+#endif // OG
 extern DisabledMaskType DISABLEDMASK_NONE;	// inits to all zeroes
 extern DisabledMaskType DISABLEDMASK_ALL;		// inits to all bits set.
 void initDisabledMasks();

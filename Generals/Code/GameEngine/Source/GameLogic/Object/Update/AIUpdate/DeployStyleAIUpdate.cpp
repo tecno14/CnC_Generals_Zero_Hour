@@ -61,16 +61,16 @@ DeployStyleAIUpdate::DeployStyleAIUpdate( Thing *thing, const ModuleData* module
 {
 #ifdef OG
 	m_hasOutsideCommand = false;
-#endif
+#endif // OG
 	m_state = READY_TO_MOVE;
 #ifdef OG
 	m_frameToWakeForDeploy = 0;
 	reset();
-#endif
+#endif // OG
 #ifdef ZH
 	m_frameToWaitForDeploy = 0;
 
-#endif
+#endif // ZH
 } 
 
 //-------------------------------------------------------------------------------------------------
@@ -87,7 +87,7 @@ Bool DeployStyleAIUpdate::isIdle() const
 	if (m_hasOutsideCommand)
 		return false;
 
-#endif
+#endif // OG
 	return AIUpdateInterface::isIdle();
 #ifdef OG
 }
@@ -103,7 +103,7 @@ void DeployStyleAIUpdate::reset()
 	m_attackObjectID			= INVALID_ID;
 	m_isAttackPosition		= FALSE;
 	m_position.zero();
-#endif
+#endif // OG
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -131,13 +131,13 @@ void DeployStyleAIUpdate::aiDoCommand( const AICommandParms* parms )
 			//Only issue the command if we're not in the process of deploying/undeploying.
 			AIUpdateInterface::aiDoCommand( parms );
 		}
-#endif
+#endif // OG
 #ifdef ZH
 	/*
 	//Hack code to allow follow waypoint scripts to be converted to attack follow waypoint scripts
 	//for simple-test-map-purposes.
 
-#endif
+#endif // ZH
 		switch( parms->m_cmd ) 
 		{
 #ifdef OG
@@ -153,12 +153,12 @@ void DeployStyleAIUpdate::aiDoCommand( const AICommandParms* parms )
 			case AICMD_ATTACKFOLLOW_WAYPOINT_PATH_AS_TEAM:
 			case AICMD_ATTACK_AREA:
 				m_isAttackMultiple = TRUE;
-#endif
+#endif // OG
 #ifdef ZH
 		case AICMD_FOLLOW_WAYPOINT_PATH:
 			((AICommandParms*)parms)->m_cmd = AICMD_ATTACKFOLLOW_WAYPOINT_PATH;
 
-#endif
+#endif // ZH
 				break;
 #ifdef OG
 			case AICMD_ATTACK_OBJECT:
@@ -169,12 +169,12 @@ void DeployStyleAIUpdate::aiDoCommand( const AICommandParms* parms )
 			case AICMD_ATTACK_POSITION:
 				m_isAttackPosition = TRUE;
 				m_position.set( &parms->m_pos );
-#endif
+#endif // OG
 #ifdef ZH
 		case AICMD_FOLLOW_WAYPOINT_PATH_AS_TEAM:
 			((AICommandParms*)parms)->m_cmd = AICMD_ATTACKFOLLOW_WAYPOINT_PATH_AS_TEAM;
 
-#endif
+#endif // ZH
 				break;
 		}
 #ifdef OG
@@ -182,15 +182,15 @@ void DeployStyleAIUpdate::aiDoCommand( const AICommandParms* parms )
 	else
 	{
 		//Always process AI issued commands.
-#endif
+#endif // OG
 #ifdef ZH
 	*/
 
-#endif
+#endif // ZH
 		AIUpdateInterface::aiDoCommand( parms );
 #ifdef OG
 	}
-#endif
+#endif // OG
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -205,7 +205,7 @@ UpdateSleepTime DeployStyleAIUpdate::update( void )
 	Object *designatedTarget = NULL;
 	Bool isAttacking = FALSE;
 
-#endif
+#endif // OG
 #ifdef ZH
 	UnsignedInt now = TheGameLogic->getFrame();
 	const DeployStyleAIUpdateModuleData *data = getDeployStyleAIUpdateModuleData();
@@ -221,75 +221,75 @@ UpdateSleepTime DeployStyleAIUpdate::update( void )
 	Bool isInGuardIdleState = getStateMachine()->isInGuardIdleState();
 
 	AIUpdateInterface *ai = self->getAI();
-#endif
+#endif // ZH
 
 #ifdef OG
 	if( weapon )
-#endif
+#endif // OG
 #ifdef ZH
 	if( isTryingToAttack && weapon )
-#endif
+#endif // ZH
 	{
 #ifdef OG
 		if( m_isAttackPosition )
 
-#endif
+#endif // OG
 #ifdef ZH
 		Object *victim = ai->getCurrentVictim();
 		if( victim )
-#endif
+#endif // ZH
 		{
 #ifdef OG
 			//Handle force attacking attacking specific position
 			inRange = weapon->isWithinAttackRange( self, &m_position );
 			isAttacking = TRUE;
-#endif
+#endif // OG
 #ifdef ZH
 			isInRange = weapon->isWithinAttackRange( self, victim );
 
-#endif
+#endif // ZH
 		}
 #ifdef OG
 		else if( m_isAttackObject )
-#endif
+#endif // OG
 #ifdef ZH
 		else 
-#endif
+#endif // ZH
 		{
 #ifdef OG
 			//Handle attacking a specific object.
 			designatedTarget = TheGameLogic->findObjectByID( m_attackObjectID );
 			if( designatedTarget && designatedTarget->isEffectivelyDead() )
-#endif
+#endif // OG
 #ifdef ZH
 			const Coord3D *pos = ai->getCurrentVictimPos();
 			if( pos )
 
-#endif
+#endif // ZH
 			{
 #ifdef OG
 				designatedTarget = NULL;
-#endif
+#endif // OG
 #ifdef ZH
 				isInRange = weapon->isWithinAttackRange( self, pos );
-#endif
+#endif // ZH
 			}
 #ifdef OG
 			if( designatedTarget )
 			{
 				inRange = weapon->isWithinAttackRange( self, designatedTarget );
 				isAttacking = TRUE;
-#endif
+#endif // OG
 			}
 		}
 #ifdef OG
 		else if( m_isAttackMultiple )
 
-#endif
+#endif // OG
 #ifdef ZH
 
 	if( m_frameToWaitForDeploy != 0 && now >= m_frameToWaitForDeploy)
-#endif
+#endif // ZH
 		{
 #ifdef OG
 			Bool newTarget = FALSE;
@@ -297,17 +297,17 @@ UpdateSleepTime DeployStyleAIUpdate::update( void )
 			//We are attacking in a different way... so attempt to figure out how.
 			WhichTurretType tur = getWhichTurretForCurWeapon();
 			if( tur != TURRET_INVALID )
-#endif
+#endif // OG
 #ifdef ZH
 		switch( m_state )
 
-#endif
+#endif // ZH
 			{
 #ifdef OG
 				//Get the turret's current target.
 				designatedTarget = getTurretTargetObject( tur );
 
-#endif
+#endif // OG
 #ifdef ZH
 			case DEPLOY:
 				setMyState( READY_TO_ATTACK );
@@ -315,34 +315,34 @@ UpdateSleepTime DeployStyleAIUpdate::update( void )
 			case UNDEPLOY:
 				setMyState( READY_TO_MOVE );
 				break;
-#endif
+#endif // ZH
 			}
 #ifdef OG
 			else
 			{
 				//Get the current goal object (NULL if we have a turret).
 				designatedTarget = getGoalObject();
-#endif
+#endif // OG
 			}
 #ifdef OG
 			if( !designatedTarget )
 
-#endif
+#endif // OG
 #ifdef ZH
 	
 	if( isInRange || isInGuardIdleState )
-#endif
+#endif // ZH
 			{
 #ifdef OG
 				//If we still don't have a target, get the last known target.
 				designatedTarget = TheGameLogic->findObjectByID( m_designatedTargetID );
 			}
 			if( designatedTarget && designatedTarget->isEffectivelyDead() )
-#endif
+#endif // OG
 #ifdef ZH
 		switch( m_state )
 
-#endif
+#endif // ZH
 			{
 #ifdef OG
 				//See if we can acquire one!
@@ -355,7 +355,7 @@ UpdateSleepTime DeployStyleAIUpdate::update( void )
 				designatedTarget = getNextMoodTarget( FALSE, FALSE );
 				if( designatedTarget )
 
-#endif
+#endif // OG
 #ifdef ZH
 			case READY_TO_MOVE:
 				//We're need to deploy before we can attack.
@@ -369,7 +369,7 @@ UpdateSleepTime DeployStyleAIUpdate::update( void )
 				break;
 			case UNDEPLOY:
 				if( m_frameToWaitForDeploy != 0 )
-#endif
+#endif // ZH
 				{
 #ifdef OG
 					inRange = weapon->isWithinAttackRange( self, designatedTarget );
@@ -380,34 +380,34 @@ UpdateSleepTime DeployStyleAIUpdate::update( void )
 						aiAttackObject( designatedTarget, NO_MAX_SHOTS_LIMIT, CMD_FROM_AI );
 						m_overriddenAttack = TRUE;
 						m_designatedTargetID = designatedTarget->getID();
-#endif
+#endif // OG
 #ifdef ZH
 					//Reverse the undeploy at it's current frame!
 					setMyState( DEPLOY, TRUE );
 
-#endif
+#endif // ZH
 					}
 #ifdef OG
 					else 
 					{
 						designatedTarget = NULL;
 
-#endif
+#endif // OG
 #ifdef ZH
 				break;
 			case ALIGNING_TURRETS:
 				//If turrets are aligning, we are able to attack right now.
 				setMyState( READY_TO_ATTACK );
 				break;
-#endif
+#endif // ZH
 					}
 				}
 #ifdef OG
 				else 
-#endif
+#endif // OG
 #ifdef ZH
 	else if( isTryingToMove )
-#endif
+#endif // ZH
 				{
 #ifdef OG
 					designatedTarget = NULL;
@@ -436,7 +436,7 @@ UpdateSleepTime DeployStyleAIUpdate::update( void )
 	Bool remainDeployed = m_isGuardingPosition && !designatedTarget && !isMoving() && !isWaitingForPath();
 
 	UnsignedInt now = TheGameLogic->getFrame();
-#endif
+#endif // OG
 	switch( m_state )
 	{
 		case READY_TO_MOVE:
@@ -445,16 +445,16 @@ UpdateSleepTime DeployStyleAIUpdate::update( void )
 			{
 				setMyState( DEPLOY );
 			}
-#endif
+#endif // OG
 #ifdef ZH
 				//We're ready... ai will handle moving.
 
-#endif
+#endif // ZH
 			break;
 		case READY_TO_ATTACK:
 #ifdef OG
 			if( !remainDeployed && (!inRange && isAttacking || !isAttacking && (isWaitingForPath() || getPath())) )
-#endif
+#endif // OG
 			{
 				WhichTurretType tur = getWhichTurretForCurWeapon();
 				if( tur != TURRET_INVALID )
@@ -463,14 +463,14 @@ UpdateSleepTime DeployStyleAIUpdate::update( void )
 					{
 #ifdef ZH
 						//Turrets need to center before we can undeploy.
-#endif
+#endif // ZH
 						setMyState( ALIGNING_TURRETS );
 						break;
 					}
 				}
 #ifdef ZH
 				//Start undeploying.
-#endif
+#endif // ZH
 				setMyState( UNDEPLOY );
 #ifdef OG
 			}
@@ -481,22 +481,22 @@ UpdateSleepTime DeployStyleAIUpdate::update( void )
 				AICommandParms parms( AICMD_MOVE_TO_POSITION, CMD_FROM_AI );	// values don't matter, will be wiped by next line
 				m_lastOutsideCommand.reconstitute( parms );
  				aiDoCommand(&parms);
-#endif
+#endif // OG
 #ifdef ZH
 				break;
 
-#endif
+#endif // ZH
 			}
 #ifdef OG
 			break;
-#endif
+#endif // OG
 		case DEPLOY:
 #ifdef OG
 			if( m_frameToWakeForDeploy != 0 && now >= m_frameToWakeForDeploy)
-#endif
+#endif // OG
 #ifdef ZH
 				if( m_frameToWaitForDeploy != 0 )
-#endif
+#endif // ZH
 			{
 #ifdef OG
 				setMyState( READY_TO_ATTACK );
@@ -505,12 +505,12 @@ UpdateSleepTime DeployStyleAIUpdate::update( void )
 					aiAttackObject( designatedTarget, NO_MAX_SHOTS_LIMIT, CMD_FROM_AI );
 					m_overriddenAttack = TRUE;
 				}
-#endif
+#endif // OG
 #ifdef ZH
 					//Reverse the deploy at it's current frame!
 					setMyState( UNDEPLOY, TRUE );
 
-#endif
+#endif // ZH
 			}
 			break;
 		case UNDEPLOY:
@@ -519,7 +519,7 @@ UpdateSleepTime DeployStyleAIUpdate::update( void )
 			{
 				setMyState( READY_TO_MOVE );
 			}
-#endif
+#endif // OG
 			break;
 		case ALIGNING_TURRETS:
 		{
@@ -530,7 +530,7 @@ UpdateSleepTime DeployStyleAIUpdate::update( void )
 				{
 #ifdef ZH
 						//Turrets are centers, so now we can undeploy.
-#endif
+#endif // ZH
 					setMyState( UNDEPLOY );
 				}
 			}
@@ -539,29 +539,29 @@ UpdateSleepTime DeployStyleAIUpdate::update( void )
 	}
 #ifdef ZH
 	}
-#endif
+#endif // ZH
 	
 #ifdef OG
 	UpdateSleepTime mine = UPDATE_SLEEP_FOREVER;
-#endif
+#endif // OG
 	switch( m_state )
 #ifdef ZH
 	{
 		case READY_TO_MOVE:
 			if( isTryingToMove )
-#endif
+#endif // ZH
 	{
 #ifdef ZH
 				self->setModelConditionState( MODELCONDITION_MOVING );
 			}
 			break;
 
-#endif
+#endif // ZH
 		case READY_TO_ATTACK:
 #ifdef OG
 		case READY_TO_MOVE:
 			mine = UPDATE_SLEEP_FOREVER;	// we can sleep for, well, a while
-#endif
+#endif // OG
 			break;
 
 		case DEPLOY:
@@ -579,13 +579,13 @@ UpdateSleepTime DeployStyleAIUpdate::update( void )
 			getStateMachine()->setTemporaryState( AI_BUSY, UPDATE_SLEEP_NONE );
 			setLocomotorGoalNone();
 			break;
-#endif
+#endif // ZH
 		case UNDEPLOY:
 #ifdef OG
 			mine = m_frameToWakeForDeploy > now ? UPDATE_SLEEP(m_frameToWakeForDeploy - now) : UPDATE_SLEEP_NONE;
 			aiIdle( CMD_FROM_AI );
 
-#endif
+#endif // OG
 #ifdef ZH
 			if( data->m_manualDeployAnimations )
 			{
@@ -598,25 +598,25 @@ UpdateSleepTime DeployStyleAIUpdate::update( void )
 			}
 			getStateMachine()->setTemporaryState( AI_BUSY, UPDATE_SLEEP_NONE );
 			setLocomotorGoalNone();
-#endif
+#endif // ZH
 			break;
 
 		case ALIGNING_TURRETS:
 #ifdef OG
 			mine = UPDATE_SLEEP_NONE;	// no sleep for us right now.
 			aiIdle( CMD_FROM_AI );
-#endif
+#endif // OG
 #ifdef ZH
 			getStateMachine()->setTemporaryState( AI_BUSY, UPDATE_SLEEP_NONE );
 			setLocomotorGoalNone();
-#endif
+#endif // ZH
 			break;
 	}
 #ifdef OG
 	UpdateSleepTime ret = AIUpdateInterface::update();
 	return (mine < ret) ? mine : ret;
 
-#endif
+#endif // OG
 #ifdef ZH
 
 	AIUpdateInterface::update();
@@ -624,16 +624,16 @@ UpdateSleepTime DeployStyleAIUpdate::update( void )
 	//into busy state during the update.
 	return UPDATE_SLEEP_NONE;
 
-#endif
+#endif // ZH
 }
 
 //-------------------------------------------------------------------------------------------------
 #ifdef OG
 void DeployStyleAIUpdate::setMyState( DeployStateTypes stateID )
-#endif
+#endif // OG
 #ifdef ZH
 void DeployStyleAIUpdate::setMyState( DeployStateTypes stateID, Bool reverseDeploy )
-#endif
+#endif // ZH
 {
 	m_state = stateID;
 	Object *self = getObject();
@@ -641,7 +641,7 @@ void DeployStyleAIUpdate::setMyState( DeployStateTypes stateID, Bool reverseDepl
 	UnsignedInt now = TheGameLogic->getFrame();
 	const DeployStyleAIUpdateModuleData *data = getDeployStyleAIUpdateModuleData();
 	
-#endif
+#endif // ZH
 	switch( stateID )
 	{
 		case DEPLOY:
@@ -649,7 +649,7 @@ void DeployStyleAIUpdate::setMyState( DeployStateTypes stateID, Bool reverseDepl
 			//Tell our object to deploy (so it can continue the same attack later).
 #ifdef OG
 			aiIdle( CMD_FROM_AI );
-#endif
+#endif // OG
 			self->clearAndSetModelConditionFlags( MAKE_MODELCONDITION_MASK( MODELCONDITION_PACKING ), 
 																						 MAKE_MODELCONDITION_MASK( MODELCONDITION_UNPACKING ) );
 #ifdef OG
@@ -658,7 +658,7 @@ void DeployStyleAIUpdate::setMyState( DeployStateTypes stateID, Bool reverseDepl
 			self->getDrawable()->setAnimationLoopDuration( m_frameToWakeForDeploy );
 			m_frameToWakeForDeploy += TheGameLogic->getFrame();	// convert to absolute frame
 
-#endif
+#endif // OG
 #ifdef ZH
 
 			if( reverseDeploy )
@@ -680,7 +680,7 @@ void DeployStyleAIUpdate::setMyState( DeployStateTypes stateID, Bool reverseDepl
 			{
 				m_frameToWaitForDeploy = getUnpackTime() + now; 
 			}
-#endif
+#endif // ZH
 
 			//Play deploy sound
 			const ThingTemplate *thing = self->getTemplate();
@@ -702,11 +702,11 @@ void DeployStyleAIUpdate::setMyState( DeployStateTypes stateID, Bool reverseDepl
 			//actually move.
 			self->clearStatus( MAKE_OBJECT_STATUS_MASK( OBJECT_STATUS_DEPLOYED ) );
 
-#endif
+#endif // ZH
 			//Tell our object to pack up (so it can continue the same move later).
 #ifdef OG
 			aiIdle( CMD_FROM_AI );
-#endif
+#endif // OG
 			self->clearAndSetModelConditionFlags( MAKE_MODELCONDITION_MASK2( MODELCONDITION_UNPACKING, MODELCONDITION_DEPLOYED ),
 																						 MAKE_MODELCONDITION_MASK( MODELCONDITION_PACKING ) );
 #ifdef OG
@@ -715,7 +715,7 @@ void DeployStyleAIUpdate::setMyState( DeployStateTypes stateID, Bool reverseDepl
 			self->getDrawable()->setAnimationLoopDuration( m_frameToWakeForDeploy );
 			m_frameToWakeForDeploy += TheGameLogic->getFrame();	// convert to absolute frame
 
-#endif
+#endif // OG
 #ifdef ZH
 
 			if( reverseDeploy )
@@ -737,7 +737,7 @@ void DeployStyleAIUpdate::setMyState( DeployStateTypes stateID, Bool reverseDepl
 			{
 				m_frameToWaitForDeploy = getPackTime() + now;
 			}
-#endif
+#endif // ZH
 
 			if( doTurretsFunctionOnlyWhenDeployed() )
 			{
@@ -764,10 +764,10 @@ void DeployStyleAIUpdate::setMyState( DeployStateTypes stateID, Bool reverseDepl
 		{
 #ifdef OG
 			m_frameToWakeForDeploy = 0;
-#endif
+#endif // OG
 #ifdef ZH
 			m_frameToWaitForDeploy = 0;
-#endif
+#endif // ZH
 
 #ifdef OG
 			//We're ready to move, so restore our command!
@@ -778,7 +778,7 @@ void DeployStyleAIUpdate::setMyState( DeployStateTypes stateID, Bool reverseDepl
 	 			aiDoCommand(&parms);
 			}
 
-#endif
+#endif // OG
 			self->clearModelConditionFlags( MAKE_MODELCONDITION_MASK( MODELCONDITION_PACKING ) );
 			break;
 		}
@@ -787,12 +787,12 @@ void DeployStyleAIUpdate::setMyState( DeployStateTypes stateID, Bool reverseDepl
 #ifdef OG
 			m_frameToWakeForDeploy = 0;
 
-#endif
+#endif // OG
 #ifdef ZH
 			//This status will tell the approach AI state to succeed automatically. This prevents
 			//twitching on deploy.
 			self->setStatus( MAKE_OBJECT_STATUS_MASK( OBJECT_STATUS_DEPLOYED ) );
-#endif
+#endif // ZH
 
 #ifdef OG
 			//We're ready to attack, so restore our command!
@@ -802,11 +802,11 @@ void DeployStyleAIUpdate::setMyState( DeployStateTypes stateID, Bool reverseDepl
 				m_lastOutsideCommand.reconstitute( parms );
  				aiDoCommand(&parms);
 			}
-#endif
+#endif // OG
 #ifdef ZH
 			m_frameToWaitForDeploy = 0;
 
-#endif
+#endif // ZH
 
 			self->clearAndSetModelConditionFlags( MAKE_MODELCONDITION_MASK( MODELCONDITION_UNPACKING ), 
 																						 MAKE_MODELCONDITION_MASK( MODELCONDITION_DEPLOYED) );
@@ -827,11 +827,11 @@ void DeployStyleAIUpdate::setMyState( DeployStateTypes stateID, Bool reverseDepl
 #ifdef OG
 			m_frameToWakeForDeploy = 0;
 
-#endif
+#endif // OG
 #ifdef ZH
 			m_frameToWaitForDeploy = 0;
 
-#endif
+#endif // ZH
 			WhichTurretType tur = getWhichTurretForCurWeapon();
 			if( tur != TURRET_INVALID )
 			{
@@ -865,10 +865,10 @@ void DeployStyleAIUpdate::xfer( Xfer *xfer )
   // version
 #ifdef OG
   XferVersion currentVersion = 3;
-#endif
+#endif // OG
 #ifdef ZH
   XferVersion currentVersion = 4;
-#endif
+#endif // ZH
   XferVersion version = currentVersion;
   xfer->xferVersion( &version, currentVersion );
  
@@ -878,11 +878,11 @@ void DeployStyleAIUpdate::xfer( Xfer *xfer )
 #ifdef OG
 	xfer->xferBool(&m_hasOutsideCommand);
 	xfer->xferUnsignedInt(&m_frameToWakeForDeploy);
-#endif
+#endif // OG
 #ifdef ZH
 	if( version >= 4 )
 	{
-#endif
+#endif // ZH
 	xfer->xferUser(&m_state, sizeof(m_state));
 #ifdef ZH
 		xfer->xferUnsignedInt(&m_frameToWaitForDeploy);
@@ -895,14 +895,14 @@ void DeployStyleAIUpdate::xfer( Xfer *xfer )
 		ObjectID obsoleteObjectID;
 		Coord3D obsoleteCoord3D;
    	AICommandParmsStorage	obsoleteAICommandParmsStorage;
-#endif
+#endif // ZH
 
 #ifdef ZH
 		xfer->xferBool( &obsoleteBool );
 		xfer->xferUnsignedInt( &obsoleteUnsignedInt );
 		xfer->xferUser(&m_state, sizeof(m_state));
 
-#endif
+#endif // ZH
 	if( version >= 2 )
 	{
 #ifdef OG
@@ -912,7 +912,7 @@ void DeployStyleAIUpdate::xfer( Xfer *xfer )
 		xfer->xferBool( &m_isAttackMultiple );
 		xfer->xferBool( &m_isAttackObject );
 		xfer->xferBool( &m_isAttackPosition );
-#endif
+#endif // OG
 #ifdef ZH
 			xfer->xferObjectID( &obsoleteObjectID );
 			xfer->xferObjectID( &obsoleteObjectID );
@@ -920,26 +920,26 @@ void DeployStyleAIUpdate::xfer( Xfer *xfer )
 			xfer->xferBool( &obsoleteBool );
 			xfer->xferBool( &obsoleteBool );
 			xfer->xferBool( &obsoleteBool );
-#endif
+#endif // ZH
 	}
 	if( version >= 3 )
 	{
 #ifdef OG
 		xfer->xferBool( &m_isGuardingPosition );
 		xfer->xferBool( &m_overriddenAttack );
-#endif
+#endif // OG
 #ifdef ZH
 			xfer->xferBool( &obsoleteBool );
 			xfer->xferBool( &obsoleteBool );
-#endif
+#endif // ZH
 	}
 
 #ifdef OG
 	m_lastOutsideCommand.doXfer(xfer);
-#endif
+#endif // OG
 #ifdef ZH
 		obsoleteAICommandParmsStorage.doXfer( xfer );
-#endif
+#endif // ZH
 
 	if( version < 2 )
 	{
@@ -947,14 +947,14 @@ void DeployStyleAIUpdate::xfer( Xfer *xfer )
 		AICommandParmsStorage obsolete;
 		obsolete.doXfer(xfer);
 
-#endif
+#endif // OG
 #ifdef ZH
 			obsoleteAICommandParmsStorage.doXfer(xfer);
 		}
 
 		//Initialize unit to able to move.
 		m_state = READY_TO_MOVE;
-#endif
+#endif // ZH
 	}
 
 }  // end xfer

@@ -63,7 +63,7 @@ typedef struct
 #ifdef OG
 #define NUM_ALPHA_TILES 8
 
-#endif
+#endif // OG
 class WorldHeightMapEdit : public WorldHeightMap
 {
 protected:
@@ -156,7 +156,7 @@ public: // Editing methods.
 #ifdef OG
 
 	Bool getRawTileData(Short tileNdx, Int width, UnsignedByte *buffer, Int bufLen);
-#endif
+#endif // OG
 
 	void dbgVerifyAfterUndo(void); ///< Verifies the structures are still consistent.
 	Bool doCliffAdjustment(Int xIndex, Int yIndex);

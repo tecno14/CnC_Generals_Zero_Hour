@@ -44,7 +44,7 @@ GrantUpgradeCreateModuleData::GrantUpgradeCreateModuleData()
 	m_upgradeName = "";
 #ifdef OG
 	m_exemptStatus = OBJECT_STATUS_NONE;
-#endif
+#endif // OG
 }
 
 // ------------------------------------------------------------------------------------------------
@@ -58,10 +58,10 @@ void GrantUpgradeCreateModuleData::buildFieldParse(MultiIniFieldParse& p)
 		{ "UpgradeToGrant",	INI::parseAsciiString,		NULL, offsetof( GrantUpgradeCreateModuleData, m_upgradeName ) },
 #ifdef OG
 		{ "ExemptStatus",	INI::parseBitString32,	TheObjectStatusBitNames, offsetof( GrantUpgradeCreateModuleData, m_exemptStatus ) },
-#endif
+#endif // OG
 #ifdef ZH
 		{ "ExemptStatus",		ObjectStatusMaskType::parseFromINI, NULL, offsetof( GrantUpgradeCreateModuleData, m_exemptStatus ) },
-#endif
+#endif // ZH
 		{ 0, 0, 0, 0 }
 	};
 
@@ -95,19 +95,19 @@ void GrantUpgradeCreate::onCreate( void )
 	ObjectStatusBits exemptStatus = (ObjectStatusBits)getGrantUpgradeCreateModuleData()->m_exemptStatus;
 	ObjectStatusBits currentStatus = (ObjectStatusBits)getObject()->getStatusBits();
 	if( BitTest( exemptStatus, OBJECT_STATUS_UNDER_CONSTRUCTION ) == TRUE )
-#endif
+#endif // OG
 #ifdef ZH
 	ObjectStatusMaskType exemptStatus = getGrantUpgradeCreateModuleData()->m_exemptStatus;
 	ObjectStatusMaskType currentStatus = getObject()->getStatusBits();
 	if( exemptStatus.test( OBJECT_STATUS_UNDER_CONSTRUCTION ) )
-#endif
+#endif // ZH
 	{
 #ifdef OG
 		if(	BitTest( currentStatus, OBJECT_STATUS_UNDER_CONSTRUCTION ) == FALSE ) 
-#endif
+#endif // OG
 #ifdef ZH
 		if(	!currentStatus.test( OBJECT_STATUS_UNDER_CONSTRUCTION ) ) 
-#endif
+#endif // ZH
 		{
 			const UpgradeTemplate *upgradeTemplate = TheUpgradeCenter->findUpgrade( getGrantUpgradeCreateModuleData()->m_upgradeName );
 			if( !upgradeTemplate )
@@ -118,13 +118,13 @@ void GrantUpgradeCreate::onCreate( void )
 
 #ifdef ZH
 			Player *player = getObject()->getControllingPlayer();
-#endif
+#endif // ZH
 			if( upgradeTemplate->getUpgradeType() == UPGRADE_TYPE_PLAYER )
 			{
 				// get the player
 #ifdef OG
 				Player *player = getObject()->getControllingPlayer();
-#endif
+#endif // OG
 				player->addUpgrade( upgradeTemplate, UPGRADE_STATUS_COMPLETE );
 			}
 			else
@@ -134,7 +134,7 @@ void GrantUpgradeCreate::onCreate( void )
 #ifdef ZH
 			
 			player->getAcademyStats()->recordUpgrade( upgradeTemplate, TRUE );
-#endif
+#endif // ZH
 		}
 	}
 

@@ -47,7 +47,7 @@ public:
 	Coord3D m_naturalRallyPoint;
 #ifdef ZH
 	Bool		m_useSpawnRallyPoint;
-#endif
+#endif // ZH
 
 	DefaultProductionExitUpdateModuleData()
 	{
@@ -55,7 +55,7 @@ public:
 		m_naturalRallyPoint.zero();
 #ifdef ZH
 		m_useSpawnRallyPoint = false;
-#endif
+#endif // ZH
 	}
 
 	static void buildFieldParse(MultiIniFieldParse& p) 
@@ -67,7 +67,7 @@ public:
 			{ "NaturalRallyPoint",  INI::parseCoord3D,		NULL, offsetof( DefaultProductionExitUpdateModuleData, m_naturalRallyPoint ) },
 #ifdef ZH
 			{ "UseSpawnRallyPoint", INI::parseBool,				NULL, offsetof( DefaultProductionExitUpdateModuleData, m_useSpawnRallyPoint ) },
-#endif
+#endif // ZH
 			{ 0, 0, 0, 0 }
 		};
     p.add(dataFieldParse);
@@ -99,7 +99,7 @@ public:
 	virtual const Coord3D *getRallyPoint( void ) const;			///< define a "rally point" for units to move towards
 #ifdef ZH
 	virtual Bool useSpawnRallyPoint( void ) const;
-#endif
+#endif // ZH
 	virtual Bool getNaturalRallyPoint( Coord3D& rallyPoint, Bool offset = TRUE ) const;			///< get the natural "rally point" for units to move towards
 	virtual Bool getExitPosition( Coord3D& exitPosition ) const;					///< access to the "Door" position of the production object
 	virtual UpdateSleepTime update()										{ return UPDATE_SLEEP_FOREVER; }
@@ -137,7 +137,7 @@ inline Bool DefaultProductionExitUpdate::useSpawnRallyPoint( void ) const
 		return TRUE;
 	else
 		return FALSE;
-#endif
+#endif // ZH
 }
 
 #endif

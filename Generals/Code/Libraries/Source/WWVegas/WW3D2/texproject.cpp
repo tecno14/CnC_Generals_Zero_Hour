@@ -28,30 +28,30 @@
  *                                                                                             *
 #ifdef OG
  *                      $Author:: Jani_p                                                      $*
-#endif
+#endif // OG
 #ifdef ZH
  *                      $Author:: Kenny Mitchell                                               * 
-#endif
+#endif // ZH
  *                                                                                             *
 #ifdef OG
  *                     $Modtime:: 7/23/01 5:31p                                               $*
-#endif
+#endif // OG
 #ifdef ZH
  *								$Modtime:: 08/05/02 10:03a                                             $*
-#endif
+#endif // ZH
  *                                                                                             *
 #ifdef OG
  *                    $Revision:: 15                                                          $*
-#endif
+#endif // OG
 #ifdef ZH
  *                    $Revision:: 22                                                          $*
-#endif
+#endif // ZH
  *                                                                                             *
 #ifdef ZH
  * 06/26/02 KM Matrix name change to avoid MAX conflicts                                       *
  * 06/27/02 KM Render to shadow buffer texture support														*
  * 08/05/02 KM Texture class redesign 
-#endif
+#endif // ZH
  *---------------------------------------------------------------------------------------------*
  * Functions:                                                                                  *
  *   TexProjectClass::TexProjectClass -- Constructor                                           *
@@ -110,10 +110,10 @@
 #define DEBUG_SHADOW_RENDERING					0
 #ifdef OG
 #define DEFAULT_TEXTURE_SIZE						64
-#endif
+#endif // OG
 #ifdef ZH
 //#define DEFAULT_TEXTURE_SIZE						64
-#endif
+#endif // ZH
 
 const float INTENSITY_RATE_OF_CHANGE			= 1.0f;			// change in intensity per second
 
@@ -213,7 +213,7 @@ TexProjectClass::TexProjectClass(void) :
 	RenderTarget(NULL),
 #ifdef ZH
 	DepthStencilTarget(NULL),
-#endif
+#endif // ZH
 	HFov(90.0f),
 	VFov(90.0f),
 	XMin(-10.0f),
@@ -227,7 +227,7 @@ TexProjectClass::TexProjectClass(void) :
 	// set a default texture size
 	Set_Texture_Size(DEFAULT_TEXTURE_SIZE);
 
-#endif
+#endif // OG
 	// create a material pass class
 	MaterialPass = NEW_REF(MaterialPassClass,()); 
 	MaterialPass->Set_Cull_Volume(&WorldBoundingVolume);
@@ -268,7 +268,7 @@ TexProjectClass::~TexProjectClass(void)
 	REF_PTR_RELEASE(RenderTarget);
 #ifdef ZH
 	REF_PTR_RELEASE(DepthStencilTarget);
-#endif
+#endif // ZH
 }
 
 
@@ -610,11 +610,11 @@ void TexProjectClass::Init_Multiplicative(void)
 #ifdef OG
 			grad_tex->Set_U_Addr_Mode(TextureClass::TEXTURE_ADDRESS_CLAMP);
 			grad_tex->Set_V_Addr_Mode(TextureClass::TEXTURE_ADDRESS_CLAMP);
-#endif
+#endif // OG
 #ifdef ZH
 			grad_tex->Get_Filter().Set_U_Addr_Mode(TextureFilterClass::TEXTURE_ADDRESS_CLAMP);
 			grad_tex->Get_Filter().Set_V_Addr_Mode(TextureFilterClass::TEXTURE_ADDRESS_CLAMP);
-#endif
+#endif // ZH
 			MaterialPass->Set_Texture(grad_tex,1);
 			grad_tex->Release_Ref();
 		} else {
@@ -718,11 +718,11 @@ void TexProjectClass::Init_Additive(void)
 #ifdef OG
 		grad_tex->Set_U_Addr_Mode(TextureClass::TEXTURE_ADDRESS_CLAMP);
 		grad_tex->Set_V_Addr_Mode(TextureClass::TEXTURE_ADDRESS_CLAMP);
-#endif
+#endif // OG
 #ifdef ZH
 		grad_tex->Get_Filter().Set_U_Addr_Mode(TextureFilterClass::TEXTURE_ADDRESS_CLAMP);
 		grad_tex->Get_Filter().Set_V_Addr_Mode(TextureFilterClass::TEXTURE_ADDRESS_CLAMP);
-#endif
+#endif // ZH
 		MaterialPass->Set_Texture(grad_tex,1);
 		grad_tex->Release_Ref();
 	} else {
@@ -776,25 +776,25 @@ void TexProjectClass::Set_Texture(TextureClass * texture)
 #ifdef ZH
 {
 	if (texture != NULL) 
-#endif
+#endif // ZH
 {
 #ifdef OG
 	if (texture != NULL) {
 		texture->Set_U_Addr_Mode(TextureClass::TEXTURE_ADDRESS_CLAMP);
 		texture->Set_V_Addr_Mode(TextureClass::TEXTURE_ADDRESS_CLAMP);	
-#endif
+#endif // OG
 #ifdef ZH
 		texture->Get_Filter().Set_U_Addr_Mode(TextureFilterClass::TEXTURE_ADDRESS_CLAMP);
 		texture->Get_Filter().Set_V_Addr_Mode(TextureFilterClass::TEXTURE_ADDRESS_CLAMP);	
 
-#endif
+#endif // ZH
 		MaterialPass->Set_Texture(texture);
 #ifdef OG
 
 		SurfaceClass::SurfaceDescription surface_desc;
 		texture->Get_Level_Description(surface_desc);
 		Set_Texture_Size(surface_desc.Width);
-#endif
+#endif // OG
 	}
 }
 
@@ -1171,12 +1171,12 @@ bool TexProjectClass::Compute_Ortho_Projection
  *   1/11/00    gth : Created.                                                                 *
 #ifdef ZH
  *   5/16/02    kjm : Added optional custom depth/stencil target										  *
-#endif
+#endif // ZH
  *=============================================================================================*/
 #ifdef OG
 bool TexProjectClass::Compute_Texture(RenderObjClass * model,SpecialRenderInfoClass * context)
 
-#endif
+#endif // OG
 #ifdef ZH
 bool TexProjectClass::Compute_Texture
 (
@@ -1185,11 +1185,11 @@ bool TexProjectClass::Compute_Texture
 )
 {
 	if ((model == NULL) || (context == NULL)) 
-#endif
+#endif // ZH
 {
 #ifdef OG
 	if ((model == NULL) || (context == NULL)) {
-#endif
+#endif // OG
 		return false;
 	}
 	/*
@@ -1198,16 +1198,16 @@ bool TexProjectClass::Compute_Texture
 #ifdef OG
 	TextureClass * rtarget = Peek_Render_Target();
 
-#endif
+#endif // OG
 #ifdef ZH
 	TextureClass * rtarget=NULL;
 	ZTextureClass* ztarget=NULL;
-#endif
+#endif // ZH
 
 #ifdef OG
 	if (rtarget != NULL) {
 
-#endif
+#endif // OG
 #ifdef ZH
 	Peek_Render_Target(&rtarget,&ztarget);
 
@@ -1215,17 +1215,17 @@ bool TexProjectClass::Compute_Texture
 	{
 		// set projector for render context KJM
 		context->Texture_Projector=this;
-#endif
+#endif // ZH
 
 		/*
 		** Set the render target
 		*/
 #ifdef OG
 		DX8Wrapper::Set_Render_Target(rtarget);
-#endif
+#endif // OG
 #ifdef ZH
 		DX8Wrapper::Set_Render_Target_With_Z (rtarget,ztarget);
-#endif
+#endif // ZH
 
 		/*
 		** Set up the camera
@@ -1243,22 +1243,22 @@ bool TexProjectClass::Compute_Texture
 #ifdef OG
 		WW3D::Begin_Render(true,true,color);
 
-#endif
+#endif // OG
 #ifdef ZH
 		bool zclear=ztarget!=NULL;
 
 		bool snapshot=WW3D::Is_Snapshot_Activated();
 		SNAPSHOT_SAY(("TexProjectCLass::Begin_Render()\n"));
 		WW3D::Begin_Render(true,zclear,color);	// false to zclear as we don't have z-buffer
-#endif
+#endif // ZH
 		WW3D::Render(*model,*context);
 #ifdef ZH
 		SNAPSHOT_SAY(("TexProjectCLass::End_Render()\n"));
-#endif
+#endif // ZH
 		WW3D::End_Render(false);
 #ifdef ZH
 		WW3D::Activate_Snapshot(snapshot);	// End_Render() ends the shapsnot, so restore the state
-#endif
+#endif // ZH
 
 		DX8Wrapper::Set_Render_Target((IDirect3DSurface8 *)NULL);
 	}
@@ -1311,20 +1311,20 @@ bool TexProjectClass::Needs_Render_Target(void)
 #ifdef OG
 void TexProjectClass::Set_Render_Target(TextureClass * render_target)
 
-#endif
+#endif // OG
 #ifdef ZH
 void TexProjectClass::Set_Render_Target
 (
 	TextureClass* render_target,
 	ZTextureClass* zbuffer
 )
-#endif
+#endif // ZH
 {
 	REF_PTR_SET(RenderTarget,render_target);
 	Set_Texture(RenderTarget);
 #ifdef ZH
 	REF_PTR_SET(DepthStencilTarget,zbuffer);
-#endif
+#endif // ZH
 }
 
 /***********************************************************************************************
@@ -1340,19 +1340,19 @@ void TexProjectClass::Set_Render_Target
  *   4/5/2001   gth : Created.                                                                 *
 #ifdef ZH
  *   5/16/2002  kjm : Added optional custom zbuffer                                            *
-#endif
+#endif // ZH
  *=============================================================================================*/
 #ifdef OG
 TextureClass * TexProjectClass::Peek_Render_Target(void)
 
-#endif
+#endif // OG
 #ifdef ZH
 TextureClass* TexProjectClass::Peek_Render_Target
 (
 	TextureClass** rtarget, 
 	ZTextureClass** ztarget
 )
-#endif
+#endif // ZH
 {
 #ifdef ZH
 	// some uses of this function just want to know if a render target exists
@@ -1364,7 +1364,7 @@ TextureClass* TexProjectClass::Peek_Render_Target
 	if (ztarget!=NULL)
 		*ztarget=DepthStencilTarget;
 
-#endif
+#endif // ZH
 	return RenderTarget;
 }
 
@@ -1400,7 +1400,7 @@ void TexProjectClass::Configure_Camera(CameraClass & camera)
 	Vector2 vmin(1.0f*inv_size,1.0f*inv_size);
 	Vector2 vmax((size-1.0f)*inv_size,(size-1.0f)*inv_size);
 	camera.Set_Viewport(vmin,vmax);
-#endif
+#endif // ZH
 }
 
 
@@ -1425,19 +1425,19 @@ void TexProjectClass::Pre_Render_Update(const Matrix3D & camera)
 	Matrix3D tmp;
 #ifdef OG
 	Matrix4	view_to_texture;
-#endif
+#endif // OG
 #ifdef ZH
 	Matrix4x4	view_to_texture;
-#endif
+#endif // ZH
 
 	Transform.Get_Orthogonal_Inverse(world_to_texture);
 	Matrix3D::Multiply(world_to_texture,camera,&tmp);
 #ifdef OG
 	Matrix4::Multiply(Projection,tmp,&view_to_texture);
-#endif
+#endif // OG
 #ifdef ZH
 	Matrix4x4::Multiply(Projection,tmp,&view_to_texture);
-#endif
+#endif // ZH
 
 	/*
 	** update the current intensity by iterating it towards the desired intensity
@@ -1483,7 +1483,7 @@ void TexProjectClass::Pre_Render_Update(const Matrix3D & camera)
 		WWASSERT(Get_Texture_Size() != 0);
 	}
 	
-#endif
+#endif // ZH
 	Mapper->Set_Texture_Transform(view_to_texture,Get_Texture_Size());
 	if (Mapper1) {
 		Mapper1->Set_Texture_Transform(view_to_texture,Get_Texture_Size());

@@ -72,7 +72,7 @@ void ParticlePanelParticle::InitPanel( void )
 	}
 #ifdef ZH
 	pWnd->AddString("SMUDGE RESERVED");	//smudges don't use textures so we're hardcoding one to tell them apart.
-#endif
+#endif // ZH
 }
 
 void ParticlePanelParticle::performUpdate( IN Bool toUI )

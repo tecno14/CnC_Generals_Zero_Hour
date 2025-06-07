@@ -52,7 +52,7 @@
 #include "BuildList.h"
 #ifdef ZH
 #include "RulerOptions.h"
-#endif
+#endif // ZH
 
 #define TWO_D_WINDOW_SECTION "TwoDWindow"
 #define MAIN_FRAME_SECTION "MainFrame"
@@ -60,7 +60,7 @@
 class LayersList;
 #ifdef ZH
 class ScriptDialog;
-#endif
+#endif // ZH
 
 class CMainFrame : public CFrameWnd
 {
@@ -99,7 +99,7 @@ public:
 	void handleCameraChange(void);
 #ifdef ZH
 	void onEditScripts();
-#endif
+#endif // ZH
 
 protected:  // control bar embedded members
 	CStatusBar					m_wndStatusBar;
@@ -129,7 +129,7 @@ protected:  // control bar embedded members
 #ifdef ZH
 	ScriptDialog*				m_scriptDialog;
 	RulerOptions				m_rulerOptions;
-#endif
+#endif // ZH
 
 	CWnd							*m_curOptions;
 	Int								m_curOptionsX;

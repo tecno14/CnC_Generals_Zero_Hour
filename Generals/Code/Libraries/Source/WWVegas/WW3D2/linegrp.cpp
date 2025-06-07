@@ -497,4 +497,4 @@ int LineGroupClass::Get_Polygon_Count(void)
 	WWASSERT(0);
 	return 0;
 }
-#endif
+#endif // ZH

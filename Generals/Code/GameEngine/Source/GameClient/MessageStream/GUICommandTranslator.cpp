@@ -458,10 +458,10 @@ GameMessageDisposition GUICommandTranslator::translateGameMessage(const GameMess
 					case GUI_COMMAND_SPECIAL_POWER:
 #ifdef OG
 					case GUI_COMMAND_SPECIAL_POWER_FROM_COMMAND_CENTER:
-#endif
+#endif // OG
 #ifdef ZH
 					case GUI_COMMAND_SPECIAL_POWER_FROM_SHORTCUT:
-#endif
+#endif // ZH
 					{
 						return KEEP_MESSAGE;
 						break;
@@ -500,11 +500,11 @@ GameMessageDisposition GUICommandTranslator::translateGameMessage(const GameMess
 #ifdef ZH
 				{
 					TheInGameUI->setPreventLeftClickDeselectionInAlternateMouseModeForOneClick( TRUE );
-#endif
+#endif // ZH
 					TheInGameUI->setGUICommand( NULL );
 #ifdef ZH
 				}
-#endif
+#endif // ZH
 			}  // end if
 
 			break;

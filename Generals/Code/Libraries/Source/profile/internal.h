@@ -125,4 +125,4 @@ __forceinline void ProfileGetTime(__int64 &t)
 
 #endif // INTERNAL_H
 
-#endif
+#endif // ZH

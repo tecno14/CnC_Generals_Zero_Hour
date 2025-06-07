@@ -121,11 +121,11 @@ UpdateSleepTime HijackerUpdate::update( void )
 				obj->clearStatus( OBJECT_STATUS_NO_COLLISIONS );
 				obj->clearStatus( OBJECT_STATUS_MASKED );
 				obj->clearStatus( OBJECT_STATUS_UNSELECTABLE );
-#endif
+#endif // OG
 #ifdef ZH
 				obj->clearStatus( MAKE_OBJECT_STATUS_MASK3( OBJECT_STATUS_NO_COLLISIONS, OBJECT_STATUS_MASKED, OBJECT_STATUS_UNSELECTABLE ) );
 
-#endif
+#endif // ZH
 
 				AIUpdateInterface* ai = obj->getAIUpdateInterface();
 				if ( ai )

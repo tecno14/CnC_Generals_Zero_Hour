@@ -17,7 +17,7 @@
 **	along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#endif
+#endif // ZH
 //{{NO_DEPENDENCIES}}
 // Microsoft Developer Studio generated include file.
 // Used by RTS.RC
@@ -31,10 +31,10 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #ifdef OG
 #define _APS_NEXT_RESOURCE_VALUE        104
-#endif
+#endif // OG
 #ifdef ZH
 #define _APS_NEXT_RESOURCE_VALUE        106
-#endif
+#endif // ZH
 #define _APS_NEXT_COMMAND_VALUE         40001
 #define _APS_NEXT_CONTROL_VALUE         1000
 #define _APS_NEXT_SYMED_VALUE           101

@@ -36,7 +36,7 @@
 class Player;
 #ifdef ZH
 class INI;
-#endif
+#endif // ZH
 
 //------------------------------------------------------------------------------------ Eva Messages
 // Keep in sync with TheEvaMessageNames AND Eva::s_shouldPlayFuncs
@@ -45,7 +45,7 @@ enum EvaMessage
 #ifdef ZH
   EVA_Invalid = -1,
     
-#endif
+#endif // ZH
 	EVA_FIRST = 0,
 	EVA_LowPower = EVA_FIRST,
 	EVA_InsufficientFunds,
@@ -57,7 +57,7 @@ enum EvaMessage
 	EVA_SuperweaponLaunched_Nuke,
 	EVA_SuperweaponLaunched_ScudStorm,
 
-#endif
+#endif // OG
 #ifdef ZH
 	EVA_SuperweaponDetected_Own_ParticleCannon,
 	EVA_SuperweaponDetected_Own_Nuke,
@@ -86,7 +86,7 @@ enum EvaMessage
   EVA_SuperweaponReady_Enemy_ParticleCannon,
   EVA_SuperweaponReady_Enemy_Nuke,
   EVA_SuperweaponReady_Enemy_ScudStorm,
-#endif
+#endif // ZH
 	EVA_BuldingLost,
 	EVA_BaseUnderAttack,
 	EVA_AllyUnderAttack,
@@ -98,7 +98,7 @@ enum EvaMessage
   EVA_OwnBlackLotusDetected,
   EVA_OwnJarmenKellDetected,
   EVA_OwnColonelBurtonDetected,
-#endif
+#endif // ZH
 	EVA_UnitLost,
 	EVA_GeneralLevelUp,
 	EVA_VehicleStolen,
@@ -114,7 +114,7 @@ enum EvaMessage
 	EVA_SuperweaponLaunched_Own_Sneak_Attack,
   EVA_SuperweaponLaunched_Ally_Sneak_Attack,
   EVA_SuperweaponLaunched_Enemy_Sneak_Attack,
-#endif
+#endif // ZH
 
 	EVA_COUNT,
 };
@@ -220,7 +220,7 @@ class Eva : public SubsystemInterface
     // Parse EvaMessage enum name in INI
     static void parseEvaMessageFromIni( INI * ini, void *instance, void *store, const void* userData );
 
-#endif
+#endif // ZH
 	protected: 	// Note: These are all protected. They should *NEVER* be made public. They are for internal use only
 		Bool isTimeForCheck(EvaMessage messageToTest, UnsignedInt currentFrame) const;
 		Bool messageShouldPlay(EvaMessage messageToTest, UnsignedInt currentFrame) const;

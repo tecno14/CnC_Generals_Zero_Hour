@@ -51,7 +51,7 @@ public:
 
 #ifdef ZH
 	Real m_toleranceDistance;	///< The maximum distance the docking unit must be within in order to cheat and dock.
-#endif
+#endif // ZH
 };
 
 // ------------------------------------------------------------------------------------------------

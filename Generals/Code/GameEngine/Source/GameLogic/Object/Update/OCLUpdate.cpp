@@ -36,7 +36,7 @@
 #include "Common/Player.h"
 #include "Common/PlayerTemplate.h"
 #include "Common/UnicodeString.h"
-#endif
+#endif // ZH
 #include "GameLogic/GameLogic.h"
 #include "GameLogic/Object.h"
 #include "GameLogic/ObjectCreationList.h"
@@ -77,7 +77,7 @@ void parseFactionObjectCreationList( INI *ini, void *instance, void *store, cons
 }  // end parseFactionObjectCreationList
 
 //-------------------------------------------------------------------------------------------------
-#endif
+#endif // ZH
 OCLUpdateModuleData::OCLUpdateModuleData()
 {
 	m_minDelay = 0;
@@ -85,11 +85,11 @@ OCLUpdateModuleData::OCLUpdateModuleData()
 	m_ocl = NULL;
 #ifdef ZH
 	m_factionOCL.clear();
-#endif
+#endif // ZH
 	m_isCreateAtEdge = FALSE;
 #ifdef ZH
 	m_isFactionTriggered = FALSE;
-#endif
+#endif // ZH
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -102,13 +102,13 @@ OCLUpdateModuleData::OCLUpdateModuleData()
 		{ "OCL",					INI::parseObjectCreationList,		NULL, offsetof( OCLUpdateModuleData, m_ocl ) },
 #ifdef ZH
 		{ "FactionOCL",		parseFactionObjectCreationList,	NULL, offsetof( OCLUpdateModuleData, m_factionOCL ) },
-#endif
+#endif // ZH
 		{ "MinDelay",			INI::parseDurationUnsignedInt,	NULL, offsetof( OCLUpdateModuleData, m_minDelay ) },
 		{ "MaxDelay",			INI::parseDurationUnsignedInt,	NULL, offsetof( OCLUpdateModuleData, m_maxDelay ) },
 		{ "CreateAtEdge",	INI::parseBool,									NULL, offsetof( OCLUpdateModuleData, m_isCreateAtEdge ) },
 #ifdef ZH
 		{ "FactionTriggered",	INI::parseBool,							NULL, offsetof( OCLUpdateModuleData, m_isFactionTriggered ) },
-#endif
+#endif // ZH
 		{ 0, 0, 0, 0 }
 	};
   p.add(dataFieldParse);
@@ -123,7 +123,7 @@ OCLUpdate::OCLUpdate( Thing *thing, const ModuleData* moduleData ) : UpdateModul
 #ifdef ZH
 	m_isFactionNeutral = TRUE;
 	m_currentPlayerColor = 0;
-#endif
+#endif // ZH
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -170,7 +170,7 @@ UpdateSleepTime OCLUpdate::update( void )
 			}
 			// If another player has taken control, reset the timer
 			else if( player && player->getPlayerColor() != m_currentPlayerColor)
-#endif
+#endif // ZH
 {
 #ifdef ZH
 				m_currentPlayerColor = player->getPlayerColor();
@@ -183,7 +183,7 @@ UpdateSleepTime OCLUpdate::update( void )
 			return UPDATE_SLEEP_NONE;
 	}
 
-#endif
+#endif // ZH
 /// @todo srj use SLEEPY_UPDATE here
 	if( shouldCreate() )
 	{
@@ -216,12 +216,12 @@ UpdateSleepTime OCLUpdate::update( void )
 
 			// Get and store the faction side to compare with the faction ocl list
 			if (playerT->getSide().str()) playerFactionName = playerT->getSide().str();
-#endif
+#endif // ZH
 
 #ifdef OG
 		ObjectCreationList::create( getOCLUpdateModuleData()->m_ocl, getObject(), &creationCoord, getObject()->getPosition() );
 
-#endif
+#endif // OG
 #ifdef ZH
 			// Loop through the list of faction ocls to find the matching faction that triggeres the specific ocls
 			for (OCLUpdateModuleData::FactionOCLList::const_iterator it = data->m_factionOCL.begin(); it != data->m_factionOCL.end(); ++it)
@@ -239,7 +239,7 @@ UpdateSleepTime OCLUpdate::update( void )
 		{
 			ObjectCreationList::create( data->m_ocl, getObject(), &creationCoord, getObject()->getPosition(), getObject()->getOrientation() );
 		}
-#endif
+#endif // ZH
 	}
 	return UPDATE_SLEEP_NONE;
 #ifdef ZH
@@ -249,7 +249,7 @@ UpdateSleepTime OCLUpdate::update( void )
 void OCLUpdate::resetTimer()
 {
 	setNextCreationFrame();
-#endif
+#endif // ZH
 }
 
 // ------------------------------------------------------------------------------------------------
@@ -261,10 +261,10 @@ Bool OCLUpdate::shouldCreate()
 
 #ifdef OG
 	if( BitTest( getObject()->getStatusBits(), OBJECT_STATUS_UNDER_CONSTRUCTION ) == TRUE )
-#endif
+#endif // OG
 #ifdef ZH
 	if( getObject()->getStatusBits().test( OBJECT_STATUS_UNDER_CONSTRUCTION ) )
-#endif
+#endif // ZH
 		return FALSE;// not built yet
 
 	return TRUE;
@@ -338,7 +338,7 @@ void OCLUpdate::xfer( Xfer *xfer )
 	
 	// current owning player color
 	xfer->xferInt( &m_currentPlayerColor );
-#endif
+#endif // ZH
 
 }  // end xfer
 

@@ -151,4 +151,4 @@ void TempWeaponBonusHelper::loadPostProcess( void )
 }  // end loadPostProcess
 
 
-#endif
+#endif // ZH

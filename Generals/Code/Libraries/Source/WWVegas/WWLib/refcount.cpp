@@ -156,10 +156,10 @@ bool RefCountClass::Validate_Active_Ref(RefCountClass * obj)
  *=============================================================================================*/
 #ifdef OG
 void	RefCountClass::Inc_Total_Refs(RefCountClass * obj)
-#endif
+#endif // OG
 #ifdef ZH
 void	RefCountClass::Inc_Total_Refs(const RefCountClass * obj)
-#endif
+#endif // ZH
 {
 #ifdef PARANOID_REFCOUNTS
 	assert(Validate_Active_Ref(obj));
@@ -175,10 +175,10 @@ RefCountClass* BreakOnReference = 0;
 #ifndef NDEBUG
 #ifdef OG
 void RefCountClass::Add_Ref(void)								
-#endif
+#endif // OG
 #ifdef ZH
 void RefCountClass::Add_Ref(void) const								
-#endif
+#endif // ZH
 { 
 	NumRefs++;  	  
 
@@ -204,10 +204,10 @@ void RefCountClass::Add_Ref(void) const
  *=============================================================================================*/
 #ifdef OG
 void	RefCountClass::Dec_Total_Refs(RefCountClass * obj)
-#endif
+#endif // OG
 #ifdef ZH
 void	RefCountClass::Dec_Total_Refs(const RefCountClass * obj)
-#endif
+#endif // ZH
 {
 #ifdef PARANOID_REFCOUNTS
 	assert(Validate_Active_Ref(obj));

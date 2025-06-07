@@ -50,7 +50,7 @@ const char *TheEvaMessageNames[] =
 	"SUPERWEAPONLAUNCHED_NUKE",
 	"SUPERWEAPONLAUNCHED_SCUDSTORM",
 
-#endif
+#endif // OG
 #ifdef ZH
 	"SUPERWEAPONDETECTED_OWN_PARTICLECANNON",
 	"SUPERWEAPONDETECTED_OWN_NUKE",
@@ -79,7 +79,7 @@ const char *TheEvaMessageNames[] =
   "SUPERWEAPONREADY_ENEMY_PARTICLECANNON",
   "SUPERWEAPONREADY_ENEMY_NUKE",
   "SUPERWEAPONREADY_ENEMY_SCUDSTORM",
-#endif
+#endif // ZH
 	"BUILDINGLOST",
 	"BASEUNDERATTACK",
 	"ALLYUNDERATTACK",
@@ -91,7 +91,7 @@ const char *TheEvaMessageNames[] =
   "OWNBLACKLOTUSDETECTED",
   "OWNJARMENKELLDETECTED",
   "OWNCOLONELBURTONDETECTED",
-#endif
+#endif // ZH
 	"UNITLOST",
 	"GENERALLEVELUP",
 	"VEHICLESTOLEN",
@@ -112,7 +112,7 @@ const char *TheEvaMessageNames[] =
 	//Kris: Don't forget to add another handler below -- it's ghey-ly implemented.
 	//****************************************************************************
 
-#endif
+#endif // ZH
 	"EVA_INVALID",
 };
 
@@ -176,7 +176,7 @@ const ShouldPlayFunc Eva::s_shouldPlayFuncs[] =
 	NULL,
 };
 
-#endif
+#endif // ZH
 //------------------------------------------------------------------------------ INI::parseEvaEvent
 void INI::parseEvaEvent( INI* ini )
 {
@@ -221,10 +221,10 @@ EvaCheckInfo::EvaCheckInfo() :
 	m_message(EVA_COUNT),
 #ifdef OG
 	m_priority(0), // lowest of all priorities
-#endif
+#endif // OG
 #ifdef ZH
 	m_priority(1), // lowest of all priorities
-#endif
+#endif // ZH
 	m_framesBetweenChecks(900),	// 30 seconds at 30 fps
 	m_framesToExpire(150) // 5 seconds at 30 fps
 {
@@ -270,7 +270,7 @@ const ShouldPlayFunc Eva::s_shouldPlayFuncs[] =
 };
 
 //-------------------------------------------------------------------------------------------------
-#endif
+#endif // OG
 EvaCheck::EvaCheck() : 
 	m_evaInfo(NULL), 
 	m_triggeredOnFrame(TRIGGEREDON_NOT),
@@ -374,7 +374,7 @@ EvaMessage Eva::nameToMessage(const AsciiString& name)
   DEBUG_ASSERTCRASH( stricmp( TheEvaMessageNames[ EVA_COUNT ], "EVA_INVALID" ) == 0, ("TheEvaMessageNames out of sync" ) );
   DEBUG_ASSERTCRASH( stricmp( TheEvaMessageNames[ EVA_COUNT - 1], "EVA_INVALID" ) != 0, ("TheEvaMessageNames out of sync" ) );
 
-#endif
+#endif // ZH
 	for (Int i = EVA_FIRST; i < EVA_COUNT; ++i) {
 		if (name.compareNoCase(TheEvaMessageNames[i]) == 0) {
 			return (EvaMessage) i;
@@ -384,10 +384,10 @@ EvaMessage Eva::nameToMessage(const AsciiString& name)
 	DEBUG_CRASH(("Invalid requested Eva message translation :%s: jkmcd", name.str()));
 #ifdef OG
 	return EVA_COUNT;
-#endif
+#endif // OG
 #ifdef ZH
 	return EVA_Invalid;
-#endif
+#endif // ZH
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -398,7 +398,7 @@ AsciiString Eva::messageToName(EvaMessage message)
   DEBUG_ASSERTCRASH( stricmp( TheEvaMessageNames[ EVA_COUNT ], "EVA_INVALID" ) == 0, ("TheEvaMessageNames out of sync" ) );
   DEBUG_ASSERTCRASH( stricmp( TheEvaMessageNames[ EVA_COUNT - 1], "EVA_INVALID" ) != 0, ("TheEvaMessageNames out of sync" ) );
 
-#endif
+#endif // ZH
 	if (message >= EVA_FIRST && message < EVA_COUNT)
 		return TheEvaMessageNames[message];
 
@@ -446,7 +446,7 @@ void Eva::setShouldPlay(EvaMessage messageToPlay)
 #ifdef ZH
   
   // DEBUG_LOG( ( "Eva message %s play requested\n", messageToName( messageToPlay).str() ) );
-#endif
+#endif // ZH
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -483,7 +483,7 @@ Bool Eva::messageShouldPlay(EvaMessage messageToTest, UnsignedInt currentFrame) 
   DEBUG_ASSERTCRASH( ELEMENTS_OF( s_shouldPlayFuncs ) == EVA_COUNT + 1, ("Eva::s_shouldPlayFuncs out of sync" ) );
   DEBUG_ASSERTCRASH( s_shouldPlayFuncs[ EVA_COUNT ] == NULL, ("Eva::s_shouldPlayFuncs out of sync" ) );
   DEBUG_ASSERTCRASH( s_shouldPlayFuncs[ EVA_COUNT - 1] != NULL, ("Eva::s_shouldPlayFuncs out of sync" ) );
-#endif
+#endif // ZH
 
 	m_messageBeingTested = messageToTest;
 	return s_shouldPlayFuncs[messageToTest](m_localPlayer);
@@ -587,7 +587,7 @@ void Eva::processPlayingMessages(UnsignedInt currentFrame)
 
   // clear it. If we can't find the side we want, don't play anything
   m_evaSpeech.setEventName(AsciiString::TheEmptyString);
-#endif
+#endif // ZH
 
 	for (Int i = 0; i < numSides; ++i) {
 		if (side.compareNoCase(storedIt->m_evaInfo->m_evaSideSounds[i].m_side) == 0) {
@@ -599,11 +599,11 @@ void Eva::processPlayingMessages(UnsignedInt currentFrame)
 			} else {
 				// clear it.
 				m_evaSpeech.setEventName(AsciiString::TheEmptyString);
-#endif
+#endif // OG
 			}
 #ifdef ZH
       break;
-#endif
+#endif // ZH
 		}
 	}
 
@@ -634,7 +634,7 @@ void Eva::processPlayingMessages(UnsignedInt currentFrame)
   }
 
   *((EvaMessage *)store) = message;
-#endif
+#endif // ZH
 }
 
 //-------------------------------------------------------------------------------------------------

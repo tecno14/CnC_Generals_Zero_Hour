@@ -19,10 +19,10 @@
 // stdafx.cpp : source file that includes just the standard includes
 #ifdef OG
 //	noxstring.pch will be the pre-compiled header
-#endif
+#endif // OG
 #ifdef ZH
 //	Babylon.pch will be the pre-compiled header
-#endif
+#endif // ZH
 //	stdafx.obj will contain the pre-compiled type information
 
 #include "stdafx.h"

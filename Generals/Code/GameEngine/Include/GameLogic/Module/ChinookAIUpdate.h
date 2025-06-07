@@ -48,7 +48,7 @@ public:
 	AsciiString		m_ropeName;
 #ifdef ZH
   AsciiString   m_rotorWashParticleSystem;
-#endif
+#endif // ZH
 	Real					m_rappelSpeed;
 	Real					m_ropeDropSpeed;
 	Real					m_ropeWidth;
@@ -64,7 +64,7 @@ public:
 	Bool					m_waitForRopesToDrop;
 #ifdef ZH
 	Int						m_upgradedSupplyBoost;
-#endif
+#endif // ZH
 
 	ChinookAIUpdateModuleData();
 	static void buildFieldParse(MultiIniFieldParse& p);
@@ -117,7 +117,7 @@ public:
 	
 	Int ChinookAIUpdate::getUpgradedSupplyBoost() const;
 
-#endif
+#endif // ZH
 protected:
 
 	virtual AIStateMachine* makeStateMachine();
@@ -134,7 +134,7 @@ protected:
   virtual void privateIdle(CommandSourceType cmdSource);
 
   void private___TellPortableStructureToAttackWithMe( Object *victim, Int maxShotsToFire, CommandSourceType cmdSource );
-#endif
+#endif // ZH
 
 private:
 
@@ -146,7 +146,7 @@ private:
 	ObjectID								m_airfieldForHealing;
 #ifdef ZH
 	Coord3D									m_originalPos;
-#endif
+#endif // ZH
 	Bool										m_hasPendingCommand;
 };
 

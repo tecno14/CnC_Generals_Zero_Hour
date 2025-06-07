@@ -49,7 +49,7 @@
 //#pragma MESSAGE("************************************** WARNING, optimization disabled for debugging purposes")
 #endif
 
-#endif
+#endif // ZH
 static const Int K_LOCAL_TEAMS_VERSION_1 = 1;
 
 #define SCRIPT_DIALOG_SECTION "ScriptDialog"
@@ -163,7 +163,7 @@ ScriptDialog::ScriptDialog(CWnd* pParent /*=NULL*/)
 	m_draggingTreeView = false;
 #ifdef ZH
 	m_autoUpdateWarnings = true;
-#endif
+#endif // ZH
 	//{{AFX_DATA_INIT(ScriptDialog)
 		// NOTE: the ClassWizard will add member initialization here
 	//}}AFX_DATA_INIT
@@ -197,7 +197,7 @@ BEGIN_MESSAGE_MAP(ScriptDialog, CDialog)
 	ON_BN_CLICKED(IDC_VERIFY, OnVerify)
 	ON_BN_CLICKED(IDC_PATCH_GC, OnPatchGC)
 	ON_BN_CLICKED(IDC_AUTO_VERIFY, OnAutoVerify)
-#endif
+#endif // ZH
 	ON_BN_CLICKED(IDC_SAVE, OnSave)
 	ON_BN_CLICKED(IDC_LOAD, OnLoad)
 	ON_NOTIFY(NM_DBLCLK, IDC_SCRIPT_TREE, OnDblclkScriptTree)
@@ -332,10 +332,10 @@ void ScriptDialog::updateScriptWarning(Script *pScript)
 				AsciiString warning;
 #ifdef OG
 				warning = EditParameter::getWarningText(pCondition->getParameter(i));
-#endif
+#endif // OG
 #ifdef ZH
 				warning = EditParameter::getWarningText(pCondition->getParameter(i), FALSE);
-#endif
+#endif // ZH
 				if (!warning.isEmpty()) {
 					pScript->setWarnings(true);
 					pCondition->setWarnings(true);
@@ -351,16 +351,16 @@ void ScriptDialog::updateScriptWarning(Script *pScript)
 			AsciiString warning;
 #ifdef OG
 			warning = EditParameter::getWarningText(pAction->getParameter(i));
-#endif
+#endif // OG
 #ifdef ZH
 			warning = EditParameter::getWarningText(pAction->getParameter(i), TRUE);
-#endif
+#endif // ZH
 			if (!warning.isEmpty()) {
 				pScript->setWarnings(true);
 				pAction->setWarnings(true);
 #ifdef ZH
 			}	
-#endif
+#endif // ZH
 			}	
 #ifdef ZH
 	}
@@ -376,7 +376,7 @@ void ScriptDialog::OnPatchGC()
 	{	
 
 	}*/
-#endif
+#endif // ZH
 		}
 #ifdef ZH
 
@@ -386,7 +386,7 @@ void ScriptDialog::OnVerify()
 {
 	updateWarnings(true);	//force an update of warnings
 	updateIcons(TVI_ROOT);
-#endif
+#endif // ZH
 	}
 #ifdef ZH
 
@@ -398,14 +398,14 @@ void ScriptDialog::OnAutoVerify()
 	//if user wants to check warnings manually, enable the verify button
 	CWnd *pWnd = GetDlgItem(IDC_VERIFY);
 	pWnd->EnableWindow(!m_autoUpdateWarnings);
-#endif
+#endif // ZH
 }
 
 /** Updates the warning flags in the scripts, script groups & script conditions & actions. */
 #ifdef OG
 void ScriptDialog::updateWarnings()
 
-#endif
+#endif // OG
 #ifdef ZH
 void ScriptDialog::updateWarnings(Bool forceUpdate)
 {
@@ -509,7 +509,7 @@ void ScriptDialog::patchScriptParametersForGC(Script *pScript)
 
 /*Checks all script parameters for obsolete values (example: mission disk using GC_ templates)*/
 void ScriptDialog::checkParametersForGC(void)
-#endif
+#endif // ZH
 {
 	SidesList *sidesListP = TheSidesList;
 	Int i;
@@ -524,7 +524,7 @@ void ScriptDialog::checkParametersForGC(void)
 			{	//check if this is using invalid GC parameters
 				patchScriptParametersForGC(pScr);
 			}
-#endif
+#endif // ZH
 		}
 		ScriptGroup *pGroup;
 		for (pGroup = pSL->getScriptGroup(); pGroup; pGroup=pGroup->getNext()) {
@@ -536,7 +536,7 @@ void ScriptDialog::checkParametersForGC(void)
 					//check if this is using invalid GC parameters.
 					patchScriptParametersForGC(pScr);
 					if (pScr->hasWarnings())	//patching may have removed warning
-#endif
+#endif // ZH
 					pGroup->setWarnings(true);
 				}
 			}
@@ -558,7 +558,7 @@ BOOL ScriptDialog::OnInitDialog()
 	CWnd *pWnd = GetDlgItem(IDC_VERIFY);
 	pWnd->EnableWindow(!m_autoUpdateWarnings);
 
-#endif
+#endif // ZH
 	m_staticThis = this;
 	CTreeCtrl *pTree = (CTreeCtrl*)GetDlgItem(IDC_SCRIPT_TREE);
 
@@ -583,10 +583,10 @@ BOOL ScriptDialog::OnInitDialog()
 	Int i;
 #ifdef OG
 	updateWarnings();
-#endif
+#endif // OG
 #ifdef ZH
 	updateWarnings(true);
-#endif
+#endif // ZH
 	if (pTree) {
 		m_imageList.Create(IDB_FOLDERSCRIPT, 16, 2, ILC_COLOR4);
 		pTree->SetImageList(&m_imageList, TVSIL_STATE);
@@ -1304,7 +1304,7 @@ void ScriptDialog::scanForWaypointsAndTeams(Script *pScript, Bool doUnits, Bool 
 #define K_PLAYERS_NAMES_FOR_SCRIPTS_VERSION_1 1
 #ifdef ZH
 #define K_PLAYERS_NAMES_FOR_SCRIPTS_VERSION_2 2
-#endif
+#endif // ZH
 
 /** Write out selected scripts, and possibly waypoints, trigger areas & teams. */
 void ScriptDialog::OnSave() 
@@ -1315,7 +1315,7 @@ void ScriptDialog::OnSave()
 	Bool doAllScripts = true;
 #ifdef ZH
 	Bool doSides = true;
-#endif
+#endif // ZH
 	Int	 i;
 
 	ExportScriptsOptions optionsDlg;
@@ -1328,7 +1328,7 @@ void ScriptDialog::OnSave()
 	doAllScripts = optionsDlg.getDoAllScripts();
 #ifdef ZH
 	doSides = optionsDlg.getDoSides();
-#endif
+#endif // ZH
 
 	Script *pScript = getCurScript();
 	ScriptGroup *pGroup = getCurGroup();
@@ -1431,12 +1431,12 @@ void ScriptDialog::OnSave()
 		chunkWriter.openDataChunk("ScriptsPlayers", 	K_PLAYERS_NAMES_FOR_SCRIPTS_VERSION_1);
 		if (doAllScripts) {
 
-#endif
+#endif // OG
 #ifdef ZH
 		chunkWriter.openDataChunk("ScriptsPlayers", 	K_PLAYERS_NAMES_FOR_SCRIPTS_VERSION_2);
 		chunkWriter.writeInt(doSides);
 		if (doAllScripts || doSides) {
-#endif
+#endif // ZH
 			chunkWriter.writeInt(m_sides.getNumSides());
 			for (i=0; i<m_sides.getNumSides(); i++) {
 				AsciiString name = m_sides.getSideInfo(i)->getDict()->getAsciiString(TheKey_playerName);
@@ -1448,7 +1448,7 @@ void ScriptDialog::OnSave()
 					chunkWriter.writeDict(*m_sides.getSideInfo(i)->getDict());
 				}
 
-#endif
+#endif // ZH
 			}
 		} else  {
 			chunkWriter.writeInt(1);
@@ -1649,7 +1649,7 @@ void ScriptDialog::OnLoad()
 				for (j=0; j<m_sides.getNumSides(); j++) {
 #ifdef ZH
 					// Using i as an index assumes that i < m_sides.getNumSides.  Is that safe???
-#endif
+#endif // ZH
  					AsciiString name = m_sides.getSideInfo(i)->getDict()->getAsciiString(TheKey_playerName);
 					if (name == m_readPlayerNames[j]) {
 						curSide = j;
@@ -1672,7 +1672,7 @@ void ScriptDialog::OnLoad()
 
 #ifdef ZH
 			if (pSL) {
-#endif
+#endif // ZH
 			Script *pScr;
 			Script *pNextScr;
 			Int j=0;
@@ -1698,12 +1698,12 @@ void ScriptDialog::OnLoad()
 			if (pSL) {
 				reloadPlayer(curSide, pSL);
 
-#endif
+#endif // OG
 #ifdef ZH
 				//reloadPlayer(curSide, pSL);
 			}
 
-#endif
+#endif // ZH
 			}
 #ifdef ZH
 
@@ -1712,7 +1712,7 @@ void ScriptDialog::OnLoad()
 			ScriptList *pSL = m_sides.getSideInfo(i)->getScriptList();
 			reloadPlayer(i, pSL);
 			updateIcons(TVI_ROOT);
-#endif
+#endif // ZH
 		}
 
 	} catch(...) {
@@ -1862,25 +1862,25 @@ Bool ScriptDialog::ParseTeamsDataChunk(DataChunkInput &file, DataChunkInfo *info
 			CFixTeamOwnerDialog fix(&ti, &pThis->m_sides);
 #ifdef ZH
 			bool nameSet = false;
-#endif
+#endif // ZH
 			if (fix.DoModal() == IDOK) {
 				if (fix.pickedValidTeam()) {
 					teamDict.setAsciiString(TheKey_teamOwner, fix.getSelectedOwner());
 #ifdef ZH
 					nameSet = true;
-#endif
+#endif // ZH
 				}
 			}
 						
 #ifdef ZH
 			if (nameSet == false) {
-#endif
+#endif // ZH
 			AsciiString neutralPlayerName; // neutral player name is empty string
 			// player doesn't exist, so add it to the neutral player.
 			teamDict.setAsciiString(TheKey_teamOwner, neutralPlayerName);
 #ifdef ZH
 			}
-#endif
+#endif // ZH
 			pThis->m_sides.addTeam(&teamDict);
 		}
 	}
@@ -1902,7 +1902,7 @@ Bool ScriptDialog::ParsePlayersDataChunk(DataChunkInput &file, DataChunkInfo *in
 	if (info->version >= K_PLAYERS_NAMES_FOR_SCRIPTS_VERSION_2) {
 		readDicts = file.readInt();
 	}
-#endif
+#endif // ZH
 	Int numNames = file.readInt();
 	Int i;
 	for (i=0; i<numNames; i++) {
@@ -1932,7 +1932,7 @@ Bool ScriptDialog::ParsePlayersDataChunk(DataChunkInput &file, DataChunkInfo *in
 				pThis->addPlayer(i);
 			}
 		}
-#endif
+#endif // ZH
 	}
 	DEBUG_ASSERTCRASH(file.atEndOfChunk(), ("Unexpected data left over."));
 	return true;

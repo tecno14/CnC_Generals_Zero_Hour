@@ -49,10 +49,10 @@ public:
 	PerGeneralMap losses;
 #ifdef OG
 	PerGeneralMap games;
-#endif
+#endif // OG
 #ifdef ZH
 	PerGeneralMap games;              //first: playerTemplate #,  second: #games played (see also gamesAsRandom)
-#endif
+#endif // ZH
 	PerGeneralMap duration;
 	PerGeneralMap unitsKilled;
 	PerGeneralMap unitsLost;

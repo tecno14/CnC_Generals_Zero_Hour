@@ -121,7 +121,7 @@ public:
 			Bool allowObservers;
 #ifdef ZH
       Bool useStats;
-#endif
+#endif // ZH
 			UnsignedShort ladPort;
 			UnsignedInt ladPassCRC;
 			Bool restrictGameList;
@@ -337,7 +337,7 @@ public:
 			Bool allowObservers;
 #ifdef ZH
       Bool useStats;
-#endif
+#endif // ZH
 			UnsignedInt version;
 			UnsignedInt exeCRC;
 			UnsignedInt iniCRC;

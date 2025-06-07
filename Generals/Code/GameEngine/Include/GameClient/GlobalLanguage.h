@@ -83,7 +83,7 @@ public:
 	Int m_militaryCaptionSpeed;
 #ifdef ZH
 	Int m_militaryCaptionDelayMS;
-#endif
+#endif // ZH
 	FontDesc	m_copyrightFont;
 	FontDesc	m_messageFont;
 	FontDesc	m_militaryCaptionTitleFont;

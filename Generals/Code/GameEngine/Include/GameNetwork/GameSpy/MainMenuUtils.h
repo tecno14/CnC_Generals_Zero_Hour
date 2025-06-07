@@ -56,14 +56,14 @@ struct OverallStats
 	Int losses[STATS_MAX];
 };
 
-#endif
+#endif // OG
 void CheckOverallStats( void );
 #ifdef OG
 void HandleOverallStats( const OverallStats& USA, const OverallStats& China, const OverallStats& GLA );
-#endif
+#endif // OG
 #ifdef ZH
 void HandleOverallStats( const char* szHTTPStats, unsigned len );
-#endif
+#endif // ZH
 
 void CheckNumPlayersOnline( void );
 void HandleNumPlayersOnline( Int numPlayersOnline );

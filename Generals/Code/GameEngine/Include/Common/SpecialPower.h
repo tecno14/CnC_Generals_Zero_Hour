@@ -49,7 +49,7 @@ enum ScienceType;
 struct FieldParse;
 #ifdef ZH
 enum AcademyClassificationType;
-#endif
+#endif // ZH
 
 // For SpecialPowerType and SpecialPowerMaskType::s_bitNameList. Part of detangling.
 #include "Common/SpecialPowerType.h"
@@ -129,7 +129,7 @@ public:
 #ifdef ZH
 	Bool isShortcutPower() const { return getFO()->m_shortcutPower; }
 	AcademyClassificationType getAcademyClassificationType() const { return m_academyClassificationType; }
-#endif
+#endif // ZH
 
 private: 
 
@@ -144,7 +144,7 @@ private:
 	AudioEventRTS			m_initiateAtLocationSound;		///< sound to play at target location (if any)
 #ifdef ZH
 	AcademyClassificationType m_academyClassificationType; ///< A value used by the academy to evaluate advice based on what players do.
-#endif
+#endif // ZH
 	UnsignedInt				m_detectionTime;			///< (frames) after using infiltration power (defection, etc.), 
 																					///< how long it takes for ex comrades to realize it on their own
 	UnsignedInt				m_viewObjectDuration;	///< Lifetime of a looking object we slap down so you can watch the effect
@@ -154,7 +154,7 @@ private:
 	Bool							m_sharedNSync;				///< If true, this is a special that is shared between all of a player's command centers
 #ifdef ZH
 	Bool							m_shortcutPower;		///< Is this shortcut power capable of being fired by the side panel?
-#endif
+#endif // ZH
 
 	static const FieldParse m_specialPowerFieldParse[];		///< the parse table
 

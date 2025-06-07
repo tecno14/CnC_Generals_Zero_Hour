@@ -85,15 +85,15 @@ public:
 	virtual Bool isGarrisonable() const { return false; }	///< can this unit be Garrisoned? (ick)
 #ifdef ZH
 	virtual Bool isBustable() const { return TRUE; }	///< can this container get busted by a bunkerbuster
-#endif
+#endif // ZH
 	virtual Bool isHealContain() const { return false; } ///< true when container only contains units while healing (not a transport!)
 
 #ifdef OG
 	virtual void onContaining( Object *obj );		///< object now contains 'obj'
-#endif
+#endif // OG
 #ifdef ZH
 	virtual void onContaining( Object *obj, Bool wasSelected );		///< object now contains 'obj'
-#endif
+#endif // ZH
 	virtual void onRemoving( Object *obj );			///< object no longer contains 'obj'
 
 	virtual Bool isValidContainerFor(const Object* obj, Bool checkCapacity) const;

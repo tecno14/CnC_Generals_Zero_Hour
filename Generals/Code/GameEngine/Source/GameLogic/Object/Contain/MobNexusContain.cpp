@@ -199,17 +199,17 @@ Bool MobNexusContain::isValidContainerFor(const Object* rider, Bool checkCapacit
 //-------------------------------------------------------------------------------------------------
 #ifdef OG
 void MobNexusContain::onContaining( Object *rider )
-#endif
+#endif // OG
 #ifdef ZH
 void MobNexusContain::onContaining( Object *rider, Bool wasSelected )
-#endif
+#endif // ZH
 {
 #ifdef OG
 	OpenContain::onContaining(rider);
-#endif
+#endif // OG
 #ifdef ZH
 	OpenContain::onContaining( rider, wasSelected );
-#endif
+#endif // ZH
 
 	// objects inside a MobNexus are held
 	rider->setDisabled( DISABLED_HELD );
@@ -455,11 +455,11 @@ Bool MobNexusContain::tryToEvacuate( Bool exposeStealthedUnits )
 #ifdef OG
 				static NameKeyType key_StealthUpdate = NAMEKEY( "StealthUpdate" );
 				StealthUpdate* stealth = (StealthUpdate*)obj->findUpdateModule( key_StealthUpdate );
-#endif
+#endif // OG
 #ifdef ZH
 				StealthUpdate* stealth = obj->getStealth();
 
-#endif
+#endif // ZH
 				if( stealth )
 				{
 					stealth->markAsDetected();

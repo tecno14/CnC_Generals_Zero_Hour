@@ -122,4 +122,4 @@ inline float CRandom::Get_Float( float min, float max )
 extern	CRandom	FreeRandom;
 
 #endif
-#endif
+#endif // ZH

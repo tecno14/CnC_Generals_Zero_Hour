@@ -68,7 +68,7 @@ protected:
 	Int				m_curEditParameter;
 #ifdef ZH
 	CTreeCtrl	m_actionTreeView;
-#endif
+#endif // ZH
 
 protected:
 

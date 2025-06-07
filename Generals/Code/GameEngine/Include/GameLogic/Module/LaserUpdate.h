@@ -50,14 +50,14 @@ public:
 #ifdef OG
 	AsciiString m_parentFireBoneName;  ///< Used to fire laser at specified parent bone position.
 	Bool m_parentFireBoneOnTurret;			///< And used to specifiy where to look for the bone.
-#endif
+#endif // OG
 
 	AsciiString m_targetParticleSystemName;  ///< Used for the target effect while laser active.
 
 #ifdef ZH
 	Real m_punchThroughScalar;	///< If non-zero, length modifier when we used to have a target object and now don't
 
-#endif
+#endif // ZH
 	LaserUpdateModuleData();
 	static void buildFieldParse(MultiIniFieldParse& p);
 
@@ -83,10 +83,10 @@ public:
 	//Actually puts the laser in the world.
 #ifdef OG
 	void initLaser( const Object *parent, const Coord3D *startPos, const Coord3D *endPos, Int sizeDeltaFrames = 0 );
-#endif
+#endif // OG
 #ifdef ZH
 	void initLaser( const Object *parent, const Object *target, const Coord3D *startPos, const Coord3D *endPos, AsciiString parentBoneName, Int sizeDeltaFrames = 0 );
-#endif
+#endif // ZH
 	void setDecayFrames( UnsignedInt decayFrames );
 
 	const Coord3D* getStartPos() { return &m_startPos; }
@@ -106,7 +106,7 @@ protected:
 
 	void updateStartPos(); ///< figures out and sets startPos
 	void updateEndPos(); ///< figures out and sets endPos
-#endif
+#endif // ZH
 
 	//If the master dies, so will this laser (although if it has a fade delay, it'll just skip to the fade)
 	Coord3D m_startPos;
@@ -116,7 +116,7 @@ protected:
 	DrawableID m_parentID;
 	DrawableID m_targetID;
 
-#endif
+#endif // ZH
 	Bool m_dirty;
 	ParticleSystemID m_particleSystemID;
 	ParticleSystemID m_targetParticleSystemID;
@@ -129,7 +129,7 @@ protected:
 	UnsignedInt m_decayFinishFrame;
 #ifdef ZH
 	AsciiString m_parentBoneName;
-#endif
+#endif // ZH
 };
 
 

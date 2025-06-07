@@ -26,24 +26,24 @@
  *                                                                                             * 
 #ifdef OG
  *                      $Author:: Byon_g                                                      $*
-#endif
+#endif // OG
 #ifdef ZH
  *                      $Author:: Ian_l                                                       $*
-#endif
+#endif // ZH
  *                                                                                             * 
 #ifdef OG
  *                     $Modtime:: 5/02/00 11:09a                                              $*
-#endif
+#endif // OG
 #ifdef ZH
  *                     $Modtime:: 10/31/01 3:33p                                              $*
-#endif
+#endif // ZH
  *                                                                                             * 
 #ifdef OG
  *                    $Revision:: 2                                                           $*
-#endif
+#endif // OG
 #ifdef ZH
  *                    $Revision:: 3                                                           $*
-#endif
+#endif // ZH
  *                                                                                             *
  *---------------------------------------------------------------------------------------------* 
  * Functions:                                                                                  * 
@@ -88,12 +88,12 @@ class BufferedFileClass : public RawFileClass
 #ifdef ZH
 		static	void		Set_Desired_Buffer_Size( int size ) { _DesiredBufferSize = size; }
 
-#endif
+#endif // ZH
 		void					Reset_Buffer( void );
 #ifdef OG
 
 		static	void		Set_Desired_Buffer_Size( int size ) { _DesiredBufferSize = size; }
-#endif
+#endif // OG
 
 	private:
 		unsigned char *	Buffer;				// The read buffer 

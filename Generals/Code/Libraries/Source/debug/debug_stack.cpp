@@ -391,4 +391,4 @@ int DebugStackwalk::StackWalk(Signature &sig, struct _CONTEXT *ctx)
 	return sig.m_numAddr;
 }
 
-#endif
+#endif // ZH

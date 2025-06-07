@@ -199,7 +199,7 @@ Bool FileSystem::doesFileExist(const Char *filename) const
 #ifdef OG
 	if (TheLocalFileSystem->doesFileExist(filename)) {
 
-#endif
+#endif // OG
 #ifdef ZH
 
   unsigned key=TheNameKeyGenerator->nameToLowercaseKey(filename);
@@ -210,24 +210,24 @@ Bool FileSystem::doesFileExist(const Char *filename) const
 	if (TheLocalFileSystem->doesFileExist(filename)) 
   {
     m_fileExist[key]=true;
-#endif
+#endif // ZH
 		return TRUE;
 	}
 #ifdef OG
 	if (TheArchiveFileSystem->doesFileExist(filename)) {
 
-#endif
+#endif // OG
 #ifdef ZH
 	if (TheArchiveFileSystem->doesFileExist(filename)) 
   {
     m_fileExist[key]=true;
-#endif
+#endif // ZH
 		return TRUE;
 	}
 #ifdef ZH
 
   m_fileExist[key]=false;
-#endif
+#endif // ZH
 	return FALSE;
 }
 
@@ -284,7 +284,7 @@ Bool FileSystem::areMusicFilesOnCD()
 #if 1
 	return TRUE;
 #else
-#endif
+#endif // OG
 	if (!TheCDManager) {
 		DEBUG_LOG(("FileSystem::areMusicFilesOnCD() - No CD Manager; returning false\n"));
 		return FALSE;
@@ -304,10 +304,10 @@ Bool FileSystem::areMusicFilesOnCD()
 			cdRoot.concat("\\");
 #ifdef OG
 		cdRoot.concat("gensec.big");
-#endif
+#endif // OG
 #ifdef ZH
 		cdRoot.concat("genseczh.big");
-#endif
+#endif // ZH
 		DEBUG_LOG(("FileSystem::areMusicFilesOnCD() - checking for %s\n", cdRoot.str()));
 		File *musicBig = TheLocalFileSystem->openFile(cdRoot.str());
 		if (musicBig)
@@ -320,7 +320,7 @@ Bool FileSystem::areMusicFilesOnCD()
 	return FALSE;
 #ifdef OG
 #endif
-#endif
+#endif // OG
 }
 //============================================================================
 // FileSystem::loadMusicFilesFromCD

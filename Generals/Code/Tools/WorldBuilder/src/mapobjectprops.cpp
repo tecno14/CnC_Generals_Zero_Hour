@@ -33,7 +33,7 @@
 #include "Common/WellKnownKeys.h"
 #ifdef ZH
 #include "Common/AudioEventInfo.h"
-#endif
+#endif // ZH
 
 #include "GameLogic/Module/UpgradeModule.h"
 #include "GameLogic/Module/GenerateMinefieldBehavior.h"
@@ -47,7 +47,7 @@ const char* NEUTRAL_TEAM_INTERNAL_STR = "team";
 //#pragma optimize("", off)
 //#pragma MESSAGE("************************************** WARNING, optimization disabled for debugging purposes")
 #endif
-#endif
+#endif // ZH
 
 
 /////////////////////////////////////////////////////////////////////////////
@@ -69,7 +69,7 @@ MapObjectProps::MapObjectProps(Dict* dictToEdit, const char* title, CWnd* pParen
 #ifdef OG
 	m_selectedObject(NULL)
 
-#endif
+#endif // OG
 #ifdef ZH
 	m_selectedObject(NULL),
   m_dictSource(NULL),
@@ -79,7 +79,7 @@ MapObjectProps::MapObjectProps(Dict* dictToEdit, const char* title, CWnd* pParen
   m_angle( 0 ),
   m_defaultEntryIndex(0), 
   m_defaultIsNone(true)
-#endif
+#endif // ZH
 {
 	//{{AFX_DATA_INIT(MapObjectProps)
 		// NOTE: the ClassWizard will add member initialization here
@@ -95,7 +95,7 @@ MapObjectProps::~MapObjectProps()
   if ( m_posUndoable != NULL )
   {
     REF_PTR_RELEASE( m_posUndoable );
-#endif
+#endif // ZH
 }
 
 #ifdef ZH
@@ -103,7 +103,7 @@ MapObjectProps::~MapObjectProps()
     DestroyWindow();
 }
 
-#endif
+#endif // ZH
 void MapObjectProps::DoDataExchange(CDataExchange* pDX)
 {
 	CDialog::DoDataExchange(pDX);
@@ -117,10 +117,10 @@ BEGIN_MESSAGE_MAP(MapObjectProps, CDialog)
 	//{{AFX_MSG_MAP(MapObjectProps)
 #ifdef OG
 	ON_LBN_SELCHANGE(IDC_PROPERTIES, OnSelchangeProperties)
-#endif
+#endif // OG
 #ifdef ZH
 	ON_BN_CLICKED(IDC_CUSTOMIZE_CHECKBOX, customizeToDict)
-#endif
+#endif // ZH
 	ON_BN_CLICKED(IDC_EDITPROP, OnEditprop)
 #ifdef ZH
 	ON_BN_CLICKED(IDC_ENABLED_CHECKBOX, enabledToDict)
@@ -132,7 +132,7 @@ BEGIN_MESSAGE_MAP(MapObjectProps, CDialog)
 	ON_BN_CLICKED(IDC_MAPOBJECT_Selectable, _SelectableToDict)
 	ON_BN_CLICKED(IDC_MAPOBJECT_Targetable, _TargetableToDict)
 	ON_BN_CLICKED(IDC_MAPOBJECT_Unsellable, _UnsellableToDict)
-#endif
+#endif // ZH
 	ON_BN_CLICKED(IDC_NEWPROP, OnNewprop)
 	ON_BN_CLICKED(IDC_REMOVEPROP, OnRemoveprop)
 #ifdef OG
@@ -141,19 +141,19 @@ BEGIN_MESSAGE_MAP(MapObjectProps, CDialog)
 	ON_EN_KILLFOCUS(IDC_MAPOBJECT_Name, _NameToDict)
 	ON_CBN_SELCHANGE(IDC_MAPOBJECT_StartingHealth, _HealthToDict)
 	ON_CBN_SELENDOK(IDC_MAPOBJECT_HitPoints, _HPsToDict)
-#endif
+#endif // OG
 #ifdef ZH
 	ON_BN_CLICKED(IDC_SCALE_OFF, OnScaleOff)
 	ON_BN_CLICKED(IDC_SCALE_ON, OnScaleOn)
 
-#endif
+#endif // ZH
 	ON_CBN_KILLFOCUS(IDC_MAPOBJECT_HitPoints, _HPsToDict)
 #ifdef OG
 	ON_BN_CLICKED(IDC_MAPOBJECT_Enabled, _EnabledToDict)
-#endif
+#endif // OG
 #ifdef ZH
 	ON_CBN_SELCHANGE(IDC_MAPOBJECT_Aggressiveness, _AggressivenessToDict)
-#endif
+#endif // ZH
 	ON_CBN_SELCHANGE(IDC_MAPOBJECT_Script, _ScriptToDict)
 #ifdef OG
 	ON_BN_CLICKED(IDC_MAPOBJECT_Indestructible, _IndestructibleToDict)
@@ -163,42 +163,42 @@ BEGIN_MESSAGE_MAP(MapObjectProps, CDialog)
 	ON_CBN_SELCHANGE(IDC_MAPOBJECT_Aggressiveness, _AggressivenessToDict)
 	ON_EN_KILLFOCUS(IDC_MAPOBJECT_VisionDistance, _VisibilityToDict)
 	ON_EN_KILLFOCUS(IDC_MAPOBJECT_ShroudClearingDistance, _ShroudClearingDistanceToDict)
-#endif
+#endif // OG
 #ifdef ZH
 	ON_CBN_SELCHANGE(IDC_MAPOBJECT_StartingHealth, _HealthToDict)
 	ON_CBN_SELCHANGE(IDC_MAPOBJECT_Team, _TeamToDict)
 	ON_CBN_SELCHANGE(IDC_MAPOBJECT_Time, _TimeToDict)
 
-#endif
+#endif // ZH
 	ON_CBN_SELCHANGE(IDC_MAPOBJECT_Veterancy, _VeterancyToDict)
 #ifdef OG
  	ON_BN_CLICKED(IDC_MAPOBJECT_RecruitableAI, _RecruitableAIToDict)
 	ON_BN_CLICKED(IDC_MAPOBJECT_Selectable, _SelectableToDict)
-#endif
+#endif // OG
 	ON_CBN_SELCHANGE(IDC_MAPOBJECT_Weather, _WeatherToDict)
 #ifdef OG
 	ON_CBN_SELCHANGE(IDC_MAPOBJECT_Time, _TimeToDict)
 	ON_EN_KILLFOCUS(IDC_MAPOBJECT_ZOffset, SetZOffset)
 
-#endif
+#endif // OG
 #ifdef ZH
 	ON_CBN_SELCHANGE(IDC_PRIORITY_COMBO, priorityToDict)
 	ON_CBN_SELCHANGE(IDC_SOUND_COMBO, attachedSoundToDict)
 	ON_CBN_SELENDOK(IDC_MAPOBJECT_HitPoints, _HPsToDict)
 	ON_EN_KILLFOCUS(IDC_LOOPCOUNT_EDIT, loopCountToDict)
-#endif
+#endif // ZH
 	ON_EN_KILLFOCUS(IDC_MAPOBJECT_Angle, SetAngle)
 #ifdef ZH
 	ON_EN_KILLFOCUS(IDC_MAPOBJECT_Name, _NameToDict)
 	ON_EN_KILLFOCUS(IDC_MAPOBJECT_Scale, _ScaleToDict)
 	ON_EN_KILLFOCUS(IDC_MAPOBJECT_ShroudClearingDistance, _ShroudClearingDistanceToDict)
 	ON_EN_KILLFOCUS(IDC_MAPOBJECT_StartingHealthEdit, _HealthToDict)
-#endif
+#endif // ZH
 	ON_EN_KILLFOCUS(IDC_MAPOBJECT_StoppingDistance, _StoppingDistanceToDict)
 #ifdef OG
 	ON_EN_KILLFOCUS(IDC_MAPOBJECT_StartingHealthEdit, _HealthToDict)
 
-#endif
+#endif // OG
 #ifdef ZH
 	ON_EN_KILLFOCUS(IDC_MAPOBJECT_VisionDistance, _VisibilityToDict)
 	ON_EN_KILLFOCUS(IDC_MAPOBJECT_XYPosition, OnKillfocusMAPOBJECTXYPosition)
@@ -208,18 +208,18 @@ BEGIN_MESSAGE_MAP(MapObjectProps, CDialog)
 	ON_EN_KILLFOCUS(IDC_MIN_VOLUME_EDIT, minVolumeToDict)
 	ON_EN_KILLFOCUS(IDC_VOLUME_EDIT, volumeToDict)
 	ON_LBN_DBLCLK(IDC_PROPERTIES, OnDblclkProperties)
-#endif
+#endif // ZH
 	ON_LBN_SELCHANGE(IDC_MAPOBJECT_BuildWithUpgrades, _PrebuiltUpgradesToDict)
 #ifdef ZH
 	ON_LBN_SELCHANGE(IDC_PROPERTIES, OnSelchangeProperties)
-#endif
+#endif // ZH
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
 #ifdef OG
 /////////////////////////////////////////////////////////////////////////////
 // MapObjectProps message handlers
-#endif
+#endif // OG
 
 static AsciiString getNthKeyStr(const Dict* d, int i)
 {
@@ -267,7 +267,7 @@ int MapObjectProps::getSel()
 #ifdef OG
 void MapObjectProps::enableButtons()
 
-#endif
+#endif // OG
 #ifdef ZH
 /// Move data from object to dialog controls
 void MapObjectProps::_DictToTeam(void)
@@ -287,12 +287,12 @@ void MapObjectProps::_DictToTeam(void)
   // re-find, since the list is sorted
   i = -1;
   if (m_dictToEdit)
-#endif
+#endif // ZH
 {
 #ifdef OG
 	// do nothing
 
-#endif
+#endif // OG
 #ifdef ZH
     name = m_dictToEdit->getAsciiString(TheKey_originalOwner);
     if (name == NEUTRAL_TEAM_INTERNAL_STR)
@@ -302,13 +302,13 @@ void MapObjectProps::_DictToTeam(void)
 
   }
   owner->SetCurSel(i);
-#endif
+#endif // ZH
 }
 
 #ifdef OG
 void MapObjectProps::OnSelchangeProperties() 
 
-#endif
+#endif // OG
 #ifdef ZH
 /// Move data from object to dialog controls
 void MapObjectProps::_DictToName(void)
@@ -316,39 +316,39 @@ void MapObjectProps::_DictToName(void)
   AsciiString name = "";
   Bool exists;
   if (m_dictToEdit)
-#endif
+#endif // ZH
 {
 #ifdef ZH
     name = m_dictToEdit->getAsciiString(TheKey_objectName, &exists);
   }
-#endif
+#endif // ZH
 	
 #ifdef ZH
   CWnd* pItem = GetDlgItem(IDC_MAPOBJECT_Name);
   if (pItem) 
   {
     pItem->SetWindowText(name.str());
-#endif
+#endif // ZH
 }
 #ifdef ZH
 }
-#endif
+#endif // ZH
 
 #ifdef OG
 BOOL MapObjectProps::OnInitDialog() 
 
-#endif
+#endif // OG
 #ifdef ZH
 /// Move data from object to dialog controls
 void MapObjectProps::_DictToScript(void)
 {
   if (!m_dictToEdit) 
-#endif
+#endif // ZH
 {
 #ifdef OG
 	CDialog::OnInitDialog();
 
-#endif
+#endif // OG
 #ifdef ZH
     return;
   }
@@ -359,13 +359,13 @@ void MapObjectProps::_DictToScript(void)
   EditParameter::loadScripts(pCombo, true);
   /*Int stringNdx =*/ pCombo->AddString("<none>");
   AsciiString script = m_dictToEdit->getAsciiString(TheKey_objectScriptAttachment, &exists);
-#endif
+#endif // ZH
 	
 #ifdef OG
 	if (m_title)
 		SetWindowText(m_title);
 
-#endif
+#endif // OG
 #ifdef ZH
   if (script.isEmpty()) {
     pCombo->SelectString(-1, "<none>");
@@ -373,7 +373,7 @@ void MapObjectProps::_DictToScript(void)
     pCombo->SelectString(-1, script.str());
   }
 }
-#endif
+#endif // ZH
 
 #ifdef OG
 	m_heightSlider.SetupPopSliderButton(this, IDC_HEIGHT_POPUP, this);
@@ -381,32 +381,32 @@ void MapObjectProps::_DictToScript(void)
 	m_posUndoable = NULL;
 	m_angle = 0;
 	m_height = 0;
-#endif
+#endif // OG
 #ifdef ZH
 /// Move data from dialog controls to object
 void MapObjectProps::_TeamToDict(void)
 {
   getAllSelectedDicts();
 
-#endif
+#endif // ZH
 
 #ifdef OG
 	updateTheUI();
 
-#endif
+#endif // OG
 #ifdef ZH
   CComboBox *owner = (CComboBox*)GetDlgItem(IDC_MAPOBJECT_Team);
   static char buf[1024];
   owner->GetWindowText(buf, sizeof(buf)-2);
   if (strcmp(buf, NEUTRAL_TEAM_UI_STR)==0)
     strcpy(buf, NEUTRAL_TEAM_INTERNAL_STR);
-#endif
+#endif // ZH
 
 #ifdef OG
 	return TRUE;  // return TRUE unless you set the focus to a control
 	              // EXCEPTION: OCX Property Pages should return FALSE
 
-#endif
+#endif // OG
 #ifdef ZH
   CWorldBuilderDoc* pDoc = CWorldBuilderDoc::GetActiveDoc();
   if ( pDoc )
@@ -418,22 +418,22 @@ void MapObjectProps::_TeamToDict(void)
     REF_PTR_RELEASE(pUndo); // belongs to pDoc now.
     // Update is called by Do
   }
-#endif
+#endif // ZH
 }
 
 #ifdef OG
 /*static*/ void MapObjectProps::update(void) 
 
-#endif
+#endif // OG
 #ifdef ZH
 /// Move data from dialog controls to object
 void MapObjectProps::_NameToDict(void)
-#endif
+#endif // ZH
 {
 #ifdef OG
 	if (TheMapObjectProps) 
 
-#endif
+#endif // OG
 #ifdef ZH
   getAllSelectedDicts();
   
@@ -445,12 +445,12 @@ void MapObjectProps::_NameToDict(void)
   // calls, since there can't be an object to affect.
   CWorldBuilderDoc* pDoc = CWorldBuilderDoc::GetActiveDoc();
   if ( pDoc )
-#endif
+#endif // ZH
 	{
 #ifdef OG
 		TheMapObjectProps->updateTheUI();
 
-#endif
+#endif // OG
 #ifdef ZH
     Dict newDict;
     newDict.setAsciiString(TheKey_objectName, cstr.GetBuffer(0));
@@ -458,14 +458,14 @@ void MapObjectProps::_NameToDict(void)
     pDoc->AddAndDoUndoable(pUndo);
     REF_PTR_RELEASE(pUndo); // belongs to pDoc now.
     // Update is called by Do																																																						
-#endif
+#endif // ZH
 	}
 }
 
 #ifdef OG
 void MapObjectProps::updateTheUI(void) 
 
-#endif
+#endif // OG
 #ifdef ZH
 /// Move data from dialog controls to object
 void MapObjectProps::_ScriptToDict(void)
@@ -478,13 +478,13 @@ void MapObjectProps::_ScriptToDict(void)
   
   CWorldBuilderDoc* pDoc = CWorldBuilderDoc::GetActiveDoc();
   if ( pDoc )
-#endif
+#endif // ZH
 {
 #ifdef OG
 	if (this != TheMapObjectProps) {
 		return;
 
-#endif
+#endif // OG
 #ifdef ZH
     Dict newDict;
     newDict.setAsciiString(TheKey_objectScriptAttachment, AsciiString(buf));
@@ -493,7 +493,7 @@ void MapObjectProps::_ScriptToDict(void)
     REF_PTR_RELEASE(pUndo); // belongs to pDoc now.
     // Update is called by Do	
   }
-#endif
+#endif // ZH
 	}
 
 #ifdef OG
@@ -501,7 +501,7 @@ void MapObjectProps::_ScriptToDict(void)
 		if (!pMapObj->isSelected() || pMapObj->isWaypoint() || pMapObj->isLight()) {
 			continue;
 
-#endif
+#endif // OG
 #ifdef ZH
 /// Move data from object to dialog controls
 void MapObjectProps::_DictToScale(void)
@@ -515,13 +515,13 @@ void MapObjectProps::_DictToScale(void)
   }
   if (!exists) {
     m_scale = 1;
-#endif
+#endif // ZH
 		}
 
 #ifdef OG
 		m_dictToEdit = pMapObj ? pMapObj->getProperties() : NULL; 
 
-#endif
+#endif // OG
 #ifdef ZH
   CWnd* edit = GetDlgItem(IDC_MAPOBJECT_Scale);
   CString cstr;
@@ -542,7 +542,7 @@ void MapObjectProps::_DictToScale(void)
     GetDlgItem(IDC_SCALE_POPUP)->EnableWindow(true);
   }
 #endif
-#endif
+#endif // ZH
 
 #ifdef OG
 		_DictToTeam();
@@ -567,17 +567,17 @@ void MapObjectProps::_DictToScale(void)
 		_DictToTargetable();
 		ShowZOffset(pMapObj);
 		ShowAngle(pMapObj);
-#endif
+#endif // OG
 #ifdef ZH
 }
 
-#endif
+#endif // ZH
 		
 #ifdef OG
 		// simply break after the first one that's selected
 		break;
 
-#endif
+#endif // OG
 #ifdef ZH
 /// Move data from object to dialog controls
 void MapObjectProps::_DictToWeather(void)
@@ -588,23 +588,23 @@ void MapObjectProps::_DictToWeather(void)
     value = m_dictToEdit->getInt(TheKey_objectWeather, &exists);
     if (!exists)
       value = 0;
-#endif
+#endif // ZH
 	}
 #ifdef ZH
   
   CComboBox* pItem = (CComboBox*) GetDlgItem(IDC_MAPOBJECT_Weather);
   pItem->SetCurSel(value);
-#endif
+#endif // ZH
 }
 
 #ifdef OG
 /*static*/ MapObject *MapObjectProps::getSingleSelectedMapObject(void)
 
-#endif
+#endif // OG
 #ifdef ZH
 /// Move data from object to dialog controls
 void MapObjectProps::_DictToTime(void)
-#endif
+#endif // ZH
 {
 #ifdef OG
 	MapObject *pMapObj; 
@@ -616,7 +616,7 @@ void MapObjectProps::_DictToTime(void)
 			if (!pMapObj->isWaypoint() && !pMapObj->isLight()) 
 			{
 				theMapObj = pMapObj;
-#endif
+#endif // OG
 #ifdef ZH
   Int value = 0;
   Bool exists;
@@ -625,24 +625,24 @@ void MapObjectProps::_DictToTime(void)
     if (!exists)
       value = 0;
 
-#endif
+#endif // ZH
 			}
 #ifdef OG
 			selCount++;
 
-#endif
+#endif // OG
 #ifdef ZH
   
   CComboBox* pItem = (CComboBox*) GetDlgItem(IDC_MAPOBJECT_Time);
   pItem->SetCurSel(value);
-#endif
+#endif // ZH
 		}
 #ifdef OG
 	}
 	if (selCount==1 && theMapObj) {
 		return theMapObj;
 
-#endif
+#endif // OG
 #ifdef ZH
 
 /// Move data from dialog controls to object
@@ -663,59 +663,59 @@ void MapObjectProps::_WeatherToDict(void)
     pDoc->AddAndDoUndoable(pUndo);
     REF_PTR_RELEASE(pUndo); // belongs to pDoc now.
     // Update is called by Do	
-#endif
+#endif // ZH
 	}
 #ifdef OG
 	return(NULL);
-#endif
+#endif // OG
 }
 
 #ifdef OG
 void MapObjectProps::OnEditprop() 
 
-#endif
+#endif // OG
 #ifdef ZH
 /// Move data from dialog controls to object
 void MapObjectProps::_TimeToDict(void)
-#endif
+#endif // ZH
 {
 #ifdef OG
 	int sel = getSel();
 	if (sel == -1 || !m_dictToEdit)
 		return;
-#endif
+#endif // OG
 #ifdef ZH
   getAllSelectedDicts();
 
-#endif
+#endif // ZH
 
 #ifdef OG
 	Bool enquote;
 	AsciiString kstr = getNthKeyStr(m_dictToEdit, sel);
 	AsciiString vstr = getNthValueStr(m_dictToEdit, sel, &enquote);
 	Dict::DataType type = m_dictToEdit->getNthType(sel);
-#endif
+#endif // OG
 #ifdef ZH
   CComboBox *owner = (CComboBox*)GetDlgItem(IDC_MAPOBJECT_Time);
   static char buf[1024];
   int curSel = owner->GetCurSel();
 
-#endif
+#endif // ZH
 
 #ifdef OG
 	PropEdit propDlg(&kstr, &type, &vstr, true, this);	
 	if (propDlg.DoModal() == IDOK) 
-#endif
+#endif // OG
 #ifdef ZH
   CWorldBuilderDoc* pDoc = CWorldBuilderDoc::GetActiveDoc();
   if ( pDoc )
-#endif
+#endif // ZH
 	{
 #ifdef OG
 		Dict newDict = DictItemUndoable::buildSingleItemDict(kstr, type, vstr);
 		if (this == TheMapObjectProps)
 
-#endif
+#endif // OG
 #ifdef ZH
     Dict newDict;
     newDict.setInt(TheKey_objectTime, curSel);
@@ -728,12 +728,12 @@ void MapObjectProps::_TimeToDict(void)
 
 /// Move data from dialog controls to object
 void MapObjectProps::_ScaleToDict(void)
-#endif
+#endif // ZH
 		{
 #ifdef OG
 			// it's the floating panel; use an undoable
 
-#endif
+#endif // OG
 #ifdef ZH
 // Currently not in mission disk.
 #if 0
@@ -750,12 +750,12 @@ void MapObjectProps::_ScaleToDict(void)
   
   CButton *off = (CButton*) GetDlgItem(IDC_SCALE_OFF);
   
-#endif
+#endif // ZH
 			CWorldBuilderDoc* pDoc = CWorldBuilderDoc::GetActiveDoc();
 #ifdef OG
 			DictItemUndoable *pUndo = new DictItemUndoable(&m_dictToEdit, newDict, newDict.getNthKey(0));
 
-#endif
+#endif // OG
 #ifdef ZH
   if ( pDoc )
   {
@@ -766,19 +766,19 @@ void MapObjectProps::_ScaleToDict(void)
       newDict.setReal(TheKey_objectPrototypeScale, m_scale);
     }
     DictItemUndoable *pUndo = new DictItemUndoable(m_allSelectedDicts.begin(), newDict, newDict.getNthKey(0), m_allSelectedDicts.size(), pDoc, true);
-#endif
+#endif // ZH
 			pDoc->AddAndDoUndoable(pUndo);
 			REF_PTR_RELEASE(pUndo); // belongs to pDoc now.
 #ifdef ZH
     // Update is called by Do
   }
 #endif
-#endif
+#endif // ZH
 		} 
 #ifdef OG
 		else 
 
-#endif
+#endif // OG
 #ifdef ZH
 
 /// Move data from object to dialog controls
@@ -794,13 +794,13 @@ void MapObjectProps::ShowZOffset(MapObject *pMapObj)
 
 /// Move data from dialog controls to object
 void MapObjectProps::SetZOffset(void)
-#endif
+#endif // ZH
 		{
 #ifdef OG
 			// we're running modal; just slam it in the dict
 			m_dictToEdit->copyPairFrom(newDict, newDict.getNthKey(0));
 
-#endif
+#endif // OG
 #ifdef ZH
   Real value = 0.0f;
   CWnd* edit = GetDlgItem(IDC_MAPOBJECT_ZOffset);
@@ -808,12 +808,12 @@ void MapObjectProps::SetZOffset(void)
   edit->GetWindowText(cstr);
   if (!cstr.IsEmpty()) {
     value = atof(cstr);
-#endif
+#endif // ZH
 		}
 #ifdef OG
 		updateTheUI();
 
-#endif
+#endif // OG
 #ifdef ZH
   m_height = value;
   CWorldBuilderDoc* pDoc = CWorldBuilderDoc::GetActiveDoc();
@@ -823,24 +823,24 @@ void MapObjectProps::SetZOffset(void)
     pDoc->AddAndDoUndoable(pUndo);
     pUndo->SetZOffset(value);
     REF_PTR_RELEASE(pUndo); // belongs to pDoc now.
-#endif
+#endif // ZH
 	}
 }
 
 #ifdef OG
 void MapObjectProps::OnNewprop() 
 
-#endif
+#endif // OG
 #ifdef ZH
 /// Move data from object to dialog controls
 void MapObjectProps::ShowAngle(MapObject *pMapObj)
-#endif
+#endif // ZH
 {
 #ifdef OG
 	if (!m_dictToEdit)
 		return;
 
-#endif
+#endif // OG
 #ifdef ZH
   m_angle = pMapObj->getAngle() * 180 / PI;
   static char buff[12];
@@ -849,14 +849,14 @@ void MapObjectProps::ShowAngle(MapObject *pMapObj)
   edit->SetWindowText(buff);
   m_angle = atof(buff);
 }
-#endif
+#endif // ZH
 
 #ifdef OG
 	// TODO: Add your control notification handler code here
 	static Dict::DataType lastNewType = Dict::DICT_BOOL;
 	AsciiString key, value;
 
-#endif
+#endif // OG
 #ifdef ZH
 /// Move data from object to dialog controls
 void MapObjectProps::ShowPosition(MapObject *pMapObj)
@@ -868,22 +868,22 @@ void MapObjectProps::ShowPosition(MapObject *pMapObj)
   edit->SetWindowText(buff);
   sscanf(buff, "%f,%f", &m_position.x, &m_position.y);
 }
-#endif
+#endif // ZH
 
 #ifdef OG
 	PropEdit propDlg(&key, &lastNewType, &value, false, this);	
 	if (propDlg.DoModal() == IDOK) 
-#endif
+#endif // OG
 #ifdef ZH
 /// Move data from dialog controls to object
 void MapObjectProps::SetAngle(void)
-#endif
+#endif // ZH
 	{
 #ifdef OG
 		Dict newDict = DictItemUndoable::buildSingleItemDict(key, lastNewType, value);
 		if (this == TheMapObjectProps)
 
-#endif
+#endif // OG
 #ifdef ZH
   Real angle = m_angle;
   CWnd* edit = GetDlgItem(IDC_MAPOBJECT_Angle);
@@ -894,38 +894,38 @@ void MapObjectProps::SetAngle(void)
   }
   if (m_selectedObject==NULL) return;
   if (m_angle!=angle) 
-#endif
+#endif // ZH
 		{
 #ifdef OG
 			// it's the floating panel; use an undoable
-#endif
+#endif // OG
 #ifdef ZH
     m_angle = angle;
-#endif
+#endif // ZH
 			CWorldBuilderDoc* pDoc = CWorldBuilderDoc::GetActiveDoc();
 #ifdef OG
 			DictItemUndoable *pUndo = new DictItemUndoable(&m_dictToEdit, newDict, newDict.getNthKey(0));
 
-#endif
+#endif // OG
 #ifdef ZH
     if ( pDoc )
     {
       ModifyObjectUndoable *pUndo = new ModifyObjectUndoable(pDoc);
-#endif
+#endif // ZH
 			pDoc->AddAndDoUndoable(pUndo);
 #ifdef ZH
       pUndo->RotateTo(angle * PI/180);
-#endif
+#endif // ZH
 			REF_PTR_RELEASE(pUndo); // belongs to pDoc now.
 #ifdef ZH
     }
   }
-#endif
+#endif // ZH
 		}
 #ifdef OG
 		else 
 
-#endif
+#endif // OG
 #ifdef ZH
 
 /// Move data from dialog controls to object
@@ -945,13 +945,13 @@ void MapObjectProps::SetPosition(void)
     m_position = loc;
     CWorldBuilderDoc* pDoc = CWorldBuilderDoc::GetActiveDoc();
     if ( pDoc )
-#endif
+#endif // ZH
 		{
 #ifdef OG
 			// we're running modal; just slam it in the dict
 			m_dictToEdit->copyPairFrom(newDict, newDict.getNthKey(0));
 
-#endif
+#endif // OG
 #ifdef ZH
       ModifyObjectUndoable *pUndo = new ModifyObjectUndoable(pDoc);
       pDoc->AddAndDoUndoable(pUndo);
@@ -960,11 +960,11 @@ void MapObjectProps::SetPosition(void)
       }
       pUndo->SetOffset(m_position.x-loc.x, m_position.y-loc.y);
       REF_PTR_RELEASE(pUndo); // belongs to pDoc now.
-#endif
+#endif // ZH
 		}
 #ifdef OG
 		updateTheUI();
-#endif
+#endif // OG
 	}
 }
 #ifdef ZH
@@ -980,12 +980,12 @@ void MapObjectProps::GetPopSliderInfo(const long sliderID, long *pMin, long *pMa
 			*pInitial = m_height;
 			*pLineSize = 1;
 			break;
-#endif
+#endif // ZH
 
 #ifdef OG
 void MapObjectProps::OnRemoveprop() 
 
-#endif
+#endif // OG
 #ifdef ZH
 		case IDC_ANGLE_POPUP:
 			*pMin = 0;
@@ -1010,16 +1010,16 @@ void MapObjectProps::OnRemoveprop()
 
 /// Slider control
 void MapObjectProps::PopSliderChanged(const long sliderID, long theVal)
-#endif
+#endif // ZH
 {
 #ifdef OG
 	int sel = getSel();
 	if (sel == -1)
-#endif
+#endif // OG
 #ifdef ZH
 	CWorldBuilderDoc* pDoc = CWorldBuilderDoc::GetActiveDoc();
   if ( pDoc == NULL )
-#endif
+#endif // ZH
 		return;
 #ifdef ZH
 
@@ -1076,13 +1076,13 @@ void MapObjectProps::PopSliderFinished(const long sliderID, long theVal)
       }
 			m_posUndoable = NULL;
 			break;
-#endif
+#endif // ZH
 	
 #ifdef OG
 	NameKeyType k = m_dictToEdit->getNthKey(sel);
 	if (this == TheMapObjectProps)
 
-#endif
+#endif // OG
 #ifdef ZH
 		case IDC_SCALE_POPUP:
 			_ScaleToDict();
@@ -1098,12 +1098,12 @@ void MapObjectProps::PopSliderFinished(const long sliderID, long theVal)
 
 /// Move data from dialog controls to object
 void MapObjectProps::_PrebuiltUpgradesToDict(void)
-#endif
+#endif // ZH
 	{
 #ifdef OG
 			// it's the floating panel; use an undoable
 
-#endif
+#endif // OG
 #ifdef ZH
   getAllSelectedDicts();
   
@@ -1160,37 +1160,37 @@ void MapObjectProps::_PrebuiltUpgradesToDict(void)
   }
   
   // Now, do the Undoable
-#endif
+#endif // ZH
 		CWorldBuilderDoc* pDoc = CWorldBuilderDoc::GetActiveDoc();
 #ifdef OG
 		Dict newDict;	// empty dict
 		DictItemUndoable *pUndo = new DictItemUndoable(&m_dictToEdit, newDict, k);
 
-#endif
+#endif // OG
 #ifdef ZH
   if ( pDoc != NULL )
   {
     DictItemUndoable *pUndo = new DictItemUndoable(m_allSelectedDicts.begin(), newDict, NAMEKEY_INVALID, m_allSelectedDicts.size(), pDoc, true);
-#endif
+#endif // ZH
 		pDoc->AddAndDoUndoable(pUndo);
 		REF_PTR_RELEASE(pUndo); // belongs to pDoc now.
 	}
 #ifdef OG
 	else
 
-#endif
+#endif // OG
 #ifdef ZH
 }
 
 /// Move data from object to dialog controls
 void MapObjectProps::_DictToPrebuiltUpgrades(void)
-#endif
+#endif // ZH
 	{
 #ifdef OG
 			// we're running modal; just slam it in the dict
 		m_dictToEdit->remove(k);
 
-#endif
+#endif // OG
 #ifdef ZH
   getAllSelectedDicts();
   
@@ -1212,12 +1212,12 @@ void MapObjectProps::_DictToPrebuiltUpgrades(void)
   
   if (m_selectedObject == NULL) {
     return;
-#endif
+#endif // ZH
 	}
 #ifdef OG
 	updateTheUI();
 
-#endif
+#endif // OG
 #ifdef ZH
   
   // Otherwise, fill it with the upgrades available for this unit
@@ -1225,7 +1225,7 @@ void MapObjectProps::_DictToPrebuiltUpgrades(void)
   if (tt == NULL) {
     // This is valid. For instance, Scorch marks do not have thing templates.
     return;
-#endif
+#endif // ZH
 }
 
 #ifdef OG
@@ -1233,7 +1233,7 @@ void MapObjectProps::OnDblclkProperties()
 {
 	OnEditprop();
 
-#endif
+#endif // OG
 #ifdef ZH
   Bool noUpgrades = false;
   
@@ -1244,21 +1244,21 @@ void MapObjectProps::OnDblclkProperties()
       cstr.LoadString(IDS_NO_UPGRADES);
       pBox->AddString(cstr);
       return;
-#endif
+#endif // ZH
 }
 #ifdef ZH
   } else {
     Int numBehaviorModules = mi.getCount();
     
     Int numBehaviorsWithUpgrades = 0;
-#endif
+#endif // ZH
 
 #ifdef OG
 void MapObjectProps::_DictToTeam(void)
 {
 	int i;
 
-#endif
+#endif // OG
 #ifdef ZH
     for (int i = 0; i < numBehaviorModules; ++i) {
       if (mi.getNthName(i).compareNoCase("GenerateMinefieldBehavior") == 0) {
@@ -1275,7 +1275,7 @@ void MapObjectProps::_DictToTeam(void)
         }
       }
     }
-#endif
+#endif // ZH
 
 #ifdef OG
 	AsciiString name;
@@ -1287,7 +1287,7 @@ void MapObjectProps::_DictToTeam(void)
 		if (name == NEUTRAL_TEAM_INTERNAL_STR)
 			name = NEUTRAL_TEAM_UI_STR;
 		owner->AddString(name.str());
-#endif
+#endif // OG
 #ifdef ZH
     if (numBehaviorsWithUpgrades == 0) {
       if (noUpgrades) {
@@ -1295,7 +1295,7 @@ void MapObjectProps::_DictToTeam(void)
         pBox->AddString(cstr);
         return;
 
-#endif
+#endif // ZH
 	}
 #ifdef OG
 	// re-find, since the list is sorted
@@ -1307,29 +1307,29 @@ void MapObjectProps::_DictToTeam(void)
 			name = NEUTRAL_TEAM_UI_STR;
 		i = owner->FindStringExact(-1, name.str());
 		DEBUG_ASSERTLOG(i >= 0, ("missing team '%s'. Non-fatal (jkmcd)\n", name.str()));
-#endif
+#endif // OG
 	}
 #ifdef OG
 	owner->SetCurSel(i);
-#endif
+#endif // OG
 }
 
 #ifdef OG
 void MapObjectProps::_DictToName(void)
 {
 	AsciiString name = "";
-#endif
+#endif // OG
 #ifdef ZH
   // Finally, walk through the upgrades that he already has, and select the appropriate members
   // from the list
   
-#endif
+#endif // ZH
 	Bool exists;
 #ifdef OG
 	if (m_dictToEdit) {
 		name = m_dictToEdit->getAsciiString(TheKey_objectName, &exists);
 
-#endif
+#endif // OG
 #ifdef ZH
   int upgradeNum = 0;
   AsciiString upgradeString;
@@ -1345,33 +1345,33 @@ void MapObjectProps::_DictToName(void)
         DEBUG_CRASH(("Object claims '%s', but it wasn't found in the list of possible upgrades.", upgradeString.str()));
         ++upgradeNum;
         continue;
-#endif
+#endif // ZH
 	}
 #ifdef ZH
       pBox->SetSel(selNdx);
-#endif
+#endif // ZH
 
 #ifdef OG
 	CWnd* pItem = GetDlgItem(IDC_MAPOBJECT_Name);
 	if (pItem) {
 		pItem->SetWindowText(name.str());
-#endif
+#endif // OG
 #ifdef ZH
     } else {
       upgradeString.clear();
 
-#endif
+#endif // ZH
 	}
 #ifdef ZH
     
     ++upgradeNum;
   } while (!upgradeString.isEmpty());
-#endif
+#endif // ZH
 }
 
 #ifdef ZH
 /// Move data from object to dialog controls
-#endif
+#endif // ZH
 void MapObjectProps::_DictToHealth(void)
 {
 	Int value = 100;
@@ -1415,7 +1415,7 @@ void MapObjectProps::_DictToHealth(void)
 
 #ifdef ZH
 /// Move data from object to dialog controls
-#endif
+#endif // ZH
 void MapObjectProps::_DictToHPs(void)
 {
 	Int value = -1;
@@ -1443,7 +1443,7 @@ void MapObjectProps::_DictToHPs(void)
 
 #ifdef ZH
 /// Move data from object to dialog controls
-#endif
+#endif // ZH
 void MapObjectProps::_DictToEnabled(void)
 {
 	Bool enabled = true;
@@ -1464,7 +1464,7 @@ void MapObjectProps::_DictToScript(void)
 	if (!m_dictToEdit) {
 		return;
 	}
-#endif
+#endif // OG
 	
 #ifdef OG
 	Bool exists;
@@ -1481,11 +1481,11 @@ void MapObjectProps::_DictToScript(void)
 	}
 }
 
-#endif
+#endif // OG
 #ifdef ZH
 /// Move data from object to dialog controls
 
-#endif
+#endif // ZH
 void MapObjectProps::_DictToDestructible(void)
 {
 	Bool destructible = true;
@@ -1502,7 +1502,7 @@ void MapObjectProps::_DictToDestructible(void)
 
 #ifdef ZH
 /// Move data from object to dialog controls
-#endif
+#endif // ZH
 void MapObjectProps::_DictToUnsellable(void)
 {
 	Bool unsellable = false;
@@ -1519,7 +1519,7 @@ void MapObjectProps::_DictToUnsellable(void)
 
 #ifdef ZH
 /// Move data from object to dialog controls
-#endif
+#endif // ZH
 void MapObjectProps::_DictToTargetable()
 {
 	Bool targetable = false;
@@ -1538,7 +1538,7 @@ void MapObjectProps::_DictToTargetable()
 
 #ifdef ZH
 /// Move data from object to dialog controls
-#endif
+#endif // ZH
 void MapObjectProps::_DictToPowered(void)
 {
 	Bool powered = true;
@@ -1556,7 +1556,7 @@ void MapObjectProps::_DictToPowered(void)
 
 #ifdef ZH
 /// Move data from object to dialog controls
-#endif
+#endif // ZH
 void MapObjectProps::_DictToAggressiveness(void)
 {
 	Int value = 0;
@@ -1583,7 +1583,7 @@ void MapObjectProps::_DictToAggressiveness(void)
 
 #ifdef ZH
 /// Move data from object to dialog controls
-#endif
+#endif // ZH
 void MapObjectProps::_DictToVisibilityRange(void)
 {
 	Int distance = 0;
@@ -1606,7 +1606,7 @@ void MapObjectProps::_DictToVisibilityRange(void)
 
 #ifdef ZH
 /// Move data from object to dialog controls
-#endif
+#endif // ZH
 void MapObjectProps::_DictToVeterancy(void)
 {
 	Int value = 0;
@@ -1650,11 +1650,11 @@ void MapObjectProps::_DictToTime(void)
 	pItem->SetCurSel(value);
 }
 
-#endif
+#endif // OG
 #ifdef ZH
 /// Move data from object to dialog controls
 
-#endif
+#endif // ZH
 void MapObjectProps::_DictToShroudClearingDistance(void)
 {
 	Int distance = 0;
@@ -1677,7 +1677,7 @@ void MapObjectProps::_DictToShroudClearingDistance(void)
 
 #ifdef ZH
 /// Move data from object to dialog controls
-#endif
+#endif // ZH
 void MapObjectProps::_DictToRecruitableAI(void)
 {
  	Bool recruitableAI = true;
@@ -1694,24 +1694,24 @@ void MapObjectProps::_DictToRecruitableAI(void)
 
 #ifdef ZH
 /// Move data from object to dialog controls
-#endif
+#endif // ZH
 void MapObjectProps::_DictToSelectable(void)
 {
 #ifdef OG
 	Bool selectable = true;
 	Bool exists;
-#endif
+#endif // OG
 #ifdef ZH
 	Int selectable = true;
 	Bool exists=false;
-#endif
+#endif // ZH
 	if (m_dictToEdit) {
 		selectable  = m_dictToEdit->getBool(TheKey_objectSelectable, &exists);
 #ifdef ZH
 	}
 	if (!exists) {
 		selectable = 2;
-#endif
+#endif // ZH
 	}
 
 	CButton* pItem = (CButton*) GetDlgItem(IDC_MAPOBJECT_Selectable);
@@ -1722,7 +1722,7 @@ void MapObjectProps::_DictToSelectable(void)
 
 #ifdef ZH
 /// Move data from object to dialog controls
-#endif
+#endif // ZH
 void MapObjectProps::_DictToStoppingDistance(void)
 {
 	Real stoppingDistance = 1.0f;
@@ -1808,14 +1808,14 @@ void MapObjectProps::_DictToPrebuiltUpgrades(void)
 				pBox->AddString(cstr);
 				return;
 			}
-#endif
+#endif // OG
 		}
 	}
 
 #ifdef OG
 	// Finally, walk through the upgrades that he already has, and select the appropriate members
 	// from the list
-#endif
+#endif // OG
 	
 #ifdef OG
 	Bool exists;
@@ -1880,11 +1880,11 @@ void MapObjectProps::_NameToDict(void)
 	// Update is called by Do
 }
 
-#endif
+#endif // OG
 #ifdef ZH
 /// Move data from dialog controls to object
 
-#endif
+#endif // ZH
 void MapObjectProps::_HealthToDict(void)
 {
 	getAllSelectedDicts();
@@ -1918,7 +1918,7 @@ void MapObjectProps::_HealthToDict(void)
 #ifdef ZH
   if ( pDoc != NULL )
   {
-#endif
+#endif // ZH
 	Dict newDict;
 	newDict.setInt(TheKey_objectInitialHealth, value);
 	DictItemUndoable *pUndo = new DictItemUndoable(m_allSelectedDicts.begin(), newDict, newDict.getNthKey(0), m_allSelectedDicts.size(), pDoc, true);
@@ -1935,7 +1935,7 @@ void MapObjectProps::_PrebuiltUpgradesToDict(void)
 	CListBox *pBox = (CListBox *) GetDlgItem(IDC_MAPOBJECT_BuildWithUpgrades);
 	if (!pBox) {
 		return;
-#endif
+#endif // OG
 	}
 
 #ifdef OG
@@ -1943,7 +1943,7 @@ void MapObjectProps::_PrebuiltUpgradesToDict(void)
 	if (m_allSelectedDicts.size() != 1) {
 		return;
 	}
-#endif
+#endif // OG
 
 #ifdef OG
 	if (m_selectedObject)	{
@@ -1995,11 +1995,11 @@ void MapObjectProps::_PrebuiltUpgradesToDict(void)
 	REF_PTR_RELEASE(pUndo); // belongs to pDoc now.
 }
 
-#endif
+#endif // OG
 #ifdef ZH
 /// Move data from dialog controls to object
 
-#endif
+#endif // ZH
 void MapObjectProps::_EnabledToDict(void)
 {
 	getAllSelectedDicts();
@@ -2011,7 +2011,7 @@ void MapObjectProps::_EnabledToDict(void)
 #ifdef ZH
   if ( pDoc != NULL )
   {
-#endif
+#endif // ZH
 	Dict newDict;
 	newDict.setBool(TheKey_objectEnabled, isChecked);
 	DictItemUndoable *pUndo = new DictItemUndoable(m_allSelectedDicts.begin(), newDict, newDict.getNthKey(0), m_allSelectedDicts.size());
@@ -2036,12 +2036,12 @@ void MapObjectProps::_ScriptToDict(void)
 	pDoc->AddAndDoUndoable(pUndo);
 	REF_PTR_RELEASE(pUndo); // belongs to pDoc now.
 	// Update is called by Do	
-#endif
+#endif // OG
 }
 
 #ifdef ZH
 /// Move data from dialog controls to object
-#endif
+#endif // ZH
 void MapObjectProps::_IndestructibleToDict(void)
 {
 	getAllSelectedDicts();
@@ -2053,7 +2053,7 @@ void MapObjectProps::_IndestructibleToDict(void)
 #ifdef ZH
   if ( pDoc != NULL )
   {
-#endif
+#endif // ZH
 	Dict newDict;
 	newDict.setBool(TheKey_objectIndestructible, isChecked);
 	DictItemUndoable *pUndo = new DictItemUndoable(m_allSelectedDicts.begin(), newDict, newDict.getNthKey(0), m_allSelectedDicts.size());
@@ -2062,12 +2062,12 @@ void MapObjectProps::_IndestructibleToDict(void)
 	// Update is called by Do	
 #ifdef ZH
   }
-#endif
+#endif // ZH
 }
 
 #ifdef ZH
 /// Move data from dialog controls to object
-#endif
+#endif // ZH
 void MapObjectProps::_UnsellableToDict(void)
 {
 	getAllSelectedDicts();
@@ -2079,7 +2079,7 @@ void MapObjectProps::_UnsellableToDict(void)
 #ifdef ZH
   if ( pDoc != NULL )
   {
-#endif
+#endif // ZH
 	Dict newDict;
 	newDict.setBool(TheKey_objectUnsellable, isChecked);
 	DictItemUndoable *pUndo = new DictItemUndoable(m_allSelectedDicts.begin(), newDict, newDict.getNthKey(0), m_allSelectedDicts.size());
@@ -2088,12 +2088,12 @@ void MapObjectProps::_UnsellableToDict(void)
 	// Update is called by Do
 #ifdef ZH
   }	
-#endif
+#endif // ZH
 }
 
 #ifdef ZH
 /// Move data from dialog controls to object
-#endif
+#endif // ZH
 void MapObjectProps::_TargetableToDict()
 {
 	getAllSelectedDicts();
@@ -2105,7 +2105,7 @@ void MapObjectProps::_TargetableToDict()
 #ifdef ZH
   if ( pDoc != NULL )
   {
-#endif
+#endif // ZH
 	Dict newDict;
 	newDict.setBool( TheKey_objectTargetable, isChecked );
 	DictItemUndoable *pUndo = new DictItemUndoable( m_allSelectedDicts.begin(), newDict, newDict.getNthKey(0), m_allSelectedDicts.size() );
@@ -2114,13 +2114,13 @@ void MapObjectProps::_TargetableToDict()
 	// Update is called by Do
 #ifdef ZH
   }
-#endif
+#endif // ZH
 }
 
 
 #ifdef ZH
 /// Move data from dialog controls to object
-#endif
+#endif // ZH
 void MapObjectProps::_PoweredToDict(void)
 {
 	getAllSelectedDicts();
@@ -2132,7 +2132,7 @@ void MapObjectProps::_PoweredToDict(void)
 #ifdef ZH
   if ( pDoc != NULL )
   {
-#endif
+#endif // ZH
 	Dict newDict;
 	newDict.setBool(TheKey_objectPowered, isChecked);
 	DictItemUndoable *pUndo = new DictItemUndoable(m_allSelectedDicts.begin(), newDict, newDict.getNthKey(0), m_allSelectedDicts.size());
@@ -2141,12 +2141,12 @@ void MapObjectProps::_PoweredToDict(void)
 	// Update is called by Do
 #ifdef ZH
   }
-#endif
+#endif // ZH
 }
 
 #ifdef ZH
 /// Move data from dialog controls to object
-#endif
+#endif // ZH
 void MapObjectProps::_AggressivenessToDict(void)
 {
 	getAllSelectedDicts();
@@ -2172,7 +2172,7 @@ void MapObjectProps::_AggressivenessToDict(void)
 #ifdef ZH
   if ( pDoc != NULL )
   {
-#endif
+#endif // ZH
 	Dict newDict;
 	newDict.setInt(TheKey_objectAggressiveness, value);
 	DictItemUndoable *pUndo = new DictItemUndoable(m_allSelectedDicts.begin(), newDict, newDict.getNthKey(0), m_allSelectedDicts.size());
@@ -2182,11 +2182,11 @@ void MapObjectProps::_AggressivenessToDict(void)
 }
 #ifdef ZH
 }
-#endif
+#endif // ZH
 
 #ifdef ZH
 /// Move data from dialog controls to object
-#endif
+#endif // ZH
 void MapObjectProps::_VisibilityToDict(void)
 {
 	getAllSelectedDicts();
@@ -2204,7 +2204,7 @@ void MapObjectProps::_VisibilityToDict(void)
 #ifdef ZH
   if ( pDoc != NULL )
   {
-#endif
+#endif // ZH
 	Dict newDict;
 	if (value != -1) {
 		newDict.setInt(TheKey_objectVisualRange, value);
@@ -2216,11 +2216,11 @@ void MapObjectProps::_VisibilityToDict(void)
 }
 #ifdef ZH
 }
-#endif
+#endif // ZH
 
 #ifdef ZH
 /// Move data from dialog controls to object
-#endif
+#endif // ZH
 void MapObjectProps::_VeterancyToDict(void)
 {
 	getAllSelectedDicts();
@@ -2237,7 +2237,7 @@ void MapObjectProps::_VeterancyToDict(void)
 #ifdef ZH
   if ( pDoc != NULL )
   {
-#endif
+#endif // ZH
 	Dict newDict;
 	newDict.setInt(TheKey_objectVeterancy, value);
 	DictItemUndoable *pUndo = new DictItemUndoable(m_allSelectedDicts.begin(), newDict, newDict.getNthKey(0), m_allSelectedDicts.size(), pDoc, true);
@@ -2263,7 +2263,7 @@ void MapObjectProps::_WeatherToDict(void)
 	REF_PTR_RELEASE(pUndo); // belongs to pDoc now.
 	// Update is called by Do	
 
-#endif
+#endif // OG
 }
 #ifdef OG
 
@@ -2274,7 +2274,7 @@ void MapObjectProps::_TimeToDict(void)
 	CComboBox *owner = (CComboBox*)GetDlgItem(IDC_MAPOBJECT_Time);
 	static char buf[1024];
 	int curSel = owner->GetCurSel();
-#endif
+#endif // OG
 
 #ifdef OG
 	CWorldBuilderDoc* pDoc = CWorldBuilderDoc::GetActiveDoc();
@@ -2287,11 +2287,11 @@ void MapObjectProps::_TimeToDict(void)
 
 }
 
-#endif
+#endif // OG
 #ifdef ZH
 /// Move data from dialog controls to object
 
-#endif
+#endif // ZH
 void MapObjectProps::_ShroudClearingDistanceToDict(void)
 {
 	getAllSelectedDicts();
@@ -2309,7 +2309,7 @@ void MapObjectProps::_ShroudClearingDistanceToDict(void)
 #ifdef ZH
   if ( pDoc != NULL )
   {
-#endif
+#endif // ZH
 	Dict newDict;
 	if (value != -1) {
 		newDict.setInt(TheKey_objectShroudClearingDistance, value);
@@ -2320,12 +2320,12 @@ void MapObjectProps::_ShroudClearingDistanceToDict(void)
 	// Update is called by Do
 #ifdef ZH
   }
-#endif
+#endif // ZH
 }
 
 #ifdef ZH
 /// Move data from dialog controls to object
-#endif
+#endif // ZH
 void MapObjectProps::_RecruitableAIToDict(void)
 {
 	getAllSelectedDicts();
@@ -2337,7 +2337,7 @@ void MapObjectProps::_RecruitableAIToDict(void)
 #ifdef ZH
   if ( pDoc != NULL )
   {
-#endif
+#endif // ZH
 	Dict newDict;
 	newDict.setBool(TheKey_objectRecruitableAI, isChecked);
 	DictItemUndoable *pUndo = new DictItemUndoable(m_allSelectedDicts.begin(), newDict, newDict.getNthKey(0), m_allSelectedDicts.size());
@@ -2347,11 +2347,11 @@ void MapObjectProps::_RecruitableAIToDict(void)
 }
 #ifdef ZH
 }
-#endif
+#endif // ZH
 
 #ifdef ZH
 /// Move data from dialog controls to object
-#endif
+#endif // ZH
 void MapObjectProps::_SelectableToDict(void)
 {
 	getAllSelectedDicts();
@@ -2360,39 +2360,39 @@ void MapObjectProps::_SelectableToDict(void)
 #ifdef OG
 	Bool isChecked = (owner->GetCheck() != 0);
 
-#endif
+#endif // OG
 #ifdef ZH
 	Bool isChecked = (owner->GetCheck() == 1);
 	Bool isTristate = (owner->GetCheck() == 2);
-#endif
+#endif // ZH
 
 	CWorldBuilderDoc* pDoc = CWorldBuilderDoc::GetActiveDoc();
 #ifdef ZH
   if ( pDoc != NULL )
   {
-#endif
+#endif // ZH
 	Dict newDict;
 #ifdef ZH
 	  if (isTristate) {
 		  newDict.remove(TheKey_objectSelectable);
 	  } else {
-#endif
+#endif // ZH
 	newDict.setBool(TheKey_objectSelectable, isChecked);
 #ifdef ZH
 	  }
-#endif
+#endif // ZH
 	DictItemUndoable *pUndo = new DictItemUndoable(m_allSelectedDicts.begin(), newDict, newDict.getNthKey(0), m_allSelectedDicts.size());
 	pDoc->AddAndDoUndoable(pUndo);
 	REF_PTR_RELEASE(pUndo); // belongs to pDoc now.
 	// Update is called by Do
 #ifdef ZH
   }
-#endif
+#endif // ZH
 }
 
 #ifdef ZH
 /// Move data from dialog controls to object
-#endif
+#endif // ZH
 void MapObjectProps::_HPsToDict() 
 {
 	getAllSelectedDicts();
@@ -2410,7 +2410,7 @@ void MapObjectProps::_HPsToDict()
 #ifdef ZH
   if ( pDoc != NULL )
   {
-#endif
+#endif // ZH
 	Dict newDict;
 
 	newDict.setInt(TheKey_objectMaxHPs, value);
@@ -2420,11 +2420,11 @@ void MapObjectProps::_HPsToDict()
 }
 #ifdef ZH
 }
-#endif
+#endif // ZH
 
 #ifdef ZH
 /// Move data from dialog controls to object
-#endif
+#endif // ZH
 void MapObjectProps::_StoppingDistanceToDict(void)
 {
 	getAllSelectedDicts();
@@ -2444,7 +2444,7 @@ void MapObjectProps::_StoppingDistanceToDict(void)
 #ifdef ZH
   if ( pDoc != NULL )
   {
-#endif
+#endif // ZH
 	Dict newDict;
 	newDict.setReal(TheKey_objectStoppingDistance, value);
 	DictItemUndoable *pUndo = new DictItemUndoable(m_allSelectedDicts.begin(), newDict, newDict.getNthKey(0), m_allSelectedDicts.size(), pDoc, true);
@@ -2530,13 +2530,13 @@ void MapObjectProps::OnRemoveprop()
 		CWorldBuilderDoc* pDoc = CWorldBuilderDoc::GetActiveDoc();
 		Dict newDict;	// empty dict
 		DictItemUndoable *pUndo = new DictItemUndoable(&m_dictToEdit, newDict, k);
-#endif
+#endif // ZH
 	pDoc->AddAndDoUndoable(pUndo);
 	REF_PTR_RELEASE(pUndo); // belongs to pDoc now.
 #ifdef OG
 	// Update is called by Do
 
-#endif
+#endif // OG
 #ifdef ZH
 	}
 	else
@@ -2826,7 +2826,7 @@ void MapObjectProps::customizeToDict(void)
       // Update is called by Doc
     }    
   }
-#endif
+#endif // ZH
 }
 #ifdef ZH
 
@@ -2836,24 +2836,24 @@ void MapObjectProps::enabledToDict(void)
   CButton * enabledCheckbox = (CButton *)GetDlgItem(IDC_ENABLED_CHECKBOX);
   if ( enabledCheckbox == NULL )
     return;
-#endif
+#endif // ZH
 
 #ifdef OG
 void MapObjectProps::OnOK()
 
-#endif
+#endif // OG
 #ifdef ZH
   getAllSelectedDicts();
   
   CWorldBuilderDoc* pDoc = CWorldBuilderDoc::GetActiveDoc();
   if ( pDoc != NULL )
-#endif
+#endif // ZH
 {
 #ifdef ZH
     Dict newDict;
     
     newDict.setBool( TheKey_objectSoundAmbientEnabled, enabledCheckbox->GetCheck() != 0 );
-#endif
+#endif // ZH
 
 #ifdef ZH
     DictItemUndoable *pUndo = new DictItemUndoable(m_allSelectedDicts.begin(), newDict, newDict.getNthKey(0), m_allSelectedDicts.size(), pDoc, true);
@@ -2861,7 +2861,7 @@ void MapObjectProps::OnOK()
     REF_PTR_RELEASE(pUndo); // belongs to pDoc now.
     // Update is called by Doc
   }
-#endif
+#endif // ZH
 }
 #ifdef ZH
 
@@ -2871,24 +2871,24 @@ void MapObjectProps::loopingToDict(void)
   CButton * loopingCheckbox = (CButton *)GetDlgItem(IDC_LOOPING_CHECKBOX);
   if ( loopingCheckbox == NULL )
     return;
-#endif
+#endif // ZH
 
 #ifdef OG
 void MapObjectProps::OnCancel()
 
-#endif
+#endif // OG
 #ifdef ZH
   getAllSelectedDicts();
   
   CWorldBuilderDoc* pDoc = CWorldBuilderDoc::GetActiveDoc();
   if ( pDoc != NULL )
-#endif
+#endif // ZH
 {
 #ifdef ZH
     Dict newDict;
     
     newDict.setBool( TheKey_objectSoundAmbientLooping, loopingCheckbox->GetCheck() != 0 );
-#endif
+#endif // ZH
 
 #ifdef ZH
     DictItemUndoable *pUndo = new DictItemUndoable(m_allSelectedDicts.begin(), newDict, newDict.getNthKey(0), m_allSelectedDicts.size(), pDoc, true);
@@ -2896,7 +2896,7 @@ void MapObjectProps::OnCancel()
     REF_PTR_RELEASE(pUndo); // belongs to pDoc now.
     // Update is called by Doc
   }
-#endif
+#endif // ZH
 }
 #ifdef ZH
 
@@ -2906,20 +2906,20 @@ void MapObjectProps::loopCountToDict(void)
   CEdit * loopCountEdit = (CEdit *)GetDlgItem(IDC_LOOPCOUNT_EDIT);
   if ( loopCountEdit == NULL )
     return;
-#endif
+#endif // ZH
 
 #ifdef ZH
   getAllSelectedDicts();
-#endif
+#endif // ZH
 
 #ifdef OG
 void MapObjectProps::ShowZOffset(MapObject *pMapObj)
 
-#endif
+#endif // OG
 #ifdef ZH
   CWorldBuilderDoc* pDoc = CWorldBuilderDoc::GetActiveDoc();
   if ( pDoc != NULL )
-#endif
+#endif // ZH
 {
 #ifdef OG
 	const Coord3D *loc = pMapObj->getLocation();
@@ -2929,7 +2929,7 @@ void MapObjectProps::ShowZOffset(MapObject *pMapObj)
 	CWnd* edit = GetDlgItem(IDC_MAPOBJECT_ZOffset);
 	edit->SetWindowText(buff);
 
-#endif
+#endif // OG
 #ifdef ZH
     Dict newDict;
 
@@ -2943,13 +2943,13 @@ void MapObjectProps::ShowZOffset(MapObject *pMapObj)
     REF_PTR_RELEASE(pUndo); // belongs to pDoc now.
     // Update is called by Doc
   }
-#endif
+#endif // ZH
 }
 
 #ifdef OG
 void MapObjectProps::SetZOffset(void)
 
-#endif
+#endif // OG
 #ifdef ZH
 /// Move data from dialog controls to object(s)
 void MapObjectProps::minVolumeToDict(void)
@@ -2962,7 +2962,7 @@ void MapObjectProps::minVolumeToDict(void)
   
   CWorldBuilderDoc* pDoc = CWorldBuilderDoc::GetActiveDoc();
   if ( pDoc != NULL )
-#endif
+#endif // ZH
 {
 #ifdef OG
 	Real value = 0.0f;
@@ -2972,7 +2972,7 @@ void MapObjectProps::minVolumeToDict(void)
 	if (!cstr.IsEmpty()) {
 		value = atof(cstr);
 
-#endif
+#endif // OG
 #ifdef ZH
     Dict newDict;
     
@@ -2987,12 +2987,12 @@ void MapObjectProps::minVolumeToDict(void)
     REF_PTR_RELEASE(pUndo); // belongs to pDoc now.
     // Update is called by Doc
   }
-#endif
+#endif // ZH
 	}
 #ifdef OG
 	m_height = value;
 
-#endif
+#endif // OG
 #ifdef ZH
 
 /// Move data from dialog controls to object(s)
@@ -3004,12 +3004,12 @@ void MapObjectProps::volumeToDict(void)
   
   getAllSelectedDicts();
   
-#endif
+#endif // ZH
 	CWorldBuilderDoc* pDoc = CWorldBuilderDoc::GetActiveDoc();
 #ifdef OG
 	ModifyObjectUndoable *pUndo = new ModifyObjectUndoable(pDoc);
 
-#endif
+#endif // OG
 #ifdef ZH
   if ( pDoc != NULL )
   {
@@ -3022,15 +3022,15 @@ void MapObjectProps::volumeToDict(void)
     newDict.setReal( TheKey_objectSoundAmbientVolume, INT_TO_REAL( atoi( volumeString ) ) / 100.0f );
     
     DictItemUndoable *pUndo = new DictItemUndoable(m_allSelectedDicts.begin(), newDict, newDict.getNthKey(0), m_allSelectedDicts.size(), pDoc, true);
-#endif
+#endif // ZH
 	pDoc->AddAndDoUndoable(pUndo);
 #ifdef OG
 	pUndo->SetZOffset(value);
-#endif
+#endif // OG
 	REF_PTR_RELEASE(pUndo); // belongs to pDoc now.
 #ifdef ZH
     // Update is called by Doc
-#endif
+#endif // ZH
 }
 #ifdef ZH
 }
@@ -3041,18 +3041,18 @@ void MapObjectProps::minRangeToDict(void)
   CEdit * minRangeEdit = (CEdit *)GetDlgItem(IDC_MIN_RANGE_EDIT);
   if ( minRangeEdit == NULL )
     return;
-#endif
+#endif // ZH
 
 #ifdef OG
 void MapObjectProps::ShowAngle(MapObject *pMapObj)
 
-#endif
+#endif // OG
 #ifdef ZH
   getAllSelectedDicts();
   
   CWorldBuilderDoc* pDoc = CWorldBuilderDoc::GetActiveDoc();
   if ( pDoc != NULL )
-#endif
+#endif // ZH
 {
 #ifdef OG
 	m_angle = pMapObj->getAngle() * 180 / PI;
@@ -3061,7 +3061,7 @@ void MapObjectProps::ShowAngle(MapObject *pMapObj)
 	CWnd* edit = GetDlgItem(IDC_MAPOBJECT_Angle);
 	edit->SetWindowText(buff);
 
-#endif
+#endif // OG
 #ifdef ZH
     Dict newDict;
     
@@ -3069,14 +3069,14 @@ void MapObjectProps::ShowAngle(MapObject *pMapObj)
     minRangeEdit->GetWindowText(minRangeString);
     
     newDict.setReal( TheKey_objectSoundAmbientMinRange, INT_TO_REAL( atoi( minRangeString ) ) );
-#endif
+#endif // ZH
 
 #ifdef ZH
     DictItemUndoable *pUndo = new DictItemUndoable(m_allSelectedDicts.begin(), newDict, newDict.getNthKey(0), m_allSelectedDicts.size(), pDoc, true);
     pDoc->AddAndDoUndoable(pUndo);
     REF_PTR_RELEASE(pUndo); // belongs to pDoc now.
     // Update is called by Doc
-#endif
+#endif // ZH
 }
 #ifdef ZH
 }
@@ -3089,16 +3089,16 @@ void MapObjectProps::maxRangeToDict(void)
     return;
   
   getAllSelectedDicts();
-#endif
+#endif // ZH
 
 #ifdef OG
 void MapObjectProps::SetAngle(void)
 
-#endif
+#endif // OG
 #ifdef ZH
   CWorldBuilderDoc* pDoc = CWorldBuilderDoc::GetActiveDoc();
   if ( pDoc != NULL )
-#endif
+#endif // ZH
 {
 #ifdef OG
 	Real angle = 0.0f;
@@ -3108,7 +3108,7 @@ void MapObjectProps::SetAngle(void)
 	if (!cstr.IsEmpty()) {
 		angle = atof(cstr);
 
-#endif
+#endif // OG
 #ifdef ZH
     Dict newDict;
     
@@ -3122,12 +3122,12 @@ void MapObjectProps::SetAngle(void)
     REF_PTR_RELEASE(pUndo); // belongs to pDoc now.
     // Update is called by Doc
   }
-#endif
+#endif // ZH
 	}
 #ifdef OG
 	m_angle = angle;
 
-#endif
+#endif // OG
 #ifdef ZH
 
 /// Move data from dialog controls to object(s)
@@ -3139,12 +3139,12 @@ void MapObjectProps::priorityToDict(void)
   
   getAllSelectedDicts();
   
-#endif
+#endif // ZH
 	CWorldBuilderDoc* pDoc = CWorldBuilderDoc::GetActiveDoc();
 #ifdef OG
 	ModifyObjectUndoable *pUndo = new ModifyObjectUndoable(pDoc);
 
-#endif
+#endif // OG
 #ifdef ZH
   if ( pDoc != NULL )
   {
@@ -3153,11 +3153,11 @@ void MapObjectProps::priorityToDict(void)
     newDict.setInt( TheKey_objectSoundAmbientPriority, priorityComboBox->GetCurSel() );
     
     DictItemUndoable *pUndo = new DictItemUndoable(m_allSelectedDicts.begin(), newDict, newDict.getNthKey(0), m_allSelectedDicts.size(), pDoc, true);
-#endif
+#endif // ZH
 	pDoc->AddAndDoUndoable(pUndo);
 #ifdef OG
 	pUndo->RotateTo(angle * PI/180);
-#endif
+#endif // OG
 	REF_PTR_RELEASE(pUndo); // belongs to pDoc now.
 #ifdef ZH
     // Update is called by Doc
@@ -3496,7 +3496,7 @@ void MapObjectProps::dictToEnabled()
       enableCheckbox->SetCheck( 1 );
       return;
     }
-#endif
+#endif // ZH
 }
 
 #ifdef ZH
@@ -3923,7 +3923,7 @@ void MapObjectProps::OnCancel()
   // Make sure CPropertySheet functions don't close the window
 }
 
-#endif
+#endif // ZH
 void MapObjectProps::getAllSelectedDicts(void)
 {
 	m_allSelectedDicts.clear();
@@ -3957,11 +3957,11 @@ void MapObjectProps::getAllSelectedDicts(void)
 #ifdef OG
 void MapObjectProps::GetPopSliderInfo(const long sliderID, long *pMin, long *pMax, long *pLineSize, long *pInitial)
 
-#endif
+#endif // OG
 #ifdef ZH
 /// Move data from dialog controls to object
 void MapObjectProps::OnScaleOn() 
-#endif
+#endif // ZH
 {
 #ifdef OG
 	switch (sliderID) {
@@ -3985,21 +3985,21 @@ void MapObjectProps::OnScaleOn()
 			DEBUG_CRASH(("Slider message from unknown control"));
 			break;
 	}	// switch
-#endif
+#endif // OG
 #ifdef ZH
   _ScaleToDict();
 
-#endif
+#endif // ZH
 }
 
 #ifdef OG
 void MapObjectProps::PopSliderChanged(const long sliderID, long theVal)
 
-#endif
+#endif // OG
 #ifdef ZH
 /// Move data from dialog controls to object
 void MapObjectProps::OnScaleOff() 
-#endif
+#endif // ZH
 {
 #ifdef OG
 	CWorldBuilderDoc* pDoc = CWorldBuilderDoc::GetActiveDoc();
@@ -4022,11 +4022,11 @@ void MapObjectProps::OnScaleOff()
 			if (!m_posUndoable) {
 				m_posUndoable = new ModifyObjectUndoable(pDoc);
 				pDoc->AddAndDoUndoable(m_posUndoable);
-#endif
+#endif // OG
 #ifdef ZH
   _ScaleToDict();
 
-#endif
+#endif // ZH
 			}
 #ifdef OG
 			m_posUndoable->RotateTo(theVal * PI/180);
@@ -4035,7 +4035,7 @@ void MapObjectProps::OnScaleOff()
 			edit = GetDlgItem(IDC_MAPOBJECT_Angle);
 			edit->SetWindowText(buff);
 			break;
-#endif
+#endif // OG
 
 #ifdef OG
 		default:
@@ -4046,12 +4046,12 @@ void MapObjectProps::OnScaleOff()
 }
 
 void MapObjectProps::PopSliderFinished(const long sliderID, long theVal)
-#endif
+#endif // OG
 #ifdef ZH
 /// Move data from dialog controls to object
 void MapObjectProps::OnKillfocusMAPOBJECTXYPosition() 
 
-#endif
+#endif // ZH
 {
 #ifdef OG
 	switch (sliderID) {
@@ -4067,10 +4067,10 @@ void MapObjectProps::OnKillfocusMAPOBJECTXYPosition()
 			break;
 	}	// switch
 
-#endif
+#endif // OG
 #ifdef ZH
   SetPosition();
 
-#endif
+#endif // ZH
 }
 

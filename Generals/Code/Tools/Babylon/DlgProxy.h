@@ -28,48 +28,48 @@
 
 #ifdef OG
 class CNoxstringDlg;
-#endif
+#endif // OG
 #ifdef ZH
 class CBabylonDlg;
-#endif
+#endif // ZH
 
 /////////////////////////////////////////////////////////////////////////////
 #ifdef OG
 // CNoxstringDlgAutoProxy command target
-#endif
+#endif // OG
 #ifdef ZH
 // CBabylonDlgAutoProxy command target
-#endif
+#endif // ZH
 
 #ifdef OG
 class CNoxstringDlgAutoProxy : public CCmdTarget
-#endif
+#endif // OG
 #ifdef ZH
 class CBabylonDlgAutoProxy : public CCmdTarget
-#endif
+#endif // ZH
 {
 #ifdef OG
 	DECLARE_DYNCREATE(CNoxstringDlgAutoProxy)
-#endif
+#endif // OG
 #ifdef ZH
 	DECLARE_DYNCREATE(CBabylonDlgAutoProxy)
-#endif
+#endif // ZH
 
 #ifdef OG
 	CNoxstringDlgAutoProxy();           // protected constructor used by dynamic creation
-#endif
+#endif // OG
 #ifdef ZH
 	CBabylonDlgAutoProxy();           // protected constructor used by dynamic creation
-#endif
+#endif // ZH
 
 // Attributes
 public:
 #ifdef OG
 	CNoxstringDlg* m_pDialog;
-#endif
+#endif // OG
 #ifdef ZH
 	CBabylonDlg* m_pDialog;
-#endif
+#endif // ZH
 
 // Operations
 public:
@@ -78,10 +78,10 @@ public:
 	// ClassWizard generated virtual function overrides
 #ifdef OG
 	//{{AFX_VIRTUAL(CNoxstringDlgAutoProxy)
-#endif
+#endif // OG
 #ifdef ZH
 	//{{AFX_VIRTUAL(CBabylonDlgAutoProxy)
-#endif
+#endif // ZH
 	public:
 	virtual void OnFinalRelease();
 	//}}AFX_VIRTUAL
@@ -90,36 +90,36 @@ public:
 protected:
 #ifdef OG
 	virtual ~CNoxstringDlgAutoProxy();
-#endif
+#endif // OG
 #ifdef ZH
 	virtual ~CBabylonDlgAutoProxy();
-#endif
+#endif // ZH
 
 	// Generated message map functions
 #ifdef OG
 	//{{AFX_MSG(CNoxstringDlgAutoProxy)
-#endif
+#endif // OG
 #ifdef ZH
 	//{{AFX_MSG(CBabylonDlgAutoProxy)
-#endif
+#endif // ZH
 		// NOTE - the ClassWizard will add and remove member functions here.
 	//}}AFX_MSG
 
 	DECLARE_MESSAGE_MAP()
 #ifdef OG
 	DECLARE_OLECREATE(CNoxstringDlgAutoProxy)
-#endif
+#endif // OG
 #ifdef ZH
 	DECLARE_OLECREATE(CBabylonDlgAutoProxy)
-#endif
+#endif // ZH
 
 	// Generated OLE dispatch map functions
 #ifdef OG
 	//{{AFX_DISPATCH(CNoxstringDlgAutoProxy)
-#endif
+#endif // OG
 #ifdef ZH
 	//{{AFX_DISPATCH(CBabylonDlgAutoProxy)
-#endif
+#endif // ZH
 		// NOTE - the ClassWizard will add and remove member functions here.
 	//}}AFX_DISPATCH
 	DECLARE_DISPATCH_MAP()

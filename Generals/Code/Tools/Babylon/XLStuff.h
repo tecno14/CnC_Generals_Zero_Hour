@@ -26,10 +26,10 @@
 
 #ifdef OG
 #include "noxstringDlg.h"
-#endif
+#endif // OG
 #ifdef ZH
 #include "BabylonDlg.h"
-#endif
+#endif // ZH
 typedef enum {
     xlAll = -4104,
     xlAutomatic = -4105,

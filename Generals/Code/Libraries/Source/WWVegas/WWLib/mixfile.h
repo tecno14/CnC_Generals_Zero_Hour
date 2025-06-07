@@ -26,24 +26,24 @@
  *                                                                                             * 
 #ifdef OG
  *                      $Author:: Patrick                                                     $* 
-#endif
+#endif // OG
 #ifdef ZH
  *                      $Author:: Steve_t                                                     $*
-#endif
+#endif // ZH
  *                                                                                             * 
 #ifdef OG
  *                     $Modtime:: 8/06/01 3:14p                                               $* 
-#endif
+#endif // OG
 #ifdef ZH
  *                     $Modtime:: 9/07/01 5:29p                                               $*
-#endif
+#endif // ZH
  *                                                                                             * 
 #ifdef OG
  *                    $Revision:: 3                                                           $* 
-#endif
+#endif // OG
 #ifdef ZH
  *                    $Revision:: 4                                                           $*
-#endif
+#endif // ZH
  *                                                                                             * 
  *---------------------------------------------------------------------------------------------* 
  * Functions:                                                                                  * 
@@ -77,10 +77,10 @@ public:
 	MixFileFactoryClass( const char * mix_filename, FileFactoryClass * factory );
 #ifdef OG
 	~MixFileFactoryClass( void );
-#endif
+#endif // OG
 #ifdef ZH
 	virtual ~MixFileFactoryClass( void );
-#endif
+#endif // ZH
 
 	//
 	//	Inherited
@@ -94,7 +94,7 @@ public:
 	bool		Build_Filename_List (DynamicVectorClass<StringClass> &list);
 #ifdef ZH
 	bool		Build_Ordered_Filename_List (DynamicVectorClass<StringClass> &list);		// ordered by offset in mixfile
-#endif
+#endif // ZH
 	bool		Build_Internal_Filename_List (void)									{ return Build_Filename_List (FilenameList); }
 	void		Get_Filename_List (DynamicVectorClass<StringClass> **list)	{ *list = &FilenameList; }
 	void		Get_Filename_List (DynamicVectorClass<StringClass> &list)	{ list = FilenameList; }
@@ -119,7 +119,7 @@ private:
 	bool		Get_Temp_Filename (const char *path, StringClass &full_path);
 #ifdef ZH
 	static int	File_Offset_Compare(const void * a, const void * b);
-#endif
+#endif // ZH
 
 	struct FileInfoStruct {
 		bool operator== (const FileInfoStruct &src)	{ return false; }

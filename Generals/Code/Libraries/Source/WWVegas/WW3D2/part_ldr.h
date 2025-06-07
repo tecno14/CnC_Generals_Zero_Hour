@@ -146,7 +146,7 @@ class ParticleEmitterDefClass
 		float						Get_Vel_Inherit (void) const			{ return m_InfoV2.VelInherit; }
 #ifdef ZH
 		float						Get_Future_Start_Time (void) const	{ return m_ExtraInfo.FutureStartTime; }
-#endif
+#endif // ZH
 
 		virtual void			Set_Render_Mode (int mode)						{ m_InfoV2.RenderMode = mode; } // values in w3d_file.h
 		virtual void			Set_Frame_Mode (int mode)						{ m_InfoV2.FrameMode = mode; } // values in w3d_file.h 
@@ -164,7 +164,7 @@ class ParticleEmitterDefClass
 		virtual void			Set_Vel_Inherit (float value)					{ m_InfoV2.VelInherit = value; }
 #ifdef ZH
 		virtual void			Set_Future_Start_Time (float value)			{ m_ExtraInfo.FutureStartTime = value; }
-#endif
+#endif // ZH
 
 		void						Get_Shader (ShaderClass &shader) const		{ W3dUtilityClass::Convert_Shader (m_InfoV2.Shader, &shader); }
 		virtual void			Set_Shader (const ShaderClass &shader)		{ W3dUtilityClass::Convert_Shader (shader, &m_InfoV2.Shader); }
@@ -187,7 +187,7 @@ class ParticleEmitterDefClass
 		virtual void			Get_Frame_Keyframes (ParticlePropertyStruct<float> &frameframes) const;
 #ifdef ZH
 		virtual void			Get_Blur_Time_Keyframes (ParticlePropertyStruct<float> &blurtimeframes) const;
-#endif
+#endif // ZH
 		virtual float			Get_Initial_Orientation_Random (void) const { return m_InitialOrientationRandom; }
 
 		virtual void			Set_Color_Keyframes (ParticlePropertyStruct<Vector3> &keyframes);
@@ -197,7 +197,7 @@ class ParticleEmitterDefClass
 		virtual void			Set_Frame_Keyframes (ParticlePropertyStruct<float> &keyframes);
 #ifdef ZH
 		virtual void			Set_Blur_Time_Keyframes (ParticlePropertyStruct<float> &keyframes);
-#endif
+#endif // ZH
 
 		//
 		//	User data accessors
@@ -256,7 +256,7 @@ class ParticleEmitterDefClass
 #ifdef ZH
 		virtual WW3DErrorType	Read_Blur_Time_Keyframes (ChunkLoadClass &chunk_load);
 		virtual WW3DErrorType	Read_Extra_Info (ChunkLoadClass &chunk_load);
-#endif
+#endif // ZH
 
 		virtual bool				Read_Color_Keyframe (ChunkLoadClass &chunk_load, float *key_time, Vector3 *value);
 		virtual bool				Read_Opacity_Keyframe (ChunkLoadClass &chunk_load, float *key_time, float *value);
@@ -276,7 +276,7 @@ class ParticleEmitterDefClass
 #ifdef ZH
 		virtual WW3DErrorType	Save_Blur_Time_Keyframes (ChunkSaveClass & chunk_save);
 		virtual WW3DErrorType	Save_Extra_Info (ChunkSaveClass & chunk_save);
-#endif
+#endif // ZH
 
 		virtual WW3DErrorType	Save_Color_Keyframes (ChunkSaveClass &chunk_save);
 		virtual WW3DErrorType	Save_Opacity_Keyframes (ChunkSaveClass &chunk_save);
@@ -313,7 +313,7 @@ class ParticleEmitterDefClass
 		W3dEmitterInfoStructV2				m_InfoV2;
 #ifdef ZH
 		W3dEmitterExtraInfoStruct			m_ExtraInfo;
-#endif
+#endif // ZH
 		W3dEmitterLinePropertiesStruct	m_LineProperties;
 		ParticlePropertyStruct<Vector3>	m_ColorKeyframes;
 		ParticlePropertyStruct<float>		m_OpacityKeyframes;
@@ -323,7 +323,7 @@ class ParticleEmitterDefClass
 		ParticlePropertyStruct<float>		m_FrameKeyframes;
 #ifdef ZH
 		ParticlePropertyStruct<float>		m_BlurTimeKeyframes;
-#endif
+#endif // ZH
 		Vector3Randomizer *					m_pCreationVolume;
 		Vector3Randomizer *					m_pVelocityRandomizer;
 };

@@ -181,7 +181,7 @@ public:
 	void makeRandomOffsetWithinFootprint(Coord3D& pt) const;
 #ifdef ZH
 	void makeRandomOffsetOnPerimeter(Coord3D& pt) const; //Chooses a random point on the extent border.
-#endif
+#endif // ZH
 
 	void clipPointToFootprint(const Coord3D& geomCenter, Coord3D& ptToClip) const;
 

@@ -54,7 +54,7 @@ RailedTransportDockUpdateModuleData::RailedTransportDockUpdateModuleData( void )
 	m_pushOutsideDurationInFrames = 0;
 #ifdef ZH
 	m_toleranceDistance = 50.0f;
-#endif
+#endif // ZH
 }  // end RailedTransportDockUpdateModuleData
 
 // ------------------------------------------------------------------------------------------------
@@ -70,7 +70,7 @@ RailedTransportDockUpdateModuleData::RailedTransportDockUpdateModuleData( void )
 		{ "PushOutsideDuration",INI::parseDurationUnsignedInt, NULL, offsetof( RailedTransportDockUpdateModuleData, m_pushOutsideDurationInFrames ) },
 #ifdef ZH
 		{ "ToleranceDistance",  INI::parseReal,								 NULL, offsetof( RailedTransportDockUpdateModuleData, m_toleranceDistance ) },
-#endif
+#endif // ZH
 		{ 0, 0, 0, 0 }
 
 	};
@@ -148,7 +148,7 @@ Bool RailedTransportDockUpdate::action( Object *docker, Object *drone )
 		// hold the object so physics doesn't mess with it anymore
 		docker->setDisabled( DISABLED_HELD );
 
-#endif
+#endif // OG
 		//
 		// given the amount of time we want it to take to "pull" the object inside, figure out
 		// how much distance it should traverse towards our center every frame
@@ -164,7 +164,7 @@ Bool RailedTransportDockUpdate::action( Object *docker, Object *drone )
 		Real mag = v.length();
 #ifdef ZH
 		const RailedTransportDockUpdateModuleData *modData = getRailedTransportDockUpdateModuleData();
-#endif
+#endif // ZH
 
 #ifdef ZH
 		//Are we close enough to even be able to get sucked in?
@@ -179,11 +179,11 @@ Bool RailedTransportDockUpdate::action( Object *docker, Object *drone )
 			// hold the object so physics doesn't mess with it anymore
 			docker->setDisabled( DISABLED_HELD );
 
-#endif
+#endif // ZH
 		// now that we know how far we must go, now much distance should we travel every frame
 #ifdef OG
 		const RailedTransportDockUpdateModuleData *modData = getRailedTransportDockUpdateModuleData();
-#endif
+#endif // OG
 		m_pullInsideDistancePerFrame = mag / modData->m_pullInsideDurationInFrames;
 
 		// orient docker so its facing toward the transport
@@ -193,7 +193,7 @@ Bool RailedTransportDockUpdate::action( Object *docker, Object *drone )
 		docker->setOrientation( angleVector.toAngle() );
 #ifdef ZH
 		}
-#endif
+#endif // ZH
 		
 	}  // end if	
 
@@ -431,10 +431,10 @@ void RailedTransportDockUpdate::doPushOutDocking( void )
 				// we can now be selected by the player again
 #ifdef OG
 				unloader->clearStatus( OBJECT_STATUS_UNSELECTABLE );
-#endif
+#endif // OG
 #ifdef ZH
 				unloader->clearStatus( MAKE_OBJECT_STATUS_MASK( OBJECT_STATUS_UNSELECTABLE ) );
-#endif
+#endif // ZH
 
 				// tell the unloader to move to one of the dock positions and out of the way
 				Drawable *draw = us->getDrawable();

@@ -40,10 +40,10 @@ class VerifyDlg : public CDialog
 	CStatic				*text;
 #ifdef OG
 	NoxText				*nox_text;
-#endif
+#endif // OG
 #ifdef ZH
 	BabylonText				*babylon_text;
-#endif
+#endif // ZH
 	LANGINFO			*linfo;
 	UINT					timer;
 	char					wavefile[1024];
@@ -52,10 +52,10 @@ class VerifyDlg : public CDialog
 public:
 #ifdef OG
 	VerifyDlg(NoxText *ntext, LangID langid, const char *path, CWnd* pParent = NULL);   // standard constructor
-#endif
+#endif // OG
 #ifdef ZH
 	VerifyDlg(BabylonText *ntext, LangID langid, const char *path, CWnd* pParent = NULL);   // standard constructor
-#endif
+#endif // ZH
 	void CloseAudio ( void );
 
 // Dialog Data

@@ -49,7 +49,7 @@
 //#pragma MESSAGE("************************************** WARNING, optimization disabled for debugging purposes")
 #endif
 
-#endif
+#endif // ZH
 //-------------------------------------------------------------------------------------------------
 //-------------------------------------------------------------------------------------------------
 void AssistedTargetingUpdateModuleData::buildFieldParse(MultiIniFieldParse& p) 
@@ -62,11 +62,11 @@ void AssistedTargetingUpdateModuleData::buildFieldParse(MultiIniFieldParse& p)
 #ifdef OG
 		{ "LaserFromAssisted",		INI::parseThingTemplate,				NULL, offsetof( AssistedTargetingUpdateModuleData, m_laserFromAssisted ) },
 		{ "LaserToTarget",				INI::parseThingTemplate,				NULL, offsetof( AssistedTargetingUpdateModuleData, m_laserToTarget ) },
-#endif
+#endif // OG
 #ifdef ZH
 		{ "LaserFromAssisted",		INI::parseAsciiString,				NULL, offsetof( AssistedTargetingUpdateModuleData, m_laserFromAssistedName ) },
 		{ "LaserToTarget",				INI::parseAsciiString,				NULL, offsetof( AssistedTargetingUpdateModuleData, m_laserToTargetName ) },
-#endif
+#endif // ZH
 		{ 0, 0, 0, 0 }
 	};
   p.add(dataFieldParse);
@@ -79,11 +79,11 @@ AssistedTargetingUpdate::AssistedTargetingUpdate( Thing *thing, const ModuleData
 #ifdef OG
 	setWakeFrame(getObject(), UPDATE_SLEEP_FOREVER);
 
-#endif
+#endif // OG
 #ifdef ZH
 	m_laserFromAssisted = NULL;
 	m_laserToTarget = NULL;
-#endif
+#endif // ZH
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -123,13 +123,13 @@ void AssistedTargetingUpdate::assistAttack( const Object *requestingObject, Obje
 		makeFeedbackLaser( md->m_laserFromAssisted, requestingObject, me );
 	if( md->m_laserToTarget )
 		makeFeedbackLaser( md->m_laserToTarget, me, victimObject );
-#endif
+#endif // OG
 #ifdef ZH
 	if( m_laserFromAssisted )
 		makeFeedbackLaser( m_laserFromAssisted, requestingObject, me );
 	if( m_laserToTarget )
 		makeFeedbackLaser( m_laserToTarget, me, victimObject );
-#endif
+#endif // ZH
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -148,7 +148,7 @@ void AssistedTargetingUpdate::makeFeedbackLaser( const ThingTemplate *laserTempl
 	// Give it a good basis in reality to ensure it can draw when on screen.
 	laser->setPosition(from->getPosition());
 	
-#endif
+#endif // ZH
 	Drawable *draw = laser->getDrawable();
 	static const NameKeyType key_LaserUpdate = NAMEKEY( "LaserUpdate" );
 	LaserUpdate *update = (LaserUpdate*)draw->findClientUpdateModule( key_LaserUpdate );
@@ -163,11 +163,11 @@ void AssistedTargetingUpdate::makeFeedbackLaser( const ThingTemplate *laserTempl
 			Objects as args instead of positions.
 	*/
 	update->initLaser( getObject(), from->getPosition(), to->getPosition() );
-#endif
+#endif // OG
 #ifdef ZH
 	update->initLaser( getObject(), to, from->getPosition(), to->getPosition(), "" );
 
-#endif
+#endif // ZH
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -182,7 +182,7 @@ UpdateSleepTime AssistedTargetingUpdate::update( void )
 
 	m_laserToTarget =TheThingFactory->findTemplate( d->m_laserFromAssistedName );
 
-#endif
+#endif // ZH
 	return UPDATE_SLEEP_FOREVER;
 }
 
@@ -225,7 +225,7 @@ void AssistedTargetingUpdate::loadPostProcess( void )
 
 	m_laserFromAssisted = TheThingFactory->findTemplate( d->m_laserFromAssistedName );
 	m_laserToTarget =TheThingFactory->findTemplate( d->m_laserFromAssistedName );
-#endif
+#endif // ZH
 
 	// extend base class
 	UpdateModule::loadPostProcess();

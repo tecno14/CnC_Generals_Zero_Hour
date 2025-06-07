@@ -280,4 +280,4 @@ void Shd6BumpSpecClass::Copy_Vertex_Stream
 }
 
 
-#endif
+#endif // ZH

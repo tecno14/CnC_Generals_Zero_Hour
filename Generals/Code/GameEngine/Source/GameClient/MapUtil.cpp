@@ -153,10 +153,10 @@ static Bool ParseObjectDataChunk(DataChunkInput &file, DataChunkInfo *info, void
 	pThisOne = newInstance( MapObject )( loc, name, angle, flags, &d, 
 #ifdef OG
 														TheThingFactory->findTemplate( name ) );
-#endif
+#endif // OG
 #ifdef ZH
 														TheThingFactory->findTemplate( name, FALSE ) );
-#endif
+#endif // ZH
 
 //DEBUG_LOG(("obj %s owner %s\n",name.str(),d.getAsciiString(TheKey_originalOwner).str()));
 
@@ -425,12 +425,12 @@ void MapCache::writeCacheINI( Bool userDir )
 #ifdef OG
 			fprintf(fp, "  displayName = %s\n", UnicodeStringToQuotedPrintable(md.m_displayName).str());
 
-#endif
+#endif // OG
 #ifdef ZH
 // BAD AND NOW UNUSED:  the mapcache.ini should not contain localized data... using the lookup tag instead
 //			fprintf(fp, "  displayName = %s\n", UnicodeStringToQuotedPrintable(md.m_displayName).str());
 			fprintf(fp, "  nameLookupTag = %s\n", md.m_nameLookupTag.str());
-#endif
+#endif // ZH
 
 			Coord3D pos;
 			WaypointMap::iterator itw = md.m_waypoints.begin();
@@ -687,7 +687,7 @@ Bool MapCache::addMap( AsciiString dirName, AsciiString fname, FileInfo *fileInf
 				}
 			}
 			else
-#endif
+#endif // ZH
 		{
 #ifdef ZH
 				// official maps with name tags
@@ -699,7 +699,7 @@ Bool MapCache::addMap( AsciiString dirName, AsciiString fname, FileInfo *fileInf
 					(*this)[lowerFname].m_displayName.concat(extension);
 				}
 			}
-#endif
+#endif // ZH
 //			DEBUG_LOG(("MapCache::addMap - found match for map %s\n", lowerFname.str()));
 			return FALSE;	// OK, it checks out.
 		}
@@ -733,7 +733,7 @@ Bool MapCache::addMap( AsciiString dirName, AsciiString fname, FileInfo *fileInf
 	AsciiString munkee = worldDict.getAsciiString(TheKey_mapName, &exists);
 #ifdef ZH
 	md.m_nameLookupTag = munkee;
-#endif
+#endif // ZH
 	if (!exists || munkee.isEmpty())
 	{
 		DEBUG_LOG(("Missing TheKey_mapName!\n"));
@@ -827,7 +827,7 @@ Int populateMapListboxNoReset( GameWindow *listbox, Bool useSystemMaps, Bool isM
 	const Image *brutalImage = NULL;
 #ifdef ZH
 	const Image *maxBrutalImage = NULL;
-#endif
+#endif // ZH
 	SkirmishBattleHonors *battleHonors = NULL;
 	Int w = 10, h = 10;
 	if (numColumns > 1)
@@ -837,7 +837,7 @@ Int populateMapListboxNoReset( GameWindow *listbox, Bool useSystemMaps, Bool isM
 		brutalImage = TheMappedImageCollection->findImageByName("Star-Gold");
 #ifdef ZH
 		maxBrutalImage = TheMappedImageCollection->findImageByName("RedYell_Star");
-#endif
+#endif // ZH
 		battleHonors = new SkirmishBattleHonors;
 
 		w = (brutalImage)?brutalImage->getImageWidth():10;
@@ -916,7 +916,7 @@ typedef MapDisplayToFileNameList::iterator MapDisplayToFileNameListIter;
 				++tempit;
 				continue;
 			}
-#endif
+#endif // ZH
 
 			DEBUG_ASSERTCRASH(it != TheMapCache->end(), ("Map %s not found in map cache.", *tempit));
 			if (it->first.startsWithNoCase(mapDir.str()) && isMultiplayer == it->second.m_isMultiplayer && !it->second.m_displayName.isEmpty())
@@ -935,7 +935,7 @@ typedef MapDisplayToFileNameList::iterator MapDisplayToFileNameListIter;
 					{
 						int maxBrutalSlots = it->second.m_numPlayers - 1;
 						if (numBrutal == maxBrutalSlots)
-#endif
+#endif // ZH
 					{
 #ifdef ZH
 							index = GadgetListBoxAddEntryImage( listbox, maxBrutalImage, index, 0, w, h, TRUE);
@@ -944,14 +944,14 @@ typedef MapDisplayToFileNameList::iterator MapDisplayToFileNameListIter;
 						else	
 						{
 							index = GadgetListBoxAddEntryImage( listbox, brutalImage, index, 0, w, h, TRUE);
-#endif
+#endif // ZH
 						imageItemData = 3;
 #ifdef OG
 						index = GadgetListBoxAddEntryImage( listbox, brutalImage, index, 0, w, h, TRUE);
-#endif
+#endif // OG
 #ifdef ZH
 						}
-#endif
+#endif // ZH
 					}
 					else if (numMedium)
 					{
@@ -1081,18 +1081,18 @@ AsciiString getDefaultMap( Bool isMultiplayer )
 	return AsciiString::TheEmptyString;
 }
 
-#endif
+#endif // ZH
 
 #ifdef ZH
 AsciiString getDefaultOfficialMap()
 {
 	if(!TheMapCache)
-#endif
+#endif // ZH
 	return AsciiString::TheEmptyString;
 #ifdef OG
 }  // end isValidMap
 
-#endif
+#endif // OG
 #ifdef ZH
 	TheMapCache->updateCache();
 
@@ -1120,7 +1120,7 @@ Bool isOfficialMap( AsciiString mapName )
 	return FALSE;
 }
 
-#endif
+#endif // ZH
 
 const MapMetaData *MapCache::findMap(AsciiString mapName)
 {
@@ -1247,10 +1247,10 @@ Image *getMapPreviewImage( AsciiString mapName )
 		{
 #ifdef OG
 			image = TheMappedImageCollection->newImage();
-#endif
+#endif // OG
 #ifdef ZH
     	image = newInstance(Image);
-#endif
+#endif // ZH
 			image->setName(tempName);
 			//image->setFullPath("mission.tga");
 			image->setFilename(name);
@@ -1265,7 +1265,7 @@ Image *getMapPreviewImage( AsciiString mapName )
 			image->setTextureWidth(128);
 #ifdef ZH
 			TheMappedImageCollection->addImage(image);
-#endif
+#endif // ZH
 		}
 		else
 		{

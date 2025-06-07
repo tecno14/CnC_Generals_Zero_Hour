@@ -99,10 +99,10 @@ CashHackSpecialPower::~CashHackSpecialPower( void )
 // ------------------------------------------------------------------------------------------------
 #ifdef OG
 void CashHackSpecialPower::doSpecialPowerAtLocation( const Coord3D *loc, UnsignedInt commandOptions )
-#endif
+#endif // OG
 #ifdef ZH
 void CashHackSpecialPower::doSpecialPowerAtLocation( const Coord3D *loc, Real angle, UnsignedInt commandOptions )
-#endif
+#endif // ZH
 {
 	if (getObject()->isDisabled())
 		return;

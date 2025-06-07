@@ -545,10 +545,10 @@ void BuddyThreadClass::connectCallback( GPConnection *con, GPConnectResponseArg 
 			req.peerRequestType = PeerRequest::PEERREQUEST_LOGIN;
 #ifdef OG
 			req.nick = m_nick;
-#endif
+#endif // OG
 #ifdef ZH
 			req.nick = m_nick.c_str();
-#endif
+#endif // ZH
 			req.password = m_pass;
 			req.email = m_email;
 			req.login.profileID = arg->profile;

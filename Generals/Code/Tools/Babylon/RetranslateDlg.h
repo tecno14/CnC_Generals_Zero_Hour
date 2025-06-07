@@ -38,11 +38,11 @@ public:
 #ifdef OG
 	NoxText *newtext;
 	NoxText *oldtext;
-#endif
+#endif // OG
 #ifdef ZH
 	BabylonText *newtext;
 	BabylonText *oldtext;
-#endif
+#endif // ZH
 
 	RetranslateDlg(CWnd* pParent = NULL);   // standard constructor
 

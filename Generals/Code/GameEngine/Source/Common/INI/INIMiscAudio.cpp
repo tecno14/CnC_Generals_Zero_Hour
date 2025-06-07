@@ -66,7 +66,7 @@ const FieldParse MiscAudio::m_fieldParseTable[] =
 #ifdef ZH
 	{ "SabotageShutDownBuilding",							INI::parseAudioEventRTS, NULL, offsetof( MiscAudio, m_sabotageShutDownBuilding ) },
 	{ "SabotageResetTimeBuilding",						INI::parseAudioEventRTS, NULL, offsetof( MiscAudio, m_sabotageResetTimerBuilding ) },
-#endif
+#endif // ZH
 	{ "AircraftWheelScreech",									INI::parseAudioEventRTS, NULL, offsetof( MiscAudio, m_aircraftWheelScreech ) },
 	
 	{ 0, 0, 0, 0 }

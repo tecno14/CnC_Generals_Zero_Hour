@@ -143,7 +143,7 @@ public:
 #ifdef OG
 	AIGuardInnerState( StateMachine *machine ) : State( machine, "AIGuardInner" ) { }
 
-#endif
+#endif // OG
 #ifdef ZH
 	AIGuardInnerState( StateMachine *machine ) : State( machine, "AIGuardInner" ) 
 	{ 
@@ -151,7 +151,7 @@ public:
 		m_enterState = 0;
 	}
 	virtual Bool isAttack() const { return m_attackState ? m_attackState->isAttack() : FALSE; }
-#endif
+#endif // ZH
 	virtual StateReturnType onEnter( void );
 	virtual StateReturnType update( void );
 	virtual void onExit( StateExitType status );
@@ -167,7 +167,7 @@ private:
 	AIAttackState *m_attackState;
 #ifdef ZH
 	AIEnterState *m_enterState;
-#endif
+#endif // ZH
 };
 EMPTY_DTOR(AIGuardInnerState)
 
@@ -180,7 +180,7 @@ public:
 #ifdef ZH
 	virtual Bool isAttack() const { return FALSE; }
 	virtual Bool isGuardIdle() const { return TRUE; }
-#endif
+#endif // ZH
 	virtual StateReturnType onEnter( void );
 	virtual StateReturnType update( void );
 	virtual void onExit( StateExitType status );
@@ -208,7 +208,7 @@ public:
 	}
 #ifdef ZH
 	virtual Bool isAttack() const { return m_attackState ? m_attackState->isAttack() : FALSE; }
-#endif
+#endif // ZH
 	virtual StateReturnType onEnter( void );
 	virtual StateReturnType update( void );
 	virtual void onExit( StateExitType status );
@@ -238,7 +238,7 @@ public:
 	}
 #ifdef ZH
 	virtual Bool isAttack() const { return FALSE; }
-#endif
+#endif // ZH
 	virtual StateReturnType onEnter( void );
 	virtual StateReturnType update( void );
 	virtual void onExit( StateExitType status );
@@ -261,7 +261,7 @@ public:
 	AIGuardPickUpCrateState( StateMachine *machine );
 #ifdef ZH
 	virtual Bool isAttack() const { return FALSE; }
-#endif
+#endif // ZH
 	virtual StateReturnType onEnter( void );
 	virtual StateReturnType update( void );
 	virtual void onExit( StateExitType status );
@@ -276,7 +276,7 @@ public:
 	AIGuardAttackAggressorState( StateMachine *machine );
 #ifdef ZH
 	virtual Bool isAttack() const { return m_attackState ? m_attackState->isAttack() : FALSE; }
-#endif
+#endif // ZH
 	virtual StateReturnType onEnter( void );
 	virtual StateReturnType update( void );
 	virtual void onExit( StateExitType status );

@@ -76,7 +76,7 @@ static const FieldParse TheGlobalLanguageDataFieldParseTable[] =
 	{ "MilitaryCaptionTitleFont",		GlobalLanguage::parseFontDesc,	NULL,	offsetof( GlobalLanguage, m_militaryCaptionTitleFont) },
 #ifdef ZH
 	{ "MilitaryCaptionDelayMS",					INI::parseInt,					NULL,		offsetof( GlobalLanguage, m_militaryCaptionDelayMS ) },
-#endif
+#endif // ZH
 	{ "MilitaryCaptionFont",			GlobalLanguage::parseFontDesc,	NULL,	offsetof( GlobalLanguage, m_militaryCaptionFont) },
 	{ "SuperweaponCountdownNormalFont",	GlobalLanguage::parseFontDesc,	NULL,	offsetof( GlobalLanguage, m_superweaponCountdownNormalFont) },
 	{ "SuperweaponCountdownReadyFont",	GlobalLanguage::parseFontDesc,	NULL,	offsetof( GlobalLanguage, m_superweaponCountdownReadyFont) },
@@ -121,7 +121,7 @@ GlobalLanguage::GlobalLanguage()
 	m_resolutionFontSizeAdjustment = 0.7f;
 #ifdef ZH
 	m_militaryCaptionDelayMS = 750;
-#endif
+#endif // ZH
 	//End Add
 }
 

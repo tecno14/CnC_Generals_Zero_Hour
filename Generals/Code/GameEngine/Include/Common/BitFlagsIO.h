@@ -152,7 +152,7 @@ template <size_t NUMBITS>
 }
 
 //-------------------------------------------------------------------------------------------------
-#endif
+#endif // ZH
 /** Xfer method
 	* Version Info:
 	* 1: Initial version */

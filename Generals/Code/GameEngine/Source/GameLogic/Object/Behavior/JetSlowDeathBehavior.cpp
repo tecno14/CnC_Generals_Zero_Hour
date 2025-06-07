@@ -156,10 +156,10 @@ void JetSlowDeathBehavior::onDie( const DamageInfo *damageInfo )
 	// if the jet is on the ground we do just our ground fx death
 #ifdef OG
 	if( us->isSignificantlyAboveTerrain() == FALSE )
-#endif
+#endif // OG
 #ifdef ZH
 	if( us->isSignificantlyAboveTerrain() == FALSE || us->getStatusBits().test( OBJECT_STATUS_DECK_HEIGHT_OFFSET ) )
-#endif
+#endif // ZH
 	{
 		const JetSlowDeathBehaviorModuleData *modData = getJetSlowDeathBehaviorModuleData();
 		
@@ -183,7 +183,7 @@ void JetSlowDeathBehavior::onDie( const DamageInfo *damageInfo )
 #ifdef ZH
 
 	getObject()->clearStatus( MAKE_OBJECT_STATUS_MASK( OBJECT_STATUS_DECK_HEIGHT_OFFSET ) );
-#endif
+#endif // ZH
 
 }  // end onDie
 

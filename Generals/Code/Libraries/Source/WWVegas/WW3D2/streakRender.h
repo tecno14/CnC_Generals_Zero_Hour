@@ -50,7 +50,7 @@ class SphereClass;
 struct W3dEmitterLinePropertiesStruct;
 #ifdef ZH
 struct VertexFormatXYZUV1;
-#endif
+#endif // ZH
 
 // The maximum allowable level of subdivision. This should be no more than 7 to avoid increasing
 // the chunk buffer size too much
@@ -94,11 +94,11 @@ public:
 #ifdef OG
 	float					Get_Texture_Tile_Factor(void) const					{ return TextureTileFactor; }
 	Vector2				Get_UV_Offset_Rate(void) const;
-#endif
+#endif // OG
 #ifdef ZH
 	// float					Get_Texture_Tile_Factor(void) const					{ return TextureTileFactor; }
 	// Vector2				Get_UV_Offset_Rate(void) const;
-#endif
+#endif // ZH
 	int					Is_Merge_Intersections(void) const					{ return Bits & MERGE_INTERSECTIONS; }
 	int					Is_Freeze_Random(void) const							{ return Bits & FREEZE_RANDOM; }
 	int					Is_Sorting_Disabled(void) const						{ return Bits & DISABLE_SORTING; }
@@ -115,13 +115,13 @@ public:
 #ifdef OG
 	void					Set_Current_Subdivision_Level(unsigned int lv)	{ SubdivisionLevel = lv; }
 
-#endif
+#endif // OG
 #ifdef ZH
 	void					Set_Current_Subdivision_Level(unsigned int lv)	{
 		DEBUG_ASSERTCRASH(lv == 0, ("Streak renderer does not work for non-zero subdivisions"));
 		SubdivisionLevel = lv; SubdivisionLevel = 0;
 	}
-#endif
+#endif // ZH
 	void					Set_Texture_Mapping_Mode(TextureMapMode mode);
 	// WARNING! Do NOT set the tile factor to be too high (should be less than 8) or negative
 	//performance impact will result!
@@ -129,12 +129,12 @@ public:
 	void					Set_Texture_Tile_Factor(float factor);
 	void					Set_Current_UV_Offset(const Vector2 & offset);
 	void					Set_UV_Offset_Rate(const Vector2 &rate);
-#endif
+#endif // OG
 #ifdef ZH
 	// void					Set_Texture_Tile_Factor(float factor);
 	// void					Set_Current_UV_Offset(const Vector2 & offset);
 	// void					Set_UV_Offset_Rate(const Vector2 &rate);
-#endif
+#endif // ZH
 	void					Set_Merge_Intersections(int onoff)					{ if (onoff) { Bits |= MERGE_INTERSECTIONS; } else { Bits &= ~MERGE_INTERSECTIONS; }; }
 	void					Set_Freeze_Random(int onoff)							{ if (onoff) { Bits |= FREEZE_RANDOM; } else { Bits &= ~FREEZE_RANDOM; }; }
 	void					Set_Disable_Sorting(int onoff)						{ if (onoff) { Bits |= DISABLE_SORTING; } else { Bits &= ~DISABLE_SORTING; }; }
@@ -186,22 +186,22 @@ private:
 	// the entire line, or both.
 #ifdef OG
 	float								TextureTileFactor;
-#endif
+#endif // OG
 #ifdef ZH
 	// float								TextureTileFactor;
-#endif
+#endif // ZH
 
 	// Used for texture coordinate animation
 #ifdef OG
 	unsigned int					LastUsedSyncTime;		// Last sync time used	
 	Vector2							CurrentUVOffset;		// Current UV offset
 	Vector2							UVOffsetDeltaPerMS;	// Amount to increase offset each millisec
-#endif
+#endif // OG
 #ifdef ZH
 	// unsigned int					LastUsedSyncTime;		// Last sync time used	
 	// Vector2							CurrentUVOffset;		// Current UV offset
 	// Vector2							UVOffsetDeltaPerMS;	// Amount to increase offset each millisec
-#endif
+#endif // ZH
 	
 	// Various flags
 	enum BitShiftOffsets {
@@ -227,7 +227,7 @@ private:
 	VertexFormatXYZUV1 *getVertexBuffer(unsigned int number);
   unsigned int m_vertexBufferSize;
   VertexFormatXYZUV1 *m_vertexBuffer;
-#endif
+#endif // ZH
 };
 
 
@@ -249,7 +249,7 @@ inline Vector2 StreakRendererClass::Get_UV_Offset_Rate(void) const
 	return UVOffsetDeltaPerMS * 1000.0f;
 }
 
-#endif
+#endif // OG
 #ifdef ZH
 // inline Vector2 StreakRendererClass::Get_UV_Offset_Rate(void) const
 // {	
@@ -260,21 +260,21 @@ inline Vector2 StreakRendererClass::Get_UV_Offset_Rate(void) const
 // {
 // 	UVOffsetDeltaPerMS = rate * 0.001f;
 // }
-#endif
+#endif // ZH
 
 #ifdef OG
 inline void StreakRendererClass::Set_UV_Offset_Rate(const Vector2 &rate)
-#endif
+#endif // OG
 #ifdef ZH
 inline void StreakRendererClass::Reset_Line(void)
-#endif
+#endif // ZH
 {
 #ifdef OG
 	UVOffsetDeltaPerMS = rate * 0.001f;
-#endif
+#endif // OG
 #ifdef ZH
 	// Empty
-#endif
+#endif // ZH
 }
 
 #endif //STREAKRENDER_H

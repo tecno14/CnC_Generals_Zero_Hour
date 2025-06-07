@@ -317,7 +317,7 @@ public:
   void flattenTerrain(Object *obj);  ///< Flatten the terrain under a building.
 #ifdef ZH
   void createCraterInTerrain(Object *obj);  ///< Flatten the terrain under a building.
-#endif
+#endif // ZH
 
 protected:
 

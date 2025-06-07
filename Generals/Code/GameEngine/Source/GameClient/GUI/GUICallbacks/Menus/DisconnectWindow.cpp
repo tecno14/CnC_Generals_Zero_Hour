@@ -41,7 +41,7 @@
 #include "Common/NameKeyGenerator.h"
 #ifdef OG
 #include "GameNetwork/GameInfo.h"
-#endif
+#endif // OG
 
 // Private Data -----------------------------
 static WindowLayout *disconnectMenuLayout;
@@ -144,7 +144,7 @@ void ShowDisconnectWindow( void )
 	}
 	else
 	{
-#endif
+#endif // OG
 		buttonVotePlayer1Window->winEnable(TRUE);
 		buttonVotePlayer2Window->winEnable(TRUE);
 		buttonVotePlayer3Window->winEnable(TRUE);
@@ -154,7 +154,7 @@ void ShowDisconnectWindow( void )
 		buttonVotePlayer7Window->winEnable(TRUE);
 #ifdef OG
 	}
-#endif
+#endif // OG
 	buttonQuitWindow->winEnable(TRUE);
 	disconnectMenuLayout->bringForward();
 

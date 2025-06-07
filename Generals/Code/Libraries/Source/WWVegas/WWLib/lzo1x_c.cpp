@@ -368,4 +368,4 @@ int lzo1x_1_compress     ( const lzo_byte * in, lzo_uint  in_len,
 vi:ts=4
 */
 
-#endif
+#endif // ZH

@@ -109,7 +109,7 @@ inline UnsignedInt calcHashForLowercaseString(const char* p)
 	return result;
 }
 
-#endif
+#endif // ZH
 //------------------------------------------------------------------------------------------------- 
 AsciiString NameKeyGenerator::keyToName(NameKeyType key)
 {
@@ -229,7 +229,7 @@ void NameKeyGenerator::parseStringAsNameKeyType( INI *ini, void *instance, void 
   *(NameKeyType *)store = TheNameKeyGenerator->nameToKey( ini->getNextToken() );
 }
 
-#endif
+#endif // ZH
 
 //------------------------------------------------------------------------------------------------- 
 NameKeyType StaticNameKey::key() const

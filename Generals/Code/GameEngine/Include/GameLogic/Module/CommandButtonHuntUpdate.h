@@ -81,7 +81,7 @@ protected:
 	UpdateSleepTime huntWeapon(AIUpdateInterface *ai);
 #ifdef ZH
 	UpdateSleepTime huntEnter( AIUpdateInterface *ai );
-#endif
+#endif // ZH
 
 
 protected:

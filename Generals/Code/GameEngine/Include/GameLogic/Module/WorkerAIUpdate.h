@@ -79,7 +79,7 @@ public:
  	AudioEventRTS m_suppliesDepletedVoice;						///< Sound played when I take the last box.
 #ifdef ZH
 	Int m_upgradedSupplyBoost;
-#endif
+#endif // ZH
 
 	WorkerAIUpdateModuleData()
 	{
@@ -92,7 +92,7 @@ public:
 		m_warehouseScanDistance = 100;
 #ifdef ZH
 		m_upgradedSupplyBoost = 0;
-#endif
+#endif // ZH
 	}
 
 	static void buildFieldParse(MultiIniFieldParse& p) 
@@ -111,7 +111,7 @@ public:
  			{ "SuppliesDepletedVoice", INI::parseAudioEventRTS, NULL, offsetof( WorkerAIUpdateModuleData, m_suppliesDepletedVoice) },
 #ifdef ZH
  			{ "UpgradedSupplyBoost", INI::parseInt, NULL, offsetof( WorkerAIUpdateModuleData, m_upgradedSupplyBoost) },
-#endif
+#endif // ZH
 			{ 0, 0, 0, 0 }
 		};
     p.add(dataFieldParse);
@@ -221,7 +221,7 @@ public:
 #ifdef ZH
 	
 	virtual Int getUpgradedSupplyBoost() const;
-#endif
+#endif // ZH
 	
 protected:
 

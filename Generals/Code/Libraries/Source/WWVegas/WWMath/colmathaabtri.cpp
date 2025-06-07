@@ -28,17 +28,17 @@
  *                                                                                             *
 #ifdef OG
  *                     $Modtime:: 5/08/01 9:52a                                               $*
-#endif
+#endif // OG
 #ifdef ZH
  *                     $Modtime:: 1/15/02 2:46p                                               $*
-#endif
+#endif // ZH
  *                                                                                             *
 #ifdef OG
  *                    $Revision:: 17                                                          $*
-#endif
+#endif // OG
 #ifdef ZH
  *                    $Revision:: 19                                                          $*
-#endif
+#endif // ZH
  *                                                                                             *
  *---------------------------------------------------------------------------------------------*
  * Functions:                                                                                  *
@@ -516,19 +516,19 @@ static inline void aabtri_compute_contact_normal
 #ifdef OG
 			set_norm = *CollisionContext.Tri->N;
 
-#endif
+#endif // OG
 #ifdef ZH
 			set_norm = CollisionContext.N;
 			set_norm.Normalize();
-#endif
+#endif // ZH
 			break;
 		case AXIS_N:
 #ifdef OG
 			set_norm = -CollisionContext.Side * *CollisionContext.Tri->N;
-#endif
+#endif // OG
 #ifdef ZH
 			set_norm = -CollisionContext.Side * CollisionContext.N;
-#endif
+#endif // ZH
 			set_norm.Normalize();
 			break;
 		case AXIS_A0:
@@ -584,11 +584,11 @@ static inline void aabtri_compute_contact_normal
 #ifdef OG
 	set_norm = *CollisionContext.Tri.N;
 
-#endif
+#endif // OG
 #ifdef ZH
 	set_norm = *CollisionContext.N;
 	set_norm.Normalize();
-#endif
+#endif // ZH
 	if (Vector3::Dot_Product(set_norm,CollisionContext.Move) > 0.0f) {
 		set_norm = -(set_norm);
 	}
@@ -864,11 +864,11 @@ exit:
 #ifdef OG
 #pragma message("fatal assert disabled for demo")
 			//WWASSERT(WWMath::Fabs(result->Normal.Length() - 1.0f) < WWMATH_EPSILON);
-#endif
+#endif // OG
 #ifdef ZH
 			WWASSERT(WWMath::Fabs(result->Normal.Length() - 1.0f) < WWMATH_EPSILON);
 
-#endif
+#endif // ZH
 		}
 				
 		result->Fraction = CollisionContext.MaxFrac;

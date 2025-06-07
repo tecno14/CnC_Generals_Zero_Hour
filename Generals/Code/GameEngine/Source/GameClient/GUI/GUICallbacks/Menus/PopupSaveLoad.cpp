@@ -341,7 +341,7 @@ WindowMsgHandledType SaveLoadMenuInput( GameWindow *window, UnsignedInt msg, Win
 						listboxGames->winEnable( TRUE );
 						buttonFrame->winEnable( TRUE );
 
-#endif
+#endif // ZH
 						TheWindowManager->winSendSystemMsg( window, GBM_SELECTED, 
 																								(WindowMsgData)button, buttonBackKey );
 
@@ -477,7 +477,7 @@ static void setEditDescription( GameWindow *editControl )
 				defaultDesc.removeLastChar();
 			}
 		}
-#endif
+#endif // ZH
 
 	}  // end else
 

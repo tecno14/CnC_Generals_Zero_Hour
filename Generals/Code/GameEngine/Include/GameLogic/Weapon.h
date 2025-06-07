@@ -120,10 +120,10 @@ enum WeaponAffectsMaskType
 
 #ifdef OG
 #ifdef DEFINE_WEAPONAFFECTSMASK_NAMES
-#endif
+#endif // OG
 #ifdef ZH
 //#ifdef DEFINE_WEAPONAFFECTSMASK_NAMES ; Removed protection so other clases can use these strings... not sure why this was protected in the 1st place
-#endif
+#endif // ZH
 static const char *TheWeaponAffectsMaskNames[] = 
 {
 	"SELF",
@@ -137,10 +137,10 @@ static const char *TheWeaponAffectsMaskNames[] =
 };
 #ifdef OG
 #endif
-#endif
+#endif // OG
 #ifdef ZH
 //#endif
-#endif
+#endif // ZH
 
 //-------------------------------------------------------------------------------------------------
 enum WeaponCollideMaskType
@@ -216,7 +216,7 @@ enum WeaponBonusConditionType
 	WEAPONBONUSCONDITION_FRENZY_ONE,
 	WEAPONBONUSCONDITION_FRENZY_TWO,
 	WEAPONBONUSCONDITION_FRENZY_THREE,
-#endif
+#endif // ZH
 
 	WEAPONBONUSCONDITION_COUNT
 };
@@ -257,7 +257,7 @@ static const char *TheWeaponBonusNames[] =
 	"FRENZY_TWO",
 	"FRENZY_THREE",
 
-#endif
+#endif // ZH
 	NULL
 };
 #endif
@@ -384,10 +384,10 @@ public:
 		Int specificBarrelToUse, 
 #ifdef OG
 		const Object *victimObj, 
-#endif
+#endif // OG
 #ifdef ZH
 		Object *victimObj, 
-#endif
+#endif // ZH
 		const Coord3D* victimPos, 
 		const WeaponBonus& bonus,
 		Bool isProjectileDetonation,
@@ -396,11 +396,11 @@ public:
 #ifdef OG
 		ObjectID* projectileID
 
-#endif
+#endif // OG
 #ifdef ZH
 		ObjectID* projectileID,
 		Bool inflictDamage
-#endif
+#endif // ZH
 	) const;
 
 	/**
@@ -433,14 +433,14 @@ public:
 	inline Real getShockWaveRadius() const { return m_shockWaveRadius; }
 	inline Real getShockWaveTaperOff() const { return m_shockWaveTaperOff; }
 
-#endif
+#endif // ZH
 	inline Real getRequestAssistRange() const {return m_requestAssistRange;}
 	inline AsciiString getName() const { return m_name; }
 	inline AsciiString getProjectileStreamName() const { return m_projectileStreamName; }
 	inline AsciiString getLaserName() const { return m_laserName; }
 #ifdef ZH
 	inline const AsciiString& getLaserBoneName() const { return m_laserBoneName; }
-#endif
+#endif // ZH
 	inline NameKeyType getNameKey() const { return m_nameKey; }
 	inline Real getWeaponSpeed() const { return m_weaponSpeed; }
 	inline Real getMinWeaponSpeed() const { return m_minWeaponSpeed; }
@@ -450,11 +450,11 @@ public:
 	inline Real getMaxTargetPitch() const { return m_maxTargetPitch; }
 #ifdef ZH
 	inline Real getRadiusDamageAngle() const { return m_radiusDamageAngle; }
-#endif
+#endif // ZH
 	inline DamageType getDamageType() const { return m_damageType; }
 #ifdef ZH
 	inline ObjectStatusTypes getDamageStatusType() const { return m_damageStatusType; }
-#endif
+#endif // ZH
 	inline DeathType getDeathType() const { return m_deathType; }
 	inline Real getContinueAttackRange() const { return m_continueAttackRange; }
 	inline Real getInfantryInaccuracyDist() const { return m_infantryInaccuracyDist; }
@@ -493,7 +493,7 @@ public:
 	inline Bool isPlayFXWhenStealthed() const { return m_playFXWhenStealthed; }
 #ifdef ZH
 	inline Bool getDieOnDetonate() const { return m_dieOnDetonate; }
-#endif
+#endif // ZH
 
 	Bool shouldProjectileCollideWith(
 		const Object* projectileLauncher, 
@@ -527,7 +527,7 @@ private:
 	AsciiString m_laserName;								///< Name of the laser object that persists.
 #ifdef ZH
 	AsciiString m_laserBoneName;						///< Where to put the laser object
-#endif
+#endif // ZH
 	Real m_primaryDamage;										///< primary damage amount
 	Real m_primaryDamageRadius;							///< primary damage radius range
 	Real m_secondaryDamage;									///< secondary damage amount
@@ -536,7 +536,7 @@ private:
 	Real m_shockWaveAmount;									///( How much shockwave generated 
 	Real m_shockWaveRadius;									///( How far shockwave effect affects objects
 	Real m_shockWaveTaperOff;								///( How much shockwave is left at the tip of the shockwave radius
-#endif
+#endif // ZH
 	Real m_attackRange;											///< max distance the weapon can deal damage
 	Real m_minimumAttackRange;							///< Min distance the weapon should be fired from
 	Real m_requestAssistRange;							///< My object will look this far around to get people to join in the attack.
@@ -554,7 +554,7 @@ private:
 	Real m_maxTargetPitch;									///< max pitch from source->victim allowable in order to target
 #ifdef ZH
 	Real m_radiusDamageAngle;								///< Damage is directional, so max defelection of straight at target (cone) you do damage
-#endif
+#endif // ZH
 	AsciiString m_projectileName;																			///< if projectile, object name to "fire"
 	const ThingTemplate* m_projectileTmpl;														///< direct access to projectile object type to "fire"
 	AsciiString m_fireOCLNames[LEVEL_COUNT];														///< Name of OCL to create at firing
@@ -596,12 +596,12 @@ private:
 	Real m_infantryInaccuracyDist;					///< When this weapon is used against infantry, it can randomly miss by as much as this distance.
 #ifdef ZH
 	ObjectStatusTypes m_damageStatusType;		///< If our damage is Status damage, the status we apply
-#endif
+#endif // ZH
 	UnsignedInt m_suspendFXDelay;						///< The fx can be suspended for any delay, in frames, then they will execute as normal
 #ifdef ZH
 	Bool m_dieOnDetonate;
 
-#endif
+#endif // ZH
 	mutable HistoricWeaponDamageList m_historicDamage;
 };  
 
@@ -639,17 +639,17 @@ public:
 
 #ifdef OG
 	void fireProjectileDetonationWeapon(const Object *source, Object *target, WeaponBonusConditionFlags extraBonusFlags);
-#endif
+#endif // OG
 #ifdef ZH
 	void fireProjectileDetonationWeapon(const Object *source, Object *target, WeaponBonusConditionFlags extraBonusFlags, Bool inflictDamage = TRUE );
-#endif
+#endif // ZH
 
 #ifdef OG
 	void fireProjectileDetonationWeapon(const Object *source, const Coord3D* pos, WeaponBonusConditionFlags extraBonusFlags);
-#endif
+#endif // OG
 #ifdef ZH
 	void fireProjectileDetonationWeapon(const Object *source, const Coord3D* pos, WeaponBonusConditionFlags extraBonusFlags, Bool inflictDamage = TRUE );
-#endif
+#endif // ZH
 
 	void preFireWeapon( const Object *source, const Object *victim );
 
@@ -675,7 +675,7 @@ public:
 #ifdef ZH
 	
 	void onWeaponBonusChange(const Object *source);///< Our Object's weapon bonus changed, so we need to update to reflect that instead of waiting
-#endif
+#endif // ZH
 
 	/** return true if the target is within attack range, false otherwise.
 	*/
@@ -716,7 +716,7 @@ public:
 	UnsignedInt getPreAttackFinishedFrame() const { return m_whenPreAttackFinished; }
 #ifdef ZH
 	UnsignedInt getLastReloadStartedFrame() const { return m_whenLastReloadStarted; }
-#endif
+#endif // ZH
 	Real getPercentReadyToFire() const;
 
 	// do not ever use this unless you are weaponset.cpp
@@ -727,7 +727,7 @@ public:
 
 	//Transfer the reload times and status from the passed in weapon.
 	void transferNextShotStatsFrom( const Weapon &weapon );
-#endif
+#endif // ZH
 
 	// we must pass the source object for these (and for ANY FUTURE ADDITIONS)
 	// so that we can take the source's weapon bonuses, if any, into account.
@@ -740,10 +740,10 @@ public:
 
 #ifdef OG
 	void newProjectileFired( const Object *sourceObj, const Object *projectile );///<I just made this projectile and may need to keep track of it 
-#endif
+#endif // OG
 #ifdef ZH
 	void newProjectileFired( const Object *sourceObj, const Object *projectile, const Object *victimObj, const Coord3D *victimPos );///<I just made this projectile and may need to keep track of it 
-#endif
+#endif // ZH
 	
 	Bool isLaser() const { return m_template->getLaserName().isNotEmpty(); }
 	void createLaser( const Object *sourceObj, const Object *victimObj, const Coord3D *victimPos );
@@ -777,10 +777,10 @@ public:
 
 #ifdef OG
 	UnsignedInt getClipReloadTime(const Object *source) const;
-#endif
+#endif // OG
 #ifdef ZH
 	Int getClipReloadTime(const Object *source) const;
-#endif
+#endif // ZH
 
 	Real getPrimaryDamageRadius(const Object *source) const;
 
@@ -845,11 +845,11 @@ protected:
 #ifdef OG
 		ObjectID* projectileID
 
-#endif
+#endif // OG
 #ifdef ZH
 		ObjectID* projectileID,
 		Bool inflictDamage
-#endif
+#endif // ZH
 	);
 	Real estimateWeaponDamage(const Object *sourceObj, const Object *victimObj, const Coord3D* victimPos);
 	void reloadWithBonus(const Object *source, const WeaponBonus& bonus, Bool loadInstantly);
@@ -923,10 +923,10 @@ public:
 	
 #ifdef OG
 	void handleProjectileDetonation(const WeaponTemplate* w, const Object *source, const Coord3D* pos, WeaponBonusConditionFlags extraBonusFlags);
-#endif
+#endif // OG
 #ifdef ZH
 	void handleProjectileDetonation( const WeaponTemplate* w, const Object *source, const Coord3D* pos, WeaponBonusConditionFlags extraBonusFlags, Bool inflictDamage = TRUE );
-#endif
+#endif // ZH
 	
 	static void parseWeaponTemplateDefinition(INI* ini);
 

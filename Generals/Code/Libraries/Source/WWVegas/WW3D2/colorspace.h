@@ -24,33 +24,33 @@
  *                                                                                             *
 #ifdef OG
  *                     $Archive:: /VSS_Sync/ww3d2/colorspace.h                                $*
-#endif
+#endif // OG
 #ifdef ZH
  *                     $Archive::                                                             $*
-#endif
+#endif // ZH
  *                                                                                             *
  *              Original Author:: Hector Yee                                                   *
  *                                                                                             *
 #ifdef OG
  *                      $Author:: Vss_sync                                                    $*
-#endif
+#endif // OG
 #ifdef ZH
  *                      $Author::                                                             $*
-#endif
+#endif // ZH
  *                                                                                             *
 #ifdef OG
  *                     $Modtime:: 8/29/01 9:50p                                               $*
-#endif
+#endif // OG
 #ifdef ZH
  *                     $Modtime::                                                             $*
-#endif
+#endif // ZH
  *                                                                                             *
 #ifdef OG
  *                    $Revision:: 1                                                           $*
-#endif
+#endif // OG
 #ifdef ZH
  *                    $Revision::                                                             $*
-#endif
+#endif // ZH
  *                                                                                             *
  *---------------------------------------------------------------------------------------------*
  * Functions:                                                                                  *
@@ -65,7 +65,7 @@
 
 #ifdef ZH
 #include "dx8wrapper.h"
-#endif
+#endif // ZH
 #include <wwmath.h>
 
 void RGB_To_HSV(Vector3 &hsv,const Vector3 &rgb);
@@ -177,7 +177,7 @@ inline void Recolor(unsigned& rgba, const Vector3 &hsv_shift)
 	Vector4 rgba_v = DX8Wrapper::Convert_Color(rgba);
 	Recolor((Vector3&)rgba_v, hsv_shift);
 	rgba = DX8Wrapper::Convert_Color(rgba_v);
-#endif
+#endif // ZH
 }
 
 

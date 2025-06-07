@@ -810,4 +810,4 @@ void W3DTerrainBackground::drawVisiblePolys(RenderInfoClass & rinfo, Bool disabl
 
 
 
-#endif
+#endif // ZH

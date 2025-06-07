@@ -63,7 +63,7 @@ RankInfoStore::~RankInfoStore()
 }
 
 //-----------------------------------------------------------------------------
-#endif
+#endif // ZH
 void RankInfoStore::init()
 {
 	DEBUG_ASSERTCRASH(m_rankInfos.empty(), ("Hmm"));

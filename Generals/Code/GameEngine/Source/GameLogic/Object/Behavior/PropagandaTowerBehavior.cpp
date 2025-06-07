@@ -51,7 +51,7 @@
 //#pragma MESSAGE("************************************** WARNING, optimization disabled for debugging purposes")
 #endif
 
-#endif
+#endif // ZH
 // FORWARD REFERENCES /////////////////////////////////////////////////////////////////////////////
 enum ObjectID;
 
@@ -91,7 +91,7 @@ PropagandaTowerBehaviorModuleData::PropagandaTowerBehaviorModuleData( void )
 	m_upgradedPulseFX = NULL;
 #ifdef ZH
 	m_affectsSelf = FALSE;
-#endif
+#endif // ZH
 
 }  // end PropagandaTowerBehaviorModuleData
 
@@ -112,7 +112,7 @@ PropagandaTowerBehaviorModuleData::PropagandaTowerBehaviorModuleData( void )
 		{ "UpgradedPulseFX",				INI::parseFXList,								NULL, offsetof( PropagandaTowerBehaviorModuleData, m_upgradedPulseFX ) },
 #ifdef ZH
 		{ "AffectsSelf",						INI::parseBool,									NULL, offsetof( PropagandaTowerBehaviorModuleData, m_affectsSelf ) },
-#endif
+#endif // ZH
 		{ 0, 0, 0, 0 }
 	};
 
@@ -193,10 +193,10 @@ UpdateSleepTime PropagandaTowerBehavior::update( void )
 	Object *self = getObject();
 #ifdef OG
 	if( BitTest( self->getStatusBits(), OBJECT_STATUS_UNDER_CONSTRUCTION ) )
-#endif
+#endif // OG
 #ifdef ZH
 	if( self->getStatusBits().test( OBJECT_STATUS_UNDER_CONSTRUCTION ) )
-#endif
+#endif // ZH
 		return UPDATE_SLEEP_NONE;
 
 	if( self->testStatus(OBJECT_STATUS_SOLD) )
@@ -484,7 +484,7 @@ void PropagandaTowerBehavior::doScan( void )
 
   if ( doFX )
   {
-#endif
+#endif // ZH
 	// play the right pulse
 	if( upgradePresent == TRUE )
 		FXList::doFXObj( modData->m_upgradedPulseFX, us );
@@ -492,7 +492,7 @@ void PropagandaTowerBehavior::doScan( void )
 		FXList::doFXObj( modData->m_pulseFX, us );
 #ifdef ZH
   }
-#endif
+#endif // ZH
 
 	// setup scan filters
 	PartitionFilterRelationship relationship( us, PartitionFilterRelationship::ALLOW_ALLIES );
@@ -520,11 +520,11 @@ void PropagandaTowerBehavior::doScan( void )
 #ifdef OG
 		// ignore ourselves, as a tower we're not interesting anyway
 		if( obj == us )
-#endif
+#endif // OG
 #ifdef ZH
 		// ignore ourselves, unless Design wants us to affect ourselves
 		if( obj == us  &&  !modData->m_affectsSelf)
-#endif
+#endif // ZH
 			continue;
 
 		// record this object as being in the new "in list"

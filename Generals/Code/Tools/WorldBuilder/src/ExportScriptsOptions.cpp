@@ -31,7 +31,7 @@ Bool ExportScriptsOptions::m_triggers = true;
 Bool ExportScriptsOptions::m_allScripts = false;
 #ifdef ZH
 Bool ExportScriptsOptions::m_sides = true;
-#endif
+#endif // ZH
 
 ExportScriptsOptions::ExportScriptsOptions(CWnd* pParent /*=NULL*/)
 	: CDialog(ExportScriptsOptions::IDD, pParent)
@@ -75,7 +75,7 @@ void ExportScriptsOptions::OnOK()
 	pButton = (CButton*)GetDlgItem(IDC_SIDES);
 	m_sides = pButton->GetCheck()==1;
 
-#endif
+#endif // ZH
 
 	CDialog::OnOK();
 }
@@ -97,7 +97,7 @@ BOOL ExportScriptsOptions::OnInitDialog()
 #ifdef ZH
 	pButton = (CButton*)GetDlgItem(IDC_SIDES);
 	pButton->SetCheck(m_sides?1:0);
-#endif
+#endif // ZH
 	
 	return TRUE;  // return TRUE unless you set the focus to a control
 	              // EXCEPTION: OCX Property Pages should return FALSE

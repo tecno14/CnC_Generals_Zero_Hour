@@ -70,7 +70,7 @@ MinefieldBehaviorModuleData::MinefieldBehaviorModuleData()
 	m_healthPercentToDrainPerSecond = 0.0f;
 #ifdef ZH
 	m_ocl = 0;
-#endif
+#endif // ZH
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -94,7 +94,7 @@ MinefieldBehaviorModuleData::MinefieldBehaviorModuleData()
 		{ "DegenPercentPerSecondAfterCreatorDies", INI::parsePercentToReal,	NULL, offsetof( MinefieldBehaviorModuleData, m_healthPercentToDrainPerSecond ) },
 #ifdef ZH
 		{ "CreationList",	INI::parseObjectCreationList,	NULL,	offsetof( MinefieldBehaviorModuleData, m_ocl ) },
-#endif
+#endif // ZH
 		{ 0, 0, 0, 0 }
 	};
 
@@ -133,10 +133,10 @@ MinefieldBehavior::MinefieldBehavior( Thing *thing, const ModuleData* moduleData
 	// mines aren't auto-acquirable
 #ifdef OG
 	getObject()->setStatus(OBJECT_STATUS_NO_ATTACK_FROM_AI);
-#endif
+#endif // OG
 #ifdef ZH
 	getObject()->setStatus( MAKE_OBJECT_STATUS_MASK( OBJECT_STATUS_NO_ATTACK_FROM_AI ) );
-#endif
+#endif // ZH
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -330,10 +330,10 @@ void MinefieldBehavior::detonateOnce(const Coord3D& position)
 		getObject()->setModelConditionState(MODELCONDITION_RUBBLE);
 #ifdef OG
 		getObject()->setStatus(OBJECT_STATUS_MASKED);
-#endif
+#endif // OG
 #ifdef ZH
 		getObject()->setStatus( MAKE_OBJECT_STATUS_MASK( OBJECT_STATUS_MASKED ) );
-#endif
+#endif // ZH
 	}
 	else
 	{
@@ -341,7 +341,7 @@ void MinefieldBehavior::detonateOnce(const Coord3D& position)
 #ifdef OG
 		getObject()->clearStatus(OBJECT_STATUS_MASKED);
 
-#endif
+#endif // OG
 #ifdef ZH
 		getObject()->clearStatus( MAKE_OBJECT_STATUS_MASK( OBJECT_STATUS_MASKED ) );
 	}
@@ -349,7 +349,7 @@ void MinefieldBehavior::detonateOnce(const Coord3D& position)
 	if (d->m_ocl)
 	{
 		ObjectCreationList::create(d->m_ocl, getObject(), getObject());
-#endif
+#endif // ZH
 	}
 }
 
@@ -524,20 +524,20 @@ void MinefieldBehavior::onDamage( DamageInfo *damageInfo )
 		getObject()->setModelConditionState(MODELCONDITION_RUBBLE);
 #ifdef OG
 		getObject()->setStatus(OBJECT_STATUS_MASKED);
-#endif
+#endif // OG
 #ifdef ZH
 		getObject()->setStatus( MAKE_OBJECT_STATUS_MASK( OBJECT_STATUS_MASKED ) );
-#endif
+#endif // ZH
 	}
 	else
 	{
 		getObject()->clearModelConditionState(MODELCONDITION_RUBBLE);
 #ifdef OG
 		getObject()->clearStatus(OBJECT_STATUS_MASKED);
-#endif
+#endif // OG
 #ifdef ZH
 		getObject()->clearStatus( MAKE_OBJECT_STATUS_MASK( OBJECT_STATUS_MASKED ) );
-#endif
+#endif // ZH
 	}
 }
 
@@ -590,10 +590,10 @@ void MinefieldBehavior::disarm()
 	getObject()->setModelConditionState(MODELCONDITION_RUBBLE);
 #ifdef OG
 	getObject()->setStatus(OBJECT_STATUS_MASKED);
-#endif
+#endif // OG
 #ifdef ZH
 	getObject()->setStatus( MAKE_OBJECT_STATUS_MASK( OBJECT_STATUS_MASKED ) );
-#endif
+#endif // ZH
 }
 
 // ------------------------------------------------------------------------------------------------

@@ -256,7 +256,7 @@ Int ParkingPlaceBehavior::getSpaceIndex( ObjectID id ) const
 }
 
 //-------------------------------------------------------------------------------------------------
-#endif
+#endif // ZH
 ParkingPlaceBehavior::ParkingPlaceInfo* ParkingPlaceBehavior::findPPI(ObjectID id)
 {
 	DEBUG_ASSERTCRASH(id != INVALID_ID, ("call findEmptyPPI instead"));
@@ -363,17 +363,17 @@ Bool ParkingPlaceBehavior::reserveSpace(ObjectID id, Real parkingOffset, Parking
 		}
 	}
 
-#endif
+#endif // ZH
 	if (info) 
 	{
 #ifdef OG
 		const RunwayInfo& rr = m_runways[ppi->m_runway];
 		info->parkingSpace = d->m_parkInHangars ? ppi->m_hangarStart : ppi->m_location;
-#endif
+#endif // OG
 #ifdef ZH
 		calcPPInfo( id, info );
 
-#endif
+#endif // ZH
 		if (parkingOffset != 0.0f)
 		{
 			info->parkingSpace.x += parkingOffset * Cos(ppi->m_orientation);
@@ -398,7 +398,7 @@ void ParkingPlaceBehavior::calcPPInfo( ObjectID id, PPInfo *info )
 	{
 		//Utter failure.
 		return;
-#endif
+#endif // ZH
 		}
 #ifdef ZH
 	const RunwayInfo& rr = m_runways[ ppi->m_runway ];
@@ -407,7 +407,7 @@ void ParkingPlaceBehavior::calcPPInfo( ObjectID id, PPInfo *info )
 	{
 		const ParkingPlaceBehaviorModuleData* d = getParkingPlaceBehaviorModuleData();
 		info->parkingSpace = d->m_parkInHangars ? ppi->m_hangarStart : ppi->m_location;
-#endif
+#endif // ZH
 		info->runwayPrep = ppi->m_prep;
 		info->parkingOrientation = d->m_parkInHangars ? ppi->m_hangarStartOrient : ppi->m_orientation;
 		info->runwayStart = rr.m_start;
@@ -420,11 +420,11 @@ void ParkingPlaceBehavior::calcPPInfo( ObjectID id, PPInfo *info )
 #ifdef OG
 		info->runwayApproach.z = rr.m_end.z + d->m_approachHeight;
 
-#endif
+#endif // OG
 #ifdef ZH
 		info->runwayApproach.z = rr.m_end.z + d->m_approachHeight + d->m_landingDeckHeightOffset;
 		info->runwayExit = info->runwayApproach;
-#endif
+#endif // ZH
 		info->hangarInternal = ppi->m_hangarStart;
 		info->hangarInternalOrient = ppi->m_hangarStartOrient;
 
@@ -434,7 +434,7 @@ void ParkingPlaceBehavior::calcPPInfo( ObjectID id, PPInfo *info )
 		vector.sub( &info->runwayEnd );
 		info->runwayTakeoffDist = vector.length();
 
-#endif
+#endif // ZH
 		for (std::vector<RunwayInfo>::iterator it = m_runways.begin(); it != m_runways.end(); ++it)
 		{
 			if (it->m_inUseBy == id && it->m_wasInLine)
@@ -450,7 +450,7 @@ void ParkingPlaceBehavior::calcPPInfo( ObjectID id, PPInfo *info )
 		pu->setHoldDoorOpen(ppi->m_door, true);
 
 	return true;
-#endif
+#endif // OG
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -470,7 +470,7 @@ void ParkingPlaceBehavior::releaseSpace(ObjectID id)
 				pu->setHoldDoorOpen(it->m_door, false);
 #ifdef ZH
 		}
-#endif
+#endif // ZH
 		}
 #ifdef ZH
 
@@ -478,21 +478,21 @@ void ParkingPlaceBehavior::releaseSpace(ObjectID id)
 	if( obj )
 	{
 		obj->clearStatus( MAKE_OBJECT_STATUS_MASK( OBJECT_STATUS_DECK_HEIGHT_OFFSET ) );
-#endif
+#endif // ZH
 	}
 }
 
 //-------------------------------------------------------------------------------------------------
 #ifdef OG
 ObjectID ParkingPlaceBehavior::getRunwayReservation(Int runway)
-#endif
+#endif // OG
 #ifdef ZH
 ObjectID ParkingPlaceBehavior::getRunwayReservation( Int runway, RunwayReservationType type )
-#endif
+#endif // ZH
 {
 #ifdef ZH
 	//Note: We don't care about type because these runways share the runway for taking off and landing.
-#endif
+#endif // ZH
 	buildInfo();
 	purgeDead();
 	return m_runways[runway].m_inUseBy;
@@ -746,7 +746,7 @@ UpdateSleepTime ParkingPlaceBehavior::update()
 //          if ( objToHeal->isKindOf( KINDOF_PRODUCED_AT_HELIPAD ) )
 //            healInfo.in.m_amount += HEAL_RATE_FRAMES * d->m_extraHealAmount4Helicopters * SECONDS_PER_LOGICFRAME_REAL;
 
-#endif
+#endif // ZH
 					BodyModuleInterface *body = objToHeal->getBodyModule();
 					body->attemptHealing( &healInfo );
 					++it;
@@ -869,7 +869,7 @@ void ParkingPlaceBehavior::exitObjectViaDoor( Object *newObj, ExitDoorType exitD
 #ifdef ZH
 			if( !newObj->isKindOf( KINDOF_PRODUCED_AT_HELIPAD ) )
 			{
-#endif
+#endif // ZH
 			std::vector<Coord3D> exitPath;
 			exitPath.push_back(ppinfo.parkingSpace);
 			ai->aiFollowExitProductionPath( &exitPath, getObject(), CMD_FROM_AI );
@@ -881,7 +881,7 @@ void ParkingPlaceBehavior::exitObjectViaDoor( Object *newObj, ExitDoorType exitD
 				// It invokes the pathfinder to find a vacant destination.
 	      ai->aiMoveToPosition( &ppinfo.parkingSpace, CMD_FROM_AI );
 			}
-#endif
+#endif // ZH
 		}
 	}
 }

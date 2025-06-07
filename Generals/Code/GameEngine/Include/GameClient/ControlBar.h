@@ -61,7 +61,7 @@ class ControlBarResizer;
 class GameWindowTransitionsHandler;
 #ifdef ZH
 class DisplayString;
-#endif
+#endif // ZH
 
 enum ProductionID;
 
@@ -105,7 +105,7 @@ enum CommandOption
 #ifdef ZH
 	CAN_USE_WAYPOINTS						= 0x00400000, // button has option to use a waypoint path
 	MUST_BE_STOPPED							= 0x00800000, // Unit must be stopped in order to be able to use button.
-#endif
+#endif // ZH
 
 	NUM_COMMAND_OPTIONS						// keep this last
 };
@@ -142,7 +142,7 @@ static const char *TheCommandOptionNames[] =
 #ifdef ZH
 	"CAN_USE_WAYPOINTS",
 	"MUST_BE_STOPPED",
-#endif
+#endif // ZH
 
 	NULL
 };
@@ -199,10 +199,10 @@ enum GUICommandType
 	GUI_COMMAND_PURCHASE_SCIENCE,					///< purchase science
 #ifdef OG
 	GUI_COMMAND_HACK_INTERNET,						///< Hey author, write me!
-#endif
+#endif // OG
 #ifdef ZH
 	GUI_COMMAND_HACK_INTERNET,						///< gain income from the ether (by hacking the internet)
-#endif
+#endif // ZH
 	GUI_COMMAND_TOGGLE_OVERCHARGE,				///< Overcharge command for power plants
 #ifdef ALLOW_SURRENDER
 	GUI_COMMAND_POW_RETURN_TO_PRISON,			///< POW Truck, return to prison
@@ -215,7 +215,7 @@ enum GUICommandType
 	GUICOMMANDMODE_CONVERT_TO_CARBOMB,
 #ifdef ZH
 	GUICOMMANDMODE_SABOTAGE_BUILDING,
-#endif
+#endif // ZH
 #ifdef ALLOW_SURRENDER
 	GUICOMMANDMODE_PICK_UP_PRISONER,			///< POW Truck assigned to pick up a specific prisoner
 #endif
@@ -226,14 +226,14 @@ enum GUICommandType
 #ifdef OG
 	GUI_COMMAND_SPECIAL_POWER_FROM_COMMAND_CENTER,			///< do a special power from localPlayer's command center, regardless of selection
 
-#endif
+#endif // OG
 #ifdef ZH
 	GUI_COMMAND_SPECIAL_POWER_FROM_SHORTCUT,			///< do a special power from localPlayer's command center, regardless of selection
 	GUI_COMMAND_SPECIAL_POWER_CONSTRUCT,					///< do a special power using the construct building interface
 	GUI_COMMAND_SPECIAL_POWER_CONSTRUCT_FROM_SHORTCUT, ///< do a shortcut special power using the construct building interface
 	
 	GUI_COMMAND_SELECT_ALL_UNITS_OF_TYPE,
-#endif
+#endif // ZH
 
 	// add more commands here, don't forget to update the string command list below too ...
 
@@ -277,7 +277,7 @@ static const char *TheGuiCommandNames[] =
 	"CONVERT_TO_CARBOMB",
 #ifdef ZH
 	"SABOTAGE_BUILDING",
-#endif
+#endif // ZH
 #ifdef ALLOW_SURRENDER
 	"PICK_UP_PRISONER",
 #endif
@@ -285,13 +285,13 @@ static const char *TheGuiCommandNames[] =
 #ifdef OG
 	"SPECIAL_POWER_FROM_COMMAND_CENTER",
 
-#endif
+#endif // OG
 #ifdef ZH
 	"SPECIAL_POWER_FROM_SHORTCUT",
 	"SPECIAL_POWER_CONSTRUCT",					
 	"SPECIAL_POWER_CONSTRUCT_FROM_SHORTCUT", 
 	"SELECT_ALL_UNITS_OF_TYPE",
-#endif
+#endif // ZH
 
 	NULL
 };
@@ -387,7 +387,7 @@ public:
 	// bleah. shouldn't be const, but is. sue me. (Kris) -snork!
 	void copyButtonTextFrom( const CommandButton *button, Bool shortcutButton, Bool markUIDirtyIfChanged ) const;
 
-#endif
+#endif // ZH
 	// bleah. shouldn't be const, but is. sue me. (srj)
 	void setFlashCount(Int c) const { m_flashCount = c; }
 	
@@ -410,14 +410,14 @@ private:
 	AsciiString										m_textLabel;									///< string manager text label
 	AsciiString										m_descriptionLabel;						///< The description of the current command, read in from the ini
 
-#endif
+#endif // OG
 #ifdef ZH
 
 	// bleah. shouldn't be mutable, but is. sue me. (Kris) -snork!
 	mutable AsciiString										m_textLabel;									///< string manager text label
 	mutable AsciiString										m_descriptionLabel;						///< The description of the current command, read in from the ini
 	
-#endif
+#endif // ZH
 	AsciiString										m_purchasedLabel;							///< Description for the current command if it has already been purchased.
 	AsciiString										m_conflictingLabel;						///< Description for the current command if it can't be selected due to multually-exclusive choice.
 	WeaponSlotType								m_weaponSlot;									///< for commands that refer to a weapon slot
@@ -441,31 +441,31 @@ private:
 //-------------------------------------------------------------------------------------------------
 #ifdef OG
 enum { MAX_COMMANDS_PER_SET = 12 };  // user interface max button limit for commands
-#endif
+#endif // OG
 #ifdef ZH
 enum { MAX_COMMANDS_PER_SET = 18 };  // user interface max is 14 (but internally it's 18 for script only buttons!)
-#endif
+#endif // ZH
 enum { MAX_RIGHT_HUD_UPGRADE_CAMEOS = 5};
 enum { 
 #ifdef OG
 			 MAX_PURCHASE_SCIENCE_RANK_1 = 3,
 			 MAX_PURCHASE_SCIENCE_RANK_3 = 12,
 			 MAX_PURCHASE_SCIENCE_RANK_8 = 1,
-#endif
+#endif // OG
 #ifdef ZH
 			 MAX_PURCHASE_SCIENCE_RANK_1 = 4,
 			 MAX_PURCHASE_SCIENCE_RANK_3 = 15,
 			 MAX_PURCHASE_SCIENCE_RANK_8 = 4,
-#endif
+#endif // ZH
 			};
 enum { MAX_STRUCTURE_INVENTORY_BUTTONS = 10 }; // there are this many physical buttons in "inventory" windows for structures
 enum { MAX_BUILD_QUEUE_BUTTONS = 9 };// physical button count for the build queue
 #ifdef OG
 enum { MAX_SPECIAL_POWER_SHORTCUTS = 5};
-#endif
+#endif // OG
 #ifdef ZH
 enum { MAX_SPECIAL_POWER_SHORTCUTS = 11};
-#endif
+#endif // ZH
 class CommandSet : public Overridable
 {
 
@@ -716,10 +716,10 @@ public:
 	/// mark the UI as dirty so the context of everything is re-evaluated
 #ifdef OG
 	void markUIDirty( void ) { m_UIDirty = TRUE; }
-#endif
+#endif // OG
 #ifdef ZH
 	void markUIDirty( void );
-#endif
+#endif // ZH
 
 	/// a drawable has just become selected
 	void onDrawableSelected( Drawable *draw );
@@ -835,7 +835,7 @@ public:
 
 	Bool hasAnyShortcutSelection() const;
 
-#endif
+#endif // ZH
 protected:
 	void updateRadarAttackGlow ( void );
 	
@@ -902,10 +902,10 @@ protected:
 	// the following methods are for updating the currently showing context
 #ifdef OG
 	CommandAvailability getCommandAvailability( const CommandButton *command, Object *obj, GameWindow *win, Bool forceDisabledEvaluation = FALSE ) const;
-#endif
+#endif // OG
 #ifdef ZH
 	CommandAvailability getCommandAvailability( const CommandButton *command, Object *obj, GameWindow *win, GameWindow *applyToWin = NULL, Bool forceDisabledEvaluation = FALSE ) const;
-#endif
+#endif // ZH
 	void updateContextMultiSelect( void );
 	void updateContextPurchaseScience( void );
 	void updateContextCommand( void );
@@ -976,7 +976,7 @@ protected:
 	GameWindow *m_specialPowerShortcutButtonParents[ MAX_SPECIAL_POWER_SHORTCUTS ];
 #ifdef ZH
 	DisplayString *m_shortcutDisplayStrings[ MAX_SPECIAL_POWER_SHORTCUTS ];
-#endif
+#endif // ZH
 	Int m_currentlyUsedSpecialPowersButtons; ///< Value will be <= MAX_SPECIAL_POWER_SHORTCUTS;
 
 
@@ -1099,7 +1099,7 @@ private:
 	UnsignedInt m_lastFrameMarkedDirty;
 	UnsignedInt m_consecutiveDirtyFrames;
 #endif
-#endif
+#endif // ZH
 //	ControlBarResizer *m_controlBarResizer;
 
 }; 

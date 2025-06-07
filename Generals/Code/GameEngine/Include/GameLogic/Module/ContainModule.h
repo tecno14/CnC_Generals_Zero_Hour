@@ -36,7 +36,7 @@
 #ifdef ZH
 #include "GameLogic/WeaponBonusConditionFlags.h" // Can't forward a typedef.  This should me made a BitFlags class.
 #include "GameLogic/Damage.h"
-#endif
+#endif // ZH
 
 //-------------------------------------------------------------------------------------------------
 class OpenContain;
@@ -64,7 +64,7 @@ enum EvacDisposition
 
 };
 
-#endif
+#endif // ZH
 //-------------------------------------------------------------------------------------------------
 
 typedef std::list<Object*> ContainedItemsList;
@@ -101,18 +101,18 @@ public:
 	virtual Bool isGarrisonable() const = 0;
 #ifdef ZH
 	virtual Bool isBustable() const = 0;
-#endif
+#endif // ZH
 	virtual Bool isSpecialZeroSlotContainer() const = 0;
 	virtual Bool isHealContain() const = 0;
 #ifdef ZH
 	virtual Bool isTunnelContain() const = 0;
 	virtual Bool isRiderChangeContain() const = 0;
-#endif
+#endif // ZH
 	virtual Bool isImmuneToClearBuildingAttacks() const = 0;
 #ifdef ZH
   virtual Bool isSpecialOverlordStyleContainer() const = 0;
   virtual Bool isAnyRiderAttacking() const = 0;
-#endif
+#endif // ZH
 	
 	///< if my object gets selected, then my visible passengers should, too
 	///< this gets called from
@@ -145,10 +145,10 @@ public:
 	//
 #ifdef OG
 	virtual void onContaining( Object *obj ) = 0;		///< object now contains 'obj'
-#endif
+#endif // OG
 #ifdef ZH
 	virtual void onContaining( Object *obj, Bool wasSelected ) = 0;		///< object now contains 'obj'
-#endif
+#endif // ZH
 	virtual void onRemoving( Object *obj ) = 0;			///< object no longer contains 'obj'
 	virtual void onCapture( Player *oldOwner, Player *newOwner ) = 0; // Very important to handle capture of container, don't want to differ in teams from passenger to us.
 	virtual void onSelling() = 0;///< Container is being sold.  Most people respond by kicking everyone out, but not all.
@@ -160,12 +160,12 @@ public:
 #ifdef OG
 	virtual void orderAllPassengersToExit( CommandSourceType ) = 0; ///< All of the smarts of exiting are in the passenger's AIExit. removeAllFrommContain is a last ditch system call, this is the game Evacuate
 
-#endif
+#endif // OG
 #ifdef ZH
 	virtual void orderAllPassengersToExit( CommandSourceType, Bool instantly ) = 0; ///< All of the smarts of exiting are in the passenger's AIExit. removeAllFrommContain is a last ditch system call, this is the game Evacuate
 	virtual void orderAllPassengersToIdle( CommandSourceType ) = 0; ///< Just like it sounds
 	virtual void orderAllPassengersToHackInternet( CommandSourceType ) = 0; ///< Just like it sounds
-#endif
+#endif // ZH
 	virtual void markAllPassengersDetected() = 0;										///< Cool game stuff got added to the system calls since this layer didn't exist, so this regains that functionality
 
 	//
@@ -184,16 +184,16 @@ public:
 #ifdef ZH
 	virtual void killAllContained( void ) = 0;									///< kill all objects on contain list
   virtual void harmAndForceExitAllContained( DamageInfo *info ) = 0; // apply canned damage against those containes 
-#endif
+#endif // ZH
 	virtual Bool isEnclosingContainerFor( const Object *obj ) const = 0;	///< Does this type of Contain Visibly enclose its contents?
 #ifdef OG
 	virtual Bool isPassengerAllowedToFire() const = 0;	///< Hey, can I shoot out of this container?
 
-#endif
+#endif // OG
 #ifdef ZH
 	virtual Bool isPassengerAllowedToFire( ObjectID id = INVALID_ID ) const = 0;	///< Hey, can I shoot out of this container?
 	virtual void setPassengerAllowedToFire( Bool permission = TRUE ) = 0;	///< Hey, can I shoot out of this container?
-#endif
+#endif // ZH
 	virtual void setOverrideDestination( const Coord3D * ) = 0; ///< Instead of falling peacefully towards a clear spot, I will now aim here
 	virtual Bool isDisplayedOnControlBar() const = 0;///< Does this container display its contents on the ControlBar?
 	virtual Int getExtraSlotsInUse( void ) = 0;
@@ -217,11 +217,11 @@ public:
 #ifdef OG
 	virtual void processDamageToContained() = 0; ///< Do our % damage to units now.
 
-#endif
+#endif // OG
 #ifdef ZH
 	virtual void processDamageToContained(Real percentDamage) = 0; ///< Do our % damage to units now.
   virtual Object* getClosestRider ( const Coord3D *pos ) = 0;
-#endif
+#endif // ZH
 
 	virtual void enableLoadSounds( Bool enable ) = 0;
 #ifdef ZH
@@ -231,7 +231,7 @@ public:
 	virtual Bool isWeaponBonusPassedToPassengers() const = 0;
 	virtual WeaponBonusConditionFlags getWeaponBonusPassedToPassengers() const = 0;
 
-#endif
+#endif // ZH
 
 	// this exists really just so someone can override it to prevent pip showings...
 	virtual Bool getContainerPipsToShow(Int& numTotal, Int& numFull)

@@ -18,10 +18,10 @@
 
 #ifdef OG
 /* $Header: /Commando/Code/ww3d2/hanim.h 2     6/29/01 6:41p Jani_p $ */
-#endif
+#endif // OG
 #ifdef ZH
 /* $Header: /Commando/Code/ww3d2/hanim.h 3     12/13/01 7:01p Patrick $ */
-#endif
+#endif // ZH
 /*********************************************************************************************** 
  ***                            Confidential - Westwood Studios                              *** 
  *********************************************************************************************** 
@@ -34,17 +34,17 @@
  *                                                                                             * 
 #ifdef OG
  *                     $Modtime:: 6/27/01 7:35p                                               $* 
-#endif
+#endif // OG
 #ifdef ZH
  *                     $Modtime:: 12/13/01 6:54p                                              $* 
-#endif
+#endif // ZH
  *                                                                                             * 
 #ifdef OG
  *                    $Revision:: 2                                                           $* 
-#endif
+#endif // OG
 #ifdef ZH
  *                    $Revision:: 3                                                           $* 
-#endif
+#endif // ZH
  *                                                                                             * 
  *---------------------------------------------------------------------------------------------* 
  * Functions:                                                                                  * 
@@ -80,7 +80,7 @@ class HTreeClass;
 
 #ifdef ZH
 #define EMBEDDED_SOUND_BONE_INDEX_NOT_SET -1
-#endif
+#endif // ZH
 /**********************************************************************************
 
 	HAnimClass
@@ -103,12 +103,12 @@ public:
 	HAnimClass(void)				{ }
 	virtual ~HAnimClass(void)	{ }
 
-#endif
+#endif // OG
 #ifdef ZH
 	HAnimClass(void)	:
 		EmbeddedSoundBoneIndex (EMBEDDED_SOUND_BONE_INDEX_NOT_SET)	{ }
 	virtual ~HAnimClass(void)		{ }
-#endif
+#endif // ZH
 
 	virtual const char *		Get_Name(void) const = 0;
 	virtual const char *		Get_HName(void) const = 0;
@@ -148,7 +148,7 @@ public:
 
 protected:
 	int EmbeddedSoundBoneIndex;					
-#endif
+#endif // ZH
 };
 
 
@@ -222,11 +222,11 @@ class HAnimComboDataClass : public AutoPoolClass<HAnimComboDataClass,256> {
 #ifdef OG
 		void Set_Frame(float frame)		{ Frame = frame; }
 
-#endif
+#endif // OG
 #ifdef ZH
 		void Set_Frame(float frame)		{ PrevFrame = Frame; Frame = frame; }		
 		void Set_Prev_Frame(float frame)	{ PrevFrame = frame; }
-#endif
+#endif // ZH
 		void Set_Weight(float weight)		{ Weight = weight; }
 		void Set_Pivot_Map(PivotMapClass *map);
 		
@@ -236,7 +236,7 @@ class HAnimComboDataClass : public AutoPoolClass<HAnimComboDataClass,256> {
 		float Get_Frame(void)						const { return Frame; }
 #ifdef ZH
 		float Get_Prev_Frame(void)					const { return PrevFrame; }
-#endif
+#endif // ZH
 		float Get_Weight(void)						const { return Weight; }
 		PivotMapClass * Peek_Pivot_Map(void)	const { return PivotMap; }
 		PivotMapClass * Get_Pivot_Map(void)		const { if(PivotMap) PivotMap->Add_Ref(); return PivotMap; }
@@ -250,7 +250,7 @@ class HAnimComboDataClass : public AutoPoolClass<HAnimComboDataClass,256> {
 		float Frame;
 #ifdef ZH
 		float PrevFrame;
-#endif
+#endif // ZH
 		float Weight;
 		PivotMapClass * PivotMap;
 		bool Shared;			// this is set to false when the HAnimCombo allocates it
@@ -281,11 +281,11 @@ public:
 	void	Set_Frame( int indx, float frame );
 #ifdef ZH
 	void	Set_Prev_Frame( int indx, float frame );
-#endif
+#endif // ZH
 	float	Get_Frame( int indx );
 #ifdef ZH
 	float	Get_Prev_Frame( int indx );
-#endif
+#endif // ZH
 
 	void	Set_Weight( int indx, float weight );
 	float	Get_Weight( int indx );

@@ -21,7 +21,7 @@
 #include "thread.h"
 #ifdef ZH
 #include "except.h"
-#endif
+#endif // ZH
 #include "wwdebug.h"
 #include <process.h>
 #include <windows.h>
@@ -29,20 +29,20 @@
 #pragma warning ( disable : 4201 ) 
 #ifdef OG
 #include <mmsystem.h>
-#endif
+#endif // OG
 #ifdef ZH
 #include "systimer.h"
-#endif
+#endif // ZH
 #pragma warning ( pop )
 
 #ifdef OG
 ThreadClass::ThreadClass() : handle(0), running(false), thread_priority(0)
 
-#endif
+#endif // OG
 #ifdef ZH
 
 ThreadClass::ThreadClass(const char *thread_name, ExceptionHandlerType exception_handler) : handle(0), running(false), thread_priority(0)
-#endif
+#endif // ZH
 {
 #ifdef ZH
 	if (thread_name) {
@@ -50,14 +50,14 @@ ThreadClass::ThreadClass(const char *thread_name, ExceptionHandlerType exception
 		strcpy(ThreadName, thread_name);
 	} else {
 		strcpy(ThreadName, "No name");;
-#endif
+#endif // ZH
 }
 
 #ifdef ZH
 	ExceptionHandler = exception_handler;
 }
 
-#endif
+#endif // ZH
 ThreadClass::~ThreadClass()
 {
 	Stop();
@@ -75,7 +75,7 @@ void __cdecl ThreadClass::Internal_Thread_Function(void* params)
 
 	if (tc->ExceptionHandler != NULL) {
 		__try {
-#endif
+#endif // ZH
 	tc->Thread_Function();
 #ifdef ZH
 		} __except(tc->ExceptionHandler(GetExceptionCode(), GetExceptionInformation())) {};
@@ -90,11 +90,11 @@ void __cdecl ThreadClass::Internal_Thread_Function(void* params)
 #ifdef _WIN32
 	Unregister_Thread_ID(tc->ThreadID, tc->ThreadName);
 #endif // _WIN32
-#endif
+#endif // ZH
 	tc->handle=0;
 #ifdef ZH
 	tc->ThreadID = 0;
-#endif
+#endif // ZH
 }
 
 void ThreadClass::Execute()
@@ -108,7 +108,7 @@ void ThreadClass::Execute()
 		SetThreadPriority((HANDLE)handle,THREAD_PRIORITY_NORMAL+thread_priority);
 #ifdef ZH
 		WWDEBUG_SAY(("ThreadClass::Execute: Started thread %s, thread ID is %X\n", ThreadName, handle));
-#endif
+#endif // ZH
 	#endif
 }
 
@@ -132,17 +132,17 @@ void ThreadClass::Stop(unsigned ms)
 		running=false;
 #ifdef OG
 		unsigned time=timeGetTime();
-#endif
+#endif // OG
 #ifdef ZH
 		unsigned time=TIMEGETTIME();
-#endif
+#endif // ZH
 		while (handle) {
 #ifdef OG
 			if ((timeGetTime()-time)>ms) {
-#endif
+#endif // OG
 #ifdef ZH
 			if ((TIMEGETTIME()-time)>ms) {
-#endif
+#endif // ZH
 				int res=TerminateThread((HANDLE)handle,0);
 				res;	// just to silence compiler warnings
 				WWASSERT(res);	// Thread still not killed!

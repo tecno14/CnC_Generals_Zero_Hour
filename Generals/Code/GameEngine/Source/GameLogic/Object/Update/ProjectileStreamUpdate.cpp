@@ -59,7 +59,7 @@ ProjectileStreamUpdate::ProjectileStreamUpdate( Thing *thing, const ModuleData* 
 	
 	m_targetObject = INVALID_ID;
 	m_targetPosition.zero();
-#endif
+#endif // ZH
 } 
 
 //-------------------------------------------------------------------------------------------------
@@ -86,10 +86,10 @@ UpdateSleepTime ProjectileStreamUpdate::update( void )
 
 #ifdef OG
 void ProjectileStreamUpdate::addProjectile( ObjectID sourceID, ObjectID newID )
-#endif
+#endif // OG
 #ifdef ZH
 void ProjectileStreamUpdate::addProjectile( ObjectID sourceID, ObjectID newID, ObjectID victimID, const Coord3D *victimPos )
-#endif
+#endif // ZH
 {
 	DEBUG_ASSERTCRASH( m_owningObject == INVALID_ID  ||  m_owningObject == sourceID, ("Two objects are trying to use the same Projectile stream.") );//Don't cross the streams!
 	if( m_owningObject == INVALID_ID )
@@ -132,7 +132,7 @@ void ProjectileStreamUpdate::addProjectile( ObjectID sourceID, ObjectID newID, O
 	{
 		DEBUG_CRASH(("A projectile stream was fired at neither an object nor a position.  Probably bad."));
 	}
-#endif
+#endif // ZH
 
 	// Keep track of the id in a circular array
 	m_projectileIDs[ m_nextFreeIndex ] = newID;
@@ -238,12 +238,12 @@ void ProjectileStreamUpdate::crc( Xfer *xfer )
 #ifdef OG
 	* 1: Initial version */
 
-#endif
+#endif // OG
 #ifdef ZH
 	* 1: Initial version 
 	* 2: Target tracking for line breaking
 */
-#endif
+#endif // ZH
 // ------------------------------------------------------------------------------------------------
 void ProjectileStreamUpdate::xfer( Xfer *xfer )
 {
@@ -251,10 +251,10 @@ void ProjectileStreamUpdate::xfer( Xfer *xfer )
 	// version
 #ifdef OG
 	XferVersion currentVersion = 1;
-#endif
+#endif // OG
 #ifdef ZH
 	XferVersion currentVersion = 2;
-#endif
+#endif // ZH
 	XferVersion version = currentVersion;
 	xfer->xferVersion( &version, currentVersion );
 
@@ -279,7 +279,7 @@ void ProjectileStreamUpdate::xfer( Xfer *xfer )
 		xfer->xferObjectID( &m_targetObject );
 		xfer->xferCoord3D( &m_targetPosition );
 	}
-#endif
+#endif // ZH
 
 }  // end xfer
 

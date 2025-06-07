@@ -74,4 +74,4 @@ extern LangID					CurrentLanguage;
 
 #endif // !defined(AFX_NOXSTRING_H__2BF3124B_3BA1_11D3_B9DA_006097B90D93__INCLUDED_)
 
-#endif
+#endif // OG

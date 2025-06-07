@@ -350,4 +350,4 @@ void Shd7BumpDiffClass::Copy_Vertex_Stream
 }
 
 
-#endif
+#endif // ZH

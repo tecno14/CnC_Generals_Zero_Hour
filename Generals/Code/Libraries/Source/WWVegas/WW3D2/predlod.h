@@ -28,17 +28,17 @@
  *                                                                         * 
 #ifdef OG
  *                     $Modtime:: 8/23/01 5:04p                           $* 
-#endif
+#endif // OG
 #ifdef ZH
  *                     $Modtime:: 9/20/01 10:10a                          $* 
-#endif
+#endif // ZH
  *                                                                         * 
 #ifdef OG
  *                    $Revision:: 2                                       $* 
-#endif
+#endif // OG
 #ifdef ZH
  *                    $Revision:: 3                                       $* 
-#endif
+#endif // ZH
  *                                                                         * 
  *-------------------------------------------------------------------------* 
  * Functions:                                                              * 
@@ -91,10 +91,10 @@ class PredictiveLODOptimizerClass {
 		static LODHeapNode *VisibleObjArray2;
 #ifdef OG
 		static int NumVisibleObjects;
-#endif
+#endif // OG
 #ifdef ZH
 		static int VisibleObjArraySize;
-#endif
+#endif // ZH
 
 };
 

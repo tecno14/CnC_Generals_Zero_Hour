@@ -28,17 +28,17 @@
  *                                                                                             *
 #ifdef OG
  *                     $Modtime:: 6/26/01 7:01p                                               $*
-#endif
+#endif // OG
 #ifdef ZH
  *                     $Modtime:: 12/10/01 11:18a                                             $*
-#endif
+#endif // ZH
  *                                                                                             *
 #ifdef OG
  *                    $Revision:: 3                                                           $*
-#endif
+#endif // OG
 #ifdef ZH
  *                    $Revision:: 4                                                           $*
-#endif
+#endif // ZH
  *                                                                                             *
  *---------------------------------------------------------------------------------------------*
  * Functions:                                                                                  *
@@ -201,11 +201,11 @@ protected:
 #ifdef OG
 			int								AnimMode;
 
-#endif
+#endif // OG
 #ifdef ZH
 			float						PrevFrame;
 			int						AnimMode;
-#endif
+#endif // ZH
 			mutable int				LastSyncTime;
 			float							animDirection;
 			float							frameRateMultiplier;	// 020607 srj -- added
@@ -221,7 +221,7 @@ protected:
 #ifdef ZH
 			float						PrevFrame0;
 			float						PrevFrame1;
-#endif
+#endif // ZH
 			float		  				Percentage;
 		} ModeInterp;
 

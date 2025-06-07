@@ -34,7 +34,7 @@
 #include "GameClient/GameText.h"
 #ifdef OG
 #include "GameNetwork/GameInfo.h"
-#endif
+#endif // OG
 #include "GameNetwork/NetworkInterface.h"
 
 char *DisconnectMenu::m_playerNameTextControlNames[] = {
@@ -186,12 +186,12 @@ void DisconnectMenu::showPlayerControls(Int slot) {
 		}
 		else
 		{
-#endif
+#endif // OG
 			control->winEnable(TRUE);
 		}
 #ifdef OG
 	}
-#endif
+#endif // OG
 
 	id = TheNameKeyGenerator->nameToKey(m_playerVoteCountControlNames[slot]);
 	control = TheWindowManager->winGetWindowFromId(NULL, id);
@@ -225,11 +225,11 @@ void DisconnectMenu::hidePlayerControls(Int slot) {
 		}
 		else
 		{
-#endif
+#endif // OG
 			control->winEnable(TRUE);
 #ifdef OG
 		}
-#endif
+#endif // OG
 	}
 
 	id = TheNameKeyGenerator->nameToKey(m_playerVoteCountControlNames[slot]);

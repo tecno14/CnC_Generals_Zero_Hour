@@ -1625,4 +1625,4 @@ void __cdecl _heap_abort(void)
   DCRASH_RELEASE("Fatal heap error.");
 }
 
-#endif
+#endif // ZH

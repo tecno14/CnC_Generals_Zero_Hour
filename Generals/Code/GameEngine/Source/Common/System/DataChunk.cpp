@@ -379,7 +379,7 @@ void DataChunkOutput::writeNameKey( const NameKeyType key )
 		writeInt(keyAndType);
 }
 
-#endif
+#endif // ZH
 void DataChunkOutput::writeDict( const Dict& d ) 
 { 
 	UnsignedShort len = d.getPairCount();
@@ -905,7 +905,7 @@ NameKeyType DataChunkInput::readNameKey(void)
 		AsciiString kname = m_contents.getName(keyAndType);
 		NameKeyType k = TheNameKeyGenerator->nameToKey(kname);
 		return k;
-#endif
+#endif // ZH
 }
 
 Dict DataChunkInput::readDict() 

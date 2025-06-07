@@ -119,10 +119,10 @@ static const Image* lookupRankImage(AsciiString side, Int rank)
 	// dirty hack rather than try to get artists to follow a naming convention
 #ifdef OG
 	if (side == "America")
-#endif
+#endif // OG
 #ifdef ZH
 	if (side == "USA")
-#endif
+#endif // ZH
 		side = "_USA";
 	else if (side == "China")
 		side = "_China";
@@ -145,11 +145,11 @@ static const Image* lookupRankImage(AsciiString side, Int rank)
 	{
 		DEBUG_LOG(("*** Could not load rank image '%s' from TheMappedImageCollection!\n", fullImageName.str()));
 	}
-#endif
+#endif // OG
 #ifdef ZH
 	DEBUG_ASSERTCRASH( img, ("Could not load rank image: %s", fullImageName.str()));
 
-#endif
+#endif // ZH
 	return img;
 }
 
@@ -166,10 +166,10 @@ static Int getTotalDisconnectsFromFile(Int playerID)
 	userPrefFilename.format("GeneralsOnline\\MiscPref%d.ini", playerID);
 #ifdef OG
 	DEBUG_LOG(("setPersistentDataCallback - reading stats from file %s\n", userPrefFilename.str()));
-#endif
+#endif // OG
 #ifdef ZH
 	DEBUG_LOG(("getTotalDisconnectsFromFile - reading stats from file %s\n", userPrefFilename.str()));
-#endif
+#endif // ZH
 	pref.load(userPrefFilename);
 
 	// if there is a file override, use that data instead.
@@ -239,10 +239,10 @@ void GetAdditionalDisconnectsFromUserFile(PSPlayerStats *stats)
 	userPrefFilename.format("GeneralsOnline\\MiscPref%d.ini", stats->id);
 #ifdef OG
 	DEBUG_LOG(("setPersistentDataCallback - reading stats from file %s\n", userPrefFilename.str()));
-#endif
+#endif // OG
 #ifdef ZH
 	DEBUG_LOG(("GetAdditionalDisconnectsFromUserFile - reading stats from file %s\n", userPrefFilename.str()));
-#endif
+#endif // ZH
 	pref.load(userPrefFilename);
 
 	// if there is a file override, use that data instead.
@@ -298,7 +298,7 @@ RankPoints::RankPoints(void)
 	for (Int i=0; i<MAX_RANKS; ++i)
 		lookupRankImage("Random", i);
 #endif
-#endif
+#endif // OG
 }
 
 RankPoints *TheRankPointValues = NULL;
@@ -312,10 +312,10 @@ void SetLookAtPlayer( Int id, AsciiString nick)
 //	BATTLE_HONOR_LADDER_CHAMP		= 0x0000001,
 #ifdef OG
 //	BATTLE_HONOR_STREAK_3				= 0x0000002,
-#endif
+#endif // OG
 #ifdef ZH
 //	BATTLE_HONOR_STREAK					= 0x0000002,
-#endif
+#endif // ZH
 //	BATTLE_HONOR_STREAK_5				= 0x0000004,
 //	BATTLE_HONOR_STREAK_10			= 0x0000008,
 //	BATTLE_HONOR_STREAK_20			= 0x0000010,
@@ -337,14 +337,14 @@ void SetLookAtPlayer( Int id, AsciiString nick)
 //	BATTLE_HONOR_SOLO_USA_G			= 0x0040000,
 //	BATTLE_HONOR_SOLO_CHINA_B		= 0x0080000,
 //	BATTLE_HONOR_SOLO_CHINA_S		= 0x0100000,
-#endif
+#endif // OG
 #ifdef ZH
 //	BATTLE_HONOR_DOMINATION			= 0x0010000,
 //	BATTLE_HONOR_CHALLENGE			= 0x0020000,
 //	BATTLE_HONOR_ULTIMATE				= 0x0040000,
 //	BATTLE_HONOR_GLOBAL_GENERAL	= 0x0080000,
 //	BATTLE_HONOR_DOMINATION_ONLINE = 0x0100000,
-#endif
+#endif // ZH
 //	BATTLE_HONOR_SOLO_CHINA_G		= 0x0200000,
 //	BATTLE_HONOR_SOLO_GLA_B			= 0x0400000,
 //	BATTLE_HONOR_SOLO_GLA_S			= 0x0800000,
@@ -369,7 +369,7 @@ void BattleHonorTooltip(GameWindow *window,
 	Int battleHonor = (Int)GadgetListBoxGetItemData( window, row, col );
 #ifdef ZH
 	Int extraValue = (Int)GadgetListBoxGetItemData( window, row - 1, col );
-#endif
+#endif // ZH
 	if (battleHonor == 0)
 	{
 		//DEBUG_CRASH(("No Battle Honor in listbox row %d, col %d!", row, col));
@@ -383,11 +383,11 @@ void BattleHonorTooltip(GameWindow *window,
 		if(BitTest(battleHonor, BATTLE_HONOR_STREAK_3))
 			TheMouse->setCursorTooltip( TheGameText->fetch("TOOLTIP:BattleHonorStreak3Disabled"), -1, NULL, tooltipWidth );
 		else if(BitTest(battleHonor, BATTLE_HONOR_LOYALTY_USA))
-#endif
+#endif // OG
 #ifdef ZH
 		if(BitTest(battleHonor, BATTLE_HONOR_LOYALTY_USA))
 
-#endif
+#endif // ZH
 			TheMouse->setCursorTooltip( TheGameText->fetch("TOOLTIP:BattleHonorLoyaltyUSADisabled"), -1, NULL, tooltipWidth );
 		else if(BitTest(battleHonor, BATTLE_HONOR_LOYALTY_CHINA))
 			TheMouse->setCursorTooltip( TheGameText->fetch("TOOLTIP:BattleHonorLoyaltyChinaDisabled"), -1, NULL, tooltipWidth );
@@ -408,10 +408,10 @@ void BattleHonorTooltip(GameWindow *window,
 		else if(BitTest(battleHonor, BATTLE_HONOR_BLITZ10))
 #ifdef OG
 			TheMouse->setCursorTooltip( TheGameText->fetch("TOOLTIP:BattleHonorBlitz10Disabled"), -1, NULL, tooltipWidth );
-#endif
+#endif // OG
 #ifdef ZH
 			TheMouse->setCursorTooltip( TheGameText->fetch("TOOLTIP:BattleHonorBlitzDisabled"), -1, NULL, tooltipWidth );
-#endif
+#endif // ZH
 		else if(BitTest(battleHonor, BATTLE_HONOR_FAIR_PLAY))
 			TheMouse->setCursorTooltip( TheGameText->fetch("TOOLTIP:BattleHonorFairPlayDisabled"), -1, NULL, tooltipWidth );
 		else if(BitTest(battleHonor, BATTLE_HONOR_APOCALYPSE))
@@ -437,7 +437,7 @@ void BattleHonorTooltip(GameWindow *window,
 		else if(BitTest(battleHonor, BATTLE_HONOR_SOLO_GLA_G))
 			TheMouse->setCursorTooltip( TheGameText->fetch("TOOLTIP:BattleHonorSoloGLAGDisabled"), -1, NULL, tooltipWidth );
 			*/
-#endif
+#endif // OG
 #ifdef ZH
 		else if(BitTest(battleHonor, BATTLE_HONOR_CHALLENGE_MODE))
 			TheMouse->setCursorTooltip( TheGameText->fetch("TOOLTIP:BattleHonorCampaignChallengeDisabled"), -1, NULL, tooltipWidth );
@@ -446,7 +446,7 @@ void BattleHonorTooltip(GameWindow *window,
 		else if(BitTest(battleHonor, BATTLE_HONOR_GLOBAL_GENERAL))
 			TheMouse->setCursorTooltip( TheGameText->fetch("TOOLTIP:BattleHonorGlobalGeneralDisabled"), -1, NULL, tooltipWidth );
 
-#endif
+#endif // ZH
 		else if(BitTest(battleHonor, BATTLE_HONOR_CHALLENGE))
 			TheMouse->setCursorTooltip( TheGameText->fetch("TOOLTIP:BattleHonorChallengeDisabled"), -1, NULL, tooltipWidth );
 #ifdef ZH
@@ -458,7 +458,7 @@ void BattleHonorTooltip(GameWindow *window,
 			TheMouse->setCursorTooltip( TheGameText->fetch("TOOLTIP:BattleHonorDominationDisabled"), -1, NULL, tooltipWidth );
 		else if(BitTest(battleHonor, BATTLE_HONOR_DOMINATION_ONLINE))
 			TheMouse->setCursorTooltip( TheGameText->fetch("TOOLTIP:BattleHonorDominationOnlineDisabled"), -1, NULL, tooltipWidth );
-#endif
+#endif // ZH
 	}
 	else
 	{
@@ -474,11 +474,11 @@ void BattleHonorTooltip(GameWindow *window,
 		else if(BitTest(battleHonor, BATTLE_HONOR_STREAK_25))
 			TheMouse->setCursorTooltip( TheGameText->fetch("TOOLTIP:BattleHonorStreak25"), -1, NULL, tooltipWidth );
 		else if(BitTest(battleHonor, BATTLE_HONOR_LOYALTY_USA))
-#endif
+#endif // OG
 #ifdef ZH
 		if(BitTest(battleHonor, BATTLE_HONOR_LOYALTY_USA))
 
-#endif
+#endif // ZH
 			TheMouse->setCursorTooltip( TheGameText->fetch("TOOLTIP:BattleHonorLoyaltyUSA"), -1, NULL, tooltipWidth );
 		else if(BitTest(battleHonor, BATTLE_HONOR_LOYALTY_CHINA))
 			TheMouse->setCursorTooltip( TheGameText->fetch("TOOLTIP:BattleHonorLoyaltyChina"), -1, NULL, tooltipWidth );
@@ -527,7 +527,7 @@ void BattleHonorTooltip(GameWindow *window,
 		else if(BitTest(battleHonor, BATTLE_HONOR_SOLO_GLA_G))
 			TheMouse->setCursorTooltip( TheGameText->fetch("TOOLTIP:BattleHonorSoloGLAG"), -1, NULL, tooltipWidth );
 			*/
-#endif
+#endif // OG
 #ifdef ZH
 		else if(BitTest(battleHonor, BATTLE_HONOR_CHALLENGE_MODE))
 			TheMouse->setCursorTooltip( TheGameText->fetch("TOOLTIP:BattleHonorCampaignChallenge"), -1, NULL, tooltipWidth );
@@ -536,7 +536,7 @@ void BattleHonorTooltip(GameWindow *window,
 		else if(BitTest(battleHonor, BATTLE_HONOR_GLOBAL_GENERAL))
 			TheMouse->setCursorTooltip( TheGameText->fetch("TOOLTIP:BattleHonorGlobalGeneral"), -1, NULL, tooltipWidth );
 
-#endif
+#endif // ZH
 		else if(BitTest(battleHonor, BATTLE_HONOR_CHALLENGE))
 			TheMouse->setCursorTooltip( TheGameText->fetch("TOOLTIP:BattleHonorChallenge"), -1, NULL, tooltipWidth );
 #ifdef ZH
@@ -556,7 +556,7 @@ void BattleHonorTooltip(GameWindow *window,
 				TheMouse->setCursorTooltip( TheGameText->fetch("TOOLTIP:BattleHonorStreak3"), -1, NULL, tooltipWidth );
 			else
 				TheMouse->setCursorTooltip( TheGameText->fetch("TOOLTIP:BattleHonorStreakDisabled"), -1, NULL, tooltipWidth );
-#endif
+#endif // ZH
 	}
 #ifdef ZH
 		else if(BitTest(battleHonor, BATTLE_HONOR_STREAK_ONLINE))
@@ -603,7 +603,7 @@ void BattleHonorTooltip(GameWindow *window,
 				TheMouse->setCursorTooltip( TheGameText->fetch("TOOLTIP:BattleHonorDominationOnlineDisabled"), -1, NULL, tooltipWidth );
 		}
 	}
-#endif
+#endif // ZH
 	
 }
 
@@ -614,10 +614,10 @@ void ResetBattleHonorInsertion(void)
 }
 #ifdef OG
 void InsertBattleHonor(GameWindow *list, const Image *image, Bool enabled, Int itemData, Int& row, Int& column, UnicodeString text = UnicodeString::TheEmptyString)
-#endif
+#endif // OG
 #ifdef ZH
 void InsertBattleHonor(GameWindow *list, const Image *image, Bool enabled, Int itemData, Int& row, Int& column, UnicodeString text = UnicodeString::TheEmptyString, Int extra = 0)
-#endif
+#endif // ZH
 {
 	Int width = MAX_BATTLE_HONOR_IMAGE_WIDTH * (TheDisplay->getWidth() / 800.0f);
 	Int height = MAX_BATTLE_HONOR_IMAGE_HEIGHT * (TheDisplay->getHeight() / 600.0f);
@@ -637,7 +637,7 @@ void InsertBattleHonor(GameWindow *list, const Image *image, Bool enabled, Int i
 	GadgetListBoxSetItemData(list, (void *)itemData, row, column );
 #ifdef ZH
 	GadgetListBoxSetItemData(list, (void *)extra, row - 1, column );
-#endif
+#endif // ZH
 
 	/*
 	** removing text, since every place that adds text has alternate displays of the same thing
@@ -707,7 +707,7 @@ static void populateBattleHonors(const PSPlayerStats& stats, Int battleHonors, I
 	GadgetListBoxAddEntryImage(list, NULL, 2, 0, 10, 10, TRUE, GameMakeColor(255,255,255,255));
 	row = 3;
 
-#endif
+#endif // ZH
 	if (BitTest(battleHonors, BATTLE_HONOR_BLITZ5))
 	{
 		InsertBattleHonor(list, TheMappedImageCollection->findImageByName("HonorBlitz5"), TRUE,
@@ -726,17 +726,17 @@ static void populateBattleHonors(const PSPlayerStats& stats, Int battleHonors, I
 #ifdef OG
 	GadgetListBoxAddEntryImage(list, NULL, 2, 0, 10, 10, TRUE, GameMakeColor(255,255,255,255));
 	row = 3;
-#endif
+#endif // OG
 
 #ifdef ZH
 	// TEST FOR STREAK HONOR
-#endif
+#endif // ZH
 	UnicodeString uStr;
 #ifdef OG
 	uStr.format(L"%10d", stats.maxWinsInARow);
 	if(BitTest(battleHonors, BATTLE_HONOR_STREAK_25))
 
-#endif
+#endif // OG
 #ifdef ZH
 	Int streak = stats.winsInARow;
 	uStr.format(L"%10d", streak);
@@ -756,45 +756,45 @@ static void populateBattleHonors(const PSPlayerStats& stats, Int battleHonors, I
 			BATTLE_HONOR_STREAK_ONLINE, row, column, uStr);
 	}
 	else if (streak >= 25)
-#endif
+#endif // ZH
 	{
 		InsertBattleHonor(list, TheMappedImageCollection->findImageByName("HonorStreak_G"), TRUE,
 #ifdef OG
 			BATTLE_HONOR_STREAK_25, row, column, uStr);
-#endif
+#endif // OG
 #ifdef ZH
 			BATTLE_HONOR_STREAK_ONLINE, row, column, uStr);
-#endif
+#endif // ZH
 	}
 #ifdef OG
 	else if(BitTest(battleHonors, BATTLE_HONOR_STREAK_10))
-#endif
+#endif // OG
 #ifdef ZH
 	else if (streak >= 10)
-#endif
+#endif // ZH
 	{
 		InsertBattleHonor(list, TheMappedImageCollection->findImageByName("HonorStreak_S"), TRUE,
 #ifdef OG
 			BATTLE_HONOR_STREAK_10, row, column, uStr);
-#endif
+#endif // OG
 #ifdef ZH
 			BATTLE_HONOR_STREAK_ONLINE, row, column, uStr);
-#endif
+#endif // ZH
 	}
 #ifdef OG
 	else if(BitTest(battleHonors, BATTLE_HONOR_STREAK_3))
-#endif
+#endif // OG
 #ifdef ZH
 	else if (streak >= 3)
-#endif
+#endif // ZH
 	{
 		InsertBattleHonor(list, TheMappedImageCollection->findImageByName("HonorStreak_B"), TRUE,
 #ifdef OG
 			BATTLE_HONOR_STREAK_3, row, column, uStr);
-#endif
+#endif // OG
 #ifdef ZH
 			BATTLE_HONOR_STREAK_ONLINE, row, column, uStr);
-#endif
+#endif // ZH
 	}
 	else
 	{
@@ -802,7 +802,7 @@ static void populateBattleHonors(const PSPlayerStats& stats, Int battleHonors, I
 #ifdef OG
 			BATTLE_HONOR_STREAK_3, row, column);
 
-#endif
+#endif // OG
 #ifdef ZH
 			BATTLE_HONOR_STREAK_ONLINE, row, column, uStr);
 	}
@@ -839,7 +839,7 @@ static void populateBattleHonors(const PSPlayerStats& stats, Int battleHonors, I
 	{
 		InsertBattleHonor(list, TheMappedImageCollection->findImageByName("Domination_100"), FALSE,
 			BATTLE_HONOR_DOMINATION_ONLINE, row, column, uStr, totalWins);
-#endif
+#endif // ZH
 	}
 
 #ifdef ZH
@@ -847,7 +847,7 @@ static void populateBattleHonors(const PSPlayerStats& stats, Int battleHonors, I
 	InsertBattleHonor(list, TheMappedImageCollection->findImageByName("GlobalGen"), BitTest(battleHonors, BATTLE_HONOR_GLOBAL_GENERAL),
 		BATTLE_HONOR_GLOBAL_GENERAL, row, column);
 
-#endif
+#endif // ZH
 	/*
 	Bool isLoyal;
 	isLoyal = ThePlayerTemplateStore->getNthPlayerTemplate(lastGen)->getSide().compareNoCase( "america") == 0 && gamesInRow >= 20;
@@ -1154,7 +1154,7 @@ void PopulatePlayerInfoWindows( AsciiString parentWindowName )
 				favoriteSide = fac->getSide();
 			}
 		}
-#endif
+#endif // OG
 	}
 
 	win = findWindow(NULL, parentWindowName, "StaticTextTotalKillsValue");
@@ -1230,12 +1230,12 @@ void PopulatePlayerInfoWindows( AsciiString parentWindowName )
 #ifdef ZH
 		//GS  prevent divide by zero
 		if( numGames > 0 )
-#endif
+#endif // ZH
 		uStr.format(TheGameText->fetch("GUI:WinPercent"), REAL_TO_INT(numWins/(Real)numGames*100.0f));
 #ifdef ZH
 		else
 			uStr.format(TheGameText->fetch("GUI:WinPercent"), 0);
-#endif
+#endif // ZH
 		GadgetStaticTextSetText(win, uStr);
 	}
 
@@ -1252,7 +1252,7 @@ void PopulatePlayerInfoWindows( AsciiString parentWindowName )
 			GadgetProgressBarSetProgress(win, 100 * INT_TO_REAL(rankPoints - TheRankPointValues->m_ranks[currentRank])/( TheRankPointValues->m_ranks[currentRank + 1] - TheRankPointValues->m_ranks[currentRank]));
 #ifdef ZH
 		}
-#endif
+#endif // ZH
 		}
 #ifdef ZH
 
@@ -1291,28 +1291,28 @@ void PopulatePlayerInfoWindows( AsciiString parentWindowName )
 //		//combined text (Ex: Toxin Corporal)
 //		sideStr = TheGameText->fetch(side);
 //		sideRankStr.format(L"%s - %s", sideStr.str(), rankStr.str() );
-#endif
+#endif // ZH
 	}
 #ifdef ZH
 
 	//rank image;  based on rank and primary faction (USA, China, GLA)
-#endif
+#endif // ZH
 	win = findWindow(NULL, parentWindowName, "WinRank");
 	if(win && TheRankPointValues)
 	{
 #ifdef OG
 		if (rankPoints == 0)
 			win->winSetEnabledImage(0, lookupRankImage(AsciiString::TheEmptyString, 0));
-#endif
+#endif // OG
 #ifdef ZH
 		if (rankPoints == 0 || pPlayerTemplate == NULL)
 			win->winSetEnabledImage(0, TheMappedImageCollection->findImageByName("NewPlayer"));
-#endif
+#endif // ZH
 		else
 #ifdef OG
 			win->winSetEnabledImage(0, lookupRankImage(favoriteSide, currentRank));
 
-#endif
+#endif // OG
 #ifdef ZH
 			win->winSetEnabledImage(0, lookupRankImage(pPlayerTemplate->getBaseSide(), currentRank));
 //x		win->setTooltipText(rankStr);  //ex: Corporal
@@ -1324,12 +1324,12 @@ void PopulatePlayerInfoWindows( AsciiString parentWindowName )
 	{
 		win->winSetEnabledImage(0, pPlayerTemplate->getGeneralImage());
 //x		win->setTooltipText( sideStr );  //ex: Toxin General
-#endif
+#endif // ZH
 	}
 #ifdef ZH
 
 	//favorite side and rank text (Ex: Tank Corporal)
-#endif
+#endif // ZH
 	win = findWindow(NULL, parentWindowName, "StaticTextRank");
 	if(win)
 	{
@@ -1337,12 +1337,12 @@ void PopulatePlayerInfoWindows( AsciiString parentWindowName )
 		AsciiString rankStr;
 		rankStr.format("GUI:GSRank%d", currentRank);
 		GadgetStaticTextSetText(win, TheGameText->fetch(rankStr));
-#endif
+#endif // OG
 #ifdef ZH
 		GadgetStaticTextSetText(win, rankStr);  //just rank
 //x		win->setTooltipText(sideRankStr);  //ex: Toxin General - Corporal
 
-#endif
+#endif // ZH
 	}
 
 	win = findWindow(NULL, parentWindowName, "StaticTextInProgress");

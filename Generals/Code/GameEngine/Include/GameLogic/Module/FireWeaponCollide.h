@@ -47,11 +47,11 @@ public:
 #ifdef OG
 	UnsignedInt m_requiredStatus;
 	UnsignedInt m_forbiddenStatus;
-#endif
+#endif // OG
 #ifdef ZH
 	ObjectStatusMaskType m_requiredStatus;
 	ObjectStatusMaskType m_forbiddenStatus;
-#endif
+#endif // ZH
 	Bool m_fireOnce;
 
 	FireWeaponCollideModuleData()
@@ -60,7 +60,7 @@ public:
 #ifdef OG
 		m_requiredStatus = 0;		// nothing required
 		m_forbiddenStatus = 0;	// nothing forbidden
-#endif
+#endif // OG
 		m_fireOnce = FALSE;
 	}
 

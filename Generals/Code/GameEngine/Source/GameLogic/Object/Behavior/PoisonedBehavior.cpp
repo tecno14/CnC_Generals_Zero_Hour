@@ -126,7 +126,7 @@ UpdateSleepTime PoisonedBehavior::update()
 		damage.in.m_damageType = DAMAGE_UNRESISTABLE; // Not poison, as that will infect us again
 #ifdef ZH
 		damage.in.m_damageFXOverride = DAMAGE_POISON; // but this will ensure that the right effect is played
-#endif
+#endif // ZH
 		damage.in.m_deathType = m_deathType;
 		getObject()->attemptDamage( &damage );
 

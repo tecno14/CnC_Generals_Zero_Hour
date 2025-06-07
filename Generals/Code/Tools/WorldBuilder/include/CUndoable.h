@@ -414,6 +414,6 @@ public:
     virtual void Redo(void);
 };
 
-#endif
+#endif // ZH
 
 #endif //CUNDOABLE_H

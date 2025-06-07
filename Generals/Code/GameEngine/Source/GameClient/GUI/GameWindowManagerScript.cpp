@@ -79,7 +79,7 @@
 //#pragma MESSAGE("************************************** WARNING, optimization disabled for debugging purposes")
 #endif
 
-#endif
+#endif // ZH
 // DEFINES ////////////////////////////////////////////////////////////////////
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -151,7 +151,7 @@ const char *WindowStatusNames[] = { "ACTIVE", "TOGGLE", "DRAGABLE", "ENABLED", "
 															"USE_OVERLAY_STATES", "NOT_READY", "FLASHING", "ALWAYS_COLOR",
 #ifdef ZH
 															"ON_MOUSE_DOWN",
-#endif
+#endif // ZH
 															NULL };
 
 const char *WindowStyleNames[] = { "PUSHBUTTON",	"RADIOBUTTON",	"CHECKBOX",
@@ -1153,7 +1153,7 @@ static Bool parseStaticTextData( char *token, WinInstanceData *instData,
 	textData->centeredVertically = TRUE;
 	textData->leftMargin = 7;
 	textData->topMargin = 7;
-#endif
+#endif // ZH
 
 	return TRUE;
 
@@ -2750,7 +2750,7 @@ GameWindow *GameWindowManager::winCreateFromScript( AsciiString filenameString,
 
   // read into memory
   inFile=inFile->convertToRAMFile();
-#endif
+#endif // ZH
 
 	// read the file version
 	Int version;

@@ -47,7 +47,7 @@
 //#pragma MESSAGE("************************************** WARNING, optimization disabled for debugging purposes")
 #endif
 
-#endif
+#endif // ZH
 //-------------------------------------------------------------------------------------------------
 W3DDependencyModelDrawModuleData::W3DDependencyModelDrawModuleData() 
 {
@@ -115,7 +115,7 @@ void W3DDependencyModelDraw::doDrawModule(const Matrix3D* transformMtx)
 
     myDrawable->imitateStealthLook( *theirDrawable );
 
-#endif
+#endif // ZH
 	}
 }
 
@@ -154,7 +154,7 @@ void W3DDependencyModelDraw::adjustTransformMtx(Matrix3D& mtx) const
 			{
 #ifdef ZH
         mtx = *theirDrawable->getTransformMatrix();//TransformMatrix();
-#endif
+#endif // ZH
 				DEBUG_LOG(("m_attachToDrawableBoneInContainer %s not found\n",getW3DDependencyModelDrawModuleData()->m_attachToDrawableBoneInContainer.str()));
 			}
 		}

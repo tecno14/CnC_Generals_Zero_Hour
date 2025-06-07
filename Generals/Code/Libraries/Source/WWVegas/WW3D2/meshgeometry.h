@@ -24,33 +24,33 @@
  *                                                                                             *
 #ifdef OG
  *                     $Archive:: /VSS_Sync/ww3d2/meshgeometry.h                              $*
-#endif
+#endif // OG
 #ifdef ZH
  *                     $Archive:: /Commando/Code/ww3d2/meshgeometry.h                         $*
-#endif
+#endif // ZH
  *                                                                                             *
  *              Original Author:: Greg Hjelstrom                                               *
  *                                                                                             *
 #ifdef OG
  *                      $Author:: Vss_sync                                                    $*
-#endif
+#endif // OG
 #ifdef ZH
  *                      $Author:: Jani_p                                                      $*
-#endif
+#endif // ZH
  *                                                                                             *
 #ifdef OG
  *                     $Modtime:: 8/29/01 7:29p                                               $*
-#endif
+#endif // OG
 #ifdef ZH
  *                     $Modtime:: 11/24/01 7:28p                                              $*
-#endif
+#endif // ZH
  *                                                                                             *
 #ifdef OG
  *                    $Revision:: 10                                                          $*
-#endif
+#endif // OG
 #ifdef ZH
  *                    $Revision:: 11                                                          $*
-#endif
+#endif // ZH
  *                                                                                             *
  *---------------------------------------------------------------------------------------------*
  * Functions:                                                                                  *
@@ -82,13 +82,13 @@ class AABTreeClass;
 #ifdef ZH
 class HTreeClass;
 class RenderInfoClass;
-#endif
+#endif // ZH
 
 #ifdef ZH
 // Define which kind of index vector to use (16- or 32 bit)
 typedef Vector3i16 TriIndex;
 //typedef Vector3i TriIndex;
-#endif
+#endif // ZH
 
 /*
 ** The following two defines control two space-saving optimizations.  In Renegade I've found
@@ -165,10 +165,10 @@ public:
 
 #ifdef OG
 	const Vector3i *			Get_Polygon_Array(void)										{ return get_polys(); }
-#endif
+#endif // OG
 #ifdef ZH
 	const TriIndex*			Get_Polygon_Array(void)										{ return get_polys(); }
-#endif
+#endif // ZH
 	Vector3 *					Get_Vertex_Array(void)										{ WWASSERT(Vertex); return Vertex->Get_Array(); }
 	const Vector3 *			Get_Vertex_Normal_Array(void);
 	const Vector4 *			Get_Plane_Array(bool create = true);
@@ -217,10 +217,10 @@ protected:
 	// internal accessor functions that are not exposed to the user (non-const...)
 #ifdef OG
 	Vector3i *					get_polys(void);
-#endif
+#endif // OG
 #ifdef ZH
 	TriIndex *					get_polys(void);
-#endif
+#endif // ZH
 	Vector3 *					get_vert_normals(void);
 	uint32 *						get_shade_indices(bool create = true);
 	Vector4 *					get_planes(bool create = true);
@@ -261,7 +261,7 @@ protected:
 	void get_deformed_vertices(Vector3 *dst_vert, Vector3 *dst_norm, const HTreeClass * htree);
 	void get_deformed_vertices(Vector3 *dst_vert, const HTreeClass * htree);
 	void get_deformed_screenspace_vertices(Vector4 *dst_vert,const RenderInfoClass & rinfo,const Matrix3D & mesh_tm,const HTreeClass * htree);
-#endif
+#endif // ZH
 	
 	// General info
 	ShareBufferClass<char> *							MeshName;
@@ -276,10 +276,10 @@ protected:
 		
 #ifdef OG
 	ShareBufferClass<Vector3i> *						Poly;
-#endif
+#endif // OG
 #ifdef ZH
 	ShareBufferClass<TriIndex> *						Poly;
-#endif
+#endif // ZH
 	ShareBufferClass<Vector3> *						Vertex;
 	ShareBufferClass<Vector3> *						VertexNorm;
 	ShareBufferClass<Vector4> *						PlaneEq;
@@ -300,10 +300,10 @@ protected:
 */
 #ifdef OG
 inline Vector3i * MeshGeometryClass::get_polys(void)
-#endif
+#endif // OG
 #ifdef ZH
 inline TriIndex * MeshGeometryClass::get_polys(void)
-#endif
+#endif // ZH
 {
 	WWASSERT(Poly);
 	return Poly->Get_Array();

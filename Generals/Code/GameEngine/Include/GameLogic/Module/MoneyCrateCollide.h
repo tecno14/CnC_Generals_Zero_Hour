@@ -37,7 +37,7 @@
 #include "GameLogic/Module/CrateCollide.h"
 #ifdef ZH
 #include "GameLogic/Module/AutoDepositUpdate.h"
-#endif
+#endif // ZH
 
 // FORWARD REFERENCES /////////////////////////////////////////////////////////////////////////////
 class Thing;
@@ -49,14 +49,14 @@ public:
 	UnsignedInt m_moneyProvided;
 #ifdef ZH
 	std::list<upgradePair> m_upgradeBoost;
-#endif
+#endif // ZH
 
 	MoneyCrateCollideModuleData()
 	{
 		m_moneyProvided = 0;
 #ifdef ZH
 		m_upgradeBoost.clear();
-#endif
+#endif // ZH
 	}
 
 	static void buildFieldParse(MultiIniFieldParse& p) 
@@ -69,7 +69,7 @@ public:
 #ifdef ZH
 			{ "UpgradedBoost",	parseUpgradePair,		NULL, offsetof( MoneyCrateCollideModuleData, m_upgradeBoost ) },
 
-#endif
+#endif // ZH
 			{ 0, 0, 0, 0 }
 		};
     p.add(dataFieldParse);
@@ -97,7 +97,7 @@ protected:
 
 	Int getUpgradedSupplyBoost( Object *other ) const;
 
-#endif
+#endif // ZH
 };
 
 #endif

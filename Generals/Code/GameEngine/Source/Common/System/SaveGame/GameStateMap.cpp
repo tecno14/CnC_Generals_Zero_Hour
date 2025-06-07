@@ -37,7 +37,7 @@
 #include "Common/Xfer.h"
 #ifdef ZH
 #include "GameClient/CampaignManager.h"
-#endif
+#endif // ZH
 #include "GameClient/GameClient.h"
 #include "GameClient/MapUtil.h"
 #include "GameLogic/GameLogic.h"
@@ -250,13 +250,13 @@ void GameStateMap::xfer( Xfer *xfer )
 #ifdef ZH
 {
 	if( xfer->getXferMode() == XFER_LOAD )
-#endif
+#endif // ZH
 {
 #ifdef ZH
 		TheGameLogic->setLoadingSave( TRUE );
 	}
 
-#endif
+#endif // ZH
 	// version
 	const XferVersion currentVersion = 2;
 	XferVersion version = currentVersion;
@@ -426,14 +426,14 @@ void GameStateMap::xfer( Xfer *xfer )
 	if (TheGameLogic->getGameMode()==GAME_SKIRMISH) {
 		if (TheSkirmishGameInfo==NULL) {
 
-#endif
+#endif // OG
 #ifdef ZH
 	// Save the Game Info so the game can be started with the correct players on load
 	if( TheGameLogic->getGameMode()==GAME_SKIRMISH ) 
 	{
 		if( TheSkirmishGameInfo==NULL ) 
 		{
-#endif
+#endif // ZH
 			TheSkirmishGameInfo = NEW SkirmishGameInfo;
 			TheSkirmishGameInfo->init();  
 			TheSkirmishGameInfo->clearSlotList();
@@ -444,14 +444,14 @@ void GameStateMap::xfer( Xfer *xfer )
 	} else {
 		if (TheSkirmishGameInfo) {
 
-#endif
+#endif // OG
 #ifdef ZH
 	} 
 	else 
 	{
 		if( TheSkirmishGameInfo ) 
 		{
-#endif
+#endif // ZH
 			delete TheSkirmishGameInfo;
 			TheSkirmishGameInfo = NULL;
 		}
@@ -465,15 +465,15 @@ void GameStateMap::xfer( Xfer *xfer )
 #ifdef OG
 	if( xfer->getXferMode() == XFER_LOAD ) {
 
-#endif
+#endif // OG
 #ifdef ZH
 	if( xfer->getXferMode() == XFER_LOAD ) 
 	{
-#endif
+#endif // ZH
 		TheGameLogic->startNewGame( TRUE );
 #ifdef ZH
 		TheGameLogic->setLoadingSave( FALSE );
-#endif
+#endif // ZH
 	}
 
 }  // end xfer

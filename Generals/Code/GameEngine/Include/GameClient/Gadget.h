@@ -312,13 +312,13 @@ typedef struct _TextData
 #ifdef OG
 	Bool centered;
 
-#endif
+#endif // OG
 #ifdef ZH
 	Bool centered;				///< horizontal
 	Bool centeredVertically;	///< vertical
 	Int leftMargin;					///< left justification margin width
 	Int topMargin;					///< top justification margin width
-#endif
+#endif // ZH
 
 } TextData;
 

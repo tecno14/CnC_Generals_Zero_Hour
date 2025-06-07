@@ -288,10 +288,10 @@ void ToggleQuitMenu()
 	//Added a check to see if we're not in game yet
 #ifdef OG
 	if (TheGameLogic->isIntroMoviePlaying() || TheGameLogic->isLoadingGame() ||TheScriptEngine->isGameEnding())
-#endif
+#endif // OG
 #ifdef ZH
 	if (TheGameLogic->isIntroMoviePlaying() || TheGameLogic->isLoadingMap() ||TheScriptEngine->isGameEnding())
-#endif
+#endif // ZH
 		return;
 
 	//End Add

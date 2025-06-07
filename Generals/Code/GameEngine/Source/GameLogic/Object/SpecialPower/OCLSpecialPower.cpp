@@ -34,7 +34,7 @@
 #include "Common/RandomValue.h"
 #ifdef ZH
 #include "Common/ThingFactory.h"
-#endif
+#endif // ZH
 #include "Common/Xfer.h"
 #include "GameLogic/Object.h"
 #include "GameLogic/ObjectCreationList.h"
@@ -57,11 +57,11 @@ enum
 #ifdef OG
 	CREATE_ABOVE_LOCATION_HEIGHT = 300
 
-#endif
+#endif // OG
 #ifdef ZH
 	CREATE_ABOVE_LOCATION_HEIGHT = 300,
 	MAX_ADJUST_RADIUS = 500
-#endif
+#endif // ZH
 };
 
 static const char* TheOCLCreateLocTypeNames[] =
@@ -84,7 +84,7 @@ OCLSpecialPowerModuleData::OCLSpecialPowerModuleData( void )
 	m_createLoc = CREATE_AT_EDGE_NEAR_SOURCE;
 #ifdef ZH
 	m_isOCLAdjustPositionToPassable = FALSE;
-#endif
+#endif // ZH
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -114,7 +114,7 @@ static void parseOCLUpgradePair( INI* ini, void * /*instance*/, void *store, con
 #ifdef ZH
 		{ "ReferenceObject", INI::parseAsciiString, NULL, offsetof( OCLSpecialPowerModuleData, m_referenceThingName ) },
 		{ "OCLAdjustPositionToPassable", INI::parseBool, NULL, offsetof( OCLSpecialPowerModuleData, m_isOCLAdjustPositionToPassable ) },
-#endif
+#endif // ZH
 		{ 0, 0, 0, 0 }
 	};
 	p.add(dataFieldParse);
@@ -164,10 +164,10 @@ OCLSpecialPower::~OCLSpecialPower( void )
 //-------------------------------------------------------------------------------------------------
 #ifdef OG
 void OCLSpecialPower::doSpecialPowerAtLocation( const Coord3D *loc, UnsignedInt commandOptions )
-#endif
+#endif // OG
 #ifdef ZH
 void OCLSpecialPower::doSpecialPowerAtLocation( const Coord3D *loc, Real angle, UnsignedInt commandOptions )
-#endif
+#endif // ZH
 {
 	if (getObject()->isDisabled())
 		return;
@@ -191,27 +191,27 @@ void OCLSpecialPower::doSpecialPowerAtLocation( const Coord3D *loc, Real angle, 
     { // if findPosition() fails, then don't monkey with target Coord!
     	targetCoord = *loc;
     }
-#endif
+#endif // ZH
 
 #ifdef ZH
 
 	}
 
-#endif
+#endif // ZH
 	// call the base class action cause we are *EXTENDING* functionality
 #ifdef OG
 	SpecialPowerModule::doSpecialPowerAtLocation( loc, commandOptions );
-#endif
+#endif // OG
 #ifdef ZH
 	SpecialPowerModule::doSpecialPowerAtLocation( &targetCoord, angle, commandOptions );
-#endif
+#endif // ZH
 
 	const ObjectCreationList* ocl = findOCL();
 #ifdef OG
 
 	// get the module data
 	const OCLSpecialPowerModuleData *modData = getOCLSpecialPowerModuleData();
-#endif
+#endif // OG
 
 	// at what point will the "deliverer" come in
 	Coord3D creationCoord;
@@ -221,72 +221,72 @@ void OCLSpecialPower::doSpecialPowerAtLocation( const Coord3D *loc, Real angle, 
 			creationCoord = TheTerrainLogic->findClosestEdgePoint( getObject()->getPosition() );
 #ifdef OG
 			ObjectCreationList::create( ocl, getObject(), &creationCoord, loc );
-#endif
+#endif // OG
 #ifdef ZH
 			ObjectCreationList::create( ocl, getObject(), &creationCoord, &targetCoord, angle );
-#endif
+#endif // ZH
 			break;
 		case CREATE_AT_EDGE_NEAR_TARGET:
 #ifdef OG
 			creationCoord = TheTerrainLogic->findClosestEdgePoint(loc);
 			ObjectCreationList::create( ocl, getObject(), &creationCoord, loc );
-#endif
+#endif // OG
 #ifdef ZH
 			creationCoord = TheTerrainLogic->findClosestEdgePoint(&targetCoord);
 			ObjectCreationList::create( ocl, getObject(), &creationCoord, &targetCoord, angle );
-#endif
+#endif // ZH
 			break;
 		case CREATE_AT_EDGE_FARTHEST_FROM_TARGET:
 #ifdef OG
 			creationCoord = TheTerrainLogic->findFarthestEdgePoint(loc);
-#endif
+#endif // OG
 #ifdef ZH
 			creationCoord = TheTerrainLogic->findFarthestEdgePoint(&targetCoord);
-#endif
+#endif // ZH
 			creationCoord.z += CREATE_ABOVE_LOCATION_HEIGHT;
 #ifdef OG
 			ObjectCreationList::create( ocl, getObject(), &creationCoord, loc );
-#endif
+#endif // OG
 #ifdef ZH
 			ObjectCreationList::create( ocl, getObject(), &creationCoord, &targetCoord, angle );
-#endif
+#endif // ZH
 			break;
 		case CREATE_AT_LOCATION:
 			// this is the case where the special power stuff originates at the location of the mouse click
 #ifdef OG
 			creationCoord = *loc;
 			ObjectCreationList::create( ocl, getObject(), &creationCoord, loc );
-#endif
+#endif // OG
 #ifdef ZH
 			creationCoord = targetCoord;
 			ObjectCreationList::create( ocl, getObject(), &creationCoord, &targetCoord, angle );
-#endif
+#endif // ZH
 			break;
 		case USE_OWNER_OBJECT:
 #ifdef OG
 			creationCoord.set( loc );
 			ObjectCreationList::create( ocl, getObject(), &creationCoord, loc, false );
-#endif
+#endif // OG
 #ifdef ZH
 			creationCoord.set( &targetCoord );
 			ObjectCreationList::create( ocl, getObject(), &creationCoord, &targetCoord, angle, false );
-#endif
+#endif // ZH
 			break;
 		case CREATE_ABOVE_LOCATION:
 			// this is the case where the special power stuff originates above the location of the mouse click
 #ifdef OG
 			creationCoord = *loc;
-#endif
+#endif // OG
 #ifdef ZH
 			creationCoord = targetCoord;
-#endif
+#endif // ZH
 			creationCoord.z += CREATE_ABOVE_LOCATION_HEIGHT;
 #ifdef OG
 			ObjectCreationList::create( ocl, getObject(), &creationCoord, loc );
-#endif
+#endif // OG
 #ifdef ZH
 			ObjectCreationList::create( ocl, getObject(), &creationCoord, &targetCoord, angle );
-#endif
+#endif // ZH
 			break;
 	}
 }  
@@ -303,10 +303,10 @@ void OCLSpecialPower::doSpecialPowerAtObject( Object *obj, UnsignedInt commandOp
 		return;
 #ifdef OG
 	doSpecialPowerAtLocation( obj->getPosition(), commandOptions );
-#endif
+#endif // OG
 #ifdef ZH
 	doSpecialPowerAtLocation( obj->getPosition(), INVALID_ANGLE, commandOptions );
-#endif
+#endif // ZH
 }  
 
 // ------------------------------------------------------------------------------------------------
@@ -321,10 +321,10 @@ void OCLSpecialPower::doSpecialPower( UnsignedInt commandOptions )
 	// call the base class action cause we are *EXTENDING* functionality
 #ifdef OG
 	SpecialPowerModule::doSpecialPowerAtLocation( &creationCoord, commandOptions );
-#endif
+#endif // OG
 #ifdef ZH
 	SpecialPowerModule::doSpecialPowerAtLocation( &creationCoord, INVALID_ANGLE, commandOptions );
-#endif
+#endif // ZH
 
 	const ObjectCreationList* ocl = findOCL();
 	ObjectCreationList::create( ocl, getObject(), &creationCoord, &creationCoord, false );
@@ -338,7 +338,7 @@ const ThingTemplate* OCLSpecialPower::getReferenceThingTemplate() const
 }
 
 // ------------------------------------------------------------------------------------------------
-#endif
+#endif // ZH
 /** CRC */
 // ------------------------------------------------------------------------------------------------
 void OCLSpecialPower::crc( Xfer *xfer )

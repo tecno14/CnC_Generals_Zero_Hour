@@ -28,17 +28,17 @@
  *                                                                                             *
 #ifdef OG
  *                     $Modtime:: 1/08/01 10:04a                                              $*
-#endif
+#endif // OG
 #ifdef ZH
  *                     $Modtime:: 12/01/01 12:18p                                             $*
-#endif
+#endif // ZH
  *                                                                                             *
 #ifdef OG
  *                    $Revision:: 1                                                           $*
-#endif
+#endif // OG
 #ifdef ZH
  *                    $Revision:: 2                                                           $*
-#endif
+#endif // ZH
  *                                                                                             *
  *---------------------------------------------------------------------------------------------*
  * Functions:                                                                                  *
@@ -92,10 +92,10 @@ void Null3DObjClass::Get_Obj_Space_Bounding_Sphere(SphereClass & sphere) const
    sphere.Center.Set(0,0,0);
 #ifdef OG
 	sphere.Radius = 0.0f;
-#endif
+#endif // OG
 #ifdef ZH
 	sphere.Radius = 0.1f;
-#endif
+#endif // ZH
 }
 
 void Null3DObjClass::Get_Obj_Space_Bounding_Box(AABoxClass & box) const
@@ -103,10 +103,10 @@ void Null3DObjClass::Get_Obj_Space_Bounding_Box(AABoxClass & box) const
 	box.Center.Set(0,0,0);
 #ifdef OG
 	box.Extent.Set(0,0,0);
-#endif
+#endif // OG
 #ifdef ZH
 	box.Extent.Set(0.1f,0.1f,0.1f);
-#endif
+#endif // ZH
 }
 
 /*

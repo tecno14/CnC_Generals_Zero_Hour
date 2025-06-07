@@ -54,7 +54,7 @@
 //#pragma message("************************************** WARNING, optimization disabled for debugging purposes")
 #endif
 
-#endif
+#endif // ZH
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 // PUBLIC FUNCTIONS ///////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -252,7 +252,7 @@ void UpgradeMuxData::performUpgradeFX(Object* obj) const
 #ifdef OG
 void UpgradeMuxData::getUpgradeActivationMasks(Int64& activation, Int64& conflicting) const
 
-#endif
+#endif // OG
 #ifdef ZH
 void UpgradeMuxData::muxDataProcessUpgradeRemoval(Object* obj) const
 {
@@ -293,7 +293,7 @@ Bool UpgradeMuxData::isTriggeredBy(const std::string &upgrade) const
 
 //-------------------------------------------------------------------------------------------------
 void UpgradeMuxData::getUpgradeActivationMasks(UpgradeMaskType& activation, UpgradeMaskType& conflicting) const
-#endif
+#endif // ZH
 {
 	// already computed.
 	if (!m_activationUpgradeNames.empty() || !m_conflictingUpgradeNames.empty())
@@ -301,11 +301,11 @@ void UpgradeMuxData::getUpgradeActivationMasks(UpgradeMaskType& activation, Upgr
 #ifdef OG
 		m_activationMask = 0;
 		m_conflictingMask = 0;
-#endif
+#endif // OG
 #ifdef ZH
 		m_activationMask.clear();
 		m_conflictingMask.clear();
-#endif
+#endif // ZH
 		
 		std::vector<AsciiString>::const_iterator it;
 		for( it = m_activationUpgradeNames.begin();
@@ -321,10 +321,10 @@ void UpgradeMuxData::getUpgradeActivationMasks(UpgradeMaskType& activation, Upgr
 
 #ifdef OG
 			m_activationMask |= theTemplate->getUpgradeMask();
-#endif
+#endif // OG
 #ifdef ZH
 			m_activationMask.set( theTemplate->getUpgradeMask() );
-#endif
+#endif // ZH
 		}
 
 		for( it = m_conflictingUpgradeNames.begin();
@@ -339,21 +339,21 @@ void UpgradeMuxData::getUpgradeActivationMasks(UpgradeMaskType& activation, Upgr
 			}
 #ifdef OG
 			m_conflictingMask |= theTemplate->getUpgradeMask();
-#endif
+#endif // OG
 #ifdef ZH
 			m_conflictingMask.set( theTemplate->getUpgradeMask() );
-#endif
+#endif // ZH
 		}
 #ifdef ZH
 
 		// We set the trigger upgrade names with the activationUpgradeNames entries to be used later.
 		// We have to do this because the activationUpgradeNames are toasted just below.
 		m_triggerUpgradeNames = m_activationUpgradeNames;
-#endif
+#endif // ZH
 
 #ifdef ZH
 		//Clear the names now that we've cached the values!
-#endif
+#endif // ZH
 		m_activationUpgradeNames.clear();
 		m_conflictingUpgradeNames.clear();
 	}

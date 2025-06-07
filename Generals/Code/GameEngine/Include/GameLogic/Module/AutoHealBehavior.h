@@ -61,11 +61,11 @@ public:
 	Bool									m_affectsWholePlayer; ///< I have more than a range, I try to affect everything the player owns
 #ifdef ZH
 	Bool									m_skipSelfForHealing; ///< Don't heal myself.
-#endif
+#endif // ZH
 	KindOfMaskType				m_kindOf;	//Only these types can heal -- defaults to everything.
 #ifdef ZH
 	KindOfMaskType				m_forbiddenKindOf;	//Only these types can heal -- defaults to everything.
-#endif
+#endif // ZH
 	const ParticleSystemTemplate*				m_radiusParticleSystemTmpl;					//Optional particle system meant to apply to entire effect for entire duration.
 	const ParticleSystemTemplate*				m_unitHealPulseParticleSystemTmpl;	//Optional particle system applying to each object getting healed each heal pulse.
 
@@ -82,11 +82,11 @@ public:
 		m_affectsWholePlayer = FALSE;
 #ifdef ZH
 		m_skipSelfForHealing = FALSE;
-#endif
+#endif // ZH
 		SET_ALL_KINDOFMASK_BITS( m_kindOf );
 #ifdef ZH
 		m_forbiddenKindOf.clear();
-#endif
+#endif // ZH
 	}
 
 	static void buildFieldParse(MultiIniFieldParse& p) 
@@ -101,14 +101,14 @@ public:
 			{ "KindOf",						KindOfMaskType::parseFromINI,											NULL, offsetof( AutoHealBehaviorModuleData, m_kindOf ) },		
 #ifdef ZH
 			{ "ForbiddenKindOf",	KindOfMaskType::parseFromINI,											NULL, offsetof( AutoHealBehaviorModuleData, m_forbiddenKindOf ) },
-#endif
+#endif // ZH
 			{ "RadiusParticleSystemName",					INI::parseParticleSystemTemplate,	NULL, offsetof( AutoHealBehaviorModuleData, m_radiusParticleSystemTmpl ) },
 			{ "UnitHealPulseParticleSystemName",	INI::parseParticleSystemTemplate,	NULL, offsetof( AutoHealBehaviorModuleData, m_unitHealPulseParticleSystemTmpl ) },
 			{ "StartHealingDelay",			INI::parseDurationUnsignedInt,				NULL, offsetof( AutoHealBehaviorModuleData, m_startHealingDelay ) },
 			{ "AffectsWholePlayer",			INI::parseBool,												NULL, offsetof( AutoHealBehaviorModuleData, m_affectsWholePlayer ) },
 #ifdef ZH
 			{ "SkipSelfForHealing",			INI::parseBool,												NULL, offsetof( AutoHealBehaviorModuleData, m_skipSelfForHealing ) },
-#endif
+#endif // ZH
 			{ 0, 0, 0, 0 }
 		};
 
@@ -162,10 +162,10 @@ protected:
 
 #ifdef OG
 	virtual void getUpgradeActivationMasks(Int64& activation, Int64& conflicting) const
-#endif
+#endif // OG
 #ifdef ZH
 	virtual void getUpgradeActivationMasks(UpgradeMaskType& activation, UpgradeMaskType& conflicting) const
-#endif
+#endif // ZH
 	{
 		getAutoHealBehaviorModuleData()->m_upgradeMuxData.getUpgradeActivationMasks(activation, conflicting);
 	}
@@ -180,7 +180,7 @@ protected:
 	{
 		// I can't take it any more.  Let the record show that I think the UpgradeMux multiple inheritence is CRAP.
 		getAutoHealBehaviorModuleData()->m_upgradeMuxData.muxDataProcessUpgradeRemoval(getObject());
-#endif
+#endif // ZH
 	}
 
 	virtual Bool requiresAllActivationUpgrades() const

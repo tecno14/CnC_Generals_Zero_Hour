@@ -26,10 +26,10 @@
 #include "transDB.h"
 #ifdef OG
 #include "noxstringdlg.h"
-#endif
+#endif // OG
 #ifdef ZH
 #include "Babylondlg.h"
-#endif
+#endif // ZH
 
 typedef enum
 {
@@ -56,10 +56,10 @@ typedef enum
 	GN_UNICODE,
 #ifdef OG
 	GN_NOXSTR,
-#endif
+#endif // OG
 #ifdef ZH
 	GN_BABYLONSTR,
-#endif
+#endif // ZH
 } GnFormat;
 
 typedef enum
@@ -118,7 +118,7 @@ int UpdateSentTranslations ( TransDB *db, const char *filename, CNoxstringDlg *d
 int GenerateGameFiles ( TransDB *db, const char *filename, GNOPTIONS *option, LangID *languages, CNoxstringDlg *dlg = NULL );
 int GenerateReport ( TransDB *db, const char *filename, RPOPTIONS *options, LangID *languages, CNoxstringDlg *dlg = NULL );
 void ProcessWaves ( TransDB *db, const char *filename, CNoxstringDlg *dlg );
-#endif
+#endif // OG
 #ifdef ZH
 int ExportTranslations ( TransDB *db, const char *filename, LangID langid, TROPTIONS *options, CBabylonDlg *dlg = NULL );
 int ImportTranslations ( TransDB *db, const char *filename, CBabylonDlg *dlg = NULL );
@@ -126,5 +126,5 @@ int UpdateSentTranslations ( TransDB *db, const char *filename, CBabylonDlg *dlg
 int GenerateGameFiles ( TransDB *db, const char *filename, GNOPTIONS *option, LangID *languages, CBabylonDlg *dlg = NULL );
 int GenerateReport ( TransDB *db, const char *filename, RPOPTIONS *options, LangID *languages, CBabylonDlg *dlg = NULL );
 void ProcessWaves ( TransDB *db, const char *filename, CBabylonDlg *dlg );
-#endif
+#endif // ZH
 #endif

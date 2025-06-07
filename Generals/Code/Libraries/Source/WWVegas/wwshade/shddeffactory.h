@@ -115,4 +115,4 @@ SimpleShdDefFactoryClass<T,ID,T ## Name> T ## Factory \
 
 #endif //SHDDEFFACTORY_H
 
-#endif
+#endif // ZH

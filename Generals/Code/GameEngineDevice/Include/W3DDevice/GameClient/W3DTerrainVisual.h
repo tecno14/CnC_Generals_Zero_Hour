@@ -40,10 +40,10 @@ class Matrix3D;
 class WaterHandle;
 #ifdef OG
 class HeightMapRenderObjClass;
-#endif
+#endif // OG
 #ifdef ZH
 class BaseHeightMapRenderObjClass;
-#endif
+#endif // ZH
 class WorldHeightMap;
 
 //-------------------------------------------------------------------------------------------------
@@ -124,7 +124,7 @@ public:
 		Real angle
 	);
 
-#endif
+#endif // ZH
 
 	//
 	// Modify height.
@@ -132,7 +132,7 @@ public:
 	virtual void setRawMapHeight(const ICoord2D *gridPos, Int height);
 #ifdef ZH
 	virtual Int getRawMapHeight(const ICoord2D *gridPos);
-#endif
+#endif // ZH
 
 	/// Replace the skybox texture
 	virtual void replaceSkyboxTextures(const AsciiString *oldTexName[NumSkyboxTextures], const AsciiString *newTexName[NumSkyboxTextures]);
@@ -157,7 +157,7 @@ public:
   ////////////////////////////////////////////////////
   ////////////////////////////////////////////////////
 
-#endif
+#endif // ZH
 
 
 protected:
@@ -181,22 +181,22 @@ protected:
   ////////////////////////////////////////////////////
   ////////////////////////////////////////////////////
 #endif
-#endif
+#endif // ZH
 
 #ifdef OG
 	HeightMapRenderObjClass *m_terrainRenderObject;  ///< W3D render object for terrain
 
-#endif
+#endif // OG
 #ifdef ZH
 
 
 	BaseHeightMapRenderObjClass *m_terrainRenderObject;  ///< W3D render object for terrain
-#endif
+#endif // ZH
 	WaterRenderObjClass	*m_waterRenderObject;	///< W3D render object for water plane
 #ifdef OG
 	WorldHeightMap *m_terrainHeightMap;  ///< height map used for render obj building
 
-#endif
+#endif // OG
 #ifdef ZH
 
   WorldHeightMap *m_logicHeightMap;  ///< height map used for render obj building
@@ -205,7 +205,7 @@ protected:
   WorldHeightMap *m_clientHeightMap; ///< this is a workspace for animating the terrain elevations
 #endif
   
-#endif
+#endif // ZH
 	Bool m_isWaterGridRenderingEnabled;
 	AsciiString	m_currentSkyboxTexNames[NumSkyboxTextures];	///<store current texture names applied to skybox.
 	AsciiString m_initialSkyboxTexNames[NumSkyboxTextures];	///<store starting texture/default skybox textures.

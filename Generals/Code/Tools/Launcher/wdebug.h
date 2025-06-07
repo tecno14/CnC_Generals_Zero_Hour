@@ -55,10 +55,10 @@ will you be ready to leave grasshopper.
 
 #ifdef OG
 #include <iostream>
-#endif
+#endif // OG
 #ifdef ZH
 #include <iostream.h>
-#endif
+#endif // ZH
 #include "odevice.h"
 #include "streamer.h"
 #include <time.h>
@@ -97,10 +97,10 @@ will you be ready to leave grasshopper.
     (*(MsgManager::errorStream())) << "ERR " << timebuf << " [" << \
 #ifdef OG
         __FILE__ <<  " " << __LINE__ << "] " << X << std::endl; \
-#endif
+#endif // OG
 #ifdef ZH
         __FILE__ <<  " " << __LINE__ << "] " << X << endl; \
-#endif
+#endif // ZH
 }
 
 
@@ -158,10 +158,10 @@ will you be ready to leave grasshopper.
     (*(MsgManager::debugStream())) << "DBG [" << __FILE__ <<  \
 #ifdef OG
     " " << __LINE__ << "] " << X << std::endl;\
-#endif
+#endif // OG
 #ifdef ZH
     " " << __LINE__ << "] " << X << endl;\
-#endif
+#endif // ZH
 }
 
 // Just get a stream to the debugging device, no extra junk
@@ -204,13 +204,13 @@ class MsgManager
    static std::ostream* infoStream(void);
    static std::ostream* warnStream(void);
    static std::ostream* errorStream(void);
-#endif
+#endif // OG
 #ifdef ZH
    static ostream            *debugStream(void);
    static ostream            *infoStream(void);
    static ostream            *warnStream(void);
    static ostream            *errorStream(void);
-#endif
+#endif // ZH
 };
 
 #endif

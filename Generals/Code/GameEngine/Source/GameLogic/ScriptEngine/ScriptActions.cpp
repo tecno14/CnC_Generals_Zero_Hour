@@ -63,7 +63,7 @@
 #include "GameClient/GlobalLanguage.h"
 #ifdef ZH
 #include "GameClient/Snow.h"
-#endif
+#endif // ZH
 
 #include "GameLogic/AI.h"
 #include "GameLogic/AISkirmishPlayer.h"
@@ -81,7 +81,7 @@
 #include "GameLogic/Module/RailroadGuideAIUpdate.h"
 #include "GameLogic/Module/StickyBombUpdate.h"
 #include "GameLogic/ObjectTypes.h"
-#endif
+#endif // ZH
 #include "GameLogic/PartitionManager.h"
 #include "GameLogic/PolygonTrigger.h"
 #include "GameLogic/ScriptActions.h"
@@ -90,7 +90,7 @@
 #include "GameLogic/VictoryConditions.h"
 #ifdef ZH
 #include "GameLogic/AIPathfind.h"
-#endif
+#endif // ZH
 
 #ifdef _INTERNAL
 // for occasional debugging...
@@ -403,7 +403,7 @@ void ScriptActions::doEnableObjectSound(const AsciiString& objectName, Bool enab
 }	
 
 //-------------------------------------------------------------------------------------------------
-#endif
+#endif // ZH
 /** doDamageTeamMembers */
 //-------------------------------------------------------------------------------------------------
 void ScriptActions::doDamageTeamMembers(const AsciiString& team, Real amount)
@@ -805,20 +805,20 @@ void ScriptActions::doCreateReinforcements(const AsciiString& team, const AsciiS
 //-------------------------------------------------------------------------------------------------
 #ifdef OG
 void ScriptActions::doMoveCameraTo(const AsciiString& waypoint, Real sec, Real cameraStutterSec)
-#endif
+#endif // OG
 #ifdef ZH
 void ScriptActions::doMoveCameraTo(const AsciiString& waypoint, Real sec, Real cameraStutterSec, Real easeIn, Real easeOut)
-#endif
+#endif // ZH
 {
 	for (Waypoint *way = TheTerrainLogic->getFirstWaypoint(); way; way = way->getNext()) {
 		if (way->getName() == waypoint) {
 			Coord3D destination = *way->getLocation();
 #ifdef OG
 			TheTacticalView->moveCameraTo(&destination, sec*1000, cameraStutterSec*1000, true);			
-#endif
+#endif // OG
 #ifdef ZH
 			TheTacticalView->moveCameraTo(&destination, sec*1000, cameraStutterSec*1000, true, easeIn*1000.0f, easeOut*1000.0f);			
-#endif
+#endif // ZH
 			break;
 		}
 	}
@@ -829,17 +829,17 @@ void ScriptActions::doMoveCameraTo(const AsciiString& waypoint, Real sec, Real c
 //-------------------------------------------------------------------------------------------------
 #ifdef OG
 void ScriptActions::doZoomCamera( Real zoom, Real sec)
-#endif
+#endif // OG
 #ifdef ZH
 void ScriptActions::doZoomCamera(Real zoom, Real sec, Real easeIn, Real easeOut)
-#endif
+#endif // ZH
 {
 #ifdef OG
 	TheTacticalView->zoomCamera(zoom, sec * 1000);
-#endif
+#endif // OG
 #ifdef ZH
 	TheTacticalView->zoomCamera(zoom, sec*1000.0f, easeIn*1000.0f, easeOut*1000.0f);
-#endif
+#endif // ZH
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -847,17 +847,17 @@ void ScriptActions::doZoomCamera(Real zoom, Real sec, Real easeIn, Real easeOut)
 //-------------------------------------------------------------------------------------------------
 #ifdef OG
 void ScriptActions::doPitchCamera(Real pitch, Real sec)
-#endif
+#endif // OG
 #ifdef ZH
 void ScriptActions::doPitchCamera(Real pitch, Real sec, Real easeIn, Real easeOut)
-#endif
+#endif // ZH
 {
 #ifdef OG
 	TheTacticalView->pitchCamera(pitch, sec * 1000);
-#endif
+#endif // OG
 #ifdef ZH
 	TheTacticalView->pitchCamera(pitch, sec*1000.0f, easeIn*1000.0f, easeOut*1000.0f);
-#endif
+#endif // ZH
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -888,19 +888,19 @@ void ScriptActions::doSetupCamera(const AsciiString& waypoint, Real zoom, Real p
 	Coord3D destination = *lookat->getLocation();
 #ifdef OG
 	TheTacticalView->moveCameraTo(&pos, 0, 0, true);			
-#endif
+#endif // OG
 #ifdef ZH
 	TheTacticalView->moveCameraTo(&pos, 0, 0, true, 0.0f, 0.0f);			
-#endif
+#endif // ZH
 	TheTacticalView->cameraModLookToward(&destination);			
 #ifdef OG
 	TheTacticalView->cameraModFinalPitch(pitch);
 	TheTacticalView->cameraModFinalZoom(zoom);
-#endif
+#endif // OG
 #ifdef ZH
 	TheTacticalView->cameraModFinalPitch(pitch, 0.0f, 0.0f);
 	TheTacticalView->cameraModFinalZoom(zoom, 0.0f, 0.0f);
-#endif
+#endif // ZH
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -965,20 +965,20 @@ void ScriptActions::doModCameraMoveToSelection(void)
 //-------------------------------------------------------------------------------------------------
 #ifdef OG
 void ScriptActions::doResetCamera(const AsciiString& waypoint, Real sec)
-#endif
+#endif // OG
 #ifdef ZH
 void ScriptActions::doResetCamera(const AsciiString& waypoint, Real sec, Real easeIn, Real easeOut)
-#endif
+#endif // ZH
 {
 	for (Waypoint *way = TheTerrainLogic->getFirstWaypoint(); way; way = way->getNext()) {
 		if (way->getName() == waypoint) {
 			Coord3D destination = *way->getLocation();
 #ifdef OG
 			TheTacticalView->resetCamera(&destination, sec*1000);			
-#endif
+#endif // OG
 #ifdef ZH
 			TheTacticalView->resetCamera(&destination, sec*1000, easeIn*1000.0f, easeOut*1000.0f);			
-#endif
+#endif // ZH
 			break;
 		}
 	}
@@ -987,24 +987,24 @@ void ScriptActions::doResetCamera(const AsciiString& waypoint, Real sec, Real ea
 //-------------------------------------------------------------------------------------------------
 #ifdef OG
 /** doRotateCamera */
-#endif
+#endif // OG
 #ifdef ZH
 /** doRotateCamera around the object we are looking at. */
-#endif
+#endif // ZH
 //-------------------------------------------------------------------------------------------------
 #ifdef OG
 void ScriptActions::doRotateCamera(Real rotations, Real sec)
-#endif
+#endif // OG
 #ifdef ZH
 void ScriptActions::doRotateCamera(Real rotations, Real sec, Real easeIn, Real easeOut)
-#endif
+#endif // ZH
 {
 #ifdef OG
 	TheTacticalView->rotateCamera(rotations, sec*1000);			
-#endif
+#endif // OG
 #ifdef ZH
 	TheTacticalView->rotateCamera(rotations, sec*1000.0f, easeIn*1000.0f, easeOut*1000.0f);			
-#endif
+#endif // ZH
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -1012,20 +1012,20 @@ void ScriptActions::doRotateCamera(Real rotations, Real sec, Real easeIn, Real e
 //-------------------------------------------------------------------------------------------------
 #ifdef OG
 void ScriptActions::doRotateCameraTowardObject(const AsciiString& unitName, Real sec, Real holdSec)
-#endif
+#endif // OG
 #ifdef ZH
 void ScriptActions::doRotateCameraTowardObject(const AsciiString& unitName, Real sec, Real holdSec, Real easeIn, Real easeOut)
-#endif
+#endif // ZH
 {
 	const Object *unit = TheScriptEngine->getUnitNamed(unitName);
 	if (!unit)
 		return;
 #ifdef OG
 	TheTacticalView->rotateCameraTowardObject(unit->getID(), sec*1000, holdSec*1000);			
-#endif
+#endif // OG
 #ifdef ZH
 	TheTacticalView->rotateCameraTowardObject(unit->getID(), sec*1000.0f, holdSec*1000.0f, easeIn*1000.0f, easeOut*1000.0f);			
-#endif
+#endif // ZH
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -1033,19 +1033,19 @@ void ScriptActions::doRotateCameraTowardObject(const AsciiString& unitName, Real
 //-------------------------------------------------------------------------------------------------
 #ifdef OG
 void ScriptActions::doRotateCameraTowardWaypoint(const AsciiString& waypointName, Real sec)
-#endif
+#endif // OG
 #ifdef ZH
 void ScriptActions::doRotateCameraTowardWaypoint(const AsciiString& waypointName, Real sec, Real easeIn, Real easeOut, Bool reverseRotation)
-#endif
+#endif // ZH
 {
 	Waypoint *way = TheTerrainLogic->getWaypointByName(waypointName);
 	if (way==NULL) return;
 #ifdef OG
 	TheTacticalView->rotateCameraTowardPosition(way->getLocation(), sec*1000);			
-#endif
+#endif // OG
 #ifdef ZH
 	TheTacticalView->rotateCameraTowardPosition(way->getLocation(), sec*1000.0f, easeIn*1000.0f, easeOut*1000.0f, reverseRotation);			
-#endif
+#endif // ZH
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -1053,19 +1053,19 @@ void ScriptActions::doRotateCameraTowardWaypoint(const AsciiString& waypointName
 //-------------------------------------------------------------------------------------------------
 #ifdef OG
 void ScriptActions::doMoveCameraAlongWaypointPath(const AsciiString& waypoint, Real sec, Real cameraStutterSec)
-#endif
+#endif // OG
 #ifdef ZH
 void ScriptActions::doMoveCameraAlongWaypointPath(const AsciiString& waypoint, Real sec, Real cameraStutterSec, Real easeIn, Real easeOut)
-#endif
+#endif // ZH
 {
 	for (Waypoint *way = TheTerrainLogic->getFirstWaypoint(); way; way = way->getNext()) {
 		if (way->getName() == waypoint) {
 #ifdef OG
 			TheTacticalView->moveCameraAlongWaypointPath(way, sec*1000, cameraStutterSec*1000, true);			
-#endif
+#endif // OG
 #ifdef ZH
 			TheTacticalView->moveCameraAlongWaypointPath(way, sec*1000, cameraStutterSec*1000, true, easeIn*1000.0f, easeOut*1000.0f);			
-#endif
+#endif // ZH
 			break;
 		}
 	}
@@ -1131,7 +1131,7 @@ void ScriptActions::doCreateObject(const AsciiString& objectName, const AsciiStr
         TheAI->pathfinder()->addObjectToPathfindMap( obj );
       }
 
-#endif
+#endif // ZH
 		}  // end if
 	} else {
 		DEBUG_LOG(("WARNING - ThingTemplate '%s' not found.\n", thingName.str()));
@@ -1224,7 +1224,7 @@ void ScriptActions::doBuildObjectNearestTeam( const AsciiString& playerName, con
 	if( thePlayer && theTeam ) 
 	{
 		thePlayer->buildSpecificBuildingNearestTeam( buildingType, theTeam );
-#endif
+#endif // ZH
 	}
 }
 
@@ -1432,10 +1432,10 @@ void ScriptActions::doNamedSetRepulsor(const AsciiString& unitName, Bool repulso
 	}
 #ifdef OG
 	theSrcUnit->setStatus(OBJECT_STATUS_REPULSOR, repulsor);
-#endif
+#endif // OG
 #ifdef ZH
 	theSrcUnit->setStatus( MAKE_OBJECT_STATUS_MASK( OBJECT_STATUS_REPULSOR ), repulsor);
-#endif
+#endif // ZH
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -1459,10 +1459,10 @@ void ScriptActions::doTeamSetRepulsor(const AsciiString& teamName, Bool repulsor
 			}
 #ifdef OG
 			obj->setStatus(OBJECT_STATUS_REPULSOR, repulsor);
-#endif
+#endif // OG
 #ifdef ZH
 			obj->setStatus( MAKE_OBJECT_STATUS_MASK( OBJECT_STATUS_REPULSOR ), repulsor );
-#endif
+#endif // ZH
 		}
 	}
 
@@ -1732,7 +1732,7 @@ void ScriptActions::doNamedSetGarrisonEvacDisposition(const AsciiString& unitNam
 }
 
 //-------------------------------------------------------------------------------------------------
-#endif
+#endif // ZH
 /** doNamedFollowWaypoints */
 //-------------------------------------------------------------------------------------------------
 void ScriptActions::doNamedFollowWaypoints(const AsciiString& unitName, const AsciiString& waypointPathLabel)
@@ -2181,7 +2181,7 @@ void ScriptActions::doTeamHuntWithCommandButton(const AsciiString& teamName, con
 				//Various enter type hunts.
 				break;
 
-#endif
+#endif // ZH
 			case GUI_COMMAND_OBJECT_UPGRADE:
 			case GUI_COMMAND_PLAYER_UPGRADE:
 			case GUI_COMMAND_DOZER_CONSTRUCT:
@@ -2208,7 +2208,7 @@ void ScriptActions::doTeamHuntWithCommandButton(const AsciiString& teamName, con
 #ifdef OG
 			case GUICOMMANDMODE_HIJACK_VEHICLE:
 			case GUICOMMANDMODE_CONVERT_TO_CARBOMB:
-#endif
+#endif // OG
 #ifdef ALLOW_SURRENDER
 			case GUICOMMANDMODE_PICK_UP_PRISONER:
 #endif
@@ -2266,7 +2266,7 @@ void ScriptActions::doTeamHuntWithCommandButton(const AsciiString& teamName, con
 			case GUICOMMANDMODE_HIJACK_VEHICLE:
 			case GUICOMMANDMODE_CONVERT_TO_CARBOMB:
 			case GUICOMMANDMODE_SABOTAGE_BUILDING:
-#endif
+#endif // ZH
 				{
 					static NameKeyType key_CommandButtonHuntUpdate = NAMEKEY("CommandButtonHuntUpdate");
 
@@ -2885,7 +2885,7 @@ enum
 {
 	SUBTITLE_DURATION = 8000
 };
-#endif
+#endif // ZH
 void ScriptActions::doSpeechPlay(const AsciiString& speechName, Bool allowOverlap)
 {	
 	AudioEventRTS speech(speechName);
@@ -2908,11 +2908,11 @@ void ScriptActions::doSpeechPlay(const AsciiString& speechName, Bool allowOverla
 		// Foreign versions can specify region specifc subtitle strings if they want.
 		// English will have strings with / for easy translation, but they don't want to display.
 		TheInGameUI->militarySubtitle( subtitleLabel, SUBTITLE_DURATION );
-#endif
+#endif // ZH
 }
 #ifdef ZH
 }
-#endif
+#endif // ZH
 
 //-------------------------------------------------------------------------------------------------
 /** doPlayerTransferAssetsToPlayer */
@@ -3521,7 +3521,7 @@ void ScriptActions::doTeamGarrisonNearestBuilding(const AsciiString& teamName)
 #ifdef OG
 	PartitionFilterGarrisonableByPlayer f1(theTeam->getControllingPlayer(), true, CMD_FROM_SCRIPT);
 
-#endif
+#endif // OG
 #ifdef ZH
 
 	PartitionFilter *filters[16];
@@ -3541,17 +3541,17 @@ void ScriptActions::doTeamGarrisonNearestBuilding(const AsciiString& teamName)
 		filters[ count++ ] = &f2;
 	}
 
-#endif
+#endif // ZH
 	PartitionFilterSameMapStatus filterMapStatus(leader);
 #ifdef OG
 	PartitionFilter *filters[] = { &f1, &filterMapStatus, NULL };
 
-#endif
+#endif // OG
 #ifdef ZH
 	filters[ count++ ] = &filterMapStatus;
 
 	filters[count++] = NULL;
-#endif
+#endif // ZH
 
 	ObjectIterator *iter = ThePartitionManager->iterateObjectsInRange(leader, REALLY_FAR, FROM_CENTER_3D, filters, ITER_SORTED_NEAR_TO_FAR);
 	MemoryPoolObjectHolder hold(iter);
@@ -3665,17 +3665,17 @@ void ScriptActions::doUnitGarrisonNearestBuilding(const AsciiString& unitName)
 	PartitionFilter *filters[16];
 	Int count = 0;
 
-#endif
+#endif // ZH
 	PartitionFilterAcceptByKindOf f1(MAKE_KINDOF_MASK(KINDOF_STRUCTURE), KINDOFMASK_NONE);
 #ifdef ZH
 	filters[ count++ ] = &f1;
 
-#endif
+#endif // ZH
 	PartitionFilterSameMapStatus filterMapStatus(theUnit);
 #ifdef OG
 	PartitionFilter *filters[] = { &f1, &filterMapStatus, NULL };
 
-#endif
+#endif // OG
 #ifdef ZH
 	filters[ count++ ] = &filterMapStatus;
 
@@ -3694,7 +3694,7 @@ void ScriptActions::doUnitGarrisonNearestBuilding(const AsciiString& unitName)
 	}
 
 	filters[count++] = NULL;
-#endif
+#endif // ZH
 
 	ObjectIterator *iter = ThePartitionManager->iterateObjectsInRange(theUnit, REALLY_FAR, FROM_CENTER_3D, filters, ITER_SORTED_NEAR_TO_FAR);
 	MemoryPoolObjectHolder hold(iter);
@@ -3824,13 +3824,13 @@ void ScriptActions::doNamedSetBoobytrapped( const AsciiString& thingTemplateName
 
 					update->initStickyBomb( obj, NULL, &pos );
 				}
-#endif
+#endif // ZH
 		}
 	}
 }
 #ifdef ZH
 }
-#endif
+#endif // ZH
 
 //-------------------------------------------------------------------------------------------------
 #ifdef ZH
@@ -3873,7 +3873,7 @@ void ScriptActions::doTeamSetBoobytrapped( const AsciiString& thingTemplateName,
 }
 
 //-------------------------------------------------------------------------------------------------
-#endif
+#endif // ZH
 /** doUnitExitBuilding */
 //-------------------------------------------------------------------------------------------------
 void ScriptActions::doUnitExitBuilding(const AsciiString& unitName)
@@ -3985,7 +3985,7 @@ void ScriptActions::doWeather(Bool showWeather)
 }
 
 //-------------------------------------------------------------------------------------------------
-#endif
+#endif // ZH
 /** Freeze time */
 //-------------------------------------------------------------------------------------------------
 void ScriptActions::doFreezeTime(void)
@@ -4312,10 +4312,10 @@ void ScriptActions::doNamedFireSpecialPowerAtWaypoint( const AsciiString& unit, 
 			}
 #ifdef OG
 			mod->doSpecialPowerAtLocation(way->getLocation(), COMMAND_FIRED_BY_SCRIPT );
-#endif
+#endif // OG
 #ifdef ZH
 			mod->doSpecialPowerAtLocation(way->getLocation(), INVALID_ANGLE, COMMAND_FIRED_BY_SCRIPT );
-#endif
+#endif // ZH
 		}
 	}
 }
@@ -4327,7 +4327,7 @@ void ScriptActions::doSkirmishFireSpecialPowerAtMostCost( const AsciiString &pla
 {
 #ifdef OG
 #if !defined(_PLAYTEST)
-#endif
+#endif // OG
 	Int enemyNdx;
 	Player *enemyPlayer = TheScriptEngine->getSkirmishEnemyPlayer();
 	if (enemyPlayer == NULL) return;
@@ -4350,41 +4350,41 @@ void ScriptActions::doSkirmishFireSpecialPowerAtMostCost( const AsciiString &pla
 #ifdef OG
 	Coord3D location;
 	pPlayer->computeSuperweaponTarget(power, &location, enemyNdx, radius);
-#endif
+#endif // OG
 
 #ifdef OG
 	for (it = pPlayer->getPlayerTeams()->begin(); it != pPlayer->getPlayerTeams()->end(); ++it) {
 		for (DLINK_ITERATOR<Team> iter = (*it)->iterate_TeamInstanceList(); !iter.done(); iter.advance()) {
 
-#endif
+#endif // OG
 #ifdef ZH
 	for (it = pPlayer->getPlayerTeams()->begin(); it != pPlayer->getPlayerTeams()->end(); ++it) 
 	{
 		for (DLINK_ITERATOR<Team> iter = (*it)->iterate_TeamInstanceList(); !iter.done(); iter.advance()) 
 		{
-#endif
+#endif // ZH
 			Team *team = iter.cur();
 #ifdef OG
 			if (!team) continue;
 			for (DLINK_ITERATOR<Object> iter = team->iterate_TeamMemberList(); !iter.done(); iter.advance()) {
 
-#endif
+#endif // OG
 #ifdef ZH
 			if (!team) 
 				continue;
 
 			for (DLINK_ITERATOR<Object> iter = team->iterate_TeamMemberList(); !iter.done(); iter.advance()) 
 			{
-#endif
+#endif // ZH
 				Object *pObj = iter.cur();
 #ifdef OG
 				if (!pObj) continue;
 
-#endif
+#endif // OG
 #ifdef ZH
 				if (!pObj) 
 					continue;
-#endif
+#endif // ZH
 
 				SpecialPowerModuleInterface *mod = pObj->getSpecialPowerModule(power);
 				if (mod)
@@ -4413,16 +4413,16 @@ void ScriptActions::doSkirmishFireSpecialPowerAtMostCost( const AsciiString &pla
           DEBUG_ASSERTCRASH( locationFound, ("ScriptActions::doSkirmishFireSpecialPowerAtMostCost() could not find a valid (costly) location.") );
 
 					if( locationFound && location.lengthSqr() > 0.0f )
-#endif
+#endif // ZH
 				{
 #ifdef OG
 					mod->doSpecialPowerAtLocation( &location, COMMAND_FIRED_BY_SCRIPT );
 
-#endif
+#endif // OG
 #ifdef ZH
 						mod->doSpecialPowerAtLocation( &location, INVALID_ANGLE, COMMAND_FIRED_BY_SCRIPT );
 					}
-#endif
+#endif // ZH
 					break;
 				}
 			}
@@ -4430,7 +4430,7 @@ void ScriptActions::doSkirmishFireSpecialPowerAtMostCost( const AsciiString &pla
 	}
 #ifdef OG
 #endif
-#endif
+#endif // OG
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -4593,7 +4593,7 @@ void ScriptActions::doNamedUseCommandButtonAbilityUsingWaypointPath( const Ascii
 }
 
 //-------------------------------------------------------------------------------------------------
-#endif
+#endif // ZH
 void ScriptActions::doTeamUseCommandButtonAbility( const AsciiString& team, const AsciiString& ability )
 {
 	Team *theTeam = TheScriptEngine->getTeamNamed( team );
@@ -5200,10 +5200,10 @@ void ScriptActions::doForceObjectSelection(const AsciiString& teamName, const As
 		Coord3D pos = *bestGuess->getPosition();
 #ifdef OG
 		TheTacticalView->moveCameraTo(&pos, 0, 0, FALSE);
-#endif
+#endif // OG
 #ifdef ZH
 		TheTacticalView->moveCameraTo(&pos, 0, 0, FALSE, 0.0f, 0.0f);
-#endif
+#endif // ZH
 	}
 }
 
@@ -5368,11 +5368,11 @@ void ScriptActions::doMoveUnitTowardsNearest( const AsciiString& unitName, const
 #ifdef OG
 	if (!obj) {
 
-#endif
+#endif // OG
 #ifdef ZH
 	if (!obj) 
 	{
-#endif
+#endif // ZH
 		return;
 	}
 
@@ -5380,11 +5380,11 @@ void ScriptActions::doMoveUnitTowardsNearest( const AsciiString& unitName, const
 #ifdef OG
 	if (!ai) {
 
-#endif
+#endif // OG
 #ifdef ZH
 	if (!ai) 
 	{
-#endif
+#endif // ZH
 		return;
 	}
 	
@@ -5392,12 +5392,12 @@ void ScriptActions::doMoveUnitTowardsNearest( const AsciiString& unitName, const
 	const ThingTemplate *templ = TheThingFactory->findTemplate(objectType);
 	if (!templ) {
 
-#endif
+#endif // OG
 #ifdef ZH
 	PolygonTrigger *trig = TheScriptEngine->getQualifiedTriggerAreaByName(triggerName);
 	if (!trig) 
 	{
-#endif
+#endif // ZH
 		return;
 	}
 
@@ -5406,17 +5406,17 @@ void ScriptActions::doMoveUnitTowardsNearest( const AsciiString& unitName, const
 	if (!trig) {
 		return;
 	}
-#endif
+#endif // OG
 #ifdef ZH
 	Object *bestObj = NULL;
 
-#endif
+#endif // ZH
 
 #ifdef ZH
 	const ThingTemplate *templ = TheThingFactory->findTemplate( objectType, FALSE );
 	if( templ ) 
 	{
-#endif
+#endif // ZH
 	PartitionFilterThing thingsToAccept(templ, true);
 	PartitionFilterPolygonTrigger acceptWithin(trig);
 	PartitionFilterSameMapStatus filterMapStatus(obj);
@@ -5427,12 +5427,12 @@ void ScriptActions::doMoveUnitTowardsNearest( const AsciiString& unitName, const
 	Object *dest = ThePartitionManager->getClosestObject(obj->getPosition(), REALLY_FAR, FROM_CENTER_2D, filters);
 	if (!dest) {
 
-#endif
+#endif // OG
 #ifdef ZH
 		bestObj = ThePartitionManager->getClosestObject( obj->getPosition(), REALLY_FAR, FROM_CENTER_2D, filters );
 		if( !bestObj ) 
 		{
-#endif
+#endif // ZH
 		return;
 #ifdef ZH
 		}
@@ -5465,7 +5465,7 @@ void ScriptActions::doMoveUnitTowardsNearest( const AsciiString& unitName, const
 						{
 							bestObj = obj;
 							closestDist = dist;
-#endif
+#endif // ZH
 	}
 #ifdef ZH
 					}
@@ -5473,15 +5473,15 @@ void ScriptActions::doMoveUnitTowardsNearest( const AsciiString& unitName, const
 			}
 		}
 	}
-#endif
+#endif // ZH
 	
 	ai->chooseLocomotorSet( LOCOMOTORSET_NORMAL );
 #ifdef OG
 	ai->aiMoveToObject(dest, CMD_FROM_SCRIPT);
-#endif
+#endif // OG
 #ifdef ZH
 	ai->aiMoveToObject( bestObj, CMD_FROM_SCRIPT );
-#endif
+#endif // ZH
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -5493,11 +5493,11 @@ void ScriptActions::doMoveTeamTowardsNearest( const AsciiString& teamName, const
 #ifdef OG
 	if (!team) {
 
-#endif
+#endif // OG
 #ifdef ZH
 	if (!team) 
 	{
-#endif
+#endif // ZH
 		return;
 	}
 	
@@ -5507,23 +5507,23 @@ void ScriptActions::doMoveTeamTowardsNearest( const AsciiString& teamName, const
 		return;
 	}
 
-#endif
+#endif // OG
 	PolygonTrigger *trig = TheScriptEngine->getQualifiedTriggerAreaByName(triggerName);
 #ifdef OG
 	if (!trig) {
 
-#endif
+#endif // OG
 #ifdef ZH
 	if (!trig) 
 	{
-#endif
+#endif // ZH
 		return;
 	}
 
 #ifdef ZH
 	//Get the first object (to use in the partition filter checks).
 	Object *teamObj = NULL;
-#endif
+#endif // ZH
 	for (DLINK_ITERATOR<Object> iter = team->iterate_TeamMemberList(); !iter.done(); iter.advance())
 	{
 #ifdef OG
@@ -5531,7 +5531,7 @@ void ScriptActions::doMoveTeamTowardsNearest( const AsciiString& teamName, const
 		if (!obj) {
 			continue;
 
-#endif
+#endif // OG
 #ifdef ZH
 		teamObj = iter.cur();
 		if( teamObj ) 
@@ -5542,18 +5542,18 @@ void ScriptActions::doMoveTeamTowardsNearest( const AsciiString& teamName, const
 				break;
 			}
 		}
-#endif
+#endif // ZH
 		}
 #ifdef OG
 		AIUpdateInterface *ai = obj->getAIUpdateInterface();
 		if (!ai) {
 			continue;
-#endif
+#endif // OG
 #ifdef ZH
 	if( !teamObj )
 	{
 		return;
-#endif
+#endif // ZH
 		}
 
 #ifdef OG
@@ -5561,13 +5561,13 @@ void ScriptActions::doMoveTeamTowardsNearest( const AsciiString& teamName, const
 		PartitionFilterPolygonTrigger acceptWithin(trig);
 		PartitionFilterSameMapStatus filterMapStatus(obj);
 
-#endif
+#endif // OG
 #ifdef ZH
 	Coord3D teamPos = *team->getEstimateTeamPosition();
 	PartitionFilterSameMapStatus filterMapStatus( teamObj );
 	PartitionFilterPolygonTrigger acceptWithin( trig );
 	Object *bestObj = NULL;
-#endif
+#endif // ZH
 
 #ifdef ZH
 	const ThingTemplate *templ = TheThingFactory->findTemplate( objectType, FALSE );
@@ -5575,7 +5575,7 @@ void ScriptActions::doMoveTeamTowardsNearest( const AsciiString& teamName, const
 	{
 		//Find the closest specified template.
 		PartitionFilterThing thingsToAccept( templ, true );
-#endif
+#endif // ZH
 		PartitionFilter *filters[] = { &thingsToAccept, &acceptWithin, &filterMapStatus, NULL };
 #ifdef ZH
 		bestObj = ThePartitionManager->getClosestObject( &teamPos, REALLY_FAR, FROM_CENTER_2D, filters );
@@ -5600,13 +5600,13 @@ void ScriptActions::doMoveTeamTowardsNearest( const AsciiString& teamName, const
 				{
 					PartitionFilterThing thingToAccept( thisType, true );
 					PartitionFilter *filters[] = { &thingToAccept, &acceptWithin, &filterMapStatus, NULL };
-#endif
+#endif // ZH
 		
 #ifdef OG
 		Object *dest = ThePartitionManager->getClosestObject(obj->getPosition(), REALLY_FAR, FROM_CENTER_2D, filters);
 		if (!dest) {
 
-#endif
+#endif // OG
 #ifdef ZH
 					Object *obj = ThePartitionManager->getClosestObject( &teamPos, REALLY_FAR, FROM_CENTER_2D, filters, &dist );
 					if( obj )
@@ -5631,16 +5631,16 @@ void ScriptActions::doMoveTeamTowardsNearest( const AsciiString& teamName, const
 		AIUpdateInterface *ai = obj->getAI();
 		if( !ai )
 		{
-#endif
+#endif // ZH
 			return;
 		}
 		ai->chooseLocomotorSet( LOCOMOTORSET_NORMAL );
 #ifdef OG
 		ai->aiMoveToObject(dest, CMD_FROM_SCRIPT);
-#endif
+#endif // OG
 #ifdef ZH
 		ai->aiMoveToObject( bestObj, CMD_FROM_SCRIPT );
-#endif
+#endif // ZH
 	}
 }
 
@@ -6065,25 +6065,25 @@ void ScriptActions::doTeamUseCommandButtonOnNearestObjectType( const AsciiString
 	if (!thingTemplate) {
 		return;
 	}
-#endif
+#endif // OG
 #ifdef ZH
 	Object *bestObj = NULL;
 
-#endif
+#endif // ZH
 
 #ifdef ZH
 	//First look for a specific object type (object lists will fail)
 	const ThingTemplate *thingTemplate = TheThingFactory->findTemplate( objectType, FALSE );
 	if( thingTemplate ) 
 	{
-#endif
+#endif // ZH
 	PartitionFilterPlayerAffiliation f1(team->getControllingPlayer(), ALLOW_ENEMIES | ALLOW_NEUTRAL, true);
 	PartitionFilterThing f2(thingTemplate, true);
 	PartitionFilterValidCommandButtonTarget f3(srcObj, commandButton, true, CMD_FROM_SCRIPT);
 	PartitionFilterSameMapStatus filterMapStatus(srcObj);
 #ifdef ZH
 		PartitionFilter *filters[] = { &f1, &f2, &f3, &filterMapStatus, 0 };
-#endif
+#endif // ZH
 
 	Coord3D pos;
 	theGroup->getCenter(&pos);
@@ -6092,12 +6092,12 @@ void ScriptActions::doTeamUseCommandButtonOnNearestObjectType( const AsciiString
 	PartitionFilter *filters[] = { &f1, &f2, &f3, &filterMapStatus, 0 };
 	Object *obj = ThePartitionManager->getClosestObject(&pos, REALLY_FAR, FROM_CENTER_2D, filters);
 	if (!obj) {
-#endif
+#endif // OG
 #ifdef ZH
 		bestObj = ThePartitionManager->getClosestObject(&pos, REALLY_FAR, FROM_CENTER_2D, filters);
 		if( !bestObj ) 
 		{
-#endif
+#endif // ZH
 		return;
 #ifdef ZH
 		}
@@ -6137,16 +6137,16 @@ void ScriptActions::doTeamUseCommandButtonOnNearestObjectType( const AsciiString
 				}
 			}
 		}
-#endif
+#endif // ZH
 	}
 
 	// already been checked for validity
 #ifdef OG
 	theGroup->groupDoCommandButtonAtObject(commandButton, obj, CMD_FROM_SCRIPT);
-#endif
+#endif // OG
 #ifdef ZH
 	theGroup->groupDoCommandButtonAtObject(commandButton, bestObj, CMD_FROM_SCRIPT);
-#endif
+#endif // ZH
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -6176,10 +6176,10 @@ void ScriptActions::doTeamPartialUseCommandButton( Real percentage, const AsciiS
 	
 #ifdef OG
 	Int numObjs = REAL_TO_INT_CEIL(percentage / 100.0f * objList.size());
-#endif
+#endif // OG
 #ifdef ZH
 	Int numObjs = /*REAL_TO_INT_CEIL*/(percentage / 100.0f * objList.size());
-#endif
+#endif // ZH
 	Int count = 0;
 	for (std::vector<Object*>::const_iterator it = objList.begin(); it != objList.end(); ++it)
 	{
@@ -6443,7 +6443,7 @@ void ScriptActions::doC3CameraShake
 	Coord3D pos = *way->getLocation();
 
 	TheTacticalView->Add_Camera_Shake(pos, radius, duration_seconds, amplitude);
-#endif
+#endif // ZH
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -6744,7 +6744,7 @@ void ScriptActions::doNamedSetTrainHeld( const AsciiString &locoName, const Bool
 }
 
 //-------------------------------------------------------------------------------------------------
-#endif
+#endif // ZH
 /** Execute an action */
 //-------------------------------------------------------------------------------------------------
 void ScriptActions::executeAction( ScriptAction *pAction )
@@ -6806,7 +6806,7 @@ void ScriptActions::executeAction( ScriptAction *pAction )
 		case ScriptAction::AI_PLAYER_BUILD_TYPE_NEAREST_TEAM:
 			doBuildObjectNearestTeam( pAction->getParameter(0)->getString(), pAction->getParameter(1)->getString(), pAction->getParameter(2)->getString() );
 			return;
-#endif
+#endif // ZH
 		case ScriptAction::AI_PLAYER_BUILD_UPGRADE: 
 			doBuildUpgrade(pAction->getParameter(0)->getString(), pAction->getParameter(1)->getString());
 			return;
@@ -6831,10 +6831,10 @@ void ScriptActions::executeAction( ScriptAction *pAction )
 		case ScriptAction::MOVE_CAMERA_TO: 
 #ifdef OG
 			doMoveCameraTo(pAction->getParameter(0)->getString(), pAction->getParameter(1)->getReal(), pAction->getParameter(2)->getReal());
-#endif
+#endif // OG
 #ifdef ZH
 			doMoveCameraTo(pAction->getParameter(0)->getString(), pAction->getParameter(1)->getReal(), pAction->getParameter(2)->getReal(), pAction->getParameter(3)->getReal(), pAction->getParameter(4)->getReal());
-#endif
+#endif // ZH
 			return;
 		case ScriptAction::SETUP_CAMERA: 
 			doSetupCamera(pAction->getParameter(0)->getString(), pAction->getParameter(1)->getReal(), pAction->getParameter(2)->getReal(), pAction->getParameter(3)->getString());
@@ -6842,18 +6842,18 @@ void ScriptActions::executeAction( ScriptAction *pAction )
 		case ScriptAction::ZOOM_CAMERA: 
 #ifdef OG
 			doZoomCamera(pAction->getParameter(0)->getReal(), pAction->getParameter(1)->getReal());
-#endif
+#endif // OG
 #ifdef ZH
 			doZoomCamera(pAction->getParameter(0)->getReal(), pAction->getParameter(1)->getReal(), pAction->getParameter(2)->getReal(), pAction->getParameter(3)->getReal());
-#endif
+#endif // ZH
 			return;
 		case ScriptAction::PITCH_CAMERA:
 #ifdef OG
 			doPitchCamera(pAction->getParameter(0)->getReal(), pAction->getParameter(1)->getReal());
-#endif
+#endif // OG
 #ifdef ZH
 			doPitchCamera(pAction->getParameter(0)->getReal(), pAction->getParameter(1)->getReal(), pAction->getParameter(2)->getReal(), pAction->getParameter(3)->getReal());
-#endif
+#endif // ZH
 			return;
 		case ScriptAction::CAMERA_FOLLOW_NAMED:
 			doCameraFollowNamed(pAction->getParameter(0)->getString(), (pAction->getParameter(1) && pAction->getParameter(1)->getInt() != 0));
@@ -6873,42 +6873,42 @@ void ScriptActions::executeAction( ScriptAction *pAction )
 		case ScriptAction::MOVE_CAMERA_ALONG_WAYPOINT_PATH: 
 #ifdef OG
 			doMoveCameraAlongWaypointPath(pAction->getParameter(0)->getString(), pAction->getParameter(1)->getReal(), pAction->getParameter(2)->getReal());
-#endif
+#endif // OG
 #ifdef ZH
 			doMoveCameraAlongWaypointPath(pAction->getParameter(0)->getString(), pAction->getParameter(1)->getReal(), pAction->getParameter(2)->getReal(), pAction->getParameter(3)->getReal(), pAction->getParameter(4)->getReal());
-#endif
+#endif // ZH
 			return;
 		case ScriptAction::ROTATE_CAMERA: 
 #ifdef OG
 			doRotateCamera(pAction->getParameter(0)->getReal(), pAction->getParameter(1)->getReal());
-#endif
+#endif // OG
 #ifdef ZH
 			doRotateCamera(pAction->getParameter(0)->getReal(), pAction->getParameter(1)->getReal(), pAction->getParameter(2)->getReal(), pAction->getParameter(3)->getReal());
-#endif
+#endif // ZH
 			return;
 		case ScriptAction::CAMERA_LOOK_TOWARD_OBJECT:
 #ifdef OG
 			doRotateCameraTowardObject(pAction->getParameter(0)->getString(), pAction->getParameter(1)->getReal(), pAction->getParameter(2)->getReal());
-#endif
+#endif // OG
 #ifdef ZH
 			doRotateCameraTowardObject(pAction->getParameter(0)->getString(), pAction->getParameter(1)->getReal(), pAction->getParameter(2)->getReal(), pAction->getParameter(3)->getReal(), pAction->getParameter(4)->getReal());
-#endif
+#endif // ZH
 			return;
 		case ScriptAction::CAMERA_LOOK_TOWARD_WAYPOINT:
 #ifdef OG
 			doRotateCameraTowardWaypoint(pAction->getParameter(0)->getString(), pAction->getParameter(1)->getReal());
-#endif
+#endif // OG
 #ifdef ZH
 			doRotateCameraTowardWaypoint(pAction->getParameter(0)->getString(), pAction->getParameter(1)->getReal(), pAction->getParameter(2)->getReal(), pAction->getParameter(3)->getReal(), pAction->getParameter(4)->getInt());
-#endif
+#endif // ZH
 			return;
 		case ScriptAction::RESET_CAMERA: 
 #ifdef OG
 			doResetCamera(pAction->getParameter(0)->getString(), pAction->getParameter(1)->getReal());
-#endif
+#endif // OG
 #ifdef ZH
 			doResetCamera(pAction->getParameter(0)->getString(), pAction->getParameter(1)->getReal(), pAction->getParameter(2)->getReal(), pAction->getParameter(3)->getReal());
-#endif
+#endif // ZH
 			return;
 		case ScriptAction::MOVE_CAMERA_TO_SELECTION: 
 			doModCameraMoveToSelection();
@@ -6922,18 +6922,18 @@ void ScriptActions::executeAction( ScriptAction *pAction )
 		case ScriptAction::CAMERA_MOD_SET_FINAL_ZOOM: 
 #ifdef OG
 			TheTacticalView->cameraModFinalZoom(pAction->getParameter(0)->getReal());
-#endif
+#endif // OG
 #ifdef ZH
 			TheTacticalView->cameraModFinalZoom(pAction->getParameter(0)->getReal(), pAction->getParameter(1)->getReal(), pAction->getParameter(2)->getReal());
-#endif
+#endif // ZH
 			return;
 		case ScriptAction::CAMERA_MOD_SET_FINAL_PITCH: 
 #ifdef OG
 			TheTacticalView->cameraModFinalPitch(pAction->getParameter(0)->getReal());
-#endif
+#endif // OG
 #ifdef ZH
 			TheTacticalView->cameraModFinalPitch(pAction->getParameter(0)->getReal(), pAction->getParameter(1)->getReal(), pAction->getParameter(2)->getReal());
-#endif
+#endif // ZH
 			return;
 		case ScriptAction::CAMERA_MOD_SET_FINAL_SPEED_MULTIPLIER: 
 			TheTacticalView->cameraModFinalTimeMultiplier(pAction->getParameter(0)->getInt());
@@ -7044,7 +7044,7 @@ void ScriptActions::executeAction( ScriptAction *pAction )
     case ScriptAction::NAMED_SET_EVAC_LEFT_OR_RIGHT:
       doNamedSetGarrisonEvacDisposition(pAction->getParameter(0)->getString(), pAction->getParameter(1)->getInt());
       return;
-#endif
+#endif // ZH
 		case ScriptAction::NAMED_FOLLOW_WAYPOINTS:
 			doNamedFollowWaypoints(pAction->getParameter(0)->getString(), pAction->getParameter(1)->getString());
 			return;
@@ -7254,13 +7254,13 @@ void ScriptActions::executeAction( ScriptAction *pAction )
 			return;
 		case ScriptAction::NAMED_SET_BOOBYTRAPPED:
 			doNamedSetBoobytrapped( pAction->getParameter(0)->getString(), pAction->getParameter(1)->getString() );
-#endif
+#endif // ZH
 			return;
 #ifdef ZH
 		case ScriptAction::TEAM_SET_BOOBYTRAPPED:
 			doTeamSetBoobytrapped( pAction->getParameter(0)->getString(), pAction->getParameter(1)->getString() );
 			return;
-#endif
+#endif // ZH
 		case ScriptAction::MAP_REVEAL_AT_WAYPOINT:
 			doRevealMapAtWaypoint(pAction->getParameter(0)->getString(), pAction->getParameter(1)->getReal(), pAction->getParameter(2)->getString());
 			return;
@@ -7364,7 +7364,7 @@ void ScriptActions::executeAction( ScriptAction *pAction )
 		case ScriptAction::SHOW_WEATHER:
 			doWeather(pAction->getParameter(0)->getInt());
 			return;
-#endif
+#endif // ZH
 		case ScriptAction::CAMERA_MOTION_BLUR:
 			doCameraMotionBlur(pAction->getParameter(0)->getInt(), pAction->getParameter(1)->getInt());
 			return;
@@ -7591,7 +7591,7 @@ void ScriptActions::executeAction( ScriptAction *pAction )
 			doNamedUseCommandButtonAbilityUsingWaypointPath( pAction->getParameter(0)->getString(), pAction->getParameter(1)->getString(), pAction->getParameter(2)->getString() );
 			return;
 		
-#endif
+#endif // ZH
 		case ScriptAction::TEAM_USE_COMMANDBUTTON_ABILITY:
 			doTeamUseCommandButtonAbility( pAction->getParameter(0)->getString(), pAction->getParameter(1)->getString() );
 			return;
@@ -7867,7 +7867,7 @@ void ScriptActions::executeAction( ScriptAction *pAction )
 			{
 				doC3CameraDisableSlaveMode();
 			}
-#endif
+#endif // ZH
 			return;
 #ifdef ZH
 		case ScriptAction::CAMERA_ADD_SHAKER_AT: // WST 11.12.2002 (MBL)
@@ -7881,7 +7881,7 @@ void ScriptActions::executeAction( ScriptAction *pAction )
 				);
 			}
 			return;
-#endif
+#endif // ZH
 		case ScriptAction::OPTIONS_SET_PARTICLE_CAP_MODE:
 			doSetDynamicLODMode(pAction->getParameter(0)->getInt());
 			return;
@@ -7969,14 +7969,14 @@ void ScriptActions::executeAction( ScriptAction *pAction )
 
   	case ScriptAction::ENABLE_OBJECT_SOUND:
  			doEnableObjectSound(pAction->getParameter(0)->getString(), true);
-#endif
+#endif // ZH
 			return;
 
 #ifdef ZH
 		case ScriptAction::DISABLE_OBJECT_SOUND:
 			doEnableObjectSound(pAction->getParameter(0)->getString(), false);
 			return;			
-#endif
+#endif // ZH
 
 	}  
 }

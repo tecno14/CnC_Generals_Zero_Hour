@@ -62,10 +62,10 @@ typedef enum
 {
 #ifdef OG
 	FILE_TYPE_UNKNOWN = 0,
-#endif
+#endif // OG
 #ifdef ZH
 	FILE_TYPE_COMPLETELY_UNKNOWN = 0,	// MBL 08.15.2002 - compile error with FILE_TYPE_UNKNOWN, is constant
-#endif
+#endif // ZH
 	FILE_TYPE_W3D,
 	FILE_TYPE_TGA,
 	FILE_TYPE_DDS,
@@ -128,7 +128,7 @@ inline static Bool isImageFileType( GameFileType fileType )
 #ifdef OG
 /** Sets the file name, and finds the GDI asset if present. */
 
-#endif
+#endif // OG
 #ifdef ZH
 /** 
 	Sets the file name, and finds the GDI asset if present. 
@@ -145,7 +145,7 @@ inline static Bool isImageFileType( GameFileType fileType )
 	
 	Finally we try UserData.
 */
-#endif
+#endif // ZH
 //-------------------------------------------------------------------------------------------------
 char const * GameFileClass::Set_Name( char const *filename )
 {
@@ -186,10 +186,10 @@ char const * GameFileClass::Set_Name( char const *filename )
 	// test the extension to recognize a few key file types
 #ifdef OG
 	GameFileType fileType = FILE_TYPE_UNKNOWN;
-#endif
+#endif // OG
 #ifdef ZH
 	GameFileType fileType = FILE_TYPE_COMPLETELY_UNKNOWN;  // MBL FILE_TYPE_UNKNOWN change due to compile error
-#endif
+#endif // ZH
 	if( stricmp( extension, ".w3d" ) == 0 )
 		fileType = FILE_TYPE_W3D;
 	else if( stricmp( extension, ".tga" ) == 0 )
@@ -220,14 +220,14 @@ char const * GameFileClass::Set_Name( char const *filename )
 	// see if the file exists
 	m_fileExists = TheFileSystem->doesFileExist( m_filePath );
 
-#endif
+#endif // ZH
 
 #ifdef ZH
 
 	// Now try the main lookup of hitting local files and big files
 	if( m_fileExists == FALSE )
 	{
-#endif
+#endif // ZH
 	// all .w3d files are in W3D_DIR_PATH, all .tga files are in TGA_DIR_PATH
 	if( fileType == FILE_TYPE_W3D )
 	{
@@ -251,7 +251,7 @@ char const * GameFileClass::Set_Name( char const *filename )
 #ifdef ZH
 	}
 
-#endif
+#endif // ZH
 
 	// maintain legacy compatibility directories for now
 	#ifdef MAINTAIN_LEGACY_FILES
@@ -362,7 +362,7 @@ char const * GameFileClass::Set_Name( char const *filename )
 
 	}  // end if
 
-#endif
+#endif // OG
 
 	return m_filename;
 

@@ -54,7 +54,7 @@
 #include "Common/MessageStream.h"
 #ifdef ZH
 #include "Common/Registry.h"
-#endif
+#endif // ZH
 #include "Common/Team.h"
 #include "GameClient/InGameUI.h"
 #include "GameClient/GameClient.h"
@@ -70,7 +70,7 @@
 #ifdef ZH
 
 #include <rts/profile.h>
-#endif
+#endif // ZH
 
 #ifdef _INTERNAL
 // for occasional debugging...
@@ -391,7 +391,7 @@ LRESULT CALLBACK WndProc( HWND hWnd, UINT message,
 				return 0;	//don't allow Windows to shutdown while game is running.
 			}
 
-#endif
+#endif // ZH
 			// ------------------------------------------------------------------------
 			case WM_CLOSE:
 #ifdef OG
@@ -400,7 +400,7 @@ LRESULT CALLBACK WndProc( HWND hWnd, UINT message,
 			TheGameEngine->setQuitting(TRUE);
 			_exit(EXIT_SUCCESS);
 
-#endif
+#endif // OG
 #ifdef ZH
 			if (!TheGameEngine->getQuitting())
 			{
@@ -418,11 +418,11 @@ LRESULT CALLBACK WndProc( HWND hWnd, UINT message,
 				//TheGameEngine->reset();
 				//TheGameEngine->setQuitting(TRUE);
 				//_exit(EXIT_SUCCESS);
-#endif
+#endif // ZH
 			return 0;
 #ifdef ZH
 			}
-#endif
+#endif // ZH
 
 			// ------------------------------------------------------------------------
 			case WM_SETFOCUS:
@@ -898,7 +898,7 @@ Int APIENTRY WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance,
   Profile::StartRange("init");
 #endif
 
-#endif
+#endif // ZH
 	try {
 
 		_set_se_translator( DumpExceptionInfo ); // Hook that allows stack trace.
@@ -912,7 +912,7 @@ Int APIENTRY WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance,
 
 #ifdef OG
 		TheAsciiStringCriticalSection = &critSec1;
-#endif
+#endif // OG
 		TheUnicodeStringCriticalSection = &critSec2;
 		TheDmaCriticalSection = &critSec3;
 		TheMemoryPoolCriticalSection = &critSec4;
@@ -986,14 +986,14 @@ Int APIENTRY WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance,
 
 // Force "splash image" to be loaded from a file, not a resource so same exe can be used in different localizations.
 #if defined _DEBUG || defined _INTERNAL || defined _PROFILE
-#endif
+#endif // ZH
 
 #ifdef OG
  		// [SKB: Jun 24 2003 @ 1:50pm] :
 		// Force to be loaded from a file, not a resource so same exe can be used in germany and retail.
  		gLoadScreenBitmap = (HBITMAP)LoadImage(hInstance, "Install_Final.bmp",	IMAGE_BITMAP, 0, 0, LR_SHARED|LR_LOADFROMFILE);
 
-#endif
+#endif // OG
 #ifdef ZH
 			// check both localized directory and root dir
 		char filePath[_MAX_PATH];
@@ -1015,7 +1015,7 @@ Int APIENTRY WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance,
 		gLoadScreenBitmap = (HBITMAP)LoadImage(hInstance, "Install_Final.bmp", IMAGE_BITMAP, 0, 0, LR_SHARED|LR_LOADFROMFILE);
 #endif
 
-#endif
+#endif // ZH
 
 		// register windows class and create application window
 		if( initializeAppWindows( hInstance, nCmdShow, ApplicationIsWindowed) == false )
@@ -1127,7 +1127,7 @@ Int APIENTRY WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance,
 
 #ifdef OG
 	TheAsciiStringCriticalSection = NULL;
-#endif
+#endif // OG
 	TheUnicodeStringCriticalSection = NULL;
 	TheDmaCriticalSection = NULL;
 	TheMemoryPoolCriticalSection = NULL;

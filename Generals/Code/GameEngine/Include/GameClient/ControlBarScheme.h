@@ -238,7 +238,7 @@ public:
 #ifdef ZH
 	Image *m_powerPurchaseImage;
 
-#endif
+#endif // ZH
 	typedef std::list< ControlBarSchemeImage* > ControlBarSchemeImageList;
 	ControlBarSchemeImageList m_layer[MAX_CONTROL_BAR_SCHEME_IMAGE_LAYERS];
 

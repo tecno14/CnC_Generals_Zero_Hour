@@ -67,7 +67,7 @@ ScienceStore::~ScienceStore()
 }
 
 //-----------------------------------------------------------------------------
-#endif
+#endif // ZH
 void ScienceStore::reset()
 {
 	// nope.

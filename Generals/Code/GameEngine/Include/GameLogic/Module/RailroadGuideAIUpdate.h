@@ -227,7 +227,7 @@ public:
 	virtual Bool wouldLikeToCollideWith(const Object* other) const {return FALSE;}; // will need to add this!
 	virtual Bool isHijackedVehicleCrateCollide() const {return FALSE;};
 	virtual Bool isCarBombCrateCollide() const {return FALSE;};
-#endif
+#endif // OG
 	virtual Bool isRailroad() const ;
 	virtual UpdateSleepTime update( void );
 
@@ -244,7 +244,7 @@ public:
 
   void makeAWallOutOfThisTrain( Bool on );
 
-#endif
+#endif // ZH
 protected:
 
 	//definitions
@@ -302,7 +302,7 @@ protected:
 #ifdef ZH
 
   Bool m_held;   ///< This will prevent a loco from departing a station
-#endif
+#endif // ZH
 
 	ConductorState m_conductorState;
 

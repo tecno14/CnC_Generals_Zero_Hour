@@ -36,4 +36,4 @@ int __cdecl _purecall(void)
   return 0;
 }
 
-#endif
+#endif // ZH

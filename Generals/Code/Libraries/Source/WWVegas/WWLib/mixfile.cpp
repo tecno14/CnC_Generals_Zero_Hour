@@ -28,17 +28,17 @@
  *                                                                                             * 
 #ifdef OG
  *                     $Modtime:: 8/06/01 3:01p                                               $* 
-#endif
+#endif // OG
 #ifdef ZH
  *                     $Modtime:: 9/12/01 7:39p                                               $* 
-#endif
+#endif // ZH
  *                                                                                             * 
 #ifdef OG
  *                    $Revision:: 3                                                           $* 
-#endif
+#endif // OG
 #ifdef ZH
  *                    $Revision:: 4                                                           $* 
-#endif
+#endif // ZH
  *                                                                                             * 
  *---------------------------------------------------------------------------------------------* 
  * Functions:                                                                                  * 
@@ -74,13 +74,13 @@ typedef struct
 struct FileOffsetStruct {
 		bool operator== (const FileOffsetStruct &src)	{ return false; }
 		bool operator!= (const FileOffsetStruct &src)	{ return true; }
-#endif
+#endif // ZH
 
 #ifdef ZH
 		StringClass	Filename;
 		unsigned long Offset;
 };
-#endif
+#endif // ZH
 
 /*
 **
@@ -98,7 +98,7 @@ MixFileFactoryClass::MixFileFactoryClass( const char * mix_filename, FileFactory
 	Factory		= factory;
 #ifdef ZH
 	FilenameList.Set_Growth_Step (1000);
-#endif
+#endif // ZH
 
 	// First, open the mix file
 	FileClass * file = factory->Get_File( mix_filename );
@@ -459,7 +459,7 @@ bool	MixFileFactoryClass::Build_Ordered_Filename_List (DynamicVectorClass<String
 		temp.Filename	= name_list[i];
 		temp.Offset		= FileInfo[i].Offset;
 		local_file_info.Add( temp );
-#endif
+#endif // ZH
 }
 
 #ifdef ZH
@@ -477,7 +477,7 @@ bool	MixFileFactoryClass::Build_Ordered_Filename_List (DynamicVectorClass<String
 
 	return true;
 }
-#endif
+#endif // ZH
 
 /*
 **

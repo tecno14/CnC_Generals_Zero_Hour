@@ -138,10 +138,10 @@ Object *Bridge::createTower( Coord3D *worldPos,
 
 #ifdef OG
 		DEBUG_CRASH(( "createTower: Invalid params\n" ));
-#endif
+#endif // OG
 #ifdef ZH
 		DEBUG_CRASH(( "Bridge::createTower(): Invalid params\n" ));
-#endif
+#endif // ZH
 		return NULL;
 
 	}  // end if
@@ -438,12 +438,12 @@ Bridge::Bridge(Object *bridgeObj)
 #ifdef ZH
 		if( tower )
 		{
-#endif
+#endif // ZH
 		// store the tower object ID
 		m_bridgeInfo.towerObjectID[ i ] = tower->getID();
 #ifdef ZH
 		}
-#endif
+#endif // ZH
 
 	}  // end for, i
 
@@ -2162,11 +2162,11 @@ Bool TerrainLogic::isUnderwater( Real x, Real y, Real *waterZ, Real *terrainZ )
     // but we have to return the terrain Z if requested!
     if (terrainZ)
       *terrainZ=getGroundHeight(x,y);
-#endif
+#endif // ZH
 		return FALSE;
 #ifdef ZH
   }
-#endif
+#endif // ZH
 
 	//
 	// if this water handle is a grid water use the grid height function, otherwise look into
@@ -2887,7 +2887,7 @@ void TerrainLogic::createCraterInTerrain(Object *obj)
   iMin.y = REAL_TO_INT_FLOOR( ( pos->y - radius ) / MAP_XY_FACTOR );
   iMax.x = REAL_TO_INT_FLOOR( ( pos->x + radius ) / MAP_XY_FACTOR );
 	iMax.y = REAL_TO_INT_FLOOR( ( pos->y + radius ) / MAP_XY_FACTOR );
-#endif
+#endif // ZH
 
 #ifdef ZH
   Real deltaX, deltaY;
@@ -2916,7 +2916,7 @@ void TerrainLogic::createCraterInTerrain(Object *obj)
     } // next j
   } // next i
 
-#endif
+#endif // ZH
 }
 
 // ------------------------------------------------------------------------------------------------

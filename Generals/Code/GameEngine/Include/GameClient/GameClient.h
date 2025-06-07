@@ -57,7 +57,7 @@ struct RayEffectData;
 #ifdef ZH
 class ChallengeGenerals;
 class SnowManager;
-#endif
+#endif // ZH
 
 /// Function pointers for use by GameClient callback functions.
 typedef void (*GameClientFuncPtr)( Drawable *draw, void *userData ); 
@@ -65,13 +65,13 @@ typedef void (*GameClientFuncPtr)( Drawable *draw, void *userData );
 typedef std::hash_map<DrawableID, Drawable *, rts::hash<DrawableID>, rts::equal_to<DrawableID> > DrawablePtrHash;
 typedef DrawablePtrHash::iterator DrawablePtrHashIt;
 
-#endif
+#endif // OG
 #ifdef ZH
 //typedef std::hash_map<DrawableID, Drawable *, rts::hash<DrawableID>, rts::equal_to<DrawableID> > DrawablePtrHash;
 //typedef DrawablePtrHash::iterator DrawablePtrHashIt;
 
 typedef std::vector<Drawable*> DrawablePtrVector;
-#endif
+#endif // ZH
 
 //-----------------------------------------------------------------------------
 /** The Client message dispatcher, this is the last "translator" on the message
@@ -125,7 +125,7 @@ public:
 	void flushTextBearingDrawables( void);
 #ifdef ZH
 	void updateFakeDrawables(void);
-#endif
+#endif // ZH
 	
 	virtual void removeFromRayEffects( Drawable *draw );  ///< remove the drawable from the ray effect system if present
 	virtual void getRayEffectData( Drawable *draw, RayEffectData *effectData );  ///< get ray effect data for a drawable
@@ -165,7 +165,7 @@ public:
 #ifdef ZH
 	virtual void notifyTerrainObjectMoved(Object *obj) = 0;
 
-#endif
+#endif // ZH
 
 protected:
 
@@ -181,11 +181,11 @@ protected:
 #ifdef OG
 	DrawablePtrHash m_drawableHash;															///< Used for DrawableID lookups
 
-#endif
+#endif // OG
 #ifdef ZH
 //	DrawablePtrHash m_drawableHash;															///< Used for DrawableID lookups
 	DrawablePtrVector m_drawableVector;
-#endif
+#endif // ZH
 
 	DrawableID m_nextDrawableID;																///< For allocating drawable id's
 	DrawableID allocDrawableID( void );													///< Returns a new unique drawable id
@@ -212,7 +212,7 @@ private:
 	virtual Mouse *createMouse( void ) = 0;											///< factory for the mouse
 #ifdef ZH
 	virtual SnowManager *createSnowManager(void) = 0;
-#endif
+#endif // ZH
 	virtual void setFrameRate(Real msecsPerFrame) = 0;
 
 	// ----------------------------------------------------------------------------------------------
@@ -276,7 +276,7 @@ inline Drawable* GameClient::findDrawableByID( const DrawableID id )
 
 	return NULL;
 }
-#endif
+#endif // ZH
 
 
 // the singleton

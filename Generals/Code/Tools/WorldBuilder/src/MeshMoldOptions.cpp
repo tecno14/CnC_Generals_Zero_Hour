@@ -120,7 +120,7 @@ BOOL MeshMoldOptions::OnInitDialog()
 						nameStart = fileBuf+i+1;
 					}
 				}
-#endif
+#endif // ZH
 
 				TVINSERTSTRUCT ins;
 				// not found, so add it.
@@ -132,11 +132,11 @@ BOOL MeshMoldOptions::OnInitDialog()
 #ifdef OG
 				ins.item.pszText = fileBuf;
 				ins.item.cchTextMax = strlen(fileBuf);				
-#endif
+#endif // OG
 #ifdef ZH
 				ins.item.pszText = nameStart;
 				ins.item.cchTextMax = strlen(nameStart);				
-#endif
+#endif // ZH
 				child = m_moldTreeView.InsertItem(&ins);
 
 				++it;

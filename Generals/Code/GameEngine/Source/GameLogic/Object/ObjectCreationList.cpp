@@ -71,7 +71,7 @@
 #ifdef ZH
 #include "GameLogic/AIPathfind.h"
 
-#endif
+#endif // ZH
 #include "Common/CRCDebug.h"
 
 #ifdef _INTERNAL
@@ -109,17 +109,17 @@ static void adjustVector(Coord3D *vec, const Matrix3D* mtx)
 //-------------------------------------------------------------------------------------------------
 #ifdef OG
 void ObjectCreationNugget::create( const Object* primary, const Object* secondary, UnsignedInt lifetimeFrames ) const
-#endif
+#endif // OG
 #ifdef ZH
 Object* ObjectCreationNugget::create( const Object* primary, const Object* secondary, UnsignedInt lifetimeFrames ) const
-#endif
+#endif // ZH
 {
 #ifdef OG
 	create( primary, primary ? primary->getPosition() : NULL, secondary ? secondary->getPosition() : NULL, lifetimeFrames );
-#endif
+#endif // OG
 #ifdef ZH
 	return create( primary, primary ? primary->getPosition() : NULL, secondary ? secondary->getPosition() : NULL, INVALID_ANGLE, lifetimeFrames );
-#endif
+#endif // ZH
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -130,21 +130,21 @@ Object* ObjectCreationNugget::create( const Object* primary, const Object* secon
 //}
 
 //-------------------------------------------------------------------------------------------------
-#endif
+#endif // ZH
 //This one is called only when we have a nugget that doesn't care about createOwner.
 #ifdef OG
 void ObjectCreationNugget::create( const Object *primaryObj, const Coord3D *primary, const Coord3D *secondary, Bool createOwner, UnsignedInt lifetimeFrames ) const
-#endif
+#endif // OG
 #ifdef ZH
 Object* ObjectCreationNugget::create( const Object *primaryObj, const Coord3D *primary, const Coord3D *secondary, Bool createOwner, UnsignedInt lifetimeFrames ) const
-#endif
+#endif // ZH
 {
 #ifdef OG
 	create( primaryObj, primary, secondary, lifetimeFrames );
-#endif
+#endif // OG
 #ifdef ZH
 	return create( primaryObj, primary, secondary, INVALID_ANGLE, lifetimeFrames );
-#endif
+#endif // ZH
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -162,20 +162,20 @@ public:
 
 #ifdef OG
 	virtual void create( const Object* primaryObj, const Coord3D *primary, const Coord3D* secondary, UnsignedInt lifetimeFrames = 0 ) const
-#endif
+#endif // OG
 #ifdef ZH
 	virtual Object* create( const Object* primaryObj, const Coord3D *primary, const Coord3D* secondary, Real angle, UnsignedInt lifetimeFrames = 0 ) const
-#endif
+#endif // ZH
 	{
 		if (!primaryObj || !primary || !secondary)
 		{ 
 			DEBUG_CRASH(("You must have a primary and secondary source for this effect"));
 #ifdef OG
       return;
-#endif
+#endif // OG
 #ifdef ZH
       return NULL;
-#endif
+#endif // ZH
     }
 
 	  if (m_weapon)
@@ -184,7 +184,7 @@ public:
 	  }
 #ifdef ZH
 		return NULL;
-#endif
+#endif // ZH
   }
 
 	static void parse(INI *ini, void *instance, void* /*store*/, const void* /*userData*/)
@@ -221,20 +221,20 @@ public:
 
 #ifdef OG
 	virtual void create( const Object* primaryObj, const Coord3D *primary, const Coord3D* secondary, UnsignedInt lifetimeFrames = 0 ) const
-#endif
+#endif // OG
 #ifdef ZH
 	virtual Object* create( const Object* primaryObj, const Coord3D *primary, const Coord3D* secondary, Real angle, UnsignedInt lifetimeFrames = 0 ) const
-#endif
+#endif // ZH
 	{
 		if (!primaryObj || !primary || !secondary)
 		{ 
 			DEBUG_CRASH(("You must have a primary and secondary source for this effect"));
 #ifdef OG
       return;
-#endif
+#endif // OG
 #ifdef ZH
       return NULL;
-#endif
+#endif // ZH
     }
 
 		// Star trekkin, across the universe.
@@ -264,7 +264,7 @@ public:
 		}
 #ifdef ZH
 		return NULL;
-#endif
+#endif // ZH
   }
 
 	static void parse(INI *ini, void *instance, void* /*store*/, const void* /*userData*/)
@@ -321,35 +321,35 @@ public:
 
 #ifdef OG
 	virtual void create(const Object *primaryObj, const Coord3D *primary, const Coord3D *secondary, UnsignedInt lifetimeFrames = 0 ) const
-#endif
+#endif // OG
 #ifdef ZH
 	virtual Object* create(const Object *primaryObj, const Coord3D *primary, const Coord3D *secondary, Real angle, UnsignedInt lifetimeFrames = 0 ) const
-#endif
+#endif // ZH
 	{
 #ifdef OG
 		create( primaryObj, primary, secondary, true, lifetimeFrames );
-#endif
+#endif // OG
 #ifdef ZH
 		return create( primaryObj, primary, secondary, true, lifetimeFrames );
-#endif
+#endif // ZH
 	}
 
 #ifdef OG
 	virtual void create(const Object* primaryObj, const Coord3D *primary, const Coord3D* secondary, Bool createOwner, UnsignedInt lifetimeFrames = 0 ) const
-#endif
+#endif // OG
 #ifdef ZH
 	virtual Object* create(const Object* primaryObj, const Coord3D *primary, const Coord3D* secondary, Bool createOwner, UnsignedInt lifetimeFrames = 0 ) const
-#endif
+#endif // ZH
 	{
 		if (!primaryObj || !primary || !secondary)
 		{
 			DEBUG_CRASH(("You must have a primary and secondary source for this effect"));
 #ifdef OG
       return;
-#endif
+#endif // OG
 #ifdef ZH
       return NULL;
-#endif
+#endif // ZH
     }
 
 		Team* owner = primaryObj ? primaryObj->getControllingPlayer()->getDefaultTeam() : NULL;
@@ -390,7 +390,7 @@ public:
 		
 #ifdef ZH
 		Object *firstTransport = NULL;
-#endif
+#endif // ZH
 		for( Int formationIndex = 0; formationIndex < m_formationSize; formationIndex++ )
 		{
 			Coord3D offset;
@@ -456,14 +456,14 @@ public:
 #ifdef OG
 					return;
 
-#endif
+#endif // OG
 #ifdef ZH
 					return NULL;
 				}
 				if( !firstTransport )
 				{
 					firstTransport = transport;
-#endif
+#endif // ZH
 				}
 				transport->setPosition(&startPos);
 				transport->setOrientation(orient);
@@ -532,7 +532,7 @@ public:
 							transport->getTemplate()->getName().str(), it->m_payloadName.str() ) );
 						return NULL;
 					}
-#endif
+#endif // ZH
 					for (int i = 0; i < it->m_payloadCount; ++i)
 					{
 						Object* payload = TheThingFactory->newObject( payloadTmpl, owner );
@@ -594,7 +594,7 @@ public:
 		}
 #ifdef ZH
 		return firstTransport;
-#endif
+#endif // ZH
 	}
 
 	static void parsePayload( INI* ini, void *instance, void *store, const void* /*userData*/ )
@@ -711,10 +711,10 @@ public:
 
 #ifdef OG
 	virtual void create( const Object* primary, const Object* secondary, UnsignedInt lifetimeFrames = 0 ) const
-#endif
+#endif // OG
 #ifdef ZH
 	virtual Object* create( const Object* primary, const Object* secondary, UnsignedInt lifetimeFrames = 0 ) const
-#endif
+#endif // ZH
 	{
 		if (primary)
 		{
@@ -744,20 +744,20 @@ public:
 		}
 #ifdef ZH
 		return NULL;
-#endif
+#endif // ZH
 	}
 
 #ifdef OG
 	virtual void create(const Object* primaryObj, const Coord3D *primary, const Coord3D* secondary, UnsignedInt lifetimeFrames = 0 ) const
-#endif
+#endif // OG
 #ifdef ZH
 	virtual Object* create(const Object* primaryObj, const Coord3D *primary, const Coord3D* secondary, Real angle, UnsignedInt lifetimeFrames = 0 ) const
-#endif
+#endif // ZH
 	{
 		DEBUG_CRASH(("You must call this effect with an object, not a location"));
 #ifdef ZH
 		return NULL;
-#endif
+#endif // ZH
 	}
 
 	static void parse(INI *ini, void *instance, void* /*store*/, const void* /*userData*/)
@@ -849,7 +849,7 @@ public:
 		m_inheritsVeterancy(false),
 #ifdef ZH
     m_diesOnBadLand(FALSE),
-#endif
+#endif // ZH
 		m_skipIfSignificantlyAirborne(false),
 		m_invulnerableTime(0),
 		m_containInsideSourceObject(FALSE),
@@ -884,27 +884,27 @@ public:
 
 #ifdef OG
 	virtual void create(const Object* primary, const Object* secondary, UnsignedInt lifetimeFrames = 0 ) const
-#endif
+#endif // OG
 #ifdef ZH
 	virtual Object* create(const Object* primary, const Object* secondary, UnsignedInt lifetimeFrames = 0 ) const
-#endif
+#endif // ZH
 	{
 		if (primary)
 		{
 			if (m_skipIfSignificantlyAirborne && primary->isSignificantlyAboveTerrain())
 #ifdef OG
 				return;
-#endif
+#endif // OG
 #ifdef ZH
 				return NULL;
-#endif
+#endif // ZH
 
 #ifdef OG
 			reallyCreate( primary->getPosition(), primary->getTransformMatrix(), primary->getOrientation(), primary, lifetimeFrames );
-#endif
+#endif // OG
 #ifdef ZH
 			return reallyCreate( primary->getPosition(), primary->getTransformMatrix(), primary->getOrientation(), primary, lifetimeFrames );
-#endif
+#endif // ZH
 		}
 		else
 		{
@@ -912,15 +912,15 @@ public:
 		}
 #ifdef ZH
 		return NULL;
-#endif
+#endif // ZH
 	}
 
 #ifdef OG
 	virtual void create(const Object* primaryObj, const Coord3D *primary, const Coord3D* secondary, UnsignedInt lifetimeFrames = 0 ) const
-#endif
+#endif // OG
 #ifdef ZH
 	virtual Object* create(const Object* primaryObj, const Coord3D *primary, const Coord3D* secondary, Real angle, UnsignedInt lifetimeFrames = 0 ) const
-#endif
+#endif // ZH
 	{
 		if (primary)
 		{
@@ -929,7 +929,7 @@ public:
 			const Real orientation = 0.0;
 			reallyCreate( primary, xfrm, orientation, primaryObj, lifetimeFrames );
 
-#endif
+#endif // OG
 #ifdef ZH
 			if( angle == INVALID_ANGLE )
 			{
@@ -937,7 +937,7 @@ public:
 				angle = 0.0f;
 			}
 			return reallyCreate( primary, xfrm, angle, primaryObj, lifetimeFrames );
-#endif
+#endif // ZH
 		}
 		else
 		{
@@ -945,7 +945,7 @@ public:
 		}
 #ifdef ZH
 		return NULL;
-#endif
+#endif // ZH
 	}
 
 	static const FieldParse* getCommonFieldParse()
@@ -983,7 +983,7 @@ public:
 			{ "PreserveLayer", INI::parseBool, NULL, offsetof( GenericObjectCreationNugget, m_preserveLayer) },
 #ifdef ZH
 			{ "DiesOnBadLand",	INI::parseBool, NULL, offsetof(GenericObjectCreationNugget, m_diesOnBadLand) },
-#endif
+#endif // ZH
 			{ 0, 0, 0, 0 }
 		};
 		return commonFieldParse;
@@ -1201,7 +1201,7 @@ protected:
 	      // Note - very important that we add to map AFTER we flatten terrain. jba.
 	      TheAI->pathfinder()->addObjectToPathfindMap( obj );
 
-#endif
+#endif // ZH
 		}
 
 #ifdef ZH
@@ -1209,7 +1209,7 @@ protected:
 
 		}
 
-#endif
+#endif // ZH
 		if( BitTest( m_disposition, ON_GROUND_ALIGNED ) )
 		{
 			chunkPos.z = 99999.0f;
@@ -1408,13 +1408,13 @@ protected:
 		    damageInfo.in.m_sourceID = INVALID_ID;
 		    damageInfo.in.m_amount = HUGE_DAMAGE_AMOUNT;
 		    obj->attemptDamage( &damageInfo );
-#endif
+#endif // ZH
 	}
 
 #ifdef OG
 	void reallyCreate(const Coord3D *pos, const Matrix3D *mtx, Real orientation, const Object *sourceObj, UnsignedInt lifetimeFrames ) const
 
-#endif
+#endif // OG
 #ifdef ZH
 	    // Kill if materialized on impassable ground
 	    Int cellX = REAL_TO_INT( obj->getPosition()->x / PATHFIND_CELL_SIZE );
@@ -1443,44 +1443,44 @@ protected:
 	}
 
 	Object* reallyCreate(const Coord3D *pos, const Matrix3D *mtx, Real orientation, const Object *sourceObj, UnsignedInt lifetimeFrames ) const
-#endif
+#endif // ZH
 	{
 		static const ThingTemplate* debrisTemplate = TheThingFactory->findTemplate("GenericDebris");
 
 		if (m_names.size() <= 0)
 #ifdef OG
 			return;
-#endif
+#endif // OG
 #ifdef ZH
 			return NULL;
-#endif
+#endif // ZH
 
 #ifdef OG
 		if (m_requiresLivePlayer && (!sourceObj || !sourceObj->getControllingPlayer()->isPlayerActive()))
 			return; // don't spawn useful objects for dead players.  Avoid the zombie units from Yuri's.
-#endif
+#endif // OG
 #ifdef ZH
 		if (m_requiresLivePlayer && (!sourceObj || !sourceObj->getControllingPlayer() || !sourceObj->getControllingPlayer()->isPlayerActive()))
 			return NULL; // don't spawn useful objects for dead players.  Avoid the zombie units from Yuri's.
-#endif
+#endif // ZH
 
 		// Object type debris might need this information to process visual UpgradeModules.
 #ifdef OG
 		Team *debrisOwner = NULL;
 		if( sourceObj )
 
-#endif
+#endif // OG
 #ifdef ZH
 		Team *debrisOwner = ThePlayerList->getNeutralPlayer() ? ThePlayerList->getNeutralPlayer()->getDefaultTeam() : NULL;
 
 		if( sourceObj && sourceObj->getControllingPlayer() )
-#endif
+#endif // ZH
 			debrisOwner = sourceObj->getControllingPlayer()->getDefaultTeam();
 		
 		Object* container = NULL;
 #ifdef ZH
 		Object *firstObject = NULL;
-#endif
+#endif // ZH
 		if (!m_putInContainer.isEmpty())
 		{
 			const ThingTemplate* containerTmpl = TheThingFactory->findTemplate(m_putInContainer);
@@ -1494,7 +1494,7 @@ protected:
 					return firstObject;
 				}
 				firstObject = container;
-#endif
+#endif // ZH
 				container->setProducer(sourceObj);
 			}
 		}
@@ -1529,7 +1529,7 @@ protected:
 			{
 				firstObject = debris;
 			}
-#endif
+#endif // ZH
 			debris->setProducer(sourceObj);
 			if (m_preserveLayer && sourceObj != NULL && container == NULL)
 			{
@@ -1584,7 +1584,7 @@ protected:
 #ifdef ZH
     
 		return firstObject;
-#endif
+#endif // ZH
 	}
 
 	static void parseDebrisObjectNames( INI* ini, void *instance, void *store, const void* /*userData*/ )
@@ -1650,7 +1650,7 @@ private:
 	Bool											m_inheritsVeterancy;
 #ifdef ZH
   Bool                      m_diesOnBadLand;
-#endif
+#endif // ZH
 	Bool											m_skipIfSignificantlyAirborne;
 
 };  
@@ -1690,91 +1690,91 @@ void ObjectCreationList::addObjectCreationNugget(ObjectCreationNugget* nugget)
 //-------------------------------------------------------------------------------------------------
 #ifdef OG
 void ObjectCreationList::create( const Object* primaryObj, const Coord3D *primary, const Coord3D* secondary, Bool createOwner, UnsignedInt lifetimeFrames ) const
-#endif
+#endif // OG
 #ifdef ZH
 Object* ObjectCreationList::createInternal( const Object* primaryObj, const Coord3D *primary, const Coord3D* secondary, Bool createOwner, UnsignedInt lifetimeFrames ) const
-#endif
+#endif // ZH
 {
 	DEBUG_ASSERTCRASH(primaryObj != NULL, ("You should always call OCLs with a non-null primary Obj, even for positional calls, to get team ownership right"));
 #ifdef ZH
 	Object *theFirstObject = NULL;
-#endif
+#endif // ZH
 	for (ObjectCreationNuggetVector::const_iterator i = m_nuggets.begin(); i != m_nuggets.end(); ++i)
 	{
 #ifdef OG
 		(*i)->create( primaryObj, primary, secondary, createOwner, lifetimeFrames );
 
-#endif
+#endif // OG
 #ifdef ZH
 		Object *curObj = (*i)->create( primaryObj, primary, secondary, createOwner, lifetimeFrames );
 		if (theFirstObject==NULL) {
 			theFirstObject = curObj;
 		}
-#endif
+#endif // ZH
 	}
 #ifdef ZH
 	return theFirstObject;
-#endif
+#endif // ZH
 }
 
 //-------------------------------------------------------------------------------------------------
 #ifdef OG
 void ObjectCreationList::create( const Object* primaryObj, const Coord3D *primary, const Coord3D* secondary, UnsignedInt lifetimeFrames ) const
-#endif
+#endif // OG
 #ifdef ZH
 Object* ObjectCreationList::createInternal( const Object* primaryObj, const Coord3D *primary, const Coord3D* secondary, Real angle, UnsignedInt lifetimeFrames ) const
-#endif
+#endif // ZH
 {
 	DEBUG_ASSERTCRASH(primaryObj != NULL, ("You should always call OCLs with a non-null primary Obj, even for positional calls, to get team ownership right"));
 #ifdef ZH
 	Object *theFirstObject = NULL;
-#endif
+#endif // ZH
 	for (ObjectCreationNuggetVector::const_iterator i = m_nuggets.begin(); i != m_nuggets.end(); ++i)
 	{
 #ifdef OG
 		(*i)->create( primaryObj, primary, secondary, lifetimeFrames );
 
-#endif
+#endif // OG
 #ifdef ZH
 		Object *curObj =  (*i)->create( primaryObj, primary, secondary, angle, lifetimeFrames );
 		if (theFirstObject==NULL) {
 			theFirstObject = curObj;
-#endif
+#endif // ZH
 	}
 #ifdef ZH
 	}
 	return theFirstObject;
-#endif
+#endif // ZH
 }
 
 //-------------------------------------------------------------------------------------------------
 #ifdef OG
 void ObjectCreationList::create( const Object* primary, const Object* secondary, UnsignedInt lifetimeFrames ) const
-#endif
+#endif // OG
 #ifdef ZH
 Object* ObjectCreationList::createInternal( const Object* primary, const Object* secondary, UnsignedInt lifetimeFrames ) const
-#endif
+#endif // ZH
 {
 	DEBUG_ASSERTCRASH(primary != NULL, ("You should always call OCLs with a non-null primary Obj, even for positional calls, to get team ownership right"));
 #ifdef ZH
 	Object *theFirstObject = NULL;
-#endif
+#endif // ZH
 	for (ObjectCreationNuggetVector::const_iterator i = m_nuggets.begin(); i != m_nuggets.end(); ++i)
 	{
 #ifdef OG
 		(*i)->create( primary, secondary, lifetimeFrames );
 
-#endif
+#endif // OG
 #ifdef ZH
 		Object *curObj =  (*i)->create( primary, secondary, lifetimeFrames );
 		if (theFirstObject==NULL) {
 			theFirstObject = curObj;
 		}
-#endif
+#endif // ZH
 	}
 #ifdef ZH
 	return theFirstObject;
-#endif
+#endif // ZH
 }
 
 //-------------------------------------------------------------------------------------------------

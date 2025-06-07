@@ -36,4 +36,4 @@ const char *DebugGetDefaultCommands(void)
   return "!debug.io flat add";
 }
 
-#endif
+#endif // ZH

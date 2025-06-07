@@ -56,7 +56,7 @@
 #ifdef ZH
 #include "Common/Player.h"
 #include "Common/Upgrade.h"
-#endif
+#endif // ZH
 #include "GameLogic/Object.h"
 #include "GameLogic/Module/ArmorUpgrade.h"
 #include "GameLogic/Module/BodyModule.h"
@@ -104,7 +104,7 @@ void ArmorUpgrade::upgradeImplementation( )
 	{
 		obj->getDrawable()->setTerrainDecal(TERRAIN_DECAL_CHEMSUIT);
 	}
-#endif
+#endif // ZH
 }
 
 // ------------------------------------------------------------------------------------------------

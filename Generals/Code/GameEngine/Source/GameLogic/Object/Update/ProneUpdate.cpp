@@ -108,10 +108,10 @@ void ProneUpdate::startProneEffects()
 	me->getDrawable()->setModelConditionState( MODELCONDITION_PRONE );
 #ifdef OG
 	me->setStatus( OBJECT_STATUS_NO_ATTACK );
-#endif
+#endif // OG
 #ifdef ZH
 	me->setStatus( MAKE_OBJECT_STATUS_MASK( OBJECT_STATUS_NO_ATTACK ) );
-#endif
+#endif // ZH
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -122,10 +122,10 @@ void ProneUpdate::stopProneEffects()
 	me->getDrawable()->clearModelConditionState( MODELCONDITION_PRONE );
 #ifdef OG
 	me->clearStatus( OBJECT_STATUS_NO_ATTACK );
-#endif
+#endif // OG
 #ifdef ZH
 	me->clearStatus( MAKE_OBJECT_STATUS_MASK( OBJECT_STATUS_NO_ATTACK ) );
-#endif
+#endif // ZH
 }
 
 // ------------------------------------------------------------------------------------------------

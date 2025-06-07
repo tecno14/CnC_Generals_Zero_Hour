@@ -405,4 +405,4 @@ bool DebugCmdInterfaceDebug::Execute(class Debug& dbg, const char *cmd,
   return false;
 }
 
-#endif
+#endif // ZH

@@ -45,14 +45,14 @@ public:
   SupplyCenterDockUpdateModuleData( void );
 #ifdef ZH
 	static void buildFieldParse(MultiIniFieldParse& p);
-#endif
+#endif // ZH
 	
 #ifdef OG
 	static void buildFieldParse(MultiIniFieldParse& p);
-#endif
+#endif // OG
 #ifdef ZH
 	UnsignedInt m_grantTemporaryStealthFrames;
-#endif
+#endif // ZH
 };
 
 // ------------------------------------------------------------------------------------------------

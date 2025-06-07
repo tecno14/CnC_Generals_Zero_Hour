@@ -47,10 +47,10 @@ public:
 	virtual Int getPingCutoffGood( void ) = 0;
 #ifdef OG
 	virtual Int getPingCutoffBad( void ) = 0;
-#endif
+#endif // OG
 #ifdef ZH
 	virtual Int getPingCutoffBad( void ) = 0; //Bryan sez, Maybe
-#endif
+#endif // ZH
 
 	// QM
 	virtual std::list<AsciiString> getQMMaps(void) = 0;
@@ -77,7 +77,7 @@ public:
 	virtual time_t getPortTimeout() = 0;
 	virtual time_t getRoundTimeout() = 0;
 
-#endif
+#endif // OG
 	// Custom match
 	virtual Bool restrictGamesToLobby() = 0;
 	static GameSpyConfigInterface* create(AsciiString config);

@@ -22,11 +22,11 @@
 #include "stdafx.h"
 #ifdef ZH
 #include "resource.h"
-#endif
+#endif // ZH
 #include "CUndoable.h"
 #ifdef ZH
 #include "CFixTeamOwnerDialog.h"
-#endif
+#endif // ZH
 #include "worldbuilder.h"
 #include "worldbuilderdoc.h"
 #include "wbview.h"
@@ -40,7 +40,7 @@
 #include "TeamsDialog.h"
 #ifdef ZH
 #include "LayersList.h"
-#endif
+#endif // ZH
 
 #ifdef ZH
 #ifdef _INTERNAL
@@ -48,7 +48,7 @@
 //#pragma optimize("", off)
 //#pragma MESSAGE("************************************** WARNING, optimization disabled for debugging purposes")
 #endif
-#endif
+#endif // ZH
 Bool WbView::m_snapToGrid = false;
 
 /////////////////////////////////////////////////////////////////////////////
@@ -65,11 +65,11 @@ WbView::WbView() :
 #ifdef OG
 	m_pickConstraint(ES_NONE)
 
-#endif
+#endif // OG
 #ifdef ZH
 	m_pickConstraint(ES_NONE),
 	m_doRulerFeedback(RULER_NONE)
-#endif
+#endif // ZH
 {
 	Int showWay = ::AfxGetApp()->GetProfileInt(MAIN_FRAME_SECTION, "ShowWaypoints", 1);
 	m_showWaypoints = (showWay!=0);
@@ -130,7 +130,7 @@ BEGIN_MESSAGE_MAP(WbView, CView)
 	ON_COMMAND(ID_EDIT_TEAMLIST, OnEditTeamlist)
 #ifdef ZH
 	ON_COMMAND(ID_TEAM_EDIT, OnEditTeamlist)
-#endif
+#endif // ZH
 	ON_UPDATE_COMMAND_UI(ID_OBJECTPROPERTIES_REFLECTSINMIRROR, OnUpdateObjectpropertiesReflectsinmirror)
 	ON_COMMAND(ID_EDIT_PICKSTRUCTS, OnPickStructures)
 	ON_UPDATE_COMMAND_UI(ID_EDIT_PICKSTRUCTS, OnUpdatePickStructures)
@@ -245,7 +245,7 @@ void WbView::mouseMove(TTrackingMode m, CPoint viewPt)
 			str.Format("Length (in feet): %f", m_rulerLength);
 		}
 		CMainFrame::GetMainFrame()->SetMessageText(str);
-#endif
+#endif // ZH
 		return;
 	}
 	// Generate the status text display with coordinates and height.
@@ -289,11 +289,11 @@ void WbView::mouseMove(TTrackingMode m, CPoint viewPt)
 	if (strcmp(AsciiString::TheEmptyString.str(), LayersList::TheActiveLayerName.c_str()) != 0) {
 		str.Format("Active Layer: (%s)    %d object(s), ", LayersList::TheActiveLayerName.c_str(), totalObjects);
 	} else {
-#endif
+#endif // ZH
 	str.Format("%d object(s), ", totalObjects);
 #ifdef ZH
 	}
-#endif
+#endif // ZH
 	str2.Format("%d waypoint(s), ", totalWaypoints);
 	str3.Format("(%.2f,%.2f), height %.2f", cpt.x, cpt.y, height);
 	str += str2;
@@ -985,7 +985,7 @@ void WbView::OnValidationFixTeams()
 	
 	// Check for teams with invalid owners.
 	for (i = 0; i < TheSidesList->getNumTeams(); ++i) 
-#endif
+#endif // ZH
 {
 #ifdef OG
 	std::vector<Dict *> allTeamDicts;
@@ -993,7 +993,7 @@ void WbView::OnValidationFixTeams()
 	// Get all team dicts in the map
 	for (Int i = 0; i < numTeams; ++i) 
 
-#endif
+#endif // OG
 #ifdef ZH
 		Dict *d = TheSidesList->getTeamInfo(i)->getDict();
 		AsciiString oname = d->getAsciiString(TheKey_teamOwner);
@@ -1016,12 +1016,12 @@ void WbView::OnValidationFixTeams()
 	{
 		// there is no validation code for these items as of yet.
 		if (pMapObj->isScorch() || pMapObj->isWaypoint() || pMapObj->isLight() || pMapObj->getFlag(FLAG_ROAD_FLAGS) || pMapObj->getFlag(FLAG_BRIDGE_FLAGS))
-#endif
+#endif // ZH
 	{
 #ifdef OG
 		allTeamDicts.push_back(TheSidesList->getTeamInfo(i)->getDict());
 
-#endif
+#endif // OG
 #ifdef ZH
 			continue;
 		}
@@ -1053,7 +1053,7 @@ void WbView::OnValidationFixTeams()
 		} else {
 			// Object doesn't even have a team name at all.  bad. jba. [8/8/2003]
 			teamExists = false; 
-#endif
+#endif // ZH
 	}
 #ifdef ZH
 		if (!teamExists) {
@@ -1061,13 +1061,13 @@ void WbView::OnValidationFixTeams()
 			AsciiString warning;
 			warning.format("Object '%s' named '%s' on team '%s' - team doesn't exist.  Select player for object...", 
 				tmplName.str(), name.str(), teamName.str());
-#endif
+#endif // ZH
 
 #ifdef OG
 	Dict newDict;
 	newDict.setBool(TheKey_teamExecutesActionsOnCreate, false);
 
-#endif
+#endif // OG
 #ifdef ZH
 			anyFixes = true;
 			::AfxMessageBox(warning.str(), MB_OK);	
@@ -1086,7 +1086,7 @@ void WbView::OnValidationFixTeams()
 			}
 		}
 	}
-#endif
+#endif // ZH
 
 #ifdef OG
 	// Now, do the Undoable
@@ -1094,22 +1094,22 @@ void WbView::OnValidationFixTeams()
 	DictItemUndoable *pUndo = new DictItemUndoable(allTeamDicts.begin(), newDict, newDict.getNthKey(0), allTeamDicts.size(), pDoc, true);
 	pDoc->AddAndDoUndoable(pUndo);
 	REF_PTR_RELEASE(pUndo); // belongs to pDoc now.
-#endif
+#endif // OG
 	
 #ifdef ZH
 	if (anyFixes) {
-#endif
+#endif // ZH
 	// Show a message indicating success.
 #ifdef OG
 	AfxMessageBox(IDS_TEAMS_FIXED);
 
-#endif
+#endif // OG
 #ifdef ZH
 		AfxMessageBox(IDS_TEAMS_FIXED, MB_OK|MB_ICONWARNING);
 	} else {
 		AfxMessageBox(IDS_NO_PROBLEMS, MB_OK);
 	}
-#endif
+#endif // ZH
 }
 
 void WbView::OnShowTerrain()
@@ -1151,5 +1151,5 @@ void WbView::rulerFeedbackInfo(Coord3D &point1, Coord3D &point2, Real dist)
 	m_rulerPoints[1] = point2; 
 	m_rulerLength = dist;
 }
-#endif
+#endif // ZH
 

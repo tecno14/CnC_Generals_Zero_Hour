@@ -196,11 +196,11 @@ GameMessageDisposition WindowTranslator::translateGameMessage(const GameMessage 
 		}
 		else
 		{
-#endif
+#endif // ZH
 		return KEEP_MESSAGE;
 #ifdef ZH
 		}
-#endif
+#endif // ZH
 	}
 
 	switch( msg->getType() )

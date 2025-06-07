@@ -469,7 +469,7 @@ void GeometryInfo::makeRandomOffsetOnPerimeter(Coord3D& pt) const
 }
 
 //=============================================================================
-#endif
+#endif // ZH
 Real GeometryInfo::getFootprintArea() const
 {
 	switch(m_type)

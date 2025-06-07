@@ -118,10 +118,10 @@ protected:
 	Int m_dstTextureHeight;					///<dimensions of m_pDstTexture
 #ifdef OG
 	TextureClass::FilterType m_shroudFilter;
-#endif
+#endif // OG
 #ifdef ZH
 	TextureFilterClass::FilterType m_shroudFilter;
-#endif
+#endif // ZH
 	Real m_drawOriginX;
 	Real m_drawOriginY;
 	Bool m_drawFogOfWar;					///<switch to draw alternate fog style instead of solid black

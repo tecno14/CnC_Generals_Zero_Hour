@@ -25,10 +25,10 @@ void FormatURLFromRegistry( std::string& gamePatchURL, std::string& mapPatchURL,
 {
 #ifdef OG
 	std::string sku = "generals";
-#endif
+#endif // OG
 #ifdef ZH
 	std::string sku = "GeneralsZH";
-#endif
+#endif // ZH
 	std::string language = "english";
 	unsigned int version = 0; // invalid version - can't get on with a corrupt reg.
 	unsigned int mapVersion = 0; // invalid version - can't get on with a corrupt reg.

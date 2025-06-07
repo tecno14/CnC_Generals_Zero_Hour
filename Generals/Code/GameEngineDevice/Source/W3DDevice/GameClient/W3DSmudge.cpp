@@ -556,4 +556,4 @@ flushSmudges:
 	DX8Wrapper::Set_DX8_Texture_Stage_State(0,D3DTSS_ALPHAOP,D3DTOP_MODULATE);			
 
 }
-#endif
+#endif // ZH

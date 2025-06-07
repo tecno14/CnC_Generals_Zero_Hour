@@ -30,7 +30,7 @@
 
 #include "WaypointOptions.h" //WST 10/7/2002
 #include "CUndoable.h" //WST 10/7/2002
-#endif
+#endif // ZH
 
 /////////////////////////////////////////////////////////////////////////////
 // CameraOptions dialog
@@ -61,7 +61,7 @@ BEGIN_MESSAGE_MAP(CameraOptions, CDialog)
 #ifdef ZH
 	ON_BN_CLICKED(IDC_DROP_WAYPOINT_BUTTON, OnDropWaypointButton)
 	ON_BN_CLICKED(IDC_CENTER_ON_SELECTED, OnCenterOnSelectedButton)
-#endif
+#endif // ZH
 	ON_WM_MOVE()
 	ON_EN_CHANGE(IDC_PITCH_EDIT, OnChangePitchEdit)
 	ON_WM_SHOWWINDOW()
@@ -140,7 +140,7 @@ void CameraOptions::OnCenterOnSelectedButton()
 	}
 }
 
-#endif
+#endif // ZH
 void CameraOptions::OnMove(int x, int y) 
 {
 	CDialog::OnMove(x, y);
@@ -212,12 +212,12 @@ void CameraOptions::stuffValuesIntoFields( void )
 #ifdef OG
 		Real zoom = height/TheGlobalData->m_maxCameraHeight;
 
-#endif
+#endif // OG
 #ifdef ZH
 		//WST 10/11/2002 This is inaccurate Real zoom = height/TheGlobalData->m_maxCameraHeight;
 		Real zoom = p3View->getCurrentZoom(); //WST 10.11.2002
 
-#endif
+#endif // ZH
 		putReal(IDC_ZOOMTEXT, zoom);
 		putReal(IDC_HEIGHTTEXT, height);
 

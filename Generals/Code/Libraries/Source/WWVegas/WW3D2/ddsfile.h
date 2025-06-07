@@ -19,7 +19,7 @@
 #ifdef ZH
 // 08/06/02 KM Added cube map and volume texture support
 
-#endif
+#endif // ZH
 #ifndef DDSFILE_H
 #define DDSFILE_H
 
@@ -32,12 +32,12 @@
 #include "wwstring.h"
 #ifdef ZH
 #include "vector3.h"
-#endif
+#endif // ZH
 
 struct IDirect3DSurface8;
 #ifdef ZH
 struct IDirect3DVolume8;
-#endif
+#endif // ZH
 
 // ----------------------------------------------------------------------------
 //
@@ -140,12 +140,12 @@ struct LegacyDDSURFACEDESC2 {
 #ifdef ZH
 	union
 	{
-#endif
+#endif // ZH
 	unsigned BackBufferCount;
 #ifdef ZH
 		unsigned Depth;				// added depth for volume textures
 	};
-#endif
+#endif // ZH
 	union
 	{
 		unsigned MipMapCount;
@@ -176,7 +176,7 @@ enum DDSType
 	DDS_VOLUME
 };
 
-#endif
+#endif // ZH
 // ----------------------------------------------------------------------------
 //
 // Utility class for loading DDS files. Simply create an instance of the class
@@ -197,29 +197,29 @@ class DDSFileClass
 	unsigned FullWidth;
 	unsigned FullHeight;
 	unsigned FullDepth;
-#endif
+#endif // ZH
 	unsigned MipLevels;
 #ifdef ZH
 	unsigned long DateTime;
-#endif
+#endif // ZH
 	unsigned ReductionFactor;
 	unsigned char* DDSMemory;
 	WW3DFormat Format;
 #ifdef ZH
 	DDSType	Type;
-#endif
+#endif // ZH
 	unsigned* LevelSizes;
 	unsigned* LevelOffsets;
 #ifdef ZH
 	unsigned CubeFaceSize;
-#endif
+#endif // ZH
 	LegacyDDSURFACEDESC2 SurfaceDesc;
 #ifdef OG
 	StringClass Name;
-#endif
+#endif // OG
 #ifdef ZH
 	char Name[256];
-#endif
+#endif // ZH
 
 	static unsigned Calculate_DXTC_Surface_Size(unsigned width, unsigned height, WW3DFormat format);
 
@@ -237,7 +237,7 @@ public:
 	unsigned Get_Full_Height() const { return FullHeight; }		// Get the height of level 0 of non-reduced texture
 	unsigned Get_Full_Depth() const { return FullDepth; }
 	unsigned long Get_Date_Time() const { return DateTime; }
-#endif
+#endif // ZH
 
 	unsigned Get_Mip_Level_Count() const { return MipLevels; }
 	const unsigned char* Get_Memory_Pointer(unsigned level) const;
@@ -247,14 +247,14 @@ public:
 #ifdef ZH
 	DDSType Get_Type() const { return Type; }
 
-#endif
+#endif // ZH
 	// Copy pixels to the destination surface.
 #ifdef OG
 	void Copy_Level_To_Surface(unsigned level,IDirect3DSurface8* d3d_surface);
-#endif
+#endif // OG
 #ifdef ZH
 	void Copy_Level_To_Surface(unsigned level,IDirect3DSurface8* d3d_surface,const Vector3& hsv_shift=Vector3(0.0f,0.0f,0.0f));
-#endif
+#endif // ZH
 	void Copy_Level_To_Surface(
 		unsigned level,
 		WW3DFormat dest_format, 
@@ -264,7 +264,7 @@ public:
 #ifdef OG
 		unsigned dest_pitch);
 
-#endif
+#endif // OG
 #ifdef ZH
 		unsigned dest_pitch,
 		const Vector3& hsv_shift=Vector3(0.0f,0.0f,0.0f));
@@ -297,7 +297,7 @@ public:
 		unsigned slice_pitch,
 		const Vector3& hsv_shift=Vector3(0.0f,0.0f,0.0f)
 	);
-#endif
+#endif // ZH
 
 	// Get pixel in A8R8G8B8 format. This isn't the fastest possible way of reading data from DDS.
 	unsigned Get_Pixel(unsigned level,unsigned x,unsigned y) const;
@@ -314,11 +314,11 @@ public:
 #ifdef OG
 		unsigned source_y) const;			// DDS y offset to copy from, must be aligned by 4!
 
-#endif
+#endif // OG
 #ifdef ZH
 		unsigned source_y,					// DDS y offset to copy from, must be aligned by 4!
 		const Vector3& hsv_shift=Vector3(0.0f,0.0f,0.0f)) const;
-#endif
+#endif // ZH
 
 	bool Load();
 	bool Is_Available() const { return !!LevelSizes; }

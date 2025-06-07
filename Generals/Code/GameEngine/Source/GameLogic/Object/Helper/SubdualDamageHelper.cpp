@@ -129,4 +129,4 @@ void SubdualDamageHelper::loadPostProcess( void )
 }  // end loadPostProcess
 
 
-#endif
+#endif // ZH

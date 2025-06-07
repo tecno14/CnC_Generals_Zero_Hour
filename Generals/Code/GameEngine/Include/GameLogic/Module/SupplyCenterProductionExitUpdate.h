@@ -45,7 +45,7 @@ public:
 	Coord3D m_naturalRallyPoint;
 #ifdef ZH
 	UnsignedInt m_grantTemporaryStealthFrames;
-#endif
+#endif // ZH
 
 	SupplyCenterProductionExitUpdateModuleData()
 	{
@@ -62,7 +62,7 @@ public:
 			{ "NaturalRallyPoint",  INI::parseCoord3D,		NULL, offsetof( SupplyCenterProductionExitUpdateModuleData, m_naturalRallyPoint ) },
 #ifdef ZH
 			{ "GrantTemporaryStealth",INI::parseDurationUnsignedInt,  NULL, offsetof( SupplyCenterProductionExitUpdateModuleData, m_grantTemporaryStealthFrames ) },
-#endif
+#endif // ZH
 			{ 0, 0, 0, 0 }
 		};
     p.add(dataFieldParse);

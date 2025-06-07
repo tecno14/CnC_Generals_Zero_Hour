@@ -493,7 +493,7 @@ void GUIEdit::init( void )
 	TheNameKeyGenerator = new NameKeyGenerator;
 	TheNameKeyGenerator->init();
 
-#endif
+#endif // ZH
 	// create file system
 	TheFileSystem = new FileSystem;
 	TheLocalFileSystem = new Win32LocalFileSystem;
@@ -532,7 +532,7 @@ void GUIEdit::init( void )
 	// create the name key generator
 	TheNameKeyGenerator = new NameKeyGenerator;
 	TheNameKeyGenerator->init();
-#endif
+#endif // OG
 
 	// create the message stream
 	TheMessageStream = new MessageStream;

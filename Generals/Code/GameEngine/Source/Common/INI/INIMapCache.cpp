@@ -35,7 +35,7 @@
 #include "GameClient/MapUtil.h"
 #ifdef ZH
 #include "GameClient/GameText.h"
-#endif
+#endif // ZH
 #include "GameNetwork/NetworkDefs.h"
 #include "Common/NameKeyGenerator.h"
 #include "Common/WellKnownKeys.h"
@@ -48,7 +48,7 @@
 //#pragma MESSAGE("************************************** WARNING, optimization disabled for debugging purposes")
 #endif
 
-#endif
+#endif // ZH
 class MapMetaDataReader
 {
 public:
@@ -58,7 +58,7 @@ public:
 	AsciiString m_asciiDisplayName;
 #ifdef ZH
 	AsciiString m_asciiNameLookupTag;
-#endif
+#endif // ZH
 
 	Bool m_isOfficial;
 	WinTimeStamp m_timestamp;
@@ -107,7 +107,7 @@ const FieldParse MapMetaDataReader::m_mapFieldParseTable[] =
 	{ "displayName",						INI::parseAsciiString,	NULL,	offsetof( MapMetaDataReader, m_asciiDisplayName ) },
 #ifdef ZH
 	{ "nameLookupTag",					INI::parseAsciiString,	NULL,	offsetof( MapMetaDataReader, m_asciiNameLookupTag ) },
-#endif
+#endif // ZH
 
 	{ "supplyPosition",					parseSupplyPositionCoord3D,	NULL, NULL },
 	{ "techPosition",						parseTechPositionsCoord3D,	NULL, NULL },
@@ -155,7 +155,7 @@ void INI::parseMapCacheDefinition( INI* ini )
 #ifdef OG
 	md.m_displayName = QuotedPrintableToUnicodeString(mdr.m_asciiDisplayName);
 
-#endif
+#endif // OG
 #ifdef ZH
 //	md.m_displayName = QuotedPrintableToUnicodeString(mdr.m_asciiDisplayName);
 // this string is never to be used, but we'll leave it in to allow people with an old mapcache.ini to parse it
@@ -185,7 +185,7 @@ void INI::parseMapCacheDefinition( INI* ini )
 			md.m_displayName.concat(extension);
 		}
 	}
-#endif
+#endif // ZH
 
 	AsciiString startingCamName;
 	for (Int i=0; i<md.m_numPlayers; ++i)

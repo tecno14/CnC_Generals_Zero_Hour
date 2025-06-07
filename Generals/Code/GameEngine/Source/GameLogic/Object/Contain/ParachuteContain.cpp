@@ -38,7 +38,7 @@
 
 #ifdef ZH
 #include "GameLogic/AIPathfind.h"
-#endif
+#endif // ZH
 #include "GameLogic/Locomotor.h"
 #include "GameLogic/Module/AIUpdate.h"
 #include "GameLogic/Module/ParachuteContain.h"
@@ -129,10 +129,10 @@ ParachuteContain::ParachuteContain( Thing *thing, const ModuleData *moduleData )
 
 #ifdef OG
 	getObject()->setStatus(OBJECT_STATUS_PARACHUTING);
-#endif
+#endif // OG
 #ifdef ZH
 	getObject()->setStatus( MAKE_OBJECT_STATUS_MASK( OBJECT_STATUS_PARACHUTING ) );
-#endif
+#endif // ZH
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -362,7 +362,7 @@ UpdateSleepTime ParachuteContain::update( void )
     else if ( rider )
 			rider->clearAndSetModelConditionState( MODELCONDITION_PARACHUTING, MODELCONDITION_FREEFALL );
 
-#endif
+#endif // ZH
 	}
 	draw->setDrawableHidden(!m_opened);
 
@@ -372,34 +372,34 @@ UpdateSleepTime ParachuteContain::update( void )
 		// ejections, paradrops, landings, etc...
 #ifdef OG
 		parachute->setStatus(OBJECT_STATUS_NO_COLLISIONS);
-#endif
+#endif // OG
 #ifdef ZH
 		parachute->setStatus( MAKE_OBJECT_STATUS_MASK( OBJECT_STATUS_NO_COLLISIONS ) );
-#endif
+#endif // ZH
 		if (rider)
 #ifdef OG
 			rider->setStatus(OBJECT_STATUS_NO_COLLISIONS);
-#endif
+#endif // OG
 #ifdef ZH
 			rider->setStatus( MAKE_OBJECT_STATUS_MASK( OBJECT_STATUS_NO_COLLISIONS ) );
-#endif
+#endif // ZH
 	}
 	else
 	{
 		// opened/nonempty chutes DO collide...
 #ifdef OG
 		parachute->clearStatus(OBJECT_STATUS_NO_COLLISIONS);
-#endif
+#endif // OG
 #ifdef ZH
 		parachute->clearStatus( MAKE_OBJECT_STATUS_MASK( OBJECT_STATUS_NO_COLLISIONS ) );
-#endif
+#endif // ZH
 		if (rider)
 #ifdef OG
 			rider->clearStatus(OBJECT_STATUS_NO_COLLISIONS);
-#endif
+#endif // OG
 #ifdef ZH
 			rider->clearStatus( MAKE_OBJECT_STATUS_MASK( OBJECT_STATUS_NO_COLLISIONS ) );
-#endif
+#endif // ZH
 	}
 
 	AIUpdateInterface* ai = parachute->getAIUpdateInterface();
@@ -484,26 +484,26 @@ UpdateSleepTime ParachuteContain::update( void )
 //-------------------------------------------------------------------------------------------------
 #ifdef OG
 void ParachuteContain::onContaining( Object *rider )
-#endif
+#endif // OG
 #ifdef ZH
 void ParachuteContain::onContaining( Object *rider, Bool wasSelected )
-#endif
+#endif // ZH
 {
 #ifdef OG
 	OpenContain::onContaining(rider);	
-#endif
+#endif // OG
 #ifdef ZH
 	OpenContain::onContaining( rider, wasSelected );	
-#endif
+#endif // ZH
 
 	// objects inside a transport are held
 	rider->setDisabled( DISABLED_HELD );
 #ifdef OG
 	rider->setStatus(OBJECT_STATUS_PARACHUTING);
-#endif
+#endif // OG
 #ifdef ZH
 	rider->setStatus( MAKE_OBJECT_STATUS_MASK( OBJECT_STATUS_PARACHUTING ) );
-#endif
+#endif // ZH
 
 	rider->clearAndSetModelConditionState(MODELCONDITION_PARACHUTING, MODELCONDITION_FREEFALL);
 	m_needToUpdateRiderBones = true;
@@ -524,20 +524,20 @@ void ParachuteContain::onRemoving( Object *rider )
 	rider->clearDisabled( DISABLED_HELD );
 #ifdef OG
 	rider->clearStatus(OBJECT_STATUS_PARACHUTING);
-#endif
+#endif // OG
 #ifdef ZH
 	rider->clearStatus( MAKE_OBJECT_STATUS_MASK( OBJECT_STATUS_PARACHUTING ) );
-#endif
+#endif // ZH
 
 	// mark parachute as "no-collisions"... it is just ephemeral at this point,
 	// and having the chute collide with the soldier (and both bounce apart) is
 	// just dumb-lookin'...
 #ifdef OG
 	getObject()->setStatus(OBJECT_STATUS_NO_COLLISIONS);
-#endif
+#endif // OG
 #ifdef ZH
 	getObject()->setStatus( MAKE_OBJECT_STATUS_MASK( OBJECT_STATUS_NO_COLLISIONS ) );
-#endif
+#endif // ZH
 
 	// position him correctly.
 	positionRider(rider);
@@ -565,11 +565,11 @@ void ParachuteContain::onRemoving( Object *rider )
 		if (controller && controller->isSkirmishAIPlayer())
 #ifdef ZH
 		{
-#endif
+#endif // ZH
 			riderAI->aiHunt(CMD_FROM_AI);	// hunt, as per Dustin's request.
 #ifdef ZH
 		}
-#endif
+#endif // ZH
 		else
 #ifdef ZH
 		{
@@ -593,12 +593,12 @@ void ParachuteContain::onRemoving( Object *rider )
 			}
 
 			if (!hasRallyPoint)
-#endif
+#endif // ZH
 			riderAI->aiIdle(CMD_FROM_AI); // become idle.		
 	}
 #ifdef ZH
 	}
-#endif
+#endif // ZH
 	
 	// if we land in the water, we die. alas.
 	const Coord3D* riderPos = rider->getPosition();
@@ -634,7 +634,7 @@ void ParachuteContain::onRemoving( Object *rider )
 		// The Paradrop command was legal, the parachute destination was legal, but the parachute
 		// can still fail to adjust back on the map.  SO this is the place to cap the cheater.
 		rider->kill();
-#endif
+#endif // ZH
 	}
 #ifdef ZH
 
@@ -642,7 +642,7 @@ void ParachuteContain::onRemoving( Object *rider )
   // using obj->getAI()->hasLocomotorForSurface( __ ). We cshould not assume here that the parachutist can not 
   // find happiness on cliffs or water or whatever.
 
-#endif
+#endif // ZH
 }
 
 //-------------------------------------------------------------------------------------------------

@@ -24,33 +24,33 @@
  *                                                                                             *
 #ifdef OG
  *                     $Archive:: /VSS_Sync/ww3d2/surfaceclass.cpp                            $*
-#endif
+#endif // OG
 #ifdef ZH
  *                     $Archive:: /Commando/Code/ww3d2/surfaceclass.cpp                       $*
-#endif
+#endif // ZH
  *                                                                                             *
  *              Original Author:: Nathaniel Hoffman                                            *
  *                                                                                             *
 #ifdef OG
  *                      $Author:: Vss_sync                                                    $*
-#endif
+#endif // OG
 #ifdef ZH
  *                      $Author:: Greg_h2                                                     $*
-#endif
+#endif // ZH
  *                                                                                             *
 #ifdef OG
  *                     $Modtime:: 8/29/01 7:29p                                               $*
-#endif
+#endif // OG
 #ifdef ZH
  *                     $Modtime:: 8/30/01 2:01p                                               $*
-#endif
+#endif // ZH
  *                                                                                             *
 #ifdef OG
  *                    $Revision:: 24                                                          $*
-#endif
+#endif // OG
 #ifdef ZH
  *                    $Revision:: 25                                                          $*
-#endif
+#endif // ZH
  *                                                                                             *
  *---------------------------------------------------------------------------------------------*
  * Functions:                                                                                  *
@@ -625,11 +625,11 @@ void SurfaceClass::FindBB(Vector2i *min,Vector2i*max)
 #ifdef ZH
 
 			// HY - this is not endian safe
-#endif
+#endif // ZH
 			unsigned char *alpha=(unsigned char*) ((unsigned int)lock_rect.pBits+(y-min->J)*lock_rect.Pitch+(x-min->I)*size);
 #ifdef OG
 			#pragma MESSAGE("HY - this is not endian safe")
-#endif
+#endif // OG
 			unsigned char myalpha=alpha[size-1];
 			myalpha=(myalpha>>(8-alphabits)) & mask;
 			if (myalpha) {
@@ -704,11 +704,11 @@ bool SurfaceClass::Is_Transparent_Column(unsigned int column)
 	{
 #ifdef ZH
 		// HY - this is not endian safe
-#endif
+#endif // ZH
 		unsigned char *alpha=(unsigned char*) ((unsigned int)lock_rect.pBits+y*lock_rect.Pitch);		
 #ifdef OG
 		#pragma MESSAGE("HY - this is not endian safe")
-#endif
+#endif // OG
 		unsigned char myalpha=alpha[size-1];		
 		myalpha=(myalpha>>(8-alphabits)) & mask;		
 		if (myalpha) {
@@ -953,13 +953,13 @@ bool SurfaceClass::Is_Monochrome(void)
 	Get_Description(sd);
 #ifdef ZH
 	bool is_compressed = false;
-#endif
+#endif // ZH
 
 	switch (sd.Format)
 	{
 #ifdef ZH
 		// these formats are always monochrome
-#endif
+#endif // ZH
 		case WW3D_FORMAT_A8L8:	
 		case WW3D_FORMAT_A8:		
 		case WW3D_FORMAT_L8:
@@ -983,7 +983,7 @@ bool SurfaceClass::Is_Monochrome(void)
 		case WW3D_FORMAT_DXT4:
 		case WW3D_FORMAT_DXT5:
 			is_compressed = true;
-#endif
+#endif // ZH
 		break;
 #ifdef ZH
 	}
@@ -996,7 +996,7 @@ bool SurfaceClass::Is_Monochrome(void)
 		bool result = new_surf->Is_Monochrome();
 		REF_PTR_RELEASE(new_surf);
 		return result;
-#endif
+#endif // ZH
 	}
 
 	int pitch,size;

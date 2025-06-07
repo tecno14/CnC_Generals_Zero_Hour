@@ -27,30 +27,30 @@
 #ifdef OG
  *                       Author:: Greg Hjelstrom                                               *
 
-#endif
+#endif // OG
 #ifdef ZH
  *                   Org Author:: Greg Hjelstrom                                               *
  *                                                                                             *
  *                       Author : Kenny Mitchell                                               * 
-#endif
+#endif // ZH
  *                                                                                             *
 #ifdef OG
  *                     $Modtime:: 1/08/01 10:04a                                              $*
-#endif
+#endif // OG
 #ifdef ZH
  *                     $Modtime:: 06/27/02 3:51p                                              $*
-#endif
+#endif // ZH
  *                                                                                             *
 #ifdef OG
  *                    $Revision:: 1                                                           $*
-#endif
+#endif // OG
 #ifdef ZH
  *                    $Revision:: 2                                                           $*
-#endif
+#endif // ZH
  *                                                                                             *
 #ifdef ZH
  * 06/26/02 KM Integrating shader system
-#endif
+#endif // ZH
  *---------------------------------------------------------------------------------------------*
  * Functions:                                                                                  *
  *   MeshLoaderClass::Load -- reads in a mesh and creates a prototype for it                   *

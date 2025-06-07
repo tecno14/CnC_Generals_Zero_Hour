@@ -102,18 +102,18 @@ void W3DBibBuffer::loadBibsInVertexAndIndexBuffers(void)
 		return;	
 	}
 
-#endif
+#endif // ZH
 	VertexFormatXYZDUV1 *vb;
 	UnsignedShort *ib;
 	// Lock the buffers.
 #ifdef OG
 	DX8IndexBufferClass::WriteLockClass lockIdxBuffer(m_indexBib);
 	DX8VertexBufferClass::WriteLockClass lockVtxBuffer(m_vertexBib);
-#endif
+#endif // OG
 #ifdef ZH
 	DX8IndexBufferClass::WriteLockClass lockIdxBuffer(m_indexBib, D3DLOCK_DISCARD);
 	DX8VertexBufferClass::WriteLockClass lockVtxBuffer(m_vertexBib, D3DLOCK_DISCARD);
-#endif
+#endif // ZH
 	vb=(VertexFormatXYZDUV1*)lockVtxBuffer.Get_Vertex_Array();
 	ib = lockIdxBuffer.Get_Index_Array();
 	// Add to the index buffer & vertex buffer.
@@ -142,7 +142,7 @@ void W3DBibBuffer::loadBibsInVertexAndIndexBuffers(void)
 	Int doHighlight;
 #ifdef ZH
 	try {
-#endif
+#endif // ZH
 	for (doHighlight=0; doHighlight<=1; doHighlight++) 
 	{
 		if (doHighlight==1) 
@@ -209,11 +209,11 @@ void W3DBibBuffer::loadBibsInVertexAndIndexBuffers(void)
 	IndexBufferExceptionFunc();
 	} catch(...) {
 		IndexBufferExceptionFunc();
-#endif
+#endif // ZH
 }
 #ifdef ZH
 }
-#endif
+#endif // ZH
 
 //-----------------------------------------------------------------------------
 //         Public Functions                                                
@@ -257,13 +257,13 @@ W3DBibBuffer::W3DBibBuffer(void)
 	m_bibTexture->Set_V_Addr_Mode(TextureClass::TEXTURE_ADDRESS_CLAMP);
 	m_highlightBibTexture->Set_U_Addr_Mode(TextureClass::TEXTURE_ADDRESS_CLAMP);
 	m_highlightBibTexture->Set_V_Addr_Mode(TextureClass::TEXTURE_ADDRESS_CLAMP);
-#endif
+#endif // OG
 #ifdef ZH
 	m_bibTexture->Get_Filter().Set_U_Addr_Mode(TextureFilterClass::TEXTURE_ADDRESS_CLAMP);
 	m_bibTexture->Get_Filter().Set_V_Addr_Mode(TextureFilterClass::TEXTURE_ADDRESS_CLAMP);
 	m_highlightBibTexture->Get_Filter().Set_U_Addr_Mode(TextureFilterClass::TEXTURE_ADDRESS_CLAMP);
 	m_highlightBibTexture->Get_Filter().Set_V_Addr_Mode(TextureFilterClass::TEXTURE_ADDRESS_CLAMP);
-#endif
+#endif // ZH
 	m_initialized = true;
 }
 

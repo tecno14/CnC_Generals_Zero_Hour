@@ -55,7 +55,7 @@
 #include "W3DDevice/GameClient/W3DMouse.h"
 #ifdef ZH
 #include "W3DDevice/GameClient/W3DSnow.h"
-#endif
+#endif // ZH
 
 class ThingTemplate;
 
@@ -94,7 +94,7 @@ public:
 	virtual void adjustLOD( Int adj ); ///< @todo hack for evaluation, remove.
 #ifdef ZH
 	virtual void notifyTerrainObjectMoved(Object *obj);
-#endif
+#endif // ZH
 
 protected:
 
@@ -123,7 +123,7 @@ protected:
 
 	/// factory for creating the snow manager
 	virtual SnowManager *createSnowManager( void ) { return NEW W3DSnowManager; }
-#endif
+#endif // ZH
 
 	virtual void setFrameRate(Real msecsPerFrame) { TheW3DFrameLengthInMsec = msecsPerFrame; }
 

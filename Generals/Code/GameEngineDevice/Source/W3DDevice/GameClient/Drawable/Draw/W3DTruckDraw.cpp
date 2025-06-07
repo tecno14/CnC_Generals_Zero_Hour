@@ -268,11 +268,11 @@ void W3DTruckDraw::enableEmitters( Bool enable  )
 #ifdef OG
 void W3DTruckDraw::updateBones( void ) {
 
-#endif
+#endif // OG
 #ifdef ZH
 void W3DTruckDraw::updateBones( void ) 
 {
-#endif
+#endif // ZH
 	if( getW3DTruckDrawModuleData() ) 
 	{
 		//Front tires
@@ -282,17 +282,17 @@ void W3DTruckDraw::updateBones( void )
 			DEBUG_ASSERTCRASH(m_frontLeftTireBone, ("Missing front-left tire bone %s in model %s\n", getW3DTruckDrawModuleData()->m_frontLeftTireBoneName.str(), getRenderObject()->Get_Name()));
 #ifdef ZH
 		}
-#endif
+#endif // ZH
 			
 #ifdef ZH
 		if( !getW3DTruckDrawModuleData()->m_frontRightTireBoneName.isEmpty() )
 		{
-#endif
+#endif // ZH
 			m_frontRightTireBone = getRenderObject()->Get_Bone_Index(getW3DTruckDrawModuleData()->m_frontRightTireBoneName.str());
 			DEBUG_ASSERTCRASH(m_frontRightTireBone, ("Missing front-right tire bone %s in model %s\n", getW3DTruckDrawModuleData()->m_frontRightTireBoneName.str(), getRenderObject()->Get_Name()));
 #ifdef ZH
 		}
-#endif
+#endif // ZH
 			
 #ifdef OG
 			if (!m_frontRightTireBone ) 
@@ -300,7 +300,7 @@ void W3DTruckDraw::updateBones( void )
 				m_frontLeftTireBone = 0;
 			}
 		}
-#endif
+#endif // OG
 		//Rear tires
 		if( !getW3DTruckDrawModuleData()->m_rearLeftTireBoneName.isEmpty() ) 
 		{
@@ -308,12 +308,12 @@ void W3DTruckDraw::updateBones( void )
 			DEBUG_ASSERTCRASH(m_rearLeftTireBone, ("Missing rear-left tire bone %s in model %s\n", getW3DTruckDrawModuleData()->m_rearLeftTireBoneName.str(), getRenderObject()->Get_Name()));
 #ifdef ZH
 		}
-#endif
+#endif // ZH
 
 #ifdef ZH
 		if( !getW3DTruckDrawModuleData()->m_rearRightTireBoneName.isEmpty() ) 
 		{
-#endif
+#endif // ZH
 			m_rearRightTireBone = getRenderObject()->Get_Bone_Index(getW3DTruckDrawModuleData()->m_rearRightTireBoneName.str());
 			DEBUG_ASSERTCRASH(m_rearRightTireBone, ("Missing rear-left tire bone %s in model %s\n", getW3DTruckDrawModuleData()->m_rearRightTireBoneName.str(), getRenderObject()->Get_Name()));
 #ifdef OG
@@ -322,7 +322,7 @@ void W3DTruckDraw::updateBones( void )
 			{
 				m_rearLeftTireBone = 0;
 			}
-#endif
+#endif // OG
 		}
 
 		//midFront tires

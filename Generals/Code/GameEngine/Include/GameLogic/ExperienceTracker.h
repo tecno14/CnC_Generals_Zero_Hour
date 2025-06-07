@@ -53,20 +53,20 @@ public:
 
 #ifdef OG
 	void setVeterancyLevel( VeterancyLevel newLevel );						///< Set Level to this
-#endif
+#endif // OG
 #ifdef ZH
 	void setVeterancyLevel( VeterancyLevel newLevel, Bool provideFeedback = TRUE );						///< Set Level to this
-#endif
+#endif // ZH
 	void setMinVeterancyLevel( VeterancyLevel newLevel );					///< Set Level to AT LEAST this... if we are already >= this level, do nothing.
 	void addExperiencePoints( Int experienceGain, Bool canScaleForBonus = TRUE );	///< Gain this many exp.
 	Bool gainExpForLevel(Int levelsToGain, Bool canScaleForBonus = TRUE );			  ///< Gain enough exp to gain a level. return false if can't gain a level.
 	Bool canGainExpForLevel(Int levelsToGain) const;															///< return same value as gainExpForLevel, but don't change anything
 #ifdef OG
 	void setExperienceAndLevel(Int experienceIn);
-#endif
+#endif // OG
 #ifdef ZH
 	void setExperienceAndLevel(Int experienceIn, Bool provideFeedback = TRUE );
-#endif
+#endif // ZH
 	void setExperienceSink( ObjectID sink );											///< My experience actually goes to this person (loose couple)
 
 	Real getExperienceScalar() const { return m_experienceScalar; }

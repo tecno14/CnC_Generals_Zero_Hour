@@ -28,28 +28,28 @@
  *                                                                                             *
 #ifdef OG
  *                      $Author:: Greg_h                                                      $*
-#endif
+#endif // OG
 #ifdef ZH
  *                       Author : Kenny Mitchell                                               * 
-#endif
+#endif // ZH
  *                                                                                             *
 #ifdef OG
  *                     $Modtime:: 5/13/01 11:19a                                              $*
-#endif
+#endif // OG
 #ifdef ZH
  *                     $Modtime:: 06/27/02 1:27p                                              $*
-#endif
+#endif // ZH
  *                                                                                             *
 #ifdef OG
  *                    $Revision:: 7                                                           $*
-#endif
+#endif // OG
 #ifdef ZH
  *                    $Revision:: 8                                                           $*
-#endif
+#endif // ZH
  *                                                                                             *
 #ifdef ZH
  * 06/27/02 KM Changes to max texture stage caps															*
-#endif
+#endif // ZH
  *---------------------------------------------------------------------------------------------*
  * Functions:                                                                                  *
  *   MaterialPassClass::MaterialPassClass -- Constructor                                       *
@@ -110,7 +110,7 @@ MaterialPassClass::MaterialPassClass(void) :
  *   12/9/99    gth : Created.                                                                 *
 #ifdef ZH
  *	  06/27/02   kjm : Changes to max texture stage caps															*
-#endif
+#endif // ZH
  *=============================================================================================*/
 MaterialPassClass::~MaterialPassClass(void)
 {
@@ -141,11 +141,11 @@ void MaterialPassClass::Install_Materials(void) const
 #ifdef OG
 	for (unsigned i=0;i<MAX_TEXTURE_STAGES;++i) {
 
-#endif
+#endif // OG
 #ifdef ZH
 	for (int i=0;i<DX8Wrapper::Get_Current_Caps()->Get_Max_Textures_Per_Pass();++i) 
 	{
-#endif
+#endif // ZH
 		DX8Wrapper::Set_Texture(i,Peek_Texture(i));
 	}
 }

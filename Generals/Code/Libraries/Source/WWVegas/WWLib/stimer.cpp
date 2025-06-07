@@ -24,31 +24,31 @@
  *                                                                                             * 
 #ifdef OG
  *                     $Archive:: /Commando/Code/wwlib/STIMER.CPP                             $* 
-#endif
+#endif // OG
 #ifdef ZH
  *                     $Archive:: /Commando/Code/wwlib/stimer.cpp                             $*
-#endif
+#endif // ZH
  *                                                                                             * 
 #ifdef OG
  *                      $Author:: Greg_h                                                      $*
-#endif
+#endif // OG
 #ifdef ZH
  *                      $Author:: Steve_t                                                     $*
-#endif
+#endif // ZH
  *                                                                                             * 
 #ifdef OG
  *                     $Modtime:: 7/09/99 1:46p                                               $*
-#endif
+#endif // OG
 #ifdef ZH
  *                     $Modtime:: 12/09/01 6:42p                                              $*
-#endif
+#endif // ZH
  *                                                                                             * 
 #ifdef OG
  *                    $Revision:: 3                                                           $*
-#endif
+#endif // OG
 #ifdef ZH
  *                    $Revision:: 4                                                           $*
-#endif
+#endif // ZH
  *                                                                                             *
  *---------------------------------------------------------------------------------------------* 
  * Functions:                                                                                  * 
@@ -64,10 +64,10 @@
 
 #ifdef OG
 #include <mmsystem.h>
-#endif
+#endif // OG
 #ifdef ZH
 #include "systimer.h"
-#endif
+#endif // ZH
 
 #ifdef _MSC_VER
 #pragma warning (pop)
@@ -78,10 +78,10 @@ long SystemTimerClass::operator () (void) const
 {
 #ifdef OG
 	return timeGetTime()/16;
-#endif
+#endif // OG
 #ifdef ZH
 	return TIMEGETTIME()/16;
-#endif
+#endif // ZH
 }
 
 
@@ -89,8 +89,8 @@ SystemTimerClass::operator long (void) const
 {
 #ifdef OG
 	return timeGetTime()/16;
-#endif
+#endif // OG
 #ifdef ZH
 	return TIMEGETTIME()/16;
-#endif
+#endif // ZH
 }

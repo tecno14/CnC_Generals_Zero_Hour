@@ -28,17 +28,17 @@
  *                                                                                             *
 #ifdef OG
  *                     $Modtime:: 5/04/01 8:37p                                               $*
-#endif
+#endif // OG
 #ifdef ZH
  *                     $Modtime:: 1/04/02 6:29p                                               $*
-#endif
+#endif // ZH
  *                                                                                             *
 #ifdef OG
  *                    $Revision:: 14                                                          $*
-#endif
+#endif // OG
 #ifdef ZH
  *                    $Revision:: 15                                                          $*
-#endif
+#endif // ZH
  *                                                                                             *
  *---------------------------------------------------------------------------------------------*
  * Functions:                                                                                  *
@@ -605,10 +605,10 @@ static inline bool obb_separation_test
 			return true;
 #ifdef OG
 		} else { 
-#endif
+#endif // OG
 #ifdef ZH
 		} else if (WWMath::Fabs(u1-u0) > 0.0f) {
-#endif
+#endif // ZH
 			tmp = (rsum-u0)/(u1-u0);
 			if ( tmp > context.MaxFrac ) {
 				context.MaxFrac = tmp; 
@@ -623,10 +623,10 @@ static inline bool obb_separation_test
 			return true;
 #ifdef OG
 		} else {
-#endif
+#endif // OG
 #ifdef ZH
 		} else if (WWMath::Fabs(u1-u0) > 0.0f) {
-#endif
+#endif // ZH
 			tmp = (-rsum-u0)/(u1-u0);
 			if ( tmp > context.MaxFrac ) {
 				context.MaxFrac = tmp;

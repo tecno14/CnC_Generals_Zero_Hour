@@ -39,7 +39,7 @@
 #include "GameLogic/Object.h"
 #ifdef ZH
 #include "Common/ObjectStatusTypes.h"
-#endif
+#endif // ZH
 
 // FORWARD REFERENCES /////////////////////////////////////////////////////////////////////////////
 class Thing;
@@ -54,10 +54,10 @@ public:
 	AsciiString		m_upgradeName;			///< name of the upgrade to be granted.
 #ifdef OG
 	UnsignedInt m_exemptStatus;				///< do not execute if this status is set in the object
-#endif
+#endif // OG
 #ifdef ZH
 	ObjectStatusMaskType m_exemptStatus; ///< do not execute if this status is set in the object
-#endif
+#endif // ZH
 
 	GrantUpgradeCreateModuleData();
 	static void buildFieldParse(MultiIniFieldParse& p);

@@ -29,10 +29,10 @@
 // Definitions.
 #ifdef OG
 CriticalSection *TheAsciiStringCriticalSection = NULL;
-#endif
+#endif // OG
 #ifdef ZH
 FastCriticalSectionClass TheAsciiStringCriticalSection;
-#endif
+#endif // ZH
 CriticalSection *TheUnicodeStringCriticalSection = NULL;
 CriticalSection *TheDmaCriticalSection = NULL;
 CriticalSection *TheMemoryPoolCriticalSection = NULL;

@@ -35,10 +35,10 @@
 
 #ifdef OG
 #define dontDO_UNIT_TIMINGS
-#endif
+#endif // OG
 #ifdef ZH
 #define dont_DO_UNIT_TIMINGS
-#endif
+#endif // ZH
 
 #endif 
 

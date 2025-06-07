@@ -36,7 +36,7 @@
 #include "GameNetwork/NetworkDefs.h"
 #ifdef ZH
 #include "Common/ObjectStatusTypes.h"
-#endif
+#endif // ZH
 
 #define THIS_TEAM "<This Team>"
 #define ANY_TEAM "<Any Team>"
@@ -50,7 +50,7 @@
 
 #define THE_PLAYER "ThePlayer"
 #define TEAM_THE_PLAYER "teamThePlayer"
-#endif
+#endif // ZH
 
 #define THIS_PLAYER_ENEMY "<This Player's Enemy>"
 
@@ -73,7 +73,7 @@
 #define SKIRMISH_PLAYER_HUMAN_ENEMIES	"Human Enemies"
 #endif
 
-#endif
+#endif // OG
 // Skirmish Player Areas
 #define SKIRMISH_AREA_HOME_BASE				"Home Base"
 #define SKIRMISH_AREA_ANY_SUPPLYDEPOT	"Any Supply Depot"
@@ -218,15 +218,15 @@ class ScriptAction : public MemoryPoolObject // This is the action class.
 public:
 #ifdef OG
 	/// @todo Use a "symbol table" so we can re-order this enum without breaking old maps (MSB)
-#endif
+#endif // OG
 	enum ScriptActionType 
 	{
 #ifdef OG
 		DEBUG_MESSAGE_BOX=0,							///< Show a message box.
-#endif
+#endif // OG
 #ifdef ZH
 		DEBUG_MESSAGE_BOX,							///< Show a message box.
-#endif
+#endif // ZH
 		SET_FLAG,													///< Set a flag true of false.
 		SET_COUNTER,											///< Set a counter to an integer.
 		VICTORY,													///< Announce victory.
@@ -571,7 +571,7 @@ public:
 		TEAM_SET_BOOBYTRAPPED,										///< Add boobytrap to all units on team.
 		SHOW_WEATHER,															///< show map defined weather.    
 		AI_PLAYER_BUILD_TYPE_NEAREST_TEAM,				///< Tell the ai player to build an object nearest team.
-#endif
+#endif // ZH
 		// add new items here, please
 		NUM_ITEMS
 	};
@@ -620,7 +620,7 @@ public:
 
 protected:
 	static ScriptAction *ParseAction(DataChunkInput &file, DataChunkInfo *info, void *userData);
-#endif
+#endif // ZH
 
 };
 
@@ -794,10 +794,10 @@ public:
 		FONT_NAME,       		// String, the name of the desired font
 #ifdef OG
 		OBJECT_STATUS,			// String, specifies ObjectStatusBits name. However, translated to an int on read.
-#endif
+#endif // OG
 #ifdef ZH
 		OBJECT_STATUS,			// String, specifies ObjectStatusTypes name. However, translated to an ObjectStatusMaskType on read
-#endif
+#endif // ZH
 		COMMANDBUTTON_ALL_ABILITIES, // String, refers to all command buttons
 		SKIRMISH_WAYPOINT_PATH, // String, name of a predefined skirmish waypoint path.
 		COLOR,							// color (as int) in ARGB format.
@@ -810,7 +810,7 @@ public:
 #ifdef ZH
     LEFT_OR_RIGHT,        // 1=left, 2=right, okay?
 		PERCENT,						// Real.  A percentage.
-#endif
+#endif // ZH
 		NUM_ITEMS	
 	};
 
@@ -847,7 +847,7 @@ private:
 	Coord3D				m_coord;
 #ifdef ZH
 	ObjectStatusMaskType m_objectStatus;
-#endif
+#endif // ZH
 
 protected:
 	void setInt(Int i) {m_int = i;}
@@ -856,7 +856,7 @@ protected:
 	void setString(AsciiString s) {m_string = s;}
 #ifdef ZH
 	void setStatus( ObjectStatusMaskType objectStatus ) { m_objectStatus.set( objectStatus ); }
-#endif
+#endif // ZH
 
 public:
 	Int getInt(void) const {return m_int;}
@@ -865,7 +865,7 @@ public:
 	ParameterType getParameterType(void) const {return m_paramType;}
 #ifdef ZH
 	ObjectStatusMaskType getStatus() const { return m_objectStatus; }
-#endif
+#endif // ZH
 
 	void friend_setInt(Int i) {m_int = i;}
 	void friend_setReal(Real r) {m_real = r;}
@@ -905,10 +905,10 @@ public:
 	{
 #ifdef OG
 		CONDITION_FALSE=0,										// Always evaluates to false.
-#endif
+#endif // OG
 #ifdef ZH
 		CONDITION_FALSE,										// Always evaluates to false.
-#endif
+#endif // ZH
 		COUNTER,															// COUNTER, COMPARISON, INT
 		FLAG,																	// FLAG BOOLEAN compares flag to value.
 		CONDITION_TRUE,												// Always evaluates to true.
@@ -1021,7 +1021,7 @@ public:
 #ifdef ZH
 		NAMED_HAS_FREE_CONTAINER_SLOTS,					///< Kris -- Checks if any given container has any free slots.
 
-#endif
+#endif // ZH
 		NUM_ITEMS		 // Always the last condition.
 	};
 
@@ -1037,10 +1037,10 @@ protected:
 
 #ifdef OG
 protected:
-#endif
+#endif // OG
 #ifdef ZH
 private:
-#endif
+#endif // ZH
 	enum ConditionType	m_conditionType;
 	Int 		m_numParms;
 	Parameter *m_parms[MAX_PARMS];
@@ -1050,11 +1050,11 @@ private:
 #ifdef OG
 	Int				m_customData; 
 
-#endif
+#endif // OG
 #ifdef ZH
 	Int				m_customData;  ///< Custom data for cacheing.
 	UnsignedInt m_customFrame; ///< Custom frame count for cacheing.
-#endif
+#endif // ZH
 
 public:
 	void setConditionType(enum ConditionType type);
@@ -1082,7 +1082,7 @@ public:
 
 	Int getCustomFrame(void) const {return m_customFrame;}
 	void setCustomFrame(Int val) { m_customFrame = val;}
-#endif
+#endif // ZH
 
 	static void WriteConditionDataChunk(DataChunkOutput &chunkWriter, Condition *pCond);
 	static Bool ParseConditionDataChunk(DataChunkInput &file, DataChunkInfo *info, void *userData);
@@ -1092,7 +1092,7 @@ public:
 #ifdef ZH
 #define dontCOUNT_SCRIPT_USAGE
 
-#endif
+#endif // ZH
 //-------------------------------------------------------------------------------------------------
 // ******************************** class Template ***********************************************
 //-------------------------------------------------------------------------------------------------
@@ -1107,13 +1107,13 @@ public:
 #ifdef OG
 	AsciiString m_name;
 
-#endif
+#endif // OG
 #ifdef ZH
 	AsciiString m_uiName;
 	AsciiString m_uiName2;
 	AsciiString m_internalName;
 	NameKeyType m_internalNameKey; // matches internal name.jba [3/20/2003]
-#endif
+#endif // ZH
 	Int					m_numUiStrings;
 	AsciiString m_uiStrings[MAX_PARMS];
 	Int					m_numParameters;
@@ -1125,7 +1125,7 @@ public:
 	mutable AsciiString m_firstMapUsed;
 #endif
 
-#endif
+#endif // ZH
 public:
 	Template();
 
@@ -1133,11 +1133,11 @@ public:
 #ifdef OG
 	AsciiString getName(void) const {return m_name;}
 
-#endif
+#endif // OG
 #ifdef ZH
 	AsciiString getName(void) const {return m_uiName;}
 	AsciiString getName2(void) const {return m_uiName2;}
-#endif
+#endif // ZH
 	Int getUiStrings(AsciiString strings[MAX_PARMS]) const;
 	Int getNumParameters(void) const {return m_numParameters;}
 	enum Parameter::ParameterType getParameterType(Int ndx) const;

@@ -26,27 +26,27 @@
  *                                                                                             *
 #ifdef OG
  *                       $Author:: Jani_p                                                                                                                                                                                  $Modtime:: 1/24/01 3:54p                                               $*
-#endif
+#endif // OG
 #ifdef ZH
  *                   $Org Author:: Byon_g                                                                                                                                                                                  $Modtime:: 1/24/01 3:54p                                               $*
-#endif
+#endif // ZH
  *                                                                                             *
 #ifdef OG
  *                    $Revision:: 38                                                          $*
 
-#endif
+#endif // OG
 #ifdef ZH
  *                       Author : Kenny Mitchell                                               * 
  *                                                                                             * 
  *                     $Modtime:: 08/05/02 2:40p                                              $*
-#endif
+#endif // ZH
  *                                                                                             *
 #ifdef ZH
  *                    $Revision:: 48                                                          $*
  *                                                                                             *
  * 06/26/02 KM Matrix name change to avoid MAX conflicts                                       *
  * 08/05/02 KM Texture class redesign 
-#endif
+#endif // ZH
  *---------------------------------------------------------------------------------------------*
  * Functions:                                                                                  *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
@@ -75,7 +75,7 @@
 //#pragma optimize("", off)
 //#pragma MESSAGE("************************************** WARNING, optimization disabled for debugging purposes")
 
-#endif
+#endif // ZH
 RectClass							Render2DClass::ScreenResolution( 0,0,0,0 );
 
 
@@ -91,14 +91,14 @@ Render2DClass::Render2DClass( TextureClass* tex ) :
 #ifdef OG
 	IsGrayScale (false)
 
-#endif
+#endif // OG
 #ifdef ZH
 	IsGrayScale (false),
 	Indices(sizeof(PreAllocatedIndices)/sizeof(unsigned short),PreAllocatedIndices),
 	Vertices(sizeof(PreAllocatedVertices)/sizeof(Vector2),PreAllocatedVertices),
 	UVCoordinates(sizeof(PreAllocatedUVCoordinates)/sizeof(Vector2),PreAllocatedUVCoordinates),
 	Colors(sizeof(PreAllocatedColors)/sizeof(unsigned long),PreAllocatedColors)
-#endif
+#endif // ZH
 {
 	Set_Texture( tex );	
    Shader = Get_Default_Shader();
@@ -123,7 +123,7 @@ void	Render2DClass::Set_Screen_Resolution( const RectClass & screen )
 #endif
 }
 
-#endif
+#endif // ZH
 ShaderClass
 Render2DClass::Get_Default_Shader( void )
 {
@@ -147,13 +147,13 @@ void	Render2DClass::Reset(void)
 	UVCoordinates.Delete_All( false );
 	Colors.Delete_All( false );
 	Indices.Delete_All( false );
-#endif
+#endif // OG
 #ifdef ZH
 	Vertices.Reset_Active();
 	UVCoordinates.Reset_Active();
 	Colors.Reset_Active();
 	Indices.Reset_Active();
-#endif
+#endif // ZH
 
 	Update_Bias(); // Keep the bias updated
 }
@@ -167,10 +167,10 @@ void Render2DClass::Set_Texture( const char * filename)
 {
 #ifdef OG
 	TextureClass * tex = WW3DAssetManager::Get_Instance()->Get_Texture( filename, TextureClass::MIP_LEVELS_1 );
-#endif
+#endif // OG
 #ifdef ZH
 	TextureClass * tex = WW3DAssetManager::Get_Instance()->Get_Texture( filename, MIP_LEVELS_1 );
-#endif
+#endif // ZH
 	Set_Texture( tex );
 	if ( tex != NULL ) {
 		SET_REF_OWNER( tex );
@@ -317,7 +317,7 @@ void	Render2DClass::Force_Alpha( float alpha )		// Force all alphas
 	a <<= 24;
 	for ( int i = 0; i < Colors.Count(); i++ ) {
 		Colors[i] = (Colors[i] & 0x00FFFFFF) | a;
-#endif
+#endif // ZH
 	}
 }
 
@@ -329,7 +329,7 @@ void	Render2DClass::Force_Color( int color )		// Force all alphas
 		Colors[i] = color;
 	}
 }
-#endif
+#endif // ZH
 
 
 /*
@@ -344,14 +344,14 @@ void	Render2DClass::Internal_Add_Quad_Vertices( const Vector2 & v0, const Vector
 	Convert_Vert( *verts++, v1 );
 	Convert_Vert( *verts++, v2 );
 	Convert_Vert( *verts  , v3 );
-#endif
+#endif // OG
 #ifdef ZH
 	Convert_Vert( *Vertices.Uninitialized_Add(), v0 );
 	Convert_Vert( *Vertices.Uninitialized_Add(), v1 );
 	Convert_Vert( *Vertices.Uninitialized_Add(), v2 );
 	Convert_Vert( *Vertices.Uninitialized_Add(), v3 );
 
-#endif
+#endif // ZH
 }
 
 void	Render2DClass::Internal_Add_Quad_Vertices( const RectClass & screen )
@@ -362,14 +362,14 @@ void	Render2DClass::Internal_Add_Quad_Vertices( const RectClass & screen )
 	Convert_Vert( *verts++, screen.Left,  screen.Bottom );
 	Convert_Vert( *verts++, screen.Right, screen.Top );
 	Convert_Vert( *verts,   screen.Right, screen.Bottom );
-#endif
+#endif // OG
 #ifdef ZH
 	Convert_Vert( *Vertices.Uninitialized_Add(), screen.Left,  screen.Top );
 	Convert_Vert( *Vertices.Uninitialized_Add(), screen.Left,  screen.Bottom );
 	Convert_Vert( *Vertices.Uninitialized_Add(), screen.Right, screen.Top );
 	Convert_Vert( *Vertices.Uninitialized_Add(), screen.Right, screen.Bottom );
 
-#endif
+#endif // ZH
 }
 
 void	Render2DClass::Internal_Add_Quad_UVs( const RectClass & uv )
@@ -380,7 +380,7 @@ void	Render2DClass::Internal_Add_Quad_UVs( const RectClass & uv )
 	uvs->X = uv.Left;		uvs->Y = uv.Bottom;		uvs++;
 	uvs->X = uv.Right;	uvs->Y = uv.Top;			uvs++;
 
-#endif
+#endif // OG
 #ifdef ZH
 	Vector2* uvs;
 
@@ -391,7 +391,7 @@ void	Render2DClass::Internal_Add_Quad_UVs( const RectClass & uv )
 	uvs=UVCoordinates.Uninitialized_Add();
 	uvs->X = uv.Right;	uvs->Y = uv.Top;
 	uvs=UVCoordinates.Uninitialized_Add();
-#endif
+#endif // ZH
 	uvs->X = uv.Right;	uvs->Y = uv.Bottom;	
 }
 
@@ -404,7 +404,7 @@ void	Render2DClass::Internal_Add_Quad_Colors( unsigned long color )
 	*colors++ = color;
 	*colors   = color;
 
-#endif
+#endif // OG
 #ifdef ZH
 	unsigned long* colors;
 
@@ -416,7 +416,7 @@ void	Render2DClass::Internal_Add_Quad_Colors( unsigned long color )
 	*colors=color;
 	colors=Colors.Uninitialized_Add();
 	*colors=color;
-#endif
+#endif // ZH
 }
 
 void	Render2DClass::Internal_Add_Quad_VColors( unsigned long color1, unsigned long color2 )
@@ -428,7 +428,7 @@ void	Render2DClass::Internal_Add_Quad_VColors( unsigned long color1, unsigned lo
 	*colors++ = color1;
 	*colors   = color2;
 
-#endif
+#endif // OG
 #ifdef ZH
 	unsigned long* colors;
 
@@ -441,7 +441,7 @@ void	Render2DClass::Internal_Add_Quad_VColors( unsigned long color1, unsigned lo
 	colors=Colors.Uninitialized_Add();
 	*colors=color2;
 
-#endif
+#endif // ZH
 }
 
 void	Render2DClass::Internal_Add_Quad_HColors( unsigned long color1, unsigned long color2 )
@@ -453,7 +453,7 @@ void	Render2DClass::Internal_Add_Quad_HColors( unsigned long color1, unsigned lo
 	*colors++ = color2;
 	*colors   = color2;
 
-#endif
+#endif // OG
 #ifdef ZH
 	unsigned long* colors;
 
@@ -465,7 +465,7 @@ void	Render2DClass::Internal_Add_Quad_HColors( unsigned long color1, unsigned lo
 	*colors=color2;
 	colors=Colors.Uninitialized_Add();
 	*colors=color2;
-#endif
+#endif // ZH
 }
 
 
@@ -473,10 +473,10 @@ void	Render2DClass::Internal_Add_Quad_Indicies( int start_vert_index, bool backf
 {
 #ifdef OG
 	unsigned short * indices = Indices.Add_Multiple( 6 );
-#endif
+#endif // OG
 #ifdef ZH
 	unsigned short * indices;
-#endif
+#endif // ZH
 	
 	if (backfaced ^ (CoordinateScale.X * CoordinateScale.Y > 0)) {
 #ifdef OG
@@ -484,7 +484,7 @@ void	Render2DClass::Internal_Add_Quad_Indicies( int start_vert_index, bool backf
 		*indices++ = start_vert_index + 0;
 		*indices++ = start_vert_index + 2;
 
-#endif
+#endif // OG
 #ifdef ZH
 		indices=Indices.Uninitialized_Add();
 		*indices = start_vert_index + 1;
@@ -492,14 +492,14 @@ void	Render2DClass::Internal_Add_Quad_Indicies( int start_vert_index, bool backf
 		*indices = start_vert_index + 0;
 		indices=Indices.Uninitialized_Add();
 		*indices = start_vert_index + 2;
-#endif
+#endif // ZH
 
 #ifdef OG
 		*indices++ = start_vert_index + 1;
 		*indices++ = start_vert_index + 2;
 		*indices   = start_vert_index + 3;
 
-#endif
+#endif // OG
 #ifdef ZH
 		indices=Indices.Uninitialized_Add();
 		*indices = start_vert_index + 1;
@@ -507,14 +507,14 @@ void	Render2DClass::Internal_Add_Quad_Indicies( int start_vert_index, bool backf
 		*indices = start_vert_index + 2;
 		indices=Indices.Uninitialized_Add();
 		*indices = start_vert_index + 3;
-#endif
+#endif // ZH
 	} else {
 #ifdef OG
 		*indices++ = start_vert_index + 0;
 		*indices++ = start_vert_index + 1;
 		*indices++ = start_vert_index + 2;
 
-#endif
+#endif // OG
 #ifdef ZH
 		indices=Indices.Uninitialized_Add();
 		*indices = start_vert_index + 0;
@@ -522,14 +522,14 @@ void	Render2DClass::Internal_Add_Quad_Indicies( int start_vert_index, bool backf
 		*indices = start_vert_index + 1;
 		indices=Indices.Uninitialized_Add();
 		*indices = start_vert_index + 2;
-#endif
+#endif // ZH
 
 #ifdef OG
 		*indices++ = start_vert_index + 2;
 		*indices++ = start_vert_index + 1;
 		*indices   = start_vert_index + 3;
 
-#endif
+#endif // OG
 #ifdef ZH
 		indices=Indices.Uninitialized_Add();
 		*indices = start_vert_index + 2;
@@ -537,7 +537,7 @@ void	Render2DClass::Internal_Add_Quad_Indicies( int start_vert_index, bool backf
 		*indices = start_vert_index + 1;
 		indices=Indices.Uninitialized_Add();
 		*indices = start_vert_index + 3;
-#endif
+#endif // ZH
 	}
 }
 
@@ -625,7 +625,7 @@ void	Render2DClass::Add_Tri( const Vector2 & v0, const Vector2 & v1, const Vecto
 #ifdef OG
 	int new_vert_count = old_vert_count + 3;
 	int new_index_count = Indices.Count() + 3;
-#endif
+#endif // OG
 
 	// Add the verticies (translated to new coordinates)
 #if 0
@@ -638,13 +638,13 @@ void	Render2DClass::Add_Tri( const Vector2 & v0, const Vector2 & v1, const Vecto
 	Convert_Vert( *verts++, v0 );
 	Convert_Vert( *verts++, v1 );
 	Convert_Vert( *verts  , v2 );
-#endif
+#endif // OG
 #ifdef ZH
 	Convert_Vert( *Vertices.Uninitialized_Add(), v0 );
 	Convert_Vert( *Vertices.Uninitialized_Add(), v1 );
 	Convert_Vert( *Vertices.Uninitialized_Add(), v2 );
 	
-#endif
+#endif // ZH
 #endif
 
 	// Add the uv coordinates
@@ -653,37 +653,37 @@ void	Render2DClass::Add_Tri( const Vector2 & v0, const Vector2 & v1, const Vecto
 	UVCoordinates.Add( uv1,  new_vert_count );
 	UVCoordinates.Add( uv2, new_vert_count );
 
-#endif
+#endif // OG
 #ifdef ZH
 
 	*UVCoordinates.Uninitialized_Add()=uv0;
 	*UVCoordinates.Uninitialized_Add()=uv1;
 	*UVCoordinates.Uninitialized_Add()=uv2;
-#endif
+#endif // ZH
 
 	// Add the colors
 #ifdef OG
 	Colors.Add( color, new_vert_count );
 	Colors.Add( color, new_vert_count );
 	Colors.Add( color, new_vert_count );
-#endif
+#endif // OG
 #ifdef ZH
 	*Colors.Uninitialized_Add()=color;
 	*Colors.Uninitialized_Add()=color;
 	*Colors.Uninitialized_Add()=color;
-#endif
+#endif // ZH
 
 	// Add the faces
 #ifdef OG
 	Indices.Add( old_vert_count + 0, new_index_count );
 	Indices.Add( old_vert_count + 1, new_index_count );
 	Indices.Add( old_vert_count + 2, new_index_count );
-#endif
+#endif // OG
 #ifdef ZH
 	*Indices.Uninitialized_Add()=old_vert_count + 0;
 	*Indices.Uninitialized_Add()=old_vert_count + 1;
 	*Indices.Uninitialized_Add()=old_vert_count + 2;
-#endif
+#endif // ZH
 
 }
 
@@ -777,11 +777,11 @@ void Render2DClass::Render(void)
 #ifdef OG
 	Matrix4 view,proj;
 	Matrix4 identity(true);
-#endif
+#endif // OG
 #ifdef ZH
 	Matrix4x4 view,proj;
 	Matrix4x4 identity(true);
-#endif
+#endif // ZH
 
 	DX8Wrapper::Get_Transform(D3DTS_VIEW,view);
 	DX8Wrapper::Get_Transform(D3DTS_PROJECTION,proj);
@@ -793,20 +793,20 @@ void Render2DClass::Render(void)
 	int width, height, bits;
 	bool windowed;
 	WW3D::Get_Device_Resolution( width, height, bits, windowed );
-#endif
+#endif // ZH
 	D3DVIEWPORT8 vp = { 0 };
 #ifdef OG
 	vp.X			= (DWORD)ScreenResolution.Left;
 	vp.Y			= (DWORD)ScreenResolution.Top;
 	vp.Width		= (DWORD)ScreenResolution.Width ();
 	vp.Height	= (DWORD)ScreenResolution.Height ();
-#endif
+#endif // OG
 #ifdef ZH
 	vp.X			= 0;
 	vp.Y			= 0;
 	vp.Width		= width;
 	vp.Height	= height;
-#endif
+#endif // ZH
 	vp.MinZ		= 0;
 	vp.MaxZ		= 1;
 	DX8Wrapper::Set_Viewport(&vp);
@@ -826,10 +826,10 @@ void Render2DClass::Render(void)
 		const FVFInfoClass &fi=vb.FVF_Info();
 #ifdef OG
 		unsigned char *vb=(unsigned char*)Lock.Get_Formatted_Vertex_Array();
-#endif
+#endif // OG
 #ifdef ZH
 		unsigned char *va=(unsigned char*)Lock.Get_Formatted_Vertex_Array();
-#endif
+#endif // ZH
 		int i;
 
 		for (i=0; i<Vertices.Count(); i++)
@@ -840,23 +840,23 @@ void Render2DClass::Render(void)
 			*(unsigned int*)(vb+fi.Get_Diffuse_Offset())=Colors[i];
 			*(Vector2*)(vb+fi.Get_Tex_Offset(0))=UVCoordinates[i];
 			vb+=fi.Get_FVF_Size();
-#endif
+#endif // OG
 #ifdef ZH
 			*(Vector3*)(va+fi.Get_Location_Offset())=temp;
 			*(unsigned int*)(va+fi.Get_Diffuse_Offset())=Colors[i];
 			*(Vector2*)(va+fi.Get_Tex_Offset(0))=UVCoordinates[i];
 			va+=fi.Get_FVF_Size();
-#endif
+#endif // ZH
 		}		
 	}
 
 	DynamicIBAccessClass ib(BUFFER_TYPE_DYNAMIC_DX8,Indices.Count());
 #ifdef OG
 	{
-#endif
+#endif // OG
 #ifdef ZH
 	try {
-#endif
+#endif // ZH
 		DynamicIBAccessClass::WriteLockClass Lock(&ib);
 		unsigned short *mem=Lock.Get_Index_Array();
 		for (int i=0; i<Indices.Count(); i++)
@@ -866,7 +866,7 @@ void Render2DClass::Render(void)
 		IndexBufferExceptionFunc();
 	} catch(...) {
 		IndexBufferExceptionFunc();
-#endif
+#endif // ZH
 	}	
 
 	DX8Wrapper::Set_Vertex_Buffer(vb);
@@ -878,10 +878,10 @@ void Render2DClass::Render(void)
 		DX8Wrapper::Apply_Render_State_Changes();	//force update of all regular W3D states.
 #ifdef OG
 		if (DX8Caps::Support_DOT3())
-#endif
+#endif // OG
 #ifdef ZH
 		if (DX8Wrapper::Get_Current_Caps()->Support_Dot3())
-#endif
+#endif // ZH
 		{	//Override W3D states with customizations for grayscale
 			DX8Wrapper::Set_DX8_Render_State(D3DRS_TEXTUREFACTOR, 0x80A5CA8E);
 			DX8Wrapper::Set_DX8_Texture_Stage_State( 0, D3DTSS_COLORARG0, D3DTA_TFACTOR | D3DTA_ALPHAREPLICATE);
@@ -907,7 +907,7 @@ void Render2DClass::Render(void)
 #ifdef OG
 //	SphereClass sphere(Vector3(0.0f,0.0f,0.0f),0.0f);
 //	SortingRendererClass::Insert_Triangles(sphere,0,Indices.Count()/3,0,Vertices.Count());
-#endif
+#endif // OG
 
 	DX8Wrapper::Set_Transform(D3DTS_VIEW,view);
 	DX8Wrapper::Set_Transform(D3DTS_PROJECTION,proj);
@@ -1061,7 +1061,7 @@ Vector2	Render2DTextClass::Get_Text_Extents( const WCHAR * text )
 
 #ifdef ZH
 	if (text) {
-#endif
+#endif // ZH
 	while (*text) {
 		WCHAR ch = *text++;
 
@@ -1069,7 +1069,7 @@ Vector2	Render2DTextClass::Get_Text_Extents( const WCHAR * text )
 			extent.X += Font->Char_Spacing( ch );
 #ifdef ZH
 			}
-#endif
+#endif // ZH
 		}
 	}
 

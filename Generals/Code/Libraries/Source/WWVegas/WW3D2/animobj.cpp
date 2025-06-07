@@ -28,17 +28,17 @@
  *                                                                                             *
 #ifdef OG
  *                     $Modtime:: 8/28/01 12:12p                                              $*
-#endif
+#endif // OG
 #ifdef ZH
  *                     $Modtime:: 12/13/01 6:56p                                              $*
-#endif
+#endif // ZH
  *                                                                                             *
 #ifdef OG
  *                    $Revision:: 7                                                           $*
-#endif
+#endif // OG
 #ifdef ZH
  *                    $Revision:: 10                                                          $*
-#endif
+#endif // ZH
  *                                                                                             *
  *---------------------------------------------------------------------------------------------*
  * Functions:                                                                                  *
@@ -77,7 +77,7 @@
 #include "wwmemlog.h"
 #ifdef ZH
 #include "animatedsoundmgr.h"
-#endif
+#endif // ZH
 
 
 /***********************************************************************************************
@@ -102,7 +102,7 @@ Animatable3DObjClass::Animatable3DObjClass(const char * htree_name) :
 	ModeAnim.Frame=0.0f;
 #ifdef ZH
 	ModeAnim.PrevFrame=0.0f;
-#endif
+#endif // ZH
 	ModeAnim.LastSyncTime=WW3D::Get_Sync_Time();
 	ModeAnim.frameRateMultiplier=1.0;	// 020607 srj -- added
 	ModeAnim.animDirection=1.0;	// 020607 srj -- added
@@ -112,7 +112,7 @@ Animatable3DObjClass::Animatable3DObjClass(const char * htree_name) :
 #ifdef ZH
 	ModeInterp.PrevFrame0=0.0f;
 	ModeInterp.PrevFrame1=0.0f;
-#endif
+#endif // ZH
 	ModeInterp.Frame1=0.0f;
 	ModeInterp.Percentage=0.0f;
 	ModeCombo.AnimCombo=NULL;
@@ -162,7 +162,7 @@ Animatable3DObjClass::Animatable3DObjClass(const Animatable3DObjClass & src) :
 	ModeAnim.Frame=0.0f;
 #ifdef ZH
 	ModeAnim.PrevFrame=0.0f;
-#endif
+#endif // ZH
 	ModeAnim.LastSyncTime=WW3D::Get_Sync_Time();
 	ModeAnim.frameRateMultiplier=1.0;	// 020607 srj -- added
 	ModeAnim.animDirection=1.0;	// 020607 srj -- added
@@ -172,7 +172,7 @@ Animatable3DObjClass::Animatable3DObjClass(const Animatable3DObjClass & src) :
 #ifdef ZH
 	ModeInterp.PrevFrame0=0.0f;
 	ModeInterp.PrevFrame1=0.0f;
-#endif
+#endif // ZH
 	ModeInterp.Frame1=0.0f;
 	ModeInterp.Percentage=0.0f;
 	ModeCombo.AnimCombo=NULL;
@@ -231,7 +231,7 @@ Animatable3DObjClass & Animatable3DObjClass::operator = (const Animatable3DObjCl
 		ModeAnim.Frame = 0.0f;
 #ifdef ZH
 		ModeAnim.PrevFrame = 0.0f;
-#endif
+#endif // ZH
 		ModeAnim.LastSyncTime = WW3D::Get_Sync_Time();
 		ModeAnim.frameRateMultiplier=1.0;	// 020607 srj -- added
 		ModeAnim.animDirection=1.0;	// 020607 srj -- added
@@ -241,7 +241,7 @@ Animatable3DObjClass & Animatable3DObjClass::operator = (const Animatable3DObjCl
 #ifdef ZH
 		ModeInterp.PrevFrame0 = 0.0f;
 		ModeInterp.PrevFrame1 = 0.0f;
-#endif
+#endif // ZH
 		ModeInterp.Frame1 = 0.0f;
 		ModeInterp.Percentage = 0.0f;
 		ModeCombo.AnimCombo = NULL;
@@ -504,7 +504,7 @@ void Animatable3DObjClass::Set_Animation(HAnimClass * motion, float frame, int m
 		ModeAnim.Motion = motion;
 #ifdef ZH
 		ModeAnim.PrevFrame = ModeAnim.Frame;
-#endif
+#endif // ZH
 		ModeAnim.Frame = frame;
 		ModeAnim.LastSyncTime = WW3D::Get_Sync_Time();
 		ModeAnim.frameRateMultiplier=1.0;	// 020607 srj -- added
@@ -521,7 +521,7 @@ void Animatable3DObjClass::Set_Animation(HAnimClass * motion, float frame, int m
 			int bone_index = Get_Bone_Index(sound_name);
 			motion->Set_Embedded_Sound_Bone_Index(bone_index);
 		}
-#endif
+#endif // ZH
 	} else {
 		CurMotionMode = BASE_POSE;
 		Release();
@@ -559,7 +559,7 @@ void Animatable3DObjClass::Set_Animation
 #ifdef ZH
 	ModeInterp.PrevFrame0 = ModeInterp.Frame0;
 	ModeInterp.PrevFrame1 = ModeInterp.Frame1;
-#endif
+#endif // ZH
 	ModeInterp.Frame0 = frame0;
 	ModeInterp.Frame1 = frame1;
 	ModeInterp.Percentage = percentage;
@@ -572,11 +572,11 @@ void Animatable3DObjClass::Set_Animation
 		if (sound_name) {
 			int bone_index = Get_Bone_Index(sound_name);
 			motion0->Set_Embedded_Sound_Bone_Index(bone_index);
-#endif
+#endif // ZH
 	}
 #ifdef ZH
 	}
-#endif
+#endif // ZH
 
 	if ( ModeInterp.Motion1 != NULL ) {
 		ModeInterp.Motion1->Add_Ref();
@@ -586,7 +586,7 @@ void Animatable3DObjClass::Set_Animation
 			int bone_index = Get_Bone_Index(sound_name);
 			motion1->Set_Embedded_Sound_Bone_Index(bone_index);
 		}
-#endif
+#endif // ZH
 	}
 }
 
@@ -626,11 +626,11 @@ void Animatable3DObjClass::Set_Animation
 				motion->Set_Embedded_Sound_Bone_Index(bone_index);
 			}
 		}
-#endif
+#endif // ZH
 }						 
 #ifdef ZH
 }						 
-#endif
+#endif // ZH
 
 
 /***********************************************************************************************
@@ -845,7 +845,7 @@ void Animatable3DObjClass::Update_Sub_Object_Transforms(void)
 			if ( ModeAnim.Motion->Has_Embedded_Sounds() ) {
 				ModeAnim.PrevFrame = AnimatedSoundMgrClass::Trigger_Sound(ModeAnim.Motion, ModeAnim.PrevFrame, ModeAnim.Frame, HTree->Get_Transform(ModeAnim.Motion->Get_Embedded_Sound_Bone_Index()));
 			}
-#endif
+#endif // ZH
 			break;
 
 		case DOUBLE_ANIM:
@@ -864,13 +864,13 @@ void Animatable3DObjClass::Update_Sub_Object_Transforms(void)
 				ModeInterp.PrevFrame1 = AnimatedSoundMgrClass::Trigger_Sound(ModeInterp.Motion1, ModeInterp.PrevFrame1, ModeInterp.Frame1, HTree->Get_Transform(ModeInterp.Motion1->Get_Embedded_Sound_Bone_Index()));
 			}
 
-#endif
+#endif // ZH
   			break;
 
 		case MULTIPLE_ANIM:
 #ifdef ZH
 		{
-#endif
+#endif // ZH
 			Combo_Update(Transform,ModeCombo.AnimCombo);
 #ifdef ZH
 
@@ -888,11 +888,11 @@ void Animatable3DObjClass::Update_Sub_Object_Transforms(void)
 				}
 				
 			}
-#endif
+#endif // ZH
 			break;
 #ifdef ZH
 		}
-#endif
+#endif // ZH
 
 		default:
 			break;
@@ -925,13 +925,13 @@ bool Animatable3DObjClass::Simple_Evaluate_Bone(int boneindex, Matrix3D *tm) con
 	if (CurMotionMode == SINGLE_ANIM) {
 		
 
-#endif
+#endif // OG
 #ifdef ZH
 	if (	CurMotionMode == NONE ||
 			CurMotionMode == BASE_POSE ||
 			CurMotionMode == SINGLE_ANIM)
 	{		
-#endif
+#endif // ZH
 		//
 		//	Determine which frame we should be on, then use this
 		// information to determine the bone's transform.
@@ -944,11 +944,11 @@ bool Animatable3DObjClass::Simple_Evaluate_Bone(int boneindex, Matrix3D *tm) con
 #ifdef OG
 		*tm = Transform;
 
-#endif
+#endif // OG
 #ifdef ZH
 		const_cast <Animatable3DObjClass *>(this)->Update_Sub_Object_Transforms();
 		*tm = HTree->Get_Transform(boneindex);
-#endif
+#endif // ZH
 
 	}
 
@@ -984,7 +984,7 @@ bool Animatable3DObjClass::Simple_Evaluate_Bone(int boneindex, float frame, Matr
 			retval = HTree->Simple_Evaluate_Pivot (boneindex, Get_Transform (), tm);
 		} else {
 			*tm = Transform;
-#endif
+#endif // ZH
 		} 
 	} else {
 		*tm = Transform;
@@ -1119,13 +1119,13 @@ void Animatable3DObjClass::Single_Anim_Progress (void)
 		ModeAnim.Frame = Compute_Current_Frame(&ModeAnim.animDirection);
 		ModeAnim.LastSyncTime = WW3D::Get_Sync_Time();
 
-#endif
+#endif // OG
 #ifdef ZH
 		float oldprev = ModeAnim.PrevFrame;
 		ModeAnim.PrevFrame		= ModeAnim.Frame;
 		ModeAnim.Frame				= Compute_Current_Frame(&ModeAnim.animDirection);
 		ModeAnim.LastSyncTime	= WW3D::Get_Sync_Time();
-#endif
+#endif // ZH
 	
 #ifdef ZH
 		if (ModeAnim.Frame == ModeAnim.PrevFrame) {
@@ -1134,7 +1134,7 @@ void Animatable3DObjClass::Single_Anim_Progress (void)
 			// If you don't do this sounds won't be triggered properly because Frame and PrevFrame will be the same.
 			ModeAnim.PrevFrame = oldprev;
 		}
-#endif
+#endif // ZH
 		//
 		// Force the heirarchy to be recalculated
 		//

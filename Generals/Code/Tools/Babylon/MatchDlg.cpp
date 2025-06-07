@@ -22,10 +22,10 @@
 #include "stdafx.h"
 #ifdef OG
 #include "noxstring.h"
-#endif
+#endif // OG
 #ifdef ZH
 #include "Babylon.h"
-#endif
+#endif // ZH
 #include "MatchDlg.h"
 
 #ifdef _DEBUG
@@ -38,20 +38,20 @@ static char THIS_FILE[] = __FILE__;
 NoxText *MatchingNoxText = NULL;
 NoxText *MatchOriginalText;
 NoxLabel *MatchLabel;
-#endif
+#endif // OG
 #ifdef ZH
 BabylonText *MatchingBabylonText = NULL;
 BabylonText *MatchOriginalText;
 BabylonLabel *MatchLabel;
-#endif
+#endif // ZH
 
 #define MAX_MATCH 256
 #ifdef OG
 static NoxText *current_match = NULL;
-#endif
+#endif // OG
 #ifdef ZH
 static BabylonText *current_match = NULL;
-#endif
+#endif // ZH
 
 /////////////////////////////////////////////////////////////////////////////
 // CMatchDlg dialog
@@ -93,10 +93,10 @@ void CMatchDlg::OnCancel()
 	
 #ifdef OG
 	MatchingNoxText = NULL;	
-#endif
+#endif // OG
 #ifdef ZH
 	MatchingBabylonText = NULL;	
-#endif
+#endif // ZH
 	CDialog::OnCancel();
 }
 
@@ -105,10 +105,10 @@ void CMatchDlg::OnNomatch()
 	// TODO: Add your control notification handler code here
 #ifdef OG
 	MatchingNoxText = NULL;	
-#endif
+#endif // OG
 #ifdef ZH
 	MatchingBabylonText = NULL;	
-#endif
+#endif // ZH
 	CDialog::OnOK ();
 }
 
@@ -117,10 +117,10 @@ void CMatchDlg::OnMatch()
 	// TODO: Add your control notification handler code here
 #ifdef OG
 	if ( (MatchingNoxText = current_match ) )
-#endif
+#endif // OG
 #ifdef ZH
 	if ( (MatchingBabylonText = current_match ) )
-#endif
+#endif // ZH
 	{
 		CButton *check = (CButton *) GetDlgItem ( IDC_CHECKRETRANSLATE );
 
@@ -133,10 +133,10 @@ BOOL CMatchDlg::OnInitDialog()
 {
 #ifdef OG
 	NoxText *text;
-#endif
+#endif // OG
 #ifdef ZH
 	BabylonText *text;
-#endif
+#endif // ZH
 	ListSearch sh;
 	int index;
 	CStatic *newtext;
@@ -188,10 +188,10 @@ BOOL CMatchDlg::OnInitDialog()
 	OnSelchangeMatchcombo();
 #ifdef OG
 	MatchingNoxText = NULL;	
-#endif
+#endif // OG
 #ifdef ZH
 	MatchingBabylonText = NULL;	
-#endif
+#endif // ZH
 	// TODO: Add extra initialization here
 	
 	return TRUE;  // return TRUE unless you set the focus to a control
@@ -212,10 +212,10 @@ void CMatchDlg::OnSelchangeMatchcombo()
 		CStatic *newtext = (CStatic *) GetDlgItem ( IDC_MATCHTEXT );
 #ifdef OG
 		current_match = (NoxText *) combo->GetItemDataPtr ( index );
-#endif
+#endif // OG
 #ifdef ZH
 		current_match = (BabylonText *) combo->GetItemDataPtr ( index );
-#endif
+#endif // ZH
 		newtext->SetWindowText ( current_match->GetSB());
 	}
 	else

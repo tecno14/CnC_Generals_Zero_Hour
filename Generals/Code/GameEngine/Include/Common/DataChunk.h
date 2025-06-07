@@ -138,7 +138,7 @@ public:
 	void writeDict(const Dict& d);
 #ifdef ZH
 	void writeNameKey(const NameKeyType key);
-#endif
+#endif // ZH
 };
 
 //----------------------------------------------------------------------
@@ -234,7 +234,7 @@ public:
 #ifdef ZH
 
 	NameKeyType readNameKey(void);
-#endif
+#endif // ZH
 };
 
 

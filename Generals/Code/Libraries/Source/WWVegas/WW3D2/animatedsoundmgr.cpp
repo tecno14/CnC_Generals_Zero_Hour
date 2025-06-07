@@ -565,4 +565,4 @@ void AnimatedSoundMgrClass::Set_Sound_Library(SoundLibraryBridgeClass* library)
 	SoundLibrary = library;
 }
 
-#endif
+#endif // ZH

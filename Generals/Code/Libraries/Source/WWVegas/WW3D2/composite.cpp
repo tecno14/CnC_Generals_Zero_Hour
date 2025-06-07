@@ -28,17 +28,17 @@
  *                                                                                             *
 #ifdef OG
  *                     $Modtime:: 5/30/01 2:10p                                               $*
-#endif
+#endif // OG
 #ifdef ZH
  *                     $Modtime:: 11/27/01 12:45a                                             $*
-#endif
+#endif // ZH
  *                                                                                             *
 #ifdef OG
  *                    $Revision:: 4                                                           $*
-#endif
+#endif // OG
 #ifdef ZH
  *                    $Revision:: 6                                                           $*
-#endif
+#endif // ZH
  *                                                                                             *
  *---------------------------------------------------------------------------------------------*
  * Functions:                                                                                  *
@@ -86,11 +86,11 @@
 CompositeRenderObjClass::CompositeRenderObjClass(void) :
 	Name(NULL),
 	BaseModelName(NULL)
-#endif
+#endif // OG
 #ifdef ZH
 CompositeRenderObjClass::CompositeRenderObjClass(void)
 
-#endif
+#endif // ZH
 {
 }
 
@@ -111,11 +111,11 @@ CompositeRenderObjClass::CompositeRenderObjClass(void)
 CompositeRenderObjClass::CompositeRenderObjClass(const CompositeRenderObjClass & that) :
 	Name(NULL),
 	BaseModelName(NULL)
-#endif
+#endif // OG
 #ifdef ZH
 CompositeRenderObjClass::CompositeRenderObjClass(const CompositeRenderObjClass & that)
 
-#endif
+#endif // ZH
 {
 	Set_Name(that.Get_Name());
 	Set_Base_Model_Name(that.Get_Base_Model_Name());
@@ -139,7 +139,7 @@ CompositeRenderObjClass::~CompositeRenderObjClass(void)
 #ifdef OG
 	if (Name) free(Name);
 	if (BaseModelName) free(BaseModelName);
-#endif
+#endif // OG
 }
 
 
@@ -225,11 +225,11 @@ void CompositeRenderObjClass::Set_Name(const char * name)
 	if (name) {
 		Name = strdup(name);
 	}
-#endif
+#endif // OG
 #ifdef ZH
 	Name=name;
 
-#endif
+#endif // ZH
 }
 
 
@@ -257,7 +257,7 @@ void CompositeRenderObjClass::Set_Base_Model_Name(const char *name)
 
 	if (name) {
 		BaseModelName = ::strdup(name);
-#endif
+#endif // OG
 #ifdef ZH
 	// NULL is a legal value for BaseModelName. Unfortunately,
 	// StringClass::operator= does not modify the string when
@@ -266,12 +266,12 @@ void CompositeRenderObjClass::Set_Base_Model_Name(const char *name)
 		BaseModelName = name;
 	} else {
 		BaseModelName = "";
-#endif
+#endif // ZH
 	}
 #ifdef OG
 	
 	return ;
-#endif
+#endif // OG
 }
 
 
@@ -614,10 +614,10 @@ const char * CompositeRenderObjClass::Get_Base_Model_Name (void) const
 	if (BaseModelName.Is_Empty()) {
 		return NULL;
 	}
-#endif
+#endif // ZH
 
 #ifdef ZH
 	return BaseModelName;
 }
-#endif
+#endif // ZH
 

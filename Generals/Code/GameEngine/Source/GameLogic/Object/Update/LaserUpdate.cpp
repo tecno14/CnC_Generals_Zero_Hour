@@ -33,22 +33,22 @@
 #ifdef ZH
 #include "Common\Player.h"
 #include "Common\PlayerList.h"
-#endif
+#endif // ZH
 #include "Common/Xfer.h"
 #include "Common/DrawModule.h"
 #ifdef ZH
 #include "Common/ThingTemplate.h"
-#endif
+#endif // ZH
 #include "GameClient/Drawable.h"
 #include "GameClient/GameClient.h"
 #include "GameClient/ParticleSys.h"
 #ifdef OG
 #include "GameLogic/GameLogic.h"
-#endif
+#endif // OG
 #include "GameLogic/Object.h"
 #ifdef ZH
 #include "GameLogic/GameLogic.h" // For frame number
-#endif
+#endif // ZH
 #include "GameLogic/Module/LaserUpdate.h"
 #include "WWMath/Vector3.h"
 #ifdef ZH
@@ -58,7 +58,7 @@
 //#pragma optimize("", off)
 //#pragma MESSAGE("************************************** WARNING, optimization disabled for debugging purposes")
 #endif
-#endif
+#endif // ZH
 
 //-------------------------------------------------------------------------------------------------
 //-------------------------------------------------------------------------------------------------
@@ -66,10 +66,10 @@ LaserUpdateModuleData::LaserUpdateModuleData()
 {
 #ifdef OG
 	m_parentFireBoneOnTurret = FALSE;
-#endif
+#endif // OG
 #ifdef ZH
 	m_punchThroughScalar = 0.0f;
-#endif
+#endif // ZH
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -84,11 +84,11 @@ LaserUpdateModuleData::LaserUpdateModuleData()
 #ifdef OG
 		{ "ParentFireBoneName",			INI::parseAsciiString,  NULL, offsetof( LaserUpdateModuleData, m_parentFireBoneName ) },
 		{ "ParentFireBoneOnTurret",	INI::parseAsciiString,  NULL, offsetof( LaserUpdateModuleData, m_parentFireBoneOnTurret ) },
-#endif
+#endif // OG
 #ifdef ZH
 		{ "PunchThroughScalar",			INI::parseReal,					NULL, offsetof( LaserUpdateModuleData, m_punchThroughScalar ) },
 
-#endif
+#endif // ZH
 		{ 0, 0, 0, 0 }
 	};
 	p.add(dataFieldParse);
@@ -117,7 +117,7 @@ LaserUpdate::LaserUpdate( Thing *thing, const ModuleData* moduleData ) : ClientU
 	m_parentID = INVALID_DRAWABLE_ID;
 	m_targetID = INVALID_DRAWABLE_ID;
 	m_parentBoneName.clear();
-#endif
+#endif // ZH
 } 
 
 //-------------------------------------------------------------------------------------------------
@@ -221,7 +221,7 @@ void LaserUpdate::updateEndPos()
 }
 
 //-------------------------------------------------------------------------------------------------
-#endif
+#endif // ZH
 /** The update callback. */
 //-------------------------------------------------------------------------------------------------
 void LaserUpdate::clientUpdate( void )
@@ -229,12 +229,12 @@ void LaserUpdate::clientUpdate( void )
 #ifdef OG
 /// @todo srj use SLEEPY_UPDATE here
 
-#endif
+#endif // OG
 #ifdef ZH
 	updateStartPos();
 	updateEndPos();
 
-#endif
+#endif // ZH
 	if( m_decaying )
 	{
 		UnsignedInt now = TheGameLogic->getFrame();
@@ -279,10 +279,10 @@ void LaserUpdate::setDecayFrames( UnsignedInt decayFrames )
 //-------------------------------------------------------------------------------------------------
 #ifdef OG
 void LaserUpdate::initLaser( const Object *parent, const Coord3D *startPos, const Coord3D *endPos, Int sizeDeltaFrames )
-#endif
+#endif // OG
 #ifdef ZH
 void LaserUpdate::initLaser( const Object *parent, const Object *target, const Coord3D *startPos, const Coord3D *endPos, AsciiString parentBoneName, Int sizeDeltaFrames )
-#endif
+#endif // ZH
 {
 	const LaserUpdateModuleData *data = getLaserUpdateModuleData();
 	ParticleSystem *system;
@@ -305,14 +305,14 @@ void LaserUpdate::initLaser( const Object *parent, const Object *target, const C
 	//Compute startPos
 	if( parent && data->m_parentFireBoneName.isNotEmpty() )
 
-#endif
+#endif // OG
 #ifdef ZH
 	// Write down the bone name override
 	m_parentBoneName = parentBoneName;
 
 	//Record IDs if we have them, then figure out starting points
 	if( parent )
-#endif
+#endif // ZH
 	{
 #ifdef OG
 		// Override startPos with the logic bone position
@@ -323,7 +323,7 @@ void LaserUpdate::initLaser( const Object *parent, const Object *target, const C
 				// failed to find the required bone, so just die
 				TheGameClient->destroyDrawable( getDrawable() );
 				return;
-#endif
+#endif // OG
 #ifdef ZH
 		// If a source object, use it
 		if( parent->getDrawable() )
@@ -331,7 +331,7 @@ void LaserUpdate::initLaser( const Object *parent, const Object *target, const C
 
 		updateStartPos();
 
-#endif
+#endif // ZH
 			}				
 #ifdef OG
 		}
@@ -345,7 +345,7 @@ void LaserUpdate::initLaser( const Object *parent, const Object *target, const C
 			}				
 		}
 	}
-#endif
+#endif // OG
 	else if( startPos )
 	{
 		// or just use what they gave
@@ -362,7 +362,7 @@ void LaserUpdate::initLaser( const Object *parent, const Object *target, const C
 	//Compute endPos
 	if( endPos != NULL )
 
-#endif
+#endif // OG
 #ifdef ZH
 	if( target && !endPos )
 	{
@@ -373,7 +373,7 @@ void LaserUpdate::initLaser( const Object *parent, const Object *target, const C
 		m_endPos = *target->getPosition();
 	}
 	else if( endPos )
-#endif
+#endif // ZH
 	{
 		// just use what they gave, no override here 
 		m_endPos = *endPos;
@@ -388,7 +388,7 @@ void LaserUpdate::initLaser( const Object *parent, const Object *target, const C
 #ifdef ZH
 	// Create special particle systems
 	//PLEASE NOTE You cannot check an ID for NULL.  This should be a check against INVALID_PARTICLE_SYSTEM_ID.  Can't change it on the last day without a bug though.
-#endif
+#endif // ZH
 	if( !m_particleSystemID )
 #ifdef ZH
 	{
@@ -396,7 +396,7 @@ void LaserUpdate::initLaser( const Object *parent, const Object *target, const C
 
 		//Make sure the laser flare is visible to the player. If no parent, assume laser owner will handle it.
 		if (!parent || parent->getShroudedStatus( localPlayer->getPlayerIndex() ) <= OBJECTSHROUD_PARTIAL_CLEAR )
-#endif
+#endif // ZH
 	{
 		//If we don't have a particle system for the lense flare (muzzle flare), create it.
 		if( data->m_particleSystemName.isNotEmpty() )
@@ -428,12 +428,12 @@ void LaserUpdate::initLaser( const Object *parent, const Object *target, const C
 	}
 #ifdef ZH
 	}
-#endif
+#endif // ZH
 
 	//Adjust the position of any existing particle system.
 #ifdef ZH
 	//PLEASE NOTE You cannot check an ID for NULL.  This should be a check against INVALID_PARTICLE_SYSTEM_ID.  Can't change it on the last day without a bug though.
-#endif
+#endif // ZH
 	if( m_particleSystemID )
 	{
 		system = TheParticleSystemManager->findParticleSystem( m_particleSystemID );
@@ -445,7 +445,7 @@ void LaserUpdate::initLaser( const Object *parent, const Object *target, const C
 #ifdef ZH
 	
 	//PLEASE NOTE You cannot check an ID for NULL.  This should be a check against INVALID_PARTICLE_SYSTEM_ID.  Can't change it on the last day without a bug though.
-#endif
+#endif // ZH
 	if( m_targetParticleSystemID )
 	{
 		system = TheParticleSystemManager->findParticleSystem( m_targetParticleSystemID );
@@ -466,7 +466,7 @@ void LaserUpdate::initLaser( const Object *parent, const Object *target, const C
 	Object *laser = getDrawable()->getObject();
 	if( laser )
 
-#endif
+#endif // OG
 #ifdef ZH
 	// And as a client update, we cannot set the logic position.
 	Coord3D posToUse;
@@ -483,14 +483,14 @@ void LaserUpdate::initLaser( const Object *parent, const Object *target, const C
 
 	Drawable *draw = getDrawable();
 	if( draw )
-#endif
+#endif // ZH
 	{
 #ifdef OG
 		laser->setPosition( &avgPos );
-#endif
+#endif // OG
 #ifdef ZH
 		draw->setPosition( &posToUse );
-#endif
+#endif // ZH
 	}
 
 	m_dirty = true;
@@ -584,7 +584,7 @@ void LaserUpdate::xfer( Xfer *xfer )
 	xfer->xferDrawableID(&m_targetID);
 
 	xfer->xferAsciiString(&m_parentBoneName);
-#endif
+#endif // ZH
 
 }  // end xfer
 

@@ -108,7 +108,7 @@ std::vector<StateID> * State::getTransitions( void )
 	return ids;
 }
 #endif
-#endif
+#endif // ZH
 
 //-----------------------------------------------------------------------------
 /**
@@ -190,10 +190,10 @@ StateReturnType State::friend_checkForTransitions( StateReturnType status )
 						{
 #ifdef OG
 							return STATE_FAILURE;
-#endif
+#endif // OG
 #ifdef ZH
 							return STATE_FAILURE;//Lorenzen wants to know why...
-#endif
+#endif // ZH
 						}
 
 						// move to new state
@@ -347,10 +347,10 @@ void StateMachine::internalClear()
 	{
 #ifdef OG
 		DEBUG_LOG(("%d '%s' -- '%s' %x internalClear()\n", TheGameLogic->getFrame(), m_owner->getTemplate()->getName().str(), m_name.str(), this));
-#endif
+#endif // OG
 #ifdef ZH
 		DEBUG_LOG(("%d '%s'%x -- '%s' %x internalClear()\n", TheGameLogic->getFrame(), m_owner->getTemplate()->getName().str(), m_owner, m_name.str(), this));
-#endif
+#endif // ZH
 	}
 #endif
 }
@@ -532,7 +532,7 @@ State *StateMachine::internalGetState( StateID id )
 #ifdef OG
 		DEBUG_CRASH(( "StateMachine::internalGetState(): Invalid state" ));
 
-#endif
+#endif // OG
 #ifdef ZH
 		DEBUG_CRASH( ("StateMachine::internalGetState(): Invalid state for object %s using state %d", m_owner->getTemplate()->getName().str(), id) );
 		DEBUG_LOG(("Transisioning to state #d\n", (Int)id));
@@ -540,13 +540,13 @@ State *StateMachine::internalGetState( StateID id )
 		i = m_stateMap.find(m_defaultStateID);
 		if (i == m_stateMap.end()) {
 			DEBUG_LOG(("Failed to located default state.  Aborting...\n"));
-#endif
+#endif // ZH
 		throw ERROR_BAD_ARG;
 #ifdef ZH
 		} else {
 			DEBUG_LOG(("Located default state to recover.\n"));
 		}
-#endif
+#endif // ZH
 	}
 
 	return (*i).second;
@@ -612,10 +612,10 @@ StateReturnType StateMachine::internalSetState( StateID newStateID )
 			}
 #ifdef OG
 			DEBUG_LOG(("%d '%s' -- '%s' %x exit ", TheGameLogic->getFrame(), m_owner->getTemplate()->getName().str(), m_name.str(), this));
-#endif
+#endif // OG
 #ifdef ZH
 			DEBUG_LOG(("%d '%s'%x -- '%s' %x exit ", TheGameLogic->getFrame(), m_owner->getTemplate()->getName().str(), m_owner, m_name.str(), this));
-#endif
+#endif // ZH
 			if (m_currentState) {
 				DEBUG_LOG((" '%s' ", m_currentState->getName().str()));
 			} else {
@@ -744,7 +744,7 @@ StateReturnType StateMachine::initDefaultState()
 	REALLY_VERBOSE_LOG(("SM_END\n\n"));
 #endif	
 #endif
-#endif
+#endif // ZH
 	DEBUG_ASSERTCRASH(!m_locked, ("Machine is locked here, but probably should not be"));
 	if (m_defaultStateInited)
 	{
@@ -897,7 +897,7 @@ void StateMachine::xfer( Xfer *xfer )
 				// Hmm... too late to find out why we are getting NULL in our state, but if we let it go, we will Throw in xferSnapshot.
 				state = internalGetState(m_defaultStateID);
 			}
-#endif
+#endif // ZH
 			xfer->xferSnapshot(state);
 		}
 
@@ -909,7 +909,7 @@ void StateMachine::xfer( Xfer *xfer )
 			// Hmm... too late to find out why we are getting NULL in our state, but if we let it go, we will Throw in xferSnapshot.
 			m_currentState = internalGetState(m_defaultStateID);
 		}
-#endif
+#endif // ZH
 		xfer->xferSnapshot(m_currentState);
 	}
 

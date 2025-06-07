@@ -28,25 +28,25 @@
 #ifdef OG
  *                   Programmer : Greg Hjelstrom                                               * 
 
-#endif
+#endif // OG
 #ifdef ZH
  *               Org Programmer : Greg Hjelstrom                                               * 
  *                                                                                             * 
  *                       Author : Kenny Mitchell                                               * 
-#endif
+#endif // ZH
  *                                                                                             * 
  *                   Start Date : 06/02/97                                                     * 
  *                                                                                             * 
 #ifdef OG
  *                  Last Update : June 2, 1997 [GH]                                            * 
-#endif
+#endif // OG
 #ifdef ZH
  *                  Last Update : June 6, 2002 [KM]                                            * 
-#endif
+#endif // ZH
  *                                                                                             * 
 #ifdef ZH
  * 06/26/02 KM Matrix name change to avoid MAX conflicts                                       *
-#endif
+#endif // ZH
  *---------------------------------------------------------------------------------------------* 
  * Functions:                                                                                  * 
 #ifdef OG
@@ -62,7 +62,7 @@
  *   Matrix3::operator-= -- "minus equals" operator                                            * 
  *   Matrix3::operator *= -- "times equals" operator                                           * 
  *   Matrix3::operator /= -- "divide equals" operator                                          * 
-#endif
+#endif // OG
 #ifdef ZH
  *   Matrix3x3::Matrix3x3 -- Constructor, optionally initialize to Identitiy matrix                * 
  *   Matrix3x3::Matrix3x3 -- Copy Constructor                                                      * 
@@ -76,25 +76,25 @@
  *   Matrix3x3::operator-= -- "minus equals" operator                                            * 
  *   Matrix3x3::operator *= -- "times equals" operator                                           * 
  *   Matrix3x3::operator /= -- "divide equals" operator                                          * 
-#endif
+#endif // ZH
  *   Create_X_Rotation_Matrix3 -- creates a matrix3 which is a rotation about X                * 
 #ifdef OG
  *   Create_Y_Rotation_Matrix3 -- Creates a Matrix3 which is a rotation about Y                * 
-#endif
+#endif // OG
 #ifdef ZH
  *   Create_Y_Rotation_Matrix3 -- Creates a Matrix3x3 which is a rotation about Y                * 
-#endif
+#endif // ZH
  *   Create_Z_Rotation_Matrix3 -- Creates a matrix3 which is a rotation about Z                * 
 #ifdef OG
  *   Matrix3::Rotate_X -- Post-mutiplies an x rotation onto the current matrix                 * 
  *   Matrix3::Rotate_Y -- Post-multiplies the matrix with a rotation about Y                   * 
  *   Matrix3::Rotate_Z -- Post-multiplies the matrix with a rotation about Z                   * 
-#endif
+#endif // OG
 #ifdef ZH
  *   Matrix3x3::Rotate_X -- Post-mutiplies an x rotation onto the current matrix                 * 
  *   Matrix3x3::Rotate_Y -- Post-multiplies the matrix with a rotation about Y                   * 
  *   Matrix3x3::Rotate_Z -- Post-multiplies the matrix with a rotation about Z                   * 
-#endif
+#endif // ZH
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
 
@@ -116,18 +116,18 @@
 class Matrix3D;
 #ifdef OG
 class Matrix4;
-#endif
+#endif // OG
 #ifdef ZH
 class Matrix4x4;
-#endif
+#endif // ZH
 class Quaternion;
 
 #ifdef OG
 class Matrix3
-#endif
+#endif // OG
 #ifdef ZH
 class Matrix3x3
-#endif
+#endif // ZH
 {
 public:
 
@@ -137,11 +137,11 @@ public:
 #ifdef OG
 	WWINLINE Matrix3(void) {};
 	WWINLINE Matrix3(const Matrix3 & m);
-#endif
+#endif // OG
 #ifdef ZH
 	WWINLINE Matrix3x3(void) {};
 	WWINLINE Matrix3x3(const Matrix3x3 & m);
-#endif
+#endif // ZH
 
 #ifdef OG
 	WWINLINE explicit Matrix3(bool identity);
@@ -149,14 +149,14 @@ public:
 	explicit Matrix3(const Matrix3D & m);
 	explicit Matrix3(const Matrix4 & m);
 	WWINLINE explicit Matrix3(
-#endif
+#endif // OG
 #ifdef ZH
 	WWINLINE explicit Matrix3x3(bool identity);
 	WWINLINE explicit Matrix3x3(const Vector3 & v0, const Vector3 & v1, const Vector3 & v2);
 	explicit Matrix3x3(const Matrix3D & m);
 	explicit Matrix3x3(const Matrix4x4 & m);
 	WWINLINE explicit Matrix3x3(
-#endif
+#endif // ZH
 		float m11,float m12,float m13,
 		float m21,float m22,float m23,
 		float m31,float m32,float m33
@@ -165,12 +165,12 @@ public:
 	WWINLINE explicit Matrix3(const Vector3 & axis,float angle);
 	WWINLINE explicit Matrix3(const Vector3 & axis,float s_angle,float c_angle);
 	WWINLINE explicit Matrix3(const Quaternion & q);
-#endif
+#endif // OG
 #ifdef ZH
 	WWINLINE explicit Matrix3x3(const Vector3 & axis,float angle);
 	WWINLINE explicit Matrix3x3(const Vector3 & axis,float s_angle,float c_angle);
 	WWINLINE explicit Matrix3x3(const Quaternion & q);
-#endif
+#endif // ZH
 
 	/*
 	** 'Set' functions
@@ -178,10 +178,10 @@ public:
 	void Set(const Matrix3D & m);
 #ifdef OG
 	void Set(const Matrix4 & m);
-#endif
+#endif // OG
 #ifdef ZH
 	void Set(const Matrix4x4 & m);
-#endif
+#endif // ZH
 	WWINLINE void Set(const Vector3 & v0, const Vector3 & v1, const Vector3 & v2);
 	WWINLINE void Set(
 		float m11,float m12,float m13,
@@ -204,11 +204,11 @@ public:
 #ifdef OG
 	WWINLINE Matrix3	Transpose	(void) const;
 	WWINLINE Matrix3	Inverse		(void) const;
-#endif
+#endif // OG
 #ifdef ZH
 	WWINLINE Matrix3x3	Transpose	(void) const;
 	WWINLINE Matrix3x3	Inverse		(void) const;
-#endif
+#endif // ZH
 	WWINLINE float		Determinant	(void) const;
 
 	/*
@@ -218,25 +218,25 @@ public:
 	WWINLINE Matrix3 & operator = (const Matrix3 & m);
 	Matrix3 & operator = (const Matrix3D & m);
 	Matrix3 & operator = (const Matrix4 & m);
-#endif
+#endif // OG
 #ifdef ZH
 	WWINLINE Matrix3x3 & operator = (const Matrix3x3 & m);
 	Matrix3x3 & operator = (const Matrix3D & m);
 	Matrix3x3 & operator = (const Matrix4x4 & m);
-#endif
+#endif // ZH
 
 #ifdef OG
 	WWINLINE Matrix3 & operator += (const Matrix3 & m);
 	WWINLINE Matrix3 & operator -= (const Matrix3 & m);
 	WWINLINE Matrix3 & operator *= (float d);
 	WWINLINE Matrix3 & operator /= (float d);
-#endif
+#endif // OG
 #ifdef ZH
 	WWINLINE Matrix3x3 & operator += (const Matrix3x3 & m);
 	WWINLINE Matrix3x3 & operator -= (const Matrix3x3 & m);
 	WWINLINE Matrix3x3 & operator *= (float d);
 	WWINLINE Matrix3x3 & operator /= (float d);
-#endif
+#endif // ZH
 
 	WWINLINE void	Make_Identity(void);
 
@@ -278,10 +278,10 @@ public:
 	*/
 #ifdef OG
 	WWINLINE friend Matrix3 operator - (const Matrix3& a);
-#endif
+#endif // OG
 #ifdef ZH
 	WWINLINE friend Matrix3x3 operator - (const Matrix3x3& a);
-#endif
+#endif // ZH
 	
 	/*
 	** Scalar multiplication and division
@@ -290,12 +290,12 @@ public:
 	WWINLINE friend Matrix3 operator * (const Matrix3& a,float d);
 	WWINLINE friend Matrix3 operator * (float d,const Matrix3& a);
 	WWINLINE friend Matrix3 operator / (const Matrix3& a,float d);
-#endif
+#endif // OG
 #ifdef ZH
 	WWINLINE friend Matrix3x3 operator * (const Matrix3x3& a,float d);
 	WWINLINE friend Matrix3x3 operator * (float d,const Matrix3x3& a);
 	WWINLINE friend Matrix3x3 operator / (const Matrix3x3& a,float d);
-#endif
+#endif // ZH
 
 	/*
 	** matrix addition
@@ -303,11 +303,11 @@ public:
 #ifdef OG
 	WWINLINE friend Matrix3 operator + (const Matrix3& a, const Matrix3& b);
 	static WWINLINE void Add(const Matrix3 & a, const Matrix3 & b,Matrix3 * res);
-#endif
+#endif // OG
 #ifdef ZH
 	WWINLINE friend Matrix3x3 operator + (const Matrix3x3& a, const Matrix3x3& b);
 	static WWINLINE void Add(const Matrix3x3 & a, const Matrix3x3 & b,Matrix3x3 * res);
-#endif
+#endif // ZH
 
 	/*
 	** matrix subtraction
@@ -315,11 +315,11 @@ public:
 #ifdef OG
 	WWINLINE friend Matrix3 operator - (const Matrix3 & a, const Matrix3 & b);
 	static WWINLINE void Subtract(const Matrix3 & a, const Matrix3 & b,Matrix3 * res);
-#endif
+#endif // OG
 #ifdef ZH
 	WWINLINE friend Matrix3x3 operator - (const Matrix3x3 & a, const Matrix3x3 & b);
 	static WWINLINE void Subtract(const Matrix3x3 & a, const Matrix3x3 & b,Matrix3x3 * res);
-#endif
+#endif // ZH
 
 	/*
 	** matrix multiplication
@@ -328,23 +328,23 @@ public:
 	WWINLINE friend Matrix3 operator * (const Matrix3 & a, const Matrix3 & b);
 	WWINLINE friend Matrix3 operator * (const Matrix3D & a, const Matrix3 & b);
 	WWINLINE friend Matrix3 operator * (const Matrix3 & a, const Matrix3D & b);
-#endif
+#endif // OG
 #ifdef ZH
 	WWINLINE friend Matrix3x3 operator * (const Matrix3x3 & a, const Matrix3x3 & b);
 	WWINLINE friend Matrix3x3 operator * (const Matrix3D & a, const Matrix3x3 & b);
 	WWINLINE friend Matrix3x3 operator * (const Matrix3x3 & a, const Matrix3D & b);
-#endif
+#endif // ZH
 
 #ifdef OG
 	static void Multiply(const Matrix3 & a, const Matrix3 & b,Matrix3 * res);
 	static void Multiply(const Matrix3D & a, const Matrix3 & b,Matrix3 * res);
 	static void Multiply(const Matrix3 & a, const Matrix3D & b,Matrix3 * res);
-#endif
+#endif // OG
 #ifdef ZH
 	static void Multiply(const Matrix3x3 & a, const Matrix3x3 & b,Matrix3x3 * res);
 	static void Multiply(const Matrix3D & a, const Matrix3x3 & b,Matrix3x3 * res);
 	static void Multiply(const Matrix3x3 & a, const Matrix3D & b,Matrix3x3 * res);
-#endif
+#endif // ZH
 
 	/*
 	** Matrix-Vector multiplication
@@ -353,12 +353,12 @@ public:
 	WWINLINE friend Vector3 operator * (const Matrix3 & a, const Vector3 & v);
 	static WWINLINE void	Rotate_Vector(const Matrix3 & tm,const Vector3 & in,Vector3 * out);
 	static WWINLINE void	Transpose_Rotate_Vector(const Matrix3 & tm,const Vector3 & in,Vector3 * out);
-#endif
+#endif // OG
 #ifdef ZH
 	WWINLINE friend Vector3 operator * (const Matrix3x3 & a, const Vector3 & v);
 	static WWINLINE void	Rotate_Vector(const Matrix3x3 & tm,const Vector3 & in,Vector3 * out);
 	static WWINLINE void	Transpose_Rotate_Vector(const Matrix3x3 & tm,const Vector3 & in,Vector3 * out);
-#endif
+#endif // ZH
 
 	/*
 	** Comparison operators
@@ -366,21 +366,21 @@ public:
 #ifdef OG
 	WWINLINE friend int operator == (const Matrix3 & a, const Matrix3 & b);
 	WWINLINE friend int operator != (const Matrix3 & a, const Matrix3 & b);
-#endif
+#endif // OG
 #ifdef ZH
 	WWINLINE friend int operator == (const Matrix3x3 & a, const Matrix3x3 & b);
 	WWINLINE friend int operator != (const Matrix3x3 & a, const Matrix3x3 & b);
-#endif
+#endif // ZH
 
 	/*
 	** Swap two matrices in place
 	*/
 #ifdef OG
 	WWINLINE friend void Swap(Matrix3 & a,Matrix3 & b);
-#endif
+#endif // OG
 #ifdef ZH
 	WWINLINE friend void Swap(Matrix3x3 & a,Matrix3x3 & b);
-#endif
+#endif // ZH
 
 	/*
 	** Check whether a matrix is orthogonal, make it orthogonal
@@ -396,10 +396,10 @@ public:
 	/*
 #ifdef OG
 	** Some useful pre-initialized Matrix3's
-#endif
+#endif // OG
 #ifdef ZH
 	** Some useful pre-initialized Matrix3x3's
-#endif
+#endif // ZH
 	*/
 #ifdef OG
 	static const Matrix3			Identity;
@@ -412,7 +412,7 @@ public:
 	static const Matrix3			RotateZ90;
 	static const Matrix3			RotateZ180;
 	static const Matrix3			RotateZ270;
-#endif
+#endif // OG
 #ifdef ZH
 	static const Matrix3x3			Identity;
 	static const Matrix3x3			RotateX90;
@@ -424,7 +424,7 @@ public:
 	static const Matrix3x3			RotateZ90;
 	static const Matrix3x3			RotateZ180;
 	static const Matrix3x3			RotateZ270;
-#endif
+#endif // ZH
 
 protected:
 
@@ -436,10 +436,10 @@ protected:
 /*********************************************************************************************** 
 #ifdef OG
  * Matrix3::Matrix3 -- Constructor, optionally initialize to Identitiy matrix                  * 
-#endif
+#endif // OG
 #ifdef ZH
  * Matrix3x3::Matrix3x3 -- Constructor, optionally initialize to Identitiy matrix                  * 
-#endif
+#endif // ZH
  *                                                                                             * 
  * INPUT:                                                                                      * 
  *                                                                                             * 
@@ -452,10 +452,10 @@ protected:
  *=============================================================================================*/
 #ifdef OG
 WWINLINE Matrix3::Matrix3(bool identity)
-#endif
+#endif // OG
 #ifdef ZH
 WWINLINE Matrix3x3::Matrix3x3(bool identity)
-#endif
+#endif // ZH
 {
 	if (identity) {
 		Row[0].Set(1.0,0.0,0.0);
@@ -467,10 +467,10 @@ WWINLINE Matrix3x3::Matrix3x3(bool identity)
 /*********************************************************************************************** 
 #ifdef OG
  * Matrix3::Matrix3 -- Copy Constructor                                                        * 
-#endif
+#endif // OG
 #ifdef ZH
  * Matrix3x3::Matrix3x3 -- Copy Constructor                                                        * 
-#endif
+#endif // ZH
  *                                                                                             * 
  * INPUT:                                                                                      * 
  *                                                                                             * 
@@ -483,10 +483,10 @@ WWINLINE Matrix3x3::Matrix3x3(bool identity)
  *=============================================================================================*/
 #ifdef OG
 WWINLINE Matrix3::Matrix3(const Matrix3 & m)
-#endif
+#endif // OG
 #ifdef ZH
 WWINLINE Matrix3x3::Matrix3x3(const Matrix3x3 & m)
-#endif
+#endif // ZH
 {
 	Row[0] = m.Row[0]; Row[1] = m.Row[1]; Row[2] = m.Row[2];
 }
@@ -494,10 +494,10 @@ WWINLINE Matrix3x3::Matrix3x3(const Matrix3x3 & m)
 /*********************************************************************************************** 
 #ifdef OG
  * Matrix3::Matrix3 -- Constructor                                                             * 
-#endif
+#endif // OG
 #ifdef ZH
  * Matrix3x3::Matrix3x3 -- Constructor                                                             * 
-#endif
+#endif // ZH
  *                                                                                             * 
  * INPUT:                                                                                      * 
  *                                                                                             * 
@@ -510,10 +510,10 @@ WWINLINE Matrix3x3::Matrix3x3(const Matrix3x3 & m)
  *=============================================================================================*/
 #ifdef OG
 WWINLINE Matrix3::Matrix3(const Vector3 & r0, const Vector3 & r1, const Vector3 & r2)
-#endif
+#endif // OG
 #ifdef ZH
 WWINLINE Matrix3x3::Matrix3x3(const Vector3 & r0, const Vector3 & r1, const Vector3 & r2)
-#endif
+#endif // ZH
 { 
 	Row[0] = r0; 
 	Row[1] = r1; 
@@ -522,10 +522,10 @@ WWINLINE Matrix3x3::Matrix3x3(const Vector3 & r0, const Vector3 & r1, const Vect
 
 #ifdef OG
 WWINLINE void Matrix3::Set(const Vector3 & r0, const Vector3 & r1, const Vector3 & r2)
-#endif
+#endif // OG
 #ifdef ZH
 WWINLINE void Matrix3x3::Set(const Vector3 & r0, const Vector3 & r1, const Vector3 & r2)
-#endif
+#endif // ZH
 { 
 	Row[0] = r0; 
 	Row[1] = r1; 
@@ -534,10 +534,10 @@ WWINLINE void Matrix3x3::Set(const Vector3 & r0, const Vector3 & r1, const Vecto
 
 #ifdef OG
 WWINLINE void Matrix3::Make_Identity(void)
-#endif
+#endif // OG
 #ifdef ZH
 WWINLINE void Matrix3x3::Make_Identity(void)
-#endif
+#endif // ZH
 {
 	Row[0].Set(1.0f,0.0f,0.0f);
 	Row[1].Set(0.0f,1.0f,0.0f);
@@ -547,10 +547,10 @@ WWINLINE void Matrix3x3::Make_Identity(void)
 
 #ifdef OG
 WWINLINE Matrix3::Matrix3
-#endif
+#endif // OG
 #ifdef ZH
 WWINLINE Matrix3x3::Matrix3x3
-#endif
+#endif // ZH
 (
 	float m11,float m12,float m13,
 	float m21,float m22,float m23,
@@ -564,10 +564,10 @@ WWINLINE Matrix3x3::Matrix3x3
 
 #ifdef OG
 WWINLINE void Matrix3::Set
-#endif
+#endif // OG
 #ifdef ZH
 WWINLINE void Matrix3x3::Set
-#endif
+#endif // ZH
 (
 	float m11,float m12,float m13,
 	float m21,float m22,float m23,
@@ -581,40 +581,40 @@ WWINLINE void Matrix3x3::Set
 
 #ifdef OG
 WWINLINE Matrix3::Matrix3(const Vector3 & axis,float angle) 
-#endif
+#endif // OG
 #ifdef ZH
 WWINLINE Matrix3x3::Matrix3x3(const Vector3 & axis,float angle) 
-#endif
+#endif // ZH
 { 
 	Set(axis,angle); 
 }
 
 #ifdef OG
 WWINLINE Matrix3::Matrix3(const Vector3 & axis,float s_angle,float c_angle) 
-#endif
+#endif // OG
 #ifdef ZH
 WWINLINE Matrix3x3::Matrix3x3(const Vector3 & axis,float s_angle,float c_angle) 
-#endif
+#endif // ZH
 { 
 	Set(axis,s_angle,c_angle); 
 }
 
 #ifdef OG
 WWINLINE void Matrix3::Set(const Vector3 & axis,float angle)
-#endif
+#endif // OG
 #ifdef ZH
 WWINLINE void Matrix3x3::Set(const Vector3 & axis,float angle)
-#endif
+#endif // ZH
 {
 	Set(axis,sinf(angle),cosf(angle));
 }
 
 #ifdef OG
 WWINLINE void Matrix3::Set(const Vector3 & axis,float s,float c)
-#endif
+#endif // OG
 #ifdef ZH
 WWINLINE void Matrix3x3::Set(const Vector3 & axis,float s,float c)
-#endif
+#endif // ZH
 {
 	WWASSERT(WWMath::Fabs(axis.Length2() - 1.0f) < 0.001f);
 
@@ -639,10 +639,10 @@ WWINLINE void Matrix3x3::Set(const Vector3 & axis,float s,float c)
 
 #ifdef OG
 WWINLINE Matrix3::Matrix3(const Quaternion & q)
-#endif
+#endif // OG
 #ifdef ZH
 WWINLINE Matrix3x3::Matrix3x3(const Quaternion & q)
-#endif
+#endif // ZH
 {
 	this->Set(q);
 }
@@ -650,10 +650,10 @@ WWINLINE Matrix3x3::Matrix3x3(const Quaternion & q)
 /*********************************************************************************************** 
 #ifdef OG
  * Matrix3::Transpose -- Returns transpose of the matrix                                       * 
-#endif
+#endif // OG
 #ifdef ZH
  * Matrix3x3::Transpose -- Returns transpose of the matrix                                       * 
-#endif
+#endif // ZH
  *                                                                                             * 
  * INPUT:                                                                                      * 
  *                                                                                             * 
@@ -666,17 +666,17 @@ WWINLINE Matrix3x3::Matrix3x3(const Quaternion & q)
  *=============================================================================================*/
 #ifdef OG
 WWINLINE Matrix3 Matrix3::Transpose() const
-#endif
+#endif // OG
 #ifdef ZH
 WWINLINE Matrix3x3 Matrix3x3::Transpose() const
-#endif
+#endif // ZH
 {
 #ifdef OG
     return Matrix3(
-#endif
+#endif // OG
 #ifdef ZH
     return Matrix3x3(
-#endif
+#endif // ZH
 			Vector3(Row[0][0], Row[1][0], Row[2][0]),
 			Vector3(Row[0][1], Row[1][1], Row[2][1]),
 			Vector3(Row[0][2], Row[1][2], Row[2][2])
@@ -686,10 +686,10 @@ WWINLINE Matrix3x3 Matrix3x3::Transpose() const
 /*********************************************************************************************** 
 #ifdef OG
  * Matrix3::Inverse -- returns the inverse of the matrix                                       * 
-#endif
+#endif // OG
 #ifdef ZH
  * Matrix3x3::Inverse -- returns the inverse of the matrix                                       * 
-#endif
+#endif // ZH
  *                                                                                             * 
  * INPUT:                                                                                      * 
  *                                                                                             * 
@@ -702,19 +702,19 @@ WWINLINE Matrix3x3 Matrix3x3::Transpose() const
  *=============================================================================================*/
 #ifdef OG
 WWINLINE Matrix3 Matrix3::Inverse() const    // Gauss-Jordan elimination with partial pivoting
-#endif
+#endif // OG
 #ifdef ZH
 WWINLINE Matrix3x3 Matrix3x3::Inverse() const    // Gauss-Jordan elimination with partial pivoting
-#endif
+#endif // ZH
 {
 #ifdef OG
 	Matrix3 a(*this);				// As a evolves from original mat into identity
 	Matrix3 b(true);				// b evolves from identity into inverse(a)
-#endif
+#endif // OG
 #ifdef ZH
 	Matrix3x3 a(*this);				// As a evolves from original mat into identity
 	Matrix3x3 b(true);				// b evolves from identity into inverse(a)
-#endif
+#endif // ZH
 	int i, j, i1;
 
 	// Loop over cols of a from left to right, eliminating above and below diagonal
@@ -736,10 +736,10 @@ WWINLINE Matrix3x3 Matrix3x3::Inverse() const    // Gauss-Jordan elimination wit
 		if (a[j][j]==0.) {
 #ifdef OG
 			//Matrix3::inverse: singular matrix; can't invert
-#endif
+#endif // OG
 #ifdef ZH
 			//Matrix3x3::inverse: singular matrix; can't invert
-#endif
+#endif // ZH
 		}
 		b.Row[j] /= a.Row[j][j];
 		a.Row[j] /= a.Row[j][j];
@@ -759,10 +759,10 @@ WWINLINE Matrix3x3 Matrix3x3::Inverse() const    // Gauss-Jordan elimination wit
 /***********************************************************************************************
 #ifdef OG
  * Matrix3::Determinant -- returns the determinant of the matrix                               *
-#endif
+#endif // OG
 #ifdef ZH
  * Matrix3x3::Determinant -- returns the determinant of the matrix                               *
-#endif
+#endif // ZH
  *                                                                                             *
  * INPUT:                                                                                      *
  *                                                                                             *
@@ -775,10 +775,10 @@ WWINLINE Matrix3x3 Matrix3x3::Inverse() const    // Gauss-Jordan elimination wit
  *=============================================================================================*/
 #ifdef OG
 WWINLINE float Matrix3::Determinant(void) const 
-#endif
+#endif // OG
 #ifdef ZH
 WWINLINE float Matrix3x3::Determinant(void) const 
-#endif
+#endif // ZH
 {
 	return   Row[0][0] * (Row[1][1] * Row[2][2] - Row[1][2] * Row[2][1])
 		    - Row[0][1] * (Row[1][0] * Row[2][2] - Row[1][2] * Row[2][0])
@@ -788,10 +788,10 @@ WWINLINE float Matrix3x3::Determinant(void) const
 /*********************************************************************************************** 
 #ifdef OG
  * Matrix3::operator = -- assignment operator                                                  * 
-#endif
+#endif // OG
 #ifdef ZH
  * Matrix3x3::operator = -- assignment operator                                                  * 
-#endif
+#endif // ZH
  *                                                                                             * 
  * INPUT:                                                                                      * 
  *                                                                                             * 
@@ -804,10 +804,10 @@ WWINLINE float Matrix3x3::Determinant(void) const
  *=============================================================================================*/
 #ifdef OG
 WWINLINE Matrix3 & Matrix3::operator = (const Matrix3 & m)
-#endif
+#endif // OG
 #ifdef ZH
 WWINLINE Matrix3x3 & Matrix3x3::operator = (const Matrix3x3 & m)
-#endif
+#endif // ZH
 {
 	Row[0] = m.Row[0]; Row[1] = m.Row[1]; Row[2] = m.Row[2];
 	return *this; 
@@ -816,10 +816,10 @@ WWINLINE Matrix3x3 & Matrix3x3::operator = (const Matrix3x3 & m)
 /*********************************************************************************************** 
 #ifdef OG
  * Matrix3::operator += -- "plus equals" operator                                              * 
-#endif
+#endif // OG
 #ifdef ZH
  * Matrix3x3::operator += -- "plus equals" operator                                              * 
-#endif
+#endif // ZH
  *                                                                                             * 
  * INPUT:                                                                                      * 
  *                                                                                             * 
@@ -832,10 +832,10 @@ WWINLINE Matrix3x3 & Matrix3x3::operator = (const Matrix3x3 & m)
  *=============================================================================================*/
 #ifdef OG
 WWINLINE Matrix3& Matrix3::operator += (const Matrix3 & m)
-#endif
+#endif // OG
 #ifdef ZH
 WWINLINE Matrix3x3& Matrix3x3::operator += (const Matrix3x3 & m)
-#endif
+#endif // ZH
 {
 	Row[0] += m.Row[0]; Row[1] += m.Row[1]; Row[2] += m.Row[2]; 
 	return *this; 
@@ -844,10 +844,10 @@ WWINLINE Matrix3x3& Matrix3x3::operator += (const Matrix3x3 & m)
 /*********************************************************************************************** 
 #ifdef OG
  * Matrix3::operator-= -- "minus equals" operator                                              * 
-#endif
+#endif // OG
 #ifdef ZH
  * Matrix3x3::operator-= -- "minus equals" operator                                              * 
-#endif
+#endif // ZH
  *                                                                                             * 
  * INPUT:                                                                                      * 
  *                                                                                             * 
@@ -860,10 +860,10 @@ WWINLINE Matrix3x3& Matrix3x3::operator += (const Matrix3x3 & m)
  *=============================================================================================*/
 #ifdef OG
 WWINLINE Matrix3& Matrix3::operator -= (const Matrix3 & m)
-#endif
+#endif // OG
 #ifdef ZH
 WWINLINE Matrix3x3& Matrix3x3::operator -= (const Matrix3x3 & m)
-#endif
+#endif // ZH
 {
 	Row[0] -= m.Row[0]; Row[1] -= m.Row[1]; Row[2] -= m.Row[2]; 
 	return *this; 
@@ -872,10 +872,10 @@ WWINLINE Matrix3x3& Matrix3x3::operator -= (const Matrix3x3 & m)
 /*********************************************************************************************** 
 #ifdef OG
  * Matrix3::operator *= -- "times equals" operator                                             * 
-#endif
+#endif // OG
 #ifdef ZH
  * Matrix3x3::operator *= -- "times equals" operator                                             * 
-#endif
+#endif // ZH
  *                                                                                             * 
  * INPUT:                                                                                      * 
  *                                                                                             * 
@@ -888,10 +888,10 @@ WWINLINE Matrix3x3& Matrix3x3::operator -= (const Matrix3x3 & m)
  *=============================================================================================*/
 #ifdef OG
 WWINLINE Matrix3& Matrix3::operator *= (float d)
-#endif
+#endif // OG
 #ifdef ZH
 WWINLINE Matrix3x3& Matrix3x3::operator *= (float d)
-#endif
+#endif // ZH
 {
 	Row[0] *= d; Row[1] *= d; Row[2] *= d; 
 	return *this; 
@@ -900,10 +900,10 @@ WWINLINE Matrix3x3& Matrix3x3::operator *= (float d)
 /*********************************************************************************************** 
 #ifdef OG
  * Matrix3::operator /= -- "divide equals" operator                                            * 
-#endif
+#endif // OG
 #ifdef ZH
  * Matrix3x3::operator /= -- "divide equals" operator                                            * 
-#endif
+#endif // ZH
  *                                                                                             * 
  * INPUT:                                                                                      * 
  *                                                                                             * 
@@ -916,10 +916,10 @@ WWINLINE Matrix3x3& Matrix3x3::operator *= (float d)
  *=============================================================================================*/
 #ifdef OG
 WWINLINE Matrix3& Matrix3::operator /= (float d)
-#endif
+#endif // OG
 #ifdef ZH
 WWINLINE Matrix3x3& Matrix3x3::operator /= (float d)
-#endif
+#endif // ZH
 {
 	Row[0] /= d; Row[1] /= d; Row[2] /= d; 
 	return *this; 
@@ -928,10 +928,10 @@ WWINLINE Matrix3x3& Matrix3x3::operator /= (float d)
 /*********************************************************************************************** 
 #ifdef OG
  * Matrix3::Get_X_Rotation -- approximates the rotation about the X axis                       * 
-#endif
+#endif // OG
 #ifdef ZH
  * Matrix3x3::Get_X_Rotation -- approximates the rotation about the X axis                       * 
-#endif
+#endif // ZH
  *                                                                                             * 
  * INPUT:                                                                                      * 
  *                                                                                             * 
@@ -944,10 +944,10 @@ WWINLINE Matrix3x3& Matrix3x3::operator /= (float d)
  *=============================================================================================*/
 #ifdef OG
 WWINLINE float Matrix3::Get_X_Rotation(void) const
-#endif
+#endif // OG
 #ifdef ZH
 WWINLINE float Matrix3x3::Get_X_Rotation(void) const
-#endif
+#endif // ZH
 {
 	Vector3 v = (*this) * Vector3(0.0,1.0,0.0);
 	return WWMath::Atan2(v[2], v[1]);
@@ -956,10 +956,10 @@ WWINLINE float Matrix3x3::Get_X_Rotation(void) const
 /*********************************************************************************************** 
 #ifdef OG
  * Matrix3::Get_Y_Rotation -- approximates the rotation about the Y axis                       * 
-#endif
+#endif // OG
 #ifdef ZH
  * Matrix3x3::Get_Y_Rotation -- approximates the rotation about the Y axis                       * 
-#endif
+#endif // ZH
  *                                                                                             * 
  * INPUT:                                                                                      * 
  *                                                                                             * 
@@ -972,10 +972,10 @@ WWINLINE float Matrix3x3::Get_X_Rotation(void) const
  *=============================================================================================*/
 #ifdef OG
 WWINLINE float Matrix3::Get_Y_Rotation(void) const 
-#endif
+#endif // OG
 #ifdef ZH
 WWINLINE float Matrix3x3::Get_Y_Rotation(void) const 
-#endif
+#endif // ZH
 {
 	Vector3 v = (*this) * Vector3(0.0,0.0,1.0);
 	return WWMath::Atan2(v[0],v[2]);
@@ -984,10 +984,10 @@ WWINLINE float Matrix3x3::Get_Y_Rotation(void) const
 /*********************************************************************************************** 
 #ifdef OG
  * Matrix3::Get_Z_Rotation -- approximates the rotation about the Z axis                       * 
-#endif
+#endif // OG
 #ifdef ZH
  * Matrix3x3::Get_Z_Rotation -- approximates the rotation about the Z axis                       * 
-#endif
+#endif // ZH
  *                                                                                             * 
  * INPUT:                                                                                      * 
  *                                                                                             * 
@@ -1000,10 +1000,10 @@ WWINLINE float Matrix3x3::Get_Y_Rotation(void) const
  *=============================================================================================*/
 #ifdef OG
 WWINLINE float Matrix3::Get_Z_Rotation(void) const
-#endif
+#endif // OG
 #ifdef ZH
 WWINLINE float Matrix3x3::Get_Z_Rotation(void) const
-#endif
+#endif // ZH
 {
 	Vector3 v = (*this) * Vector3(1.0,0.0,0.0);
 	return WWMath::Atan2(v[1],v[0]);
@@ -1011,118 +1011,118 @@ WWINLINE float Matrix3x3::Get_Z_Rotation(void) const
 
 #ifdef OG
 WWINLINE Vector3 Matrix3::Get_X_Vector(void) const
-#endif
+#endif // OG
 #ifdef ZH
 WWINLINE Vector3 Matrix3x3::Get_X_Vector(void) const
-#endif
+#endif // ZH
 {
    return Vector3(Row[0][0], Row[1][0], Row[2][0]);
 }
 
 #ifdef OG
 WWINLINE Vector3 Matrix3::Get_Y_Vector(void) const
-#endif
+#endif // OG
 #ifdef ZH
 WWINLINE Vector3 Matrix3x3::Get_Y_Vector(void) const
-#endif
+#endif // ZH
 {
    return Vector3(Row[0][1], Row[1][1], Row[2][1]);
 }
 
 #ifdef OG
 WWINLINE Vector3 Matrix3::Get_Z_Vector(void) const
-#endif
+#endif // OG
 #ifdef ZH
 WWINLINE Vector3 Matrix3x3::Get_Z_Vector(void) const
-#endif
+#endif // ZH
 {
    return Vector3(Row[0][2], Row[1][2], Row[2][2]);
 }
 
 #ifdef OG
 WWINLINE void Matrix3::Get_X_Vector(Vector3 * set) const
-#endif
+#endif // OG
 #ifdef ZH
 WWINLINE void Matrix3x3::Get_X_Vector(Vector3 * set) const
-#endif
+#endif // ZH
 {
    set->Set(Row[0][0], Row[1][0], Row[2][0]);
 }
 
 #ifdef OG
 WWINLINE void Matrix3::Get_Y_Vector(Vector3 * set) const
-#endif
+#endif // OG
 #ifdef ZH
 WWINLINE void Matrix3x3::Get_Y_Vector(Vector3 * set) const
-#endif
+#endif // ZH
 {
    set->Set(Row[0][1], Row[1][1], Row[2][1]);
 }
 
 #ifdef OG
 WWINLINE void Matrix3::Get_Z_Vector(Vector3 * set) const
-#endif
+#endif // OG
 #ifdef ZH
 WWINLINE void Matrix3x3::Get_Z_Vector(Vector3 * set) const
-#endif
+#endif // ZH
 {
    set->Set(Row[0][2], Row[1][2], Row[2][2]);
 }
 
 #ifdef OG
 WWINLINE Matrix3 operator - (const Matrix3 & a)
-#endif
+#endif // OG
 #ifdef ZH
 WWINLINE Matrix3x3 operator - (const Matrix3x3 & a)
-#endif
+#endif // ZH
 { 
 #ifdef OG
 	return Matrix3(-a.Row[0], -a.Row[1], -a.Row[2]); 
-#endif
+#endif // OG
 #ifdef ZH
 	return Matrix3x3(-a.Row[0], -a.Row[1], -a.Row[2]); 
-#endif
+#endif // ZH
 }
 
 #ifdef OG
 WWINLINE Matrix3 operator * (const Matrix3 & a, float d)
-#endif
+#endif // OG
 #ifdef ZH
 WWINLINE Matrix3x3 operator * (const Matrix3x3 & a, float d)
-#endif
+#endif // ZH
 { 
 #ifdef OG
 	return Matrix3(a.Row[0] * d, a.Row[1] * d, a.Row[2] * d); 
-#endif
+#endif // OG
 #ifdef ZH
 	return Matrix3x3(a.Row[0] * d, a.Row[1] * d, a.Row[2] * d); 
-#endif
+#endif // ZH
 }
 
 #ifdef OG
 WWINLINE Matrix3 operator * (float d, const Matrix3 & a)
-#endif
+#endif // OG
 #ifdef ZH
 WWINLINE Matrix3x3 operator * (float d, const Matrix3x3 & a)
-#endif
+#endif // ZH
 { 
 	return a*d; 
 }
 
 #ifdef OG
 WWINLINE Matrix3 operator / (const Matrix3 & a, float d)
-#endif
+#endif // OG
 #ifdef ZH
 WWINLINE Matrix3x3 operator / (const Matrix3x3 & a, float d)
-#endif
+#endif // ZH
 { 
 	float ood = 1.0f / d;
 #ifdef OG
 	return Matrix3(a.Row[0] * ood, a.Row[1] * ood, a.Row[2] * ood); 
-#endif
+#endif // OG
 #ifdef ZH
 	return Matrix3x3(a.Row[0] * ood, a.Row[1] * ood, a.Row[2] * ood); 
-#endif
+#endif // ZH
 }
 
 /*
@@ -1130,17 +1130,17 @@ WWINLINE Matrix3x3 operator / (const Matrix3x3 & a, float d)
 */ 
 #ifdef OG
 WWINLINE Matrix3 operator + (const Matrix3 & a, const Matrix3 & b)
-#endif
+#endif // OG
 #ifdef ZH
 WWINLINE Matrix3x3 operator + (const Matrix3x3 & a, const Matrix3x3 & b)
-#endif
+#endif // ZH
 {
 #ifdef OG
 	return Matrix3(
-#endif
+#endif // OG
 #ifdef ZH
 	return Matrix3x3(
-#endif
+#endif // ZH
 				a.Row[0] + b.Row[0],
 				a.Row[1] + b.Row[1],
 				a.Row[2] + b.Row[2]
@@ -1149,10 +1149,10 @@ WWINLINE Matrix3x3 operator + (const Matrix3x3 & a, const Matrix3x3 & b)
 
 #ifdef OG
 WWINLINE void Matrix3::Add(const Matrix3 & a, const Matrix3 & b,Matrix3 * c)
-#endif
+#endif // OG
 #ifdef ZH
 WWINLINE void Matrix3x3::Add(const Matrix3x3 & a, const Matrix3x3 & b,Matrix3x3 * c)
-#endif
+#endif // ZH
 { 
 	WWASSERT(c);
 	Vector3::Add(a.Row[0],b.Row[0],&(c->Row[0]));
@@ -1165,17 +1165,17 @@ WWINLINE void Matrix3x3::Add(const Matrix3x3 & a, const Matrix3x3 & b,Matrix3x3 
 */
 #ifdef OG
 WWINLINE Matrix3 operator - (const Matrix3 & a, const Matrix3 & b)
-#endif
+#endif // OG
 #ifdef ZH
 WWINLINE Matrix3x3 operator - (const Matrix3x3 & a, const Matrix3x3 & b)
-#endif
+#endif // ZH
 {
 #ifdef OG
 	return Matrix3(
-#endif
+#endif // OG
 #ifdef ZH
 	return Matrix3x3(
-#endif
+#endif // ZH
 				a.Row[0] - b.Row[0],
 				a.Row[1] - b.Row[1],
 				a.Row[2] - b.Row[2]
@@ -1184,10 +1184,10 @@ WWINLINE Matrix3x3 operator - (const Matrix3x3 & a, const Matrix3x3 & b)
 
 #ifdef OG
 WWINLINE void Matrix3::Subtract(const Matrix3 & a, const Matrix3 & b,Matrix3 * c)
-#endif
+#endif // OG
 #ifdef ZH
 WWINLINE void Matrix3x3::Subtract(const Matrix3x3 & a, const Matrix3x3 & b,Matrix3x3 * c)
-#endif
+#endif // ZH
 {
 	WWASSERT(c);
 	Vector3::Subtract(a.Row[0],b.Row[0],&(c->Row[0]));
@@ -1200,19 +1200,19 @@ WWINLINE void Matrix3x3::Subtract(const Matrix3x3 & a, const Matrix3x3 & b,Matri
 */
 #ifdef OG
 WWINLINE Matrix3 operator * (const Matrix3 & a, const Matrix3 & b)
-#endif
+#endif // OG
 #ifdef ZH
 WWINLINE Matrix3x3 operator * (const Matrix3x3 & a, const Matrix3x3 & b)
-#endif
+#endif // ZH
 {
 	#define ROWCOL(i,j) a[i][0]*b[0][j] + a[i][1]*b[1][j] + a[i][2]*b[2][j]
     
 #ifdef OG
 	return Matrix3(
-#endif
+#endif // OG
 #ifdef ZH
 	return Matrix3x3(
-#endif
+#endif // ZH
 			Vector3(ROWCOL(0,0), ROWCOL(0,1), ROWCOL(0,2) ),
 			Vector3(ROWCOL(1,0), ROWCOL(1,1), ROWCOL(1,2) ),
 			Vector3(ROWCOL(2,0), ROWCOL(2,1), ROWCOL(2,2) )
@@ -1225,17 +1225,17 @@ WWINLINE Matrix3x3 operator * (const Matrix3x3 & a, const Matrix3x3 & b)
 /*
 #ifdef OG
 ** Multiply a Matrix3 by a Vector3. Yeilds a Vector3 result
-#endif
+#endif // OG
 #ifdef ZH
 ** Multiply a Matrix3x3 by a Vector3. Yeilds a Vector3 result
-#endif
+#endif // ZH
 */
 #ifdef OG
 WWINLINE Vector3 operator * (const Matrix3 & a, const Vector3 & v) 
-#endif
+#endif // OG
 #ifdef ZH
 WWINLINE Vector3 operator * (const Matrix3x3 & a, const Vector3 & v) 
-#endif
+#endif // ZH
 {
 	return Vector3(
 		a[0][0] * v[0] + a[0][1] * v[1] + a[0][2] * v[2],
@@ -1247,10 +1247,10 @@ WWINLINE Vector3 operator * (const Matrix3x3 & a, const Vector3 & v)
 
 #ifdef OG
 WWINLINE int operator == (const Matrix3 & a, const Matrix3 & b)
-#endif
+#endif // OG
 #ifdef ZH
 WWINLINE int operator == (const Matrix3x3 & a, const Matrix3x3 & b)
-#endif
+#endif // ZH
 {
 	return ((a [0] == b [0]) && (a [1] == b [1]) && (a [2] == b [2]));
 }
@@ -1258,10 +1258,10 @@ WWINLINE int operator == (const Matrix3x3 & a, const Matrix3x3 & b)
 
 #ifdef OG
 WWINLINE int operator != (const Matrix3 & a, const Matrix3 & b)
-#endif
+#endif // OG
 #ifdef ZH
 WWINLINE int operator != (const Matrix3x3 & a, const Matrix3x3 & b)
-#endif
+#endif // ZH
 {
 	return (!(a == b));
 }
@@ -1270,10 +1270,10 @@ WWINLINE int operator != (const Matrix3x3 & a, const Matrix3x3 & b)
 /*********************************************************************************************** 
 #ifdef OG
  * Matrix3::Rotate_X -- Post-mutiplies an x rotation onto the current matrix                   * 
-#endif
+#endif // OG
 #ifdef ZH
  * Matrix3x3::Rotate_X -- Post-mutiplies an x rotation onto the current matrix                   * 
-#endif
+#endif // ZH
  *                                                                                             * 
  * INPUT:                                                                                      * 
  *                                                                                             * 
@@ -1286,20 +1286,20 @@ WWINLINE int operator != (const Matrix3x3 & a, const Matrix3x3 & b)
  *=============================================================================================*/
 #ifdef OG
 WWINLINE void Matrix3::Rotate_X(float theta)
-#endif
+#endif // OG
 #ifdef ZH
 WWINLINE void Matrix3x3::Rotate_X(float theta)
-#endif
+#endif // ZH
 {
 	Rotate_X(sinf(theta),cosf(theta));
 }
 
 #ifdef OG
 WWINLINE void Matrix3::Rotate_X(float s,float c)
-#endif
+#endif // OG
 #ifdef ZH
 WWINLINE void Matrix3x3::Rotate_X(float s,float c)
-#endif
+#endif // ZH
 {
 	float tmp1,tmp2;
 
@@ -1319,10 +1319,10 @@ WWINLINE void Matrix3x3::Rotate_X(float s,float c)
 /*********************************************************************************************** 
 #ifdef OG
  * Matrix3::Rotate_Y -- Post-multiplies the matrix with a rotation about Y                     * 
-#endif
+#endif // OG
 #ifdef ZH
  * Matrix3x3::Rotate_Y -- Post-multiplies the matrix with a rotation about Y                     * 
-#endif
+#endif // ZH
  *                                                                                             * 
  * INPUT:                                                                                      * 
  *                                                                                             * 
@@ -1335,20 +1335,20 @@ WWINLINE void Matrix3x3::Rotate_X(float s,float c)
  *=============================================================================================*/
 #ifdef OG
 WWINLINE void Matrix3::Rotate_Y(float theta)
-#endif
+#endif // OG
 #ifdef ZH
 WWINLINE void Matrix3x3::Rotate_Y(float theta)
-#endif
+#endif // ZH
 {
 	Rotate_Y(sinf(theta),cosf(theta));
 }
 
 #ifdef OG
 WWINLINE void Matrix3::Rotate_Y(float s,float c)
-#endif
+#endif // OG
 #ifdef ZH
 WWINLINE void Matrix3x3::Rotate_Y(float s,float c)
-#endif
+#endif // ZH
 {
 	float tmp1,tmp2;
 
@@ -1369,10 +1369,10 @@ WWINLINE void Matrix3x3::Rotate_Y(float s,float c)
 /*********************************************************************************************** 
 #ifdef OG
  * Matrix3::Rotate_Z -- Post-multiplies the matrix with a rotation about Z                     * 
-#endif
+#endif // OG
 #ifdef ZH
  * Matrix3x3::Rotate_Z -- Post-multiplies the matrix with a rotation about Z                     * 
-#endif
+#endif // ZH
  *                                                                                             * 
  * INPUT:                                                                                      * 
  *                                                                                             * 
@@ -1385,20 +1385,20 @@ WWINLINE void Matrix3x3::Rotate_Y(float s,float c)
  *=============================================================================================*/
 #ifdef OG
 WWINLINE void Matrix3::Rotate_Z(float theta)
-#endif
+#endif // OG
 #ifdef ZH
 WWINLINE void Matrix3x3::Rotate_Z(float theta)
-#endif
+#endif // ZH
 {
 	Rotate_Z(sinf(theta),cosf(theta));
 }
 
 #ifdef OG
 WWINLINE void Matrix3::Rotate_Z(float s,float c)
-#endif
+#endif // OG
 #ifdef ZH
 WWINLINE void Matrix3x3::Rotate_Z(float s,float c)
-#endif
+#endif // ZH
 {
 	float tmp1,tmp2;
 
@@ -1430,17 +1430,17 @@ WWINLINE void Matrix3x3::Rotate_Z(float s,float c)
  *=============================================================================================*/
 #ifdef OG
 WWINLINE Matrix3 Create_X_Rotation_Matrix3(float s,float c)
-#endif
+#endif // OG
 #ifdef ZH
 WWINLINE Matrix3x3 Create_X_Rotation_Matrix3(float s,float c)
-#endif
+#endif // ZH
 {
 #ifdef OG
 	Matrix3 mat;
-#endif
+#endif // OG
 #ifdef ZH
 	Matrix3x3 mat;
-#endif
+#endif // ZH
 
 	mat[0][0] = 1.0f;
 	mat[0][1] = 0.0f;
@@ -1459,10 +1459,10 @@ WWINLINE Matrix3x3 Create_X_Rotation_Matrix3(float s,float c)
 
 #ifdef OG
 WWINLINE Matrix3 Create_X_Rotation_Matrix3(float rad)
-#endif
+#endif // OG
 #ifdef ZH
 WWINLINE Matrix3x3 Create_X_Rotation_Matrix3(float rad)
-#endif
+#endif // ZH
 {
 	return Create_X_Rotation_Matrix3(sinf(rad),cosf(rad));
 }
@@ -1470,10 +1470,10 @@ WWINLINE Matrix3x3 Create_X_Rotation_Matrix3(float rad)
 /*********************************************************************************************** 
 #ifdef OG
  * Create_Y_Rotation_Matrix3 -- Creates a Matrix3 which is a rotation about Y                  * 
-#endif
+#endif // OG
 #ifdef ZH
  * Create_Y_Rotation_Matrix3 -- Creates a Matrix3x3 which is a rotation about Y                  * 
-#endif
+#endif // ZH
  *                                                                                             * 
  * INPUT:                                                                                      * 
  *                                                                                             * 
@@ -1486,17 +1486,17 @@ WWINLINE Matrix3x3 Create_X_Rotation_Matrix3(float rad)
  *=============================================================================================*/
 #ifdef OG
 WWINLINE Matrix3 Create_Y_Rotation_Matrix3(float s,float c)
-#endif
+#endif // OG
 #ifdef ZH
 WWINLINE Matrix3x3 Create_Y_Rotation_Matrix3(float s,float c)
-#endif
+#endif // ZH
 {
 #ifdef OG
 	Matrix3 mat;
-#endif
+#endif // OG
 #ifdef ZH
 	Matrix3x3 mat;
-#endif
+#endif // ZH
 
 	mat[0][0] = c;
 	mat[0][1] = 0.0f;
@@ -1515,10 +1515,10 @@ WWINLINE Matrix3x3 Create_Y_Rotation_Matrix3(float s,float c)
 
 #ifdef OG
 WWINLINE Matrix3 Create_Y_Rotation_Matrix3(float rad)
-#endif
+#endif // OG
 #ifdef ZH
 WWINLINE Matrix3x3 Create_Y_Rotation_Matrix3(float rad)
-#endif
+#endif // ZH
 {
 	return Create_Y_Rotation_Matrix3(sinf(rad),cosf(rad));
 }
@@ -1537,17 +1537,17 @@ WWINLINE Matrix3x3 Create_Y_Rotation_Matrix3(float rad)
  *=============================================================================================*/
 #ifdef OG
 WWINLINE Matrix3 Create_Z_Rotation_Matrix3(float s,float c)
-#endif
+#endif // OG
 #ifdef ZH
 WWINLINE Matrix3x3 Create_Z_Rotation_Matrix3(float s,float c)
-#endif
+#endif // ZH
 {
 #ifdef OG
 	Matrix3 mat;
-#endif
+#endif // OG
 #ifdef ZH
 	Matrix3x3 mat;
-#endif
+#endif // ZH
 
 	mat[0][0] = c;
 	mat[0][1] = -s;
@@ -1566,20 +1566,20 @@ WWINLINE Matrix3x3 Create_Z_Rotation_Matrix3(float s,float c)
 
 #ifdef OG
 WWINLINE Matrix3 Create_Z_Rotation_Matrix3(float rad)
-#endif
+#endif // OG
 #ifdef ZH
 WWINLINE Matrix3x3 Create_Z_Rotation_Matrix3(float rad)
-#endif
+#endif // ZH
 {
 	return Create_Z_Rotation_Matrix3(sinf(rad),cosf(rad));
 }
 
 #ifdef OG
 WWINLINE void Matrix3::Rotate_Vector(const Matrix3 & A,const Vector3 & in,Vector3 * out)
-#endif
+#endif // OG
 #ifdef ZH
 WWINLINE void Matrix3x3::Rotate_Vector(const Matrix3x3 & A,const Vector3 & in,Vector3 * out)
-#endif
+#endif // ZH
 {
 	Vector3 tmp;
 	Vector3 * v;
@@ -1599,10 +1599,10 @@ WWINLINE void Matrix3x3::Rotate_Vector(const Matrix3x3 & A,const Vector3 & in,Ve
 
 #ifdef OG
 WWINLINE void Matrix3::Transpose_Rotate_Vector(const Matrix3 & A,const Vector3 & in,Vector3 * out)
-#endif
+#endif // OG
 #ifdef ZH
 WWINLINE void Matrix3x3::Transpose_Rotate_Vector(const Matrix3x3 & A,const Vector3 & in,Vector3 * out)
-#endif
+#endif // ZH
 {
 	Vector3 tmp;
 	Vector3 * v;
@@ -1621,10 +1621,10 @@ WWINLINE void Matrix3x3::Transpose_Rotate_Vector(const Matrix3x3 & A,const Vecto
 
 #ifdef OG
 WWINLINE void Matrix3::Rotate_AABox_Extent(const Vector3 & extent,Vector3 * set_extent)
-#endif
+#endif // OG
 #ifdef ZH
 WWINLINE void Matrix3x3::Rotate_AABox_Extent(const Vector3 & extent,Vector3 * set_extent)
-#endif
+#endif // ZH
 {
 	// push each extent out to the projections of the original extents
 	for (int i=0; i<3; i++) {

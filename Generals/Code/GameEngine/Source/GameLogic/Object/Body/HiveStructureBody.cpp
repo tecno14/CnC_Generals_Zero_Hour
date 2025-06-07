@@ -44,7 +44,7 @@
 #ifdef ZH
 #include "GameLogic/Module/ContainModule.h"
 
-#endif
+#endif // ZH
 // PUBLIC FUNCTIONS ///////////////////////////////////////////////////////////////////////////////
 
 //-------------------------------------------------------------------------------------------------
@@ -112,7 +112,7 @@ void HiveStructureBody::attemptDamage( DamageInfo *damageInfo )
 				{
 					//Propagate damage and return!
 					rider->attemptDamage( damageInfo );
-#endif
+#endif // ZH
 					return;
 				}
 				else if( getDamageTypeFlag( data->m_damageTypesToSwallow, damageInfo->in.m_damageType ) )

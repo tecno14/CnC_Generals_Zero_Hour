@@ -46,7 +46,7 @@ const char* DisabledMaskType::s_bitNameList[] =
   "DISABLED_BRAINWASHED",
 	"DISABLED_SUBDUED",
 
-#endif
+#endif // ZH
 	"DISABLED_SCRIPT_DISABLED",
 	"DISABLED_SCRIPT_UNDERPOWERED",
 

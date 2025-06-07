@@ -93,27 +93,27 @@ public:
 	virtual Bool isGarrisonable() const { return false; }	///< can this unit be Garrisoned? (ick)
 #ifdef ZH
 	virtual Bool isBustable() const { return TRUE; }	///< can this container get busted by a bunkerbuster
-#endif
+#endif // ZH
 	virtual Bool isHealContain() const { return false; } ///< true when container only contains units while healing (not a transport!)
 #ifdef ZH
 	virtual Bool isTunnelContain() const { return TRUE; }
-#endif
+#endif // ZH
 	virtual Bool isImmuneToClearBuildingAttacks() const { return true; }
 #ifdef ZH
   virtual Bool isSpecialOverlordStyleContainer() const {return FALSE;}
-#endif
+#endif // ZH
 
 #ifdef OG
 	virtual void onContaining( Object *obj );		///< object now contains 'obj'
-#endif
+#endif // OG
 #ifdef ZH
 	virtual void onContaining( Object *obj, Bool wasSelected );		///< object now contains 'obj'
-#endif
+#endif // ZH
 	virtual void onRemoving( Object *obj );			///< object no longer contains 'obj'
 	virtual void onSelling();///< Container is being sold.  Tunnel responds by kicking people out if this is the last tunnel.
 #ifdef ZH
 	virtual void onCapture( Player *oldOwner, Player *newOwner ); // Need to change who we are registered with.
-#endif
+#endif // ZH
 
 	virtual Bool isValidContainerFor(const Object* obj, Bool checkCapacity) const;
 	virtual void addToContainList( Object *obj );		///< The part of AddToContain that inheritors can override (Can't do whole thing because of all the private stuff involved)
@@ -122,7 +122,7 @@ public:
 #ifdef ZH
   virtual void harmAndForceExitAllContained( DamageInfo *info );
   virtual void killAllContained( void );				///< kill all objects on contain list
-#endif
+#endif // ZH
 
 	// contain list access
 	virtual void iterateContained( ContainIterateFunc func, void *userData, Bool reverse );
@@ -140,11 +140,11 @@ public:
 #ifdef OG
 	virtual void onBuildComplete();	///< This is called when you are a finished game object
 
-#endif
+#endif // OG
 #ifdef ZH
 	virtual void onObjectCreated();
 	virtual void onBuildComplete();
-#endif
+#endif // ZH
 	virtual Bool shouldDoOnBuildComplete() const { return m_needToRunOnBuildComplete; }
 
 	// so that the ppl within the tunnel network can get healed	

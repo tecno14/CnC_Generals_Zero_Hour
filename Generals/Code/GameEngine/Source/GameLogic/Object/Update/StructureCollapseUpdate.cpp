@@ -337,10 +337,10 @@ void StructureCollapseUpdate::doPhaseStuff(StructureCollapsePhaseType scphase, c
 			const ObjectCreationList* ocl = v[idx];
 #ifdef OG
 			ObjectCreationList::create(ocl, getObject(), target, NULL);
-#endif
+#endif // OG
 #ifdef ZH
 			ObjectCreationList::create(ocl, getObject(), target, NULL, getObject()->getOrientation() );
-#endif
+#endif // ZH
 		}
 	}
 }

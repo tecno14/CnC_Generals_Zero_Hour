@@ -63,7 +63,7 @@ public:
 	const FXList *m_upgradedPulseFX;						///< FXList to play for pulse when upgraded
 #ifdef ZH
 	Bool m_affectsSelf;													///< Allow effect to affect ourselves
-#endif
+#endif // ZH
 
 };
 

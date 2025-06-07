@@ -24,31 +24,31 @@
  *                                                                                             *
 #ifdef OG
  *                     $Archive:: /VSS_Sync/wwlib/ini.h                                       $*
-#endif
+#endif // OG
 #ifdef ZH
  *                     $Archive:: /Commando/Code/wwlib/ini.h                                  $*
-#endif
+#endif // ZH
  *                                                                                             *
 #ifdef OG
  *                      $Author:: Vss_sync                                                    $*
-#endif
+#endif // OG
 #ifdef ZH
  *                      $Author:: Steve_t                                                     $*
-#endif
+#endif // ZH
  *                                                                                             *
 #ifdef OG
  *                     $Modtime:: 3/21/01 12:01p                                              $*
-#endif
+#endif // OG
 #ifdef ZH
  *                     $Modtime:: 11/14/01 1:32a                                              $*
-#endif
+#endif // ZH
  *                                                                                             *
 #ifdef OG
  *                    $Revision:: 12                                                          $*
-#endif
+#endif // OG
 #ifdef ZH
  *                    $Revision:: 16                                                          $*
-#endif
+#endif // ZH
  *                                                                                             *
  *---------------------------------------------------------------------------------------------*
  * Functions:                                                                                  *
@@ -62,7 +62,7 @@
 #ifdef ZH
 
 #include <wchar.h>
-#endif
+#endif // ZH
 
 //#include	"listnode.h"
 //#include	"trect.h"
@@ -80,7 +80,7 @@ class Pipe;
 class StringClass;
 #ifdef ZH
 class WideStringClass;
-#endif
+#endif // ZH
 class FileFactoryClass;
 
 struct INISection;
@@ -120,7 +120,7 @@ class INIClass {
 		static void Keep_Blank_Entries(bool keep_blanks);
 
 		/*
-#endif
+#endif // ZH
 		**	Fetch and store INI data.
 		*/
 		int Load(FileClass & file);
@@ -135,7 +135,7 @@ class INIClass {
 		** Fetch the name of the INI file (if it wasn't created from a Straw).
 		*/
 		const char * Get_Filename(void) const;
-#endif
+#endif // ZH
 
 		/*
 		**	Erase all data within this INI file manager.
@@ -173,22 +173,22 @@ class INIClass {
 #ifdef OG
 		float Get_Float(char const * section, char const * entry, float defvalue=0.0) const;
 
-#endif
+#endif // OG
 #ifdef ZH
 		float Get_Float(char const * section, char const * entry, float defvalue=0.0f) const;
 		double Get_Double(char const * section, char const * entry, double defvalue=0.0) const;
-#endif
+#endif // ZH
 		int Get_Hex(char const * section, char const * entry, int defvalue=0) const;
 		int Get_Int(char const * section, char const * entry, int defvalue=0) const;
 		int Get_String(char const * section, char const * entry, char const * defvalue, char * buffer, int size) const;
 #ifdef OG
 		StringClass Get_String(char const * section, char const * entry, char const * defvalue="") const;
 
-#endif
+#endif // OG
 #ifdef ZH
 		const StringClass& Get_String(StringClass& new_string, char const * section, char const * entry, char const * defvalue="") const;
 		const WideStringClass& Get_Wide_String(WideStringClass& new_string, char const * section, char const * entry, wchar_t const * defvalue=L"") const;
-#endif
+#endif // ZH
 		int Get_List_Index(char const * section, char const * entry, int const defvalue, char *list[]);
 		int *	Get_Alloc_Int_Array(char const * section, char const * entry, int listend);
 		int Get_Int_Bitfield(char const * section, char const * entry, int defvalue, char *list[]); 
@@ -197,7 +197,7 @@ class INIClass {
 		int Get_UUBlock(char const * section, void * buffer, int len) const;
 #ifdef ZH
 		int Get_UUBlock(char const * section, char const *entry, void * block, int len) const;
-#endif
+#endif // ZH
 		TRect<int> const Get_Rect(char const * section, char const * entry, TRect<int> const & defvalue) const;
 		TPoint3D<int> const Get_Point(char const * section, char const * entry, TPoint3D<int> const & defvalue) const;
 		TPoint2D<int> const Get_Point(char const * section, char const * entry, TPoint2D<int> const & defvalue) const;
@@ -211,11 +211,11 @@ class INIClass {
 #ifdef OG
 		bool Put_Float(char const * section, char const * entry, double number);
 
-#endif
+#endif // OG
 #ifdef ZH
 		bool Put_Float(char const * section, char const * entry, float number);
 		bool Put_Double(char const * section, char const * entry, double number);
-#endif
+#endif // ZH
 		bool Put_Hex(char const * section, char const * entry, int number);
 		bool Put_Int(char const * section, char const * entry, int number, int format=0);
 		bool Put_PKey(PKey const & key);
@@ -224,26 +224,26 @@ class INIClass {
 		bool Put_UUBlock(char const * section, void const * block, int len);
 #ifdef ZH
 		bool Put_UUBlock(char const * section, char const *entry, void const * block, int len);
-#endif
+#endif // ZH
 		bool Put_Rect(char const * section, char const * entry, TRect<int> const & value);
 		bool Put_Point(char const * section, char const * entry, TPoint3D<int> const & value);
 		bool Put_Point(char const * section, char const * entry, TPoint3D<float> const & value);
 		bool Put_Point(char const * section, char const * entry, TPoint2D<int> const & value);
 #ifdef ZH
 		bool Put_Wide_String(char const * section, char const * entry, wchar_t const * string);
-#endif
+#endif // ZH
 
 //	protected:
 #ifdef OG
 		enum {MAX_LINE_LENGTH=512};
 
-#endif
+#endif // OG
 #ifdef ZH
 
 		// Declared here, but assigned a value in ini.cpp. This is done so that we
 		// can change this value in the future without needed to rebuild the entire world.
 		static const int MAX_LINE_LENGTH;
-#endif
+#endif // ZH
 
 		/*
 		**	Access to the list of all sections within this INI file.
@@ -269,10 +269,10 @@ class INIClass {
 		// that an entry's CRC matches one already in the database.
 #ifdef OG
 		void DuplicateCRCError(const char *message, const char *entry);
-#endif
+#endif // OG
 #ifdef ZH
 		void DuplicateCRCError(const char *message, const char *section, const char *entry);
-#endif
+#endif // ZH
 
 	private:
 
@@ -305,7 +305,7 @@ class INIClass {
 		** The flag used to control the blank entry loading behavior.
 		*/
 		static bool KeepBlankEntries;
-#endif
+#endif // ZH
 };
 
 #endif

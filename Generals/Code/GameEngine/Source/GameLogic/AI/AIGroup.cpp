@@ -55,7 +55,7 @@
 #include "GameLogic/Module/StealthUpdate.h"
 #ifdef ZH
 #include "GameLogic/Module/SpecialPowerUpdateModule.h"
-#endif
+#endif // ZH
 #include "GameLogic/ObjectIter.h"
 
 #ifdef _INTERNAL
@@ -642,7 +642,7 @@ Bool AIGroup::friend_computeGroundPath( const Coord3D *pos, CommandSourceType cm
 #ifdef ZH
 
 }
-#endif
+#endif // ZH
 
 #ifdef ZH
 static void clampToMap(Coord3D *dest, PlayerType pt)
@@ -655,7 +655,7 @@ static void clampToMap(Coord3D *dest, PlayerType pt)
 	} else {
 		// Human player has to stay within the visible map.
 		TheTerrainLogic->getExtent(&extent);
-#endif
+#endif // ZH
 }
 
 #ifdef ZH
@@ -680,7 +680,7 @@ static void clampToMap(Coord3D *dest, PlayerType pt)
 	}
 }
 
-#endif
+#endif // ZH
 //-------------------------------------------------------------------------------------------------
 // Internal function for moving a group of infantry as a column.
 //
@@ -759,7 +759,7 @@ Bool AIGroup::friend_moveInfantryToPos( const Coord3D *pos, CommandSourceType cm
 	std::list<Object *>::iterator i;
 #ifdef ZH
 	PlayerType controllingPlayerType = PLAYER_COMPUTER;
-#endif
+#endif // ZH
 	for( i = m_memberList.begin(); i != m_memberList.end(); ++i )	
 	{
 		if ((*i)->isDisabledByType( DISABLED_HELD ) ) 
@@ -782,7 +782,7 @@ Bool AIGroup::friend_moveInfantryToPos( const Coord3D *pos, CommandSourceType cm
 		}
 		if ((*i)->getControllingPlayer()) {
 			controllingPlayerType = (*i)->getControllingPlayer()->getPlayerType();
-#endif
+#endif // ZH
 		}
 		Coord3D unitPos = *((*i)->getPosition());
 		TheAI->pathfinder()->removeGoal(*i);
@@ -985,7 +985,7 @@ Bool AIGroup::friend_moveInfantryToPos( const Coord3D *pos, CommandSourceType cm
 
 #ifdef ZH
 			clampToMap(&dest, controllingPlayerType);
-#endif
+#endif // ZH
 			// Make sure that this dest is going in the same direction as the vector.
 			if (cornerVector.x*curVector.x + cornerVector.y*curVector.y > 0) {
 				path.push_back( dest );
@@ -1041,7 +1041,7 @@ Bool AIGroup::friend_moveInfantryToPos( const Coord3D *pos, CommandSourceType cm
 		}
 #ifdef ZH
 		clampToMap(&dest, controllingPlayerType);
-#endif
+#endif // ZH
 		TheAI->pathfinder()->adjustDestination(theUnit, ai->getLocomotorSet(), &dest, NULL);
 		TheAI->pathfinder()->updateGoal(theUnit, &dest, LAYER_GROUND);
 		path.push_back(dest);
@@ -1235,7 +1235,7 @@ Bool AIGroup::friend_moveVehicleToPos( const Coord3D *pos, CommandSourceType cmd
 	iterHolder2.hold(iter2);
 #ifdef ZH
 	PlayerType controllingPlayerType = PLAYER_COMPUTER;
-#endif
+#endif // ZH
 	std::list<Object *>::iterator i;
 	for( i = m_memberList.begin(); i != m_memberList.end(); ++i )	
 	{
@@ -1259,7 +1259,7 @@ Bool AIGroup::friend_moveVehicleToPos( const Coord3D *pos, CommandSourceType cmd
 		if ((*i)->getControllingPlayer()) {
 			controllingPlayerType = (*i)->getControllingPlayer()->getPlayerType();
 		}
-#endif
+#endif // ZH
 		Coord3D unitPos = *((*i)->getPosition());
 		TheAI->pathfinder()->removeGoal(*i);
 		Real dx, dy;
@@ -1468,7 +1468,7 @@ Bool AIGroup::friend_moveVehicleToPos( const Coord3D *pos, CommandSourceType cmd
 			curVector.y = dest.y-prevPos.y;
 #ifdef ZH
 			clampToMap(&dest, controllingPlayerType);
-#endif
+#endif // ZH
 			// Make sure that this dest is going in the same direction as the vector.
 			if (cornerVector.x*curVector.x + cornerVector.y*curVector.y > 0) {
 				path.push_back( dest );
@@ -1527,7 +1527,7 @@ Bool AIGroup::friend_moveVehicleToPos( const Coord3D *pos, CommandSourceType cmd
 		}
 #ifdef ZH
 		clampToMap(&dest, controllingPlayerType);
-#endif
+#endif // ZH
 		TheAI->pathfinder()->adjustDestination(theUnit, ai->getLocomotorSet(), &dest, NULL);
 		TheAI->pathfinder()->updateGoal(theUnit, &dest, LAYER_GROUND);
 		path.push_back(dest);
@@ -1560,7 +1560,7 @@ void clampWaypointPosition( Coord3D &position, Int margin )
       position.x = mapExtent.hi.x;
     else if ( position.x < mapExtent.lo.x )
       position.x = mapExtent.lo.x;
-#endif
+#endif // ZH
 
 #ifdef ZH
     if ( position.y > mapExtent.hi.y )
@@ -1572,23 +1572,23 @@ void clampWaypointPosition( Coord3D &position, Int margin )
   }
 }
 
-#endif
+#endif // ZH
 /**
  * Move to given position(s)
  */
 #ifdef OG
 void AIGroup::groupMoveToPosition( const Coord3D *pos, Bool addWaypoint, CommandSourceType cmdSource )
-#endif
+#endif // OG
 #ifdef ZH
 void AIGroup::groupMoveToPosition( const Coord3D *p_posIn, Bool addWaypoint, CommandSourceType cmdSource )
-#endif
+#endif // ZH
 {
 #ifdef ZH
 
   Coord3D position = *p_posIn;
   Coord3D *pos = &position;
 
-#endif
+#endif // ZH
 	Bool didInfantry = false;
 	Bool didVehicles = false;
 	// compute current centroid of the team
@@ -1602,14 +1602,14 @@ void AIGroup::groupMoveToPosition( const Coord3D *p_posIn, Bool addWaypoint, Com
 #ifdef OG
 	if (addWaypoint) isFormation = false;
 
-#endif
+#endif // OG
 #ifdef ZH
 	if (addWaypoint) 
   {
     isFormation = false;
   }
 
-#endif
+#endif // ZH
 	if (!addWaypoint && !isFormation) {
 		friend_computeGroundPath(pos, cmdSource);
 		didInfantry = friend_moveInfantryToPos(pos, cmdSource);
@@ -1631,7 +1631,7 @@ void AIGroup::groupMoveToPosition( const Coord3D *p_posIn, Bool addWaypoint, Com
 #ifdef ZH
 
   Real extraMargin = 0.0f;
-#endif
+#endif // ZH
 
 	for( i = m_memberList.begin(); i != m_memberList.end(); ++i )	
 #ifdef ZH
@@ -1646,24 +1646,24 @@ void AIGroup::groupMoveToPosition( const Coord3D *p_posIn, Bool addWaypoint, Com
     else if ( groupMember->isKindOf( KINDOF_AIRCRAFT ) )// fixed wing aircraft only
     {
 			if ( groupMember->getAI() && groupMember->getAI()->isDoingGroundMovement() == FALSE ) //if unit is airborne
-#endif
+#endif // ZH
 	{
 #ifdef OG
 		if ((*i)->getAI()) {
 			if (!(*i)->getAI()->isDoingGroundMovement()) {
-#endif
+#endif // OG
 				tightenGroup = FALSE;	// Don't tighten aircraft.  It is a bad idea. jba.
 #ifdef OG
 				isFormation = false;
-#endif
+#endif // OG
 #ifdef ZH
 				isFormation = FALSE;//then keep spread formation after move
-#endif
+#endif // ZH
 			}
 #ifdef ZH
 
       extraMargin = MAX( extraMargin, STD_AIRCRAFT_EXTRA_MARGIN );
-#endif
+#endif // ZH
 		}
 	} 
 
@@ -1673,7 +1673,7 @@ void AIGroup::groupMoveToPosition( const Coord3D *p_posIn, Bool addWaypoint, Com
 
   
 
-#endif
+#endif // ZH
 	if (tightenGroup)
 	{
 		isFormation = false;
@@ -1719,11 +1719,11 @@ void AIGroup::groupMoveToPosition( const Coord3D *p_posIn, Bool addWaypoint, Com
 #ifdef OG
 		if ((*i)->isKindOf(KINDOF_VEHICLE) && didVehicles) {
 
-#endif
+#endif // OG
 #ifdef ZH
 		if ((*i)->isKindOf(KINDOF_VEHICLE) && didVehicles) 
 		{
-#endif
+#endif // ZH
 			if( (*i)->getAI()->isDoingGroundMovement() )
 			{	
 #ifdef ZH
@@ -1731,13 +1731,13 @@ void AIGroup::groupMoveToPosition( const Coord3D *p_posIn, Bool addWaypoint, Com
 				if( !obj->isKindOf( KINDOF_CLIFF_JUMPER ) )
 				{
 					//Not a cliff-jumper-offer unit.
-#endif
+#endif // ZH
 				continue;
 			}	 
 		}
 #ifdef ZH
 		}
-#endif
+#endif // ZH
 		Coord3D unitPos = *((*i)->getPosition());
 		TheAI->pathfinder()->removeGoal(*i);
 		dx = unitPos.x - pos->x;
@@ -1784,10 +1784,10 @@ void AIGroup::groupMoveToPosition( const Coord3D *p_posIn, Bool addWaypoint, Com
 
 #ifdef OG
 		if( cmdSource == CMD_FROM_PLAYER && BitTest( theUnit->getStatusBits(), OBJECT_STATUS_CAN_STEALTH ) && ai->canAutoAcquire() )
-#endif
+#endif // OG
 #ifdef ZH
 		if( cmdSource == CMD_FROM_PLAYER && theUnit->getStatusBits().test( OBJECT_STATUS_CAN_STEALTH ) && ai->canAutoAcquire() )
-#endif
+#endif // ZH
 		{
 			//When ordering a combat stealth unit to move, there is a single special case we want to handle.
 			//When a stealth unit is currently not stealthed and doesn't autoacquire while stealthed,
@@ -1795,10 +1795,10 @@ void AIGroup::groupMoveToPosition( const Coord3D *p_posIn, Bool addWaypoint, Com
 			//he is able to stealth again. Of course, if he's detected, then don't bother trying.
 #ifdef OG
 			if( !BitTest( theUnit->getStatusBits(), OBJECT_STATUS_STEALTHED ) && !BitTest( theUnit->getStatusBits(), OBJECT_STATUS_DETECTED ) )
-#endif
+#endif // OG
 #ifdef ZH
 			if( !theUnit->getStatusBits().test( OBJECT_STATUS_STEALTHED ) && !theUnit->getStatusBits().test( OBJECT_STATUS_DETECTED ) )
-#endif
+#endif // ZH
 			{
 				//Not stealthed, not detected -- so do auto-acquire while stealthed?
 				if( !ai->canAutoAcquireWhileStealthed() )
@@ -1806,11 +1806,11 @@ void AIGroup::groupMoveToPosition( const Coord3D *p_posIn, Bool addWaypoint, Com
 #ifdef OG
 					static NameKeyType key_StealthUpdate = NAMEKEY( "StealthUpdate" );
 					StealthUpdate* stealth = (StealthUpdate*)theUnit->findUpdateModule( key_StealthUpdate );
-#endif
+#endif // OG
 #ifdef ZH
           StealthUpdate *stealth = theUnit->getStealth();
 
-#endif
+#endif // ZH
 					if( stealth )
 					{
 						//Delay the mood check time (for autoacquire) until after the unit can stealth again.
@@ -1916,7 +1916,7 @@ void getHelicopterOffset( Coord3D& posOut, Int idx )
   for (Int h = 1; h < idx; ++h )
   {
     angle += angleBetweenEachChopper;
-#endif
+#endif // ZH
 
 #ifdef ZH
     if ( angle > CIRCLE )
@@ -1934,7 +1934,7 @@ void getHelicopterOffset( Coord3D& posOut, Int idx )
 
 }
 
-#endif
+#endif // ZH
 /**
  * Move to given position(s), tightening the formation
  */
@@ -1992,7 +1992,7 @@ void AIGroup::groupTightenToPosition( const Coord3D *pos, Bool addWaypoint, Comm
   // the late date, this is much safer.
 
   Int heliIdx = 0;
-#endif
+#endif // ZH
 	Object *theUnit;
 	for (theUnit = iter->first(); theUnit; theUnit = iter->next())
 	{
@@ -2001,7 +2001,7 @@ void AIGroup::groupTightenToPosition( const Coord3D *pos, Bool addWaypoint, Comm
 #ifdef ZH
 		{
       if ( theUnit->isKindOf( KINDOF_PRODUCED_AT_HELIPAD ) ) //NEW
-#endif
+#endif // ZH
 		{
 #ifdef ZH
         Coord3D heliOffs = *pos;
@@ -2009,7 +2009,7 @@ void AIGroup::groupTightenToPosition( const Coord3D *pos, Bool addWaypoint, Comm
         ai->aiTightenToPosition( &heliOffs, CMD_FROM_AI );//NEW
       }
       else
-#endif
+#endif // ZH
 			ai->aiTightenToPosition( pos, cmdSource );
 		}
 		else
@@ -2153,10 +2153,10 @@ void AIGroup::groupIdle(CommandSourceType cmdSource)
 
 #ifdef OG
 			if( cmdSource == CMD_FROM_PLAYER && BitTest( obj->getStatusBits(), OBJECT_STATUS_CAN_STEALTH ) && ai->canAutoAcquire() )
-#endif
+#endif // OG
 #ifdef ZH
 			if( cmdSource == CMD_FROM_PLAYER && obj->getStatusBits().test( OBJECT_STATUS_CAN_STEALTH ) && ai->canAutoAcquire() )
-#endif
+#endif // ZH
 			{
 				//When ordering a combat stealth unit to stop, there is a single special case we want to handle.
 				//When a stealth unit is currently not stealthed and doesn't autoacquire while stealthed,
@@ -2164,10 +2164,10 @@ void AIGroup::groupIdle(CommandSourceType cmdSource)
 				//he is able to stealth again. Of course, if he's detected, then don't bother trying.
 #ifdef OG
 				if( !BitTest( obj->getStatusBits(), OBJECT_STATUS_STEALTHED ) && !BitTest( obj->getStatusBits(), OBJECT_STATUS_DETECTED ) )
-#endif
+#endif // OG
 #ifdef ZH
 				if( !obj->getStatusBits().test( OBJECT_STATUS_STEALTHED ) && !obj->getStatusBits().test( OBJECT_STATUS_DETECTED ) )
-#endif
+#endif // ZH
 				{
 					//Not stealthed, not detected -- so do auto-acquire while stealthed?
 					if( !ai->canAutoAcquireWhileStealthed() )
@@ -2175,11 +2175,11 @@ void AIGroup::groupIdle(CommandSourceType cmdSource)
 #ifdef OG
 						static NameKeyType key_StealthUpdate = NAMEKEY( "StealthUpdate" );
 						StealthUpdate* stealth = (StealthUpdate*)obj->findUpdateModule( key_StealthUpdate );
-#endif
+#endif // OG
 #ifdef ZH
             StealthUpdate *stealth = obj->getStealth();
 
-#endif
+#endif // ZH
 						if( stealth )
 						{
 							//Delay the mood check time (for autoacquire) until after the unit can stealth again.
@@ -2287,10 +2287,10 @@ void AIGroup::groupAttackObjectPrivate( Bool forced, Object *victim, Int maxShot
 		SpawnBehaviorInterface *spawnInterface = theUnit->getSpawnBehaviorInterface();
 #ifdef OG
 		if( spawnInterface )
-#endif
+#endif // OG
 #ifdef ZH
 		if( spawnInterface && !spawnInterface->doSlavesHaveFreedom() )
-#endif
+#endif // ZH
 		{
 			spawnInterface->orderSlavesToAttackTarget( victim, maxShotsToFire, cmdSource );
 		}
@@ -2377,10 +2377,10 @@ void AIGroup::groupAttackPosition( const Coord3D *pos, Int maxShotsToFire, Comma
 		SpawnBehaviorInterface *spawnInterface = (*i)->getSpawnBehaviorInterface();
 #ifdef OG
 		if( spawnInterface )
-#endif
+#endif // OG
 #ifdef ZH
 		if( spawnInterface && !spawnInterface->doSlavesHaveFreedom() )
-#endif
+#endif // ZH
 		{
 			spawnInterface->orderSlavesToAttackPosition( &attackPos, maxShotsToFire, cmdSource );
 		}
@@ -2575,10 +2575,10 @@ void AIGroup::groupEvacuate( CommandSourceType cmdSource )
 			{
 #ifdef OG
 				contain->orderAllPassengersToExit( cmdSource );
-#endif
+#endif // OG
 #ifdef ZH
 				contain->orderAllPassengersToExit( cmdSource, FALSE );
-#endif
+#endif // ZH
 			}
 		}
 	}
@@ -2770,10 +2770,10 @@ void AIGroup::groupDoSpecialPower( UnsignedInt specialPowerID, UnsignedInt comma
 			// Have to justify the execution in case someone changed their button
 #ifdef OG
 			if( (spTemplate->getRequiredScience() != SCIENCE_INVALID) && object->getControllingPlayer() )
-#endif
+#endif // OG
 #ifdef ZH
 			if( spTemplate->getRequiredScience() != SCIENCE_INVALID )
-#endif
+#endif // ZH
 			{
 				if( !object->getControllingPlayer()->hasScience(spTemplate->getRequiredScience()) )
 					continue;// Nice try, smacktard.
@@ -2800,19 +2800,19 @@ void AIGroup::groupDoSpecialPower( UnsignedInt specialPowerID, UnsignedInt comma
  */
 #ifdef OG
 void AIGroup::groupDoSpecialPowerAtLocation( UnsignedInt specialPowerID, const Coord3D *location, const Object *objectInWay, UnsignedInt commandOptions )
-#endif
+#endif // OG
 #ifdef ZH
 void AIGroup::groupDoSpecialPowerAtLocation( UnsignedInt specialPowerID, const Coord3D *location, Real angle, const Object *objectInWay, UnsignedInt commandOptions )
-#endif
+#endif // ZH
 {
 	//This one requires a position
 	std::list<Object *>::iterator i;
 #ifdef OG
 	for( i = m_memberList.begin(); i != m_memberList.end(); ++i )
-#endif
+#endif // OG
 #ifdef ZH
 	for( i = m_memberList.begin(); i != m_memberList.end(); )
-#endif
+#endif // ZH
 	{
 		//Special powers do a lot of different things, but the top level stuff doesn't use
 		//ai interface code. It finds the special power module and calls it directly for each object.
@@ -2826,17 +2826,17 @@ void AIGroup::groupDoSpecialPowerAtLocation( UnsignedInt specialPowerID, const C
          // destroys the AIGroup list, in order to keep the selection sync'ed with the group.
          // M Lorenzen... 8/23/03
     
-#endif
+#endif // ZH
 		const SpecialPowerTemplate *spTemplate = TheSpecialPowerStore->findSpecialPowerTemplateByID( specialPowerID );
 		if( spTemplate )
 		{
 			// Have to justify the execution in case someone changed their button
 #ifdef OG
 			if( (spTemplate->getRequiredScience() != SCIENCE_INVALID) && object->getControllingPlayer() )
-#endif
+#endif // OG
 #ifdef ZH
 			if( spTemplate->getRequiredScience() != SCIENCE_INVALID )
-#endif
+#endif // ZH
 			{
 				if( !object->getControllingPlayer()->hasScience(spTemplate->getRequiredScience()) )
 					continue;// Nice try, smacktard.
@@ -2849,10 +2849,10 @@ void AIGroup::groupDoSpecialPowerAtLocation( UnsignedInt specialPowerID, const C
 				{
 #ifdef OG
 					mod->doSpecialPowerAtLocation( location, commandOptions );
-#endif
+#endif // OG
 #ifdef ZH
 					mod->doSpecialPowerAtLocation( location, angle, commandOptions );
-#endif
+#endif // ZH
 
 					object->friend_setUndetectedDefector( FALSE );// My secret is out
 				}
@@ -2882,10 +2882,10 @@ void AIGroup::groupDoSpecialPowerAtObject( UnsignedInt specialPowerID, Object *t
 			// Have to justify the execution in case someone changed their button
 #ifdef OG
 			if( (spTemplate->getRequiredScience() != SCIENCE_INVALID) && object->getControllingPlayer() )
-#endif
+#endif // OG
 #ifdef ZH
 			if( spTemplate->getRequiredScience() != SCIENCE_INVALID )
-#endif
+#endif // ZH
 			{
 				if( !object->getControllingPlayer()->hasScience(spTemplate->getRequiredScience()) )
 					continue;// Nice try, smacktard.
@@ -3113,7 +3113,7 @@ void AIGroup::groupDoCommandButtonUsingWaypoints( const CommandButton *commandBu
 		source = *i;
 		
 		source->doCommandButtonUsingWaypoints( commandButton, way, cmdSource );
-#endif
+#endif // ZH
 	}  // end for, i
 }
 

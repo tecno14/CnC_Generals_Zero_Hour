@@ -98,7 +98,7 @@ public:
 #ifdef ZH
 	virtual void setFramesTillCountermeasureDiversionOccurs( UnsignedInt frames ) {}
 	virtual void projectileNowJammed() {}
-#endif
+#endif // ZH
 
 protected:
 
@@ -121,7 +121,7 @@ private:
 #ifdef ZH
   
   Bool                  m_hasDetonated;           ///< 
-#endif
+#endif // ZH
 
 	Bool calcFlightPath(Bool recalcNumSegments);
 #if defined(_DEBUG) || defined(_INTERNAL)

@@ -90,7 +90,7 @@ void TransportAIUpdate::privateAttackObject( Object *victim, Int maxShotsToFire,
 						|| passenger->isDisabledByType( DISABLED_EMP ) 
 #ifdef ZH
 						|| passenger->isDisabledByType( DISABLED_SUBDUED ) 
-#endif
+#endif // ZH
 						|| passenger->isDisabledByType( DISABLED_PARALYZED) )
 						continue;
 				}
@@ -137,7 +137,7 @@ void TransportAIUpdate::privateForceAttackObject( Object *victim, Int maxShotsTo
 						|| passenger->isDisabledByType( DISABLED_EMP ) 
 #ifdef ZH
 						|| passenger->isDisabledByType( DISABLED_SUBDUED ) 
-#endif
+#endif // ZH
 						|| passenger->isDisabledByType( DISABLED_PARALYZED) )
 						continue;
 				}
@@ -184,7 +184,7 @@ void TransportAIUpdate::privateAttackPosition( const Coord3D *pos, Int maxShotsT
 						|| passenger->isDisabledByType( DISABLED_EMP) 
 #ifdef ZH
 						|| passenger->isDisabledByType( DISABLED_SUBDUED ) 
-#endif
+#endif // ZH
 						|| passenger->isDisabledByType( DISABLED_PARALYZED) )
 						continue;
 				}

@@ -35,7 +35,7 @@ class ModifyObjectUndoable;
 class MultipleUndoable;
 class CWorldBuilderDoc;
 class MapObject;
-#endif
+#endif // ZH
 
 /////////////////////////////////////////////////////////////////////////////
 // External Defines
@@ -75,7 +75,7 @@ protected:
 
 #ifdef ZH
 	// Data common to all property pages
-#endif
+#endif // ZH
 	Dict* m_dictToEdit;
 	std::vector<Dict*> m_allSelectedDicts;
 	const char* m_title;
@@ -92,7 +92,7 @@ protected:
 	WBPopupSliderButton m_heightSlider;
 	WBPopupSliderButton m_angleSlider;
 	WBPopupSliderButton m_scaleSlider;
-#endif
+#endif // ZH
 
 #ifdef ZH
 	Int              m_defaultEntryIndex; //< Index in the sound combobox of the entry labelled "default"
@@ -103,7 +103,7 @@ protected:
 	Coord3D m_position;
 
 	void deletePages();
-#endif
+#endif // ZH
 	void updateTheUI(void);
 	void enableButtons();
 	int getSel();
@@ -113,7 +113,7 @@ protected:
 	Real m_angle;
 	Real m_height;
 	ModifyObjectUndoable *m_posUndoable;
-#endif
+#endif // OG
 
 	// Generated message map functions
 	//{{AFX_MSG(MapObjectProps)
@@ -121,11 +121,11 @@ protected:
 	virtual BOOL OnInitDialog();
 	virtual void OnOK();
 	virtual void OnCancel();
-#endif
+#endif // ZH
 	afx_msg void OnSelchangeProperties();
 #ifdef OG
 	virtual BOOL OnInitDialog();
-#endif
+#endif // OG
 	afx_msg void OnEditprop();
 	afx_msg void OnNewprop();
 	afx_msg void OnRemoveprop();
@@ -133,7 +133,7 @@ protected:
 #ifdef OG
 	virtual void OnOK();
 	virtual void OnCancel();
-#endif
+#endif // OG
 	afx_msg void _TeamToDict(void);
 	afx_msg void _NameToDict(void);
 #ifdef ZH
@@ -148,12 +148,12 @@ protected:
 	afx_msg void OnScaleOff();
 	afx_msg void OnKillfocusMAPOBJECTXYPosition();
 	afx_msg void _PrebuiltUpgradesToDict(void);
-#endif
+#endif // ZH
 	afx_msg void _HealthToDict(void);
 	afx_msg void _EnabledToDict(void);
 #ifdef OG
 	afx_msg void _ScriptToDict(void);
-#endif
+#endif // OG
 	afx_msg void _IndestructibleToDict(void);
 	afx_msg void _UnsellableToDict(void);
 	afx_msg void _TargetableToDict();
@@ -170,7 +170,7 @@ protected:
 	afx_msg void _PrebuiltUpgradesToDict(void);
 	afx_msg void SetZOffset(void);
 	afx_msg void SetAngle(void);
-#endif
+#endif // OG
 	afx_msg void _HPsToDict();
 	afx_msg void _StoppingDistanceToDict(void);
 #ifdef ZH
@@ -184,32 +184,32 @@ protected:
 	afx_msg void minRangeToDict(void);
 	afx_msg void maxRangeToDict(void);
 	afx_msg void priorityToDict(void);
-#endif
+#endif // ZH
 	//}}AFX_MSG
 
 	DECLARE_MESSAGE_MAP()
 
 #ifdef ZH
 	void _DictToName(void);
-#endif
+#endif // ZH
 	void _DictToTeam(void);
 #ifdef OG
 	void _DictToName(void);
 
-#endif
+#endif // OG
 #ifdef ZH
 	void _DictToScript(void);
 	void _DictToScale(void);
 	void _DictToWeather(void);
 	void _DictToTime(void);
 	void _DictToPrebuiltUpgrades(void);
-#endif
+#endif // ZH
 	void _DictToHealth(void);
 	void _DictToHPs(void);
 	void _DictToEnabled(void);
 #ifdef OG
 	void _DictToScript(void);
-#endif
+#endif // OG
 	void _DictToDestructible(void);
 	void _DictToUnsellable(void);
 	void _DictToTargetable(void);
@@ -224,18 +224,18 @@ protected:
 #ifdef OG
 	void _DictToWeather(void);
 	void _DictToTime(void);
-#endif
+#endif // OG
 #ifdef ZH
 	void _DictToStoppingDistance(void);
 
-#endif
+#endif // ZH
 	void ShowZOffset(MapObject* pMapObj);
 	void ShowAngle(MapObject* pMapObj);
 #ifdef OG
 	void _DictToStoppingDistance(void);
 	void _DictToPrebuiltUpgrades(void);
 
-#endif
+#endif // OG
 #ifdef ZH
 	void ShowPosition(MapObject* pMapObj);
 	void dictToAttachedSound(void);
@@ -250,21 +250,21 @@ protected:
 	void dictToPriority(void);
 
 	void clearCustomizeFlag( CWorldBuilderDoc* pDoc, MultipleUndoable * ownerUndoable );
-#endif
+#endif // ZH
 
 #ifdef OG
 public:
-#endif
+#endif // OG
 #ifdef ZH
 	// Implementation of PopupSliderOwner callbacks
-#endif
+#endif // ZH
 	virtual void GetPopSliderInfo(const long sliderID, long *pMin, long *pMax, long *pLineSize, long *pInitial);
 	virtual void PopSliderChanged(const long sliderID, long theVal);
 	virtual void PopSliderFinished(const long sliderID, long theVal);
 
 #ifdef ZH
 public:
-#endif
+#endif // ZH
 	static MapObject *getSingleSelectedMapObject(void);
 	static void update(void);
 
@@ -275,7 +275,7 @@ private:
   MapObjectProps & operator=( const MapObjectProps & other ); // Deliberately undefined
 	void updateTheUI(MapObject *pMapObj);
 	void InitSound(void);
-#endif
+#endif // ZH
 };
 
 //{{AFX_INSERT_LOCATION}}

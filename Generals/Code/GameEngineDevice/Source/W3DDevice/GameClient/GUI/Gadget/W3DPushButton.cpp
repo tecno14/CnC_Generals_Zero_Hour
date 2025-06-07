@@ -135,12 +135,12 @@ static void drawButtonText( GameWindow *window, WinInstanceData *instData )
 	}
 	else
 	{
-#endif
+#endif // ZH
 	textPos.x = origin.x + (size.x / 2) - (width / 2);
 	textPos.y = origin.y + (size.y / 2) - (height / 2);
 #ifdef ZH
 	}
-#endif
+#endif // ZH
 
 	// draw it
 	text->draw( textPos.x, textPos.y, textColor, dropColor );

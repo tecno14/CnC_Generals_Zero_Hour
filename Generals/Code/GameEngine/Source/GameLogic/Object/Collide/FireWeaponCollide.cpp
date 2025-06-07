@@ -48,11 +48,11 @@ void FireWeaponCollideModuleData::buildFieldParse(MultiIniFieldParse& p)
 #ifdef OG
 		{ "RequiredStatus",	INI::parseBitString32,	TheObjectStatusBitNames, offsetof( FireWeaponCollideModuleData, m_requiredStatus ) },
 		{ "ForbiddenStatus",	INI::parseBitString32,	TheObjectStatusBitNames, offsetof( FireWeaponCollideModuleData, m_forbiddenStatus ) },
-#endif
+#endif // OG
 #ifdef ZH
 		{ "RequiredStatus",		ObjectStatusMaskType::parseFromINI,	NULL, offsetof( FireWeaponCollideModuleData, m_requiredStatus ) },
 		{ "ForbiddenStatus",	ObjectStatusMaskType::parseFromINI,	NULL, offsetof( FireWeaponCollideModuleData, m_forbiddenStatus ) },
-#endif
+#endif // ZH
 		{ 0, 0, 0, 0 }
 	};
   p.add(dataFieldParse);
@@ -104,29 +104,29 @@ Bool FireWeaponCollide::shouldFireWeapon()
 
 #ifdef OG
 	UnsignedInt status = getObject()->getStatusBits();
-#endif
+#endif // OG
 #ifdef ZH
 	ObjectStatusMaskType status = getObject()->getStatusBits();
-#endif
+#endif // ZH
 	
 #ifdef OG
 	if( (status & d->m_requiredStatus) != d->m_requiredStatus )
 
-#endif
+#endif // OG
 #ifdef ZH
 	//We need all required status or else we fail
 	if( !status.testForAll( d->m_requiredStatus ) )
-#endif
+#endif // ZH
 		return FALSE; 
 
 #ifdef OG
 	if( (status & d->m_forbiddenStatus) != 0 )
 
-#endif
+#endif // OG
 #ifdef ZH
 	//If we have any forbidden statii, then fail
 	if( status.testForAny( d->m_forbiddenStatus ) )
-#endif
+#endif // ZH
 		return FALSE; 
 
 	if( m_everFired && d->m_fireOnce )

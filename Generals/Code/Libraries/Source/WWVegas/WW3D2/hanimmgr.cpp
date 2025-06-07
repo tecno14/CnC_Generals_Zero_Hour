@@ -18,10 +18,10 @@
 
 #ifdef OG
 /* $Header: /Commando/Code/ww3d2/hanimmgr.cpp 1     1/22/01 3:36p Greg_h $ */
-#endif
+#endif // OG
 #ifdef ZH
 /* $Header: /Commando/Code/ww3d2/hanimmgr.cpp 3     1/16/02 9:51a Jani_p $ */
-#endif
+#endif // ZH
 /*********************************************************************************************** 
  ***                            Confidential - Westwood Studios                              *** 
  *********************************************************************************************** 
@@ -34,17 +34,17 @@
  *                                                                                             * 
 #ifdef OG
  *                     $Modtime:: 1/08/01 10:04a                                              $* 
-#endif
+#endif // OG
 #ifdef ZH
  *                     $Modtime:: 1/16/02 9:49a                                               $* 
-#endif
+#endif // ZH
  *                                                                                             * 
 #ifdef OG
  *                    $Revision:: 1                                                           $* 
-#endif
+#endif // OG
 #ifdef ZH
  *                    $Revision:: 3                                                           $* 
-#endif
+#endif // ZH
  *                                                                                             * 
  *---------------------------------------------------------------------------------------------* 
  * Functions:                                                                                  * 
@@ -72,7 +72,7 @@
 #include "w3dexclusionlist.h"
 #ifdef ZH
 #include "animatedsoundmgr.h"
-#endif
+#endif // ZH
 
 
 /*********************************************************************************************** 
@@ -112,7 +112,7 @@ HAnimManagerClass::~HAnimManagerClass(void)
 	Free_All_Anims();
 #ifdef ZH
 	Reset_Missing();	// Jani: Deleting missing animations as well
-#endif
+#endif // ZH
 
 	delete AnimPtrTable;
 	AnimPtrTable = NULL;

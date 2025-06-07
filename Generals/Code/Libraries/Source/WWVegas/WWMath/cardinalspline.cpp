@@ -24,26 +24,26 @@
  *                                                                                             *
 #ifdef OG
  *                     $Archive:: /VSS_Sync/wwmath/cardinalspline.cpp                         $*
-#endif
+#endif // OG
 #ifdef ZH
  *                     $Archive:: /Commando/Code/wwmath/cardinalspline.cpp                    $*
-#endif
+#endif // ZH
  *                                                                                             *
  *                       Author:: Greg Hjelstrom                                               *
  *                                                                                             *
 #ifdef OG
  *                     $Modtime:: 6/13/01 2:18p                                               $*
-#endif
+#endif // OG
 #ifdef ZH
  *                     $Modtime:: 9/16/01 4:07p                                               $*
-#endif
+#endif // ZH
  *                                                                                             *
 #ifdef OG
  *                    $Revision:: 5                                                           $*
-#endif
+#endif // OG
 #ifdef ZH
  *                    $Revision:: 6                                                           $*
-#endif
+#endif // ZH
  *                                                                                             *
  *---------------------------------------------------------------------------------------------*
  * Functions:                                                                                  *
@@ -125,7 +125,7 @@ void CardinalSpline3DClass::Update_Tangents(void)
 		}
 #ifdef ZH
 		return;
-#endif
+#endif // ZH
 	}
 
 	// First and Last Key: 

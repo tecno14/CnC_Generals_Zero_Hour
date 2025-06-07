@@ -367,7 +367,7 @@ void GadgetCheckBoxToggle( GameWindow *g)
 
 }
 
-#endif
+#endif // ZH
 // GadgetCheckBoxIsChecked ======================================================
 /** Check the check state */
 //=============================================================================

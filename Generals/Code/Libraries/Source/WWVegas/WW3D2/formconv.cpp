@@ -28,28 +28,28 @@
  *                                                                                             *
 #ifdef OG
  *                      $Author:: Jani_p                                                      $*
-#endif
+#endif // OG
 #ifdef ZH
  *                       Author : Kenny Mitchell                                               * 
-#endif
+#endif // ZH
  *                                                                                             *
 #ifdef OG
  *                     $Modtime:: 7/16/01 1:33p                                               $*
-#endif
+#endif // OG
 #ifdef ZH
  *                     $Modtime:: 06/27/02 1:27p                                              $*
-#endif
+#endif // ZH
  *                                                                                             *
 #ifdef OG
  *                    $Revision:: 2                                                           $*
-#endif
+#endif // OG
 #ifdef ZH
  *                    $Revision:: 3                                                           $*
-#endif
+#endif // ZH
  *                                                                                             *
 #ifdef ZH
  * 06/27/02 KM Z Format support																						*
-#endif
+#endif // ZH
  *---------------------------------------------------------------------------------------------*
  * Functions:                                                                                  *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
@@ -111,7 +111,7 @@ D3DFORMAT WW3DZFormatToD3DFormatConversionArray[WW3D_ZFORMAT_COUNT] =
 	D3DFMT_LIN_D16,
 	D3DFMT_LIN_F16
 #endif
-#endif
+#endif // ZH
 };
 
 /*
@@ -149,7 +149,7 @@ WW3DFormat D3DFormatToWW3DFormatConversionArray[HIGHEST_SUPPORTED_D3DFORMAT + 1]
 
 #ifdef ZH
 #ifndef _XBOX
-#endif
+#endif // ZH
 #define HIGHEST_SUPPORTED_D3DFORMAT D3DFMT_X8L8V8U8
 #ifdef ZH
 #define HIGHEST_SUPPORTED_D3DZFORMAT D3DFMT_D24X4S4
@@ -157,11 +157,11 @@ WW3DFormat D3DFormatToWW3DFormatConversionArray[HIGHEST_SUPPORTED_D3DFORMAT + 1]
 #define HIGHEST_SUPPORTED_D3DFORMAT  D3DFMT_LIN_R8G8B8A8 
 #define HIGHEST_SUPPORTED_D3DZFORMAT    D3DFMT_LIN_F16
 #endif
-#endif
+#endif // ZH
 WW3DFormat D3DFormatToWW3DFormatConversionArray[HIGHEST_SUPPORTED_D3DFORMAT + 1];
 #ifdef ZH
 WW3DZFormat D3DFormatToWW3DZFormatConversionArray[HIGHEST_SUPPORTED_D3DZFORMAT + 1];
-#endif
+#endif // ZH
 
 D3DFORMAT WW3DFormat_To_D3DFormat(WW3DFormat ww3d_format) {
 	if (ww3d_format >= WW3D_FORMAT_COUNT) {
@@ -204,7 +204,7 @@ D3DFORMAT WW3DZFormat_To_D3DFormat(WW3DZFormat ww3d_zformat)
 	else 
 	{
 		return WW3DZFormatToD3DFormatConversionArray[(unsigned int)ww3d_zformat];
-#endif
+#endif // ZH
 	}
 }
 
@@ -230,7 +230,7 @@ WW3DZFormat D3DFormat_To_WW3DZFormat(D3DFORMAT d3d_format)
 /*!
  * 06/27/02 KM Z Format support																						*
 */
-#endif
+#endif // ZH
 void Init_D3D_To_WW3_Conversion()
 {
 	for (int i=0;i<HIGHEST_SUPPORTED_D3DFORMAT;++i) {
@@ -263,7 +263,7 @@ void Init_D3D_To_WW3_Conversion()
 	{
 		D3DFormatToWW3DZFormatConversionArray[i]=WW3D_ZFORMAT_UNKNOWN;
 	}
-#endif
+#endif // ZH
 
 #ifdef ZH
 	D3DFormatToWW3DZFormatConversionArray[D3DFMT_D16_LOCKABLE]=WW3D_ZFORMAT_D16_LOCKABLE;
@@ -279,5 +279,5 @@ void Init_D3D_To_WW3_Conversion()
 	D3DFormatToWW3DZFormatConversionArray[D3DFMT_LIN_D16]=WW3D_ZFORMAT_LIN_D16;
 	D3DFormatToWW3DZFormatConversionArray[D3DFMT_LIN_F16]=WW3D_ZFORMAT_LIN_F16;
 #endif
-#endif
+#endif // ZH
 };

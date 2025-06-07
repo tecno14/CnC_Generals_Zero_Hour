@@ -20,7 +20,7 @@
 #include "wwdebug.h"
 #ifdef ZH
 #include "colorspace.h"
-#endif
+#endif // ZH
 
 void Bitmap_Assert(bool condition)
 {
@@ -64,16 +64,16 @@ void BitmapHandlerClass::Copy_Image_Generate_Mipmap(
 #ifdef OG
 	unsigned mip_pitch)
 
-#endif
+#endif // OG
 #ifdef ZH
 	unsigned mip_pitch,
 	const Vector3& hsv_shift)
-#endif
+#endif // ZH
 {
 	// Optimized loop if source and destination are 32 bit
 #ifdef ZH
 	bool has_hsv_shift = hsv_shift[0]!=0.0f || hsv_shift[1]!=0.0f || hsv_shift[2]!=0.0f;
-#endif
+#endif // ZH
 	if (src_format==dest_format && src_format==WW3D_FORMAT_A8R8G8B8) {
 		dest_pitch/=4;
 		src_pitch/=4;
@@ -103,14 +103,14 @@ void BitmapHandlerClass::Copy_Image_Generate_Mipmap(
 #ifdef OG
 				*mip_ptr++=Combine_A8R8G8B8(b8g8r8a8_00,b8g8r8a8_01,b8g8r8a8_10,b8g8r8a8_11);
 
-#endif
+#endif // OG
 #ifdef ZH
 				unsigned b8g8r8a8=Combine_A8R8G8B8(b8g8r8a8_00,b8g8r8a8_01,b8g8r8a8_10,b8g8r8a8_11);
 				if (has_hsv_shift) {
 					Recolor(b8g8r8a8,hsv_shift);
 				}
 				*mip_ptr++=b8g8r8a8;
-#endif
+#endif // ZH
 			}
 		}
 		return;
@@ -146,7 +146,7 @@ void BitmapHandlerClass::Copy_Image_Generate_Mipmap(
 			if (has_hsv_shift) {
 				Recolor(b8g8r8a8,hsv_shift);
 			}
-#endif
+#endif // ZH
 
 			Write_B8G8R8A8(mip_ptr,dest_format,b8g8r8a8);
 		}
@@ -178,11 +178,11 @@ void BitmapHandlerClass::Copy_Image(
 #ifdef OG
 	bool generate_mip_level)
 
-#endif
+#endif // OG
 #ifdef ZH
 	bool generate_mip_level,
 	const Vector3& hsv_shift)
-#endif
+#endif // ZH
 {
 	WWASSERT(dest_surface_width);
 	WWASSERT(dest_surface_height);
@@ -278,12 +278,12 @@ void BitmapHandlerClass::Copy_Image(
 		}
 #ifdef ZH
 		return;
-#endif
+#endif // ZH
 	}
 
 #ifdef ZH
 	bool has_hsv_shift = hsv_shift[0]!=0.0f || hsv_shift[1]!=0.0f || hsv_shift[2]!=0.0f;
-#endif
+#endif // ZH
 	if (src_surface_format==dest_surface_format && (src_surface_format==WW3D_FORMAT_A8R8G8B8 || src_surface_format==WW3D_FORMAT_X8R8G8B8)) {
 		// One-to-one copy or scaling?
 		dest_surface_pitch/=4;
@@ -295,12 +295,12 @@ void BitmapHandlerClass::Copy_Image(
 #ifdef OG
 					*(unsigned*)dest_surface=*(unsigned*)src_surface;
 
-#endif
+#endif // OG
 #ifdef ZH
 					unsigned b8g8r8a8=*(unsigned*)src_surface;
 					if (has_hsv_shift) Recolor(b8g8r8a8,hsv_shift);
 					*(unsigned*)dest_surface=b8g8r8a8;
-#endif
+#endif // ZH
 				}
 				else {
 					for (unsigned y=0;y<dest_surface_height/2;++y) {
@@ -317,7 +317,7 @@ void BitmapHandlerClass::Copy_Image(
 						for (unsigned x=0;x<dest_surface_width/2;x++) {
 #ifdef ZH
 							// Read four pixels from the source
-#endif
+#endif // ZH
 							b8g8r8a8_10=src_ptr[src_surface_pitch];
 #ifdef ZH
 							b8g8r8a8_00=*src_ptr++;
@@ -332,25 +332,25 @@ void BitmapHandlerClass::Copy_Image(
 							}
 
 							// Write the four pixels to the destination
-#endif
+#endif // ZH
 							dest_ptr[dest_surface_pitch]=b8g8r8a8_10;
 #ifdef OG
 							b8g8r8a8_00=*src_ptr++;
-#endif
+#endif // OG
 							*dest_ptr++=b8g8r8a8_00;
 #ifdef OG
 
 							b8g8r8a8_11=src_ptr[src_surface_pitch];
-#endif
+#endif // OG
 							dest_ptr[dest_surface_pitch]=b8g8r8a8_11;
 #ifdef OG
 							b8g8r8a8_01=*src_ptr++;
-#endif
+#endif // OG
 							*dest_ptr++=b8g8r8a8_01;
 
 #ifdef ZH
 							// Write combined four pixels to the destination mip map level
-#endif
+#endif // ZH
 							*mip_ptr++=Combine_A8R8G8B8(b8g8r8a8_00,b8g8r8a8_01,b8g8r8a8_10,b8g8r8a8_11);
 						}
 					}
@@ -372,7 +372,7 @@ void BitmapHandlerClass::Copy_Image(
 						}
 					}
 					else {
-#endif
+#endif // ZH
 					for (unsigned x=0;x<dest_surface_width;++x) {
 						*dest_ptr++=*src_ptr++;
 					}
@@ -381,7 +381,7 @@ void BitmapHandlerClass::Copy_Image(
 		}
 #ifdef ZH
 		}
-#endif
+#endif // ZH
 		else {
 			
 			// For now do only point-sampling
@@ -396,14 +396,14 @@ void BitmapHandlerClass::Copy_Image(
 #ifdef OG
 					*dest_ptr++=src_ptr[src_x];
 
-#endif
+#endif // OG
 #ifdef ZH
 					unsigned b8g8r8a8=src_ptr[src_x];
 					if (has_hsv_shift) {
 						Recolor(b8g8r8a8,hsv_shift);
 					}
 					*dest_ptr++=b8g8r8a8;
-#endif
+#endif // ZH
 				}
 			}
 		}
@@ -427,7 +427,7 @@ void BitmapHandlerClass::Copy_Image(
 				if (has_hsv_shift) {
 					Recolor(b8g8r8a8,hsv_shift);
 				}
-#endif
+#endif // ZH
 				Write_B8G8R8A8(dest_ptr,dest_surface_format,b8g8r8a8);
 			}
 			else {
@@ -442,7 +442,7 @@ void BitmapHandlerClass::Copy_Image(
 					for (unsigned x=0;x<dest_surface_width/2;x++,dest_ptr+=dest_bpp*2,src_ptr+=src_bpp*2,mip_ptr+=src_bpp) {
 #ifdef ZH
 						// Read four pixels from the source
-#endif
+#endif // ZH
 						Read_B8G8R8A8(b8g8r8a8_00,src_ptr,src_surface_format,src_palette,src_palette_bpp);
 #ifdef ZH
 						Read_B8G8R8A8(b8g8r8a8_01,src_ptr+src_bpp,src_surface_format,src_palette,src_palette_bpp);
@@ -458,27 +458,27 @@ void BitmapHandlerClass::Copy_Image(
 						}
 
 						// Write the four pixels to the destination
-#endif
+#endif // ZH
 						Write_B8G8R8A8(dest_ptr,dest_surface_format,b8g8r8a8_00);
 #ifdef OG
 
 						Read_B8G8R8A8(b8g8r8a8_01,src_ptr+src_bpp,src_surface_format,src_palette,src_palette_bpp);
-#endif
+#endif // OG
 						Write_B8G8R8A8(dest_ptr+dest_bpp,dest_surface_format,b8g8r8a8_01);
 #ifdef OG
 
 						Read_B8G8R8A8(b8g8r8a8_10,src_ptr+src_surface_pitch,src_surface_format,src_palette,src_palette_bpp);
-#endif
+#endif // OG
 						Write_B8G8R8A8(dest_ptr+dest_surface_pitch,dest_surface_format,b8g8r8a8_10);
 #ifdef OG
 
 						Read_B8G8R8A8(b8g8r8a8_11,src_ptr+src_bpp+src_surface_pitch,src_surface_format,src_palette,src_palette_bpp);
-#endif
+#endif // OG
 						Write_B8G8R8A8(dest_ptr+dest_bpp+dest_surface_pitch,dest_surface_format,b8g8r8a8_11);
 
 #ifdef ZH
 						// Write combined four pixels to the destination mip map level
-#endif
+#endif // ZH
 						unsigned b8g8r8a8=Combine_A8R8G8B8(b8g8r8a8_00,b8g8r8a8_01,b8g8r8a8_10,b8g8r8a8_11);
 						Write_B8G8R8A8(mip_ptr,src_surface_format,b8g8r8a8);
 					}
@@ -491,7 +491,7 @@ void BitmapHandlerClass::Copy_Image(
 				const unsigned char* src_ptr=src_surface+y*src_surface_pitch;
 #ifdef ZH
 				if (has_hsv_shift) {
-#endif
+#endif // ZH
 				for (unsigned x=0;x<dest_surface_width;++x,dest_ptr+=dest_bpp,src_ptr+=src_bpp) {
 #ifdef ZH
 						Copy_Pixel(dest_ptr,dest_surface_format,src_ptr,src_surface_format,src_palette,src_palette_bpp,hsv_shift);
@@ -499,11 +499,11 @@ void BitmapHandlerClass::Copy_Image(
 				}
 				else {
 					for (unsigned x=0;x<dest_surface_width;++x,dest_ptr+=dest_bpp,src_ptr+=src_bpp) {
-#endif
+#endif // ZH
 					Copy_Pixel(dest_ptr,dest_surface_format,src_ptr,src_surface_format,src_palette,src_palette_bpp);
 #ifdef ZH
 					}
-#endif
+#endif // ZH
 				}
 			}
 		}
@@ -517,7 +517,7 @@ void BitmapHandlerClass::Copy_Image(
 			const unsigned char* src_ptr=src_surface+src_y*src_surface_pitch;
 #ifdef ZH
 			if (has_hsv_shift) {
-#endif
+#endif // ZH
 			for (unsigned x=0;x<dest_surface_width;++x,dest_ptr+=dest_bpp) {
 				unsigned src_x=x*src_surface_width/dest_surface_width;
 				src_x*=src_bpp;
@@ -529,11 +529,11 @@ void BitmapHandlerClass::Copy_Image(
 				for (unsigned x=0;x<dest_surface_width;++x,dest_ptr+=dest_bpp) {
 					unsigned src_x=x*src_surface_width/dest_surface_width;
 					src_x*=src_bpp;
-#endif
+#endif // ZH
 				Copy_Pixel(dest_ptr,dest_surface_format,src_ptr+src_x,src_surface_format,src_palette,src_palette_bpp);
 #ifdef ZH
 				}
-#endif
+#endif // ZH
 			}
 		}
 	}

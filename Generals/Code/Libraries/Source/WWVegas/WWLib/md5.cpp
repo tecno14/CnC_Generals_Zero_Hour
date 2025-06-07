@@ -340,4 +340,4 @@ static void MD5_memset (POINTER output, int value, unsigned int len)
  ((char *)output)[i] = (char)value;
 }
 
-#endif
+#endif // ZH

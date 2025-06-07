@@ -42,13 +42,13 @@
 #include "GameClient/GameText.h"
 #ifdef ZH
 #include "GameLogic/GameLogic.h" // SUPERWEAPON_RESTRICT_COUNT
-#endif
+#endif // ZH
 #include "GameNetwork/GameInfo.h"
 #include "Common/PlayerTemplate.h"
 #include "GameNetwork/LANAPICallbacks.h" // for acceptTrueColor, etc
 #ifdef ZH
 #include "GameClient/ChallengeGenerals.h"
-#endif
+#endif // ZH
 
 #ifdef _INTERNAL
 // for occasional debugging...
@@ -263,7 +263,7 @@ void PopulatePlayerTemplateComboBox(Int comboBox, GameWindow *comboArray[], Game
 			continue;
 
 		if ( myGame->oldFactionsOnly() && !fac->isOldFaction() )
-#endif
+#endif // ZH
 			continue;
 
 #ifdef ZH
@@ -276,7 +276,7 @@ void PopulatePlayerTemplateComboBox(Int comboBox, GameWindow *comboArray[], Game
 		if (disallowLockedGenerals && startsLocked)
 			continue;
 
-#endif
+#endif // ZH
 		AsciiString side;
 		side.format("SIDE:%s", fac->getSide().str());
 		if (seenSides.find(side) != seenSides.end())
@@ -292,7 +292,7 @@ void PopulatePlayerTemplateComboBox(Int comboBox, GameWindow *comboArray[], Game
 	// disabling observers for Multiplayer test
 #ifdef OG
 #ifndef _PLAYTEST
-#endif
+#endif // OG
 	if (allowObservers)
 	{
 		def = TheMultiplayerSettings->getColor(PLAYERTEMPLATE_OBSERVER);
@@ -301,7 +301,7 @@ void PopulatePlayerTemplateComboBox(Int comboBox, GameWindow *comboArray[], Game
 	}
 #ifdef OG
 #endif
-#endif
+#endif // OG
 	GadgetComboBoxSetSelectedPos(comboArray[comboBox], 0);
 
 }
@@ -373,7 +373,7 @@ void PopulateStartingCashComboBox(GameWindow *comboBox, GameInfo *myGame)
   }
 
   GadgetComboBoxSetSelectedPos(comboBox, currentSelectionIndex);
-#endif
+#endif // ZH
 }
 
 // -----------------------------------------------------------------------------

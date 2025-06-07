@@ -38,7 +38,7 @@
  * Functions:                                                                                  *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-#endif
+#endif // ZH
 #ifndef TEXTURELOADER_H
 #define TEXTURELOADER_H
 
@@ -58,7 +58,7 @@ class TextureLoader
 #ifdef OG
 	static void Init_Load_Task(TextureClass* tc);
 
-#endif
+#endif // OG
 #ifdef ZH
 public:
 	static void Init(void);
@@ -66,39 +66,39 @@ public:
 
 	// Modify given texture size to nearest valid size on current hardware.
 	static void Validate_Texture_Size(unsigned& width, unsigned& height, unsigned& depth);
-#endif
+#endif // ZH
 
 #ifdef OG
 	static bool Load_Uncompressed_Mipmap_Levels_From_TGA(TextureLoadTaskClass* texture);
 
-#endif
+#endif // OG
 #ifdef ZH
 	static IDirect3DTexture8 * Load_Thumbnail(
 		const StringClass& filename,const Vector3& hsv_shift);
 //		WW3DFormat texture_format);	// Pass WW3D_FORMAT_UNKNOWN if you don't care
-#endif
+#endif // ZH
 
 #ifdef OG
 public:
 	static void Init();
 	static void Deinit();
 
-#endif
+#endif // OG
 #ifdef ZH
 	static IDirect3DSurface8 *		Load_Surface_Immediate(
 		const StringClass& filename,
 		WW3DFormat surface_format,		// Pass WW3D_FORMAT_UNKNOWN if you don't care
 		bool allow_compression);
-#endif
+#endif // ZH
 
 #ifdef OG
 	// Modify given texture size to nearest valid size on current hardware.
 	static void Validate_Texture_Size(unsigned& width, unsigned& height);
-#endif
+#endif // OG
 #ifdef ZH
 	static void	Request_Thumbnail(TextureBaseClass* tc);
 
-#endif
+#endif // ZH
 
 	// Adds a loading task to the system. The task if processed in a separate
 	// thread as soon as possible. The task will appear in finished tasks list
@@ -115,11 +115,11 @@ public:
 		const StringClass& filename,
 		WW3DFormat surface_format,		// Pass WW3D_FORMAT_UNKNOWN if you don't care
 		bool allow_compression);
-#endif
+#endif // OG
 #ifdef ZH
 	static void Request_Background_Loading(TextureBaseClass* tc);
 
-#endif
+#endif // ZH
 
 	// Textures can only be created and locked by the main thread so this function sends a request to the texture
 	// handling system to load the texture immediatelly next time it enters the main thread. If this function
@@ -130,7 +130,7 @@ public:
 		TextureClass::MipCountType mip_level_count);
 	static void	Request_Thumbnail(TextureClass* tc);
 
-#endif
+#endif // OG
 #ifdef ZH
 	static void Request_Foreground_Loading(TextureBaseClass* tc);
 
@@ -192,31 +192,31 @@ class TextureLoadTaskListClass
 
 		// Remove and return a task from beginning of list, or NULL if list is empty.
 		TextureLoadTaskClass *			Pop_Front	(void);
-#endif
+#endif // ZH
 
 #ifdef OG
 	static void Update();
 	static void Flush_Pending_Load_Tasks();
-#endif
+#endif // OG
 #ifdef ZH
 		// Remove and return a task from end of list, or NULL if list is empty
 		TextureLoadTaskClass *			Pop_Back		(void);
-#endif
+#endif // ZH
 
 #ifdef OG
 	static IDirect3DTexture8* Generate_Bumpmap(TextureClass* texture);
 
-#endif
+#endif // OG
 #ifdef ZH
 		// Remove specified task from list, if present
 		void									Remove		(TextureLoadTaskClass *task);
-#endif
+#endif // ZH
 
 #ifdef ZH
 	private:
 		// This list is implemented using a sentinel node.
 		TextureLoadTaskListNodeClass	Root;
-#endif
+#endif // ZH
 };
 
 #ifdef OG
@@ -225,19 +225,19 @@ class TextureLoadTaskListClass
 // Texture loader task handler
 //
 // ----------------------------------------------------------------------------
-#endif
+#endif // OG
 
 #ifdef OG
 class TextureLoadTaskClass : public W3DMPO
-#endif
+#endif // OG
 #ifdef ZH
 class SynchronizedTextureLoadTaskListClass : public TextureLoadTaskListClass
-#endif
+#endif // ZH
 {
 #ifdef OG
 	W3DMPO_GLUE(TextureLoadTaskClass)
 
-#endif
+#endif // OG
 #ifdef ZH
 	// This class added thread-safety to the basic TextureLoadTaskListClass.
 
@@ -254,12 +254,12 @@ class SynchronizedTextureLoadTaskListClass : public TextureLoadTaskListClass
 	private:
 		FastCriticalSectionClass		CriticalSection;
 };
-#endif
+#endif // ZH
 
 #ifdef OG
 	static TextureLoadTaskClass* FreeTaskListHead;
 
-#endif
+#endif // OG
 #ifdef ZH
 /*
 ** (gth) The allocation system we're using for TextureLoadTaskClass has gotten a little
@@ -267,7 +267,7 @@ class SynchronizedTextureLoadTaskListClass : public TextureLoadTaskListClass
 ** ::Destroy member is used to return a task to the pool now and must be over-ridden in
 ** each derived class to put the task back into the correct free list.  
 */
-#endif
+#endif // ZH
 
 #ifdef OG
 	TextureClass* Texture;
@@ -283,23 +283,23 @@ class SynchronizedTextureLoadTaskListClass : public TextureLoadTaskListClass
 	bool IsLoading;
 	bool HasFailed;
 	bool HighPriorityRequested;
-#endif
+#endif // OG
 
 #ifdef OG
 	~TextureLoadTaskClass();
 	TextureLoadTaskClass();
-#endif
+#endif // OG
 #ifdef ZH
 class TextureLoadTaskClass : public TextureLoadTaskListNodeClass
 {
-#endif
+#endif // ZH
 public:
 #ifdef OG
 	static TextureLoadTaskClass* Get_Instance(TextureClass* tc, bool high_priority);
 	static void Release_Instance(TextureLoadTaskClass* task);
 	static void shutdown(void) {TextureLoadTaskClass *pT; while (FreeTaskListHead) {pT = FreeTaskListHead; FreeTaskListHead = pT->Peek_Succ(); pT->Set_Succ(NULL); delete pT;} };
 
-#endif
+#endif // OG
 #ifdef ZH
 		enum TaskType {
 			TASK_NONE,
@@ -379,16 +379,16 @@ public:
 		unsigned	int			MipLevelCount;
 		unsigned	int			Reduction;
 		Vector3					HSVShift;
-#endif
+#endif // ZH
 
 #ifdef OG
 	void Init(TextureClass* tc,bool high_priority);
 	void Deinit();
-#endif
+#endif // OG
 #ifdef ZH
 		unsigned char *		LockedSurfacePtr[MIP_LEVELS_MAX];
 		unsigned	int			LockedSurfacePitch[MIP_LEVELS_MAX];
-#endif
+#endif // ZH
 
 #ifdef OG
 	unsigned Get_Mip_Level_Count() const { return MipLevelCount; }
@@ -396,65 +396,65 @@ public:
 	unsigned Get_Height() const { return Height; }
 	WW3DFormat Get_Format() const { return Format; }
 	unsigned Get_Reduction() const { return Reduction; }
-#endif
+#endif // OG
 #ifdef ZH
 		TaskType					Type;
 		PriorityType			Priority;
 		StateType				State;
 };
 
-#endif
+#endif // ZH
 
 #ifdef OG
 	unsigned char* Get_Locked_Surface_Ptr(unsigned level);
 	unsigned Get_Locked_Surface_Pitch(unsigned level) const;
 
-#endif
+#endif // OG
 #ifdef ZH
 class CubeTextureLoadTaskClass : public TextureLoadTaskClass
 {
 public:
 	CubeTextureLoadTaskClass();
-#endif
+#endif // ZH
 
 #ifdef OG
 	bool Has_Failed() const { return HasFailed; }
 	void Set_Fail(bool b) { HasFailed=b; }
 
-#endif
+#endif // OG
 #ifdef ZH
 	virtual void			Destroy						(void);
 	virtual void			Init							(TextureBaseClass *tc, TaskType type, PriorityType priority);
 	virtual void			Deinit						(void);
-#endif
+#endif // ZH
 
 #ifdef OG
 	// Init the task or put it to a deferred init list if called from outside the main thread
 	void Begin_Texture_Load();
 	void Begin_Thumbnail_Load();
 	void End_Load();		// Deinit must be called before Applying()
-#endif
+#endif // OG
 #ifdef ZH
 protected:
 	virtual bool			Begin_Compressed_Load	(void);
 	virtual bool			Begin_Uncompressed_Load	(void);
 
-#endif
+#endif // ZH
 
 #ifdef OG
 	void Apply(bool initialize);
 
-#endif
+#endif // OG
 #ifdef ZH
 	virtual bool			Load_Compressed_Mipmap	(void);
 //	virtual bool			Load_Uncompressed_Mipmap(void);
-#endif
+#endif // ZH
 
 #ifdef OG
 	TextureLoadTaskClass* Peek_Succ() { return Succ; }
 	void Set_Succ(TextureLoadTaskClass* succ);
 
-#endif
+#endif // OG
 #ifdef ZH
 	virtual void			Lock_Surfaces				(void);
 	virtual void			Unlock_Surfaces			(void);
@@ -462,31 +462,31 @@ protected:
 private:
 	unsigned char*			Get_Locked_CubeMap_Surface_Pointer(unsigned int face, unsigned int level);
 	unsigned int			Get_Locked_CubeMap_Surface_Pitch(unsigned int face, unsigned int level) const;
-#endif
+#endif // ZH
 
 #ifdef OG
 	TextureClass* Peek_Texture() { return Texture; }
 	IDirect3DTexture8* Peek_D3D_Texture() { return D3DTexture; }
-#endif
+#endif // OG
 #ifdef ZH
 	IDirect3DCubeTexture8*	Peek_D3D_Cube_Texture(void)				{ return (IDirect3DCubeTexture8*)D3DTexture;		}
 
-#endif
+#endif // ZH
 
 #ifdef OG
 	void Set_D3D_Texture(IDirect3DTexture8* texture);
 
-#endif
+#endif // OG
 #ifdef ZH
 	unsigned char*			LockedCubeSurfacePtr[6][MIP_LEVELS_MAX];
 	unsigned int			LockedCubeSurfacePitch[6][MIP_LEVELS_MAX];
-#endif
+#endif // ZH
 };
 
 #ifdef OG
 #endif
 
-#endif
+#endif // OG
 #ifdef ZH
 class VolumeTextureLoadTaskClass : public TextureLoadTaskClass
 {
@@ -514,15 +514,15 @@ private:
 	IDirect3DVolumeTexture8*	Peek_D3D_Volume_Texture(void)				{ return (IDirect3DVolumeTexture8*)D3DTexture;		}
 
 	unsigned	int			LockedSurfaceSlicePitch[MIP_LEVELS_MAX];
-#endif
+#endif // ZH
 
 #ifdef ZH
 	unsigned int		Depth;
 };
-#endif
+#endif // ZH
 
 #ifdef ZH
 #endif
-#endif
+#endif // ZH
 
 

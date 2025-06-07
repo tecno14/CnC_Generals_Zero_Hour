@@ -61,7 +61,7 @@
 //#pragma MESSAGE("************************************** WARNING, optimization disabled for debugging purposes")
 #endif
 
-#endif
+#endif // ZH
 #define K_OBSOLETE_HEIGHT_MAP_VERSION 8
 
 #define PATHFIND_CLIFF_SLOPE_LIMIT_F	9.8f	
@@ -106,7 +106,7 @@ MapObject::MapObject(Coord3D loc, AsciiString name, Real angle, Int flags, const
 	m_runtimeFlags = 0;
 #ifdef ZH
 	// Note - do NOT set TheKey_objectSelectable on creation - allow it to follow the .ini value unless specified by user action.  jba. [3/20/2003]
-#endif
+#endif // ZH
 	if (props)
 	{
 		m_properties = *props;
@@ -115,7 +115,7 @@ MapObject::MapObject(Coord3D loc, AsciiString name, Real angle, Int flags, const
 			Bool selectable = thingTemplate->isKindOf(KINDOF_SELECTABLE);
 			m_properties.setBool(TheKey_objectSelectable, selectable);
 		}
-#endif
+#endif // OG
 	} 
 	else 
 	{
@@ -133,7 +133,7 @@ MapObject::MapObject(Coord3D loc, AsciiString name, Real angle, Int flags, const
 			selectable = thingTemplate->isKindOf(KINDOF_SELECTABLE);
 		}
 		m_properties.setBool(TheKey_objectSelectable, selectable);
-#endif
+#endif // OG
 	}
 
 	for( Int i = 0; i < BRIDGE_MAX_TOWERS; ++i )
@@ -392,7 +392,7 @@ const ThingTemplate *MapObject::getThingTemplate( void ) const
 
 #ifdef ZH
 TileData *WorldHeightMap::m_alphaTiles[NUM_ALPHA_TILES]={0,0,0,0,0,0,0,0,0,0,0,0};
-#endif
+#endif // ZH
 
 //
 // WorldHeightMap destructor .
@@ -432,7 +432,7 @@ WorldHeightMap::~WorldHeightMap(void)
 	{	delete (m_seismicZVelocities);
 		m_seismicZVelocities = NULL;
 	}
-#endif
+#endif // ZH
 	if (m_cellCliffState)
 	{	delete (m_cellCliffState);
 		m_cellCliffState = NULL;
@@ -445,7 +445,7 @@ WorldHeightMap::~WorldHeightMap(void)
 	}
 	for (i=0; i<NUM_ALPHA_TILES; i++) {
 		REF_PTR_RELEASE(m_alphaTiles[i]);
-#endif
+#endif // ZH
 	}
 	REF_PTR_RELEASE(m_terrainTex);
 	REF_PTR_RELEASE(m_alphaTerrainTex);
@@ -471,10 +471,10 @@ void WorldHeightMap::freeListOfMapObjects(void)
 WorldHeightMap::WorldHeightMap():
 #ifdef OG
 	m_width(0), m_height(0),  m_dataSize(0), m_data(NULL), m_cellFlipState(NULL), 
-#endif
+#endif // OG
 #ifdef ZH
 	m_width(0), m_height(0),  m_dataSize(0), m_data(NULL), m_cellFlipState(NULL), m_seismicUpdateFlag(NULL), m_seismicZVelocities(NULL),
-#endif
+#endif // ZH
 	m_drawOriginX(0), m_drawOriginY(0), 
 	m_numTextureClasses(0),	
 	m_drawWidthX(NORMAL_DRAW_WIDTH), m_drawHeightY(NORMAL_DRAW_HEIGHT), 
@@ -495,7 +495,7 @@ WorldHeightMap::WorldHeightMap():
 	TheSidesList->validateSides();
 #ifdef ZH
 	setupAlphaTiles();
-#endif
+#endif // ZH
 }
 
 #ifdef EVAL_TILING_MODES
@@ -517,10 +517,10 @@ static Bool ParseFunkyTilingDataChunk(DataChunkInput &file, DataChunkInfo *info,
 WorldHeightMap::WorldHeightMap(ChunkInputStream *pStrm, Bool logicalDataOnly):
 #ifdef OG
 	m_width(0), m_height(0),  m_dataSize(0), m_data(NULL), m_cellFlipState(NULL), 
-#endif
+#endif // OG
 #ifdef ZH
 	m_width(0), m_height(0),  m_dataSize(0), m_data(NULL), m_cellFlipState(NULL), m_seismicUpdateFlag(NULL), m_seismicZVelocities(NULL),
-#endif
+#endif // ZH
 	m_drawOriginX(0),	m_cellCliffState(NULL), m_drawOriginY(0),
 	m_numTextureClasses(0),	
 	m_drawWidthX(NORMAL_DRAW_WIDTH), m_drawHeightY(NORMAL_DRAW_HEIGHT), 
@@ -593,7 +593,7 @@ WorldHeightMap::WorldHeightMap(ChunkInputStream *pStrm, Bool logicalDataOnly):
 	TheSidesList->validateSides();
 #ifdef ZH
 	setupAlphaTiles();
-#endif
+#endif // ZH
 }
 
 /** Optimized version of method to get triangle flip state of a terrain cell.  Use this
@@ -684,7 +684,7 @@ void WorldHeightMap::fillSeismicZVelocities( Real value )
 	if (!m_seismicZVelocities) return ;
   for (Int idx = 0; idx < m_width*m_height; ++idx)
     m_seismicZVelocities[idx] = value;
-#endif
+#endif // ZH
 }
 
 #ifdef ZH
@@ -750,7 +750,7 @@ Real WorldHeightMap::getBilinearSampleSeismicZVelocity( Int x, Int y)
 
 }
 
-#endif
+#endif // ZH
 /** Get whether the cell is a cliff cell (impassable to ground vehicles).
 */
 Bool WorldHeightMap::getCliffState(Int xIndex, Int yIndex) const
@@ -948,7 +948,7 @@ Bool WorldHeightMap::ParseHeightMapData(DataChunkInput &file, DataChunkInfo *inf
   m_seismicZVelocities = MSGNEW("WorldHeightMap_ParseHeightMapData _ zvelocities allocated") Real[m_dataSize];
   fillSeismicZVelocities( 0 );
 
-#endif
+#endif // ZH
 	file.readArrayOfBytes((char *)m_data, m_dataSize);
 	// Resize me. 
 	if (info->version == K_HEIGHT_MAP_VERSION_1) {
@@ -1096,7 +1096,7 @@ Bool WorldHeightMap::ParseBlendTileData(DataChunkInput &file, DataChunkInfo *inf
 {
 #ifdef ZH
 	int i, j;
-#endif
+#endif // ZH
 	Int len = file.readInt();
 	if (m_dataSize != len) {
 		throw ERROR_CORRUPT_FILE_FORMAT	;
@@ -1110,10 +1110,10 @@ Bool WorldHeightMap::ParseBlendTileData(DataChunkInput &file, DataChunkInfo *inf
 	// 
 #ifdef OG
 	Int numBytesX = (m_width+1)/8;	//how many bytes to fit all bitflags
-#endif
+#endif // OG
 #ifdef ZH
 	Int numBytesX = (m_width+7)/8;	//how many bytes to fit all bitflags
-#endif
+#endif // ZH
 	Int numBytesY = m_height;	
 
 	m_flipStateWidth=numBytesX;
@@ -1147,11 +1147,11 @@ Bool WorldHeightMap::ParseBlendTileData(DataChunkInput &file, DataChunkInfo *inf
 				}
 			}
 		} else {
-#endif
+#endif // ZH
 		file.readArrayOfBytes((char*)m_cellCliffState, m_height*m_flipStateWidth);
 #ifdef ZH
 		}
-#endif
+#endif // ZH
 	} else {
 		initCliffFlagsFromHeights();
 	}
@@ -1167,7 +1167,7 @@ Bool WorldHeightMap::ParseBlendTileData(DataChunkInput &file, DataChunkInfo *inf
 // --> file loading here
 #ifdef OG
 	int i;
-#endif
+#endif // OG
 	m_numTextureClasses	= file.readInt();
 	DEBUG_ASSERTCRASH(m_numTextureClasses>0 && m_numTextureClasses<200, ("Unlikely m_numTextureClasses."));
 	for (i=0; i<m_numTextureClasses; i++) {
@@ -1322,10 +1322,10 @@ Bool WorldHeightMap::ParseObjectData(DataChunkInput &file, DataChunkInfo *info, 
 	pThisOne = newInstance( MapObject )( loc, name, angle, flags, &d, 
 #ifdef OG
 														TheThingFactory->findTemplate( name ) );
-#endif
+#endif // OG
 #ifdef ZH
 														TheThingFactory->findTemplate( name, FALSE ) );
-#endif
+#endif // ZH
 
 //DEBUG_LOG(("obj %s owner %s\n",name.str(),d.getAsciiString(TheKey_originalOwner).str()));
 
@@ -1380,17 +1380,17 @@ typedef struct {
 /// Count how many tiles come in from a targa file.
 #ifdef OG
 Int WorldHeightMap::countTiles(InputStream *pStr)
-#endif
+#endif // OG
 #ifdef ZH
 Int WorldHeightMap::countTiles(InputStream *pStr, Bool *halfTile)
-#endif
+#endif // ZH
 {
 	TTargaHeader hdr;
 #ifdef ZH
 	if (halfTile) {
 		*halfTile = false;
 	}
-#endif
+#endif // ZH
 	Int len = pStr->read(&hdr,sizeof(hdr));
 	if (len!=sizeof(hdr)) return(0);
 	Int tileWidth = hdr.imageWidth/TILE_PIXEL_EXTENT;
@@ -1425,7 +1425,7 @@ Int WorldHeightMap::countTiles(InputStream *pStr, Bool *halfTile)
 		*halfTile = true;
 		return 1;
 	}
-#endif
+#endif // ZH
 	return(0);
 }
 /*Break down a .tga file into a collection of tiles.  numRows * numRows total tiles.*/
@@ -1443,7 +1443,7 @@ Bool WorldHeightMap::readTiles(InputStream *pStr, TileData **tiles, Int numRows)
 	if (hdr.imageWidth==TILE_PIXEL_EXTENT/2) {
 		tileWidth = 1;
 	}
-#endif
+#endif // ZH
 
 	if (tileWidth<numRows && tileHeight<numRows) {
 		return(false);
@@ -1471,11 +1471,11 @@ Bool WorldHeightMap::readTiles(InputStream *pStr, TileData **tiles, Int numRows)
 #ifdef OG
 			UnsignedByte r, g, b;
 
-#endif
+#endif // OG
 #ifdef ZH
 			UnsignedByte r, g, b, a;
 			if (row < hdr.imageHeight) {
-#endif
+#endif // ZH
 			if (compressed && repeatCount==0) {
 				UnsignedByte flag;
 				pStr->read(&flag, 1);
@@ -1502,12 +1502,12 @@ Bool WorldHeightMap::readTiles(InputStream *pStr, TileData **tiles, Int numRows)
 			} else {
 				r = g = b = a = 0;
 			}
-#endif
+#endif // ZH
 			if (column >= (numRows*TILE_PIXEL_EXTENT)) continue;
 #ifdef OG
 			r = buf[2]; g = buf[1]; b = buf[0];
 			
-#endif
+#endif // OG
 			int tileNdx = (column/TILE_PIXEL_EXTENT) + numRows*(row/TILE_PIXEL_EXTENT);
 			int pixelNdx = (column%TILE_PIXEL_EXTENT) + TILE_PIXEL_EXTENT*(row%TILE_PIXEL_EXTENT);
 
@@ -1519,10 +1519,10 @@ Bool WorldHeightMap::readTiles(InputStream *pStr, TileData **tiles, Int numRows)
 			*pixel++ = r;
 #ifdef OG
 			*pixel = 0xFF; // solid alpha.
-#endif
+#endif // OG
 #ifdef ZH
 			*pixel = a; 
-#endif
+#endif // ZH
 
 		}
 		DEBUG_ASSERTCRASH(repeatCount==0, ("Invalid tga."));
@@ -2233,7 +2233,7 @@ void WorldHeightMap::setTextureLOD(Int lod)
 {
 	if (m_terrainTex)
 		m_terrainTex->setLOD(lod);
-#endif
+#endif // ZH
 }
 
 TextureClass *WorldHeightMap::getTerrainTexture(void)
@@ -2318,7 +2318,7 @@ TerrainTextureClass *WorldHeightMap::getFlatTexture(Int xCell, Int yCell, Int ce
 	return newTexture;
 }
 
-#endif
+#endif // ZH
 Bool WorldHeightMap::setDrawOrg(Int xOrg, Int yOrg)
 {
 	Int newX, newY;
@@ -2548,12 +2548,12 @@ UnsignedByte *WorldHeightMap::getRGBAlphaDataForWidth(Int width, TBlendTileInfo 
 	}
 	if (pBlend->inverted) {
 		alphaTileNdx += K_INV;
-#endif
+#endif // ZH
 }	
 #ifdef ZH
 	return m_alphaTiles[alphaTileNdx]->getRGBDataForWidth(width);
 }
-#endif
+#endif // ZH
 
 #ifdef ZH
 void WorldHeightMap::setupAlphaTiles(void)
@@ -2652,6 +2652,6 @@ Bool  WorldHeightMap::getRawTileData(Short tileNdx, Int width,
 	}
 	return(false);
 }
-#endif	
+#endif // ZH	
 
 

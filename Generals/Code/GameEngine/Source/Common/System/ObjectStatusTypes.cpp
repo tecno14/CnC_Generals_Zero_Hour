@@ -84,4 +84,4 @@ const char* ObjectStatusMaskType::s_bitNameList[] =
 };
 
 ObjectStatusMaskType OBJECT_STATUS_MASK_NONE;	// inits to all zeroes
-#endif
+#endif // ZH

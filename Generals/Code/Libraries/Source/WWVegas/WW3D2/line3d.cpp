@@ -297,7 +297,7 @@ void Line3DClass::Render(RenderInfoClass & rinfo)
 		unsigned short *mem=Lock.Get_Index_Array();
 #ifdef ZH
 		try {
-#endif
+#endif // ZH
 		for (int i=0; i<36; i++)
 			mem[i]=Indices[i];
 #ifdef ZH
@@ -305,7 +305,7 @@ void Line3DClass::Render(RenderInfoClass & rinfo)
 		} catch(...) {
 			IndexBufferExceptionFunc();
 		}
-#endif
+#endif // ZH
 	}	
 
 	DX8Wrapper::Set_Vertex_Buffer(vb);

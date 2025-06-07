@@ -330,10 +330,10 @@ void W3DStatusCircle::Render(RenderInfoClass & rinfo)
 		Vector3 vec(0.95f, 0.67f, 0);
 #ifdef OG
 		Matrix3 rot(true);
-#endif
+#endif // OG
 #ifdef ZH
 		Matrix3x3 rot(true);
-#endif
+#endif // ZH
 
 		tm.Set_Translation(vec);
 

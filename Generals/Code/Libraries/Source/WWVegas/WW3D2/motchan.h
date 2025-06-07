@@ -18,10 +18,10 @@
 
 #ifdef OG
 /* $Header: /Commando/Code/ww3d2/motchan.h 2     6/29/01 6:41p Jani_p $ */
-#endif
+#endif // OG
 #ifdef ZH
 /* $Header: /Commando/Code/ww3d2/motchan.h 5     11/29/01 1:07p Jani_p $ */
-#endif
+#endif // ZH
 /*********************************************************************************************** 
  ***                            Confidential - Westwood Studios                              *** 
  *********************************************************************************************** 
@@ -34,17 +34,17 @@
  *                                                                                             * 
 #ifdef OG
  *                     $Modtime:: 6/27/01 6:29p                                               $* 
-#endif
+#endif // OG
 #ifdef ZH
  *                     $Modtime:: 11/28/01 5:43p                                              $* 
-#endif
+#endif // ZH
  *                                                                                             * 
 #ifdef OG
  *                    $Revision:: 2                                                           $* 
-#endif
+#endif // OG
 #ifdef ZH
  *                    $Revision:: 5                                                           $* 
-#endif
+#endif // ZH
  *                                                                                             * 
  *---------------------------------------------------------------------------------------------* 
  * Functions:                                                                                  * 
@@ -84,7 +84,7 @@ public:
 #ifdef ZH
 	void Do_Data_Compression(int datasize);
 	void Get_Vector(int frame,float * setvec) const;
-#endif
+#endif // ZH
 
 	MotionChannelClass(void);
 	~MotionChannelClass(void);
@@ -94,10 +94,10 @@ public:
 	WWINLINE int Get_Pivot(void) const { return PivotIdx; }
 #ifdef OG
 	WWINLINE void Get_Vector(int frame,float * setvec) const;
-#endif
+#endif // OG
 #ifdef ZH
 	WWINLINE void Set_Pivot(int idx) { PivotIdx=idx; }
-#endif
+#endif // ZH
 
 #define SPECIAL_GETVEC_AS_QUAT
 #ifdef SPECIAL_GETVEC_AS_QUAT
@@ -115,7 +115,7 @@ private:
 	float		ValueScale;
 	unsigned short* CompressedData;
 
-#endif
+#endif // ZH
 	float	*	Data;					// pointer to the raw floating point data
 	int		FirstFrame;			// first frame which was non-identity
 	int		LastFrame;			// last frame which was non-identity
@@ -125,11 +125,11 @@ private:
 #ifdef OG
 	friend class HRawAnimClass;
 
-#endif
+#endif // OG
 #ifdef ZH
 //	friend class HRawAnimClass;
 
-#endif
+#endif // ZH
 };
 
 WWINLINE void MotionChannelClass::set_identity(float * setvec) const

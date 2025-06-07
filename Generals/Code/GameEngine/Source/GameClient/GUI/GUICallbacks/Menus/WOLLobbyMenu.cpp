@@ -101,10 +101,10 @@ static void doSliderTrack(GameWindow *control, Int val);
 Bool DontShowMainMenu = FALSE;
 #ifdef OG
 enum { COLUMN_PLAYERNAME = 2 };
-#endif
+#endif // OG
 #ifdef ZH
 enum { COLUMN_PLAYERNAME = 1 };
-#endif
+#endif // ZH
 
 // window ids ------------------------------------------------------------------------------
 static NameKeyType parentWOLLobbyID = NAMEKEY_INVALID;
@@ -251,10 +251,10 @@ static void playerTooltip(GameWindow *window,
 
 #ifdef OG
 	UnicodeString uName = GadgetListBoxGetText(window, row, 2);
-#endif
+#endif // OG
 #ifdef ZH
 	UnicodeString uName = GadgetListBoxGetText(window, row, COLUMN_PLAYERNAME);
-#endif
+#endif // ZH
 	AsciiString aName;
 	aName.translate(uName);
 
@@ -414,39 +414,39 @@ const Image* LookupSmallRankImage(Int side, Int rankPoints)
 #ifdef OG
 		case 2:
 
-#endif
+#endif // OG
 #ifdef ZH
 		case 2:  //USA
 		case 5:  //Super Weapon
 		case 6:  //Laser
 		case 7:  //Air Force
-#endif
+#endif // ZH
 			sideStr = "USA";
 			break;
 #ifdef OG
 		case 3:
 
-#endif
+#endif // OG
 #ifdef ZH
 
 		case 3:  //China
 		case 8:  //Tank
 		case 9:  //Infantry
 		case 10: //Nuke
-#endif
+#endif // ZH
 			sideStr = "CHA";
 			break;
 #ifdef OG
 		case 4:
 
-#endif
+#endif // OG
 #ifdef ZH
 
 		case 4:  //GLA
 		case 11: //Toxin
 		case 12: //Demolition
 		case 13: //Stealth
-#endif
+#endif // ZH
 			sideStr = "GLA";
 			break;
 	}
@@ -505,7 +505,7 @@ static Int insertPlayerInListbox(const PlayerInfo& info, Color color)
 
 #ifdef ZH
 #if 0  //Officer's Club (preorder image) no longer used in Zero Hour
-#endif
+#endif // ZH
 	Int index = GadgetListBoxAddEntryImage(listboxLobbyPlayers, preorderImg, -1, 0, w, h);
 	GadgetListBoxAddEntryImage(listboxLobbyPlayers, rankImg, index, 1, w, h);
 	GadgetListBoxAddEntryText(listboxLobbyPlayers, uStr, color, index, 2);
@@ -514,7 +514,7 @@ static Int insertPlayerInListbox(const PlayerInfo& info, Color color)
 	Int index = GadgetListBoxAddEntryImage(listboxLobbyPlayers, rankImg, -1, 0, w, h);
 	GadgetListBoxAddEntryText(listboxLobbyPlayers, uStr, color, index, 1);
 #endif
-#endif
+#endif // ZH
 	return index;
 }
 
@@ -549,10 +549,10 @@ void PopulateLobbyPlayerListbox(void)
 			AsciiString selectedName;
 #ifdef OG
 			uStr = GadgetListBoxGetText(listboxLobbyPlayers, selectedIndices[i], 2);
-#endif
+#endif // OG
 #ifdef ZH
 			uStr = GadgetListBoxGetText(listboxLobbyPlayers, selectedIndices[i], COLUMN_PLAYERNAME);
-#endif
+#endif // ZH
 			selectedName.translate(uStr);
 			selectedNames.insert(selectedName);
 			DEBUG_LOG(("Saving off old selection %d (%s)\n", selectedIndices[i], selectedName.str()));
@@ -1224,7 +1224,7 @@ void WOLLobbyMenuUpdate( WindowLayout * layout, void *userData)
 							room.setAllowObservers(resp.stagingRoom.allowObservers);
 #ifdef ZH
               room.setUseStats(resp.stagingRoom.useStats);
-#endif
+#endif // ZH
 							room.setPingString(resp.stagingServerPingString.c_str());
 							room.setLadderIP(resp.stagingServerLadderIP.c_str());
 							room.setLadderPort(resp.stagingRoom.ladderPort);

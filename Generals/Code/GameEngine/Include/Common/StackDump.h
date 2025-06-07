@@ -32,11 +32,11 @@
 #ifdef OG
 #endif
 
-#endif
+#endif // OG
 #ifdef ZH
 #endif // Unsure about this one -ML 3/25/03
 
-#endif
+#endif // ZH
 #if defined(_DEBUG) || defined(_INTERNAL) || defined(IG_DEBUG_STACKTRACE)
 
 // Writes a stackdump (provide a callback : gets called per line)

@@ -58,7 +58,7 @@ Bool MoneyCrateCollide::executeCrateBehavior( Object *other )
 #ifdef ZH
 	money += getUpgradedSupplyBoost(other);
 
-#endif
+#endif // ZH
 	other->getControllingPlayer()->getMoney()->deposit( money );
 	other->getControllingPlayer()->getScoreKeeper()->addMoneyEarned( money );
 
@@ -95,7 +95,7 @@ Int MoneyCrateCollide::getUpgradedSupplyBoost( Object *other ) const
 	}
 
 	return 0;
-#endif
+#endif // ZH
 }
 
 // ------------------------------------------------------------------------------------------------

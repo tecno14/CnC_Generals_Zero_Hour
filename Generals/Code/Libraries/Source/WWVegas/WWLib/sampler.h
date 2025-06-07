@@ -127,7 +127,7 @@ public:
 	virtual void Sample(float *target);
 #ifdef ZH
 	void Set_Offset(unsigned int offset) { index=offset; }
-#endif
+#endif // ZH
 protected:
 	unsigned int index;
 };

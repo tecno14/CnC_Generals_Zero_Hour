@@ -24,10 +24,10 @@
 
 #ifdef OG
 // FILE: BaikonurLaunchPower.h /////////////////////////////////////////////////
-#endif
+#endif // OG
 #ifdef ZH
 // FILE: BaikonurLaunchPower.cpp////////////////////////////////////////////////
-#endif
+#endif // ZH
 //-----------------------------------------------------------------------------
 //                                                                          
 //                       Electronic Arts Pacific.                          
@@ -41,10 +41,10 @@
 //
 #ifdef OG
 //	Filename: BaikonurLaunchPower.h
-#endif
+#endif // OG
 #ifdef ZH
 //	Filename: BaikonurLaunchPower.cpp
-#endif
+#endif // ZH
 //
 //	Author:		Kris Morness
 //
@@ -110,10 +110,10 @@ void BaikonurLaunchPower::doSpecialPower( UnsignedInt commandOptions )
 // ------------------------------------------------------------------------------------------------
 #ifdef OG
 void BaikonurLaunchPower::doSpecialPowerAtLocation( const Coord3D *loc, UnsignedInt commandOptions )
-#endif
+#endif // OG
 #ifdef ZH
 void BaikonurLaunchPower::doSpecialPowerAtLocation( const Coord3D *loc, Real angle, UnsignedInt commandOptions )
-#endif
+#endif // ZH
 {
 	if (getObject()->isDisabled())
 		return;
@@ -123,10 +123,10 @@ void BaikonurLaunchPower::doSpecialPowerAtLocation( const Coord3D *loc, Real ang
 	// call the base class action cause we are *EXTENDING* functionality
 #ifdef OG
 	SpecialPowerModule::doSpecialPowerAtLocation( loc, commandOptions );
-#endif
+#endif // OG
 #ifdef ZH
 	SpecialPowerModule::doSpecialPowerAtLocation( loc, angle, commandOptions );
-#endif
+#endif // ZH
 
 	//Create the detonation
 	const ThingTemplate *thing = TheThingFactory->findTemplate( data->m_detonationObject );

@@ -248,4 +248,4 @@ char const * fixed::As_ASCII(void) const
 	return(buffer);
 }
 
-#endif
+#endif // ZH

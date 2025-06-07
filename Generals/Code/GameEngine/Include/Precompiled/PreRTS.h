@@ -123,7 +123,7 @@ class STLSpecialAlloc;
 #include "GameLogic/LogicRandomValue.h"
 #ifdef ZH
 #include "Common/ObjectStatusTypes.h"
-#endif
+#endif // ZH
 
 #include "Common/Thing.h"
 #include "Common/UnicodeString.h"

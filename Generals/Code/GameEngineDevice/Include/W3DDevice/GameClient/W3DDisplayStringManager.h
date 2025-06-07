@@ -47,7 +47,7 @@
 	#define MAX_GROUPS 10
 #endif
 
-#endif
+#endif // ZH
 class W3DDisplayStringManager : public DisplayStringManager
 {
 
@@ -76,10 +76,10 @@ public:
 protected:
 #ifdef OG
 	DisplayString *m_groupNumeralStrings[10];
-#endif
+#endif // OG
 #ifdef ZH
 	DisplayString *m_groupNumeralStrings[ MAX_GROUPS ];
-#endif
+#endif // ZH
 	DisplayString *m_formationLetterDisplayString;
 
 };

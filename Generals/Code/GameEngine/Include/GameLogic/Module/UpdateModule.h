@@ -49,7 +49,7 @@ class AIUpdateInterface;		///< @todo Clean up this nasty hack (MSB)
 class ExitInterface;
 #ifdef OG
 class DelayedUpgradeUpdateInterface;
-#endif
+#endif // OG
 class DockUpdateInterface;
 class RailedTransportDockUpdateInterface;
 class SpecialPowerUpdateInterface;
@@ -66,7 +66,7 @@ class ParticleSystemTemplate;
 class CommandButton;
 #ifdef ZH
 class Waypoint;
-#endif
+#endif // ZH
 enum CommandOption;
 
 //-------------------------------------------------------------------------------------------------
@@ -279,7 +279,7 @@ public:
 };
 
 //-------------------------------------------------------------------------------------------------
-#endif
+#endif // OG
 class ProjectileUpdateInterface
 {
 public:
@@ -291,7 +291,7 @@ public:
 #ifdef ZH
 	virtual void setFramesTillCountermeasureDiversionOccurs( UnsignedInt frames ) = 0; ///< Number of frames till missile diverts to countermeasures.
 	virtual void projectileNowJammed() = 0;
-#endif
+#endif // ZH
 };
 
 //-------------------------------------------------------------------------------------------------
@@ -386,7 +386,7 @@ public:
 	virtual const Coord3D *getRallyPoint( void ) const = 0;			///< define a "rally point" for units to move towards
 #ifdef ZH
 	virtual Bool useSpawnRallyPoint( void ) const { return FALSE; }
-#endif
+#endif // ZH
 	virtual Bool getNaturalRallyPoint( Coord3D& rallyPoint, Bool offset = TRUE ) const {rallyPoint.x=rallyPoint.y=rallyPoint.z=0; return false;}	///< get the natural "rally point" for units to move towards
 	virtual Bool getExitPosition( Coord3D& exitPosition ) const {exitPosition.x=exitPosition.y=exitPosition.z=0; return false;};					///< access to the "Door" position of the production object
 #ifdef OG
@@ -398,7 +398,7 @@ class DelayedUpgradeUpdateInterface
 public:
 	virtual Bool isTriggeredBy( Int64 potentialMask ) = 0;	///< If you were an upgrade, would you trigger for this?
 	virtual void setDelay( UnsignedInt startingDelay ) = 0;	///< Start the upgrade doing countdown
-#endif
+#endif // OG
 };
 
 #endif

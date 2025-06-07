@@ -24,38 +24,38 @@
  *                                                                         * 
 #ifdef OG
  *                     $Archive:: /VSS_Sync/ww3d2/mapper.h                $* 
-#endif
+#endif // OG
 #ifdef ZH
  *                     $Archive:: /Commando/Code/ww3d2/mapper.h           $* 
-#endif
+#endif // ZH
  *                                                                         * 
 #ifdef OG
  *                      $Author:: Vss_sync                                $* 
-#endif
+#endif // OG
 #ifdef ZH
  *                     $Org Author:: Greg_h                                  $* 
-#endif
+#endif // ZH
  *                                                                         * 
 #ifdef OG
  *                     $Modtime:: 8/30/01 1:38a                           $* 
 
-#endif
+#endif // OG
 #ifdef ZH
  *                       $Author:: Kenny Mitchell                                               * 
  *                                                                                             * 
  *                     $Modtime:: 06/26/02 4:04p                                             $*
-#endif
+#endif // ZH
  *                                                                         * 
 #ifdef OG
  *                    $Revision:: 23                                      $* 
-#endif
+#endif // OG
 #ifdef ZH
  *                    $Revision:: 26                                      $* 
-#endif
+#endif // ZH
  *                                                                         * 
 #ifdef ZH
  * 06/26/02 KM Matrix name change to avoid MAX conflicts                                       *
-#endif
+#endif // ZH
  *-------------------------------------------------------------------------* 
  * Functions:                                                              * 
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
@@ -76,7 +76,7 @@
 #include "ww3d.h"
 #ifdef ZH
 #include "matrix4.h"
-#endif
+#endif // ZH
 
 class INIClass;
 
@@ -113,7 +113,7 @@ class TextureMapperClass : public W3DMPO, public RefCountClass
 #ifdef ZH
 			MAPPER_ID_GRID_WS_CLASSIC_ENVIRONMENT,
 			MAPPER_ID_GRID_WS_ENVIRONMENT,
-#endif
+#endif // ZH
 		};
 
 		TextureMapperClass(unsigned int stage=0);
@@ -121,29 +121,29 @@ class TextureMapperClass : public W3DMPO, public RefCountClass
 
 #ifdef OG
 		virtual void Reset(void) { }
-#endif
+#endif // OG
 #ifdef ZH
 		virtual ~TextureMapperClass(void) { }
-#endif
+#endif // ZH
 		
 #ifdef OG
 		virtual TextureMapperClass *		Clone(void) const=0;		
-#endif
+#endif // OG
 		virtual int								Mapper_ID(void) const { return MAPPER_ID_UNKNOWN;}
 #ifdef ZH
 
 		virtual TextureMapperClass *		Clone(void) const = 0;
-#endif
+#endif // ZH
 
 		virtual bool Is_Time_Variant(void) { return false; }
 #ifdef OG
 		virtual void							Apply(int uv_array_index)=0;
 
-#endif
+#endif // OG
 #ifdef ZH
 		virtual void							Apply(int uv_array_index) = 0;
 		virtual void							Reset(void) { }
-#endif
+#endif // ZH
 		virtual bool							Needs_Normals(void) { return false; }
 		void										Set_Stage(int stage) { Stage = stage; }
 		int										Get_Stage(void) const { return Stage; }
@@ -153,7 +153,7 @@ class TextureMapperClass : public W3DMPO, public RefCountClass
 		// in unusual circumstances.
 		virtual void							Calculate_Texture_Matrix(Matrix4x4 &tex_matrix) = 0;
 
-#endif
+#endif // ZH
 	protected:
 		unsigned int							Stage;
 };
@@ -168,7 +168,7 @@ class ScaleTextureMapperClass : public TextureMapperClass
 public:	
 #ifdef OG
 	ScaleTextureMapperClass(unsigned int stage);
-#endif
+#endif // OG
 	ScaleTextureMapperClass(const Vector2 &scale, unsigned int stage);
 	ScaleTextureMapperClass(const INIClass &ini, const char *section, unsigned int stage);
 	ScaleTextureMapperClass(const ScaleTextureMapperClass & src);
@@ -180,7 +180,7 @@ public:
 	virtual void Apply(int uv_array_index);
 #ifdef ZH
 	virtual void Calculate_Texture_Matrix(Matrix4x4 &tex_matrix);
-#endif
+#endif // ZH
 
 protected:
 	Vector2			Scale;		// Scale
@@ -190,10 +190,10 @@ protected:
 ** LinearOffsetTextureMapperClass
 #ifdef OG
 ** Modifies the UV coodinates by a linear offset
-#endif
+#endif // OG
 #ifdef ZH
 ** Modifies the UV coordinates by a linear offset
-#endif
+#endif // ZH
 */
 class LinearOffsetTextureMapperClass : public ScaleTextureMapperClass
 {
@@ -202,11 +202,11 @@ public:
 #ifdef OG
 	LinearOffsetTextureMapperClass(const Vector2 &offset_per_sec, const Vector2 &scale, unsigned int stage);
 
-#endif
+#endif // OG
 #ifdef ZH
 	LinearOffsetTextureMapperClass(const Vector2 &offset_per_sec, const Vector2 & start_offset,
 		bool clamp_fix, const Vector2 &scale, unsigned int stage);
-#endif
+#endif // ZH
 	LinearOffsetTextureMapperClass(const INIClass &ini, const char *section, unsigned int stage);
 	LinearOffsetTextureMapperClass(const LinearOffsetTextureMapperClass & src);
 
@@ -217,20 +217,20 @@ public:
 #ifdef OG
 	virtual void Apply(int uv_array_index);
 	virtual void Reset(void) { Set_Current_UV_Offset(Vector2(0.0f, 0.0f)); }
-#endif
+#endif // OG
 #ifdef ZH
 	virtual bool Is_Time_Variant(void) { return true; }
 
-#endif
+#endif // ZH
 
 #ifdef OG
 	virtual bool Is_Time_Variant(void) { return true; }
 
-#endif
+#endif // OG
 #ifdef ZH
 	virtual void Reset(void);
 	virtual void Calculate_Texture_Matrix(Matrix4x4 &tex_matrix);
-#endif
+#endif // ZH
 
 	void Set_Current_UV_Offset(const Vector2 &cur)  {
 		CurrentUVOffset = cur;
@@ -252,7 +252,7 @@ protected:
 #ifdef ZH
 	Vector2			StartingUVOffset;		// Need to store this for copy constructors
 	bool				ClampFix;				// Restrict the offset in a correct manner for clamped textures
-#endif
+#endif // ZH
 };
 
 /*
@@ -265,10 +265,10 @@ class GridTextureMapperClass : public TextureMapperClass
 public:
 #ifdef OG
 	GridTextureMapperClass(float fps, unsigned int gridwidth_log2, unsigned int stage);
-#endif
+#endif // OG
 #ifdef ZH
 	GridTextureMapperClass(float fps, unsigned int gridwidth_log2, unsigned int last_frame, unsigned int offset, unsigned int stage);
-#endif
+#endif // ZH
 	GridTextureMapperClass(const INIClass &ini, const char *section, unsigned int stage);
 	GridTextureMapperClass(const GridTextureMapperClass & src);
 
@@ -278,17 +278,17 @@ public:
 
 #ifdef ZH
 	virtual bool Is_Time_Variant(void) { return true; }
-#endif
+#endif // ZH
 	virtual void Apply(int uv_array_index);
 	virtual void Reset(void);
 #ifdef ZH
 	virtual void Calculate_Texture_Matrix(Matrix4x4 &tex_matrix);
-#endif
+#endif // ZH
 
 #ifdef OG
 	virtual bool Is_Time_Variant(void) { return true; }
 
-#endif
+#endif // OG
 	void Set_Frame(unsigned int frame) { CurrentFrame=frame; }
 	void Set_Frame_Per_Second(float fps);
 	
@@ -306,7 +306,7 @@ protected:
 	unsigned int	LastFrame;				// Last frame to use
 #ifdef ZH
 	unsigned int	Offset;				// Only affects initialization, but need to store it for copy CTors to work
-#endif
+#endif // ZH
 
 	// Temporal state
 	unsigned int	Remainder;			// used for timing calculations
@@ -324,10 +324,10 @@ class RotateTextureMapperClass : public ScaleTextureMapperClass
 public:
 #ifdef OG
 	RotateTextureMapperClass(float rad_per_sec, const Vector2& center, unsigned int stage);
-#endif
+#endif // OG
 #ifdef ZH
 	RotateTextureMapperClass(float rad_per_sec, const Vector2& center, const Vector2 &scale, unsigned int stage);
-#endif
+#endif // ZH
 	RotateTextureMapperClass(const INIClass &ini, const char *section, unsigned int stage);
 	RotateTextureMapperClass(const RotateTextureMapperClass & src);
 
@@ -339,22 +339,22 @@ public:
 	virtual void Apply(int uv_array_index);
 	
 	virtual void Reset(void) { CurrentAngle = 0.0f; }
-#endif
+#endif // OG
 
 	virtual bool Is_Time_Variant(void) { return true; }
 #ifdef ZH
 	virtual void Reset(void);
 	virtual void Calculate_Texture_Matrix(Matrix4x4 &tex_matrix);
-#endif
+#endif // ZH
 
 private:
 	float CurrentAngle;
 #ifdef OG
 	float RadiansPerSec;
-#endif
+#endif // OG
 #ifdef ZH
 	float RadiansPerMilliSec;
-#endif
+#endif // ZH
 	Vector2 Center;
 	unsigned int	LastUsedSyncTime;		// Sync time last used to update offset
 };
@@ -365,19 +365,19 @@ private:
 */
 #ifdef OG
 class SineLinearOffsetTextureMapperClass : public TextureMapperClass
-#endif
+#endif // OG
 #ifdef ZH
 class SineLinearOffsetTextureMapperClass : public ScaleTextureMapperClass
-#endif
+#endif // ZH
 {
 	W3DMPO_GLUE(SineLinearOffsetTextureMapperClass)
 public:
 #ifdef OG
 	SineLinearOffsetTextureMapperClass(const Vector3 &uafp, const Vector3 &vafp, unsigned int stage);
-#endif
+#endif // OG
 #ifdef ZH
 	SineLinearOffsetTextureMapperClass(const Vector3 &uafp, const Vector3 &vafp, const Vector2 &scale, unsigned int stage);
-#endif
+#endif // ZH
 	SineLinearOffsetTextureMapperClass(const INIClass &ini, const char *section, unsigned int stage);
 	SineLinearOffsetTextureMapperClass(const SineLinearOffsetTextureMapperClass & src);
 
@@ -389,13 +389,13 @@ public:
 	virtual void Apply(int uv_array_index);	
 	
 	virtual void Reset(void) { CurrentAngle = 0.0f; }
-#endif
+#endif // OG
 	
 	virtual bool Is_Time_Variant(void) { return true; }
 #ifdef ZH
 	virtual void Reset(void);
 	virtual void Calculate_Texture_Matrix(Matrix4x4 &tex_matrix);
-#endif
+#endif // ZH
 
 private:
 	Vector3 UAFP;								// U Coordinate Amplitude frequency phase
@@ -410,21 +410,21 @@ private:
 */
 #ifdef OG
 class StepLinearOffsetTextureMapperClass : public TextureMapperClass
-#endif
+#endif // OG
 #ifdef ZH
 class StepLinearOffsetTextureMapperClass : public ScaleTextureMapperClass
-#endif
+#endif // ZH
 {
 	W3DMPO_GLUE(StepLinearOffsetTextureMapperClass)
 public:
 #ifdef OG
 	StepLinearOffsetTextureMapperClass(const Vector2 &step, float steps_per_sec, unsigned int stage);
 
-#endif
+#endif // OG
 #ifdef ZH
 	StepLinearOffsetTextureMapperClass(const Vector2 &step, float steps_per_sec, bool clamp_fix,
 		const Vector2 &scale, unsigned int stage);
-#endif
+#endif // ZH
 	StepLinearOffsetTextureMapperClass(const INIClass &ini, const char *section, unsigned int stage);
 	StepLinearOffsetTextureMapperClass(const StepLinearOffsetTextureMapperClass & src);
 
@@ -435,37 +435,37 @@ public:
 #ifdef OG
 	virtual void Apply(int uv_array_index);	
 	
-#endif
+#endif // OG
 #ifdef ZH
 	virtual bool Is_Time_Variant(void) { return true; }
 
-#endif
+#endif // ZH
 	virtual void Reset(void);
 #ifdef OG
 
 	virtual bool Is_Time_Variant(void) { return true; }
-#endif
+#endif // OG
 #ifdef ZH
 	virtual void Calculate_Texture_Matrix(Matrix4x4 &tex_matrix);
 
-#endif
+#endif // ZH
 
 private:
 	Vector2 Step;								// Size of step
 #ifdef OG
 	float StepsPerSec;						// Steps per second
-#endif
+#endif // OG
 #ifdef ZH
 	float StepsPerMilliSec;					// Steps per millisecond
-#endif
+#endif // ZH
 	Vector2 CurrentStep;						// Current step
 #ifdef ZH
 	float	Remainder;							// Remainder time
-#endif
+#endif // ZH
 	unsigned int	LastUsedSyncTime;		// Sync time last used to update offset
 #ifdef ZH
 	bool	ClampFix;							// Restrict the offset in a correct manner for clamped textures
-#endif
+#endif // ZH
 };
 
 /*
@@ -474,19 +474,19 @@ private:
 */
 #ifdef OG
 class ZigZagLinearOffsetTextureMapperClass : public TextureMapperClass
-#endif
+#endif // OG
 #ifdef ZH
 class ZigZagLinearOffsetTextureMapperClass : public ScaleTextureMapperClass
-#endif
+#endif // ZH
 {
 	W3DMPO_GLUE(ZigZagLinearOffsetTextureMapperClass)
 public:
 #ifdef OG
 	ZigZagLinearOffsetTextureMapperClass(const Vector2 &speed, float period, unsigned int stage);
-#endif
+#endif // OG
 #ifdef ZH
 	ZigZagLinearOffsetTextureMapperClass(const Vector2 &speed, float period, const Vector2 &scale, unsigned int stage);
-#endif
+#endif // ZH
 	ZigZagLinearOffsetTextureMapperClass(const INIClass &ini, const char *section, unsigned int stage);
 	ZigZagLinearOffsetTextureMapperClass(const ZigZagLinearOffsetTextureMapperClass & src);
 
@@ -497,33 +497,33 @@ public:
 #ifdef OG
 	virtual void Apply(int uv_array_index);	
 	
-#endif
+#endif // OG
 #ifdef ZH
 	virtual bool Is_Time_Variant(void) { return true; }
 
-#endif
+#endif // ZH
 	virtual void Reset(void);
 #ifdef OG
 	
 	virtual bool Is_Time_Variant(void) { return true; }
-#endif
+#endif // OG
 #ifdef ZH
 	virtual void Calculate_Texture_Matrix(Matrix4x4 &tex_matrix);
 
-#endif
+#endif // ZH
 
 private:
 #ifdef OG
 	Vector2 Speed;								// Speed of zigzag
 	float Period;								// Time taken for a period	
 
-#endif
+#endif // OG
 #ifdef ZH
 	Vector2 Speed;								// Speed of zigzag in units per millisecond
 	float Period;								// Time taken for a period	in milliseconds
 	float Half_Period;						// Half of period
 	float Remainder;							// Remainder time in milliseconds
-#endif
+#endif // ZH
 	unsigned int	LastUsedSyncTime;		// Sync time last used to update offset
 };
 
@@ -546,7 +546,7 @@ public:
 	virtual bool Needs_Normals(void) { return true; }
 #ifdef ZH
 	virtual void Calculate_Texture_Matrix(Matrix4x4 &tex_matrix);
-#endif
+#endif // ZH
 };
 
 class EnvironmentMapperClass : public TextureMapperClass
@@ -561,7 +561,7 @@ public:
 	virtual bool Needs_Normals(void) { return true; }
 #ifdef ZH
 	virtual void Calculate_Texture_Matrix(Matrix4x4 &tex_matrix);
-#endif
+#endif // ZH
 };
 
 class EdgeMapperClass : public TextureMapperClass
@@ -579,7 +579,7 @@ public:
 	virtual bool Needs_Normals(void) { return true; }
 #ifdef ZH
 	virtual void Calculate_Texture_Matrix(Matrix4x4 &tex_matrix);
-#endif
+#endif // ZH
 
 protected:
 	unsigned int	LastUsedSyncTime;		// Sync time last used to update offset
@@ -590,7 +590,7 @@ protected:
 #ifdef OG
 class WSClassicEnvironmentMapperClass : public TextureMapperClass
 
-#endif
+#endif // OG
 #ifdef ZH
 class WSEnvMapperClass : public TextureMapperClass
 {
@@ -606,7 +606,7 @@ protected:
 };
 
 class WSClassicEnvironmentMapperClass : public WSEnvMapperClass
-#endif
+#endif // ZH
 {
 	W3DMPO_GLUE(WSClassicEnvironmentMapperClass)
 public:
@@ -614,26 +614,26 @@ public:
 	WSClassicEnvironmentMapperClass(unsigned int stage) : TextureMapperClass(stage) { }
 	WSClassicEnvironmentMapperClass(const WSClassicEnvironmentMapperClass & src) : TextureMapperClass(src) { }
 
-#endif
+#endif // OG
 #ifdef ZH
 	WSClassicEnvironmentMapperClass(AxisType axis, unsigned int stage) : WSEnvMapperClass(axis, stage) { }
 	WSClassicEnvironmentMapperClass(const WSClassicEnvironmentMapperClass & src) : WSEnvMapperClass(src) { }
 	WSClassicEnvironmentMapperClass(const INIClass &ini, const char *section, unsigned int stage) : WSEnvMapperClass(ini, section, stage) { }
-#endif
+#endif // ZH
 	virtual int	Mapper_ID(void) const { return MAPPER_ID_WS_CLASSIC_ENVIRONMENT;}
 	virtual TextureMapperClass* Clone() const { return NEW_REF( WSClassicEnvironmentMapperClass, (*this)); }
 	virtual void Apply(int uv_array_index);
 #ifdef OG
 	virtual bool Needs_Normals(void) { return true; }
-#endif
+#endif // OG
 };
 
 #ifdef OG
 class WSEnvironmentMapperClass : public TextureMapperClass
-#endif
+#endif // OG
 #ifdef ZH
 class WSEnvironmentMapperClass : public WSEnvMapperClass
-#endif
+#endif // ZH
 {
 	W3DMPO_GLUE(WSEnvironmentMapperClass)
 public:
@@ -641,18 +641,18 @@ public:
 	WSEnvironmentMapperClass(unsigned int stage) : TextureMapperClass(stage) { }
 	WSEnvironmentMapperClass(const WSEnvironmentMapperClass & src) : TextureMapperClass(src) { }
 
-#endif
+#endif // OG
 #ifdef ZH
 	WSEnvironmentMapperClass(AxisType axis, unsigned int stage) : WSEnvMapperClass(axis, stage) { }
 	WSEnvironmentMapperClass(const WSClassicEnvironmentMapperClass & src) : WSEnvMapperClass(src) { }
 	WSEnvironmentMapperClass(const INIClass &ini, const char *section, unsigned int stage) : WSEnvMapperClass(ini, section, stage) { }
-#endif
+#endif // ZH
 	virtual int	Mapper_ID(void) const { return MAPPER_ID_WS_ENVIRONMENT;}
 	virtual TextureMapperClass* Clone() const { return NEW_REF( WSEnvironmentMapperClass, (*this)); }
 	virtual void Apply(int uv_array_index);
 #ifdef OG
 	virtual bool Needs_Normals(void) { return true; }
-#endif
+#endif // OG
 };
 
 class GridClassicEnvironmentMapperClass : public GridTextureMapperClass
@@ -661,10 +661,10 @@ class GridClassicEnvironmentMapperClass : public GridTextureMapperClass
 public:
 #ifdef OG
 	GridClassicEnvironmentMapperClass(float fps,unsigned int gridwidth, unsigned int stage):GridTextureMapperClass(fps,gridwidth,stage) { }
-#endif
+#endif // OG
 #ifdef ZH
 	GridClassicEnvironmentMapperClass(float fps, unsigned int gridwidth_log2, unsigned int last_frame, unsigned int offset, unsigned int stage) : GridTextureMapperClass(fps, gridwidth_log2, last_frame, offset, stage) { }
-#endif
+#endif // ZH
 	GridClassicEnvironmentMapperClass(const INIClass &ini, const char *section, unsigned int stage) : GridTextureMapperClass(ini,section,stage) { }
 	GridClassicEnvironmentMapperClass(const GridTextureMapperClass & src) : GridTextureMapperClass(src) { }
 	virtual int	Mapper_ID(void) const { return MAPPER_ID_GRID_CLASSIC_ENVIRONMENT;}
@@ -673,7 +673,7 @@ public:
 	virtual bool Needs_Normals(void) { return true; }
 #ifdef ZH
 	virtual void Calculate_Texture_Matrix(Matrix4x4 &tex_matrix);
-#endif
+#endif // ZH
 };
 
 class GridEnvironmentMapperClass : public GridTextureMapperClass
@@ -682,10 +682,10 @@ class GridEnvironmentMapperClass : public GridTextureMapperClass
 public:	
 #ifdef OG
 	GridEnvironmentMapperClass(float fps,unsigned int gridwidth, unsigned int stage):GridTextureMapperClass(fps,gridwidth,stage) { }
-#endif
+#endif // OG
 #ifdef ZH
 	GridEnvironmentMapperClass(float fps, unsigned int gridwidth_log2, unsigned int last_frame, unsigned int offset, unsigned int stage) : GridTextureMapperClass(fps, gridwidth_log2, last_frame, offset, stage) { }
-#endif
+#endif // ZH
 	GridEnvironmentMapperClass(const INIClass &ini, const char *section, unsigned int stage) : GridTextureMapperClass(ini,section,stage) { }
 	GridEnvironmentMapperClass(const GridTextureMapperClass & src) : GridTextureMapperClass(src) { }
 	virtual int	Mapper_ID(void) const { return MAPPER_ID_GRID_ENVIRONMENT;}
@@ -694,7 +694,7 @@ public:
 	virtual bool Needs_Normals(void) { return true; }
 #ifdef ZH
 	virtual void Calculate_Texture_Matrix(Matrix4x4 &tex_matrix);
-#endif
+#endif // ZH
 };
 
 // ----------------------------------------------------------------------------
@@ -712,19 +712,19 @@ public:
 	ScreenMapperClass(const INIClass &ini, const char *section, unsigned int stage):LinearOffsetTextureMapperClass(ini,section,stage) { }
 	ScreenMapperClass(const LinearOffsetTextureMapperClass & src):LinearOffsetTextureMapperClass(src) { }
 
-#endif
+#endif // OG
 #ifdef ZH
 	ScreenMapperClass(const Vector2 &offset_per_sec, const Vector2 & start_offset, bool clamp_fix,
 		const Vector2 &scale, unsigned int stage) : LinearOffsetTextureMapperClass(offset_per_sec, start_offset, clamp_fix, scale, stage) { }
 	ScreenMapperClass(const INIClass &ini, const char *section, unsigned int stage) : LinearOffsetTextureMapperClass(ini, section, stage) { }
 	ScreenMapperClass(const ScreenMapperClass & src) : LinearOffsetTextureMapperClass(src) { }
-#endif
+#endif // ZH
 	virtual int	Mapper_ID(void) const { return MAPPER_ID_SCREEN;}
 	virtual TextureMapperClass* Clone() const { return NEW_REF( ScreenMapperClass, (*this)); }
 	virtual void Apply(int uv_array_index);
 #ifdef ZH
 	virtual void Calculate_Texture_Matrix(Matrix4x4 &tex_matrix);
-#endif
+#endif // ZH
 };
 
 /**
@@ -733,19 +733,19 @@ public:
 */
 #ifdef OG
 class RandomTextureMapperClass : public TextureMapperClass
-#endif
+#endif // OG
 #ifdef ZH
 class RandomTextureMapperClass : public ScaleTextureMapperClass
-#endif
+#endif // ZH
 {
 	W3DMPO_GLUE(RandomTextureMapperClass)
 public:
 #ifdef OG
 	RandomTextureMapperClass(float fps, unsigned int stage);
-#endif
+#endif // OG
 #ifdef ZH
 	RandomTextureMapperClass(float fps, const Vector2 &scale, unsigned int stage);
-#endif
+#endif // ZH
 	RandomTextureMapperClass(const INIClass &ini, const char *section, unsigned int stage);
 	RandomTextureMapperClass(const RandomTextureMapperClass & src);
 
@@ -755,28 +755,28 @@ public:
 
 #ifdef OG
 	virtual void Apply(int uv_array_index);
-#endif
+#endif // OG
 #ifdef ZH
 	virtual bool Is_Time_Variant(void) { return true; }
-#endif
+#endif // ZH
 	virtual void Reset(void);
 #ifdef OG
 	virtual bool Is_Time_Variant(void) { return true; }
-#endif
+#endif // OG
 #ifdef ZH
 	virtual void Calculate_Texture_Matrix(Matrix4x4 &tex_matrix);
-#endif
+#endif // ZH
 
 protected:
 #ifdef OG
 	float FPS;
 
-#endif
+#endif // OG
 #ifdef ZH
 	void randomize(void);
 	float FPMS;									// frames per millisecond
 	float Remainder;							// remaining time
-#endif
+#endif // ZH
 	float CurrentAngle;
 	Vector2 Center;
 	Vector2 Speed;
@@ -795,11 +795,11 @@ public:
 #ifdef OG
 	BumpEnvTextureMapperClass(float rad_per_sec, float scale_factor, const Vector2 & offset_per_sec, const Vector2 &scale, unsigned int stage);
 
-#endif
+#endif // OG
 #ifdef ZH
 	BumpEnvTextureMapperClass(float rad_per_sec, float scale_factor, const Vector2 & offset_per_sec,
 		const Vector2 & start_offset, bool clamp_fix, const Vector2 &scale, unsigned int stage);
-#endif
+#endif // ZH
 	BumpEnvTextureMapperClass(INIClass &ini, char *section, unsigned int stage);
 	BumpEnvTextureMapperClass(const BumpEnvTextureMapperClass & src);
 
@@ -851,7 +851,7 @@ public:
 	virtual int	Mapper_ID(void) const { return MAPPER_ID_GRID_WS_ENVIRONMENT;}
 	virtual TextureMapperClass* Clone() const { return NEW_REF( GridWSEnvironmentMapperClass, (*this)); }
 	virtual void Apply(int uv_array_index);	
-#endif
+#endif // ZH
 };
 
 

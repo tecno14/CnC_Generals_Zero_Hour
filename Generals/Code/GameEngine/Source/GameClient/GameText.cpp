@@ -374,13 +374,13 @@ void GameTextManager::init( void )
 	AsciiString ourNameA;
 	ourNameA.translate(ourName);	//get ASCII version for Win 9x
 
-#endif
+#endif // ZH
 	extern HWND ApplicationHWnd;  ///< our application window handle
 	if (ApplicationHWnd) {
 #ifdef ZH
 		//Set it twice because Win 9x does not support SetWindowTextW.
 		::SetWindowText(ApplicationHWnd, ourNameA.str());
-#endif
+#endif // ZH
 		::SetWindowTextW(ApplicationHWnd, ourName.str());
 	}
 

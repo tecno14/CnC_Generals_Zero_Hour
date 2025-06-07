@@ -86,22 +86,22 @@ inline char* skipNonWhitespace(char* p)
 #ifdef OG
 // -----------------------------------------------------
 AsciiString::AsciiString(const AsciiString& stringSrc) : m_data(stringSrc.m_data)
-#endif
+#endif // OG
 #ifdef ZH
 void AsciiString::freeBytes(void)
 
-#endif
+#endif // ZH
 {
 #ifdef OG
 	ScopedCriticalSection scopedCriticalSection(TheAsciiStringCriticalSection);
 	if (m_data)
 		++m_data->m_refCount;
 	validate();
-#endif
+#endif // OG
 #ifdef ZH
 	TheDynamicMemoryAllocator->freeBytes(m_data);
 
-#endif
+#endif // ZH
 }
 
 // -----------------------------------------------------
@@ -246,7 +246,7 @@ void AsciiString::set(const char* s)
 }
 
 // -----------------------------------------------------
-#endif
+#endif // OG
 char*  AsciiString::getBufferForRead(Int len)
 {
 	validate();
@@ -285,7 +285,7 @@ void AsciiString::concat(const char* s)
 	{
 		set(s);
 	}
-#endif
+#endif // OG
 	validate();
 }
 

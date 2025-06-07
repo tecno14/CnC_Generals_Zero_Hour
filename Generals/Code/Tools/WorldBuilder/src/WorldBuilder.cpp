@@ -238,7 +238,7 @@ CWorldBuilderApp::CWorldBuilderApp() :
 	m_tools[23] = &m_borderTool;
 #ifdef ZH
 	m_tools[24] = &m_rulerTool;
-#endif
+#endif // ZH
 
 	// set up initial values.
 	m_brushTool.setHeight(16);
@@ -267,7 +267,7 @@ CWorldBuilderApp::~CWorldBuilderApp()
 	}
 #ifdef ZH
 	_exit(0);
-#endif
+#endif // ZH
 }
 
 
@@ -278,7 +278,7 @@ BOOL CWorldBuilderApp::InitInstance()
 {
 #ifdef ZH
 //#ifdef _RELEASE
-#endif
+#endif // ZH
 	EulaDialog eulaDialog;
 	if( eulaDialog.DoModal() == IDCANCEL )
 	{
@@ -286,12 +286,12 @@ BOOL CWorldBuilderApp::InitInstance()
 	}
 #ifdef ZH
 //#endif
-#endif
+#endif // ZH
 
 #ifdef ZH
 	ApplicationHWnd = GetDesktopWindow();
 
-#endif
+#endif // ZH
 	// initialization
   _set_se_translator( DumpExceptionInfo ); // Hook that allows stack trace.
 
@@ -304,7 +304,7 @@ BOOL CWorldBuilderApp::InitInstance()
 	DebugSetFlags(DebugGetFlags() | DEBUG_FLAG_LOG_TO_CONSOLE);
 #endif
 
-#endif
+#endif // ZH
 	DEBUG_LOG(("starting Worldbuilder.\n"));
 #ifdef _INTERNAL
 	DEBUG_LOG(("_INTERNAL defined.\n"));
@@ -367,21 +367,21 @@ BOOL CWorldBuilderApp::InitInstance()
 	ini.load( AsciiString( "Data\\INI\\GameDataDebug.ini" ), INI_LOAD_MULTIFILE, NULL );
 #ifdef ZH
 	TheWritableGlobalData->m_debugIgnoreAsserts = false;
-#endif
+#endif // ZH
 #endif
 
 #ifdef OG
 #if defined(_DEBUG) || defined(_INTERNAL)
 	TheWritableGlobalData->m_debugIgnoreAsserts = true;
-#endif
+#endif // OG
 #ifdef ZH
 #if defined(_INTERNAL)
 	// leave on asserts for a while. jba. [4/15/2003] TheWritableGlobalData->m_debugIgnoreAsserts = true;
-#endif
+#endif // ZH
 #endif
 #ifdef ZH
 	DEBUG_LOG(("TheWritableGlobalData %x\n", TheWritableGlobalData));
-#endif
+#endif // ZH
 #if 1
 	// srj sez: put INI into our user data folder, not the ap dir
 	free((void*)m_pszProfileName);
@@ -419,7 +419,7 @@ BOOL CWorldBuilderApp::InitInstance()
 	//  [2/11/2003]
 	ini.load( AsciiString( "Data\\Scripts\\Scripts.ini" ), INI_LOAD_OVERWRITE, NULL );
 
-#endif
+#endif // ZH
 	// need this before TheAudio in case we're running off of CD - TheAudio can try to open Music.big on the CD...
 	initSubsystem(TheCDManager, CreateCDManager(), NULL);
 	initSubsystem(TheAudio, (AudioManager*)new MilesAudioManager());
@@ -460,7 +460,7 @@ BOOL CWorldBuilderApp::InitInstance()
 #ifdef ZH
 
 	TheWritableGlobalData->m_isWorldBuilder = TRUE;
-#endif
+#endif // ZH
 
 	// Change the registry key under which our settings are stored.
 	// TODO: You should modify this string to be something appropriate
@@ -685,7 +685,7 @@ int CWorldBuilderApp::ExitInstance()
 	TheFileSystem = NULL;
 #ifdef OG
 	TextureLoadTaskClass::shutdown();  
-#endif
+#endif // OG
 
 	delete TheW3DFileSystem;
 	TheW3DFileSystem = NULL;
@@ -702,7 +702,7 @@ int CWorldBuilderApp::ExitInstance()
 #endif
 	#ifdef MEMORYPOOL_DEBUG
 		TheMemoryPoolFactory->debugMemoryReport(REPORT_POOLINFO | REPORT_POOL_OVERFLOW | REPORT_SIMPLE_LEAKS, 0, 0);
-#endif
+#endif // ZH
 #endif
 	shutdownMemoryManager();
 	DEBUG_SHUTDOWN();

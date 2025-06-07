@@ -24,37 +24,37 @@
  *                                                                                             *
 #ifdef OG
  *                     $Archive:: /VSS_Sync/ww3d2/dx8renderer.cpp                             $*
-#endif
+#endif // OG
 #ifdef ZH
  *                     $Archive:: /Commando/Code/ww3d2/dx8renderer.cpp                        $*
-#endif
+#endif // ZH
  *                                                                                             *
  *              Original Author:: Greg Hjelstrom                                               *
  *                                                                                             *
 #ifdef OG
  *                      $Author:: Vss_sync                                                    $*
-#endif
+#endif // OG
 #ifdef ZH
  *                       Author : Kenny Mitchell                                               * 
-#endif
+#endif // ZH
  *                                                                                             *
 #ifdef OG
  *                     $Modtime:: 8/29/01 7:29p                                               $*
-#endif
+#endif // OG
 #ifdef ZH
  *                     $Modtime:: 06/27/02 1:27p                                              $*
-#endif
+#endif // ZH
  *                                                                                             *
 #ifdef OG
  *                    $Revision:: 103                                                         $*
-#endif
+#endif // OG
 #ifdef ZH
  *                    $Revision:: 111                                                         $*
-#endif
+#endif // ZH
  *                                                                                             *
 #ifdef ZH
  * 06/27/02 KM Changes to max texture stage caps																*
-#endif
+#endif // ZH
  *---------------------------------------------------------------------------------------------*
  * Functions:                                                                                  *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
@@ -71,7 +71,7 @@
 #include "dx8caps.h"
 #ifdef ZH
 #include "dx8rendererdebugger.h"
-#endif
+#endif // ZH
 #include "wwdebug.h"
 #include "wwprofile.h"
 #include "wwmemlog.h"
@@ -109,7 +109,7 @@ void Whatever(
 	const Vector3i* polygon_indices,
 	unsigned polygon_count);
 
-#endif
+#endif // OG
 
 // helper data structure
 class PolyRemover : public MultiListObjectClass
@@ -240,11 +240,11 @@ DX8TextureCategoryClass::DX8TextureCategoryClass(
 #ifdef OG
 
 	for (int a=0;a<MAX_TEXTURE_STAGES;++a) {
-#endif
+#endif // OG
 #ifdef ZH
 	for (int a=0;a<MeshMatDescClass::MAX_TEX_STAGES;++a) 
 	{
-#endif
+#endif // ZH
 		textures[a]=NULL;
 		REF_PTR_SET(textures[a],texs[a]);
 	}
@@ -261,11 +261,11 @@ DX8TextureCategoryClass::~DX8TextureCategoryClass()
 #ifdef OG
 	for (int a=0;a<MAX_TEXTURE_STAGES;++a) {
 
-#endif
+#endif // OG
 #ifdef ZH
 	for (int a=0;a<MeshMatDescClass::MAX_TEX_STAGES;++a) 
 	{
-#endif
+#endif // ZH
 		REF_PTR_RELEASE(textures[a]);
 	}
 
@@ -345,7 +345,7 @@ void DX8FVFCategoryContainer::Render_Procedural_Material_Passes(void)
 	while (mpr != NULL) {
 #ifdef ZH
 		SNAPSHOT_SAY(("Render_Procedural_Material_Pass\n"));
-#endif
+#endif // ZH
 
    		MeshClass * mesh = mpr->Peek_Mesh();
   	
@@ -385,7 +385,7 @@ void DX8RigidFVFCategoryContainer::Add_Delayed_Visible_Material_Pass(MaterialPas
 	} else {
 		WWASSERT(delayed_matpass_tail != NULL);
 		delayed_matpass_tail->Set_Next_Visible(new_mpr);
-#endif
+#endif // ZH
 }
 
 #ifdef ZH
@@ -397,7 +397,7 @@ void DX8RigidFVFCategoryContainer::Render_Delayed_Procedural_Material_Passes(voi
 {
 	if (!Any_Delayed_Passes_To_Render()) return;
 	AnyDelayedPassesToRender=false;
-#endif
+#endif // ZH
 
 #ifdef ZH
 	DX8Wrapper::Set_Vertex_Buffer(vertex_buffer);
@@ -419,7 +419,7 @@ void DX8RigidFVFCategoryContainer::Render_Delayed_Procedural_Material_Passes(voi
 	delayed_matpass_head = delayed_matpass_tail = NULL;
 }
 
-#endif
+#endif // ZH
 void DX8TextureCategoryClass::Log(bool only_visible)
 {
 #ifdef ENABLE_CATEGORY_LOG
@@ -430,10 +430,10 @@ void DX8TextureCategoryClass::Log(bool only_visible)
 	StringClass work2(255,true);
 #ifdef OG
 	for (int stage=0;stage<MAX_TEXTURE_STAGES;++stage) {
-#endif
+#endif // OG
 #ifdef ZH
 	for (int stage=0;stage<MeshMatDescClass::MAX_TEX_STAGES;++stage) {
-#endif
+#endif // ZH
 		work2.Format("	texture[%d]: %x (%s)\n", stage, textures[stage], textures[stage] ? textures[stage]->Get_Name() : "-");
 		work+=work2;
 	}
@@ -491,11 +491,11 @@ DX8FVFCategoryContainer::DX8FVFCategoryContainer(unsigned FVF_,bool sorting_)
 #ifdef OG
 	AnythingToRender(false)
 
-#endif
+#endif // OG
 #ifdef ZH
 	AnythingToRender(false),
 	AnyDelayedPassesToRender(false)
-#endif
+#endif // ZH
 {
 	if ((FVF&D3DFVF_TEX1)==D3DFVF_TEX1) uv_coordinate_channels=1;
 	if ((FVF&D3DFVF_TEX2)==D3DFVF_TEX2) uv_coordinate_channels=2;
@@ -811,12 +811,12 @@ DX8RigidFVFCategoryContainer::DX8RigidFVFCategoryContainer(unsigned FVF,bool sor
 #ifdef OG
 	used_vertices(0)
 
-#endif
+#endif // OG
 #ifdef ZH
 	used_vertices(0),
 	delayed_matpass_head(NULL),
 	delayed_matpass_tail(NULL)
-#endif
+#endif // ZH
 {
 }
 
@@ -884,7 +884,7 @@ void DX8RigidFVFCategoryContainer::Render(void)
 	// Disabling it for now HY.
 	//int zbias=0;
 	//DX8Wrapper::Set_DX8_ZBias(zbias);
-#endif
+#endif // ZH
 	for (unsigned p=0;p<passes;++p) {
 		SNAPSHOT_SAY(("Pass: %d\n",p));
 		while (DX8TextureCategoryClass * tex = visible_texture_category_list[p].Remove_Head()) {
@@ -894,14 +894,14 @@ void DX8RigidFVFCategoryContainer::Render(void)
 		//zbias++;
 		//if (zbias>15) zbias=15;
 		//DX8Wrapper::Set_DX8_ZBias(zbias);
-#endif
+#endif // ZH
 	}
 
 	Render_Procedural_Material_Passes();
 #ifdef ZH
 
 	//DX8Wrapper::Set_DX8_ZBias(0);
-#endif
+#endif // ZH
 }
 
 // ----------------------------------------------------------------------------
@@ -934,10 +934,10 @@ class Vertex_Split_Table
 	unsigned polygon_count;
 #ifdef OG
 	Vector3i* polygon_array;
-#endif
+#endif // OG
 #ifdef ZH
 	TriIndex* polygon_array;
-#endif
+#endif // ZH
 
 	bool allocated_polygon_array;
 
@@ -950,10 +950,10 @@ public:
 	{
 #ifdef OG
 		if (DX8Caps::Support_NPatches() && mmc->Needs_Vertex_Normals()) {
-#endif
+#endif // OG
 #ifdef ZH
 		if (DX8Wrapper::Get_Current_Caps()->Support_NPatches() && mmc->Needs_Vertex_Normals()) {
-#endif
+#endif // ZH
 			if (mmc->Get_Flag(MeshGeometryClass::ALLOW_NPATCHES)) {
 				npatch_enable=true;
 			}
@@ -966,38 +966,38 @@ public:
 			allocated_polygon_array=true;
 #ifdef OG
 			polygon_array=W3DNEWARRAY Vector3i[polygon_count];
-#endif
+#endif // OG
 #ifdef ZH
 			polygon_array=W3DNEWARRAY TriIndex[polygon_count];
-#endif
+#endif // ZH
 			memcpy(
 				polygon_array,
 				mmc->Get_Polygon_Array(),
 #ifdef OG
 				mmc->Get_Polygon_Count()*sizeof(Vector3i));
-#endif
+#endif // OG
 #ifdef ZH
 				mmc->Get_Polygon_Count()*sizeof(TriIndex));
-#endif
+#endif // ZH
 			if (gap_filler) {
 				memcpy(
 					polygon_array+mmc->Get_Polygon_Count(),
 					gap_filler->Get_Polygon_Array(),
 #ifdef OG
 					gap_filler->Get_Polygon_Count()*sizeof(Vector3i));
-#endif
+#endif // OG
 #ifdef ZH
 					gap_filler->Get_Polygon_Count()*sizeof(TriIndex));
-#endif
+#endif // ZH
 			}
 //		}
 //		else {
 #ifdef OG
 //			polygon_array=const_cast<Vector3i*>(mmc->Get_Polygon_Array());
-#endif
+#endif // OG
 #ifdef ZH
 //			polygon_array=const_cast<TriIndex*>(mmc->Get_Polygon_Array());
-#endif
+#endif // ZH
 //		}
 
 	}
@@ -1099,17 +1099,17 @@ public:
 
 #ifdef OG
 	unsigned* Get_Polygon_Array(unsigned pass)
-#endif
+#endif // OG
 #ifdef ZH
 	unsigned short* Get_Polygon_Array(unsigned pass)
-#endif
+#endif // ZH
 	{
 #ifdef OG
 		return (unsigned*)polygon_array;
-#endif
+#endif // OG
 #ifdef ZH
 		return (unsigned short*)polygon_array;
-#endif
+#endif // ZH
 	}
 };
 
@@ -1139,10 +1139,10 @@ void DX8RigidFVFCategoryContainer::Add_Mesh(MeshModelClass* mmc_)
 				vb_size,
 #ifdef OG
 				(DX8Caps::Support_NPatches() && WW3D::Get_NPatches_Level()>1) ? DX8VertexBufferClass::USAGE_NPATCHES : DX8VertexBufferClass::USAGE_DEFAULT));
-#endif
+#endif // OG
 #ifdef ZH
 				(DX8Wrapper::Get_Current_Caps()->Support_NPatches() && WW3D::Get_NPatches_Level()>1) ? DX8VertexBufferClass::USAGE_NPATCHES : DX8VertexBufferClass::USAGE_DEFAULT));
-#endif
+#endif // ZH
 		}
 	}
 
@@ -1342,10 +1342,10 @@ void DX8FVFCategoryContainer::Generate_Texture_Categories(Vertex_Split_Table& sp
 				ib_size,
 #ifdef OG
 				(DX8Caps::Support_NPatches() && WW3D::Get_NPatches_Level()>1) ? DX8IndexBufferClass::USAGE_NPATCHES : DX8IndexBufferClass::USAGE_DEFAULT));
-#endif
+#endif // OG
 #ifdef ZH
 				(DX8Wrapper::Get_Current_Caps()->Support_NPatches() && WW3D::Get_NPatches_Level()>1) ? DX8IndexBufferClass::USAGE_NPATCHES : DX8IndexBufferClass::USAGE_DEFAULT));
-#endif
+#endif // ZH
 		}
 	}
 
@@ -1360,13 +1360,13 @@ void DX8FVFCategoryContainer::Generate_Texture_Categories(Vertex_Split_Table& sp
 			WWASSERT(MAX_TEXTURE_STAGES==MeshMatDescClass::MAX_TEX_STAGES);
 			for (int stage=0;stage<MeshMatDescClass::MAX_TEX_STAGES;stage++) {
 
-#endif
+#endif // OG
 #ifdef ZH
 			// disabled this assert as MAX_TEXTURE_STAGES is now 8, but legacy MeshMat::MAX_TEX_STAGES is still 2
 	//		WWASSERT(MAX_TEXTURE_STAGES==MeshMatDescClass::MAX_TEX_STAGES);
 			for (int stage=0;stage<MeshMatDescClass::MAX_TEX_STAGES;stage++) 
 			{
-#endif
+#endif // ZH
 				textures[stage]=split_table.Peek_Texture(i,pass,stage);
 			}
 			VertexMaterialClass* mat=split_table.Peek_Material(i,pass);
@@ -1480,7 +1480,7 @@ void DX8SkinFVFCategoryContainer::Render(void)
 #ifdef ZH
 		// If this assert hits, a skinned mesh has probably been added to the scene more than once.
 		// Example: A skinned mesh was added to the scene then it was attached to a bone without being removed from the scene.
-#endif
+#endif // ZH
 				WWASSERT((vertex_offset+mesh_vertex_count)<=VisibleVertexCount);
 				DX8_RECORD_SKIN_RENDER(mesh->Get_Num_Polys(),mesh_vertex_count);
 
@@ -1497,7 +1497,7 @@ void DX8SkinFVFCategoryContainer::Render(void)
 
 #ifdef OG
 	//			mesh->Compose_Deformed_Vertex_Buffer(verts,uv0,uv1,diffuse);
-#endif
+#endif // OG
 				mesh->Get_Deformed_Vertices(loc,norm);
 
 				for (int v=0;v<mesh_vertex_count;++v) {
@@ -1687,10 +1687,10 @@ unsigned DX8TextureCategoryClass::Add_Mesh(
 #endif;
 #ifdef OG
 		const Vector3i* src_indices=(const Vector3i*)split_table.Get_Polygon_Array(pass);//mmc->Get_Polygon_Array();
-#endif
+#endif // OG
 #ifdef ZH
 		const TriIndex* src_indices=(const TriIndex*)split_table.Get_Polygon_Array(pass);//mmc->Get_Polygon_Array();
-#endif
+#endif // ZH
 
 		if (stripify) {
 			int* triangles=W3DNEWARRAY int[index_count];
@@ -1835,11 +1835,11 @@ void DX8TextureCategoryClass::Render(void)
 #ifdef OG
 		for (unsigned i=0;i<MAX_TEXTURE_STAGES;++i) {
 
-#endif
+#endif // OG
 #ifdef ZH
 		for (unsigned i=0;i<MeshMatDescClass::MAX_TEX_STAGES;++i) 
 		{
-#endif
+#endif // ZH
 			SNAPSHOT_SAY(("Set_Texture(%d,%s)\n",i,Peek_Texture(i) ? Peek_Texture(i)->Get_Texture_Name() : "NULL"));
 			DX8Wrapper::Set_Texture(i,Peek_Texture(i));
 		}
@@ -1913,11 +1913,11 @@ void DX8TextureCategoryClass::Render(void)
 #ifdef OG
 					for (i = 0; i < MAX_TEXTURE_STAGES; i++) {
 
-#endif
+#endif // OG
 #ifdef ZH
 					for (i = 0; i < MeshMatDescClass::MAX_TEX_STAGES; i++) 
 					{
-#endif
+#endif // ZH
 						DX8Wrapper::Set_Texture (i, NULL);
 					}
 					break;
@@ -1929,11 +1929,11 @@ void DX8TextureCategoryClass::Render(void)
 #ifdef OG
 						for (i = 0; i < MAX_TEXTURE_STAGES; i++) {
 
-#endif
+#endif // OG
 #ifdef ZH
 						for (i = 0; i < MeshMatDescClass::MAX_TEX_STAGES; i++) 
 						{
-#endif
+#endif // ZH
 							DX8Wrapper::Set_Texture (i, Peek_Texture (i));
 						}
 					} else {
@@ -1950,11 +1950,11 @@ void DX8TextureCategoryClass::Render(void)
 #ifdef OG
 					for (i = 1; i < MAX_TEXTURE_STAGES; i++) {
 
-#endif
+#endif // OG
 #ifdef ZH
 					for (i = 1; i < MeshMatDescClass::MAX_TEX_STAGES; i++) 
 					{
-#endif
+#endif // ZH
 						DX8Wrapper::Set_Texture (i, NULL);
 					}
 					break;
@@ -1963,11 +1963,11 @@ void DX8TextureCategoryClass::Render(void)
 #ifdef OG
 					for (i = 0; i < MAX_TEXTURE_STAGES; i++) {
 
-#endif
+#endif // OG
 #ifdef ZH
 					for (i = 0; i < MeshMatDescClass::MAX_TEX_STAGES; i++) 
 					{
-#endif
+#endif // ZH
 						DX8Wrapper::Set_Texture (i, Peek_Texture (i));
 					}
 					break;
@@ -2049,7 +2049,7 @@ void DX8TextureCategoryClass::Render(void)
 		//(gth) this if statement's contents are not tabbed to avoid perforce merge problems...
 		if (!DX8RendererDebugger::Is_Enabled() || !mesh->Is_Disabled_By_Debugger()) {
 
-#endif
+#endif // ZH
 		if ((!!mesh->Peek_Model()->Get_Flag(MeshGeometryClass::SORT)) && WW3D::Is_Sorting_Enabled()) {
 			renderer->Render_Sorted(mesh->Get_Base_Vertex_Offset(),mesh->Get_Bounding_Sphere());
 		} else {
@@ -2101,11 +2101,11 @@ void DX8TextureCategoryClass::Render(void)
 #ifdef OG
 
 				DX8Wrapper::Set_Material(NULL);	//force a reset of vertex material since we secretly changed opacity or uv offset
-#endif
+#endif // OG
 #ifdef ZH
 				DX8Wrapper::Set_Material(NULL);	//force a reset of vertex material since we secretly changed opacity
 
-#endif
+#endif // ZH
 				DX8Wrapper::Set_Material(vmaterial);	//restore previous material.
 			}
 			else
@@ -2121,7 +2121,7 @@ void DX8TextureCategoryClass::Render(void)
 
 #ifdef ZH
         } // (gth) non-tabbed to aviod per-force merge problems...
-#endif
+#endif // ZH
 
 		/*
 		** Move to the next render task.  Note that the delete should be fast because prt's are pooled
@@ -2169,7 +2169,7 @@ void DX8MeshRendererClass::Init(void)
 #ifdef ZH
 	// DMS - Only allocate one if we havent already (leak fix)
 	if(!texture_category_container_list_skin)
-#endif
+#endif // ZH
 	texture_category_container_list_skin = W3DNEW FVFCategoryList;
 }
 
@@ -2201,10 +2201,10 @@ static void Add_Rigid_Mesh_To_Container(FVFCategoryList* container_list,unsigned
 	DX8FVFCategoryContainer * container = NULL;
 #ifdef OG
 	bool sorting=((!!mmc->Get_Flag(MeshModelClass::SORT)) && WW3D::Is_Sorting_Enabled());
-#endif
+#endif // OG
 #ifdef ZH
 	bool sorting=((!!mmc->Get_Flag(MeshModelClass::SORT)) && WW3D::Is_Sorting_Enabled() && (mmc->Get_Sort_Level() == SORT_LEVEL_NONE));
-#endif
+#endif // ZH
 
 	FVFCategoryListIterator it(container_list);
 	while (!it.Is_Done()) {
@@ -2236,12 +2236,12 @@ void DX8MeshRendererClass::Unregister_Mesh_Type(MeshModelClass* mmc)
 		GapFillerClass* gf=mmc->GapFiller;
 		mmc->GapFiller=NULL;
 		delete gf;
-#endif
+#endif // ZH
 }
 
 #ifdef ZH
 }
-#endif
+#endif // ZH
 
 void DX8MeshRendererClass::Register_Mesh_Type(MeshModelClass* mmc)
 {
@@ -2253,11 +2253,11 @@ void DX8MeshRendererClass::Register_Mesh_Type(MeshModelClass* mmc)
 #ifdef OG
 	bool sorting=((!!mmc->Get_Flag(MeshModelClass::SORT)) && WW3D::Is_Sorting_Enabled());
 
-#endif
+#endif // OG
 #ifdef ZH
 	bool sorting=((!!mmc->Get_Flag(MeshModelClass::SORT)) && WW3D::Is_Sorting_Enabled() && (mmc->Get_Sort_Level() == SORT_LEVEL_NONE));
 
-#endif
+#endif // ZH
 	if (skin) {
 
 		/*
@@ -2365,13 +2365,13 @@ static void Render_FVF_Category_Container_List_Delayed_Passes(FVFCategoryList& l
 	}
 }
 
-#endif
+#endif // ZH
 void DX8MeshRendererClass::Flush(void)
 {
 #ifdef ZH
 	int i;
 
-#endif
+#endif // ZH
 	WWPROFILE("DX8MeshRenderer::Flush");
 	if (!camera) return;
 	Log_Statistics_String(true);	
@@ -2379,7 +2379,7 @@ void DX8MeshRendererClass::Flush(void)
 #ifdef OG
 	for (int i=0;i<texture_category_container_lists_rigid.Count();++i) {
 
-#endif
+#endif // OG
 #ifdef ZH
 	/*
 	** Render the FVF categories.  Note that it is critical that skins be 
@@ -2391,7 +2391,7 @@ void DX8MeshRendererClass::Flush(void)
 	** in solving this for skins)
 	*/
 	for (i=0;i<texture_category_container_lists_rigid.Count();++i) {
-#endif
+#endif // ZH
 		Render_FVF_Category_Container_List(*texture_category_container_lists_rigid[i]);
 	}
 
@@ -2408,7 +2408,7 @@ void DX8MeshRendererClass::Flush(void)
 		Render_FVF_Category_Container_List_Delayed_Passes(*texture_category_container_lists_rigid[i]);
 	}
 
-#endif
+#endif // ZH
 	DX8Wrapper::Set_Vertex_Buffer(NULL);
 	DX8Wrapper::Set_Index_Buffer(NULL,0);
 }
@@ -2427,12 +2427,12 @@ void DX8MeshRendererClass::Render_Decal_Meshes(void)
 	DecalMeshClass * decal_mesh = visible_decal_meshes;
 	if (!decal_mesh) return;
 
-#endif
+#endif // ZH
 	DX8Wrapper::Set_DX8_Render_State(D3DRS_ZBIAS,8);
 	
 #ifdef OG
 	DecalMeshClass * decal_mesh = visible_decal_meshes;
-#endif
+#endif // OG
 	while (decal_mesh != NULL) {
 		decal_mesh->Render();
 		decal_mesh = decal_mesh->Peek_Next_Visible();
@@ -2475,7 +2475,7 @@ void DX8MeshRendererClass::Invalidate( bool shutdown)
 {
 #ifdef ZH
 	WWMEMLOG(MEM_RENDERER);
-#endif
+#endif // ZH
 	_RegisteredMeshList.Reset_List();
 
 	for (int i=0;i<texture_category_container_lists_rigid.Count();++i) {

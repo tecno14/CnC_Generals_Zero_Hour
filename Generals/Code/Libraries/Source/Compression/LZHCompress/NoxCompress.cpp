@@ -26,10 +26,10 @@
 #include "Noxcompress.h"
 #ifdef OG
 #include "../../../../../../Dependencies/ThirdParty/LZHCompress/Header/lzhl.h"
-#endif
+#endif // OG
 #ifdef ZH
 #include "CompLibHeader/lzhl.h"
-#endif
+#endif // ZH
 
 #ifdef _INTERNAL
 // for occasional debugging...

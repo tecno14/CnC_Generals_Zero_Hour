@@ -35,7 +35,7 @@
 #include "Common/PlayerList.h"
 #ifdef ZH
 #include "Common/Radar.h"
-#endif
+#endif // ZH
 #include "Common/SpecialPower.h"
 #include "Common/Team.h"
 #include "Common/ThingFactory.h"
@@ -76,10 +76,10 @@
 //-------------------------------------------------------------------------------------------------
 #ifdef OG
 SpecialAbilityUpdate::SpecialAbilityUpdate( Thing *thing, const ModuleData* moduleData ) : UpdateModule( thing, moduleData )
-#endif
+#endif // OG
 #ifdef ZH
 SpecialAbilityUpdate::SpecialAbilityUpdate( Thing *thing, const ModuleData* moduleData ) : SpecialPowerUpdateModule( thing, moduleData )
-#endif
+#endif // ZH
 {
 	//Added By Sadullah Nader
 	//Initialization(s) inserted
@@ -213,7 +213,7 @@ UpdateSleepTime SpecialAbilityUpdate::update( void )
 
 	const SpecialAbilityUpdateModuleData* data = getSpecialAbilityUpdateModuleData();
 
-#endif
+#endif // ZH
 	validateSpecialObjects();
 	
 	//Important! This check will see if there has been any commands issued by either the player
@@ -241,7 +241,7 @@ UpdateSleepTime SpecialAbilityUpdate::update( void )
     return calcSleepTime();
   }
 	if( ai->isMoving() && isPowerCurrentlyInUse() && !m_facingInitiated )
-#endif
+#endif // ZH
 	{
 #ifdef ZH
 		// Capture is broken by movement just as if we had been given a direct command (above check).
@@ -251,7 +251,7 @@ UpdateSleepTime SpecialAbilityUpdate::update( void )
       case SPECIAL_INFANTRY_CAPTURE_BUILDING: 
       case SPECIAL_BLACKLOTUS_CAPTURE_BUILDING:
 			{
-#endif
+#endif // ZH
 		onExit( false );
 		return calcSleepTime();
 #ifdef ZH
@@ -260,11 +260,11 @@ UpdateSleepTime SpecialAbilityUpdate::update( void )
 
 			default:
 				break;
-#endif
+#endif // ZH
 	}
 #ifdef ZH
   }
-#endif
+#endif // ZH
 
 	//STEP 2 & 5(6) -- Handles packing and unpacking in progress. If packing
 	//then ends the special ability once complete. Things that don't pack
@@ -285,7 +285,7 @@ UpdateSleepTime SpecialAbilityUpdate::update( void )
 		{
 #ifdef OG
 			const SpecialAbilityUpdateModuleData* data = getSpecialAbilityUpdateModuleData();
-#endif
+#endif // OG
 			if (target->isEffectivelyDead())
 				shouldAbort = TRUE;
 			else switch (data->m_specialPowerTemplate->getSpecialPowerType())
@@ -295,7 +295,7 @@ UpdateSleepTime SpecialAbilityUpdate::update( void )
 				case SPECIAL_HACKER_DISABLE_BUILDING:
 #ifdef ZH
         {
-#endif
+#endif // ZH
 					if (target->getTeam() == getObject()->getTeam())
 					{
 						// it's been captured by a colleague! we should stop.
@@ -325,7 +325,7 @@ UpdateSleepTime SpecialAbilityUpdate::update( void )
                 shouldAbort = TRUE;
             }
           }
-#endif
+#endif // ZH
 					break;
 #ifdef ZH
         }
@@ -334,7 +334,7 @@ UpdateSleepTime SpecialAbilityUpdate::update( void )
           if ( target->isKindOf( KINDOF_STRUCTURE ) )
             shouldAbort = TRUE;
           //deliberately falling through
-#endif
+#endif // ZH
 			}
 #ifdef ZH
         case SPECIAL_BLACKLOTUS_DISABLE_VEHICLE_HACK:
@@ -348,7 +348,7 @@ UpdateSleepTime SpecialAbilityUpdate::update( void )
         }
 
       }
-#endif
+#endif // ZH
 
 		}
 
@@ -356,14 +356,14 @@ UpdateSleepTime SpecialAbilityUpdate::update( void )
 #ifdef ZH
 
   SpecialPowerModuleInterface *spm = getMySPM();
-#endif
+#endif // ZH
 
 #ifdef OG
 	if (shouldAbort)
-#endif
+#endif // OG
 #ifdef ZH
   if ( shouldAbort || spm == NULL )
-#endif
+#endif // ZH
 	{
 		// doh, a colleague has already captured it. just stop.
 		ai->aiIdle( CMD_FROM_AI );
@@ -386,7 +386,7 @@ UpdateSleepTime SpecialAbilityUpdate::update( void )
       SPMReady = ( spm->isReady() && spm->getReadyFrame() < TheGameLogic->getFrame() );
 
     if ( SPMReady )// if power requires recharging, lets freeze prep countdown until power is ready
-#endif
+#endif // ZH
 		m_prepFrames--;
 
 		if( isPreparationComplete() )
@@ -403,7 +403,7 @@ UpdateSleepTime SpecialAbilityUpdate::update( void )
         if ( getDoesPersistenceRequireRecharge() )
           spm->startPowerRecharge();
 
-#endif
+#endif // ZH
 			}
 			else
 			{
@@ -487,7 +487,7 @@ UpdateSleepTime SpecialAbilityUpdate::update( void )
 
         }
         else
-#endif
+#endif // ZH
 				endPreparation();
 
 				if( needToPack() )
@@ -516,20 +516,20 @@ UpdateSleepTime SpecialAbilityUpdate::update( void )
 //-------------------------------------------------------------------------------------------------
 #ifdef OG
 void SpecialAbilityUpdate::initiateIntentToDoSpecialPower( const SpecialPowerTemplate *specialPowerTemplate, 
-#endif
+#endif // OG
 #ifdef ZH
 Bool SpecialAbilityUpdate::initiateIntentToDoSpecialPower( const SpecialPowerTemplate *specialPowerTemplate, 
-#endif
+#endif // ZH
 																													 const Object *targetObj, 
 																													 const Coord3D *targetPos, 
 #ifdef OG
 																													 UnsignedInt commandOptions, 
 																													 Int locationCount )
-#endif
+#endif // OG
 #ifdef ZH
                                                            const Waypoint *way, 
                                                            UnsignedInt commandOptions )
-#endif
+#endif // ZH
 {
 	const SpecialAbilityUpdateModuleData* data = getSpecialAbilityUpdateModuleData();
 	const SpecialPowerTemplate *spTemplate = data->m_specialPowerTemplate;
@@ -539,10 +539,10 @@ Bool SpecialAbilityUpdate::initiateIntentToDoSpecialPower( const SpecialPowerTem
 		//Check to make sure our modules are connected.
 #ifdef OG
 		return;
-#endif
+#endif // OG
 #ifdef ZH
     return FALSE;
-#endif
+#endif // ZH
 	}
 
 	//Clear target values
@@ -558,7 +558,7 @@ Bool SpecialAbilityUpdate::initiateIntentToDoSpecialPower( const SpecialPowerTem
 #ifdef ZH
 
 //  getObject()->getControllingPlayer()->getAcademyStats()->recordSpecialPowerUsed( specialPowerTemplate );
-#endif
+#endif // ZH
 
 	getObject()->clearModelConditionFlags( 
 		MAKE_MODELCONDITION_MASK4( MODELCONDITION_UNPACKING, MODELCONDITION_PACKING, MODELCONDITION_FIRING_A, MODELCONDITION_RAISING_FLAG ) );
@@ -574,7 +574,7 @@ Bool SpecialAbilityUpdate::initiateIntentToDoSpecialPower( const SpecialPowerTem
 		m_targetPos = *targetPos;
 #ifdef OG
 		m_locationCount = locationCount;
-#endif
+#endif // OG
 	}
 	
 	//Clear any old AI before starting this special ability.
@@ -582,10 +582,10 @@ Bool SpecialAbilityUpdate::initiateIntentToDoSpecialPower( const SpecialPowerTem
 	{
 #ifdef OG
 		return;
-#endif
+#endif // OG
 #ifdef ZH
     return FALSE;
-#endif
+#endif // ZH
 	}
 	getObject()->getAIUpdateInterface()->aiIdle( CMD_FROM_AI );
 
@@ -622,7 +622,7 @@ Bool SpecialAbilityUpdate::initiateIntentToDoSpecialPower( const SpecialPowerTem
   if( disableSA && disableSA != this ) 
     disableSA->onExit( FALSE );
   disableSA = getObject()->findSpecialAbilityUpdate( SPECIAL_BOOBY_TRAP );
-#endif
+#endif // ZH
 	if( disableSA && disableSA != this ) 
 		disableSA->onExit( FALSE );
 
@@ -631,7 +631,7 @@ Bool SpecialAbilityUpdate::initiateIntentToDoSpecialPower( const SpecialPowerTem
 #ifdef ZH
 
   return TRUE;
-#endif
+#endif // ZH
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -676,10 +676,10 @@ void SpecialAbilityUpdate::onExit( Bool cleanup )
 		MAKE_MODELCONDITION_MASK4( MODELCONDITION_UNPACKING, MODELCONDITION_PACKING, MODELCONDITION_FIRING_A, MODELCONDITION_RAISING_FLAG ) );
 #ifdef OG
 	getObject()->clearStatus( OBJECT_STATUS_IS_USING_ABILITY );
-#endif
+#endif // OG
 #ifdef ZH
   getObject()->clearStatus( MAKE_OBJECT_STATUS_MASK( OBJECT_STATUS_IS_USING_ABILITY ) );
-#endif
+#endif // ZH
 
 	TheAudio->removeAudioEvent( m_prepSoundLoop.getPlayingHandle() );
 	endPreparation();
@@ -761,11 +761,11 @@ Bool SpecialAbilityUpdate::handlePackingProcessing()
 #ifdef OG
 			static NameKeyType key_StealthUpdate = NAMEKEY( "StealthUpdate" );
 			StealthUpdate* stealth = (StealthUpdate*)getObject()->findUpdateModule( key_StealthUpdate );
-#endif
+#endif // OG
 #ifdef ZH
       StealthUpdate* stealth = getObject()->getStealth();
 
-#endif
+#endif // ZH
 			if( stealth )
 			{
 				stealth->markAsDetected();
@@ -1108,7 +1108,7 @@ void SpecialAbilityUpdate::startPreparation()
 						return;
 					}
 				}
-#endif
+#endif // ZH
 			}
 
 			getObject()->clearAndSetModelConditionFlags( MAKE_MODELCONDITION_MASK( MODELCONDITION_UNPACKING ),
@@ -1124,7 +1124,7 @@ void SpecialAbilityUpdate::startPreparation()
 			}
 #ifdef ZH
       TheRadar->tryInfiltrationEvent( target );
-#endif
+#endif // ZH
 			
 			break;
 		}
@@ -1161,7 +1161,7 @@ void SpecialAbilityUpdate::startPreparation()
 				}
 #ifdef ZH
         TheRadar->tryInfiltrationEvent( target );
-#endif
+#endif // ZH
 
 			}
 			break;
@@ -1180,10 +1180,10 @@ void SpecialAbilityUpdate::startPreparation()
 	}
 #ifdef OG
 	getObject()->setStatus( OBJECT_STATUS_IS_USING_ABILITY );
-#endif
+#endif // OG
 #ifdef ZH
   getObject()->setStatus( MAKE_OBJECT_STATUS_MASK( OBJECT_STATUS_IS_USING_ABILITY ) );
-#endif
+#endif // ZH
 
 	m_prepSoundLoop = data->m_prepSoundLoop;
 	m_prepSoundLoop.setObjectID( getObject()->getID() );
@@ -1234,10 +1234,10 @@ Bool SpecialAbilityUpdate::initLaser(Object* specialObject, Object* target )
 	}
 #ifdef OG
 	update->initLaser( NULL, &startPos, &endPos );
-#endif
+#endif // OG
 #ifdef ZH
   update->initLaser( getObject(), target, &startPos, &endPos, data->m_specialObjectAttachToBoneName );
-#endif
+#endif // ZH
 	return true;
 }
 
@@ -1408,26 +1408,26 @@ void SpecialAbilityUpdate::triggerAbilityEffect()
 						ai->aiAttackObject( target, NO_MAX_SHOTS_LIMIT, CMD_FROM_AI );
 #ifdef ZH
           }
-#endif
+#endif // ZH
 					}
 				}
 #ifdef ZH
       break;
-#endif
+#endif // ZH
 			}
 #ifdef ZH
     case SPECIAL_HELIX_NAPALM_BOMB:
     {
       // Couldn't be simpler... the special object is the bomb
       createSpecialObject();
-#endif
+#endif // ZH
 			break;
 		}
 		case SPECIAL_TANKHUNTER_TNT_ATTACK:
 		case SPECIAL_TIMED_CHARGES:
 #ifdef ZH
     case SPECIAL_BOOBY_TRAP:
-#endif
+#endif // ZH
 		{
 			//Place new tnt.
 			Object *target = TheGameLogic->findObjectByID( m_targetID );
@@ -1454,7 +1454,7 @@ void SpecialAbilityUpdate::triggerAbilityEffect()
 				return;
 			}
 
-#endif
+#endif // ZH
 			Object *charge = createSpecialObject();
 			if( charge )
 			{
@@ -1474,10 +1474,10 @@ void SpecialAbilityUpdate::triggerAbilityEffect()
 				//and setup timers, etc.
 #ifdef OG
 				update->init( target, object );
-#endif
+#endif // OG
 #ifdef ZH
         update->initStickyBomb( target, object );
-#endif
+#endif // ZH
 				
 
 			}
@@ -1549,12 +1549,12 @@ void SpecialAbilityUpdate::triggerAbilityEffect()
       {
         // Whoops, it was mined.  Cancel if it or us is now dead.
         if( target->isEffectivelyDead() || getObject()->isEffectivelyDead() )
-#endif
+#endif // ZH
 			{
 				return;
 #ifdef ZH
         }
-#endif
+#endif // ZH
 			}
 			
 			if (target->getTeam() == object->getTeam())
@@ -1587,11 +1587,11 @@ void SpecialAbilityUpdate::triggerAbilityEffect()
 			}
 #ifdef OG
 			break;
-#endif
+#endif // OG
 
 #ifdef ZH
       object->getControllingPlayer()->getAcademyStats()->recordBuildingCapture();
-#endif
+#endif // ZH
 			break;
 		}
 		case SPECIAL_BLACKLOTUS_STEAL_CASH_HACK:
@@ -1652,7 +1652,7 @@ void SpecialAbilityUpdate::triggerAbilityEffect()
       Object *target = TheGameLogic->findObjectByID( m_targetID );
 
       if( target && target->checkAndDetonateBoobyTrap(getObject()) )
-#endif
+#endif // ZH
 		{
 #ifdef ZH
         // Whoops, it was mined.  Cancel if it or us is now dead.
@@ -1662,7 +1662,7 @@ void SpecialAbilityUpdate::triggerAbilityEffect()
         }
       }
 
-#endif
+#endif // ZH
 			static NameKeyType key_StickyBombUpdate = NAMEKEY( "StickyBombUpdate" );
 			if( m_targetID == INVALID_ID && !m_targetPos.x && !m_targetPos.y && !m_targetPos.z ) 
 			{
@@ -1691,7 +1691,7 @@ void SpecialAbilityUpdate::triggerAbilityEffect()
 				//Place a new charge.
 #ifdef OG
 				Object *target = TheGameLogic->findObjectByID( m_targetID );
-#endif
+#endif // OG
 				//sanity
 				if( !target )
 				{
@@ -1715,10 +1715,10 @@ void SpecialAbilityUpdate::triggerAbilityEffect()
 					//and setup timers, etc.
 #ifdef OG
 					update->init( target, object );
-#endif
+#endif // OG
 #ifdef ZH
           update->initStickyBomb( target, object );
-#endif
+#endif // ZH
 				}
 			}
 			break;
@@ -1729,17 +1729,17 @@ void SpecialAbilityUpdate::triggerAbilityEffect()
 			Object *target = TheGameLogic->findObjectByID( m_targetID );
 #ifdef OG
 			static NameKeyType key_StealthUpdate = NAMEKEY( "StealthUpdate" );
-#endif
+#endif // OG
 			if( target )
 			{
 #ifdef OG
 				StealthUpdate *update = (StealthUpdate*)object->findUpdateModule( key_StealthUpdate );
 
-#endif
+#endif // OG
 #ifdef ZH
         StealthUpdate* update = getObject()->getStealth();
 
-#endif
+#endif // ZH
 				if( update )
 				{
 					update->disguiseAsObject( target );
@@ -1755,11 +1755,11 @@ void SpecialAbilityUpdate::triggerAbilityEffect()
 #ifdef OG
 		static NameKeyType key_StealthUpdate = NAMEKEY( "StealthUpdate" );
 		StealthUpdate* stealth = (StealthUpdate*)object->findUpdateModule( key_StealthUpdate );
-#endif
+#endif // OG
 #ifdef ZH
     StealthUpdate* stealth = getObject()->getStealth();
 
-#endif
+#endif // ZH
 		if( stealth )
 		{
 			stealth->markAsDetected();
@@ -1804,7 +1804,7 @@ Object* SpecialAbilityUpdate::createSpecialObject()
 #ifdef ZH
 
       specialObject->setOrientation( getObject()->getOrientation() );
-#endif
+#endif // ZH
 			
 			//So we can get experience from it when it blows up (if applicable)
 			//specialObject->setProducer( getObject() ); --This causes it to be an enemy which is naughty.
@@ -1822,7 +1822,7 @@ Object* SpecialAbilityUpdate::createSpecialObject()
         Real pitchRate = specialObjectPhysics->getCenterOfMassOffset();
         specialObjectPhysics->setPitchRate( pitchRate );
         specialObjectPhysics->setAllowAirborneFriction( false );
-#endif
+#endif // ZH
 			}
 		}
 	}
@@ -1926,7 +1926,7 @@ void SpecialAbilityUpdate::finishAbility()
 			dir.set( getObject()->getUnitDirectionVector2D() );
 #ifdef OG
 			dir.normalize();
-#endif
+#endif // OG
 			dir.scale( data->m_fleeRangeAfterCompletion );
 
 			if( data->m_flipObjectAfterUnpacking || data->m_flipObjectAfterPacking )
@@ -2033,13 +2033,13 @@ Bool SpecialAbilityUpdate::needToFace() const
 #ifdef ZH
 
 	const SpecialAbilityUpdateModuleData* data = getSpecialAbilityUpdateModuleData();
-#endif
+#endif // ZH
 
 #ifdef ZH
   if ( !data->m_needToFaceTarget )
     return false;
 
-#endif
+#endif // ZH
 	//Return true if we haven't initiated facing or if we haven't completed it.
 	return !m_facingInitiated || !m_facingComplete;
 }
@@ -2114,10 +2114,10 @@ void SpecialAbilityUpdate::endPreparation()
 {
 #ifdef OG
 	getObject()->clearStatus( OBJECT_STATUS_IS_USING_ABILITY );
-#endif
+#endif // OG
 #ifdef ZH
 	getObject()->clearStatus( MAKE_OBJECT_STATUS_MASK( OBJECT_STATUS_IS_USING_ABILITY ) );
-#endif
+#endif // ZH
 	TheAudio->removeAudioEvent( m_prepSoundLoop.getPlayingHandle() );
 
 	// Based on the special that we just finished preparing (either by failure or success),
@@ -2132,12 +2132,12 @@ void SpecialAbilityUpdate::endPreparation()
 		case SPECIAL_TIMED_CHARGES:
 #ifdef ZH
 		case SPECIAL_BOOBY_TRAP:
-#endif
+#endif // ZH
 		case SPECIAL_REMOTE_CHARGES:
 		case SPECIAL_DISGUISE_AS_VEHICLE:
 #ifdef ZH
 		case SPECIAL_HELIX_NAPALM_BOMB:
-#endif
+#endif // ZH
 			// No, don't delete placed charges.
 			// -OR- Not applicable (doesn't use special objects).
 			break;

@@ -26,7 +26,7 @@
 #include "always.h"
 #ifdef ZH
 #include "thread.h"
-#endif
+#endif // ZH
 
 
 // Always use mutex or critical section when accessing the same data from multiple threads!
@@ -104,7 +104,7 @@ public:
 		// In order to lock a mutex create a local instance of LockClass with mutex as a parameter.
 #ifdef OG
 		// Time is in milliseconds, INFINITE means infinite wait.
-#endif
+#endif // OG
 		LockClass(CriticalSectionClass& c);
 		~LockClass();
 	private:
@@ -120,7 +120,7 @@ public:
 // of it is that it can't be locked multiple times from the same thread.
 //
 // ----------------------------------------------------------------------------
-#endif
+#endif // ZH
 
 #ifdef ZH
 class FastCriticalSectionClass
@@ -181,6 +181,6 @@ public:
 
   friend class LockClass;
 };
-#endif
+#endif // ZH
 
 #endif

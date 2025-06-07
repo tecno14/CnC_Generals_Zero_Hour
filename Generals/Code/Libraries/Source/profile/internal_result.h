@@ -102,4 +102,4 @@ private:
 
 #endif // INTERNAL_RESULT_H
 
-#endif
+#endif // ZH

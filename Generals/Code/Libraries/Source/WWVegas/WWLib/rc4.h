@@ -44,7 +44,7 @@ public:
 	// Key preparation takes about 0.015 Ms on a 1Ghz PC
 #ifdef ZH
 	// It's 3x faster if your keylen is 8 or 16 bytes!
-#endif
+#endif // ZH
 	//
 	void Prepare_Key(const unsigned char *key_data_ptr, int key_data_len);
 
@@ -60,18 +60,18 @@ public:
 	// Copy state & key
 	//
 	RC4Class &operator=(const RC4Class &other);
-#endif
+#endif // ZH
 
 #ifdef ZH
 
 	void Print_State(void);
 
-#endif
+#endif // ZH
 private:
 #ifdef ZH
 	void Prepare_Key_16bytes(const unsigned char *key_data_ptr);
 	void Prepare_Key_8bytes(const unsigned char *key_data_ptr);
-#endif
+#endif // ZH
 
 	struct RC4Key
 	{      

@@ -144,10 +144,10 @@ class HeadOffMapState :  public State
 public:
 #ifdef OG
 	HeadOffMapState( StateMachine *machine ) :State( machine, "HeadOffMapState" ) {}
-#endif
+#endif // OG
 #ifdef ZH
   HeadOffMapState( StateMachine *machine ) :State( machine, "HeadOffMapState" ) { facingDirectionUponDelivery.zero(); }
-#endif
+#endif // ZH
 	virtual StateReturnType update();
 	virtual StateReturnType onEnter();
 protected:
@@ -158,7 +158,7 @@ protected:
 #ifdef ZH
   
   Coord3D facingDirectionUponDelivery;
-#endif
+#endif // ZH
 };
 EMPTY_DTOR(HeadOffMapState)
 

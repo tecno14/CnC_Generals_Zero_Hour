@@ -44,7 +44,7 @@ enum NameKeyType;
 class Image;
 #ifdef ZH
 enum AcademyClassificationType;
-#endif
+#endif // ZH
 
 //-------------------------------------------------------------------------------------------------
 //-------------------------------------------------------------------------------------------------
@@ -97,7 +97,7 @@ inline void SET_ALL_UPGRADE_MASK_BITS( UpgradeMaskType& m )
 	m.clear( );
 	m.flip( );
 }
-#endif
+#endif // ZH
 
 #ifdef ZH
 inline void FLIP_UPGRADE_MASK( UpgradeMaskType& m )
@@ -105,7 +105,7 @@ inline void FLIP_UPGRADE_MASK( UpgradeMaskType& m )
 	m.flip();
 }
 
-#endif
+#endif // ZH
 //-------------------------------------------------------------------------------------------------
 /** A single upgrade *INSTANCE* */
 //-------------------------------------------------------------------------------------------------
@@ -165,11 +165,11 @@ static Char *UpgradeTypeNames[] =
 	NULL
 };
 #endif  // end DEFINE_UPGRADE_TYPE_NAMES
-#endif
+#endif // OG
 #ifdef ZH
 extern const char *TheUpgradeTypeNames[]; //Change above, change this!
 
-#endif
+#endif // ZH
 
 //-------------------------------------------------------------------------------------------------
 /** A single upgrade template definition */
@@ -195,16 +195,16 @@ public:
 	const AsciiString& getDisplayNameLabel( void ) const { return m_displayNameLabel; }
 #ifdef OG
 	Int64 getUpgradeMask() const { return m_upgradeMask; }
-#endif
+#endif // OG
 #ifdef ZH
 	UpgradeMaskType getUpgradeMask() const { return m_upgradeMask; }
-#endif
+#endif // ZH
 	UpgradeType getUpgradeType( void ) const { return m_type; }
 	const AudioEventRTS* getResearchCompleteSound() const { return &m_researchSound; }
 	const AudioEventRTS* getUnitSpecificSound() const { return &m_unitSpecificSound; }
 #ifdef ZH
 	AcademyClassificationType getAcademyClassificationType() const { return m_academyClassificationType; }
-#endif
+#endif // ZH
 
 	/// inventory pictures
 	void cacheButtonImage();
@@ -222,10 +222,10 @@ public:
 	const UpgradeTemplate *friend_getPrev( void ) const { return m_prev; }
 #ifdef OG
 	void friend_setUpgradeMask( Int64 mask ) { m_upgradeMask = mask; }
-#endif
+#endif // OG
 #ifdef ZH
 	void friend_setUpgradeMask( UpgradeMaskType mask ) { m_upgradeMask = mask; }
-#endif
+#endif // ZH
 	void friend_makeVeterancyUpgrade(VeterancyLevel v);
 
 protected:
@@ -238,15 +238,15 @@ protected:
 	Int m_cost;													///< cost for production 
 #ifdef OG
 	Int64 m_upgradeMask;								///< Unique bitmask for this upgrade template
-#endif
+#endif // OG
 #ifdef ZH
 	UpgradeMaskType m_upgradeMask;			///< Unique bitmask for this upgrade template
-#endif
+#endif // ZH
 	AudioEventRTS	m_researchSound;			///< Sound played when upgrade researched.
 	AudioEventRTS	m_unitSpecificSound;	///< Secondary sound played when upgrade researched.
 #ifdef ZH
 	AcademyClassificationType m_academyClassificationType; ///< A value used by the academy to evaluate advice based on what players do.
-#endif
+#endif // ZH
 
 	UpgradeTemplate *m_next;						///< next
 	UpgradeTemplate *m_prev;						///< prev

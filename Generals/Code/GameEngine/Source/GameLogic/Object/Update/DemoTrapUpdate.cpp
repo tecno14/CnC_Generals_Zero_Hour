@@ -217,7 +217,7 @@ UpdateSleepTime DemoTrapUpdate::update()
 			}
 		}
 
-#endif
+#endif // ZH
 			// order matters: we want to know if I consider it to be an enemy, not vice versa
 		if( getObject()->getRelationship( other ) != ENEMIES )
 		{

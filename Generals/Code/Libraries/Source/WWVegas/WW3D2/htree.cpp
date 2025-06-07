@@ -18,10 +18,10 @@
 
 #ifdef OG
 /* $Header: /VSS_Sync/ww3d2/htree.cpp 11    8/29/01 9:49p Vss_sync $ */
-#endif
+#endif // OG
 #ifdef ZH
 /* $Header: /Commando/Code/ww3d2/htree.cpp 14    10/01/01 6:07p Patrick $ */
-#endif
+#endif // ZH
 /*********************************************************************************************** 
  ***                            Confidential - Westwood Studios                              *** 
  *********************************************************************************************** 
@@ -30,26 +30,26 @@
  *                                                                                             * 
 #ifdef OG
  *                     $Archive:: /VSS_Sync/ww3d2/htree.cpp                                   $* 
-#endif
+#endif // OG
 #ifdef ZH
  *                     $Archive:: /Commando/Code/ww3d2/htree.cpp                              $* 
-#endif
+#endif // ZH
  *                                                                                             * 
  *                       Author:: Greg_h                                                       * 
  *                                                                                             * 
 #ifdef OG
  *                     $Modtime:: 8/29/01 8:36p                                               $* 
-#endif
+#endif // OG
 #ifdef ZH
  *                     $Modtime:: 10/01/01 6:06p                                              $* 
-#endif
+#endif // ZH
  *                                                                                             * 
 #ifdef OG
  *                    $Revision:: 11                                                          $* 
-#endif
+#endif // OG
 #ifdef ZH
  *                    $Revision:: 14                                                          $* 
-#endif
+#endif // ZH
  *                                                                                             * 
  *---------------------------------------------------------------------------------------------* 
  * Functions:                                                                                  * 
@@ -496,7 +496,7 @@ bool HTreeClass::Simple_Evaluate_Pivot
 {
 	bool retval = false;
 	end_tm->Make_Identity ();
-#endif
+#endif // ZH
 
 #ifdef ZH
 	if (	end_tm != NULL &&
@@ -538,7 +538,7 @@ bool HTreeClass::Simple_Evaluate_Pivot
 	return retval;
 }
 
-#endif
+#endif // ZH
 /*********************************************************************************************** 
  * HTreeClass::Base_Update -- Computes the base pose transform for each pivot                  * 
  *                                                                                             * 
@@ -1143,13 +1143,13 @@ HTreeClass * HTreeClass::Alter_Avatar_HTree( const HTreeClass *tree, Vector3 &sc
 
 		// Store the final result in the new HTree
 		new_tree->Pivot[pi].BaseTransform.Set_Translation( new_relative_vector );
-#endif
+#endif // ZH
 }
 
 #ifdef ZH
 	return new_tree;
 }
-#endif
+#endif // ZH
 
 // Morph the bones on the HTree using weights from a number of other HTrees
 HTreeClass * HTreeClass::Create_Morphed(	int num_morph_sources,

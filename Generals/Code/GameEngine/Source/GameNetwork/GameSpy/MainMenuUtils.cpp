@@ -676,11 +676,11 @@ static GHTTPBool overallStatsCallback( GHTTPRequest request, GHTTPResult result,
 
 	HandleOverallStats(USA, China, GLA);
 
-#endif
+#endif // OG
 #ifdef ZH
 	HandleOverallStats( buffer, bufferLen );
 
-#endif
+#endif // ZH
 	return GHTTPTrue;
 }
 
@@ -717,10 +717,10 @@ void CheckOverallStats( void )
 {
 #ifdef OG
 	ghttpGet("http://gamestats.gamespy.com/ccgenerals/display.html",
-#endif
+#endif // OG
 #ifdef ZH
 	ghttpGet("http://gamestats.gamespy.com/ccgenzh/display.html",
-#endif
+#endif // ZH
 		GHTTPFalse, overallStatsCallback, NULL);
 }
 
@@ -730,10 +730,10 @@ void CheckNumPlayersOnline( void )
 {
 #ifdef OG
 	ghttpGet("http://launch.gamespyarcade.com/software/launch/arcadecount2.dll?svcname=ccgenerals",
-#endif
+#endif // OG
 #ifdef ZH
 	ghttpGet("http://launch.gamespyarcade.com/software/launch/arcadecount2.dll?svcname=ccgenzh",
-#endif
+#endif // ZH
 		GHTTPFalse, numPlayersOnlineCallback, NULL);
 }
 

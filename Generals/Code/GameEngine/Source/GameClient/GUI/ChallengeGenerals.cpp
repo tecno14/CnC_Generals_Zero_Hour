@@ -165,4 +165,4 @@ const GeneralPersona* ChallengeGenerals::getGeneralByTemplateName( AsciiString n
 	return NULL;
 }
 
-#endif
+#endif // ZH

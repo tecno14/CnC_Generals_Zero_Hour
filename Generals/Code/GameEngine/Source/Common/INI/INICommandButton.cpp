@@ -34,7 +34,7 @@
 #include "Common/INI.h"
 #ifdef ZH
 #include "Common/SpecialPower.h"
-#endif
+#endif // ZH
 #include "GameClient/ControlBar.h"
 
 //-------------------------------------------------------------------------------------------------
@@ -91,7 +91,7 @@ void ControlBar::parseCommandButtonDefinition( INI *ini )
 		DEBUG_CRASH( ("[LINE: %d in '%s'] CommandButton %s has Options = NEED_SPECIAL_POWER_SCIENCE but doesn't specify a SpecialPower = xxxx. Please evaluate INI.",
 			ini->getLineNum(), ini->getFilename().str(), name.str() ) );
 	}
-#endif
+#endif // ZH
 
 }  // end parseCommandButtonDefinition
 

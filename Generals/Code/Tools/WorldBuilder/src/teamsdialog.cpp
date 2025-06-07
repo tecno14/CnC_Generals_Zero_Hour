@@ -32,7 +32,7 @@
 #include "TeamReinforcement.h"
 #ifdef ZH
 #include "TeamObjectProperties.h"
-#endif
+#endif // ZH
 #include "WorldBuilderDoc.h"
 #include "cundoable.h"
 #include "WBView3d.h"
@@ -300,10 +300,10 @@ void CTeamsDialog::OnEditTemplate()
 	CPropertySheet editDialog;
 #ifdef OG
 	editDialog.Construct("Edit Team:");
-#endif
+#endif // OG
 #ifdef ZH
 	editDialog.Construct("Edit Team Template.");
-#endif
+#endif // ZH
 	TeamIdentity identity;
 	identity.setTeamDict(m_sides.getTeamInfo(m_curTeam)->getDict());
 	identity.setSidesList(&m_sides);
@@ -317,7 +317,7 @@ void CTeamsDialog::OnEditTemplate()
 #ifdef ZH
 
 	TeamObjectProperties object(m_sides.getTeamInfo(m_curTeam)->getDict());
-#endif
+#endif // ZH
 
 	editDialog.AddPage(&identity);
 	editDialog.AddPage(&reinforcements);
@@ -325,7 +325,7 @@ void CTeamsDialog::OnEditTemplate()
 	editDialog.AddPage(&generic);
 #ifdef ZH
 	editDialog.AddPage(&object);
-#endif
+#endif // ZH
 
 	if (IDOK == editDialog.DoModal()) {
 	}

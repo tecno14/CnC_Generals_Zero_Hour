@@ -185,7 +185,7 @@ enum
 #ifdef ZH
 	WIN_STATUS_ON_MOUSE_DOWN			= 0x02000000,		// Pushbutton triggers on mouse down.
 	WIN_STATUS_SHORTCUT_BUTTON		= 0x04000000,   // Oh god... this is a total hack for shortcut buttons to handle rendering text top left corner...
-#endif
+#endif // ZH
 	// when you edit this, remember to edit WindowStatusNames[]
 
 };
@@ -254,7 +254,7 @@ public:
 																 window can be seen but accepts no input */
 #ifdef ZH
   Bool winGetEnabled( void ); ///< Is window enabled?
-#endif
+#endif // ZH
 	Int winHide( Bool hide );  ///< hide/unhide a window
 	Bool winIsHidden( void );  ///< is this window hidden/
 	UnsignedInt winSetStatus( UnsignedInt status );  ///< set status bits

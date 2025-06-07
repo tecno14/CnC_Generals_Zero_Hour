@@ -28,17 +28,17 @@
  *                                                                                             *
 #ifdef OG
  *                     $Modtime:: 6/27/00 2:34p                                               $*
-#endif
+#endif // OG
 #ifdef ZH
  *                     $Modtime:: 12/10/01 12:40p                                             $*
-#endif
+#endif // ZH
  *                                                                                             *
 #ifdef OG
  *                    $Revision:: 2                                                           $*
-#endif
+#endif // OG
 #ifdef ZH
  *                    $Revision:: 3                                                           $*
-#endif
+#endif // ZH
  *                                                                                             *
  *---------------------------------------------------------------------------------------------*
  * Functions:                                                                                  *
@@ -54,7 +54,7 @@
 #include "wwhack.h"
 #ifdef ZH
 #include "systimer.h"
-#endif
+#endif // ZH
 
 
 DECLARE_FORCE_LINK( Twiddler )
@@ -126,10 +126,10 @@ TwiddlerClass::Twiddle (void) const
 		//
 #ifdef OG
 		RandomClass randomizer (::GetTickCount ());
-#endif
+#endif // OG
 #ifdef ZH
 		RandomClass randomizer (TIMEGETTIME ());
-#endif
+#endif // ZH
 		int index = randomizer (0, m_DefinitionList.Count () - 1);
 
 		//

@@ -50,7 +50,7 @@ class SphereClass;
 struct W3dEmitterLinePropertiesStruct;
 #ifdef ZH
 struct VertexFormatXYZDUV1;
-#endif
+#endif // ZH
 
 
 // The maximum allowable level of subdivision. This should be no more than 7 to avoid increasing
@@ -113,11 +113,11 @@ public:
 	// WARNING! Do NOT set the tile factor to be too high (should be less than 8) or negative
 	//performance impact will result!
 	void					Set_Texture_Tile_Factor(float factor);
-#endif
+#endif // OG
 #ifdef ZH
 	void					Set_Texture_Tile_Factor(float factor);	// Might be clamped if too high
 
-#endif
+#endif // ZH
 	void					Set_Current_UV_Offset(const Vector2 & offset);
 	void					Set_UV_Offset_Rate(const Vector2 &rate);
 	void					Set_Merge_Intersections(int onoff)					{ if (onoff) { Bits |= MERGE_INTERSECTIONS; } else { Bits &= ~MERGE_INTERSECTIONS; }; }
@@ -133,16 +133,16 @@ public:
 #ifdef OG
 										const SphereClass & obj_sphere);
 
-#endif
+#endif // OG
 #ifdef ZH
 										const SphereClass & obj_sphere,
 										Vector4 * rgbas = 0);
-#endif
+#endif // ZH
 
 	void					Reset_Line(void);
 #ifdef ZH
 	void					Scale(float scale);
-#endif
+#endif // ZH
 
 private:
 
@@ -152,11 +152,11 @@ private:
 #ifdef OG
 											Vector3 *xformed_subdiv_pts, float *subdiv_tex_v);
 
-#endif
+#endif // OG
 #ifdef ZH
 											Vector3 *xformed_subdiv_pts, float *subdiv_tex_v,
 											Vector4 *base_diffuse, Vector4 *subdiv_diffuse);
-#endif
+#endif // ZH
 
 	// Global properties
 	TextureClass *					Texture;
@@ -207,7 +207,7 @@ private:
 	VertexFormatXYZDUV1 *getVertexBuffer(unsigned int number);
 	unsigned int m_vertexBufferSize;
 	VertexFormatXYZDUV1 *m_vertexBuffer;
-#endif
+#endif // ZH
 };
 
 

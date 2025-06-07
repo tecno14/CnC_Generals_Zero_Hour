@@ -84,10 +84,10 @@ private:
 	/////////////////////////////////////////////////////////////////////
 #ifdef OG
 	DynamicVectorClass<ParameterClass *>		m_Parameters;
-#endif
+#endif // OG
 #ifdef ZH
 	//DynamicVectorClass<ParameterClass *>		m_Parameters;
-#endif
+#endif // ZH
 };
 
 
@@ -159,11 +159,11 @@ ParameterListClass::Free_Parameters (void)
 #ifdef OG
 	m_Parameters.Delete_All ();
 
-#endif
+#endif // OG
 #ifdef ZH
 	Delete_All();
 //	m_Parameters.Delete_All ();
-#endif
+#endif // ZH
 	return ;
 }
 

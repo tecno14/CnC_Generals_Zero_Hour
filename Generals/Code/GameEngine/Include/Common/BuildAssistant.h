@@ -97,7 +97,7 @@ enum LegalBuildCode
 	LBC_TOO_CLOSE_TO_SUPPLIES,
 #ifdef ZH
 	LBC_GENERIC_FAILURE,
-#endif
+#endif // ZH
 };
 
 //-------------------------------------------------------------------------------------------------
@@ -123,12 +123,12 @@ public:
 #ifdef OG
 		NO_ENEMY_OBJECT_OVERLAP=0x00000020,	///< Can't overlap enemy objects only.			
 
-#endif
+#endif // OG
 #ifdef ZH
 		NO_ENEMY_OBJECT_OVERLAP	= 0x00000020,	///< Can't overlap enemy objects only.			
 		IGNORE_STEALTHED				= 0x00000040, ///< Units that we can't see are legal to "build" on. (when moving mouse around)
 		FAIL_STEALTHED_WITHOUT_FEEDBACK = 0x00000080 ///< USE WITH IGNORE_STEALTHED except it will fail without BIB feedback (when clicking to place).
-#endif
+#endif // ZH
 	};
 
 public:
@@ -168,10 +168,10 @@ public:
 	/// query if we can build at this location
 #ifdef OG
 	virtual Bool isLocationClearOfObjects( const Coord3D *worldPos,
-#endif
+#endif // OG
 #ifdef ZH
 	virtual LegalBuildCode isLocationClearOfObjects( const Coord3D *worldPos,
-#endif
+#endif // ZH
 																								 const ThingTemplate *build, 
 																								 Real angle,  // angle to construct 'build' a
 																								 Object *builderObject,

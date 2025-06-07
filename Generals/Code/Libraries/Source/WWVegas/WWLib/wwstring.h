@@ -28,17 +28,17 @@
  *                                                                                             *
 #ifdef OG
  *                     $Modtime:: 8/28/01 11:43a                                              $*
-#endif
+#endif // OG
 #ifdef ZH
  *                     $Modtime:: 12/13/01 5:11p                                              $*
-#endif
+#endif // ZH
  *                                                                                             *
 #ifdef OG
  *                    $Revision:: 30                                                          $*
-#endif
+#endif // OG
 #ifdef ZH
  *                    $Revision:: 37                                                          $*
-#endif
+#endif // ZH
  *                                                                                             *
  *---------------------------------------------------------------------------------------------*
  * Functions:                                                                                  *
@@ -55,18 +55,18 @@
 #include "mutex.h"
 #ifdef ZH
 #include "win.h"
-#endif
+#endif // ZH
 #include <string.h>
 #include <stdarg.h>
 #include <tchar.h>
 #ifdef OG
 #include <wwdebug.h>
 
-#endif
+#endif // OG
 #ifdef ZH
 #include "trim.h"
 #include "wwdebug.h"
-#endif
+#endif // ZH
 #ifdef _UNIX
 #include "osdep.h"
 #endif
@@ -100,7 +100,7 @@ public:
 	StringClass (TCHAR ch, bool hint_temporary = false);
 #ifdef ZH
 	StringClass (const WCHAR *string, bool hint_temporary = false);
-#endif
+#endif // ZH
 	~StringClass (void);
 
 	////////////////////////////////////////////////////////////
@@ -114,7 +114,7 @@ public:
 	inline const StringClass &operator= (TCHAR ch);
 #ifdef ZH
 	inline const StringClass &operator= (const WCHAR *string);
-#endif
+#endif // ZH
 
 	const StringClass &operator+= (const StringClass &string);
 	const StringClass &operator+= (const TCHAR *string);
@@ -150,14 +150,14 @@ public:
 	// Trim leading and trailing whitespace characters (values <= 32)
 	void Trim(void);
 
-#endif
+#endif // ZH
 	TCHAR *		Get_Buffer (int new_length);
 	TCHAR *		Peek_Buffer (void);
 	const TCHAR * Peek_Buffer (void) const;
 #ifdef ZH
 
 	bool Copy_Wide (const WCHAR *source);
-#endif
+#endif // ZH
 
 	////////////////////////////////////////////////////////////
 	//	Static methods
@@ -216,10 +216,10 @@ private:
 
 #ifdef OG
 	static CriticalSectionClass m_Mutex;
-#endif
+#endif // OG
 #ifdef ZH
 	static FastCriticalSectionClass m_Mutex;
-#endif
+#endif // ZH
 
 	static TCHAR	m_NullChar;
 	static TCHAR *	m_EmptyString;
@@ -234,7 +234,7 @@ StringClass::operator= (const StringClass &string)
 #ifdef OG
 //	return operator= ((const TCHAR *)string);
 
-#endif
+#endif // OG
 	int len = string.Get_Length();
 	Uninitialised_Grow(len+1);
 	Store_Length(len);
@@ -280,7 +280,7 @@ StringClass::operator= (const WCHAR *string)
 //	operator=
 ///////////////////////////////////////////////////////////////////
 inline const StringClass &
-#endif
+#endif // ZH
 StringClass::operator= (TCHAR ch)
 {
 	Uninitialised_Grow (2);
@@ -379,7 +379,7 @@ StringClass::StringClass (const WCHAR *string, bool hint_temporary)
 }
 
 ///////////////////////////////////////////////////////////////////
-#endif
+#endif // ZH
 //	~StringClass
 ///////////////////////////////////////////////////////////////////
 inline
@@ -535,7 +535,7 @@ inline void StringClass::Trim(void)
 }
 
 ///////////////////////////////////////////////////////////////////
-#endif
+#endif // ZH
 //	operator+=
 ///////////////////////////////////////////////////////////////////
 inline const StringClass &
@@ -666,11 +666,11 @@ operator+ (const StringClass &string1, const TCHAR *string2)
 #ifdef OG
 	new_string += string2;
 
-#endif
+#endif // OG
 #ifdef ZH
 	StringClass new_string2(string2, true);
 	new_string += new_string2;
-#endif
+#endif // ZH
 	return new_string;
 }
 

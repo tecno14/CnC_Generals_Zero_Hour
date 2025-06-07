@@ -305,4 +305,4 @@ void CameraShakeSystemClass::Update_Camera_Shaker(Vector3 camera_position, Vecto
 CameraShakeSystemClass CameraShakerSystem; //WST 11/12/2002 This is the new Camera Shaker system upgrade
 
 
-#endif
+#endif // ZH

@@ -43,7 +43,7 @@
 #include "common/MapObject.h"
 #ifdef OG
 #include "Common/ThingTemplate.h"
-#endif
+#endif // OG
 #include "GameLogic/PolygonTrigger.h"
 #include "GameLogic/SidesList.h"
 #include "resource.h"
@@ -62,7 +62,7 @@
 #include "render2d.h"
 #include "GameLogic/Weapon.h"
 #include "Common/AudioEventInfo.h"
-#endif
+#endif // ZH
 
 #ifdef _DEBUG
 #define NO_INTENSE_DEBUG 1
@@ -144,7 +144,7 @@ DrawObject::~DrawObject(void)
 #ifdef ZH
 	REF_PTR_RELEASE(m_waterDrawObject);
 	TheWaterRenderObj = NULL;
-#endif
+#endif // ZH
 }
 
 DrawObject::DrawObject(void) :
@@ -161,12 +161,12 @@ DrawObject::DrawObject(void) :
 #ifdef OG
 	m_moldMesh(NULL)
 
-#endif
+#endif // OG
 #ifdef ZH
 	m_moldMesh(NULL),
 	m_lineRenderer(NULL),
   m_drawSoundRanges(false)
-#endif
+#endif // ZH
 {
 	m_feedbackPoint.x = 20;
 	m_feedbackPoint.y = 20;
@@ -178,7 +178,7 @@ DrawObject::DrawObject(void) :
 
 	//(gth) this was needed to fix the extents bug that is based off water and too small for our maps
 	Set_Force_Visible(true);
-#endif
+#endif // ZH
 }
 
 
@@ -208,7 +208,7 @@ void DrawObject::Get_Obj_Space_Bounding_Sphere(SphereClass & sphere) const
 	// (gth) CNC3 these bounds don't actually work for all levels...
 	// we set the "force visible" flag for this object since it encapsulates all of the UI
 	// gadgets for the whole level anyway.
-#endif
+#endif // ZH
 	Vector3	ObjSpaceCenter(TheGlobalData->m_waterExtentX,TheGlobalData->m_waterExtentY,50*MAP_XY_FACTOR);
 	float length = ObjSpaceCenter.Length();
 	sphere.Init(ObjSpaceCenter, length);
@@ -220,7 +220,7 @@ void DrawObject::Get_Obj_Space_Bounding_Box(AABoxClass & box) const
 	// (gth) CNC3 these bounds don't actually work for all levels...
 	// we set the "force visible" flag for this object since it encapsulates all of the UI
 	// gadgets for the whole level anyway.
-#endif
+#endif // ZH
 	Vector3	minPt(-2*TheGlobalData->m_waterExtentX,-2*TheGlobalData->m_waterExtentY,0);
 	Vector3	maxPt(2*TheGlobalData->m_waterExtentX,2*TheGlobalData->m_waterExtentY,100*MAP_XY_FACTOR);
 	box.Init(minPt,maxPt);
@@ -253,13 +253,13 @@ Int DrawObject::freeMapResources(void)
 	REF_PTR_RELEASE(m_waterDrawObject);
 	TheWaterRenderObj = NULL;
 
-#endif
+#endif // OG
 #ifdef ZH
 	if (m_lineRenderer) {
 		delete m_lineRenderer;
 		m_lineRenderer = NULL;
 	}
-#endif
+#endif // ZH
 	return 0;
 }
 
@@ -282,18 +282,18 @@ Int DrawObject::initData(void)
 	m_numTriangles = 2*NUM_TRI;
 #ifdef OG
 	m_indexBuffer=NEW_REF(DX8IndexBufferClass,(m_numTriangles*3));
-#endif
+#endif // OG
 #ifdef ZH
 	m_indexBuffer=NEW_REF(DX8IndexBufferClass,(m_numTriangles*3, DX8IndexBufferClass::USAGE_DYNAMIC));
-#endif
+#endif // ZH
 
 	// Fill up the IB
 #ifdef OG
 	DX8IndexBufferClass::WriteLockClass lockIdxBuffer(m_indexBuffer);
-#endif
+#endif // OG
 #ifdef ZH
 	DX8IndexBufferClass::WriteLockClass lockIdxBuffer(m_indexBuffer, D3DLOCK_DISCARD);
-#endif
+#endif // ZH
 	UnsignedShort *ib=lockIdxBuffer.Get_Index_Array();
 		
 	for (i=0; i<3*m_numTriangles; i+=3)
@@ -308,20 +308,20 @@ Int DrawObject::initData(void)
 #ifdef OG
 	m_vertexBufferTile1=NEW_REF(DX8VertexBufferClass,(DX8_FVF_XYZDUV1,m_numTriangles*3,DX8VertexBufferClass::USAGE_DEFAULT));
 	m_vertexBufferTile2=NEW_REF(DX8VertexBufferClass,(DX8_FVF_XYZDUV1,m_numTriangles*3,DX8VertexBufferClass::USAGE_DEFAULT));
-#endif
+#endif // OG
 #ifdef ZH
 	m_vertexBufferTile1=NEW_REF(DX8VertexBufferClass,(DX8_FVF_XYZDUV1,m_numTriangles*3,DX8VertexBufferClass::USAGE_DYNAMIC));
 	m_vertexBufferTile2=NEW_REF(DX8VertexBufferClass,(DX8_FVF_XYZDUV1,m_numTriangles*3,DX8VertexBufferClass::USAGE_DYNAMIC));
-#endif
+#endif // ZH
 
 #ifdef OG
 	m_vertexFeedback=NEW_REF(DX8VertexBufferClass,(DX8_FVF_XYZDUV1,NUM_FEEDBACK_VERTEX,DX8VertexBufferClass::USAGE_DEFAULT));
 	m_indexFeedback=NEW_REF(DX8IndexBufferClass,(NUM_FEEDBACK_INDEX));
-#endif
+#endif // OG
 #ifdef ZH
 	m_vertexFeedback=NEW_REF(DX8VertexBufferClass,(DX8_FVF_XYZDUV1,NUM_FEEDBACK_VERTEX,DX8VertexBufferClass::USAGE_DYNAMIC));
 	m_indexFeedback=NEW_REF(DX8IndexBufferClass,(NUM_FEEDBACK_INDEX,DX8IndexBufferClass::USAGE_DYNAMIC));
-#endif
+#endif // ZH
 
 	//go with a preset material for now.
 	m_vertexMaterialClass=VertexMaterialClass::Get_Preset(VertexMaterialClass::PRELIT_DIFFUSE);
@@ -373,19 +373,19 @@ void DrawObject::updateMeshVB(void)
 	m_feedbackIndexCount = 0;
 #ifdef OG
 	DX8IndexBufferClass::WriteLockClass lockIdxBuffer(m_indexFeedback);
-#endif
+#endif // OG
 #ifdef ZH
 	DX8IndexBufferClass::WriteLockClass lockIdxBuffer(m_indexFeedback, D3DLOCK_DISCARD);
-#endif
+#endif // ZH
 	UnsignedShort *ib=lockIdxBuffer.Get_Index_Array();
 	UnsignedShort *curIb = ib;
 
 #ifdef OG
 	DX8VertexBufferClass::WriteLockClass lockVtxBuffer(m_vertexFeedback);
-#endif
+#endif // OG
 #ifdef ZH
 	DX8VertexBufferClass::WriteLockClass lockVtxBuffer(m_vertexFeedback, D3DLOCK_DISCARD);
-#endif
+#endif // ZH
 	VertexFormatXYZDUV1 *vb = (VertexFormatXYZDUV1*)lockVtxBuffer.Get_Vertex_Array();
 	VertexFormatXYZDUV1 *curVb = vb;
 
@@ -475,10 +475,10 @@ void DrawObject::updateMeshVB(void)
 	Int numPoly = m_moldMesh->Get_Model()->Get_Polygon_Count();
 #ifdef OG
 	const Vector3i *pPoly =m_moldMesh->Get_Model()->Get_Polygon_Array();
-#endif
+#endif // OG
 #ifdef ZH
 	const TriIndex *pPoly =m_moldMesh->Get_Model()->Get_Polygon_Array();
-#endif
+#endif // ZH
 	if (3*numPoly+9 >= NUM_FEEDBACK_INDEX) {
 		return;
 	}
@@ -516,19 +516,19 @@ void DrawObject::updateRampVB(void)
 	m_feedbackIndexCount = 0;
 #ifdef OG
 	DX8IndexBufferClass::WriteLockClass lockIdxBuffer(m_indexFeedback);
-#endif
+#endif // OG
 #ifdef ZH
 	DX8IndexBufferClass::WriteLockClass lockIdxBuffer(m_indexFeedback, D3DLOCK_DISCARD);
-#endif
+#endif // ZH
 	UnsignedShort *ib=lockIdxBuffer.Get_Index_Array();
 	UnsignedShort *curIb = ib;
 
 #ifdef OG
 	DX8VertexBufferClass::WriteLockClass lockVtxBuffer(m_vertexFeedback);
-#endif
+#endif // OG
 #ifdef ZH
 	DX8VertexBufferClass::WriteLockClass lockVtxBuffer(m_vertexFeedback, D3DLOCK_DISCARD);
-#endif
+#endif // ZH
 	VertexFormatXYZDUV1 *vb = (VertexFormatXYZDUV1*)lockVtxBuffer.Get_Vertex_Array();
 	VertexFormatXYZDUV1 *curVb = vb;
 
@@ -642,19 +642,19 @@ void DrawObject::updateBoundaryVB(void)
 	m_feedbackIndexCount = 0;
 #ifdef OG
 	DX8IndexBufferClass::WriteLockClass lockIdxBuffer(m_indexFeedback);
-#endif
+#endif // OG
 #ifdef ZH
 	DX8IndexBufferClass::WriteLockClass lockIdxBuffer(m_indexFeedback, D3DLOCK_DISCARD);
-#endif
+#endif // ZH
 	UnsignedShort *ib=lockIdxBuffer.Get_Index_Array();
 	UnsignedShort *curIb = ib;
 
 #ifdef OG
 	DX8VertexBufferClass::WriteLockClass lockVtxBuffer(m_vertexFeedback);
-#endif
+#endif // OG
 #ifdef ZH
 	DX8VertexBufferClass::WriteLockClass lockVtxBuffer(m_vertexFeedback, D3DLOCK_DISCARD);
-#endif
+#endif // ZH
 	VertexFormatXYZDUV1 *vb = (VertexFormatXYZDUV1*)lockVtxBuffer.Get_Vertex_Array();
 	VertexFormatXYZDUV1 *curVb = vb;
 
@@ -708,19 +708,19 @@ void DrawObject::updateBoundaryVB(void)
 
 #ifdef OG
 			if ((m_feedbackVertexCount + 8) > NUM_FEEDBACK_VERTEX) {
-#endif
+#endif // OG
 #ifdef ZH
 			if (m_feedbackVertexCount + 8 > NUM_FEEDBACK_VERTEX) {
-#endif
+#endif // ZH
 				return;
 			}
 
 #ifdef OG
 			if ((m_feedbackIndexCount + 12) > NUM_FEEDBACK_INDEX) {
-#endif
+#endif // OG
 #ifdef ZH
 			if (m_feedbackIndexCount + 12 > NUM_FEEDBACK_INDEX) {
-#endif
+#endif // ZH
 				return;
 			}
 
@@ -838,19 +838,19 @@ void DrawObject::updateAmbientSoundVB(void)
 	m_feedbackIndexCount = 0;
 #ifdef OG
 	DX8IndexBufferClass::WriteLockClass lockIdxBuffer(m_indexFeedback);
-#endif
+#endif // OG
 #ifdef ZH
 	DX8IndexBufferClass::WriteLockClass lockIdxBuffer(m_indexFeedback, D3DLOCK_DISCARD);
-#endif
+#endif // ZH
 	UnsignedShort *ib=lockIdxBuffer.Get_Index_Array();
 	UnsignedShort *curIb = ib;
 
 #ifdef OG
 	DX8VertexBufferClass::WriteLockClass lockVtxBuffer(m_vertexFeedback);
-#endif
+#endif // OG
 #ifdef ZH
 	DX8VertexBufferClass::WriteLockClass lockVtxBuffer(m_vertexFeedback, D3DLOCK_DISCARD);
-#endif
+#endif // ZH
 	VertexFormatXYZDUV1 *vb = (VertexFormatXYZDUV1*)lockVtxBuffer.Get_Vertex_Array();
 	VertexFormatXYZDUV1 *curVb = vb;
 
@@ -958,19 +958,19 @@ void DrawObject::updateWaypointVB(void)
 	m_feedbackIndexCount = 0;
 #ifdef OG
 	DX8IndexBufferClass::WriteLockClass lockIdxBuffer(m_indexFeedback);
-#endif
+#endif // OG
 #ifdef ZH
 	DX8IndexBufferClass::WriteLockClass lockIdxBuffer(m_indexFeedback, D3DLOCK_DISCARD);
-#endif
+#endif // ZH
 	UnsignedShort *ib=lockIdxBuffer.Get_Index_Array();
 	UnsignedShort *curIb = ib;
 
 #ifdef OG
 	DX8VertexBufferClass::WriteLockClass lockVtxBuffer(m_vertexFeedback);
-#endif
+#endif // OG
 #ifdef ZH
 	DX8VertexBufferClass::WriteLockClass lockVtxBuffer(m_vertexFeedback, D3DLOCK_DISCARD);
-#endif
+#endif // ZH
 	VertexFormatXYZDUV1 *vb = (VertexFormatXYZDUV1*)lockVtxBuffer.Get_Vertex_Array();
 	VertexFormatXYZDUV1 *curVb = vb;
 
@@ -1206,19 +1206,19 @@ void DrawObject::updatePolygonVB(PolygonTrigger *pTrig, Bool selected, Bool isOp
 	m_feedbackIndexCount = 0;
 #ifdef OG
 	DX8IndexBufferClass::WriteLockClass lockIdxBuffer(m_indexFeedback);
-#endif
+#endif // OG
 #ifdef ZH
 	DX8IndexBufferClass::WriteLockClass lockIdxBuffer(m_indexFeedback, D3DLOCK_DISCARD);
-#endif
+#endif // ZH
 	UnsignedShort *ib=lockIdxBuffer.Get_Index_Array();
 	UnsignedShort *curIb = ib;
 
 #ifdef OG
 	DX8VertexBufferClass::WriteLockClass lockVtxBuffer(m_vertexFeedback);
-#endif
+#endif // OG
 #ifdef ZH
 	DX8VertexBufferClass::WriteLockClass lockVtxBuffer(m_vertexFeedback, D3DLOCK_DISCARD);
-#endif
+#endif // ZH
 	VertexFormatXYZDUV1 *vb = (VertexFormatXYZDUV1*)lockVtxBuffer.Get_Vertex_Array();
 	VertexFormatXYZDUV1 *curVb = vb;
 
@@ -1310,19 +1310,19 @@ void DrawObject::updateFeedbackVB(void)
 	m_feedbackIndexCount = 0;
 #ifdef OG
 	DX8IndexBufferClass::WriteLockClass lockIdxBuffer(m_indexFeedback);
-#endif
+#endif // OG
 #ifdef ZH
 	DX8IndexBufferClass::WriteLockClass lockIdxBuffer(m_indexFeedback, D3DLOCK_DISCARD);
-#endif
+#endif // ZH
 	UnsignedShort *ib=lockIdxBuffer.Get_Index_Array();
 	UnsignedShort *curIb = ib;
 
 #ifdef OG
 	DX8VertexBufferClass::WriteLockClass lockVtxBuffer(m_vertexFeedback);
-#endif
+#endif // OG
 #ifdef ZH
 	DX8VertexBufferClass::WriteLockClass lockVtxBuffer(m_vertexFeedback, D3DLOCK_DISCARD);
-#endif
+#endif // ZH
 	VertexFormatXYZDUV1 *vb = (VertexFormatXYZDUV1*)lockVtxBuffer.Get_Vertex_Array();
 	VertexFormatXYZDUV1 *curVb = vb;
 
@@ -1529,10 +1529,10 @@ Int DrawObject::updateVB(DX8VertexBufferClass	*pVB, Int color, Bool doArrow, Boo
 		
 #ifdef OG
 		DX8VertexBufferClass::WriteLockClass lockVtxBuffer(pVB);
-#endif
+#endif // OG
 #ifdef ZH
 		DX8VertexBufferClass::WriteLockClass lockVtxBuffer(pVB, D3DLOCK_DISCARD);
-#endif
+#endif // ZH
 		VertexFormatXYZDUV1 *vb = (VertexFormatXYZDUV1*)lockVtxBuffer.Get_Vertex_Array();
 		
 		const Real theZ = 0.0f;
@@ -1546,7 +1546,7 @@ Int DrawObject::updateVB(DX8VertexBufferClass	*pVB, Int color, Bool doArrow, Boo
 		{
 			theRadius *= 2.0;
 		}
-#endif
+#endif // ZH
 
 		Int limit = NUM_TRI-(NUM_ARROW_TRI+NUM_SELECT_TRI);
 		float curAngle = 0;
@@ -1594,12 +1594,12 @@ Int DrawObject::updateVB(DX8VertexBufferClass	*pVB, Int color, Bool doArrow, Boo
 			curAngle += deltaAngle;
 #ifdef ZH
 		}
-#endif
+#endif // ZH
 			
 #ifdef ZH
 		if (!doDiamond) {
 			theRadius /= 2.0;
-#endif
+#endif // ZH
 		}
 		if (!doArrow) {
 			theRadius /= 20;
@@ -2068,7 +2068,7 @@ void DrawObject::updateVBWithSoundRanges(MapObject *pMapObj, CameraClass* camera
     if ( exists )
     {
       minRadius = valReal;
-#endif
+#endif // ZH
 }
 #ifdef ZH
     valReal = properties->getReal( TheKey_objectSoundAmbientMaxRange, &exists );
@@ -2130,7 +2130,7 @@ void DrawObject::updateVBWithTestArtHighlight(MapObject *pMapObj, CameraClass* c
 
 }
 
-#endif
+#endif // ZH
 
 #ifdef ZH
 /** Transform a 3D Coordinate into 2D screen space **/
@@ -2164,7 +2164,7 @@ bool DrawObject::worldToScreen(const Coord3D *w, ICoord2D *s, CameraClass* camer
 	return (true);
 }  
 
-#endif
+#endif // ZH
 /** Tells drawobject where the tool is located, so it can draw feedback. */
 void DrawObject::setFeedbackPos(Coord3D pos) 
 {
@@ -2211,7 +2211,7 @@ void DrawObject::setRampFeedbackParms(const Coord3D *start, const Coord3D *end, 
 #ifdef ZH
 
 bool _skip_drawobject_render = false;
-#endif
+#endif // ZH
 
 /** Render draws into the current 3d context. */
 void DrawObject::Render(RenderInfoClass & rinfo)
@@ -2236,7 +2236,7 @@ if (_skip_drawobject_render) {
 		m_lineRenderer->Enable_Texturing(FALSE);
 	}
 
-#endif
+#endif // ZH
 	DX8Wrapper::Apply_Render_State_Changes();
 
 	DX8Wrapper::Set_Material(m_vertexMaterialClass);
@@ -2244,14 +2244,14 @@ if (_skip_drawobject_render) {
 	DX8Wrapper::Set_Texture(0, NULL);
 #ifdef ZH
 	DX8Wrapper::Set_Index_Buffer(m_indexBuffer,0);
-#endif
+#endif // ZH
 	DX8Wrapper::Apply_Render_State_Changes();
 	Int count=0;
 	Int i;
 #ifdef ZH
 	bool linesToRender = false;
 
-#endif
+#endif // ZH
 	curHighlight++;
 	if (curHighlight >= NUM_HIGHLIGHT) {
 		curHighlight = 0;
@@ -2260,11 +2260,11 @@ if (_skip_drawobject_render) {
 #ifdef OG
 	if (m_drawObjects || m_drawWaypoints) {
 
-#endif
+#endif // OG
 #ifdef ZH
 	DX8Wrapper::Set_Vertex_Buffer(m_vertexBufferTile1);
   if (m_drawObjects || m_drawWaypoints || m_drawBoundingBoxes || m_drawSightRanges || m_drawWeaponRanges || m_drawSoundRanges || m_drawTestArtHighlight) {
-#endif
+#endif // ZH
 		//Apply the shader and material
 
 #ifdef ZH
@@ -2273,7 +2273,7 @@ if (_skip_drawobject_render) {
 		int rememberLastSettingVB1 = -99999;	
 		int rememberLastSettingVB2 = -99999;
 
-#endif
+#endif // ZH
 		MapObject *pMapObj;
 		for (pMapObj = MapObject::getFirstMapObject(); pMapObj; pMapObj = pMapObj->getNext()) {
 			// simple Draw test.
@@ -2286,7 +2286,7 @@ if (_skip_drawobject_render) {
 if (pMapObj->isSelected()) {
  Transform.Get_Translation();
 }
-#endif
+#endif // ZH
 			Coord3D loc = *pMapObj->getLocation();
 			if (TheTerrainRenderObject) {
 				loc.z += TheTerrainRenderObject->getHeightMapHeight(loc.x, loc.y, NULL);
@@ -2297,13 +2297,13 @@ if (pMapObj->isSelected()) {
 			if (rinfo.Camera.Cull_Sphere(bounds)) {
 				continue;
 			}
-#endif
+#endif // OG
 #ifdef ZH
 			//SphereClass bounds(Vector3(loc.x, loc.y, loc.z), THE_RADIUS); 
 			//if (rinfo.Camera.Cull_Sphere(bounds)) {
 			//	continue;
 			//}
-#endif
+#endif // ZH
 			Bool doArrow = true;
 			if (pMapObj->getFlag(FLAG_ROAD_FLAGS) || pMapObj->getFlag(FLAG_BRIDGE_FLAGS) || pMapObj->isWaypoint()) 
 			{
@@ -2342,7 +2342,7 @@ if (pMapObj->isSelected()) {
 					updateVBWithTestArtHighlight(pMapObj, &rinfo.Camera); 
 				}
 
-#endif
+#endif // ZH
 				if (!m_drawObjects) {
 					continue;
 				}
@@ -2355,7 +2355,7 @@ if (pMapObj->isSelected()) {
 #ifdef OG
 				updateVB(m_vertexBufferTile1, pMapObj->getColor(), doArrow, doDiamond);
 
-#endif
+#endif // OG
 #ifdef ZH
 				int setting = pMapObj->getColor();
 					
@@ -2370,7 +2370,7 @@ if (pMapObj->isSelected()) {
 					rememberLastSettingVB1 = setting;
 					updateVB(m_vertexBufferTile1,pMapObj->getColor(), doArrow, doDiamond);
 				}
-#endif
+#endif // ZH
 				DX8Wrapper::Set_Vertex_Buffer(m_vertexBufferTile1);
 			} else {
 #ifdef ZH
@@ -2385,16 +2385,16 @@ if (pMapObj->isSelected()) {
 
 				if (setting != rememberLastSettingVB2) {
 					rememberLastSettingVB2 = setting;
-#endif
+#endif // ZH
 				updateVB(m_vertexBufferTile2, pMapObj->getColor(), doArrow, doDiamond);
 #ifdef ZH
 				}
-#endif
+#endif // ZH
 				DX8Wrapper::Set_Vertex_Buffer(m_vertexBufferTile2);
 			}
 #ifdef OG
 			count++;
-#endif
+#endif // OG
 			///@todo - remove the istree stuff, or get the info from the thing template.  jba.
 			Bool isTree = false;
 
@@ -2402,10 +2402,10 @@ if (pMapObj->isSelected()) {
 			Matrix3D tm(Transform);
 #ifdef OG
 			Matrix3 rot(true);
-#endif
+#endif // OG
 #ifdef ZH
 			Matrix3x3 rot(true);
-#endif
+#endif // ZH
 			rot.Rotate_Z(pMapObj->getAngle());
 
 			tm.Set_Translation(vec);
@@ -2419,7 +2419,7 @@ if (pMapObj->isSelected()) {
 #ifdef OG
 			DX8Wrapper::Set_Index_Buffer(m_indexBuffer,0);
 
-#endif
+#endif // OG
 			if (isTree) {
 				DX8Wrapper::Draw_Triangles(	NUM_TRI*3,polyCount, 0,	(m_numTriangles*3));
 			} else {
@@ -2428,7 +2428,7 @@ if (pMapObj->isSelected()) {
 #ifdef ZH
 			
 			count++;
-#endif
+#endif // ZH
 		}
 	}
 #ifdef OG
@@ -2436,18 +2436,18 @@ if (pMapObj->isSelected()) {
 	DX8Wrapper::Set_Vertex_Buffer(NULL);	//release reference to vertex buffer
 	DX8Wrapper::Set_Index_Buffer(NULL,0);	//release reference to vertex buffer
 
-#endif
+#endif // OG
 	if (m_drawPolygonAreas) {
 #ifdef ZH
  		DX8Wrapper::Set_Vertex_Buffer(m_vertexBufferWater);
-#endif
+#endif // ZH
 		Int selected;
 		for (selected = 0; selected < 2; selected++) {
 			for (PolygonTrigger *pTrig=PolygonTrigger::getFirstPolygonTrigger(); pTrig; pTrig = pTrig->getNext()) {
 				DX8Wrapper::Set_Index_Buffer(m_indexBuffer,0);
 #ifdef ZH
 				if (!pTrig->getShouldRender()) continue;
-#endif
+#endif // ZH
 				Bool polySelected = PolygonTool::isSelected(pTrig);
 				if (polySelected && !selected) continue;
 				if (!polySelected && selected) continue;
@@ -2509,7 +2509,7 @@ if (pMapObj->isSelected()) {
 #ifdef OG
 	DX8Wrapper::Set_Vertex_Buffer(NULL);	//release reference to vertex buffer
 	DX8Wrapper::Set_Index_Buffer(NULL,0);	//release reference to vertex buffer
-#endif
+#endif // OG
 
  	if (BuildListTool::isActive()) for (i=0; i<TheSidesList->getNumSides(); i++) {
 		SidesInfo *pSide = TheSidesList->getSideInfo(i); 
@@ -2540,10 +2540,10 @@ if (pMapObj->isSelected()) {
 			Matrix3D tmXX(Transform);
 #ifdef OG
 			Matrix3 rot(true);
-#endif
+#endif // OG
 #ifdef ZH
 			Matrix3x3 rot(true);
-#endif
+#endif // ZH
 			rot.Rotate_Z(pBuild->getAngle());
 
 			tmXX.Set_Translation(vec);
@@ -2556,7 +2556,7 @@ if (pMapObj->isSelected()) {
 #if 1	
 #ifdef OG
 			DX8Wrapper::Set_Index_Buffer(m_indexBuffer,0);
-#endif
+#endif // OG
 			DX8Wrapper::Set_Transform(D3DTS_WORLD,tmXX);
 			DX8Wrapper::Draw_Triangles(	0,polyCountA, 0,	(m_numTriangles*3));
 #endif
@@ -2567,12 +2567,12 @@ if (pMapObj->isSelected()) {
 	DX8Wrapper::Set_Vertex_Buffer(NULL);	//release reference to vertex buffer
 	DX8Wrapper::Set_Index_Buffer(NULL,0);	//release reference to vertex buffer
 
-#endif
+#endif // OG
 #ifdef ZH
 	DX8Wrapper::Set_Index_Buffer(m_indexBuffer,0);
  	DX8Wrapper::Set_Vertex_Buffer(m_vertexBufferWater);
 
-#endif
+#endif // ZH
 	Matrix3D tmReset(Transform);
 	DX8Wrapper::Set_Transform(D3DTS_WORLD,tmReset);
 
@@ -2586,18 +2586,18 @@ if (pMapObj->isSelected()) {
 #ifdef OG
 //			DX8Wrapper::Set_Index_Buffer(m_indexBuffer,0);
  //			DX8Wrapper::Set_Vertex_Buffer(m_vertexBufferWater);
-#endif
+#endif // OG
 #ifdef ZH
 			DX8Wrapper::Set_Index_Buffer(m_indexBuffer,0);
  			DX8Wrapper::Set_Vertex_Buffer(m_vertexBufferWater);
-#endif
+#endif // ZH
 		}
 	}
 
 #ifdef OG
 	DX8Wrapper::Set_Vertex_Buffer(NULL);	//release reference to vertex buffer
 	DX8Wrapper::Set_Index_Buffer(NULL,0);	//release reference to vertex buffer
-#endif
+#endif // OG
 
 #if 1
 	if (m_meshFeedback) {
@@ -2624,7 +2624,7 @@ if (pMapObj->isSelected()) {
 	DX8Wrapper::Set_Vertex_Buffer(NULL);	//release reference to vertex buffer
 	DX8Wrapper::Set_Index_Buffer(NULL,0);	//release reference to vertex buffer
 
-#endif
+#endif // OG
 #if 1
 	if (m_rampFeedback) {
 		updateRampVB();
@@ -2643,7 +2643,7 @@ if (pMapObj->isSelected()) {
 	DX8Wrapper::Set_Vertex_Buffer(NULL);	//release reference to vertex buffer
 	DX8Wrapper::Set_Index_Buffer(NULL,0);	//release reference to vertex buffer
 
-#endif
+#endif // OG
 #if 1
 	if (m_boundaryFeedback) {
 		updateBoundaryVB();
@@ -2702,7 +2702,7 @@ if (pMapObj->isSelected()) {
 		// Clear the old lines.
 		m_lineRenderer->Reset();
 	}
-#endif
+#endif // ZH
 }
 #pragma optimize("", on)
 

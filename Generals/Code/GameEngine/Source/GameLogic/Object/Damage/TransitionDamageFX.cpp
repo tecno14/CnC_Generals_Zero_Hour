@@ -78,7 +78,7 @@ TransitionDamageFXModuleData::TransitionDamageFXModuleData( void )
 	m_damageOCLTypes = DAMAGE_TYPE_FLAGS_ALL;
 	m_damageParticleTypes = DAMAGE_TYPE_FLAGS_ALL;
 
-#endif
+#endif // OG
 #ifdef ZH
 	m_damageFXTypes = DAMAGE_TYPE_FLAGS_NONE;
 	m_damageFXTypes.flip();
@@ -86,7 +86,7 @@ TransitionDamageFXModuleData::TransitionDamageFXModuleData( void )
 	m_damageOCLTypes.flip();
 	m_damageParticleTypes = DAMAGE_TYPE_FLAGS_NONE;
 	m_damageParticleTypes.flip();
-#endif
+#endif // ZH
 
 }  // end TransitionDamageFXModuleData
 
@@ -386,10 +386,10 @@ void TransitionDamageFX::onBodyDamageStateChange( const DamageInfo* damageInfo,
 					ObjectCreationList::create( modData->m_OCL[ newState ][ i ].ocl, 
 #ifdef OG
 																			getObject(), &pos, damageSource->getPosition() );
-#endif
+#endif // OG
 #ifdef ZH
 																			getObject(), &pos, damageSource->getPosition(), INVALID_ANGLE );
-#endif
+#endif // ZH
 
 				}  // end if
 

@@ -24,26 +24,26 @@
  *                                                                                             *
 #ifdef OG
  *                     $Archive:: /VSS_Sync/ww3d2/vertmaterial.h                              $*
-#endif
+#endif // OG
 #ifdef ZH
  *                     $Archive:: /Commando/Code/ww3d2/vertmaterial.h                         $*
-#endif
+#endif // ZH
  *                                                                                             *
  *                       Author:: Greg Hjelstrom                                               *
  *                                                                                             *
 #ifdef OG
  *                     $Modtime:: 8/29/01 7:29p                                               $*
-#endif
+#endif // OG
 #ifdef ZH
  *                     $Modtime:: 4/27/01 2:22p                                               $*
-#endif
+#endif // ZH
  *                                                                                             *
 #ifdef OG
  *                    $Revision:: 26                                                          $*
-#endif
+#endif // OG
 #ifdef ZH
  *                    $Revision:: 25                                                          $*
-#endif
+#endif // ZH
  *                                                                                             *
  *---------------------------------------------------------------------------------------------*
  * Functions:                                                                                  *
@@ -225,7 +225,7 @@ public:
 #ifdef ZH
 	void					Parse_W3dVertexMaterialStruct(const W3dVertexMaterialStruct & vmat);
 	void					Parse_Mapping_Args(const W3dVertexMaterialStruct & vmat,char * mapping0_arg_buffer,char * mapping1_arg_buffer);
-#endif
+#endif // ZH
 	void					Init_From_Material3(const W3dMaterial3Struct & mat3);
 
 	/*

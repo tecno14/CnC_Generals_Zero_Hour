@@ -161,7 +161,7 @@ const FieldParse ControlBarSchemeManager::m_controlBarSchemeFieldParseTable[] =
 	{ "ExpBarForegroundImage",		INI::parseMappedImage,				NULL, offsetof( ControlBarScheme, m_expBarForeground) },
 #ifdef ZH
 	{ "PowerPurchaseImage",			INI::parseMappedImage,				NULL, offsetof( ControlBarScheme, m_powerPurchaseImage) },
-#endif
+#endif // ZH
 
 	{ NULL,										NULL,													NULL, 0 }  // keep this last
 
@@ -288,7 +288,7 @@ void ControlBarScheme::reset(void)
 	m_expBarForeground = NULL;
 #ifdef ZH
 	m_powerPurchaseImage = NULL;
-#endif
+#endif // ZH
 		
 }
 
@@ -356,7 +356,7 @@ ControlBarScheme::ControlBarScheme(void)
 #ifdef ZH
 	m_powerPurchaseImage = NULL;
 
-#endif
+#endif // ZH
 	m_generalButtonEnable = NULL;
 	m_generalButtonHightlited = NULL;
 	m_generalButtonPushed = NULL;
@@ -689,7 +689,7 @@ void ControlBarScheme::init(void)
 		{
 			win->winSetSize(m_powerPurchaseImage->getImageWidth() * resMultiplier.x, m_powerPurchaseImage->getImageHeight() * resMultiplier.y);
 		}
-#endif
+#endif // ZH
 	}
 }
 

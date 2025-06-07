@@ -75,7 +75,7 @@ static const FieldParse TheStaticGameLODFieldParseTable[] =
 	{ "UseEmissiveNightMaterials",		INI::parseBool,					NULL,	offsetof( StaticGameLODInfo, m_useEmissiveNightMaterials ) },
 #ifdef ZH
 	{ "UseHeatEffects",					INI::parseBool,					NULL,	offsetof( StaticGameLODInfo, m_useHeatEffects ) },
-#endif
+#endif // ZH
 	{ "TextureReductionFactor",		INI::parseInt,					NULL,	offsetof( StaticGameLODInfo, m_textureReduction ) },
 };
 
@@ -109,7 +109,7 @@ StaticGameLODInfo::StaticGameLODInfo(void)
 	m_useEmissiveNightMaterials=TRUE;
 #ifdef ZH
 	m_useHeatEffects=TRUE;
-#endif
+#endif // ZH
 	m_textureReduction = 0;	//none
 	m_useFpsLimit = TRUE;
 	m_enableDynamicLOD = TRUE;
@@ -359,7 +359,7 @@ void GameLODManager::init(void)
 		TheWritableGlobalData->m_showSoftWaterEdge = optionPref.getSmoothWaterEnabled();
 #ifdef ZH
 		TheWritableGlobalData->m_useHeatEffects = optionPref.getUseHeatEffects();
-#endif
+#endif // ZH
 		TheWritableGlobalData->m_useDrawModuleLOD = optionPref.getExtraAnimationsDisabled();
 		TheWritableGlobalData->m_useTreeSway = !TheWritableGlobalData->m_useDrawModuleLOD;	//borrow same setting.
 		TheWritableGlobalData->m_useTrees = optionPref.getTreesEnabled();
@@ -384,7 +384,7 @@ void GameLODManager::refreshCustomStaticLODLevel(void)
 	lodInfo->m_useBuildupScaffolds=!TheGlobalData->m_useDrawModuleLOD;
 #ifdef ZH
 	lodInfo->m_useHeatEffects = TheGlobalData->m_useHeatEffects;
-#endif
+#endif // ZH
 	lodInfo->m_useTreeSway=lodInfo->m_useBuildupScaffolds;// Borrow same setting. //TheGlobalData->m_useTreeSway;
 	lodInfo->m_textureReduction=TheGlobalData->m_textureReductionFactor;
 	lodInfo->m_useFpsLimit = TheGlobalData->m_useFpsLimit;
@@ -588,7 +588,7 @@ void GameLODManager::applyStaticLODLevel(StaticGameLODLevel level)
 		TheWritableGlobalData->m_useDrawModuleLOD=!lodInfo->m_useBuildupScaffolds;
 #ifdef ZH
 		TheWritableGlobalData->m_useHeatEffects=lodInfo->m_useHeatEffects;
-#endif
+#endif // ZH
 		TheWritableGlobalData->m_enableDynamicLOD = lodInfo->m_enableDynamicLOD;
 		TheWritableGlobalData->m_useFpsLimit = lodInfo->m_useFpsLimit;
 		TheWritableGlobalData->m_useTrees = requestedTrees;

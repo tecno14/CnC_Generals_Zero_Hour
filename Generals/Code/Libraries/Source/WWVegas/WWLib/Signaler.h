@@ -27,23 +27,23 @@
 *     communication between two classes. The only details that need to be know
 *     by both classes is the Signaler class it self and the type of signal they
 *     communicate to each other.
-#endif
+#endif // ZH
 *
 * PROGRAMMER
 #ifdef ZH
 *     Denzil E. Long, Jr.
-#endif
+#endif // ZH
 *     $Author: Denzil_l $
 *
 * VERSION INFO
 #ifdef OG
 *     $Modtime: 8/17/01 7:08p $
 *     $Revision: 3 $
-#endif
+#endif // OG
 #ifdef ZH
 *     $Modtime: 11/16/01 11:19a $
 *     $Revision: 4 $
-#endif
+#endif // ZH
 *
 ******************************************************************************/
 

@@ -37,7 +37,7 @@
 #ifdef ZH
 #ifdef _DEBUG
 
-#endif
+#endif // ZH
 class CRC
 {
 public:
@@ -87,7 +87,7 @@ public:
 	    crc += hibit;
     }
     */
-#endif
+#endif // ZH
 
 #ifdef ZH
     // ASM version, verified by comparing resulting data with C++ version data
@@ -124,12 +124,12 @@ public:
   }
 
 private:
-#endif
+#endif // ZH
 	UnsignedInt crc;
 };
 #ifdef ZH
 
 #endif
-#endif
+#endif // ZH
 
 #endif // _CRC_H_

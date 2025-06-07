@@ -128,4 +128,4 @@ lzo1x_999_compress      ( const lzo_byte *src, lzo_uint  src_len,
 vi:ts=4
 */
 
-#endif
+#endif // ZH

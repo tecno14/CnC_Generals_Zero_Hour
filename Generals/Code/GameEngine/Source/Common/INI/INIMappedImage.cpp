@@ -68,14 +68,14 @@ void INI::parseMappedImageDefinition( INI* ini )
 		// image not found, create a new one
 #ifdef OG
 		image = TheMappedImageCollection->newImage();
-#endif
+#endif // OG
 #ifdef ZH
   	image = newInstance(Image);
-#endif
+#endif // ZH
 		image->setName( name );
 #ifdef ZH
 		TheMappedImageCollection->addImage(image);
-#endif
+#endif // ZH
 		DEBUG_ASSERTCRASH( image, ("parseMappedImage: unable to allocate image for '%s'\n",
 															name.str()) );
 

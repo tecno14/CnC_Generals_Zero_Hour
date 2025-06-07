@@ -27,30 +27,30 @@
 #ifdef OG
  *                       Author:: Greg Hjelstrom                                               *
 
-#endif
+#endif // OG
 #ifdef ZH
  *                   Org Author:: Greg Hjelstrom                                               *
  *                                                                                             *
  *                       Author : Kenny Mitchell                                               * 
-#endif
+#endif // ZH
  *                                                                                             *
 #ifdef OG
  *                     $Modtime:: 8/24/01 3:31p                                               $*
-#endif
+#endif // OG
 #ifdef ZH
  *                     $Modtime:: 06/27/02 1:27p                                              $*
-#endif
+#endif // ZH
  *                                                                                             *
 #ifdef OG
  *                    $Revision:: 13                                                          $*
-#endif
+#endif // OG
 #ifdef ZH
  *                    $Revision:: 15                                                          $*
-#endif
+#endif // ZH
  *                                                                                             *
 #ifdef ZH
  * 06/27/02 KM Render to shadow buffer texture support														*
-#endif
+#endif // ZH
  *---------------------------------------------------------------------------------------------*
  * Functions:                                                                                  *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
@@ -75,11 +75,11 @@ RenderInfoClass::RenderInfoClass(CameraClass & cam) :
 	AdditionalMaterialPassCount(0),
 #ifdef ZH
 	RejectedMaterialPasses(0),
-#endif
+#endif // ZH
 	OverrideFlagLevel(0),
 #ifdef ZH
 	Texture_Projector(NULL),
-#endif
+#endif // ZH
 	alphaOverride(1.0f),
 	materialPassAlphaOverride(1.0f),
 	materialPassEmissiveOverride(1.0f)
@@ -98,26 +98,26 @@ void RenderInfoClass::Push_Material_Pass(MaterialPassClass * matpass)
 #ifdef ZH
 	if (AdditionalMaterialPassCount<MAX_ADDITIONAL_MATERIAL_PASSES-1) {
 
-#endif
+#endif // ZH
 	if (matpass) {
 		matpass->Add_Ref();
 	}
 #ifdef OG
 	WWASSERT(AdditionalMaterialPassCount<MAX_ADDITIONAL_MATERIAL_PASSES);
-#endif
+#endif // OG
 	AdditionalMaterialPassArray[AdditionalMaterialPassCount++]=matpass;
 #ifdef ZH
 	} else {
 		RejectedMaterialPasses++;
 	}
-#endif
+#endif // ZH
 }
 
 void RenderInfoClass::Pop_Material_Pass(void)
 {
 #ifdef ZH
 	if (RejectedMaterialPasses == 0) {
-#endif
+#endif // ZH
 	// remove from the end of the array
 	WWASSERT(AdditionalMaterialPassCount>0);
 	AdditionalMaterialPassCount--;
@@ -128,7 +128,7 @@ void RenderInfoClass::Pop_Material_Pass(void)
 		}
 	} else {
 		RejectedMaterialPasses--;
-#endif
+#endif // ZH
 	}
 }
 

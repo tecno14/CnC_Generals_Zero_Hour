@@ -21,18 +21,18 @@
 
 #ifdef ZH
 #include "W3DDevice/GameClient/FlatHeightMap.h"	
-#endif
+#endif // ZH
 #include "W3DDevice/GameClient/HeightMap.h"	
 #ifdef ZH
 #define dont_USE_FLAT_HEIGHT_MAP // Use the origina height map for mission disk. jba. [4/15/2003]
 #ifdef USE_FLAT_HEIGHT_MAP
 class WBHeightMap : public FlatHeightMapRenderObjClass
 #else
-#endif
+#endif // ZH
 class WBHeightMap : public HeightMapRenderObjClass
 #ifdef ZH
 #endif	
-#endif
+#endif // ZH
 {	
 
 public:

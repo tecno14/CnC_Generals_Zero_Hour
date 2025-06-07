@@ -108,4 +108,4 @@ PrototypeClass * ShdMeshLegacyLoaderClass::Load_W3D(ChunkLoadClass & cload)
 	}
 }
 
-#endif
+#endif // ZH

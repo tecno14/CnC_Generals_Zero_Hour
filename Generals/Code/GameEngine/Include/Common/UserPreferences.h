@@ -41,7 +41,7 @@
 #ifdef ZH
 class Money;
 
-#endif
+#endif // ZH
 //-----------------------------------------------------------------------------
 // PUBLIC TYPES ///////////////////////////////////////////////////////////////
 //-----------------------------------------------------------------------------
@@ -92,7 +92,7 @@ public:
 #ifdef ZH
 	Bool getRetaliationModeEnabled();					// convenience function
 	Bool getDoubleClickAttackMoveEnabled(void);	// convenience function
-#endif
+#endif // ZH
 	Real getScrollFactor(void);								// convenience function
 	Bool getSendDelay(void);									// convenience function
 	Int getFirewallBehavior(void);						// convenience function
@@ -122,7 +122,7 @@ public:
 	Bool getExtraAnimationsDisabled(void);
 #ifdef ZH
 	Bool getUseHeatEffects(void);
-#endif
+#endif // ZH
 	Bool getDynamicLODEnabled(void);
 	Bool getFPSLimitEnabled(void);
 	Bool getNoDynamicLODEnabled(void);
@@ -154,7 +154,7 @@ public:
   Money getStartingCash(void) const;
   void setSuperweaponRestricted( Bool superweaponRestricted);
   void setStartingCash( const Money & startingCash );
-#endif
+#endif // ZH
 };
 
 #endif // __USERPREFERENCES_H__

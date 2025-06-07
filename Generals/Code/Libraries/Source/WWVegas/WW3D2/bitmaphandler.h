@@ -28,7 +28,7 @@
 #ifdef ZH
 #include "vector3.h"
 #include "colorspace.h"
-#endif
+#endif // ZH
 
 void Bitmap_Assert(bool condition);
 
@@ -37,7 +37,7 @@ class BitmapHandlerClass
 public:
 #ifdef ZH
 	// Read pixel at given address
-#endif
+#endif // ZH
 	WWINLINE static void Read_B8G8R8A8(
 		unsigned char* argb,
 		const unsigned char* src_ptr,
@@ -47,7 +47,7 @@ public:
 
 #ifdef ZH
 	// Read pixel at given address
-#endif
+#endif // ZH
 	WWINLINE static void Read_B8G8R8A8(
 		unsigned& argb,
 		const unsigned char* src_ptr,
@@ -65,7 +65,7 @@ public:
 		int y,
 		int width,
 		int height,
-#endif
+#endif // ZH
 		const unsigned char* palette,
 		unsigned palette_bpp);
 
@@ -96,7 +96,7 @@ public:
 		const unsigned char* palette,
 		unsigned palette_bpp,
 		const Vector3& hsv_shift);
-#endif
+#endif // ZH
 
 	WWINLINE static unsigned Combine_A8R8G8B8(
 		unsigned bgra1,
@@ -125,11 +125,11 @@ public:
 #ifdef OG
 		unsigned mip_pitch);
 
-#endif
+#endif // OG
 #ifdef ZH
 		unsigned mip_pitch,
 		const Vector3& hsv_shift=Vector3(0.0f,0.0f,0.0f));
-#endif
+#endif // ZH
 
 	static void Copy_Image(
 		unsigned char* dest_surface, 
@@ -147,11 +147,11 @@ public:
 #ifdef OG
 		bool generate_mip_level);
 
-#endif
+#endif // OG
 #ifdef ZH
 		bool generate_mip_level,
 		const Vector3& hsv_shift=Vector3(0.0f,0.0f,0.0f));
-#endif
+#endif // ZH
 
 };
 
@@ -180,10 +180,10 @@ WWINLINE void BitmapHandlerClass::Read_B8G8R8A8(
 		*argb++=src_ptr[2];
 #ifdef OG
 		*argb++=0;
-#endif
+#endif // OG
 #ifdef ZH
 		*argb++=0xff;
-#endif
+#endif // ZH
 		break;
 	case WW3D_FORMAT_A4R4G4B4:
 		{
@@ -211,10 +211,10 @@ WWINLINE void BitmapHandlerClass::Read_B8G8R8A8(
 			tmp=*(unsigned short*)src_ptr;
 #ifdef OG
 			argb[3]=0;
-#endif
+#endif // OG
 #ifdef ZH
 			argb[3]=0xff;
-#endif
+#endif // ZH
 			argb[2]=(tmp>>8)&0xf8;
 			argb[1]=(tmp>>3)&0xfc;
 			argb[0]=(tmp<<3)&0xf8;
@@ -228,7 +228,7 @@ WWINLINE void BitmapHandlerClass::Read_B8G8R8A8(
 			argb[2]=tmp&0xe0;
 			argb[1]=(tmp<<3)&0xe0;
 			argb[0]=(tmp<<6)&0xc0;
-#endif
+#endif // ZH
 		}
 		break;
 	case WW3D_FORMAT_L8:
@@ -239,10 +239,10 @@ WWINLINE void BitmapHandlerClass::Read_B8G8R8A8(
 			*argb++=tmp;
 #ifdef OG
 			*argb++=0x0;
-#endif
+#endif // OG
 #ifdef ZH
 			*argb++=0xff;
-#endif
+#endif // ZH
 		}
 		break;
 	case WW3D_FORMAT_A8:
@@ -269,10 +269,10 @@ WWINLINE void BitmapHandlerClass::Read_B8G8R8A8(
 				*argb++=palette[palette_bpp*index+0];
 #ifdef OG
 				*argb++=0x0;
-#endif
+#endif // OG
 #ifdef ZH
 				*argb++=0xff;
-#endif
+#endif // ZH
 				break;
 			case 2:
 			case 1:
@@ -326,7 +326,7 @@ WWINLINE void BitmapHandlerClass::Read_B8G8R8A8(
 		src_format,
 		palette,
 		palette_bpp);
-#endif
+#endif // ZH
 }
 
 // ----------------------------------------------------------------------------
@@ -387,7 +387,7 @@ WWINLINE void BitmapHandlerClass::Write_B8G8R8A8(
 			tmp=((argb[2])&0xe0);
 			tmp|=((argb[1])&0xe0)>>3;
 			tmp|=((argb[0])&0xc0)>>6;
-#endif
+#endif // ZH
 			*(unsigned short*)dest_ptr=tmp;
 		}
 		break;
@@ -473,7 +473,7 @@ WWINLINE void BitmapHandlerClass::Copy_Pixel(
 			break;
 #ifdef ZH
 		case WW3D_FORMAT_R3G3B2:
-#endif
+#endif // ZH
 		case WW3D_FORMAT_L8:
 		case WW3D_FORMAT_A8: *dest_ptr++=*src_ptr++;
 			break;
@@ -508,7 +508,7 @@ WWINLINE void BitmapHandlerClass::Copy_Pixel(
 	Read_B8G8R8A8(b8g8r8a8,src_ptr,src_format,palette,palette_bpp);
 	Recolor(b8g8r8a8,hsv_shift);
 	Write_B8G8R8A8(dest_ptr,dest_format,b8g8r8a8);
-#endif
+#endif // ZH
 }
 
 WWINLINE unsigned BitmapHandlerClass::Combine_A8R8G8B8(

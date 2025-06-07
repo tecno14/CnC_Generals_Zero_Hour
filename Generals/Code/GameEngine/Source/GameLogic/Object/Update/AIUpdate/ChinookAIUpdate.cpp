@@ -40,12 +40,12 @@
 #ifdef ZH
 #include "Common/Player.h"
 #include "Common/PlayerList.h"
-#endif
+#endif // ZH
 #include "GameClient/Drawable.h"
 #include "GameClient/GameClient.h"
 #ifdef ZH
 #include "GameClient/ParticleSys.h"
-#endif
+#endif // ZH
 #include "GameLogic/AIPathfind.h"
 #include "GameLogic/Locomotor.h"
 #include "GameLogic/Module/ContainModule.h"
@@ -86,11 +86,11 @@ enum ChinookAIStateType
 #ifdef OG
 	DO_COMBAT_DROP
 
-#endif
+#endif // OG
 #ifdef ZH
 	DO_COMBAT_DROP,
 	MOVE_TO_AND_EVAC_AND_EXIT_INIT
-#endif
+#endif // ZH
 };
 
 
@@ -170,10 +170,10 @@ public:
 		Object *owner = getMachineOwner();
 #ifdef OG
 		AIUpdateInterface *ai = owner->getAIUpdateInterface();
-#endif
+#endif // OG
 #ifdef ZH
 		ChinookAIUpdate* ai = (ChinookAIUpdate*)owner->getAIUpdateInterface();
-#endif
+#endif // ZH
 
 #ifdef OG
 		// just keep moving straight ahead till we exit the map.
@@ -189,12 +189,12 @@ public:
 		exitCoord.y += dir->y * HUGE_DIST;
 
 		ai->aiMoveToPosition( &exitCoord, CMD_FROM_AI );
-#endif
+#endif // OG
 #ifdef ZH
 		owner->setStatus( MAKE_OBJECT_STATUS_MASK( OBJECT_STATUS_RIDER8 ) );
 		ai->aiMoveToPosition( ai->getOriginalPosition(), CMD_FROM_AI );
 
-#endif
+#endif // ZH
 		ai->getCurLocomotor()->setAllowInvalidPosition(true);
 
 		return STATE_CONTINUE;
@@ -208,10 +208,10 @@ public:
 		TheTerrainLogic->getExtentIncludingBorder( &mapRegion );
 #ifdef OG
 		if (!mapRegion.isInRegionNoZ( owner->getPosition() ))
-#endif
+#endif // OG
 #ifdef ZH
 		if( !mapRegion.isInRegionNoZ( owner->getPosition() ) )
-#endif
+#endif // ZH
 		{
 			TheGameLogic->destroyObject(owner);
 			return STATE_SUCCESS;
@@ -225,7 +225,7 @@ public:
 	{
 		Object *owner = getMachineOwner();
 		owner->clearStatus( MAKE_OBJECT_STATUS_MASK( OBJECT_STATUS_RIDER8 ) );
-#endif
+#endif // ZH
 	}
 };
 EMPTY_DTOR(ChinookHeadOffMapState)
@@ -823,7 +823,7 @@ protected:
 	{
 		// empty
 	}
-#endif
+#endif // ZH
 
 #ifdef ZH
 	virtual void xfer( Xfer *xfer )
@@ -833,7 +833,7 @@ protected:
 		XferVersion version = currentVersion;
 		xfer->xferVersion( &version, currentVersion );
 	}
-#endif
+#endif // ZH
 
 #ifdef ZH
 	virtual void loadPostProcess()
@@ -863,7 +863,7 @@ public:
 };
 EMPTY_DTOR(ChinookRecordCreationState)
 
-#endif
+#endif // ZH
 //-------------------------------------------------------------------------------------------------
 //-------------------------------------------------------------------------------------------------
 //-------------------------------------------------------------------------------------------------
@@ -894,7 +894,7 @@ ChinookAIStateMachine::ChinookAIStateMachine(Object *owner, AsciiString name) : 
 
 #ifdef ZH
 	defineState( MOVE_TO_AND_EVAC_AND_EXIT_INIT, newInstance(ChinookRecordCreationState)( this ), MOVE_TO_AND_EVAC_AND_EXIT, AI_IDLE );
-#endif
+#endif // ZH
 	defineState( MOVE_TO_AND_EVAC_AND_EXIT, newInstance(AIMoveToState)( this ), LAND_AND_EVAC_AND_EXIT, AI_IDLE );
 	defineState( LAND_AND_EVAC_AND_EXIT, newInstance(ChinookTakeoffOrLandingState)( this, true ), EVAC_AND_EXIT, AI_IDLE );
 	defineState( EVAC_AND_EXIT, newInstance(ChinookEvacuateState)( this ), TAKEOFF_AND_EXIT, AI_IDLE );
@@ -933,7 +933,7 @@ ChinookAIUpdateModuleData::ChinookAIUpdateModuleData()
 #ifdef ZH
   m_rotorWashParticleSystem.clear();
 	m_upgradedSupplyBoost = 0;
-#endif
+#endif // ZH
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -961,7 +961,7 @@ ChinookAIUpdateModuleData::ChinookAIUpdateModuleData()
 		{ "RotorWashParticleSystem", INI::parseAsciiString,	NULL, offsetof( ChinookAIUpdateModuleData, m_rotorWashParticleSystem ) },
 		{ "UpgradedSupplyBoost", INI::parseInt, NULL, offsetof( ChinookAIUpdateModuleData, m_upgradedSupplyBoost) },
 
-#endif
+#endif // ZH
 		{ 0, 0, 0, 0 }
 	};
   p.add(dataFieldParse);
@@ -985,7 +985,7 @@ ChinookAIUpdate::ChinookAIUpdate( Thing *thing, const ModuleData* moduleData ) :
 	m_airfieldForHealing = INVALID_ID;
 #ifdef ZH
 	m_originalPos.zero();
-#endif
+#endif // ZH
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -1000,10 +1000,10 @@ static ParkingPlaceBehaviorInterface* getPP(ObjectID id)
 	Object* airfield = TheGameLogic->findObjectByID( id );
 #ifdef OG
 	if (airfield == NULL || airfield->isEffectivelyDead() || !airfield->isKindOf(KINDOF_AIRFIELD))
-#endif
+#endif // OG
 #ifdef ZH
 	if (airfield == NULL || airfield->isEffectivelyDead() || !airfield->isKindOf(KINDOF_FS_AIRFIELD))
-#endif
+#endif // ZH
 		return NULL;
 
 	ParkingPlaceBehaviorInterface* pp = NULL;
@@ -1067,10 +1067,10 @@ Bool ChinookAIUpdate::isAvailableForSupplying() const
 	ContainModuleInterface* contain = getObject()->getContain();
 #ifdef OG
 	if( !contain || contain->hasObjectsWantingToEnterOrExit() || contain->getContainCount())
-#endif
+#endif // OG
 #ifdef ZH
 	if( !contain || contain->hasObjectsWantingToEnterOrExit() || contain->getContainCount() || contain->isSpecialOverlordStyleContainer())
-#endif
+#endif // ZH
 		return false;
 
 	return true;
@@ -1087,7 +1087,7 @@ Bool ChinookAIUpdate::isAllowedToAdjustDestination() const
 	{
 		return FALSE;
 	}
-#endif
+#endif // ZH
 	
 	return SupplyTruckAIUpdate::isAllowedToAdjustDestination(); 
 }
@@ -1152,13 +1152,13 @@ UpdateSleepTime ChinookAIUpdate::update()
 #ifdef OG
 	if (SupplyTruckAIUpdate::isIdle())
 	{
-#endif
+#endif // OG
 		ContainModuleInterface* contain = getObject()->getContain();
 		if( contain )
 #ifdef ZH
 	{
 	  if (SupplyTruckAIUpdate::isIdle())
-#endif
+#endif // ZH
 		{
 			Bool waitingToEnterOrExit = contain->hasObjectsWantingToEnterOrExit();
 			if (m_hasPendingCommand)
@@ -1232,7 +1232,7 @@ UpdateSleepTime ChinookAIUpdate::update()
 		      if( system )
 		      {
 			      system->setPosition( &pos );
-#endif
+#endif // ZH
 			}
 		}
 	}
@@ -1241,7 +1241,7 @@ UpdateSleepTime ChinookAIUpdate::update()
     }
   }
 
-#endif
+#endif // ZH
 	return SupplyTruckAIUpdate::update();
 }
 
@@ -1366,10 +1366,10 @@ void ChinookAIUpdate::aiDoCommand(const AICommandParms* parms)
 				setMyState(
 #ifdef OG
 					(parms->m_cmd == AICMD_MOVE_TO_POSITION_AND_EVACUATE) ? MOVE_TO_AND_EVAC : MOVE_TO_AND_EVAC_AND_EXIT, 
-#endif
+#endif // OG
 #ifdef ZH
 					(parms->m_cmd == AICMD_MOVE_TO_POSITION_AND_EVACUATE) ? MOVE_TO_AND_EVAC : MOVE_TO_AND_EVAC_AND_EXIT_INIT, 
-#endif
+#endif // ZH
 					NULL, &parms->m_pos, CMD_FROM_AI);
 				passItThru = false;
 			}
@@ -1432,15 +1432,15 @@ void ChinookAIUpdate::xfer( Xfer *xfer )
   // version
 #ifdef OG
   XferVersion currentVersion = 1;
-#endif
+#endif // OG
 #ifdef ZH
   XferVersion currentVersion = 2;
-#endif
+#endif // ZH
   XferVersion version = currentVersion;
   xfer->xferVersion( &version, currentVersion );
 #ifdef ZH
 	// extend base class
-#endif
+#endif // ZH
 	SupplyTruckAIUpdate::xfer(xfer);
 
 	xfer->xferBool(&m_hasPendingCommand);
@@ -1452,7 +1452,7 @@ void ChinookAIUpdate::xfer( Xfer *xfer )
 #ifdef OG
  // extend base class
 
-#endif
+#endif // OG
 #ifdef ZH
 
 	if( version >= 2 )
@@ -1460,7 +1460,7 @@ void ChinookAIUpdate::xfer( Xfer *xfer )
 		xfer->xferCoord3D( &m_originalPos );
 	}
 
-#endif
+#endif // ZH
 }  // end xfer
 
 // ------------------------------------------------------------------------------------------------
@@ -1746,4 +1746,4 @@ Int ChinookAIUpdate::getUpgradedSupplyBoost() const
 	else
 		return 0;
 }
-#endif
+#endif // ZH

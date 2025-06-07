@@ -34,7 +34,7 @@
 #ifdef OG
 #include "Common/GlobalData.h"
 #include "Common/LocalFileSystem.h"
-#endif
+#endif // OG
 #include "GameClient/GameClient.h"
 #include "Win32Device/GameClient/Win32Mouse.h"
 #include "WinMain.h"
@@ -401,7 +401,7 @@ void Win32Mouse::initCursorResources(void)
 						fname.format("%sdata\\cursors\\%s%d.ANI", TheGlobalData->m_modDir.str(), m_cursorInfo[cursor].textureName.str(), direction);
 					else
 						fname.format("%sdata\\cursors\\%s.ANI", TheGlobalData->m_modDir.str(), m_cursorInfo[cursor].textureName.str());
-#endif
+#endif // OG
 
 #ifdef OG
 					if (TheLocalFileSystem->doesFileExist(fname.str()))
@@ -412,7 +412,7 @@ void Win32Mouse::initCursorResources(void)
 				}
 
 				if (!loaded)
-#endif
+#endif // OG
 					cursorResources[cursor][direction]=LoadCursorFromFile(resourcePath);
 				DEBUG_ASSERTCRASH(cursorResources[cursor][direction], ("MissingCursor %s\n",resourcePath));
 			}

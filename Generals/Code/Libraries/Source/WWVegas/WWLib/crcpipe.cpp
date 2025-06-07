@@ -89,4 +89,4 @@ long CRCPipe::Result(void) const
 }
 
 
-#endif
+#endif // ZH

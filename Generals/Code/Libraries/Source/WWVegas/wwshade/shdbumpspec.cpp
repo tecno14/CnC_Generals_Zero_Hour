@@ -236,4 +236,4 @@ ShdInterfaceClass* ShdBumpSpecDefClass::Create() const
 }
 
 
-#endif
+#endif // ZH

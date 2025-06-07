@@ -92,10 +92,10 @@ void FrameDataManager::addNetCommandMsg(NetCommandMsg *msg) {
 	UnsignedInt frameindex = frame % FRAME_DATA_LENGTH;
 #ifdef OG
 	DEBUG_LOG_LEVEL(DEBUG_LEVEL_NET, ("FrameDataManager::addNetCommandMsg - about to add a command of type %s for frame %d, frame index %d\n", GetAsciiNetCommandType(msg->getNetCommandType()).str(), frame, frameindex));
-#endif
+#endif // OG
 #ifdef ZH
 	DEBUG_LOG(("FrameDataManager::addNetCommandMsg - about to add a command of type %s for frame %d, frame index %d\n", GetAsciiNetCommandType(msg->getNetCommandType()).str(), frame, frameindex));
-#endif
+#endif // ZH
 	m_frameData[frameindex].addCommand(msg);
 
 	if (m_isLocal) {

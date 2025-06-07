@@ -36,7 +36,7 @@ public:
 	virtual LRESULT WindowProc( UINT message, WPARAM wParam, LPARAM lParam );
 };
 
-#endif
+#endif // ZH
 /////////////////////////////////////////////////////////////////////////////
 // EditCondition dialog
 
@@ -76,7 +76,7 @@ protected:
 	Int				m_curEditParameter;
 #ifdef ZH
 	CTreeCtrl	m_conditionTreeView;
-#endif
+#endif // ZH
 
 protected:
 

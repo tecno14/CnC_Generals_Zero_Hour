@@ -26,24 +26,24 @@
  *                                                                                             *
 #ifdef OG
  *                      $Author:: Greg_h                                                      $*
-#endif
+#endif // OG
 #ifdef ZH
  *                      $Author:: Jani_p                                                      $*
-#endif
+#endif // ZH
  *                                                                                             *
 #ifdef OG
  *                     $Modtime:: 3/19/01 11:43a                                              $*
-#endif
+#endif // OG
 #ifdef ZH
  *                     $Modtime:: 12/04/01 5:20p                                              $*
-#endif
+#endif // ZH
  *                                                                                             *
 #ifdef OG
  *                    $Revision:: 3                                                           $*
-#endif
+#endif // OG
 #ifdef ZH
  *                    $Revision:: 6                                                           $*
-#endif
+#endif // ZH
  *                                                                                             *
  *---------------------------------------------------------------------------------------------*
  * Functions:                                                                                  *
@@ -62,12 +62,12 @@
 #include <stdlib.h>
 #include <string.h>
 
-#endif
+#endif // OG
 #ifdef ZH
 #include "wwstring.h"
 #include <d3d8types.h>
 #include <d3d8caps.h>
-#endif
+#endif // ZH
 
 class ResolutionDescClass
 {
@@ -107,7 +107,7 @@ public:
 		if (HardwareName) { free(HardwareName); }
 		if (HardwareVendor) { free(HardwareVendor); }
 		if (HardwareChipset) { free(HardwareChipset); }
-#endif
+#endif // OG
 	}
 
 	RenderDeviceDescClass & operator = (const RenderDeviceDescClass & src) 
@@ -124,7 +124,7 @@ public:
 #ifdef ZH
 		Caps=src.Caps;
 		AdapterIdentifier=src.AdapterIdentifier;
-#endif
+#endif // ZH
 		ResArray = src.ResArray;
 		return *this;
 	}	
@@ -148,7 +148,7 @@ public:
 #ifdef ZH
 	const D3DCAPS8& 	Get_Caps() const { return Caps; }
 	const D3DADAPTER_IDENTIFIER8& Get_Adapter_Identifier() const { return AdapterIdentifier; }
-#endif
+#endif // ZH
 
 private:
 
@@ -162,7 +162,7 @@ private:
 	void set_hardware_name(const char * name)		{ if (HardwareName) { free(HardwareName); }			HardwareName = NULL;			if (name) HardwareName = strdup(name); }
 	void set_hardware_vendor(const char * name)	{ if (HardwareVendor) { free(HardwareVendor); }		HardwareVendor = NULL;		if (name) HardwareVendor = strdup(name); }
 	void set_hardware_chipset(const char * name)	{ if (HardwareChipset) { free(HardwareChipset); }	HardwareChipset = NULL;		if (name) HardwareChipset = strdup(name); }
-#endif
+#endif // OG
 #ifdef ZH
 	void set_device_name(const char * name)		{ DeviceName=name; }
 	void set_device_vendor(const char * name)		{ DeviceVendor=name; }
@@ -173,7 +173,7 @@ private:
 	void set_hardware_name(const char * name)		{ HardwareName=name; }
 	void set_hardware_vendor(const char * name)	{ HardwareVendor=name; }
 	void set_hardware_chipset(const char * name)	{ HardwareChipset=name; }
-#endif
+#endif // ZH
 
 	void reset_resolution_list(void)					{ ResArray.Delete_All(); }
 	void add_resolution(int w,int h,int bits);
@@ -183,7 +183,7 @@ private:
 	char *				DeviceVendor;
 	char *				DevicePlatform;
 
-#endif
+#endif // OG
 #ifdef ZH
 	StringClass			DeviceName;
 	StringClass			DeviceVendor;
@@ -192,29 +192,29 @@ private:
 	StringClass			DriverName;
 	StringClass			DriverVendor;
 	StringClass			DriverVersion;
-#endif
+#endif // ZH
 
 #ifdef OG
 	char *				DriverName;
 	char *				DriverVendor;
 	char *				DriverVersion;
-#endif
+#endif // OG
 #ifdef ZH
 	StringClass			HardwareName;
 	StringClass			HardwareVendor;
 	StringClass			HardwareChipset;
-#endif
+#endif // ZH
 
 #ifdef OG
 	char *				HardwareName;
 	char *				HardwareVendor;
 	char *				HardwareChipset;
-#endif
+#endif // OG
 #ifdef ZH
 	D3DCAPS8				Caps;
 	D3DADAPTER_IDENTIFIER8 AdapterIdentifier;
 
-#endif
+#endif // ZH
 	
 	DynamicVectorClass<ResolutionDescClass>	ResArray;
 

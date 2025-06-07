@@ -363,4 +363,4 @@ void Shd6GlossMaskClass::Copy_Vertex_Stream
 }
 
 
-#endif
+#endif // ZH

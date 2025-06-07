@@ -125,11 +125,11 @@ Bool W3DVideoBuffer::allocate( UnsignedInt width, UnsignedInt height )
 #ifdef OG
 	TextureLoader::Validate_Texture_Size( m_textureWidth, m_textureHeight);
 
-#endif
+#endif // OG
 #ifdef ZH
 	unsigned int temp_depth=1;
 	TextureLoader::Validate_Texture_Size( m_textureWidth, m_textureHeight, temp_depth);
-#endif
+#endif // ZH
 
 	WW3DFormat w3dFormat = TypeToW3DFormat(  m_format );
  
@@ -140,10 +140,10 @@ Bool W3DVideoBuffer::allocate( UnsignedInt width, UnsignedInt height )
 
 #ifdef OG
 	m_texture  = MSGNEW("TextureClass") TextureClass ( m_textureWidth, m_textureHeight, w3dFormat, TextureClass::MIP_LEVELS_1 );
-#endif
+#endif // OG
 #ifdef ZH
 	m_texture  = MSGNEW("TextureClass") TextureClass ( m_textureWidth, m_textureHeight, w3dFormat, MIP_LEVELS_1 );
-#endif
+#endif // ZH
 
 	if ( m_texture == NULL )
 	{

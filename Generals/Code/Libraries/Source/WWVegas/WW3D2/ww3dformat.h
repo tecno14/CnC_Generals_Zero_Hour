@@ -28,28 +28,28 @@
  *                                                                                             *
 #ifdef OG
  *                      $Author:: Jani_p                                                      $*
-#endif
+#endif // OG
 #ifdef ZH
  *                       Author : Kenny Mitchell                                               * 
-#endif
+#endif // ZH
  *                                                                                             *
 #ifdef OG
  *                     $Modtime:: 8/20/01 9:41a                                               $*
-#endif
+#endif // OG
 #ifdef ZH
  *                     $Modtime:: 06/27/02 1:27p                                              $*
-#endif
+#endif // ZH
  *                                                                                             *
 #ifdef OG
  *                    $Revision:: 9                                                           $*
-#endif
+#endif // OG
 #ifdef ZH
  *                    $Revision:: 12                                                          $*
-#endif
+#endif // ZH
  *                                                                                             *
 #ifdef ZH
  * 06/27/02 KM Z Format support																						*
-#endif
+#endif // ZH
  *---------------------------------------------------------------------------------------------*
  * Functions:                                                                                  *
  * Vector4_to_Color - converts a vector4 to the format in format                               *
@@ -67,7 +67,7 @@
 #include "always.h"
 #include "wwstring.h"
 
-#endif
+#endif // ZH
 class Vector4;
 class Targa;
 
@@ -141,7 +141,7 @@ enum WW3DZFormat
 	WW3D_ZFORMAT_COUNT
 };
 
-#endif
+#endif // ZH
 // Utility function - not much used otherwise it would use an array.
 // NOTE: when adding values to WW3DFormat add here also (if they have alpha).
 inline bool Has_Alpha(WW3DFormat format) {
@@ -214,7 +214,7 @@ void Get_WW3D_Format(WW3DFormat& dest_format,WW3DFormat& src_format,unsigned& sr
 // The same as above, but doesn't validate the device - only checks the source format.
 void Get_WW3D_Format(WW3DFormat& src_format,unsigned& src_bpp,const Targa& targa);
 
-#endif
+#endif // ZH
 // Get valid texture format (on current hardware) that is closest to the given format (for instance, 32 bit ARGB8888 would
 // return 16 bit ARGB4444 if the device doesn't support 32 bit textures).
 // Pass false to the second parameter if you don't wish to consider compressed textures on hardware that supports them.
@@ -229,6 +229,6 @@ void Get_WW3D_ZFormat_Name(WW3DZFormat format, StringClass& name);
 
 unsigned Get_Num_Depth_Bits(WW3DZFormat zformat);
 unsigned Get_Num_Stencil_Bits(WW3DZFormat zformat);
-#endif
+#endif // ZH
 
 #endif

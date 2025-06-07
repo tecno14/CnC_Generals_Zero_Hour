@@ -638,7 +638,7 @@ void Mouse::reset( void )
 	// reset the text of the cursor text
 #ifdef ZH
   if ( m_cursorTextDisplayString )
-#endif
+#endif // ZH
 	m_cursorTextDisplayString->reset();
 
 }  // end reset
@@ -687,7 +687,7 @@ void Mouse::createStreamMessages( void )
 		//No delay while scriptdebugging!
 		delay = 0;
 	}
-#endif
+#endif // ZH
   
 	if( now - m_stillTime >= delay )
 	{

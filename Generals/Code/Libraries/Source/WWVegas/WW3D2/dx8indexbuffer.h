@@ -83,10 +83,10 @@ public:
 	public:
 #ifdef OG
 		WriteLockClass(IndexBufferClass* index_buffer);
-#endif
+#endif // OG
 #ifdef ZH
 		WriteLockClass(IndexBufferClass* index_buffer, int flags=0);
-#endif
+#endif // ZH
 		~WriteLockClass();
 
 		unsigned short* Get_Index_Array() { return indices; }
@@ -211,7 +211,7 @@ protected:
 #ifdef ZH
 
 extern int IndexBufferExceptionFunc(void);
-#endif
+#endif // ZH
 
 #endif //DX8INDEXBUFFER_H
 

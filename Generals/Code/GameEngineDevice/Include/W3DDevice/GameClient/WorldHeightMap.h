@@ -94,13 +94,13 @@ class AlphaEdgeTextureClass;
 #ifdef OG
 class WorldHeightMap : public RefCountClass
 
-#endif
+#endif // OG
 #ifdef ZH
 #define NUM_ALPHA_TILES 12
 
 class WorldHeightMap : public RefCountClass,
                        public WorldHeightMapInterfaceClass
-#endif
+#endif // ZH
 {
 	friend class TerrainTextureClass;
 	friend class AlphaTerrainTextureClass;
@@ -133,7 +133,7 @@ protected:
   UnsignedInt   m_seismicUpdateWidth; ///< width of the array holding SeismicUpdateFlags
   Real         *m_seismicZVelocities; ///< how fast is the dirt rising/falling at this location
 
-#endif
+#endif // ZH
 	UnsignedByte *m_cellFlipState;	///< array of bits to indicate the flip state of each cell.
 	Int m_flipStateWidth;			///< with of the array holding cellFlipState
 	UnsignedByte *m_cellCliffState;	///< array of bits to indicate the cliff state of each cell.
@@ -194,14 +194,14 @@ protected:
 	/// Tiles that hold the alpha channel info.
 	static TileData *m_alphaTiles[NUM_ALPHA_TILES];
 
-#endif
+#endif // ZH
 protected:
 	TileData *getSourceTile(UnsignedInt ndx) { if (ndx<NUM_SOURCE_TILES) return(m_sourceTiles[ndx]); return(NULL); };
 	TileData *getEdgeTile(UnsignedInt ndx) { if (ndx<NUM_SOURCE_TILES) return(m_edgeTiles[ndx]); return(NULL); };
 #ifdef OG
 	static Bool readTiles(InputStream *pStrm, TileData **tiles, Int numRows);
 	static Int countTiles(InputStream *pStrm);
-#endif
+#endif // OG
 	/// UV mapping data for a cell to map into the terrain texture.
 	void getUVForNdx(Int ndx, float *minU, float *minV, float *maxU, float*maxV, Bool fullTile);
 	Bool getUVForTileIndex(Int ndx, Short tileNdx, float U[4], float V[4], Bool fullTile);
@@ -254,11 +254,11 @@ public:  // height map info.
 #ifdef OG
 	inline Int getBorderSize(void) {return m_borderSize;}
 
-#endif
+#endif // OG
 #ifdef ZH
 	virtual Int getBorderSize(void) {return m_borderSize;}
   inline Int getBorderSizeInline(void) const { return m_borderSize; }
-#endif
+#endif // ZH
 	/// Get height with the offset that HeightMapRenderObjClass uses built in.
 	inline UnsignedByte getDisplayHeight(Int x, Int y) { return m_data[x+m_drawOriginX+m_width*(y+m_drawOriginY)];}
 
@@ -285,7 +285,7 @@ public:  // height map info.
 public:  // tile and texture info.	
 #ifdef ZH
 	void setTextureLOD(Int lod);	///< set maximum lod level sent to the hardware.
-#endif
+#endif // ZH
 	TextureClass *getTerrainTexture(void);  //< generates if needed and returns the terrain texture
 	TextureClass *getAlphaTerrainTexture(void); //< generates if needed and returns alpha terrain texture
 	TextureClass *getEdgeTerrainTexture(void); //< generates if needed and returns blend edge texture
@@ -301,7 +301,7 @@ public:  // tile and texture info.
 
 	void setFlipState(Int xIndex, Int yIndex, Bool value);
 	void clearFlipStates(void);
-#endif
+#endif // ZH
 	Bool getCliffState(Int xIndex, Int yIndex) const;
 	Bool getExtraAlphaUVData(Int xIndex, Int yIndex, float U[4], float V[4], UnsignedByte alpha[4], Bool *flip, Bool *cliff);
 	/// UV mapping data for a cell to map into the alpha terrain texture.
@@ -319,7 +319,7 @@ public:  // tile and texture info.
   virtual void setSeismicZVelocity(Int xIndex, Int yIndex, Real value); 
   void fillSeismicZVelocities( Real value );
   virtual Real getBilinearSampleSeismicZVelocity( Int x, Int y);
-#endif
+#endif // ZH
 
 #ifdef ZH
 
@@ -332,7 +332,7 @@ public:  // Flat tile texture info.
 	Bool getRawTileData(Short tileNdx, Int width, UnsignedByte *buffer, Int bufLen);
 	UnsignedByte *getRGBAlphaDataForWidth(Int width, TBlendTileInfo *pBlend);
 
-#endif
+#endif // ZH
 public:  // modify height value
 	void setRawHeight(Int xIndex, Int yIndex, UnsignedByte height) { 
 		Int ndx = (yIndex*m_width)+xIndex;
@@ -342,7 +342,7 @@ public:  // modify height value
 public: // Read tile utilities. jba [7/9/2003]
 	static Bool readTiles(InputStream *pStrm, TileData **tiles, Int numRows);
 	static Int countTiles(InputStream *pStrm, Bool *halfTile=NULL);
-#endif
+#endif // ZH
 
 protected:
 	void setCliffState(Int xIndex, Int yIndex, Bool state);

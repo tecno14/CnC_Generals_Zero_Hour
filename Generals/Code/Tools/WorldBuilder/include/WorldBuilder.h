@@ -58,7 +58,7 @@
 #include "ScorchTool.h"
 #ifdef ZH
 #include "RulerTool.h"
-#endif
+#endif // ZH
 #include "Common/Debug.h"
 
 /////////////////////////////////////////////////////////////////////////////
@@ -103,10 +103,10 @@ protected:
 
 #ifdef OG
 	enum {NUM_VIEW_TOOLS=24};
-#endif
+#endif // OG
 #ifdef ZH
 	enum {NUM_VIEW_TOOLS=25};
-#endif
+#endif // ZH
 
 	Tool							*m_tools[NUM_VIEW_TOOLS]; ///< array of tool pointers.
 	Tool							*m_curTool;   ///< Currently active tool.
@@ -137,7 +137,7 @@ protected:
 	BorderTool				m_borderTool;				///< Border tool.
 #ifdef ZH
 	RulerTool					m_rulerTool;				///< Ruler tool.
-#endif
+#endif // ZH
 
 	Int								m_lockCurTool;
 

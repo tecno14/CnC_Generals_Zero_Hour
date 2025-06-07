@@ -708,4 +708,4 @@ void ShdDX8RendererNodeClass::Apply_Shared_Shader_Settings(ShdRendererNodeClass*
 }
 
 
-#endif
+#endif // ZH

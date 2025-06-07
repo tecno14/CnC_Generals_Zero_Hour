@@ -669,7 +669,7 @@ Bool GameWindow::winGetEnabled( void )
 
 }  // end winGetEnabled
 
-#endif
+#endif // ZH
 // GameWindow::winHide ========================================================
 /** Hide or show a window based on the hide parameter.
 	* A hidden window can't be seen and accepts no input. */

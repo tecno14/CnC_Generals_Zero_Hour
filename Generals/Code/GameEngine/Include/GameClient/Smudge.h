@@ -100,4 +100,4 @@ protected:
 extern SmudgeManager *TheSmudgeManager;	///<singleton
 
 #endif	//_SMUDGE_H_
-#endif
+#endif // ZH

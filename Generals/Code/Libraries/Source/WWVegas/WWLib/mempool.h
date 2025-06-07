@@ -28,17 +28,17 @@
  *                                                                                             *
 #ifdef OG
  *                     $Modtime:: 6/06/01 11:04a                                              $*
-#endif
+#endif // OG
 #ifdef ZH
  *                     $Modtime:: 9/26/01 3:11p                                               $*
-#endif
+#endif // ZH
  *                                                                                             *
 #ifdef OG
  *                    $Revision:: 7                                                           $*
-#endif
+#endif // OG
 #ifdef ZH
  *                    $Revision:: 9                                                           $*
-#endif
+#endif // ZH
  *                                                                                             *
  *---------------------------------------------------------------------------------------------*
  * Functions:                                                                                  *
@@ -65,7 +65,7 @@
 #ifdef ZH
 #include "mutex.h"
 #include <new.h>
-#endif
+#endif // ZH
 #include <stdlib.h>
 #include <stddef.h>
 
@@ -108,7 +108,7 @@ protected:
 	int		TotalObjectCount;
 #ifdef ZH
 	FastCriticalSectionClass ObjectPoolCS;
-#endif
+#endif // ZH
 
 };
 
@@ -174,10 +174,10 @@ private:
 #define DEFINE_AUTO_POOL(T,BLOCKSIZE) \
 #ifdef OG
 ObjectPoolClass<T,BLOCKSIZE> AutoPoolClass<T,BLOCKSIZE>::Allocator
-#endif
+#endif // OG
 #ifdef ZH
 ObjectPoolClass<T,BLOCKSIZE> AutoPoolClass<T,BLOCKSIZE>::Allocator;
-#endif
+#endif // ZH
 
 
 /***********************************************************************************************
@@ -298,7 +298,7 @@ T * ObjectPoolClass<T,BLOCK_SIZE>::Allocate_Object_Memory(void)
 #ifdef ZH
 	FastCriticalSectionClass::LockClass lock(ObjectPoolCS);
 
-#endif
+#endif // ZH
 	if ( FreeListHead == 0 ) {  
 
 		// No free objects, allocate another block
@@ -343,7 +343,7 @@ void ObjectPoolClass<T,BLOCK_SIZE>::Free_Object_Memory(T * obj)
 #ifdef ZH
 	FastCriticalSectionClass::LockClass lock(ObjectPoolCS);
 
-#endif
+#endif // ZH
 	WWASSERT(obj != NULL);
 	*(T**)(obj) = FreeListHead;		// Link to the Head
 	FreeListHead = obj;					// Set the Head

@@ -143,7 +143,7 @@ void W3DCustomEdging::loadEdgingsInVertexAndIndexBuffers(WorldHeightMap *pMap, I
 	Int column;
 #ifdef ZH
 	try {
-#endif
+#endif // ZH
 	for (row=minY; row<maxY-1; row++) {
 		for (column = minX; column < maxX-1; column++) {
 			Int cellNdx = column+row*pMap->getXExtent();
@@ -264,13 +264,13 @@ void W3DCustomEdging::loadEdgingsInVertexAndIndexBuffers(WorldHeightMap *pMap, I
 			m_curNumEdgingIndices+=6;
 #ifdef ZH
 		}
-#endif
+#endif // ZH
 		}
 #ifdef ZH
 	IndexBufferExceptionFunc();
 	} catch(...) {
 		IndexBufferExceptionFunc();
-#endif
+#endif // ZH
 	}
 	m_anythingChanged = false;
 }

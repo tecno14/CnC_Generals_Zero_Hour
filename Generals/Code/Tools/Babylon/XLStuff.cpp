@@ -23,10 +23,10 @@
 #include "stdAfx.h"
 #ifdef OG
 #include "noxstring.h"
-#endif
+#endif // OG
 #ifdef ZH
 #include "Babylon.h"
-#endif
+#endif // ZH
 #include "resource.h"				 
 #include <stdio.h>
 #include "xlstuff.h"

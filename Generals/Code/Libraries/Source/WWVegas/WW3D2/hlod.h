@@ -119,7 +119,7 @@ public:
 	virtual int						Get_Additional_Model_Bone (int model_index) const;
 #ifdef ZH
 	virtual void					Add_Lod_Model(int lod, RenderObjClass * robj, int boneindex);
-#endif
+#endif // ZH
 
 	virtual bool					Is_NULL_Lod_Included (void) const;
 	virtual void					Include_NULL_Lod (bool include = true);
@@ -231,7 +231,7 @@ protected:
 	virtual void					Update_Obj_Space_Bounding_Volumes(void);
 #ifdef OG
 	void								add_lod_model(int lod,RenderObjClass * robj,int boneindex);
-#endif
+#endif // OG
 
 protected:
 	

@@ -38,11 +38,11 @@
 #include "Common/MessageStream.h"		// for GameMessageTranslator
 #ifdef ZH
 #include "Common/KindOf.h"
-#endif
+#endif // ZH
 #include "Common/SpecialPowerType.h"
 #ifdef ZH
 #include "Common/Snapshot.h"
-#endif
+#endif // ZH
 #include "Common/STLTypedefs.h"
 #include "Common/SubsystemInterface.h"
 #include "Common/UnicodeString.h"
@@ -52,7 +52,7 @@
 #include "GameClient/View.h"
 #ifdef OG
 #include "Common/Snapshot.h"
-#endif
+#endif // OG
 
 // FORWARD DECLARATIONS ///////////////////////////////////////////////////////////////////////////
 class Drawable;
@@ -94,7 +94,7 @@ enum RadiusCursorType
 #ifdef ZH
 	RADIUSCURSOR_SPECTREGUNSHIP,
 	RADIUSCURSOR_HELIX_NAPALM_BOMB,
-#endif
+#endif // ZH
 
 	RADIUSCURSOR_NUCLEARMISSILE, 
 	RADIUSCURSOR_EMPPULSE,
@@ -109,12 +109,12 @@ enum RadiusCursorType
 	RADIUSCURSOR_SPYDRONE,
 #ifdef ZH
 	RADIUSCURSOR_FRENZY,
-#endif
+#endif // ZH
 
 #ifdef ZH
 	RADIUSCURSOR_CLEARMINES,
 	RADIUSCURSOR_AMBULANCE,
-#endif
+#endif // ZH
 
 	RADIUSCURSOR_COUNT	// keep last
 };
@@ -141,7 +141,7 @@ static const char *TheRadiusCursorNames[] =
 #ifdef ZH
   "SPECTREGUNSHIP",
   "HELIX_NAPALM_BOMB",
-#endif
+#endif // ZH
 
 	"NUCLEARMISSILE", 
 	"EMPPULSE",
@@ -156,13 +156,13 @@ static const char *TheRadiusCursorNames[] =
 	"SPYDRONE",
 #ifdef ZH
 	"FRENZY",
-#endif
+#endif // ZH
 
 #ifdef ZH
 	"CLEARMINES",
 	"AMBULANCE",
 
-#endif
+#endif // ZH
 	NULL
 };
 #endif
@@ -208,7 +208,7 @@ public:
 		Bool ready,
 #ifdef ZH
     Bool evaReadyPlayed,
-#endif
+#endif // ZH
 		const AsciiString& superweaponNormalFont, 
 		Int superweaponNormalPointSize, 
 		Bool superweaponNormalBold,
@@ -232,7 +232,7 @@ public:
  	Bool												m_ready;											///< Stores if we were ready last draw, since readyness can change without time changing
 #ifdef ZH
   Bool                        m_evaReadyPlayed;             ///< Stores if Eva announced superweapon is ready
-#endif
+#endif // ZH
 // not saved, but public
  	Bool												m_forceUpdateText;
 
@@ -377,7 +377,7 @@ public:  // ********************************************************************
 		ACTIONTYPE_COMBATDROP_INTO,
 #ifdef ZH
 		ACTIONTYPE_SABOTAGE_BUILDING,
-#endif
+#endif // ZH
 
 		//Keep last.
 		NUM_ACTIONTYPES
@@ -459,7 +459,7 @@ public:  // ********************************************************************
 #ifdef ZH
 	virtual Bool getPreventLeftClickDeselectionInAlternateMouseModeForOneClick() const { return m_preventLeftClickDeselectionInAlternateMouseModeForOneClick; }
 	virtual void setPreventLeftClickDeselectionInAlternateMouseModeForOneClick( Bool set ) { m_preventLeftClickDeselectionInAlternateMouseModeForOneClick = set; }
-#endif
+#endif // ZH
 	virtual void setPlacementStart( const ICoord2D *start );					///< placement anchor point (for choosing angles)
 	virtual void setPlacementEnd( const ICoord2D *end );							///< set target placement point (for choosing angles)
 	virtual Bool isPlacementAnchored( void );													///< is placement arrow anchor set
@@ -532,7 +532,7 @@ public:  // ********************************************************************
 	virtual Int selectAcrossMap();                            ///< selects matching units across map
 	virtual Int selectAcrossRegion( IRegion2D *region );			// -1 = no locally-owned selection, 0+ = # of units selected
 
-#endif
+#endif // OG
 #ifdef ZH
 	virtual Int selectUnitsMatchingCurrentSelection();                        ///< selects matching units
 	virtual Int selectMatchingAcrossScreen();                         ///< selects matching units across screen
@@ -544,7 +544,7 @@ public:  // ********************************************************************
 	virtual Int selectAllUnitsByTypeAcrossMap(KindOfMaskType mustBeSet, KindOfMaskType mustBeClear);                            
 	virtual Int selectAllUnitsByTypeAcrossRegion( IRegion2D *region, KindOfMaskType mustBeSet, KindOfMaskType mustBeClear );			
 	
-#endif
+#endif // ZH
 	virtual void buildRegion( const ICoord2D *anchor, const ICoord2D *dest, IRegion2D *region );  ///< builds a region around the specified coordinates
 
 	virtual Bool getDisplayedMaxWarning( void ) { return m_displayedMaxWarning; }
@@ -583,14 +583,14 @@ public:  // ********************************************************************
 	void setCameraZoomOut( Bool set )				{ m_cameraZoomingOut = set; }
 #ifdef ZH
   void setCameraTrackingDrawable( Bool set ) { m_cameraTrackingDrawable = set; }
-#endif
+#endif // ZH
 	Bool isCameraRotatingLeft() const { return m_cameraRotatingLeft; }
 	Bool isCameraRotatingRight() const { return m_cameraRotatingRight; }
 	Bool isCameraZoomingIn() const { return m_cameraZoomingIn; }
 	Bool isCameraZoomingOut() const { return m_cameraZoomingOut; }
 #ifdef ZH
   Bool isCameraTrackingDrawable() const { return m_cameraTrackingDrawable; }
-#endif
+#endif // ZH
 	void resetCamera();
 
 	virtual void addIdleWorker( Object *obj );
@@ -624,7 +624,7 @@ public:
 
   void triggerDoubleClickAttackMoveGuardHint( void );
   
-#endif
+#endif // ZH
 
 public:
 	// World 2D animation methods
@@ -764,7 +764,7 @@ protected:
 	ObjectID										m_pendingPlaceSourceObjectID;						///< source object of the thing constructing the item
 #ifdef ZH
 	Bool										m_preventLeftClickDeselectionInAlternateMouseModeForOneClick;
-#endif
+#endif // ZH
 	Drawable **									m_placeIcon;														///< array for drawables to appear at the cursor when building in the world
 	Bool												m_placeAnchorInProgress;								///< is place angle interface for placement active
 	ICoord2D										m_placeAnchorStart;											///< place angle anchor start
@@ -776,7 +776,7 @@ protected:
 #ifdef ZH
   Int                         m_duringDoubleClickAttackMoveGuardHintTimer; ///< Frames left to draw the doubleClickFeedbackTimer 
   Coord3D                     m_duringDoubleClickAttackMoveGuardHintStashedPosition; 
-#endif
+#endif // ZH
 
 	// Video playback data
 	VideoBuffer*								m_videoBuffer;			///< video playback buffer
@@ -865,7 +865,7 @@ protected:
 	Bool												m_militaryCaptionRandomizeTyping;
 #ifdef OG
 	Int													m_militaryCaptionDelayMS;
-#endif
+#endif // OG
 	Int													m_militaryCaptionSpeed;
 
 	RadiusDecalTemplate					m_radiusCursors[RADIUSCURSOR_COUNT];
@@ -892,7 +892,7 @@ protected:
 	Bool 												m_cameraZoomingIn;
 #ifdef ZH
 	Bool 												m_cameraTrackingDrawable;
-#endif
+#endif // ZH
 	Bool 												m_cameraZoomingOut;
 	
 	Bool												m_drawRMBScrollAnchor;

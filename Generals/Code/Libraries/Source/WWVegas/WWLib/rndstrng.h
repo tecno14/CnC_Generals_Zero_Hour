@@ -26,24 +26,24 @@
  *                                                                                             * 
 #ifdef OG
  *                      $Author:: Byon_g                                                      $*
-#endif
+#endif // OG
 #ifdef ZH
  *                      $Author:: Jani_p                                                      $*
-#endif
+#endif // ZH
  *                                                                                             * 
 #ifdef OG
  *                     $Modtime:: 11/03/99 2:26p                                              $*
-#endif
+#endif // OG
 #ifdef ZH
  *                     $Modtime:: 9/01/01 11:03a                                              $*
-#endif
+#endif // ZH
  *                                                                                             * 
 #ifdef OG
  *                    $Revision:: 2                                                           $*
-#endif
+#endif // OG
 #ifdef ZH
  *                    $Revision:: 3                                                           $*
-#endif
+#endif // ZH
  *                                                                                             *
  *---------------------------------------------------------------------------------------------* 
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
@@ -70,7 +70,7 @@ public:
 	RandomStringClass( void );
 	~RandomStringClass( void );
 
-#endif
+#endif // OG
 	// Add a string to the class.  
 	// (future version may have a weight parameter)
 	void Add_String( const char * str );
@@ -81,10 +81,10 @@ public:
 private:
 #ifdef OG
 	DynamicVectorClass<StringClass*>	Strings;
-#endif
+#endif // OG
 #ifdef ZH
 	DynamicVectorClass<StringClass>	Strings;
-#endif
+#endif // ZH
 	Random2Class							Randomizer;
 };
 

@@ -70,10 +70,10 @@ void DebugLog(const char *fmt, ...)
 	va_start( va, fmt );
 #ifdef OG
 	vsnprintf(theBuffer, LARGE_BUFFER, fmt, va );
-#endif
+#endif // OG
 #ifdef ZH
 	_vsnprintf(theBuffer, LARGE_BUFFER, fmt, va );
-#endif
+#endif // ZH
 	theBuffer[LARGE_BUFFER-1] = 0;
 	va_end( va );
 

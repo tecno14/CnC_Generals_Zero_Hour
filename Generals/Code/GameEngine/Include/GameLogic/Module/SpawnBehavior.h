@@ -61,7 +61,7 @@ public:
 	Bool m_spawnedRequireSpawner;					///< Spawned objects can only exist while the spawner (us) is alive and present
 #ifdef ZH
 	Bool m_slavesHaveFreeWill;						///< Slaves with free will don't attack when parent attacks.
-#endif
+#endif // ZH
 	DamageTypeFlags m_damageTypesToPropagateToSlaves;
 	std::vector<AsciiString> m_spawnTemplateNameData;
 	DieMuxData m_dieMuxData;
@@ -83,7 +83,7 @@ public:
 		m_spawnedRequireSpawner = FALSE;
 #ifdef ZH
 		m_slavesHaveFreeWill = FALSE;
-#endif
+#endif // ZH
 	}
 
 	static void buildFieldParse(MultiIniFieldParse& p) 
@@ -103,13 +103,13 @@ public:
 #ifdef OG
 			{ "InitialBurst",				      INI::parseInt,						        NULL, offsetof( SpawnBehaviorModuleData, m_initialBurst ) },			{ 0, 0, 0, 0 }
 
-#endif
+#endif // OG
 #ifdef ZH
 			{ "InitialBurst",				      INI::parseInt,						        NULL, offsetof( SpawnBehaviorModuleData, m_initialBurst ) },			
 			{ "SlavesHaveFreeWill",				INI::parseBool,										NULL, offsetof( SpawnBehaviorModuleData, m_slavesHaveFreeWill ) },
 			{ 0, 0, 0, 0 }
 			
-#endif
+#endif // ZH
 		};
     p.add(dataFieldParse);
 		p.add(DieMuxData::getFieldParse(), offsetof( SpawnBehaviorModuleData, m_dieMuxData ));
@@ -139,7 +139,7 @@ public:
 	virtual Bool areAllSlavesStealthed() const = 0;
 	virtual void revealSlaves() = 0;
 	virtual Bool doSlavesHaveFreedom() const = 0;
-#endif
+#endif // ZH
 };
 
 // ------------------------------------------------------------------------------------------------
@@ -196,7 +196,7 @@ public:
 	virtual Bool areAllSlavesStealthed() const;
 	virtual void revealSlaves();
 	virtual Bool doSlavesHaveFreedom() const { return getSpawnBehaviorModuleData()->m_slavesHaveFreeWill; }
-#endif
+#endif // ZH
 
 	// **********************************************************************************************
 	// our own methods

@@ -108,7 +108,7 @@ static FunctionLexicon::TableEntry gameWinSystemTable[] =
 	{ NAMEKEY_INVALID, "SkirmishMapSelectMenuSystem",   SkirmishMapSelectMenuSystem },
 #ifdef ZH
 	{ NAMEKEY_INVALID, "ChallengeMenuSystem",			ChallengeMenuSystem },
-#endif
+#endif // ZH
 	{ NAMEKEY_INVALID, "SaveLoadMenuSystem",            SaveLoadMenuSystem },
 	{ NAMEKEY_INVALID, "PopupCommunicatorSystem",       PopupCommunicatorSystem },
 	{ NAMEKEY_INVALID, "PopupBuddyNotificationSystem",  PopupBuddyNotificationSystem },
@@ -188,7 +188,7 @@ static FunctionLexicon::TableEntry gameWinInputTable[] =
 	{ NAMEKEY_INVALID, "SkirmishMapSelectMenuInput",    SkirmishMapSelectMenuInput },
 #ifdef ZH
 	{ NAMEKEY_INVALID, "ChallengeMenuInput",			ChallengeMenuInput },
-#endif
+#endif // ZH
 	{ NAMEKEY_INVALID, "WOLLadderScreenInput",					WOLLadderScreenInput },
 	{ NAMEKEY_INVALID, "WOLLoginMenuInput",							WOLLoginMenuInput },
 	{ NAMEKEY_INVALID, "WOLLocaleSelectInput",					WOLLocaleSelectInput },
@@ -262,7 +262,7 @@ static FunctionLexicon::TableEntry winLayoutInitTable[] =
 	{ NAMEKEY_INVALID, "SkirmishMapSelectMenuInit",     SkirmishMapSelectMenuInit },
 #ifdef ZH
 	{ NAMEKEY_INVALID, "ChallengeMenuInit",				ChallengeMenuInit },
-#endif
+#endif // ZH
 	{ NAMEKEY_INVALID, "WOLLadderScreenInit",						WOLLadderScreenInit },
 	{ NAMEKEY_INVALID, "WOLLoginMenuInit",							WOLLoginMenuInit },
 	{ NAMEKEY_INVALID, "WOLLocaleSelectInit",						WOLLocaleSelectInit },
@@ -313,7 +313,7 @@ static FunctionLexicon::TableEntry winLayoutUpdateTable[] =
 	{ NAMEKEY_INVALID, "SkirmishMapSelectMenuUpdate",   SkirmishMapSelectMenuUpdate },
 #ifdef ZH
 	{ NAMEKEY_INVALID, "ChallengeMenuUpdate",			ChallengeMenuUpdate },
-#endif
+#endif // ZH
 	{ NAMEKEY_INVALID, "WOLLadderScreenUpdate",					WOLLadderScreenUpdate },
 	{ NAMEKEY_INVALID, "WOLLoginMenuUpdate",						WOLLoginMenuUpdate },
 	{ NAMEKEY_INVALID, "WOLLocaleSelectUpdate",					WOLLocaleSelectUpdate },
@@ -321,7 +321,7 @@ static FunctionLexicon::TableEntry winLayoutUpdateTable[] =
 	{ NAMEKEY_INVALID, "WOLGameSetupMenuUpdate",				WOLGameSetupMenuUpdate },
 #ifdef ZH
 	{ NAMEKEY_INVALID, "PopupHostGameUpdate",						PopupHostGameUpdate },
-#endif
+#endif // ZH
 	{ NAMEKEY_INVALID, "WOLMapSelectMenuUpdate",				WOLMapSelectMenuUpdate },
 	{ NAMEKEY_INVALID, "WOLBuddyOverlayUpdate",					WOLBuddyOverlayUpdate },
 	{ NAMEKEY_INVALID, "GameSpyPlayerInfoOverlayUpdate",GameSpyPlayerInfoOverlayUpdate },
@@ -359,7 +359,7 @@ static FunctionLexicon::TableEntry winLayoutShutdownTable[] =
 	{ NAMEKEY_INVALID, "SkirmishMapSelectMenuShutdown", SkirmishMapSelectMenuShutdown },
 #ifdef ZH
 	{ NAMEKEY_INVALID, "ChallengeMenuShutdown",				ChallengeMenuShutdown },
-#endif
+#endif // ZH
 	{ NAMEKEY_INVALID, "WOLLadderScreenShutdown",				WOLLadderScreenShutdown },
 	{ NAMEKEY_INVALID, "WOLLoginMenuShutdown",					WOLLoginMenuShutdown },
 	{ NAMEKEY_INVALID, "WOLLocaleSelectShutdown",				WOLLocaleSelectShutdown },

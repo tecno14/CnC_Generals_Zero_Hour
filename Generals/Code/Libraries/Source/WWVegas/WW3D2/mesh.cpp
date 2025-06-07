@@ -18,10 +18,10 @@
 
 #ifdef OG
 /* $Header: /VSS_Sync/ww3d2/mesh.cpp 56    8/29/01 9:50p Vss_sync $ */
-#endif
+#endif // OG
 #ifdef ZH
 /* $Header: /Commando/Code/ww3d2/mesh.cpp 69    1/19/02 1:01p Greg_h $ */
-#endif
+#endif // ZH
 /*********************************************************************************************** 
  ***                            Confidential - Westwood Studios                              *** 
  *********************************************************************************************** 
@@ -125,20 +125,20 @@
 #include "wwmemlog.h"
 #ifdef ZH
 #include "dx8rendererdebugger.h"
-#endif
+#endif // ZH
 #include <stdio.h>
 #ifdef ZH
 #include <wwprofile.h>
-#endif
+#endif // ZH
 
 #ifdef ZH
 static unsigned MeshDebugIdCount;
-#endif
+#endif // ZH
 
 bool MeshClass::Legacy_Meshes_Fogged = true;
 #ifdef ZH
 static SimpleDynVecClass<uint32> temp_apt;
-#endif
+#endif // ZH
 
 /*
 ** This #define causes the collision code to always recompute the triangle normals rather
@@ -180,7 +180,7 @@ MeshClass::MeshClass(void) :
 #ifdef ZH
 	IsDisabledByDebugger(false),
 	MeshDebugId(MeshDebugIdCount++),
-#endif
+#endif // ZH
 	m_alphaOverride(1.0f),
 	m_materialPassAlphaOverride(1.0f),
 	m_materialPassEmissiveOverride(1.0f)
@@ -211,7 +211,7 @@ MeshClass::MeshClass(const MeshClass & that) :
 #ifdef ZH
 	IsDisabledByDebugger(false),
 	MeshDebugId(MeshDebugIdCount++),
-#endif
+#endif // ZH
 	m_alphaOverride(1.0f),
 	m_materialPassAlphaOverride(1.0f),
 	m_materialPassEmissiveOverride(1.0f)
@@ -553,7 +553,7 @@ void MeshClass::Compose_Deformed_Vertex_Buffer(
 	Model->compose_deformed_vertex_buffer(verts,uv0,uv1,diffuse,Container->Get_HTree());
 }
 
-#endif
+#endif // OG
 /***********************************************************************************************
  * MeshClass::Create_Decal -- creates a decal on this mesh                                     *
  *                                                                                             *
@@ -591,27 +591,27 @@ void MeshClass::Create_Decal(DecalGeneratorClass * generator)
 #ifdef OG
 		SimpleDynVecClass<uint32> apt;
 		Model->Generate_Rigid_APT(localbox, apt);
-#endif
+#endif // OG
 #ifdef ZH
 		temp_apt.Delete_All(false);	// reset contents
 		Model->Generate_Rigid_APT(localbox, temp_apt);
-#endif
+#endif // ZH
 		
 #ifdef OG
 		if (apt.Count() > 0) {
-#endif
+#endif // OG
 #ifdef ZH
 		if (temp_apt.Count() > 0) {
-#endif
+#endif // ZH
 			if (DecalMesh == NULL) {
 				DecalMesh =		NEW_REF(RigidDecalMeshClass, (this, generator->Peek_Decal_System()));
 			}
 #ifdef OG
 			DecalMesh->Create_Decal(generator, localbox, apt);
-#endif
+#endif // OG
 #ifdef ZH
 			DecalMesh->Create_Decal(generator, localbox, temp_apt);
-#endif
+#endif // ZH
 		}
 
 	} else {
@@ -629,37 +629,37 @@ void MeshClass::Create_Decal(DecalGeneratorClass * generator)
 		// generate apt, if it is not empty, add a decal.
 #ifdef OG
 		SimpleDynVecClass<uint32> apt;
-#endif
+#endif // OG
 #ifdef ZH
 		temp_apt.Delete_All(false);
-#endif
+#endif // ZH
 
 		OBBoxClass worldbox = generator->Get_Bounding_Volume();
 
 		// We compare the worldspace box vs. the worldspace vertices
 #ifdef OG
 		Model->Generate_Skin_APT(worldbox, apt, dst_vert);
-#endif
+#endif // OG
 #ifdef ZH
 		Model->Generate_Skin_APT(worldbox, temp_apt, dst_vert);
-#endif
+#endif // ZH
 		
 		// if it is not empty, add a decal
 #ifdef OG
 		if (apt.Count() > 0) {
-#endif
+#endif // OG
 #ifdef ZH
 		if (temp_apt.Count() > 0) {
-#endif
+#endif // ZH
 			if (DecalMesh == NULL) {
 				DecalMesh = NEW_REF(SkinDecalMeshClass, (this, generator->Peek_Decal_System()));
 			}
 #ifdef OG
 			DecalMesh->Create_Decal(generator, worldbox, apt, &_TempVertexBuffer);
-#endif
+#endif // OG
 #ifdef ZH
 			DecalMesh->Create_Decal(generator, worldbox, temp_apt, &_TempVertexBuffer);
-#endif
+#endif // ZH
 		}
 	}
 }
@@ -703,13 +703,13 @@ int MeshClass::Get_Num_Polys(void) const
 #ifdef OG
 		return Model->Get_Polygon_Count();
 
-#endif
+#endif // OG
 #ifdef ZH
 		int num_passes=Model->Get_Pass_Count();
 		WWASSERT(num_passes>0);
 		int poly_count=Model->Get_Polygon_Count();
 		return num_passes*poly_count;
-#endif
+#endif // ZH
 	} else {
 		return 0;
 	}
@@ -731,7 +731,7 @@ void MeshClass::Render(RenderInfoClass & rinfo)
 {
 #ifdef ZH
 	WWPROFILE("Mesh::Render");
-#endif
+#endif // ZH
 	if (Is_Not_Hidden_At_All() == false) {
 		return;
 	}
@@ -751,12 +751,12 @@ void MeshClass::Render(RenderInfoClass & rinfo)
 		WW3D::Add_To_Static_Sort_List(this, sort_level);
 #ifdef ZH
 	} else {
-#endif
+#endif // ZH
 
 #ifdef OG
 	} else {
 
-#endif
+#endif // OG
 #ifdef ZH
 		/* Commented out since we set lighting environment only on visible meshes below. -MW
 		** Plug in the lighting environment unless we arrived here as part of the static
@@ -765,7 +765,7 @@ void MeshClass::Render(RenderInfoClass & rinfo)
 //		if (WW3D::Are_Static_Sort_Lists_Enabled()) {
 //			Set_Lighting_Environment(rinfo.light_environment);
 //		}
-#endif
+#endif // ZH
 
 		const FrustumClass & frustum=rinfo.Camera.Get_Frustum();
 
@@ -802,13 +802,13 @@ void MeshClass::Render(RenderInfoClass & rinfo)
 			** Look up the FVF container that this mesh is in
 #ifdef OG
 			** TODO: make this a little nicer?
-#endif
+#endif // OG
 			*/
 			DX8FVFCategoryContainer * fvf_container = Model->PolygonRendererList.Peek_Head()->Get_Texture_Category()->Get_Container();
 #ifdef OG
 			if ((rinfo.Current_Override_Flags() & RenderInfoClass::RINFO_OVERRIDE_ADDITIONAL_PASSES_ONLY) == 0) {
 
-#endif
+#endif // OG
 #ifdef ZH
 			
 			/*
@@ -828,7 +828,7 @@ void MeshClass::Render(RenderInfoClass & rinfo)
 			}
 			
 			if (render_base_passes) {
-#endif
+#endif // ZH
 
 				/*
 				** Link each polygon renderer for this mesh into the visible list
@@ -862,11 +862,11 @@ void MeshClass::Render(RenderInfoClass & rinfo)
 					if (rinfo.Current_Override_Flags() & RenderInfoClass::RINFO_OVERRIDE_ADDITIONAL_PASSES_ONLY) {
 						fvf_container->Add_Delayed_Visible_Material_Pass(matpass, this);
 					} else {
-#endif
+#endif // ZH
 					fvf_container->Add_Visible_Material_Pass(matpass,this);
 #ifdef ZH
 					}
-#endif
+#endif // ZH
 					rendered_something = true;
 				}
 			}
@@ -886,12 +886,12 @@ void MeshClass::Render(RenderInfoClass & rinfo)
 #ifdef OG
 			if (DecalMesh != NULL) {
 
-#endif
+#endif // OG
 #ifdef ZH
 			if (	(DecalMesh != NULL) && 
 					((rinfo.Current_Override_Flags() & RenderInfoClass::RINFO_OVERRIDE_ADDITIONAL_PASSES_ONLY) == 0))
 			{
-#endif
+#endif // ZH
 				const SphereClass & ws_sphere = Get_Bounding_Sphere();
 				Vector3 cam_space_sphere_center;
 				rinfo.Camera.Transform_To_View_Space(cam_space_sphere_center,ws_sphere.Center);
@@ -902,7 +902,7 @@ void MeshClass::Render(RenderInfoClass & rinfo)
 #ifdef ZH
 
 			DX8RendererDebugger::Add_Mesh(this);
-#endif
+#endif // ZH
 		}
 	}
 }
@@ -986,11 +986,11 @@ void MeshClass::Render_Material_Pass(MaterialPassClass * pass,IndexBufferClass *
 #ifdef OG
 		static SimpleDynVecClass<uint32> _apt;
 		_apt.Delete_All(false);
-#endif
+#endif // OG
 #ifdef ZH
 		temp_apt.Delete_All(false);
 
-#endif
+#endif // ZH
 			
 		Matrix3D modeltminv;
 		Get_Transform().Get_Orthogonal_Inverse(modeltminv);
@@ -1005,25 +1005,25 @@ void MeshClass::Render_Material_Pass(MaterialPassClass * pass,IndexBufferClass *
 		if (Model->Has_Cull_Tree()) {
 #ifdef OG
 			Model->Generate_Rigid_APT(localbox,view_dir,_apt);
-#endif
+#endif // OG
 #ifdef ZH
 			Model->Generate_Rigid_APT(localbox,view_dir,temp_apt);
-#endif
+#endif // ZH
 		} else {
 #ifdef OG
 			Model->Generate_Rigid_APT(view_dir,_apt);
-#endif
+#endif // OG
 #ifdef ZH
 			Model->Generate_Rigid_APT(view_dir,temp_apt);
-#endif
+#endif // ZH
 		}
 	
 #ifdef OG
 		if (_apt.Count() > 0) {
-#endif
+#endif // OG
 #ifdef ZH
 		if (temp_apt.Count() > 0) {
-#endif
+#endif // ZH
 
 			int buftype = BUFFER_TYPE_DYNAMIC_DX8;
 			if (Model->Get_Flag(MeshGeometryClass::SORT) && WW3D::Is_Sorting_Enabled()) {
@@ -1038,10 +1038,10 @@ void MeshClass::Render_Material_Pass(MaterialPassClass * pass,IndexBufferClass *
 
 #ifdef OG
 			DynamicIBAccessClass dynamic_ib(buftype,_apt.Count() * 3);
-#endif
+#endif // OG
 #ifdef ZH
 			DynamicIBAccessClass dynamic_ib(buftype,temp_apt.Count() * 3);
-#endif
+#endif // ZH
 			{
 				DynamicIBAccessClass::WriteLockClass lock(&dynamic_ib);
 				unsigned short * indices = lock.Get_Index_Array();
@@ -1049,23 +1049,23 @@ void MeshClass::Render_Material_Pass(MaterialPassClass * pass,IndexBufferClass *
 				const Vector3i * polys = Model->Get_Polygon_Array();
 
 				for (int i=0; i < _apt.Count(); i++)
-#endif
+#endif // OG
 #ifdef ZH
 				const TriIndex * polys = Model->Get_Polygon_Array();
 				try {
 				for (int i=0; i < temp_apt.Count(); i++)
-#endif
+#endif // ZH
 				{
 #ifdef OG
 					unsigned v0 = polys[_apt[i]].I;
 					unsigned v1 = polys[_apt[i]].J;
 					unsigned v2 = polys[_apt[i]].K;
-#endif
+#endif // OG
 #ifdef ZH
 					unsigned v0 = polys[temp_apt[i]].I;
 					unsigned v1 = polys[temp_apt[i]].J;
 					unsigned v2 = polys[temp_apt[i]].K;
-#endif
+#endif // ZH
 
 					indices[i*3 + 0] = (unsigned short)v0;
 					indices[i*3 + 1] = (unsigned short)v1;
@@ -1083,11 +1083,11 @@ void MeshClass::Render_Material_Pass(MaterialPassClass * pass,IndexBufferClass *
 				IndexBufferExceptionFunc();
 				} catch(...) {
 					IndexBufferExceptionFunc();
-#endif
+#endif // ZH
 			}
 #ifdef ZH
 			}
-#endif
+#endif // ZH
 
 			/*
 			** Render
@@ -1102,10 +1102,10 @@ void MeshClass::Render_Material_Pass(MaterialPassClass * pass,IndexBufferClass *
 				0,
 #ifdef OG
 				_apt.Count(),
-#endif
+#endif // OG
 #ifdef ZH
 				temp_apt.Count(),
-#endif
+#endif // ZH
 				min_v,
 				max_v-min_v+1);
 			//MW: Need uninstall custom materials in case they leave D3D in unknown state
@@ -1186,7 +1186,7 @@ void MeshClass::Special_Render(SpecialRenderInfoClass & rinfo)
 #ifdef ZH
 		rinfo.VisRasterizer->Enable_Two_Sided_Rendering(!!Model->Get_Flag(MeshGeometryClass::TWO_SIDED));
 
-#endif
+#endif // ZH
 		if (Model->Get_Flag(MeshModelClass::SKIN) == 0) {
 
 			rinfo.VisRasterizer->Set_Model_Transform(Transform);
@@ -1211,7 +1211,7 @@ void MeshClass::Special_Render(SpecialRenderInfoClass & rinfo)
 		}
 #ifdef ZH
 		rinfo.VisRasterizer->Enable_Two_Sided_Rendering(false);
-#endif
+#endif // ZH
 	}
 
 	if (rinfo.RenderType == SpecialRenderInfoClass::RENDER_SHADOW) {
@@ -1267,22 +1267,22 @@ void MeshClass::Replace_VertexMaterial(VertexMaterialClass* vmat,VertexMaterialC
  *=============================================================================================*/
 #ifdef OG
 void MeshClass::Make_Unique()
-#endif
+#endif // OG
 #ifdef ZH
 void MeshClass::Make_Unique(bool force_meshmdl_clone)
-#endif
+#endif // ZH
 {
 #ifdef OG
 	if (Model->Num_Refs()==1) return;
 
-#endif
+#endif // OG
 #ifdef ZH
 	// Usually we will not clone the mesh model if it is already unique - force_meshmdl_clone will
 	// force it to be cloned in any case. This is used in some special situations, for example if we
 	// want to change this mesh and it may have already been rendered, we need to clone the mesh
 	// model regardless of whether there is another mesh using it.
 	if (Model->Num_Refs()==1 && !force_meshmdl_clone) return;
-#endif
+#endif // ZH
 
 	MeshModelClass *newmesh=NEW_REF(MeshModelClass,(*Model));
 	REF_PTR_SET(Model,newmesh);
@@ -1351,7 +1351,7 @@ WW3DErrorType MeshClass::Load_W3D(ChunkLoadClass & cload)
 			is_additive |= (Model->Get_Shader(i,0).Get_Dst_Blend_Func() == ShaderClass::DSTBLEND_ONE &&
 									Model->Get_Shader(i,0).Get_Src_Blend_Func() == ShaderClass::SRCBLEND_ONE);
 
-#endif
+#endif // OG
 #ifdef ZH
 			ShaderClass shader = Model->Get_Shader(i,0);
 			is_translucent |= (shader.Get_Alpha_Test() == ShaderClass::ALPHATEST_ENABLE);
@@ -1359,7 +1359,7 @@ WW3DErrorType MeshClass::Load_W3D(ChunkLoadClass & cload)
 									shader.Get_Src_Blend_Func() != ShaderClass::SRCBLEND_ONE) && (shader.Get_Alpha_Test() != ShaderClass::ALPHATEST_ENABLE);
 			is_additive |= (shader.Get_Dst_Blend_Func() == ShaderClass::DSTBLEND_ONE &&
 									shader.Get_Src_Blend_Func() == ShaderClass::SRCBLEND_ONE);
-#endif
+#endif // ZH
 		}
 	} else {
 #ifdef OG
@@ -1369,7 +1369,7 @@ WW3DErrorType MeshClass::Load_W3D(ChunkLoadClass & cload)
 		is_additive |= (Model->Get_Single_Shader(0).Get_Dst_Blend_Func() == ShaderClass::DSTBLEND_ONE &&
 									Model->Get_Single_Shader(0).Get_Src_Blend_Func() == ShaderClass::SRCBLEND_ONE);
 
-#endif
+#endif // OG
 #ifdef ZH
 		ShaderClass shader = Model->Get_Single_Shader(0);
 		is_translucent |= (shader.Get_Alpha_Test() == ShaderClass::ALPHATEST_ENABLE);
@@ -1377,7 +1377,7 @@ WW3DErrorType MeshClass::Load_W3D(ChunkLoadClass & cload)
 									shader.Get_Src_Blend_Func() != ShaderClass::SRCBLEND_ONE) && (shader.Get_Alpha_Test() != ShaderClass::ALPHATEST_ENABLE);
 		is_additive |= (shader.Get_Dst_Blend_Func() == ShaderClass::DSTBLEND_ONE &&
 									shader.Get_Src_Blend_Func() == ShaderClass::SRCBLEND_ONE);
-#endif
+#endif // ZH
 	}
 	Set_Translucent(is_translucent);
 	Set_Alpha(is_alpha);
@@ -1410,7 +1410,7 @@ bool MeshClass::Cast_Ray(RayCollisionTestClass & raytest)
 #ifdef ZH
 	if (Is_Animation_Hidden()) return false;
 	if (raytest.Result->StartBad) return false;
-#endif
+#endif // ZH
 
 	Matrix3D world_to_obj;
 	Matrix3D world=Get_Transform();
@@ -1463,7 +1463,7 @@ bool MeshClass::Cast_AABox(AABoxCollisionTestClass & boxtest)
 	if ((Get_Collision_Type() & boxtest.CollisionType) == 0) return false;
 #ifdef ZH
 	if (boxtest.Result->StartBad) return false;
-#endif
+#endif // ZH
 
 	WWASSERT(Model);
 
@@ -1495,7 +1495,7 @@ bool MeshClass::Cast_OBBox(OBBoxCollisionTestClass & boxtest)
 	if ((Get_Collision_Type() & boxtest.CollisionType) == 0) return false;
 #ifdef ZH
 	if (boxtest.Result->StartBad) return false;
-#endif
+#endif // ZH
 
 	/*
 	** transform into the local coordinate system of the mesh.

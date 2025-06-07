@@ -118,7 +118,7 @@ void Win32GameEngine::update( void )
     AudioAffect aa = (AudioAffect)0x10;
 		TheAudio->setVolume(TheAudio->getVolume( aa ), aa );
 
-#endif
+#endif // ZH
 	}
 
 	// allow windows to perform regular windows maintenance stuff like msgs

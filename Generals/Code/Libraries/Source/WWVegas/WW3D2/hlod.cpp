@@ -117,10 +117,10 @@
  *   HLodClass::Update_Obj_Space_Bounding_Volumes -- update object-space bounding volumes      *
 #ifdef OG
  *   HLodClass::add_lod_model -- adds a model to one of the lods                               *
-#endif
+#endif // OG
 #ifdef ZH
  *   HLodClass::Add_Lod_Model -- adds a model to one of the lods                               *
-#endif
+#endif // ZH
  *   HLodClass::Create_Decal -- create a decal on this HLod                                    *
  *   HLodClass::Delete_Decal -- remove a decal from this HLod                                  *
  *   HLodClass::Set_HTree -- replace the hierarchy tree                                        *
@@ -1042,10 +1042,10 @@ HLodClass::HLodClass(const char * name,RenderObjClass ** lods,int count) :
 				
 #ifdef OG
 				add_lod_model(lod_index,sub_obj,boneindex);
-#endif
+#endif // OG
 #ifdef ZH
 				Add_Lod_Model(lod_index,sub_obj,boneindex);
-#endif
+#endif // ZH
 
 				sub_obj->Release_Ref();
 			}
@@ -1056,10 +1056,10 @@ HLodClass::HLodClass(const char * name,RenderObjClass ** lods,int count) :
 			// case happens if this level of detail is a simple object such as a mesh or NullRenderObj
 #ifdef OG
 			add_lod_model(lod_index,lod_obj,0);
-#endif
+#endif // OG
 #ifdef ZH
 			Add_Lod_Model(lod_index,lod_obj,0);
-#endif
+#endif // ZH
 		}
 	}
 
@@ -1134,10 +1134,10 @@ HLodClass::HLodClass(const HLodDefClass & def) :
 			if (robj != NULL) {
 #ifdef OG
 				add_lod_model(ilod,robj,boneindex);
-#endif
+#endif // OG
 #ifdef ZH
 				Add_Lod_Model(ilod,robj,boneindex);
-#endif
+#endif // ZH
 				robj->Release_Ref();
 			}
 		}
@@ -1225,10 +1225,10 @@ HLodClass::HLodClass(const HModelDefClass & def) :
 			int boneindex = def.SubObjects[imodel].PivotID;
 #ifdef OG
 			add_lod_model(0,robj,boneindex);
-#endif
+#endif // OG
 #ifdef ZH
 			Add_Lod_Model(0,robj,boneindex);
-#endif
+#endif // ZH
 			robj->Release_Ref();
 		}
 	}
@@ -2045,10 +2045,10 @@ void HLodClass::Include_NULL_Lod(bool include)
 			// Add this NULL object to the start of the lod list
 #ifdef OG
 			add_lod_model (0, null_object, 0);
-#endif
+#endif // OG
 #ifdef ZH
 			Add_Lod_Model (0, null_object, 0);
-#endif
+#endif // ZH
 			null_object->Release_Ref ();
 		}
 	}
@@ -3536,10 +3536,10 @@ void HLodClass::Update_Obj_Space_Bounding_Volumes(void)
 /***********************************************************************************************
 #ifdef OG
  * HLodClass::add_lod_model -- adds a model to one of the lods                                 *
-#endif
+#endif // OG
 #ifdef ZH
  * HLodClass::Add_Lod_Model -- adds a model to one of the lods                                 *
-#endif
+#endif // ZH
  *                                                                                             *
  * INPUT:                                                                                      *
  *                                                                                             *
@@ -3552,10 +3552,10 @@ void HLodClass::Update_Obj_Space_Bounding_Volumes(void)
  *=============================================================================================*/
 #ifdef OG
 void HLodClass::add_lod_model(int lod,RenderObjClass * robj,int boneindex)
-#endif
+#endif // OG
 #ifdef ZH
 void HLodClass::Add_Lod_Model(int lod, RenderObjClass * robj, int boneindex)
-#endif
+#endif // ZH
 {		
 	WWASSERT(robj != NULL);
 #ifdef ZH
@@ -3567,7 +3567,7 @@ void HLodClass::Add_Lod_Model(int lod, RenderObjClass * robj, int boneindex)
 		WWDEBUG_SAY(("ERROR: Model %s tried to use bone %d in skeleton %s.  Please re-export!\n",Get_Name(),boneindex,HTree->Get_Name()));
 		boneindex = 0;
 	}
-#endif
+#endif // ZH
 
 	ModelNodeClass newnode;
 	newnode.Model = robj;

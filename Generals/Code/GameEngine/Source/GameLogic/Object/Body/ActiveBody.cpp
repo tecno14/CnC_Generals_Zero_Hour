@@ -46,7 +46,7 @@
 #include "GameClient/ParticleSys.h"
 #ifdef ZH
 #include "GameLogic/AI.h"
-#endif
+#endif // ZH
 #include "GameLogic/AIPathfind.h"
 #include "GameLogic/Armor.h"
 #include "GameLogic/GameLogic.h"
@@ -54,17 +54,17 @@
 #include "GameLogic/Damage.h"
 #ifdef ZH
 #include "GameLogic/PartitionManager.h"
-#endif
+#endif // ZH
 #include "GameLogic/TerrainLogic.h"
 #ifdef ZH
 #include "GameLogic/Weapon.h"
-#endif
+#endif // ZH
 #include "GameLogic/Module/AIUpdate.h"
 #include "GameLogic/Module/ActiveBody.h"
 #include "GameLogic/Module/BridgeBehavior.h"
 #ifdef ZH
 #include "GameLogic/Module/ContainModule.h"
-#endif
+#endif // ZH
 #include "GameLogic/Module/DamageModule.h"
 #include "GameLogic/Module/DieModule.h"
 
@@ -145,7 +145,7 @@ ActiveBodyModuleData::ActiveBodyModuleData()
 	m_subdualDamageCap = 0;
 	m_subdualDamageHealRate = 0;
 	m_subdualDamageHealAmount = 0;
-#endif
+#endif // ZH
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -163,7 +163,7 @@ void ActiveBodyModuleData::buildFieldParse(MultiIniFieldParse& p)
 		{ "SubdualDamageCap",					INI::parseReal,									NULL,		offsetof( ActiveBodyModuleData, m_subdualDamageCap ) },
 		{ "SubdualDamageHealRate",		INI::parseDurationUnsignedInt,	NULL,		offsetof( ActiveBodyModuleData, m_subdualDamageHealRate ) },
 		{ "SubdualDamageHealAmount",	INI::parseReal,									NULL,		offsetof( ActiveBodyModuleData, m_subdualDamageHealAmount ) },
-#endif
+#endif // ZH
 		{ 0, 0, 0, 0 }
 	};
   p.add(dataFieldParse);
@@ -186,7 +186,7 @@ ActiveBody::ActiveBody( Thing *thing, const ModuleData* moduleData ) :
 	m_particleSystems(NULL),
 #ifdef ZH
 	m_currentSubdualDamage(0),
-#endif
+#endif // ZH
 	m_indestructible(false)
 {
 	m_currentHealth = getActiveBodyModuleData()->m_initialHealth;
@@ -244,10 +244,10 @@ void ActiveBody::setCorrectDamageState()
 		//THis allows projectiles shot from infantry that are inside rubble to get out of said rubble safely
 #ifdef OG
 		getObject()->setStatus( OBJECT_STATUS_NO_COLLISIONS );
-#endif
+#endif // OG
 #ifdef ZH
 		getObject()->setStatus( MAKE_OBJECT_STATUS_MASK( OBJECT_STATUS_NO_COLLISIONS ) );
-#endif
+#endif // ZH
 
 
 	}
@@ -329,7 +329,7 @@ Real ActiveBody::estimateDamage( DamageInfoInput& damageInfo ) const
 			return 0.0f;
 		}
 	}
-#endif
+#endif // ZH
 
 	Real amount = m_curArmor.adjustDamage(damageInfo.m_damageType, damageInfo.m_amount);
 
@@ -344,11 +344,11 @@ void ActiveBody::doDamageFX( const DamageInfo *damageInfo )
 #ifdef OG
 	if (damageInfo->in.m_damageType == DAMAGE_UNRESISTABLE && 
 				(damageInfo->in.m_deathType == DEATH_POISONED || damageInfo->in.m_deathType == DEATH_POISONED_BETA))
-#endif
+#endif // OG
 #ifdef ZH
 	if (damageInfo->in.m_damageFXOverride != DAMAGE_UNRESISTABLE )
 
-#endif
+#endif // ZH
 	{
 #ifdef OG
 		// PoisonedBehavior sends DAMAGE_UNRESISTABLE (rather that DAMAGE_POISON) to avoid reinfection,
@@ -368,18 +368,18 @@ void ActiveBody::doDamageFX( const DamageInfo *damageInfo )
 			{
 				draw->setTintStatus( TINT_STATUS_IRRADIATED );
 				// We allow the Tinting Class in Drawable to turn this effect off, which it does every update
-#endif
+#endif // OG
 #ifdef ZH
 		// Just the visual aspect of damage can be overridden in some cases.
 		// Unresistable is the default to mean no override, as we are out of bits.
 		damageTypeToUse = damageInfo->in.m_damageFXOverride;
 
-#endif
+#endif // ZH
 			}
 #ifdef OG
 		}
 	}
-#endif
+#endif // OG
 
 	if (m_curDamageFX)
 	{
@@ -424,7 +424,7 @@ void ActiveBody::attemptDamage( DamageInfo *damageInfo )
 		damageInfo->in.m_sourceTemplate = damager->getTemplate();
 	}
 
-#endif
+#endif // ZH
 	Bool alreadyHandled = FALSE;
 	Bool allowModifier = TRUE;
 	Real amount = m_curArmor.adjustDamage(damageInfo->in.m_damageType, damageInfo->in.m_amount);
@@ -435,13 +435,13 @@ void ActiveBody::attemptDamage( DamageInfo *damageInfo )
 #ifdef ZH
 		{
 			if( !damageInfo->in.m_kill )
-#endif
+#endif // ZH
 		{
 			// Healing and Damage are separate, so this shouldn't happen
 			attemptHealing( damageInfo );
 #ifdef ZH
 			}
-#endif
+#endif // ZH
 			return;
 		}
 
@@ -482,33 +482,33 @@ void ActiveBody::attemptDamage( DamageInfo *damageInfo )
 				}
 				else
 				{
-#endif
+#endif // ZH
 				// Make it unmanned, so units can easily check the ability to "take control of it"
 				obj->setDisabled( DISABLED_UNMANNED );
 #ifdef ZH
 					TheGameLogic->deselectObject(obj, PLAYERMASK_ALL, TRUE);
-#endif
+#endif // ZH
 
 #ifdef OG
 				TheGameLogic->deselectObject(obj, PLAYERMASK_ALL, TRUE);
 
-#endif
+#endif // OG
 #ifdef ZH
           if ( obj->getAI() )
             obj->getAI()->aiIdle( CMD_FROM_AI );
-#endif
+#endif // ZH
 
 				// Convert it to the neutral team so it renders gray giving visual representation that it is unmanned.
 				obj->setTeam( ThePlayerList->getNeutralPlayer()->getDefaultTeam() );
 #ifdef ZH
 				}
-#endif
+#endif // ZH
 				
 #ifdef ZH
 				//We don't care which team sniped the vehicle... we use this information to flag whether or not
 				//we captured a vehicle.
 	      ThePlayerList->getNeutralPlayer()->getAcademyStats()->recordVehicleSniped();
-#endif
+#endif // ZH
 			}
 			alreadyHandled = TRUE;
 			allowModifier = FALSE;
@@ -545,11 +545,11 @@ void ActiveBody::attemptDamage( DamageInfo *damageInfo )
 							thingToKill->kill();
 							++numKilled;
 							thingToKill->getControllingPlayer()->getAcademyStats()->recordClearedGarrisonedBuilding();
-#endif
+#endif // ZH
 	}
 #ifdef ZH
 					} // next contained item
-#endif
+#endif // ZH
 
 #ifdef ZH
 				} // if items
@@ -589,7 +589,7 @@ void ActiveBody::attemptDamage( DamageInfo *damageInfo )
 		getObject()->notifySubdualDamage(amount);
 	}
 
-#endif
+#endif // ZH
 	if (allowModifier)
 	{
 		if( damageInfo->in.m_damageType != DAMAGE_UNRESISTABLE )
@@ -603,10 +603,10 @@ void ActiveBody::attemptDamage( DamageInfo *damageInfo )
 	// sanity check the damage value -- can't apply negative damage
 #ifdef OG
 	if( amount > 0.0f )
-#endif
+#endif // OG
 #ifdef ZH
 	if( amount > 0.0f || damageInfo->in.m_kill )
-#endif
+#endif // ZH
 	{
 		BodyDamageType oldState = m_curDamageState;
 
@@ -617,7 +617,7 @@ void ActiveBody::attemptDamage( DamageInfo *damageInfo )
 			amount = m_currentHealth;
 		}
 
-#endif
+#endif // ZH
 		if (!alreadyHandled) 
 		{
 			// do the damage simplistic damage subtraction
@@ -754,18 +754,18 @@ void ActiveBody::attemptDamage( DamageInfo *damageInfo )
 #ifdef OG
 			Object *killer = TheGameLogic->findObjectByID( damageInfo->in.m_sourceID );
 			if( killer )
-#endif
+#endif // OG
 #ifdef ZH
 			if( damager )
 
-#endif
+#endif // ZH
 			{
 #ifdef OG
 				killer->scoreTheKill( obj );
-#endif
+#endif // OG
 #ifdef ZH
 				damager->scoreTheKill( obj );
-#endif
+#endif // ZH
 			}
 	
 			obj->onDie( damageInfo );
@@ -780,7 +780,7 @@ void ActiveBody::attemptDamage( DamageInfo *damageInfo )
 		if (obj->isKindOf(KINDOF_CAN_BE_REPULSED)) {
 			obj->setStatus(OBJECT_STATUS_REPULSOR, true);
 
-#endif
+#endif // OG
 #ifdef ZH
 	if( TheAI->getAiData()->m_enableRepulsors ) 
 	{
@@ -888,17 +888,17 @@ Bool ActiveBody::shouldRetaliate(Object *obj)
 	if ( obj->getStatusBits().test( OBJECT_STATUS_STEALTHED ) && 
 		!obj->getStatusBits().test( OBJECT_STATUS_DETECTED ) ) {
 		return false; 
-#endif
+#endif // ZH
 		}
 #ifdef ZH
 	// If we're using an ability, don't stop. [8/25/2003]
 	if (obj->testStatus(OBJECT_STATUS_IS_USING_ABILITY)) {
 		return false;
-#endif
+#endif // ZH
 	}
 #ifdef ZH
 	return true;
-#endif
+#endif // ZH
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -1042,11 +1042,11 @@ void ActiveBody::setMaxHealth( Real maxHealth, MaxHealthChangeType healthChangeT
 			//200/500 (40%) - 100 becomes 400/400 (100%)
 			internalChangeHealth(m_maxHealth - m_currentHealth);
 			break;
-#endif
+#endif // ZH
 	}
 #ifdef ZH
 	}
-#endif
+#endif // ZH
 
 	//
 	// when max health is getting clipped to a lower value, if our current health
@@ -1135,7 +1135,7 @@ void ActiveBody::createParticleSystems( const AsciiString &boneBaseName,
 #ifdef OG
 		//Int boneIndex = GameLogicRandomValue( 0, maxSystems - i - 1 );
 
-#endif
+#endif // OG
     // DTEH: Moved back to GameClientRandomValue because of desync problems. July 27th 2003.
     Int boneIndex = GameClientRandomValue( 0, maxSystems - i - 1 );
 
@@ -1360,10 +1360,10 @@ void ActiveBody::internalChangeHealth( Real delta )
 		//
 #ifdef OG
 		if( BitTest( getObject()->getStatusBits(), OBJECT_STATUS_UNDER_CONSTRUCTION ) == FALSE)
-#endif
+#endif // OG
 #ifdef ZH
 		if( !getObject()->getStatusBits().test( OBJECT_STATUS_UNDER_CONSTRUCTION ) )
-#endif
+#endif // ZH
 			evaluateVisualCondition();
 
 	}  // end if
@@ -1376,7 +1376,7 @@ void ActiveBody::internalChangeHealth( Real delta )
 
 #ifdef ZH
 //-------------------------------------------------------------------------------------------------
-#endif
+#endif // ZH
 //-------------------------------------------------------------------------------------------------
 #ifdef ZH
 void ActiveBody::internalAddSubdualDamage( Real delta )
@@ -1395,7 +1395,7 @@ Bool ActiveBody::canBeSubdued() const
 	return getActiveBodyModuleData()->m_subdualDamageCap > 0;
 }
 
-#endif
+#endif // ZH
 //-------------------------------------------------------------------------------------------------
 #ifdef ZH
 //-------------------------------------------------------------------------------------------------
@@ -1448,7 +1448,7 @@ Bool ActiveBody::isSubdued() const
 
 //-------------------------------------------------------------------------------------------------
 //-------------------------------------------------------------------------------------------------
-#endif
+#endif // ZH
 Real ActiveBody::getHealth() const
 {
 	return m_currentHealth;
@@ -1492,7 +1492,7 @@ Bool ActiveBody::hasAnySubdualDamage() const
 
 //-------------------------------------------------------------------------------------------------
 //-------------------------------------------------------------------------------------------------
-#endif
+#endif // ZH
 Real ActiveBody::getInitialHealth() const 
 { 
 	return m_initialHealth;
@@ -1542,10 +1542,10 @@ void ActiveBody::setIndestructible( Bool indestructible )
 //-------------------------------------------------------------------------------------------------
 #ifdef OG
 void ActiveBody::onVeterancyLevelChanged( VeterancyLevel oldLevel, VeterancyLevel newLevel )
-#endif
+#endif // OG
 #ifdef ZH
 void ActiveBody::onVeterancyLevelChanged( VeterancyLevel oldLevel, VeterancyLevel newLevel, Bool provideFeedback )
-#endif
+#endif // ZH
 {
 	if (oldLevel == newLevel)
 		return;
@@ -1555,7 +1555,7 @@ void ActiveBody::onVeterancyLevelChanged( VeterancyLevel oldLevel, VeterancyLeve
 #ifdef ZH
 		if( provideFeedback )
 		{
-#endif
+#endif // ZH
 		AudioEventRTS veterancyChanged;
 		switch (newLevel)
 		{
@@ -1574,7 +1574,7 @@ void ActiveBody::onVeterancyLevelChanged( VeterancyLevel oldLevel, VeterancyLeve
 		TheAudio->addAudioEvent(&veterancyChanged);
 #ifdef ZH
 		}
-#endif
+#endif // ZH
 
 		//Also mark the UI dirty -- incase the object is selected or contained.
 		Object *obj = getObject();
@@ -1686,7 +1686,7 @@ void ActiveBody::xfer( Xfer *xfer )
 #ifdef ZH
 
 	xfer->xferReal( &m_currentSubdualDamage );
-#endif
+#endif // ZH
 
 	// previous health
 	xfer->xferReal( &m_prevHealth );

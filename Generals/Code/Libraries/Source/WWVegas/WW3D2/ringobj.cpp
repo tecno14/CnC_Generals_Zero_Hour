@@ -28,17 +28,17 @@
  *                                                                                             *
 #ifdef OG
  *                     $Modtime:: 7/05/01 4:15p                                               $*
-#endif
+#endif // OG
 #ifdef ZH
  *                     $Modtime:: 11/24/01 6:17p                                              $*
-#endif
+#endif // ZH
  *                                                                                             *
 #ifdef OG
  *                    $Revision:: 26                                                          $*
-#endif
+#endif // OG
 #ifdef ZH
  *                    $Revision:: 27                                                          $*
-#endif
+#endif // ZH
  *                                                                                             *
  *---------------------------------------------------------------------------------------------*
  * Functions:                                                                                  *
@@ -77,13 +77,13 @@
  *   RingRenderObjClass::Get_Obj_Space_Bounding_Ring -- return the object-space bounding sp	  *
  *   RingRenderObjClass::Get_Obj_Space_Bounding_Ring -- returns the obj-space bounding Sphe	  *
 
-#endif
+#endif // OG
 #ifdef ZH
  *   RingRenderObjClass::Get_Obj_Space_Bounding_Sphere -- return the object-space bounding sper*
  *   RingRenderObjClass::Get_Obj_Space_Bounding_Box -- returns the obj-space bounding box      *
  *   RingRenderObjClass::Scale -- scales ring uniformly.                                       *
  *   RingRenderObjClass::Scale -- scales ring non-uniformly.                                   *
-#endif
+#endif // ZH
  *   RingRenderObjClass::Update_Cached_Bounding_Volumes -- Updates world-space bounding volum  *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
@@ -103,12 +103,12 @@
 #include "wwstring.h"
 #ifdef ZH
 #include "bound.h"
-#endif
+#endif // ZH
 #include "camera.h"
 #include "statistics.h"
 #ifdef ZH
 #include "predlod.h"
-#endif
+#endif // ZH
 #include "dx8wrapper.h"
 #include "dx8indexbuffer.h"
 #include "dx8vertexbuffer.h"
@@ -125,7 +125,7 @@
 #define STATIC_SORT_RINGS	1		// makes all ring use a static sort level rather than per-poly sorting
 #define RING_SORT_LEVEL		1		// the static sort level for all rings (when enabled)
 
-#endif
+#endif // OG
 static bool Ring_Array_Valid = false;
 
 
@@ -171,17 +171,17 @@ private:
 
 #ifdef OG
 	Vector3i	*tri_poly;	// array of triangle polys, vertex indices (can be discard if switch to fan renderer)
-#endif
+#endif // OG
 #ifdef ZH
 	TriIndex	*tri_poly;	// array of triangle polys, vertex indices (can be discard if switch to fan renderer)
-#endif
+#endif // ZH
 };
 
 
 RingMeshClass RingMeshArray[RING_NUM_LOD];
 #ifdef ZH
 float RingLODCosts[RING_NUM_LOD + 1];	// RING_NUM_LOD doesn't include the null LOD
-#endif
+#endif // ZH
 
 
 
@@ -208,7 +208,7 @@ RingRenderObjClass::RingRenderObjClass(void)
 #ifdef ZH
 		LODBias(1.0f),
 		CurrentLOD(RING_NUM_LOD),	// RING_NUM_LOD does not include the null LOD
-#endif
+#endif // ZH
 		AnimDuration (0.0F),
 		RingMaterial (NULL),
 		RingTexture (NULL),
@@ -224,11 +224,11 @@ RingRenderObjClass::RingRenderObjClass(void)
 #ifdef OG
 		OuterExtent (1.0F, 1.0F),
 		CurrentLOD (RING_NUM_LOD - 1)
-#endif
+#endif // OG
 #ifdef ZH
 		OuterExtent (1.0F, 1.0F)
 
-#endif
+#endif // ZH
 {
 	Generate_Shared_Mesh_Arrays ();
 
@@ -241,13 +241,13 @@ RingRenderObjClass::RingRenderObjClass(void)
 	//	(gth) testing whether we can get away without poly-sorting rings and spheres
 	Set_Sort_Level(RING_SORT_LEVEL);
 #endif
-#endif
+#endif // OG
 #ifdef ZH
 	// So that the object is ready for use after construction, we will
 	// complete its initialization by initializing its value array
 	// according to a screen area of 1.
 	calculate_value_array(1.0f, Value);
-#endif
+#endif // ZH
 }
 
 /***********************************************************************************************
@@ -268,7 +268,7 @@ RingRenderObjClass::RingRenderObjClass(const W3dRingStruct & def)
 #ifdef ZH
 		LODBias(1.0f),
 		CurrentLOD(RING_NUM_LOD),	// RING_NUM_LOD does not include the null LOD
-#endif
+#endif // ZH
 		AnimDuration (0.0F),
 		RingMaterial (NULL),
 		RingTexture (NULL),
@@ -284,11 +284,11 @@ RingRenderObjClass::RingRenderObjClass(const W3dRingStruct & def)
 #ifdef OG
 		OuterExtent (1.0F, 1.0F),
 		CurrentLOD (RING_NUM_LOD - 1)
-#endif
+#endif // OG
 #ifdef ZH
 		OuterExtent (1.0F, 1.0F)
 
-#endif
+#endif // ZH
 {
 	Generate_Shared_Mesh_Arrays ();
 	Init_Material ();
@@ -308,13 +308,13 @@ RingRenderObjClass::RingRenderObjClass(const W3dRingStruct & def)
 	//	(gth) testing whether we can get away without poly-sorting rings and spheres
 	Set_Sort_Level(RING_SORT_LEVEL);
 #endif
-#endif
+#endif // OG
 #ifdef ZH
 	// So that the object is ready for use after construction, we will
 	// complete its initialization by initializing its value array
 	// according to a screen area of 1.
 	calculate_value_array(1.0f, Value);
-#endif
+#endif // ZH
 }
 
 
@@ -336,7 +336,7 @@ RingRenderObjClass::RingRenderObjClass(const RingRenderObjClass & src)
 #ifdef ZH
 		LODBias(1.0f),
 		CurrentLOD(RING_NUM_LOD),	// RING_NUM_LOD does not include the null LOD
-#endif
+#endif // ZH
 		AnimDuration (0.0F),
 		RingMaterial (NULL),
 		RingTexture (NULL),
@@ -352,11 +352,11 @@ RingRenderObjClass::RingRenderObjClass(const RingRenderObjClass & src)
 #ifdef OG
 		OuterExtent (1.0F, 1.0F),
 		CurrentLOD (RING_NUM_LOD - 1)
-#endif
+#endif // OG
 #ifdef ZH
 		OuterExtent (1.0F, 1.0F)
 
-#endif
+#endif // ZH
 {
 	Generate_Shared_Mesh_Arrays ();
 	Init_Material ();
@@ -368,13 +368,13 @@ RingRenderObjClass::RingRenderObjClass(const RingRenderObjClass & src)
 	//	(gth) testing whether we can get away without poly-sorting rings and spheres
 	Set_Sort_Level(RING_SORT_LEVEL);
 #endif
-#endif
+#endif // OG
 #ifdef ZH
 	// So that the object is ready for use after construction, we will
 	// complete its initialization by initializing its value array
 	// according to a screen area of 1.
 	calculate_value_array(1.0f, Value);
-#endif
+#endif // ZH
 }
 
 
@@ -464,13 +464,13 @@ void RingRenderObjClass::Generate_Shared_Mesh_Arrays (void)
 #ifdef ZH
 		// For NULL LOD set Cost to a small nonzero amount to avoid divisions by zero.
 		RingLODCosts[0] = 0.000001f;
-#endif
+#endif // ZH
 		for(int i=0; i < RING_NUM_LOD; i++) {
 
 			RingMeshArray[i].Generate(1.0f, size);
 #ifdef ZH
 			RingLODCosts[i + 1] = RingMeshArray[i].Get_Num_Polys();
-#endif
+#endif // ZH
 
 			size+=step;
 		}
@@ -494,7 +494,7 @@ void RingRenderObjClass::calculate_value_array(float screen_area, float *values)
 	values[RING_NUM_LOD + 1] = AT_MAX_LOD; 	// Post-inc value will flag max LOD.
 }
 
-#endif
+#endif // ZH
 /***********************************************************************************************
  * RingRenderObjClass::Init_Material -- Sets up the material and default shader for the Ring.*
  *                                                                                             *
@@ -542,10 +542,10 @@ int RingRenderObjClass::Get_Num_Polys(void) const
 {
 #ifdef OG
 	return RingMeshArray[ CurrentLOD ].Get_Num_Polys();
-#endif
+#endif // OG
 #ifdef ZH
 	return RingLODCosts[CurrentLOD];
-#endif
+#endif // ZH
 }
 
 /***********************************************************************************************
@@ -620,7 +620,7 @@ void RingRenderObjClass::render_ring(RenderInfoClass & rinfo,const Vector3 & cen
 #ifdef OG
 	RingMeshClass & ring = RingMeshArray[ CurrentLOD ];
 
-#endif
+#endif // OG
 #ifdef ZH
 	// Should never get here with NULL LOD
 	if (CurrentLOD == 0) {
@@ -629,7 +629,7 @@ void RingRenderObjClass::render_ring(RenderInfoClass & rinfo,const Vector3 & cen
 	}
 
 	RingMeshClass & ring = RingMeshArray[CurrentLOD - 1];
-#endif
+#endif // ZH
 
 	if (RingTexture) {
 		RingShader.Set_Texturing (ShaderClass::TEXTURING_ENABLE);
@@ -644,14 +644,14 @@ void RingRenderObjClass::render_ring(RenderInfoClass & rinfo,const Vector3 & cen
 	// Enable sorting if the primitive is translucent, alpha testing is not enabled, and sorting is enabled globally.
 	const bool sort = (RingShader.Get_Dst_Blend_Func() != ShaderClass::DSTBLEND_ZERO) && (RingShader.Get_Alpha_Test() == ShaderClass::ALPHATEST_DISABLE) && (WW3D::Is_Sorting_Enabled());
 	const unsigned int buffer_type = sort ? BUFFER_TYPE_DYNAMIC_SORTING : BUFFER_TYPE_DYNAMIC_DX8;
-#endif
+#endif // ZH
 
 #ifdef OG
 	DynamicVBAccessClass vb(BUFFER_TYPE_DYNAMIC_SORTING,dynamic_fvf_type,ring.Vertex_ct);
-#endif
+#endif // OG
 #ifdef ZH
 	DynamicVBAccessClass vb(buffer_type, dynamic_fvf_type, ring.Vertex_ct);
-#endif
+#endif // ZH
 	{
 		DynamicVBAccessClass::WriteLockClass Lock(&vb);
 		VertexFormatXYZNDUV2 *vb = Lock.Get_Formatted_Vertex_Array();
@@ -688,10 +688,10 @@ void RingRenderObjClass::render_ring(RenderInfoClass & rinfo,const Vector3 & cen
 
 #ifdef OG
 	DynamicIBAccessClass ib(BUFFER_TYPE_DYNAMIC_SORTING,ring.face_ct*3);
-#endif
+#endif // OG
 #ifdef ZH
 	DynamicIBAccessClass ib(buffer_type, ring.face_ct * 3);
-#endif
+#endif // ZH
 	{
 		DynamicIBAccessClass::WriteLockClass Lock(&ib);
 		unsigned short *mem=Lock.Get_Index_Array();
@@ -717,7 +717,7 @@ void RingRenderObjClass::render_ring(RenderInfoClass & rinfo,const Vector3 & cen
 		0,
 		ring.Vertex_ct);
 #endif
-#endif
+#endif // OG
 #ifdef ZH
 	if (sort) {
 		SortingRendererClass::Insert_Triangles(Get_Bounding_Sphere(), 0, ring.face_ct, 0, ring.Vertex_ct);
@@ -725,7 +725,7 @@ void RingRenderObjClass::render_ring(RenderInfoClass & rinfo,const Vector3 & cen
 		DX8Wrapper::Draw_Triangles(0, ring.face_ct, 0, ring.Vertex_ct);
 	}
 
-#endif
+#endif // ZH
 
 } // render_ring
 
@@ -789,10 +789,10 @@ int RingRenderObjClass::Class_ID(void) const
 /***********************************************************************************************
 #ifdef OG
  * RingRenderObjClass::Render -- render this box                                              *
-#endif
+#endif // OG
 #ifdef ZH
  * RingRenderObjClass::Render -- render this ring                                              *
-#endif
+#endif // ZH
  *                                                                                             *
  * INPUT:                                                                                      *
  *                                                                                             *
@@ -809,7 +809,7 @@ void RingRenderObjClass::Render(RenderInfoClass & rinfo)
 	// NULL LOD
 	if (CurrentLOD == 0) return;
 
-#endif
+#endif // ZH
 	if (Is_Not_Hidden_At_All() == false) {
 		return;
 	}
@@ -819,14 +819,14 @@ void RingRenderObjClass::Render(RenderInfoClass & rinfo)
 	// of rendering it.
 	unsigned int sort_level = (unsigned int)Get_Sort_Level();
 
-#endif
+#endif // OG
 #ifdef ZH
 	unsigned int sort_level = SORT_LEVEL_NONE;
 
 	if (!WW3D::Is_Sorting_Enabled()) {
 		sort_level = RingShader.Guess_Sort_Level();
 	}
-#endif
+#endif // ZH
 
 	if (WW3D::Are_Static_Sort_Lists_Enabled() && sort_level != SORT_LEVEL_NONE) {
 
@@ -860,12 +860,12 @@ void RingRenderObjClass::Render(RenderInfoClass & rinfo)
 
 		CurrentLOD = lod_int;
 
-#endif
+#endif // OG
 
 #ifdef OG
 		// End LOD Determination
 
-#endif
+#endif // OG
 		Matrix3D temp = Transform;
 
 		// Do Time Based Animation
@@ -878,10 +878,10 @@ void RingRenderObjClass::Render(RenderInfoClass & rinfo)
 		Vector2 outer_scale (OuterExtent.X * OuterScale.X, OuterExtent.Y * OuterScale.Y);
 #ifdef OG
 		RingMeshArray[CurrentLOD].Scale (inner_scale, outer_scale);
-#endif
+#endif // OG
 #ifdef ZH
 		RingMeshArray[CurrentLOD - 1].Scale(inner_scale, outer_scale);
-#endif
+#endif // ZH
 
 		//
 		//	Make sure this mesh uses the correct UV tiling
@@ -889,17 +889,17 @@ void RingRenderObjClass::Render(RenderInfoClass & rinfo)
 		if (RingTexture != NULL) {
 #ifdef OG
 			RingMeshArray[CurrentLOD].Set_Tiling (TextureTileCount);
-#endif
+#endif // OG
 #ifdef ZH
 			RingMeshArray[CurrentLOD - 1].Set_Tiling (TextureTileCount);
-#endif
+#endif // ZH
 		}
 
 		//
 		//	Should we force the ring to be camera aligned?
 #ifdef ZH
 		// (this will cause the ring to be parallel to the screen)
-#endif
+#endif // ZH
 		//
 		if (Flags & USE_CAMERA_ALIGN) {
 #ifdef OG
@@ -908,21 +908,21 @@ void RingRenderObjClass::Render(RenderInfoClass & rinfo)
 			rinfo.Gerd.matrixMode (srGERD::MODELVIEW);
 			rinfo.Gerd.pushMatrix ();
 			rinfo.Gerd.getMatrix (srGERD::MODELVIEW, srtm);
-#endif
+#endif // OG
 #ifdef ZH
 			Vector3 obj_position;
 			Vector3 camera_z_vector;
 
-#endif
+#endif // ZH
 
 #ifdef OG
 			srVector3 wpos(Transform[0][3],Transform[1][3],Transform[2][3]);
 			srVector4 cpos = srtm.transform (wpos);
-#endif
+#endif // OG
 #ifdef ZH
 			rinfo.Camera.Get_Transform().Get_Z_Vector(&camera_z_vector);
 			Transform.Get_Translation(&obj_position);
-#endif
+#endif // ZH
 
 #ifdef OG
 			Matrix3D tm(1.0f, 0.0f, 0.0f, cpos.x,
@@ -932,29 +932,29 @@ void RingRenderObjClass::Render(RenderInfoClass & rinfo)
 			Convert_Westwood_Matrix (tm, &srtm);
 			rinfo.Gerd.loadMatrix (srtm);	 
 	#endif //WW3D_DX8
-#endif
+#endif // OG
 #ifdef ZH
 			Matrix3D temp;
 			temp.Look_At(obj_position, obj_position + camera_z_vector, 0.0f);
 			DX8Wrapper::Set_Transform(D3DTS_WORLD, temp);	
 
-#endif
+#endif // ZH
 		} else {
 #ifdef OG
 			DX8Wrapper::Set_Transform(D3DTS_WORLD,temp);	
-#endif
+#endif // OG
 #ifdef ZH
 			DX8Wrapper::Set_Transform(D3DTS_WORLD, Transform);	
-#endif
+#endif // ZH
 		}
 
 		//
 #ifdef OG
 		//	Pass the geometry onto Surrender
-#endif
+#endif // OG
 #ifdef ZH
 		//	Pass the geometry on to DX8
-#endif
+#endif // ZH
 		//
 		render_ring (rinfo, ObjSpaceCenter, ObjSpaceExtent);
 	}
@@ -1245,7 +1245,7 @@ int RingRenderObjClass::Calculate_Cost_Value_Arrays(float screen_area, float *va
 
 	// We currently don't support max screen size or minimum LOD clamping for ring objects
 	return 0;
-#endif
+#endif // ZH
 }
 
 
@@ -1253,7 +1253,7 @@ int RingRenderObjClass::Calculate_Cost_Value_Arrays(float screen_area, float *va
 #ifdef OG
  * SphereRenderObjClass::Update_On_Visibilty	-- Either starts or stops the animation based on visibility*
 
-#endif
+#endif // OG
 #ifdef ZH
  * RingRenderObjClass::Scale -- scales ring uniformly.                                         *
  *                                                                                             *
@@ -1330,7 +1330,7 @@ void RingRenderObjClass::Scale(float scalex, float scaley, float scalez)
 
 /***********************************************************************************************
  * RingRenderObjClass::Update_On_Visibilty -- Either starts or stops the animation based on vis*
-#endif
+#endif // ZH
  *                                                                                             *
  * INPUT:                                                                                      *
  *                                                                                             *
@@ -1461,10 +1461,10 @@ RingPrototypeClass::RingPrototypeClass(RingRenderObjClass *ring)
 	//
 #ifdef OG
 	//	Determine the texture name for this sphere
-#endif
+#endif // OG
 #ifdef ZH
 	//	Determine the texture name for this ring
-#endif
+#endif // ZH
 	//
 	if (ring->RingTexture != NULL) {
 		StringClass name = ring->RingTexture->Get_Full_Path();
@@ -1778,10 +1778,10 @@ void RingMeshClass::Generate(float radius, int slices)
 	vtx_uv		= W3DNEWARRAY Vector2[Vertex_ct];
 #ifdef OG
 	tri_poly		= W3DNEWARRAY Vector3i[face_ct];
-#endif
+#endif // OG
 #ifdef ZH
 	tri_poly		= W3DNEWARRAY TriIndex[face_ct];
-#endif
+#endif // ZH
 
 	//
 	//	Generate vertices, normals, and uv's

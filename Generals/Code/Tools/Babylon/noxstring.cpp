@@ -233,4 +233,4 @@ BOOL CALLBACK EnumAllWindowsProcExact(HWND hWnd, LPARAM lParam)
 }
 
 
-#endif
+#endif // OG

@@ -128,7 +128,7 @@ public:
 	Int				m_uniqueID;			///< Road type.
 #ifdef ZH
 	Bool			m_visible;
-#endif
+#endif // ZH
 protected:
 	Int										m_numVertex;
 	VertexFormatXYZDUV1*	m_vb;
@@ -198,10 +198,10 @@ class W3DRoadBuffer
 {	
 #ifdef OG
 friend class HeightMapRenderObjClass;
-#endif
+#endif // OG
 #ifdef ZH
 friend class BaseHeightMapRenderObjClass;
-#endif
+#endif // ZH
 public:
 
 	W3DRoadBuffer(void);
@@ -220,7 +220,7 @@ public:
 #ifdef ZH
 	/// Notifies that the camera moved.
 	void updateCenter(void);
-#endif
+#endif // ZH
 
 protected:
 	RoadType *m_roadTypes;	///<Roads texture
@@ -231,7 +231,7 @@ protected:
 	RefRenderObjListIterator *m_lightsIterator;	///< Lighting iterator.
 #ifdef OG
 	Int m_minX, m_maxX, m_minY, m_maxY; ///< Bounds on the terrain to be rendered.
-#endif
+#endif // OG
 	Int m_curUniqueID;				///< Road type we are rendering at this pass.
 	Int m_curRoadType;
 #ifdef LOAD_TEST_ASSETS
@@ -249,7 +249,7 @@ protected:
 #ifdef ZH
 	Bool m_updateBuffers; ///< If true, update the vertex buffers.
 
-#endif
+#endif // ZH
 	void addMapObjects(void);
 	void addMapObject(RoadSegment *pRoad, Bool updateTheCounts);
 	void adjustStacking(Int topUniqueID, Int bottomUniqueID);
@@ -294,7 +294,7 @@ protected:
 	void freeRoadBuffers(void);									 ///< Frees the index and vertex buffers.
 #ifdef ZH
 	Bool visibilityChanged(const IRegion2D &bounds);								///< Returns true if some roads are now visible that weren't, or vice versa.
-#endif
+#endif // ZH
 	void rotateAbout(Vector2 *ptP, Vector2 center, Real angle);
 };
 

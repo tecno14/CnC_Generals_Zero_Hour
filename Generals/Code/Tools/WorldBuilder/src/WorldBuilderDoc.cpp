@@ -66,7 +66,7 @@
 //#pragma MESSAGE("************************************** WARNING, optimization disabled for debugging purposes")
 #endif
 
-#endif
+#endif // ZH
 // Can't currently have multiple open... jba.
 #define notONLY_ONE_AT_A_TIME
 
@@ -117,7 +117,7 @@ BEGIN_MESSAGE_MAP(CWorldBuilderDoc, CDocument)
 	ON_COMMAND(ID_EDIT_SCRIPTS, OnEditScripts)
 #ifdef ZH
 	ON_COMMAND(ID_SCRIPT_EDIT, OnEditScripts)
-#endif
+#endif // ZH
 	ON_COMMAND(ID_VIEWHOME, OnViewHome)
 	ON_COMMAND(ID_TEXTURESIZING_TILE4X4, OnTexturesizingTile4x4)
 	ON_UPDATE_COMMAND_UI(ID_TEXTURESIZING_TILE4X4, OnUpdateTexturesizingTile4x4)
@@ -415,7 +415,7 @@ void CWorldBuilderDoc::Serialize(CArchive& ar)
 				polyTrigger = polyTrigger->getNext();
 			}
 			
-#endif
+#endif // ZH
 			TheLayersList->enableUpdates();
 
 			TerrainMaterial::updateTextures(m_heightMap);
@@ -457,13 +457,13 @@ AsciiString ConvertToNonGCName(AsciiString name, Bool checkTemplate=true)
 		const ThingTemplate *tt = TheThingFactory->findTemplate(swapName);
 		if (tt) {
 			return swapName;
-#endif
+#endif // ZH
 	}
 #ifdef ZH
 		return AsciiString::TheEmptyString;
 	}
 	return swapName;
-#endif
+#endif // ZH
 }
 
 AsciiString ConvertName(AsciiString name)
@@ -509,7 +509,7 @@ void CWorldBuilderDoc::validate(void)
 #ifdef ZH
 	Bool needToFixTeams = false;
 
-#endif
+#endif // ZH
 	// verify/fix the build lists
 	for (int side=0; side<TheSidesList->getNumSides(); side++) {
 		SidesInfo *pSide = TheSidesList->getSideInfo(side); 
@@ -520,15 +520,15 @@ void CWorldBuilderDoc::validate(void)
 		if (tmplname.isEmpty()) {
 			continue; // Neutral player has empty template. jba. [8/8/2003]
 		}
-#endif
+#endif // ZH
 		const PlayerTemplate* pt = ThePlayerTemplateStore->findPlayerTemplate(NAMEKEY(tmplname));
 		if (!pt) {
 #ifdef OG
 			DEBUG_LOG(("Faction %s could not be found in sides list!\n", tmplname.str()));
-#endif
+#endif // OG
 #ifdef ZH
 			DEBUG_LOG(("Player '%s' Faction '%s' could not be found in sides list!\n", playername.str(), tmplname.str()));
-#endif
+#endif // ZH
 			if (tmplname.startsWith("FactionFundamentalist")) {
 				swapName = ConvertFaction(tmplname);
 				if (swapName != AsciiString::TheEmptyString) {
@@ -615,7 +615,7 @@ void CWorldBuilderDoc::validate(void)
 			// quick hack to remove "GC_" objects from Generals mission disk maps.
 			if (name.startsWith("GC_")) {
 				swapName = ConvertToNonGCName(name);
-#endif
+#endif // ZH
 				if (swapName != AsciiString::TheEmptyString) {
 					swapDict.setAsciiString(NAMEKEY(name), swapName);
 					exists = true;
@@ -667,15 +667,15 @@ void CWorldBuilderDoc::validate(void)
 					if (tmplname.isEmpty()) {
 						continue; // Neutral player has empty template. jba. [8/8/2003]
 					}
-#endif
+#endif // ZH
 					const PlayerTemplate* pt = ThePlayerTemplateStore->findPlayerTemplate(NAMEKEY(tmplname));
 					if (!pt) {
 #ifdef OG
 						DEBUG_LOG(("Faction %s could not be found in sides list!\n", tmplname.str()));
-#endif
+#endif // OG
 #ifdef ZH
 						DEBUG_LOG(("Player '%s' Faction '%s' could not be found in sides list!\n", playername.str(), tmplname.str()));
-#endif
+#endif // ZH
 						if (tmplname.startsWith("FactionFundamentalist")) {
 							swapName = ConvertFaction(tmplname);
 							if (swapName != AsciiString::TheEmptyString) {
@@ -688,37 +688,37 @@ void CWorldBuilderDoc::validate(void)
 #ifdef OG
 					DEBUG_LOG(("Side %s could not be found in sides list!\n", teamOwner.str()));
 
-#endif
+#endif // OG
 #ifdef ZH
 					needToFixTeams = true;
 					DEBUG_LOG(("Side '%s' could not be found in sides list!\n", teamOwner.str()));
-#endif
+#endif // ZH
 				}
 			} else {
 #ifdef OG
 				DEBUG_LOG(("Team %s could not be found in sides list!\n", teamName.str()));
 
-#endif
+#endif // OG
 #ifdef ZH
 				needToFixTeams = true;
 				DEBUG_LOG(("Team '%s' could not be found in sides list!\n", teamName.str()));
-#endif
+#endif // ZH
 			}
 		} else {
 #ifdef OG
 			DEBUG_LOG(("Object %s does not have a team at all!\n", name.str()));
 
-#endif
+#endif // OG
 #ifdef ZH
 			needToFixTeams = true;
 			DEBUG_LOG(("Object '%s' does not have a team at all!\n", name.str()));
 		}
-#endif
+#endif // ZH
 		}
 #ifdef ZH
 	if (needToFixTeams) {
 		AfxMessageBox(IDS_NEED_TO_FIX_TEAMS, MB_OK|MB_ICONERROR);
-#endif
+#endif // ZH
 	}
 }
 
@@ -1328,7 +1328,7 @@ BOOL CWorldBuilderDoc::OnNewDocument()
 	TheLayersList->resetLayers();
 	TheLayersList->disableUpdates();
 
-#endif
+#endif // ZH
 	TheSidesList->clear();
 	TheSidesList->validateSides();
 
@@ -1346,7 +1346,7 @@ BOOL CWorldBuilderDoc::OnNewDocument()
 	pTrig->setWaterArea(true);
 #ifdef ZH
 	pTrig->setTriggerName(AsciiString("Default Water"));
-#endif
+#endif // ZH
 	loc.x = -hi.borderWidth*MAP_XY_FACTOR;
 	loc.y = -hi.borderWidth*MAP_XY_FACTOR;
 	loc.z = TheGlobalData->m_waterPositionZ;
@@ -1360,7 +1360,7 @@ BOOL CWorldBuilderDoc::OnNewDocument()
 	PolygonTrigger::addPolygonTrigger(pTrig);
 #ifdef ZH
 	TheLayersList->addPolygonTriggerToLayersList(pTrig, pTrig->getLayerName()); 
-#endif
+#endif // ZH
 	SetHeightMap(m_heightMap, true);
 	TerrainMaterial::updateTextures(m_heightMap);
 
@@ -2005,11 +2005,11 @@ void CWorldBuilderDoc::OnEditScripts()
 #ifdef OG
 	ScriptDialog script;
 	script.DoModal();
-#endif
+#endif // OG
 #ifdef ZH
 	ASSERT(CMainFrame::GetMainFrame());
 	CMainFrame::GetMainFrame()->onEditScripts();
-#endif
+#endif // ZH
 }
 
 /* when "home" key is pressed, goes to the initial camera waypoint or if

@@ -160,10 +160,10 @@ public:
 		IntersectionNormal = &_IntersectionNormal;
 #ifdef OG
 		Result.CollisionType=COLLISION_TYPE_ALL;	//added for 'Generals'. MW
-#endif
+#endif // OG
 #ifdef ZH
 		Result.CollisionType=COLL_TYPE_ALL;	//added for 'Generals'. MW
-#endif
+#endif // ZH
 	}
 
 	

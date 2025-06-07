@@ -81,7 +81,7 @@ MissileAIUpdateModuleData::MissileAIUpdateModuleData()
 	m_distanceScatterWhenJammed = 75.0f;
     m_detonateCallsKill = FALSE;
     m_killSelfDelay   = 3; // just long enough for the contrail to catch up to me
-#endif
+#endif // ZH
 }
 
 //-----------------------------------------------------------------------------
@@ -103,7 +103,7 @@ void MissileAIUpdateModuleData::buildFieldParse(MultiIniFieldParse& p)
 		{ "DetonateOnNoFuel",			  INI::parseBool,			NULL, offsetof( MissileAIUpdateModuleData, m_detonateOnNoFuel ) },
 #ifdef ZH
 		{ "DistanceScatterWhenJammed",INI::parseReal,		NULL, offsetof( MissileAIUpdateModuleData, m_distanceScatterWhenJammed ) },
-#endif
+#endif // ZH
 
 		{ "GarrisonHitKillRequiredKindOf", KindOfMaskType::parseFromINI, NULL, offsetof( MissileAIUpdateModuleData, m_garrisonHitKillKindof ) },
 		{ "GarrisonHitKillForbiddenKindOf", KindOfMaskType::parseFromINI, NULL, offsetof( MissileAIUpdateModuleData, m_garrisonHitKillKindofNot ) },
@@ -112,7 +112,7 @@ void MissileAIUpdateModuleData::buildFieldParse(MultiIniFieldParse& p)
 #ifdef ZH
     { "DetonateCallsKill", INI::parseBool,   NULL, offsetof( MissileAIUpdateModuleData, m_detonateCallsKill ) },
     { "KillSelfDelay",     INI::parseDurationUnsignedInt, NULL, offsetof( MissileAIUpdateModuleData, m_killSelfDelay ) },
-#endif
+#endif // ZH
 		{ 0, 0, 0, 0 }
 	};
 
@@ -148,7 +148,7 @@ MissileAIUpdate::MissileAIUpdate( Thing *thing, const ModuleData* moduleData ) :
 	m_framesTillDecoyed = 0;
 	m_noDamage = FALSE;
 	m_isJammed = FALSE;
-#endif
+#endif // ZH
 } 
 
 //-------------------------------------------------------------------------------------------------
@@ -304,7 +304,7 @@ void MissileAIUpdate::projectileFireAtObjectOrPosition( const Object *victim, co
 
 #ifdef ZH
   setCurrentVictim( victim );/// extending access to the victim via the parent class
-#endif
+#endif // ZH
 	m_prevPos = *getObject()->getPosition();
 }
 
@@ -392,10 +392,10 @@ Bool MissileAIUpdate::projectileHandleCollision( Object *other )
 	// mark ourself as "no collisions" (since we might still exist in slow death mode)
 #ifdef OG
 	obj->setStatus(OBJECT_STATUS_NO_COLLISIONS);
-#endif
+#endif // OG
 #ifdef ZH
 	obj->setStatus( MAKE_OBJECT_STATUS_MASK( OBJECT_STATUS_NO_COLLISIONS ) );
-#endif
+#endif // ZH
 	return true;
 }
 
@@ -408,7 +408,7 @@ void MissileAIUpdate::detonate()
 #ifdef OG
 		TheWeaponStore->handleProjectileDetonation(m_detonationWeaponTmpl, obj, obj->getPosition(), m_extraBonusFlags);
 
-#endif
+#endif // OG
 #ifdef ZH
 		
 		TheWeaponStore->handleProjectileDetonation(m_detonationWeaponTmpl, obj, obj->getPosition(), m_extraBonusFlags, !m_noDamage );
@@ -422,20 +422,20 @@ void MissileAIUpdate::detonate()
 			damageInfo.in.m_amount = obj->getBodyModule()->getMaxHealth();
 			obj->attemptDamage( &damageInfo );
 		}
-#endif
+#endif // ZH
 	}
 #ifdef OG
 	else
-#endif
+#endif // OG
 #ifdef ZH
 	else if( !m_noDamage )
-#endif
+#endif // ZH
 	{
 #ifdef OG
 		// kill it (vs destroying it) so that its Die modules are called
 //	obj->kill();
 		// do it manually, so we can specify DEATH_DETONATED
-#endif
+#endif // OG
 		DamageInfo damageInfo;
 		damageInfo.in.m_damageType = DAMAGE_UNRESISTABLE;
 		damageInfo.in.m_deathType = DEATH_DETONATED;
@@ -451,7 +451,7 @@ void MissileAIUpdate::detonate()
 
 	  obj->setStatus( MAKE_OBJECT_STATUS_MASK( OBJECT_STATUS_MISSILE_KILLING_SELF ) );
 
-#endif
+#endif // ZH
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -471,30 +471,30 @@ void MissileAIUpdate::doKillSelfState()
   const MissileAIUpdateModuleData *modData = getMissileAIUpdateModuleData();
 
 	if (m_stateTimestamp > TheGameLogic->getFrame() - modData->m_killSelfDelay ) 
-#endif
+#endif // ZH
 {
 #ifdef OG
 	if (m_stateTimestamp > TheGameLogic->getFrame()-3) {
 		// Hold in this state 2 frames to let the contrail catch up. jba.
-#endif
+#endif // OG
 #ifdef ZH
 		// Hold in this state [modData->m_killSelfDelay] frames to let the contrail catch up. jba.
 
-#endif
+#endif // ZH
 		return;
 	}
 	Object* obj = getObject();
 #ifdef OG
 	if (m_detonationWeaponTmpl)	{
 
-#endif
+#endif // OG
 #ifdef ZH
 	if (m_detonationWeaponTmpl)	
   {
     if ( modData->m_detonateCallsKill )
       obj->kill(); // kill it (vs destroying it) so that its Die modules are called
     else  
-#endif
+#endif // ZH
 		TheGameLogic->destroyObject( obj );	
 	}
 	switchToState(DEAD);
@@ -647,10 +647,10 @@ void MissileAIUpdate::doKillState(void)
 	// Objects that are braking don't follow the normal physics, so they end up at their destination exactly.
 #ifdef OG
 	obj->setStatus(OBJECT_STATUS_BRAKING, TRUE);
-#endif
+#endif // OG
 #ifdef ZH
 	obj->setStatus( MAKE_OBJECT_STATUS_MASK( OBJECT_STATUS_BRAKING ) );
-#endif
+#endif // ZH
 
 	if (curLoco)
 	{
@@ -668,10 +668,10 @@ void MissileAIUpdate::doKillState(void)
 			}
 #ifdef OG
 			Real distanceToTargetSq = ThePartitionManager->getDistanceSquared( getObject(), getGoalObject(), FROM_CENTER_3D);
-#endif
+#endif // OG
 #ifdef ZH
 			Real distanceToTargetSq = ThePartitionManager->getDistanceSquared( getObject(), getGoalObject(), FROM_BOUNDINGSPHERE_3D);
-#endif
+#endif // ZH
 			//DEBUG_LOG(("Distance to target %f, closeEnough %f\n", sqrt(distanceToTargetSq), closeEnough));
 			if (distanceToTargetSq < closeEnough*closeEnough) {
 				Coord3D pos = *getGoalObject()->getPosition();
@@ -738,11 +738,11 @@ UpdateSleepTime MissileAIUpdate::update()
 				// target dies I can do something cool.
 				m_victimID = victim->getID();
 			}
-#endif
+#endif // ZH
 	}
 #ifdef ZH
 	}
-#endif
+#endif // ZH
 
 	if (newPos.z < 0) 
 	{	 
@@ -856,7 +856,7 @@ void MissileAIUpdate::setFramesTillCountermeasureDiversionOccurs( UnsignedInt fr
 {
 	UnsignedInt now = TheGameLogic->getFrame();
 	m_framesTillDecoyed = now + frames;
-#endif
+#endif // ZH
 }
 
 #ifdef ZH
@@ -895,7 +895,7 @@ void MissileAIUpdate::projectileNowJammed()
 	m_victimID = INVALID_ID;
 }
 
-#endif
+#endif // ZH
 // ------------------------------------------------------------------------------------------------
 /** CRC */
 // ------------------------------------------------------------------------------------------------
@@ -915,10 +915,10 @@ void MissileAIUpdate::xfer( Xfer *xfer )
   // version
 #ifdef OG
   const XferVersion currentVersion = 4;
-#endif
+#endif // OG
 #ifdef ZH
   const XferVersion currentVersion = 6;
-#endif
+#endif // ZH
   XferVersion version = currentVersion;
   xfer->xferVersion( &version, currentVersion );
  
@@ -983,7 +983,7 @@ void MissileAIUpdate::xfer( Xfer *xfer )
 
 	if( version>= 6 )
 		xfer->xferBool( &m_isJammed );
-#endif
+#endif // ZH
 
 }  // end xfer
 
