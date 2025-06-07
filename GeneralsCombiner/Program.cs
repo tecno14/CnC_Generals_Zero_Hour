@@ -54,7 +54,7 @@ internal class Program
 #endif
 
         // Add versions as projects variables for project files
-#if true
+#if false
         var varDefiner = new VarDefiner("OG", "ZH", destinationPath);
         varDefiner.Start();
 #endif
@@ -177,6 +177,27 @@ internal class Program
         //      then check using the old way to check if result is same as current file (not changed for other stuff),
         //      then check if there is #ifdef or #endif in each block, if so ...fix it and save it
         //      add comment at #endif 
+
+        // temp
+        
+        var tmp_gv1 = @"C:\Projects\3_generals\src\temp\new merger\CnC_Generals_Zero_Hour\Generals";
+        var tmp_gv2 = @"C:\Projects\3_generals\src\temp\new merger\CnC_Generals_Zero_Hour\GeneralsMD";
+        var tmp_gv3 = @"C:\Projects\3_generals\src\temp\new merger\CnC_Generals_Zero_Hour\Generals3";
+
+        //1- delete all files but VersionDependent
+        var otherFiles = Directory.GetFiles(tmp_gv1, "*", SearchOption.AllDirectories)
+            .Where(file => !Constants.VersionDependent.Any(ex => Path.GetExtension(file).Equals(ex, StringComparison.OrdinalIgnoreCase)))
+            .ToList();
+
+        otherFiles.ForEach(File.Delete);
+        Console.WriteLine($"({otherFiles.Count}) files removed");
+
+        var oldmerger = new Merger("OG", "ZH",
+            tmp_gv1, tmp_gv2, tmp_gv3,
+            Constants.VersionDependent);
+        var oldmergerResult = oldmerger.Start();
+        Merger.GenerateReport(oldmergerResult);
+
         // - check files that still in zh and not in og
         // - fix c++ upgrade from98 to new version errors
     }

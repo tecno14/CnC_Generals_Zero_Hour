@@ -16,7 +16,8 @@ namespace Workers;
 /// <param name="versionBRoot"></param>
 /// <param name="destinationRoot"></param>
 /// <param name="validFilesExtensions"></param>
-public class Merger(
+[Obsolete("Use Merger instead", false)]
+public class MergerObsolete(
     string versionA,
     string versionB,
     string versionARoot,
@@ -88,7 +89,7 @@ public class Merger(
         {
             var content = File.ReadAllText(source);
             Directory.CreateDirectory(Path.GetDirectoryName(dest)!);
-            File.WriteAllText(dest, $"#ifdef {symbol}\r\n{content}\r\n#endif // {symbol}\r\n");
+            File.WriteAllText(dest, $"#ifdef {symbol}\r\n{content}\r\n#endif\r\n");
             Console.WriteLine($"[{symbol}] {dest}");
         }
         catch (Exception ex)
@@ -217,7 +218,7 @@ public class Merger(
         {
             merged.AppendLine($"#ifdef {symbol}");
             merged.Append(processed);
-            merged.AppendLine($"#endif // {symbol}");
+            merged.AppendLine("#endif");
         }
     }
 
