@@ -28,6 +28,7 @@ Max4Hybrid
 *.sln.ide
 .vs/
 ~AutoRecover.*
+/Code/UpgradeLog.htm
 
 # VS Code specific files
 .vscode/
