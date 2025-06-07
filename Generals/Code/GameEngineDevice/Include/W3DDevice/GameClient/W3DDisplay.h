@@ -128,6 +128,9 @@ public:
 	virtual void enableLetterBox(Bool enable);	///<forces letter-boxed display on/off
 
 	virtual Bool isLetterBoxFading(void);	///<returns true while letterbox fades in/out
+#ifdef ZH
+	virtual Bool isLetterBoxed(void);
+#endif // ZH
 
 	virtual void clearShroud();
 	virtual void setShroudLevel(Int x, Int y, CellShroudStatus setting);

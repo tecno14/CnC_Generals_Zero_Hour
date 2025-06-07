@@ -1,3 +1,4 @@
+#ifdef OG
 /*
 **	Command & Conquer Generals(tm)
 **	Copyright 2025 Electronic Arts Inc.
@@ -71,3 +72,5 @@ protected:
 };
 
 #endif
+
+#endif // OG

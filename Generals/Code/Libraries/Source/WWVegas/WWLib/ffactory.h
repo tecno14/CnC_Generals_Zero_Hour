@@ -24,11 +24,26 @@
  *                                                                                             * 
  *                     $Archive:: /Commando/Code/wwlib/ffactory.h                     $* 
  *                                                                                             * 
+#ifdef OG
  *                      $Author:: Jani_p                                                      $*
+#endif // OG
+#ifdef ZH
+ *                      $Author:: Steve_t                                                     $*
+#endif // ZH
  *                                                                                             * 
+#ifdef OG
  *                     $Modtime:: 8/24/01 11:50a                                              $*
+#endif // OG
+#ifdef ZH
+ *                     $Modtime:: 9/07/01 5:30p                                               $*
+#endif // ZH
  *                                                                                             * 
+#ifdef OG
  *                    $Revision:: 13                                                          $*
+#endif // OG
+#ifdef ZH
+ *                    $Revision:: 14                                                          $*
+#endif // ZH
  *                                                                                             *
  *---------------------------------------------------------------------------------------------* 
  * Functions:                                                                                  * 
@@ -62,6 +77,9 @@ class	FileClass;
 class	FileFactoryClass {
 
 public:
+#ifdef ZH
+	virtual ~FileFactoryClass(void){};
+#endif // ZH
 	virtual FileClass * Get_File( char const *filename ) = 0;
 	virtual void Return_File( FileClass *file ) = 0;
 };
@@ -141,6 +159,9 @@ public:
 	void						Append_Sub_Directory( const char * sub_directory );
 	bool						Get_Strip_Path( void ) const								{ return IsStripPath; }
 	void						Set_Strip_Path( bool set )									{ IsStripPath = set; }
+#ifdef ZH
+	void						Reset_Sub_Directory( void )								{ SubDirectory = ""; }
+#endif // ZH
 
 protected:
 	StringClass				SubDirectory;
@@ -155,6 +176,13 @@ extern FileFactoryClass	*	_TheFileFactory;
 extern RawFileFactoryClass	*	_TheWritingFileFactory;
 
 // No simple file factory.  jba.
+#ifdef OG
 //extern SimpleFileFactoryClass	*	_TheSimpleFileFactory;
+
+#endif // OG
+#ifdef ZH
+// (gth) re-enabling this because w3d view uses it
+extern SimpleFileFactoryClass	*	_TheSimpleFileFactory;
+#endif // ZH
 
 #endif

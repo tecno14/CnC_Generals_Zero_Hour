@@ -26,12 +26,30 @@
  *                                                                                             *
  *              Original Author:: Nathaniel Hoffman                                            *
  *                                                                                             *
+#ifdef OG
  *                      $Author:: Jani_p                                                      $*
+#endif // OG
+#ifdef ZH
+ *                       Author : Kenny Mitchell                                               * 
+#endif // ZH
  *                                                                                             *
+#ifdef OG
  *                     $Modtime:: 7/16/01 1:33p                                               $*
+#endif // OG
+#ifdef ZH
+ *                     $Modtime:: 06/27/02 1:27p                                              $*
+#endif // ZH
  *                                                                                             *
+#ifdef OG
  *                    $Revision:: 2                                                           $*
+#endif // OG
+#ifdef ZH
+ *                    $Revision:: 3                                                           $*
+#endif // ZH
  *                                                                                             *
+#ifdef ZH
+ * 06/27/02 KM Z Format support																						*
+#endif // ZH
  *---------------------------------------------------------------------------------------------*
  * Functions:                                                                                  *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
@@ -52,6 +70,11 @@
 
 D3DFORMAT WW3DFormat_To_D3DFormat(WW3DFormat ww3d_format);
 WW3DFormat D3DFormat_To_WW3DFormat(D3DFORMAT d3d_format);
+#ifdef ZH
+
+D3DFORMAT WW3DZFormat_To_D3DFormat(WW3DZFormat ww3d_zformat);
+WW3DZFormat D3DFormat_To_WW3DZFormat(D3DFORMAT d3d_format);
+#endif // ZH
 
 void Init_D3D_To_WW3_Conversion();
 

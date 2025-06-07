@@ -26,12 +26,30 @@
  *                                                                                             *
  *              Original Author:: Greg Hjelstrom                                               *
  *                                                                                             *
+#ifdef OG
  *                      $Author:: Greg_h                                                      $*
+#endif // OG
+#ifdef ZH
+ *                      $Author:: Kenny Mitchell                                               * 
+#endif // ZH
  *                                                                                             *
+#ifdef OG
  *                     $Modtime:: 6/29/01 11:23a                                              $*
+#endif // OG
+#ifdef ZH
+ *                     $Modtime:: 06/26/02 4:04p                                             $*
+#endif // ZH
  *                                                                                             *
+#ifdef OG
  *                    $Revision:: 6                                                           $*
+#endif // OG
+#ifdef ZH
+ *                    $Revision:: 8                                                           $*
+#endif // ZH
  *                                                                                             *
+#ifdef ZH
+ * 06/26/02 KM Matrix name change to avoid MAX conflicts                                       *
+#endif // ZH
  *---------------------------------------------------------------------------------------------*
  * Functions:                                                                                  *
  *   DecalSystemClass::DecalSystemClass -- Constructor                                         *
@@ -264,11 +282,21 @@ void DecalGeneratorClass::Set_Mesh_Transform(const Matrix3D & mesh_transform)
 	*/
 	Matrix3D world_to_texture;
 	Matrix3D tmp;
+#ifdef OG
 	Matrix4  mesh_to_texture;
+#endif // OG
+#ifdef ZH
+	Matrix4x4  mesh_to_texture;
+#endif // ZH
 
 	Transform.Get_Orthogonal_Inverse(world_to_texture);
 	Matrix3D::Multiply(world_to_texture,mesh_transform,&tmp);
+#ifdef OG
 	Matrix4::Multiply(Projection,tmp,&mesh_to_texture);
+#endif // OG
+#ifdef ZH
+	Matrix4x4::Multiply(Projection,tmp,&mesh_to_texture);
+#endif // ZH
 
 	/*
 	** Plug the matrix and texture size into the mapper
@@ -278,9 +306,18 @@ void DecalGeneratorClass::Set_Mesh_Transform(const Matrix3D & mesh_transform)
 		TextureClass * tex = Material->Peek_Texture();
 		WWASSERT(tex != NULL);
 		if (tex) {
+#ifdef OG
 			SurfaceClass::SurfaceDescription surface_desc;
 			tex->Get_Level_Description(surface_desc);
 			texsize = surface_desc.Width;
+
+#endif // OG
+#ifdef ZH
+//			SurfaceClass::SurfaceDescription surface_desc;
+//			tex->Get_Level_Description(surface_desc);
+//			texsize = surface_desc.Width;
+			texsize = tex->Get_Width();
+#endif // ZH
 		}
 
 		Mapper->Set_Texture_Transform(mesh_to_texture,texsize);

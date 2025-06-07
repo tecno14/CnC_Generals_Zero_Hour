@@ -16,21 +16,53 @@
 **	along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#ifdef OG
 /* $Header: /VSS_Sync/ww3d2/rendobj.cpp 15    8/29/01 9:49p Vss_sync $ */
+#endif // OG
+#ifdef ZH
+/* $Header: /Commando/Code/ww3d2/rendobj.cpp 16    12/17/01 8:06p Byon_g $ */
+#endif // ZH
 /*********************************************************************************************** 
  ***                            Confidential - Westwood Studios                              *** 
  *********************************************************************************************** 
  *                                                                                             * 
  *                 Project Name : Commando / G 3D Engine                                       * 
+#ifdef ZH
  *                                                                                             * 
+ *                     $Archive:: /Commando/Code/ww3d2/rendobj.cpp                            $* 
+#endif // ZH
+ *                                                                                             * 
+#ifdef OG
  *                     $Archive:: /VSS_Sync/ww3d2/rendobj.cpp                                 $* 
+#endif // OG
+#ifdef ZH
+ *                   Org Author:: Greg_h                                                       * 
+#endif // ZH
  *                                                                                             * 
+#ifdef OG
  *                       Author:: Greg_h                                                       * 
+#endif // OG
+#ifdef ZH
+ *                       Author : Kenny Mitchell                                               * 
+#endif // ZH
  *                                                                                             * 
+#ifdef OG
  *                     $Modtime:: 8/29/01 7:29p                                               $* 
+#endif // OG
+#ifdef ZH
+ *                     $Modtime:: 07/01/02 12:45p                                              $*
+#endif // ZH
  *                                                                                             * 
+#ifdef OG
  *                    $Revision:: 15                                                          $* 
+#endif // OG
+#ifdef ZH
+ *                    $Revision:: 17                                                          $* 
+#endif // ZH
  *                                                                                             * 
+#ifdef ZH
+ * 07/01/02 KM Coltype enum change to avoid MAX conflicts									   *
+#endif // ZH
  *---------------------------------------------------------------------------------------------* 
  * Functions:                                                                                  * 
  *   RenderObjClass::RenderObjClass -- constructor                                             * 
@@ -91,6 +123,13 @@
 #include "intersec.h"
 
 
+#ifdef ZH
+#ifdef _INTERNAL
+// for occasional debugging...
+//#pragma optimize("", off) 
+//#pragma MESSAGE("************************************** WARNING, optimization disabled for debugging purposes")
+#endif
+#endif // ZH
 
 // Definitions of static members:
 const float	RenderObjClass::AT_MIN_LOD = FLT_MAX;
@@ -166,6 +205,9 @@ RenderObjClass::RenderObjClass(void) :
 	Scene(NULL),
 	Container(NULL),
 	User_Data(NULL),
+#ifdef ZH
+	RenderHook(NULL),
+#endif // ZH
 	ObjectScale(1.0),
 	ObjectColor(0),
 	CachedBoundingSphere(Vector3(0,0,0),1.0f),
@@ -194,6 +236,9 @@ RenderObjClass::RenderObjClass(const RenderObjClass & src) :
 	Scene(NULL),
 	Container(NULL),
 	User_Data(NULL),
+#ifdef ZH
+	RenderHook(NULL),
+#endif // ZH
 	ObjectScale(1.0),
 	ObjectColor(0),
 	CachedBoundingSphere(src.CachedBoundingSphere),
@@ -587,21 +632,61 @@ int RenderObjClass::Add_Sub_Object_To_Bone(RenderObjClass * subobj,const char * 
  * WARNINGS:                                                                                   *
  *                                                                                             *
  * HISTORY:                                                                                    *
+#ifdef OG
  *   3/4/99     NH : Created.                                                                  *
+#endif // OG
+#ifdef ZH
+ *   3/1/02     NH : Created.                                                                  *
+#endif // ZH
  *=============================================================================================*/
+#ifdef OG
 int RenderObjClass::Remove_Sub_Objects_From_Bone(const char * bname)
+#endif // OG
+#ifdef ZH
+int RenderObjClass::Remove_Sub_Objects_From_Bone(int boneindex)
+#endif // ZH
 {
+#ifdef OG
 	int boneidx = Get_Bone_Index(bname);
 	int count = Get_Num_Sub_Objects_On_Bone(boneidx);
+#endif // OG
+#ifdef ZH
+	int count = Get_Num_Sub_Objects_On_Bone(boneindex);
+
+#endif // ZH
 	int remove_count = 0;
 	for (int i = count-1; i >= 0; i--) {
+#ifdef OG
 		RenderObjClass *robj = Get_Sub_Object_On_Bone(i, boneidx);
+#endif // OG
+#ifdef ZH
+		RenderObjClass *robj = Get_Sub_Object_On_Bone(i, boneindex);
+#endif // ZH
 		if ( robj ) {
 			remove_count += Remove_Sub_Object(robj);
 			robj->Release_Ref();
 		}
 	}
 	return remove_count;
+#ifdef ZH
+}
+
+/***********************************************************************************************
+ * RenderObjClass::Remove_Sub_Objects_From_Bone -- remove all objects from a named bone        *
+ *                                                                                             *
+ * INPUT:                                                                                      *
+ *                                                                                             *
+ * OUTPUT:                                                                                     *
+ *                                                                                             *
+ * WARNINGS:                                                                                   *
+ *                                                                                             *
+ * HISTORY:                                                                                    *
+ *   3/4/99     NH : Created.                                                                  *
+ *=============================================================================================*/
+int RenderObjClass::Remove_Sub_Objects_From_Bone(const char * bname)
+{
+	return Remove_Sub_Objects_From_Bone(Get_Bone_Index(bname));
+#endif // ZH
 }
 
 
@@ -955,7 +1040,12 @@ bool RenderObjClass::Intersect(IntersectionClass *Intersection, IntersectionResu
 		lineseg.Set(* Intersection->RayLocation, end);
 
 		RayCollisionTestClass ray(lineseg, &castresult);
+#ifdef OG
 		ray.CollisionType = COLLISION_TYPE_ALL;
+#endif // OG
+#ifdef ZH
+		ray.CollisionType = COLL_TYPE_ALL;
+#endif // ZH
 
 		if (Cast_Ray(ray)) {
 			lineseg.Compute_Point(ray.Result->Fraction,&(Final_Result->Intersection));

@@ -34,6 +34,9 @@
 
 #include "Common/Module.h"
 #include "Common/STLTypedefs.h"
+#ifdef ZH
+#include "Common/Upgrade.h"
+#endif // ZH
 
 #include "GameClient/Drawable.h"
 #include "GameClient/FXList.h"
@@ -53,12 +56,24 @@ class UpgradeModuleInterface
 public:
 
  	virtual Bool isAlreadyUpgraded() const = 0;
+#ifdef OG
 	virtual Bool attemptUpgrade( Int64 keyMask ) = 0;
 	virtual Bool wouldUpgrade( Int64 keyMask ) const = 0;
 	virtual Bool resetUpgrade( Int64 keyMask ) = 0;
+#endif // OG
+#ifdef ZH
+	virtual Bool attemptUpgrade( UpgradeMaskType keyMask ) = 0;
+	virtual Bool wouldUpgrade( UpgradeMaskType keyMask ) const = 0;
+	virtual Bool resetUpgrade( UpgradeMaskType keyMask ) = 0;
+#endif // ZH
 	virtual Bool isSubObjectsUpgrade() = 0;
 	virtual void forceRefreshUpgrade() = 0;
+#ifdef OG
 	virtual Bool testUpgradeConditions( Int64 keyMask ) const = 0;
+#endif // OG
+#ifdef ZH
+	virtual Bool testUpgradeConditions( UpgradeMaskType keyMask ) const = 0;
+#endif // ZH
 
 };
 
@@ -66,18 +81,45 @@ public:
 class UpgradeMuxData	// does NOT inherit from ModuleData.
 {
 public:
+#ifdef ZH
+	mutable std::vector<AsciiString>	m_triggerUpgradeNames;
+#endif // ZH
 	mutable std::vector<AsciiString>	m_activationUpgradeNames;
 	mutable std::vector<AsciiString>	m_conflictingUpgradeNames;
+#ifdef ZH
+	mutable std::vector<AsciiString>	m_removalUpgradeNames;
+	
+#endif // ZH
 	mutable const FXList*							m_fxListUpgrade;
+#ifdef OG
 	mutable Int64		m_activationMask;				///< Activation only supports a single name currently
 	mutable Int64		m_conflictingMask;			///< Conflicts support multiple listings, and they are an OR
+#endif // OG
+#ifdef ZH
+	mutable UpgradeMaskType						m_activationMask;				///< Activation only supports a single name currently
+	mutable UpgradeMaskType						m_conflictingMask;			///< Conflicts support multiple listings, and they are an OR
+#endif // ZH
 	mutable Bool    m_requiresAllTriggers;
 
 	UpgradeMuxData()
 	{
+#ifdef OG
 		m_activationMask = 0;
 		m_conflictingMask = 0;
+
+#endif // OG
+#ifdef ZH
+		m_triggerUpgradeNames.clear();
+		m_activationUpgradeNames.clear();
+		m_conflictingUpgradeNames.clear();
+		m_removalUpgradeNames.clear();
+
+#endif // ZH
 		m_fxListUpgrade = NULL;
+#ifdef ZH
+		m_activationMask.clear();
+		m_conflictingMask.clear();
+#endif // ZH
 		m_requiresAllTriggers = false;
 	}
 
@@ -87,6 +129,9 @@ public:
 		{
 			{ "TriggeredBy",		INI::parseAsciiStringVector, NULL, offsetof( UpgradeMuxData, m_activationUpgradeNames ) },
 			{ "ConflictsWith",	INI::parseAsciiStringVector, NULL, offsetof( UpgradeMuxData, m_conflictingUpgradeNames ) },
+#ifdef ZH
+			{ "RemovesUpgrades",INI::parseAsciiStringVector, NULL, offsetof( UpgradeMuxData, m_removalUpgradeNames ) },
+#endif // ZH
 			{ "FXListUpgrade",	INI::parseFXList, NULL, offsetof( UpgradeMuxData, m_fxListUpgrade ) },
 			{ "RequiresAllTriggers", INI::parseBool, NULL, offsetof( UpgradeMuxData, m_requiresAllTriggers ) },
 			{ 0, 0, 0, 0 }
@@ -94,8 +139,17 @@ public:
 		return dataFieldParse;
 	}
 	Bool requiresAllActivationUpgrades() const;
+#ifdef OG
 	void getUpgradeActivationMasks(Int64& activation, Int64& conflicting) const;	///< The first time someone looks at my mask, I'll figure it out.
+#endif // OG
+#ifdef ZH
+	void getUpgradeActivationMasks(UpgradeMaskType& activation, UpgradeMaskType& conflicting) const;	///< The first time someone looks at my mask, I'll figure it out.
+#endif // ZH
 	void performUpgradeFX(Object* obj) const;
+#ifdef ZH
+	void muxDataProcessUpgradeRemoval(Object* obj) const;
+	Bool isTriggeredBy(const std::string &upgrade) const;
+#endif // ZH
 };
 
 //-------------------------------------------------------------------------------------------------
@@ -110,20 +164,37 @@ public:
 	virtual Bool isAlreadyUpgraded() const ;
 	// ***DANGER! DANGER! Don't use this, unless you are forcing an already made upgrade to refresh!!
 	virtual void forceRefreshUpgrade();
+#ifdef OG
 	virtual Bool attemptUpgrade( Int64 keyMask );
 	virtual Bool wouldUpgrade( Int64 keyMask ) const;
 	virtual Bool resetUpgrade( Int64 keyMask );
 	virtual Bool testUpgradeConditions( Int64 keyMask ) const;
+#endif // OG
+#ifdef ZH
+	virtual Bool attemptUpgrade( UpgradeMaskType keyMask );
+	virtual Bool wouldUpgrade( UpgradeMaskType keyMask ) const;
+	virtual Bool resetUpgrade( UpgradeMaskType keyMask );
+	virtual Bool testUpgradeConditions( UpgradeMaskType keyMask ) const;
+#endif // ZH
 
 protected:
 
 	void setUpgradeExecuted(Bool e) { m_upgradeExecuted = e; }
 	virtual void upgradeImplementation( ) = 0; ///< Here's the actual work of Upgrading
+#ifdef OG
 	virtual void getUpgradeActivationMasks(Int64& activation, Int64& conflicting) const = 0; ///< Here's the actual work of Upgrading
+#endif // OG
+#ifdef ZH
+	virtual void getUpgradeActivationMasks(UpgradeMaskType& activation, UpgradeMaskType& conflicting) const = 0; ///< Here's the actual work of Upgrading
+#endif // ZH
 	virtual void performUpgradeFX() = 0;	///< perform the associated fx list
 	virtual Bool requiresAllActivationUpgrades() const = 0;
 	virtual Bool isSubObjectsUpgrade() = 0;
+#ifdef ZH
+	virtual void processUpgradeRemoval() = 0;
+#endif // ZH
 	
+#ifdef OG
 	void giveSelfUpgrade()
 	{
 		// If I have an activation condition, and I haven't activated, and this key matches my condition.
@@ -131,6 +202,11 @@ protected:
 		upgradeImplementation();
 		setUpgradeExecuted(true);
 	}
+#endif // OG
+#ifdef ZH
+	void giveSelfUpgrade();
+
+#endif // ZH
 
 	//
 	// this is not a snapshot class itself, but it is a base class used in conjunction with
@@ -178,14 +254,31 @@ public:
 	// BehaviorModule
 	virtual UpgradeModuleInterface* getUpgrade() { return this; }
 
+#ifdef ZH
+	bool isTriggeredBy(const std::string & upgrade) const { return getUpgradeModuleData()->m_upgradeMuxData.isTriggeredBy(upgrade); }
+
+#endif // ZH
 protected:
+#ifdef ZH
+
+	virtual void processUpgradeRemoval()
+	{
+		// I can't take it any more.  Let the record show that I think the UpgradeMux multiple inheritence is CRAP.
+		getUpgradeModuleData()->m_upgradeMuxData.muxDataProcessUpgradeRemoval(getObject());
+	}
+#endif // ZH
 
 	virtual Bool requiresAllActivationUpgrades() const
 	{
 		return getUpgradeModuleData()->m_upgradeMuxData.m_requiresAllTriggers;
 	}
 
+#ifdef OG
 	virtual void getUpgradeActivationMasks(Int64& activation, Int64& conflicting) const
+#endif // OG
+#ifdef ZH
+	virtual void getUpgradeActivationMasks(UpgradeMaskType& activation, UpgradeMaskType& conflicting) const
+#endif // ZH
 	{
 		getUpgradeModuleData()->m_upgradeMuxData.getUpgradeActivationMasks(activation, conflicting);
 	}

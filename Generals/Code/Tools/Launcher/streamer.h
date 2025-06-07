@@ -22,7 +22,12 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <stdarg.h>
+#ifdef OG
+#include <iostream>
+#endif // OG
+#ifdef ZH
 #include <iostream.h>
+#endif // ZH
 #include <string.h>
 
 #include "odevice.h"
@@ -36,7 +41,12 @@
 
 
 // Provide a streambuf interface for a class that can 'print'
+#ifdef OG
+class Streamer : public std::streambuf
+#endif // OG
+#ifdef ZH
 class Streamer : public streambuf
+#endif // ZH
 {
  public:
                Streamer();

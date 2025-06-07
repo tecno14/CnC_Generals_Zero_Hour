@@ -35,6 +35,9 @@
 // INCLUDES ///////////////////////////////////////////////////////////////////////////////////////
 #include "Common/Module.h"
 #include "GameLogic/Module/CrateCollide.h"
+#ifdef ZH
+#include "GameLogic/Module/AutoDepositUpdate.h"
+#endif // ZH
 
 // FORWARD REFERENCES /////////////////////////////////////////////////////////////////////////////
 class Thing;
@@ -44,10 +47,16 @@ class MoneyCrateCollideModuleData : public CrateCollideModuleData
 {
 public:
 	UnsignedInt m_moneyProvided;
+#ifdef ZH
+	std::list<upgradePair> m_upgradeBoost;
+#endif // ZH
 
 	MoneyCrateCollideModuleData()
 	{
 		m_moneyProvided = 0;
+#ifdef ZH
+		m_upgradeBoost.clear();
+#endif // ZH
 	}
 
 	static void buildFieldParse(MultiIniFieldParse& p) 
@@ -57,6 +66,10 @@ public:
 		static const FieldParse dataFieldParse[] = 
 		{
 			{ "MoneyProvided",	INI::parseUnsignedInt,	NULL, offsetof( MoneyCrateCollideModuleData, m_moneyProvided ) },
+#ifdef ZH
+			{ "UpgradedBoost",	parseUpgradePair,		NULL, offsetof( MoneyCrateCollideModuleData, m_upgradeBoost ) },
+
+#endif // ZH
 			{ 0, 0, 0, 0 }
 		};
     p.add(dataFieldParse);
@@ -80,6 +93,11 @@ protected:
 
 	/// This is the game logic execution function that all real CrateCollides will implement
 	virtual Bool executeCrateBehavior( Object *other );
+#ifdef ZH
+
+	Int getUpgradedSupplyBoost( Object *other ) const;
+
+#endif // ZH
 };
 
 #endif

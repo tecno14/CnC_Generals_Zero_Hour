@@ -24,13 +24,35 @@
  *                                                                                             *
  *                     $Archive:: /Commando/Code/ww3d2/aabtree.h                              $*
  *                                                                                             *
+#ifdef OG
  *                       Author:: Greg Hjelstrom                                               *
+#endif // OG
+#ifdef ZH
+ *                   Org Author:: Greg Hjelstrom                                               *
+#endif // ZH
  *                                                                                             *
+#ifdef OG
  *                     $Modtime:: 6/14/01 9:42a                                               $*
+#endif // OG
+#ifdef ZH
+ *                       Author:: Kenny Mitchell                                               *
+#endif // ZH
  *                                                                                             *
+#ifdef OG
  *                    $Revision:: 3                                                           $*
+#endif // OG
+#ifdef ZH
+ *                     $Modtime:: 6/26/02 2:58p                                               $*
+#endif // ZH
  *                                                                                             *
+#ifdef ZH
+ *                    $Revision:: 4                                                           $*
+ *                                                                                             *
+#endif // ZH
  *---------------------------------------------------------------------------------------------*
+#ifdef ZH
+ * 06/26/02 KM Integrating shader system
+#endif // ZH
  * Functions:                                                                                  *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
@@ -94,6 +116,11 @@ public:
 
 	void						Load_W3D(ChunkLoadClass & cload);
 
+#ifdef ZH
+	// Uniformly scale the AABTree
+	void						Scale(float scale);
+
+#endif // ZH
 	int						Get_Node_Count(void) { return NodeCount; }
 	int						Get_Poly_Count(void) { return PolyCount; }
 	int						Compute_Ram_Size(void);
@@ -107,6 +134,10 @@ public:
 	bool						Cast_OBBox(OBBoxCollisionTestClass & boxtest);
 	bool						Intersect_OBBox(OBBoxIntersectionTestClass & boxtest);
 
+#ifdef ZH
+	void						Set_Mesh(MeshGeometryClass * mesh);
+
+#endif // ZH
 private:
 	
 	AABTreeClass &			operator = (const AABTreeClass & that);
@@ -116,7 +147,9 @@ private:
 	
 	void						Build_Tree_Recursive(AABTreeBuilderClass::CullNodeStruct * node,int &curpolyindex);
 	void						Reset(void);
+#ifdef OG
 	void						Set_Mesh(MeshGeometryClass * mesh);
+#endif // OG
 	void						Update_Bounding_Boxes(void);
 	void						Update_Min_Max(int index,Vector3 & min,Vector3 & max);
 

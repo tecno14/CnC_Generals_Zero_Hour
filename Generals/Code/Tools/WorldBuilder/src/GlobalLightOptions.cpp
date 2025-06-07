@@ -938,7 +938,12 @@ void GlobalLightOptions::OnShowWindow(BOOL bShow, UINT nStatus)
 	stuffValuesIntoFields(K_SUN);
 	stuffValuesIntoFields(K_ACCENT1);
 	stuffValuesIntoFields(K_ACCENT2);
+#ifdef OG
 	if (!IsWindowVisible()) {
+#endif // OG
+#ifdef ZH
+	if (!bShow) {
+#endif // ZH
 		WbView3d * pView = CWorldBuilderDoc::GetActive3DView();
 		if (pView) {
 			Coord3D lightRay;

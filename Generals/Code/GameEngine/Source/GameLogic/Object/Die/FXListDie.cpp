@@ -31,8 +31,13 @@
 // INCLUDES ///////////////////////////////////////////////////////////////////////////////////////
 #include "PreRTS.h"	// This must go first in EVERY cpp file int the GameEngine
 
+#ifdef OG
 #define DEFINE_DAMAGE_NAMES
+#endif // OG
 #include "Common/INI.h"
+#ifdef ZH
+#include "Common/Player.h"
+#endif // ZH
 #include "Common/ThingTemplate.h"
 #include "Common/Xfer.h"
 #include "GameClient/FXList.h"
@@ -45,7 +50,15 @@
 //-------------------------------------------------------------------------------------------------
 //-------------------------------------------------------------------------------------------------
 FXListDie::FXListDie( Thing *thing, const ModuleData* moduleData ) : DieModule( thing, moduleData )
+#ifdef ZH
 {
+	if( getFXListDieModuleData()->m_initiallyActive )
+#endif // ZH
+{
+#ifdef ZH
+		giveSelfUpgrade();
+	}
+#endif // ZH
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -60,14 +73,35 @@ FXListDie::~FXListDie( void )
 //-------------------------------------------------------------------------------------------------
 void FXListDie::onDie( const DamageInfo *damageInfo )
 {
+#ifdef ZH
+	if (!isUpgradeActive())
+		return;
+#endif // ZH
 	if (!isDieApplicable(damageInfo))
 		return;
 	const FXListDieModuleData* d = getFXListDieModuleData();
+#ifdef ZH
+
+	UpgradeMaskType activation, conflicting;
+	getUpgradeActivationMasks( activation, conflicting );
+	Object *obj = getObject();
+	if( obj->getObjectCompletedUpgradeMask().testForAny( conflicting ) )
+	{
+		return;
+	}
+	if( obj->getControllingPlayer() && obj->getControllingPlayer()->getCompletedUpgradeMask().testForAny( conflicting ) )
+	{
+		return;
+	}
+
+#endif // ZH
 	if (d->m_defaultDeathFX)
 	{
+#ifdef OG
 		// if the object has any ambient sound(s), kill 'em now.
 		TheAudio->stopAllAmbientsBy(getObject());
 		
+#endif // OG
 		if (d->m_orientToObject)
 		{
 			Object *damageDealer = TheGameLogic->findObjectByID( damageInfo->in.m_sourceID );

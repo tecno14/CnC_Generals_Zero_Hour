@@ -62,10 +62,15 @@ void MutexClass::Unlock()
 		//assert(0);
 	#else
 		WWASSERT(locked);
+#ifdef ZH
+		locked--;
+#endif // ZH
 		int res=ReleaseMutex(handle);
 		res;	// silence compiler warnings
 		WWASSERT(res);
+#ifdef OG
 		locked--;
+#endif // OG
 	#endif
 }
 
@@ -126,8 +131,13 @@ void CriticalSectionClass::Unlock()
 		//assert(0);
 	#else
 		WWASSERT(locked);
-		LeaveCriticalSection((CRITICAL_SECTION*)handle);
+#ifdef ZH
 		locked--;
+#endif // ZH
+		LeaveCriticalSection((CRITICAL_SECTION*)handle);
+#ifdef OG
+		locked--;
+#endif // OG
 	#endif
 }
 

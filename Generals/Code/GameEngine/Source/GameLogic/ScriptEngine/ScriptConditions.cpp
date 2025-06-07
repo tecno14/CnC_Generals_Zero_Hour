@@ -38,6 +38,9 @@
 #include "Common/ThingFactory.h"
 #include "Common/Team.h"
 #include "Common/Player.h"
+#ifdef ZH
+#include "Common/ObjectStatusTypes.h"
+#endif // ZH
 
 #include "GameClient/ControlBar.h"
 #include "GameClient/Drawable.h"
@@ -470,7 +473,12 @@ Bool ScriptConditions::evaluatePlayerHasUnitTypeInArea(Condition *pCondition, Pa
 		}
 	}
 
+#ifdef OG
 	if (TheScriptEngine->getFrameObjectCountChanged()+1 >= TheGameLogic->getFrame()) {
+#endif // OG
+#ifdef ZH
+	if (TheScriptEngine->getFrameObjectCountChanged() > pCondition->getCustomFrame()) {
+#endif // ZH
 		anyChanges = true; // Objects were added/deleted last frame, so count could have changed.  jba.
 	}
 
@@ -526,6 +534,9 @@ Bool ScriptConditions::evaluatePlayerHasUnitTypeInArea(Condition *pCondition, Pa
 	if (comparison) {
 		pCondition->setCustomData(1); // true.
 	}
+#ifdef ZH
+	pCondition->setCustomFrame(TheScriptEngine->getFrameObjectCountChanged());
+#endif // ZH
 	return comparison;
 }  
 
@@ -563,8 +574,14 @@ Bool ScriptConditions::evaluatePlayerHasUnitKindInArea(Condition *pCondition, Pa
 			}
 		}
 	}
+#ifdef OG
 	if (TheScriptEngine->getFrameObjectCountChanged()+1 >= TheGameLogic->getFrame()) {
 		anyChanges = true; // Objects were added/deleted last frame, so count could have changed.  jba.
+#endif // OG
+#ifdef ZH
+	if (TheScriptEngine->getFrameObjectCountChanged() > pCondition->getCustomFrame()) {
+		anyChanges = true; // Objects were added/deleted since we cached, so count could have changed.  jba.
+#endif // ZH
 	}
 	if (!anyChanges) {
 		if (pCondition->getCustomData()==-1) return false;
@@ -606,7 +623,9 @@ Bool ScriptConditions::evaluatePlayerHasUnitKindInArea(Condition *pCondition, Pa
 		case Parameter::GREATER :				comparison = (count > pCountParm->getInt()); break;
 		case Parameter::NOT_EQUAL :			comparison = (count != pCountParm->getInt()); break;
 	}
-
+#ifdef ZH
+	pCondition->setCustomData(TheScriptEngine->getFrameObjectCountChanged());
+#endif // ZH
 	return comparison;
 }  
 
@@ -700,16 +719,51 @@ Bool ScriptConditions::evaluateNamedAttackedByType(Parameter *pUnitParm, Paramet
 		return false;
 	}
 	
+#ifdef ZH
+	const ThingTemplate *attackerTemplate = lastDamageInfo->in.m_sourceTemplate;
+	if( attackerTemplate )
+	{
+		//New system... we don't care if the attacker is alive or dead... we just want the type right?
+		ObjectTypesTemp types;
+		objectTypesFromParam(pTypeParm, types.m_types);
+		if( types.m_types->isInSet( attackerTemplate ) )
+		{
+			return TRUE;
+		}
+	}
+	else
+	{
+		//Old system... just incase m_sourceTemplate doesn't get set, don't want to foobar the logic.
+#endif // ZH
 	ObjectID id = lastDamageInfo->in.m_sourceID;
 	Object* pAttacker = TheGameLogic->findObjectByID(id);
+#ifdef OG
 	if (!pAttacker || !pAttacker->getTemplate()) {
 		return false;
-	}
 
+#endif // OG
+#ifdef ZH
+		if (!pAttacker || !pAttacker->getTemplate()) 
+		{
+			return FALSE;
+#endif // ZH
+	}
 	ObjectTypesTemp types;
 	objectTypesFromParam(pTypeParm, types.m_types);
+#ifdef ZH
+		if( types.m_types->isInSet( pAttacker->getTemplate()->getName() ) )
+		{
+			return TRUE;
+		}
+	}
+#endif // ZH
 
+#ifdef OG
 	return (types.m_types->isInSet(pAttacker->getTemplate()->getName()));
+#endif // OG
+#ifdef ZH
+	return FALSE;
+#endif // ZH
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -719,7 +773,12 @@ Bool ScriptConditions::evaluateTeamAttackedByType(Parameter *pTeamParm, Paramete
 {
 	Team *theTeam = TheScriptEngine->getTeamNamed(pTeamParm->getString());
 	if (!theTeam) {
+#ifdef OG
 		return false;
+#endif // OG
+#ifdef ZH
+		return FALSE;
+#endif // ZH
 	}
 
 	ObjectTypesTemp types;
@@ -742,18 +801,58 @@ Bool ScriptConditions::evaluateTeamAttackedByType(Parameter *pTeamParm, Paramete
 			continue;
 		}
 		
+#ifdef ZH
+		ObjectTypesTemp types;
+		objectTypesFromParam(pTypeParm, types.m_types);
+
+		const ThingTemplate *attackerTemplate = lastDamageInfo->in.m_sourceTemplate;
+		if( attackerTemplate )
+		{
+			//New system... we don't care if the attacker is alive or dead... we just want the type right?
+			if( types.m_types->isInSet( attackerTemplate ) )
+			{
+				return TRUE;
+			}
+		}
+		else
+		{
+			//Old system... just incase m_sourceTemplate doesn't get set, don't want to foobar the logic.
+#endif // ZH
 		ObjectID id = lastDamageInfo->in.m_sourceID;
 		Object* pAttacker = TheGameLogic->findObjectByID(id);
+#ifdef OG
 		if (!pAttacker || !pAttacker->getTemplate()) {
+
+#endif // OG
+#ifdef ZH
+			if (!pAttacker || !pAttacker->getTemplate()) 
+			{
+				//Kris: Woah... do not return false here... because we need to iterate other team members!
+				//return FALSE;
+#endif // ZH
 			continue;
+#ifdef ZH
+			}
+			if( types.m_types->isInSet( pAttacker->getTemplate()->getName() ) )
+			{
+				return TRUE;
+			}
+#endif // ZH
 		}
 		
+#ifdef OG
 		if (types.m_types->isInSet(pAttacker->getTemplate()->getName())) {
 			return true;
 		}
+#endif // OG
 	}
 
+#ifdef OG
 	return false;
+#endif // OG
+#ifdef ZH
+	return FALSE;
+#endif // ZH
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -841,8 +940,14 @@ Bool ScriptConditions::evaluateBuiltByPlayer(Condition *pCondition, Parameter* p
 {
 	if (pCondition->getCustomData()!=0) {
 		// We have a cached value.
+#ifdef OG
 		if (TheScriptEngine->getFrameObjectCountChanged()+1 < TheGameLogic->getFrame()) {
 			// object count hasn't changed recently.  Use cached value.
+#endif // OG
+#ifdef ZH
+		if (TheScriptEngine->getFrameObjectCountChanged() == pCondition->getCustomFrame()) {
+			// object count hasn't changed.  Use cached value.
+#endif // ZH
 			if (pCondition->getCustomData()==1) return true;
 			if (pCondition->getCustomData()==-1) return false;
 		}
@@ -875,6 +980,9 @@ Bool ScriptConditions::evaluateBuiltByPlayer(Condition *pCondition, Parameter* p
 	if (sumOfObjs != 0) {
 		pCondition->setCustomData(1); // true.
 	}
+#ifdef ZH
+	pCondition->setCustomFrame(TheScriptEngine->getFrameObjectCountChanged());
+#endif // ZH
 	return (sumOfObjs != 0);
 }
 
@@ -1040,7 +1148,14 @@ Bool ScriptConditions::evaluateEnemySighted(Parameter *pItemParm, Parameter *pAl
 	PartitionFilterAlive filterAlive;
 
 	// and only nonstealthed items.
+#ifdef OG
 	PartitionFilterRejectByObjectStatus filterStealth(OBJECT_STATUS_STEALTHED, OBJECT_STATUS_DETECTED);
+
+#endif // OG
+#ifdef ZH
+	PartitionFilterRejectByObjectStatus filterStealth( MAKE_OBJECT_STATUS_MASK( OBJECT_STATUS_STEALTHED ), 
+																										 MAKE_OBJECT_STATUS_MASK2( OBJECT_STATUS_DETECTED, OBJECT_STATUS_DISGUISED ) );
+#endif // ZH
 	
 	// and only on-map (or not)
 	PartitionFilterSameMapStatus filterMapStatus(theObj);
@@ -1084,7 +1199,14 @@ Bool ScriptConditions::evaluateTypeSighted(Parameter *pItemParm, Parameter *pTyp
 	PartitionFilterAlive filterAlive;
 
 	// and only nonstealthed items.
+#ifdef OG
 	PartitionFilterRejectByObjectStatus filterStealth(OBJECT_STATUS_STEALTHED, OBJECT_STATUS_DETECTED);
+
+#endif // OG
+#ifdef ZH
+	PartitionFilterRejectByObjectStatus filterStealth( MAKE_OBJECT_STATUS_MASK( OBJECT_STATUS_STEALTHED ), 
+																										 MAKE_OBJECT_STATUS_MASK2( OBJECT_STATUS_DETECTED, OBJECT_STATUS_DISGUISED ) );
+#endif // ZH
 
 	// and only on-map (or not)
 	PartitionFilterSameMapStatus filterMapStatus(theObj);
@@ -1128,8 +1250,17 @@ Bool ScriptConditions::evaluateNamedDiscovered(Parameter *pItemParm, Parameter* 
 	}
 
 	// If we are stealthed we are not visible.
+#ifdef OG
 	if (BitTest( theObj->getStatusBits(), OBJECT_STATUS_STEALTHED) && 
 		!BitTest( theObj->getStatusBits(), OBJECT_STATUS_DETECTED)) {
+
+#endif // OG
+#ifdef ZH
+	if( theObj->getStatusBits().test( OBJECT_STATUS_STEALTHED ) && 
+			!theObj->getStatusBits().test( OBJECT_STATUS_DETECTED ) &&
+			!theObj->getStatusBits().test( OBJECT_STATUS_DISGUISED ) ) 
+	{
+#endif // ZH
 		return false;
 	}
 	ObjectShroudStatus shroud = theObj->getShroudedStatus(pPlayer->getPlayerIndex());
@@ -1164,8 +1295,17 @@ Bool ScriptConditions::evaluateTeamDiscovered(Parameter *pTeamParm, Parameter *p
 		}
 		
 		// If we are stealthed we are not visible.
+#ifdef OG
 		if (BitTest( pObj->getStatusBits(), OBJECT_STATUS_STEALTHED) && 
 			!BitTest( pObj->getStatusBits(), OBJECT_STATUS_DETECTED)) {
+
+#endif // OG
+#ifdef ZH
+		if( pObj->getStatusBits().test( OBJECT_STATUS_STEALTHED ) && 
+				!pObj->getStatusBits().test( OBJECT_STATUS_DETECTED ) &&
+				!pObj->getStatusBits().test( OBJECT_STATUS_DISGUISED ) )
+		{
+#endif // ZH
 			continue;
 		}
 		ObjectShroudStatus shroud = pObj->getShroudedStatus(pPlayer->getPlayerIndex());
@@ -1357,8 +1497,14 @@ Bool ScriptConditions::evaluateNamedSelected(Condition *pCondition, Parameter *p
 	if (pCondition->getCustomData() == 0) anyChanges = true;
 
 
+#ifdef OG
 	if (TheInGameUI->getFrameSelectionChanged()+1 >= TheGameLogic->getFrame()) {
 		anyChanges = true; // Objects were selected last frame, so count could have changed.  jba.
+#endif // OG
+#ifdef ZH
+	if (TheInGameUI->getFrameSelectionChanged() != pCondition->getCustomFrame()) {
+		anyChanges = true; // Selection changed since we cached the value.  jba.
+#endif // ZH
 	}
 	if (!anyChanges) {
 		if (pCondition->getCustomData()==-1) return false;
@@ -1385,6 +1531,9 @@ Bool ScriptConditions::evaluateNamedSelected(Condition *pCondition, Parameter *p
 	if (isSelected) {
 		pCondition->setCustomData(1); // true.
 	}
+#ifdef ZH
+	pCondition->setCustomFrame(TheInGameUI->getFrameSelectionChanged());
+#endif // ZH
 	return isSelected;
 }
 
@@ -1554,7 +1703,35 @@ Bool ScriptConditions::evaluateSciencePurchasePoints(Parameter *pPlayerParm, Par
 	{
 		Int pointsNeeded = pSciencePointParm->getInt();
 		return pPlayer->getSciencePurchasePoints() >= pointsNeeded;
+#ifdef ZH
 	}
+	return FALSE;
+#endif // ZH
+	}
+#ifdef ZH
+
+//-------------------------------------------------------------------------------------------------
+/** evaluateNamedHasFreeContainerSlots */
+//-------------------------------------------------------------------------------------------------
+Bool ScriptConditions::evaluateNamedHasFreeContainerSlots(Parameter *pUnitParm)
+{
+	Object* pUnit = TheScriptEngine->getUnitNamed(pUnitParm->getString());
+	if (!pUnit) {
+		return false;
+	}
+
+	ContainModuleInterface *contain = pUnit->getContain();
+	if( contain )
+	{
+		UnsignedInt max = contain->getContainMax();
+		UnsignedInt cur = contain->getContainCount();
+
+		if( cur < max )
+		{
+			return TRUE;
+		}
+	}
+#endif // ZH
 	return FALSE;
 }
 
@@ -1705,17 +1882,47 @@ Bool ScriptConditions::evaluateMultiplayerPlayerDefeat(void)
 //-------------------------------------------------------------------------------------------------
 Bool ScriptConditions::evaluatePlayerUnitCondition(Condition *pCondition, Parameter *pPlayerParm, Parameter *pComparisonParm, Parameter *pCountParm, Parameter *pUnitTypeParm)
 {					
+#ifdef OG
 	if (pCondition->getCustomData()!=0) {
+
+#endif // OG
+#ifdef ZH
+	if (pCondition->getCustomData()!=0) 
+	{
+#endif // ZH
 		// We have a cached value.
+#ifdef OG
 		if (TheScriptEngine->getFrameObjectCountChanged()+1 < TheGameLogic->getFrame()) {
 			// object count hasn't changed recently.  Use cached value.
 			if (pCondition->getCustomData()==1) return true;
 			if (pCondition->getCustomData()==-1) return false;
+
+#endif // OG
+#ifdef ZH
+		if( TheScriptEngine->getFrameObjectCountChanged() == pCondition->getCustomFrame() ) 
+		{
+			// object count hasn't changed since we cached.  Use cached value.
+			if( pCondition->getCustomData() == 1 ) 
+			{
+				return true;
+			}
+			if( pCondition->getCustomData() == -1 ) 
+			{
+				return false;
+			}
+#endif // ZH
 		}
 	}
 
 	Player* pPlayer = playerFromParam(pPlayerParm);
+#ifdef OG
 	if (!pPlayer) {
+
+#endif // OG
+#ifdef ZH
+	if (!pPlayer) 
+	{
+#endif // ZH
 		return false;
 	}
 
@@ -1728,7 +1935,14 @@ Bool ScriptConditions::evaluatePlayerUnitCondition(Condition *pCondition, Parame
 	Int numObjs = types.m_types->prepForPlayerCounting(templates, counts);
 	Int count = 0;
 
+#ifdef OG
 	if (numObjs > 0) {
+
+#endif // OG
+#ifdef ZH
+	if (numObjs > 0) 
+	{
+#endif // ZH
 		pPlayer->countObjectsByThingTemplate(numObjs, &(*templates.begin()), false, &(*counts.begin()));
 		count = rts::sum(counts);
 	}
@@ -1736,20 +1950,53 @@ Bool ScriptConditions::evaluatePlayerUnitCondition(Condition *pCondition, Parame
 	Bool comparison = false;
 	switch (pComparisonParm->getInt())
 	{
+#ifdef OG
 		case Parameter::LESS_THAN :			comparison = (count < pCountParm->getInt()); break;
 		case Parameter::LESS_EQUAL :		comparison = (count <= pCountParm->getInt()); break;
 		case Parameter::EQUAL :					comparison = (count == pCountParm->getInt()); break; 
 		case Parameter::GREATER_EQUAL :	comparison = (count >= pCountParm->getInt()); break;
 		case Parameter::GREATER :				comparison = (count > pCountParm->getInt()); break;
 		case Parameter::NOT_EQUAL :			comparison = (count != pCountParm->getInt()); break;
+
+#endif // OG
+#ifdef ZH
+		case Parameter::LESS_THAN :			
+			comparison = (count < pCountParm->getInt()); 
+			break;
+		case Parameter::LESS_EQUAL :		
+			comparison = (count <= pCountParm->getInt()); 
+			break;
+		case Parameter::EQUAL :					
+			comparison = (count == pCountParm->getInt()); 
+			break; 
+		case Parameter::GREATER_EQUAL :	
+			comparison = (count >= pCountParm->getInt()); 
+			break;
+		case Parameter::GREATER :				
+			comparison = (count > pCountParm->getInt()); 
+			break;
+		case Parameter::NOT_EQUAL :			
+			comparison = (count != pCountParm->getInt()); 
+			break;
+#endif // ZH
 		default:
 			DEBUG_CRASH(("ScriptConditions::evaluatePlayerUnitCondition: Invalid comparison type. (jkmcd)"));
 			break;
 	}
 	pCondition->setCustomData(-1); // false.
+#ifdef OG
 	if (comparison) {
+
+#endif // OG
+#ifdef ZH
+	if (comparison) 
+	{
+#endif // ZH
 		pCondition->setCustomData(1); // true.
 	}
+#ifdef ZH
+	pCondition->setCustomFrame(TheScriptEngine->getFrameObjectCountChanged());
+#endif // ZH
 	return comparison;
 }
 
@@ -1826,7 +2073,12 @@ Bool ScriptConditions::evaluateSkirmishSpecialPowerIsReady(Parameter *pSkirmishP
 			for (DLINK_ITERATOR<Object> iter = team->iterate_TeamMemberList(); !iter.done(); iter.advance()) {
 				Object *pObj = iter.cur();
 				if (!pObj) continue;
+#ifdef OG
 				if ( BitTest( pObj->getStatusBits(), OBJECT_STATUS_UNDER_CONSTRUCTION ) || pObj->isDisabled() )
+#endif // OG
+#ifdef ZH
+				if( pObj->getStatusBits().test( OBJECT_STATUS_UNDER_CONSTRUCTION ) || pObj->isDisabled() )
+#endif // ZH
 				{
 					continue; // can't fire if under construction or disabled.
 				}
@@ -1969,7 +2221,12 @@ Bool ScriptConditions::evaluateUnitHasObjectStatus(Parameter *pUnitParm, Paramet
 		return false;
 	}
 
+#ifdef OG
 	return ((object->getStatusBits() & pObjectStatus->getInt()) != 0);
+#endif // OG
+#ifdef ZH
+	return( object->getStatusBits().testForAny( pObjectStatus->getStatus() ) );
+#endif // ZH
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -1986,11 +2243,33 @@ Bool ScriptConditions::evaluateTeamHasObjectStatus(Parameter *pTeamParm, Paramet
 			return false;
 		}
 
+#ifdef OG
 		Bool currObj = pObj->getStatusBits() & pObjectStatus->getInt();
 
+#endif // OG
+#ifdef ZH
+		ObjectStatusMaskType objStatus = pObjectStatus->getStatus();
+		Bool currObjHasStatus = pObj->getStatusBits().testForAny( objStatus );
+#endif // ZH
+
+#ifdef OG
 		if (entireTeam && !currObj) {
+
+#endif // OG
+#ifdef ZH
+		if( entireTeam && !currObjHasStatus ) 
+		{
+#endif // ZH
 			return false;
+#ifdef OG
 		} else if (!entireTeam && currObj) {
+
+#endif // OG
+#ifdef ZH
+		} 
+		else if( !entireTeam && currObjHasStatus )
+		{
+#endif // ZH
 			return true;
 		}
 	}
@@ -2038,8 +2317,14 @@ Bool ScriptConditions::evaluateSkirmishValueInArea(Condition *pCondition, Parame
 			}
 		}
 	}
+#ifdef OG
 	if (TheScriptEngine->getFrameObjectCountChanged()+1 >= TheGameLogic->getFrame()) {
 		anyChanges = true; // Objects were added/deleted last frame, so count could have changed.  jba.
+#endif // OG
+#ifdef ZH
+	if (TheScriptEngine->getFrameObjectCountChanged() != pCondition->getCustomFrame()) {
+		anyChanges = true; // Objects were added/deleted since we cached, so count could have changed.  jba.
+#endif // ZH
 	}
 	if (!anyChanges) {
 		if (pCondition->getCustomData()==-1) return false;
@@ -2087,6 +2372,9 @@ Bool ScriptConditions::evaluateSkirmishValueInArea(Condition *pCondition, Parame
 	if (comparison) {
 		pCondition->setCustomData(1); // true.
 	}
+#ifdef ZH
+	pCondition->setCustomFrame(TheScriptEngine->getFrameObjectCountChanged());
+#endif // ZH
 	return comparison;
 }
 
@@ -2156,7 +2444,9 @@ Bool ScriptConditions::evaluateSkirmishPlayerTechBuildingWithinDistancePerimeter
 	if (!player) {
 		return false;
 	}
-
+#ifdef ZH
+	// If we have a chached value, return it. [8/8/2003]
+#endif // ZH
 	if (pCondition->getCustomData()==1) return true;
 	if (pCondition->getCustomData()==-1) return false;
 
@@ -2391,23 +2681,42 @@ Bool ScriptConditions::evaluateSkirmishNamedAreaExists(Parameter *, Parameter *p
 //-------------------------------------------------------------------------------------------------
 Bool ScriptConditions::evaluateSkirmishPlayerHasUnitsInArea(Condition *pCondition, Parameter *pSkirmishPlayerParm, Parameter *pTriggerParm )
 {
+#ifdef OG
 	Player *player = playerFromParam(pSkirmishPlayerParm);
 	if (!player) {
 		return FALSE;
 	}
+#endif // OG
+#ifdef ZH
+	AsciiString triggerName = pTriggerParm->getString();
+	PolygonTrigger *pTrig = TheScriptEngine->getQualifiedTriggerAreaByName(pTriggerParm->getString());
+	if (pTrig == NULL) return false;
 
+#endif // ZH
+
+#ifdef OG
 	PolygonTrigger *pTrig = TheScriptEngine->getQualifiedTriggerAreaByName(pTriggerParm->getString());
 	if (!pTrig) {
 		return FALSE;
+#endif // OG
+#ifdef ZH
+	Player* pPlayer = playerFromParam(pSkirmishPlayerParm);
+	if (!pPlayer) {
+		return false;
+#endif // ZH
 	}
-
 	Player::PlayerTeamList::const_iterator it;
 	Bool anyChanges = false;
 
 
 	if (pCondition->getCustomData() == 0) anyChanges = true;
 
+#ifdef OG
 	for (it = player->getPlayerTeams()->begin(); it != player->getPlayerTeams()->end(); ++it) {
+#endif // OG
+#ifdef ZH
+	for (it = pPlayer->getPlayerTeams()->begin(); it != pPlayer->getPlayerTeams()->end(); ++it) {
+#endif // ZH
 		if (anyChanges) break;
 		for (DLINK_ITERATOR<Team> iter = (*it)->iterate_TeamInstanceList(); !iter.done(); iter.advance()) {
 			if (anyChanges) break;
@@ -2421,7 +2730,12 @@ Bool ScriptConditions::evaluateSkirmishPlayerHasUnitsInArea(Condition *pConditio
 		}
 	}
 
+#ifdef OG
 	if (TheScriptEngine->getFrameObjectCountChanged()+1 >= TheGameLogic->getFrame()) {
+#endif // OG
+#ifdef ZH
+	if (TheScriptEngine->getFrameObjectCountChanged() > pCondition->getCustomFrame()) {
+#endif // ZH
 		anyChanges = true; // Objects were added/deleted last frame, so count could have changed.  jba.
 	}
 
@@ -2430,34 +2744,99 @@ Bool ScriptConditions::evaluateSkirmishPlayerHasUnitsInArea(Condition *pConditio
 		if (pCondition->getCustomData()==1) return true;
 	}
 
+#ifdef OG
 	Coord3D center;
 	Real radius = pTrig->getRadius();
 	pTrig->getCenterPoint(&center);
 
+#endif // OG
+#ifdef ZH
+	Int count = 0;
+	for (it = pPlayer->getPlayerTeams()->begin(); it != pPlayer->getPlayerTeams()->end(); ++it) {
+		for (DLINK_ITERATOR<Team> iter = (*it)->iterate_TeamInstanceList(); !iter.done(); iter.advance()) {
+			Team *team = iter.cur();
+			if (!team) {
+				continue;
+			}
+			for (DLINK_ITERATOR<Object> iter = team->iterate_TeamMemberList(); !iter.done(); iter.advance()) {
+				Object *pObj = iter.cur();
+				if (!pObj) {
+					continue;
+				}
+#endif // ZH
+
+#ifdef OG
 	PartitionFilterPlayer f1(player, true);
 	PartitionFilterPolygonTrigger f2(pTrig);
 	PartitionFilterOnMap filterMapStatus;
+#endif // OG
+#ifdef ZH
+				if (pObj->isInside(pTrig)) {
 
+#endif // ZH
+
+#ifdef OG
 	PartitionFilter *filters[] = { &f1, &f2, &filterMapStatus, 0 };
 
+#endif // OG
+#ifdef ZH
+					//
+					// dead objects will not be considered.
+					//
+					if (!(pObj->isEffectivelyDead() || pObj->isKindOf(KINDOF_INERT) || pObj->isKindOf(KINDOF_PROJECTILE)) ) {
+						count++;
+					}
+				}
+			}
+		}
+	}
+#endif // ZH
+
+#ifdef OG
 	Object *obj = ThePartitionManager->getClosestObject(&center, radius, FROM_CENTER_2D, filters);
 	Bool condition = (obj!=NULL);
+#endif // OG
+#ifdef ZH
+	Bool comparison = count > 0;
+
+#endif // ZH
 	pCondition->setCustomData(-1); // false.
+#ifdef OG
 	if (condition) {
+#endif // OG
+#ifdef ZH
+	if (comparison) {
+#endif // ZH
 		pCondition->setCustomData(1); // true.
 	}
+#ifdef OG
 	return condition;
+
+#endif // OG
+#ifdef ZH
+	pCondition->setCustomFrame(TheScriptEngine->getFrameObjectCountChanged());
+	return comparison;
+#endif // ZH
 }
 
 //-------------------------------------------------------------------------------------------------
 Bool ScriptConditions::evaluateSkirmishSupplySourceSafe(Condition *pCondition, Parameter *pSkirmishPlayerParm, Parameter *pMinSupplyAmount )
 {
+#ifdef OG
 	// Trigger every 32 frames on the 31st frame. jba.
 	Bool anyChanges = (TheGameLogic->getFrame() & 0x1F) == 0x1F;
+#endif // OG
+#ifdef ZH
+	// Trigger every 2*LOGICFRAMES_PER_SECOND. jba.
+	Bool anyChanges = (TheGameLogic->getFrame() > pCondition->getCustomFrame());
+#endif // ZH
 	if (!anyChanges) {
 		if (pCondition->getCustomData()==-1) return false;
 		if (pCondition->getCustomData()==1) return true;
 	}
+#ifdef ZH
+	pCondition->setCustomFrame(TheGameLogic->getFrame()+2*LOGICFRAMES_PER_SECOND);
+#endif // ZH
 	Player *player = playerFromParam(pSkirmishPlayerParm);
 	if (!player) {
 		return FALSE;
@@ -2749,6 +3128,10 @@ Bool ScriptConditions::evaluateCondition( Condition *pCondition )
 			return evaluateCanPurchaseScience(pCondition->getParameter(0), pCondition->getParameter(1));
 		case Condition::PLAYER_HAS_SCIENCEPURCHASEPOINTS:
 			return evaluateSciencePurchasePoints(pCondition->getParameter(0), pCondition->getParameter(1));
+#ifdef ZH
+		case Condition::NAMED_HAS_FREE_CONTAINER_SLOTS:
+			return evaluateNamedHasFreeContainerSlots(pCondition->getParameter(0));
+#endif // ZH
 		case Condition::DEFUNCT_PLAYER_SELECTED_GENERAL:
 		case Condition::DEFUNCT_PLAYER_SELECTED_GENERAL_FROM_NAMED:
 			DEBUG_CRASH(("PLAYER_SELECTED_GENERAL script conditions are no longer in use\n")); 

@@ -24,12 +24,33 @@
  *                                                                                             *
  *                     $Archive:: /Commando/Code/wwmath/colmathobbox.cpp                      $*
  *                                                                                             *
+#ifdef OG
  *                       Author:: Greg Hjelstrom                                               *
+#endif // OG
+#ifdef ZH
+ *                   Org Author:: Greg Hjelstrom                                               *
+#endif // ZH
  *                                                                                             *
+#ifdef OG
  *                     $Modtime:: 11/14/00 2:46p                                              $*
+#endif // OG
+#ifdef ZH
+ *                       Author : Kenny Mitchell                                               * 
+#endif // ZH
  *                                                                                             *
+#ifdef OG
  *                    $Revision:: 8                                                           $*
+
+#endif // OG
+#ifdef ZH
+ *                     $Modtime:: 06/26/02 4:04p                                             $*
  *                                                                                             *
+ *                    $Revision:: 9                                                           $*
+#endif // ZH
+ *                                                                                             *
+#ifdef ZH
+ * 06/26/02 KM Matrix name change to avoid MAX conflicts                                       *
+#endif // ZH
  *---------------------------------------------------------------------------------------------*
  * Functions:                                                                                  *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
@@ -53,7 +74,12 @@ CollisionMath::Overlap_Test(const OBBoxClass & box,const Vector3 & point)
 {
 	// transform point into box coordinate system
 	Vector3 localpoint;
+#ifdef OG
 	Matrix3::Transpose_Rotate_Vector(box.Basis,(point - box.Center),&localpoint);
+#endif // OG
+#ifdef ZH
+	Matrix3x3::Transpose_Rotate_Vector(box.Basis,(point - box.Center),&localpoint);
+#endif // ZH
 
 	// if the point is outside any of the extents, it is outside the box
 	if (WWMath::Fabs(localpoint.X) > box.Extent.X) {

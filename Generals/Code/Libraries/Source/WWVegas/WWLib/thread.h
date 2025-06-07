@@ -27,7 +27,13 @@
 #endif
 
 #include "always.h"
+#ifdef ZH
+#include "vector.h"
+#endif // ZH
 
+#ifdef ZH
+struct _EXCEPTION_POINTERS;
+#endif // ZH
 
 // ****************************************************************************
 //
@@ -46,7 +52,15 @@
 class ThreadClass
 {
 public:
+#ifdef OG
 	ThreadClass();
+
+#endif // OG
+#ifdef ZH
+	typedef int (*ExceptionHandlerType)(int exception_code, struct _EXCEPTION_POINTERS *e_info);
+
+	ThreadClass(const char *name = NULL, ExceptionHandlerType exception_handler = NULL);
+#endif // ZH
 	virtual ~ThreadClass();
 
 	// Execute Thread_Function(). Note that only one instance can be executed at a time.
@@ -70,6 +84,14 @@ public:
 	// Returns true if the thread is running.
 	bool Is_Running();
 
+#ifdef ZH
+	// Gets the name of the thread.
+	const char *Get_Name(void) {return(ThreadName);};
+
+	// Get info about a registered thread by it's index.
+	static int Get_Thread_By_Index(int index, char *name_ptr = NULL);
+
+#endif // ZH
 protected:
 
 	// User defined thread function. The thread function should check for "running" flag every now and then
@@ -77,6 +99,17 @@ protected:
 	virtual void Thread_Function() = 0;
 	volatile bool running;
 
+#ifdef ZH
+	// Name of thread.
+	char ThreadName[64];
+
+	// ID of thread.
+	unsigned ThreadID;
+
+	// Exception handler for this thread.
+	ExceptionHandlerType ExceptionHandler;
+
+#endif // ZH
 private:
 	static void __cdecl Internal_Thread_Function(void*);
 	volatile unsigned long handle;

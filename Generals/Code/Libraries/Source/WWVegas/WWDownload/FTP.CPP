@@ -41,10 +41,18 @@
 
 #include "DownloadDebug.h"
 
+#ifdef OG
 // umm... what?? BGC 3/27/03
 //#ifndef _DEBUG
 //#define _DEBUG
 //#endif
+#endif // OG
+#ifdef ZH
+#ifndef _DEBUG
+#define _DEBUG
+#endif
+
+#endif // ZH
 
 /*************************************************************************/
 /*_$                      External References                            */

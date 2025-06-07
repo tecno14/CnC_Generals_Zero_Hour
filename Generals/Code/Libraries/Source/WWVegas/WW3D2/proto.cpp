@@ -24,12 +24,33 @@
  *                                                                                             *
  *                     $Archive:: /Commando/Code/ww3d2/proto.cpp                              $*
  *                                                                                             *
+#ifdef OG
  *                       Author:: Greg Hjelstrom                                               *
+
+#endif // OG
+#ifdef ZH
+ *                   Org Author:: Greg Hjelstrom                                               *
  *                                                                                             *
+ *                       Author : Kenny Mitchell                                               * 
+#endif // ZH
+ *                                                                                             *
+#ifdef OG
  *                     $Modtime:: 1/08/01 10:04a                                              $*
+#endif // OG
+#ifdef ZH
+ *                     $Modtime:: 06/27/02 3:51p                                              $*
+#endif // ZH
  *                                                                                             *
+#ifdef OG
  *                    $Revision:: 1                                                           $*
+#endif // OG
+#ifdef ZH
+ *                    $Revision:: 2                                                           $*
+#endif // ZH
  *                                                                                             *
+#ifdef ZH
+ * 06/26/02 KM Integrating shader system
+#endif // ZH
  *---------------------------------------------------------------------------------------------*
  * Functions:                                                                                  *
  *   MeshLoaderClass::Load -- reads in a mesh and creates a prototype for it                   *

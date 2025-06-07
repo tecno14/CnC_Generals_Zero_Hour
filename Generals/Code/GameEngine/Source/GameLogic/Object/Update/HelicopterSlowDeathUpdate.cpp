@@ -403,7 +403,12 @@ UpdateSleepTime HelicopterSlowDeathBehavior::update( void )
 		
 				// run the fx at the blade position
 				FXList::doFXPos( modData->m_fxBlade, &bladePos );
+#ifdef OG
 				ObjectCreationList::create( modData->m_oclBlade, copter, &bladePos, NULL );
+#endif // OG
+#ifdef ZH
+				ObjectCreationList::create( modData->m_oclBlade, copter, &bladePos, NULL, INVALID_ANGLE );
+#endif // ZH
 
 				//				
 				// if we have (potentially) a pilot ejection, do it here.

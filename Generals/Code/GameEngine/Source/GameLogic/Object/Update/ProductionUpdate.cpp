@@ -202,6 +202,9 @@ ProductionUpdate::ProductionUpdate( Thing *thing, const ModuleData* moduleData )
 	m_clearFlags.clear();
 	m_setFlags.clear();
 	m_flagsDirty = FALSE;
+#ifdef ZH
+	m_specialPowerConstructionCommandButton = NULL;
+#endif // ZH
 
 }  // end ProductionUpdate
 
@@ -667,7 +670,12 @@ UpdateSleepTime ProductionUpdate::update( void )
 	// Actually, there will be nothing in the queue since everything gets cancel/refunded
 	// at the start of sell, but we still don't want to do anything here.
 	//
+#ifdef OG
 	if( BitTest( us->getStatusBits(), OBJECT_STATUS_SOLD ) )
+#endif // OG
+#ifdef ZH
+	if( us->getStatusBits().test( OBJECT_STATUS_SOLD ) )
+#endif // ZH
 		return UPDATE_SLEEP_NONE;
 
 	// get the player that is building this thing
@@ -855,6 +863,10 @@ UpdateSleepTime ProductionUpdate::update( void )
 								TheAudio->addAudioEvent( &sound );
 							}
 
+#ifdef ZH
+							creationBuilding->getControllingPlayer()->getAcademyStats()->recordProduction( newObj, creationBuilding );
+
+#endif // ZH
 							//We created one guy, but we may want to do more so we should stay in this node of production.
 							// This is last so the voice check can easily check for "first" guy
 							production->oneProductionSuccessful();
@@ -905,8 +917,14 @@ UpdateSleepTime ProductionUpdate::update( void )
 				upgrade->getUpgradeName(),
 				us->getID());
 
+#ifdef OG
 			// print a message to the local player
 			if( us->isLocallyControlled() )
+#endif // OG
+#ifdef ZH
+			// print a message to the local player, if it wants one
+			if( us->isLocallyControlled() && !upgrade->getDisplayNameLabel().isEmpty() )
+#endif // ZH
 			{
 				UnicodeString msg;
 				UnicodeString format = TheGameText->fetch( "UPGRADE:UpgradeComplete" );
@@ -948,6 +966,10 @@ UpdateSleepTime ProductionUpdate::update( void )
 			{
 				us->giveUpgrade( upgrade );
 			}
+#ifdef ZH
+
+			player->getAcademyStats()->recordUpgrade( upgrade, FALSE );
+#endif // ZH
 			
 			//Also mark the UI dirty -- incase object with upgrade cameo is selected.
 			Drawable *draw = TheInGameUI->getFirstSelectedDrawable();
@@ -1152,8 +1174,14 @@ void ProductionUpdate::cancelAndRefundAllProduction( void )
       else
       {
         // unknown production type
+#ifdef OG
         DEBUG_CRASH(( "ProductionUpdate::cancelAndRefundAllProduction - Unknown production type '%d'\n",
                       m_productionQueue->getProductionType() ));
+#endif // OG
+#ifdef ZH
+				DEBUG_CRASH(( "ProductionUpdate::cancelAndRefundAllProduction - Unknown production type '%d'\n", m_productionQueue->getProductionType() ));
+
+#endif // ZH
         return;
       }  // end else
     }  // end if

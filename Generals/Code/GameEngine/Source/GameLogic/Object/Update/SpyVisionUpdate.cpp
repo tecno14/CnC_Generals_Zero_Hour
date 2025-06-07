@@ -38,6 +38,7 @@
 #include "GameLogic/GameLogic.h"
 #include "GameLogic/Module/SpyVisionUpdate.h"
 
+#ifdef OG
 //-------------------------------------------------------------------------------------------------
 //-------------------------------------------------------------------------------------------------
 void SpyVisionUpdateModuleData::buildFieldParse(MultiIniFieldParse& p) 
@@ -49,6 +50,15 @@ void SpyVisionUpdateModuleData::buildFieldParse(MultiIniFieldParse& p)
 	};
   p.add(dataFieldParse);
 }
+#endif // OG
+#ifdef ZH
+#ifdef _INTERNAL
+// for occasional debugging...
+//#pragma optimize("", off)
+//#pragma MESSAGE("************************************** WARNING, optimization disabled for debugging purposes")
+#endif
+
+#endif // ZH
 
 //-------------------------------------------------------------------------------------------------
 //-------------------------------------------------------------------------------------------------
@@ -56,6 +66,11 @@ SpyVisionUpdate::SpyVisionUpdate( Thing *thing, const ModuleData* moduleData ) :
 {
 	m_deactivateFrame = 0;
 	setWakeFrame(getObject(), UPDATE_SLEEP_FOREVER);
+#ifdef ZH
+	m_currentlyActive = FALSE;
+	m_resetTimersNextUpdate = FALSE;
+	m_disabledUntilFrame = 0;
+#endif // ZH
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -69,49 +84,226 @@ SpyVisionUpdate::~SpyVisionUpdate( void )
 void SpyVisionUpdate::activateSpyVision( UnsignedInt duration )
 {
 	UnsignedInt now = TheGameLogic->getFrame();
+#ifdef ZH
+	if( duration == 0 )
+		m_deactivateFrame = UINT_MAX;
+	else
+#endif // ZH
 	m_deactivateFrame = now + duration;
 
+#ifdef OG
 	doActivationWork( TRUE );
+#endif // OG
+#ifdef ZH
+	doActivationWork( getObject()->getControllingPlayer(), TRUE );
+#endif // ZH
 		
+#ifdef ZH
+	if( duration == 0 )
+		setWakeFrame(getObject(), UPDATE_SLEEP_FOREVER);
+	else
+#endif // ZH
 	setWakeFrame( getObject(), UPDATE_SLEEP(duration) );
 }
 
 //-------------------------------------------------------------------------------------------------
 //-------------------------------------------------------------------------------------------------
+#ifdef ZH
+void SpyVisionUpdate::setDisabledUntilFrame( UnsignedInt frame )
+{
+	UnsignedInt now = TheGameLogic->getFrame();
+	if( frame > now )
+	{
+		//Turn off the spy vision now since we are disabled
+		if( m_currentlyActive )
+		{
+			doActivationWork( getObject()->getControllingPlayer(), FALSE );
+		}
+
+		//When should we wake up?
+		m_disabledUntilFrame = frame;
+
+		//Mark it so we can turn it on again on next update.
+		m_resetTimersNextUpdate = TRUE;
+
+		//Now sleep until the disabled has expired. If it's expired again when we come back due to another
+		//sabotage or something else... we'll do the same thing over again.
+		setWakeFrame( getObject(), (UpdateSleepTime)(m_disabledUntilFrame - now) );
+	}
+	else
+	{
+		// Else it is a wakeup message.  Update does the turning on.
+		m_disabledUntilFrame = now;
+		m_resetTimersNextUpdate = TRUE;
+		setWakeFrame(getObject(), UPDATE_SLEEP_NONE);
+	}
+}
+
+//-------------------------------------------------------------------------------------------------
+//-------------------------------------------------------------------------------------------------
+void SpyVisionUpdate::onCapture( Player *oldOwner, Player *newOwner ) 
+{ 
+	if( m_currentlyActive )
+	{
+		// If on, flick the switch real fast to get everything to update for the new owner
+		doActivationWork( oldOwner, FALSE );
+		doActivationWork( newOwner, TRUE );
+	}
+}
+
+//-------------------------------------------------------------------------------------------------
+//-------------------------------------------------------------------------------------------------
+void SpyVisionUpdate::onDisabledEdge( Bool nowDisabled )
+{
+	if( nowDisabled )
+		setDisabledUntilFrame(UINT_MAX);
+	else
+		setDisabledUntilFrame(0);
+}
+
+//-------------------------------------------------------------------------------------------------
+//-------------------------------------------------------------------------------------------------
+#endif // ZH
 UpdateSleepTime SpyVisionUpdate::update( void )
 {
+#ifdef OG
 	if( m_deactivateFrame && (m_deactivateFrame <= TheGameLogic->getFrame()) )
-	{
-		// Turn off SpyVision.
-		doActivationWork( FALSE );
 
-		m_deactivateFrame = 0;
+#endif // OG
+#ifdef ZH
+	const SpyVisionUpdateModuleData *data = getSpyVisionUpdateModuleData();
+	UnsignedInt now = TheGameLogic->getFrame();
+
+	//Once disable has complete and we are waking up from it, then reset the interval so
+	//it has to wait before going on again. If it doesn't have an interval, we turn it on
+	//immediately, but only for self powered objects. 
+	if( m_resetTimersNextUpdate )
+	{
+		m_resetTimersNextUpdate = FALSE;
+		
+		if( data->m_selfPowered )
+		{
+			if( data->m_selfPoweredInterval == 0 )
+			{
+				//It's an always on self-powered special. So turn it back on now.
+				doActivationWork( getObject()->getControllingPlayer(), TRUE );
+				return UPDATE_SLEEP( UPDATE_SLEEP_FOREVER );
+			}
+			else
+			{
+				//Reset the interval timer via sleeping (so we have to wait a longer time before going on)
+				return UPDATE_SLEEP( data->m_selfPoweredInterval );
+			}
+		}
 	}
 
+	if( m_currentlyActive && (m_deactivateFrame <= TheGameLogic->getFrame()) )
+#endif // ZH
+	{
+		// Turn off SpyVision.
+#ifdef OG
+		doActivationWork( FALSE );
+#endif // OG
+#ifdef ZH
+		doActivationWork( getObject()->getControllingPlayer(), FALSE );
+#endif // ZH
+
+		m_deactivateFrame = 0;
+#ifdef ZH
+	}
+	else if( !m_currentlyActive && data->m_selfPowered )
+	{
+		doActivationWork( getObject()->getControllingPlayer(), TRUE );
+		if( data->m_selfPoweredDuration == 0 )
+			m_deactivateFrame = UINT_MAX;
+		else
+			m_deactivateFrame = now + data->m_selfPoweredDuration;
+#endif // ZH
+	}
+
+#ifdef ZH
+	if( data->m_selfPowered )
+	{
+		if( m_currentlyActive )
+			return UPDATE_SLEEP(data->m_selfPoweredDuration);
+		else
+			return UPDATE_SLEEP(data->m_selfPoweredInterval);
+	}
+
+#endif // ZH
 	return UPDATE_SLEEP_FOREVER;
 }
 
+#ifdef OG
 void SpyVisionUpdate::doActivationWork( Bool setting )
+
+#endif // OG
+#ifdef ZH
+//-------------------------------------------------------------------------------------------------
+void SpyVisionUpdate::doActivationWork( Player *playerToSetFor, Bool setting )
+#endif // ZH
 {
+#ifdef OG
 	Player *ourPlayer = getObject()->getControllingPlayer();
 	if( ourPlayer == NULL  ||  ThePlayerList == NULL )
+#endif // OG
+#ifdef ZH
+	const SpyVisionUpdateModuleData *data = getSpyVisionUpdateModuleData();
+	if( playerToSetFor == NULL  ||  ThePlayerList == NULL )
+#endif // ZH
 		return;
 	
 	for (Int i=0; i < ThePlayerList->getPlayerCount(); ++i)
 	{
 		Player *player = ThePlayerList->getNthPlayer(i);
+#ifdef OG
 		if( ourPlayer->getRelationship(player->getDefaultTeam()) == ENEMIES )
+#endif // OG
+#ifdef ZH
+		if( playerToSetFor->getRelationship(player->getDefaultTeam()) == ENEMIES )
+#endif // ZH
 		{
+#ifdef OG
 			player->setUnitsVisionSpied( setting, ourPlayer->getPlayerIndex() );
+#endif // OG
+#ifdef ZH
+			player->setUnitsVisionSpied( setting, data->m_spyOnKindof, playerToSetFor->getPlayerIndex() );
+#endif // ZH
 		}
 	}
+#ifdef ZH
+
+	m_currentlyActive = setting;
+#endif // ZH
 }
 
+#ifdef ZH
+//-------------------------------------------------------------------------------------------------
+#endif // ZH
 void SpyVisionUpdate::onDelete( void )
 {
 	// If I was left on at the time of death, then turn me off.
+#ifdef OG
 	if( m_deactivateFrame )
 		doActivationWork( FALSE );
+
+#endif // OG
+#ifdef ZH
+	if( m_currentlyActive )
+	{
+		doActivationWork( getObject()->getControllingPlayer(), FALSE );
+	}
+} 
+
+// ------------------------------------------------------------------------------------------------
+void SpyVisionUpdate::upgradeImplementation()
+{
+	const SpyVisionUpdateModuleData *data = getSpyVisionUpdateModuleData();
+	if( data->m_needsUpgrade && !isAlreadyUpgraded() )
+	{
+		activateSpyVision(data->m_selfPoweredDuration);// If zero, will turn on permanently.  And it does the wake up setting
+	}
+#endif // ZH
 } 
 
 // ------------------------------------------------------------------------------------------------
@@ -134,7 +326,12 @@ void SpyVisionUpdate::xfer( Xfer *xfer )
 {
 
 	// version
+#ifdef OG
 	XferVersion currentVersion = 1;
+#endif // OG
+#ifdef ZH
+	XferVersion currentVersion = 2;
+#endif // ZH
 	XferVersion version = currentVersion;
 	xfer->xferVersion( &version, currentVersion );
 
@@ -143,6 +340,16 @@ void SpyVisionUpdate::xfer( Xfer *xfer )
 
 	// deactivate frame
 	xfer->xferUnsignedInt( &m_deactivateFrame );
+#ifdef ZH
+
+	xfer->xferBool( &m_currentlyActive );
+
+	if( version >= 2 )
+	{
+		xfer->xferBool( &m_resetTimersNextUpdate );
+		xfer->xferUnsignedInt( &m_disabledUntilFrame );
+	}
+#endif // ZH
 
 }  // end xfer
 

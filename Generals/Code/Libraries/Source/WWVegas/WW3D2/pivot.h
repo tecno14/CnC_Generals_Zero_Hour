@@ -58,7 +58,12 @@
 	
 */
 
+#ifdef OG
 #define LAZY_CAP_MTX_ALLOC
+#endif // OG
+#ifdef ZH
+//#define LAZY_CAP_MTX_ALLOC
+#endif // ZH
 
 struct PivotClass
 {

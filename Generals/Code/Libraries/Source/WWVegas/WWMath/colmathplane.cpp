@@ -24,12 +24,33 @@
  *                                                                                             *
  *                     $Archive:: /Commando/Code/wwmath/colmathplane.cpp                      $*
  *                                                                                             *
+#ifdef OG
  *                       Author:: Greg Hjelstrom                                               *
+
+#endif // OG
+#ifdef ZH
+ *                    Org Author:: Greg Hjelstrom                                               *
  *                                                                                             *
+ *                       Author : Kenny Mitchell                                               * 
+#endif // ZH
+ *                                                                                             *
+#ifdef OG
  *                     $Modtime:: 3/29/00 4:41p                                               $*
+#endif // OG
+#ifdef ZH
+ *                     $Modtime:: 06/26/02 4:04p                                             $*
+#endif // ZH
  *                                                                                             *
+#ifdef OG
  *                    $Revision:: 9                                                           $*
+#endif // OG
+#ifdef ZH
+ *                    $Revision:: 10                                                           $*
+#endif // ZH
  *                                                                                             *
+#ifdef ZH
+ * 06/26/02 KM Matrix name change to avoid MAX conflicts                                       *
+#endif // ZH
  *---------------------------------------------------------------------------------------------*
  * Functions:                                                                                  *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
@@ -173,12 +194,22 @@ CollisionMath::Overlap_Test(const PlaneClass & plane,const OBBoxClass & box)
 	Vector3 local_normal;
 	Vector3 posfarpt;
 	Vector3 negfarpt;
+#ifdef OG
 	Matrix3::Transpose_Rotate_Vector(box.Basis,plane.N,&local_normal);
+#endif // OG
+#ifdef ZH
+	Matrix3x3::Transpose_Rotate_Vector(box.Basis,plane.N,&local_normal);
+#endif // ZH
 
 	get_far_extent(local_normal,box.Extent,&posfarpt);
 
 	// transform the two extreme box coordinates into world space
+#ifdef OG
 	Matrix3::Rotate_Vector(box.Basis,posfarpt,&posfarpt);
+#endif // OG
+#ifdef ZH
+	Matrix3x3::Rotate_Vector(box.Basis,posfarpt,&posfarpt);
+#endif // ZH
 	negfarpt = -posfarpt;
 	posfarpt += box.Center;
 	negfarpt += box.Center;

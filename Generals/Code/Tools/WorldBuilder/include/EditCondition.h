@@ -28,6 +28,15 @@
 
 class Condition;
 class SidesList;
+#ifdef ZH
+
+class CMyTreeCtrl : public CTreeCtrl
+{
+public:
+	virtual LRESULT WindowProc( UINT message, WPARAM wParam, LPARAM lParam );
+};
+
+#endif // ZH
 /////////////////////////////////////////////////////////////////////////////
 // EditCondition dialog
 
@@ -65,6 +74,9 @@ protected:
 	CRichEditCtrl m_myEditCtrl;
 	CHARRANGE m_curLinkChrg;
 	Int				m_curEditParameter;
+#ifdef ZH
+	CTreeCtrl	m_conditionTreeView;
+#endif // ZH
 
 protected:
 

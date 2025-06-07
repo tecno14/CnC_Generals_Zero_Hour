@@ -26,9 +26,19 @@
  *                                                                                             *
  *                       Author:: Greg Hjelstrom                                               *
  *                                                                                             *
+#ifdef OG
  *                     $Modtime:: 5/30/01 2:10p                                               $*
+#endif // OG
+#ifdef ZH
+ *                     $Modtime:: 11/27/01 12:45a                                             $*
+#endif // ZH
  *                                                                                             *
+#ifdef OG
  *                    $Revision:: 4                                                           $*
+#endif // OG
+#ifdef ZH
+ *                    $Revision:: 6                                                           $*
+#endif // ZH
  *                                                                                             *
  *---------------------------------------------------------------------------------------------*
  * Functions:                                                                                  *
@@ -72,9 +82,15 @@
  *                                                                                             *
  * HISTORY:                                                                                    *
  *=============================================================================================*/
+#ifdef OG
 CompositeRenderObjClass::CompositeRenderObjClass(void) :
 	Name(NULL),
 	BaseModelName(NULL)
+#endif // OG
+#ifdef ZH
+CompositeRenderObjClass::CompositeRenderObjClass(void)
+
+#endif // ZH
 {
 }
 
@@ -91,9 +107,15 @@ CompositeRenderObjClass::CompositeRenderObjClass(void) :
  * HISTORY:                                                                                    *
  *   1/26/00    gth : Created.                                                                 *
  *=============================================================================================*/
+#ifdef OG
 CompositeRenderObjClass::CompositeRenderObjClass(const CompositeRenderObjClass & that) :
 	Name(NULL),
 	BaseModelName(NULL)
+#endif // OG
+#ifdef ZH
+CompositeRenderObjClass::CompositeRenderObjClass(const CompositeRenderObjClass & that)
+
+#endif // ZH
 {
 	Set_Name(that.Get_Name());
 	Set_Base_Model_Name(that.Get_Base_Model_Name());
@@ -114,8 +136,10 @@ CompositeRenderObjClass::CompositeRenderObjClass(const CompositeRenderObjClass &
  *=============================================================================================*/
 CompositeRenderObjClass::~CompositeRenderObjClass(void)
 {
+#ifdef OG
 	if (Name) free(Name);
 	if (BaseModelName) free(BaseModelName);
+#endif // OG
 }
 
 
@@ -193,6 +217,7 @@ const char * CompositeRenderObjClass::Get_Name(void) const
  *=============================================================================================*/
 void CompositeRenderObjClass::Set_Name(const char * name)												
 { 
+#ifdef OG
 	if (Name) {
 		free(Name);
 		Name = NULL;
@@ -200,6 +225,11 @@ void CompositeRenderObjClass::Set_Name(const char * name)
 	if (name) {
 		Name = strdup(name);
 	}
+#endif // OG
+#ifdef ZH
+	Name=name;
+
+#endif // ZH
 }
 
 
@@ -219,6 +249,7 @@ void CompositeRenderObjClass::Set_Name(const char * name)
  *=============================================================================================*/
 void CompositeRenderObjClass::Set_Base_Model_Name(const char *name)
 {
+#ifdef OG
 	if (BaseModelName) {
 		free(BaseModelName);
 		BaseModelName = NULL;
@@ -226,9 +257,21 @@ void CompositeRenderObjClass::Set_Base_Model_Name(const char *name)
 
 	if (name) {
 		BaseModelName = ::strdup(name);
+#endif // OG
+#ifdef ZH
+	// NULL is a legal value for BaseModelName. Unfortunately,
+	// StringClass::operator= does not modify the string when
+	// assigning NULL, so we explicitly handle that case here.
+	if (name != 0) {
+		BaseModelName = name;
+	} else {
+		BaseModelName = "";
+#endif // ZH
 	}
+#ifdef OG
 	
 	return ;
+#endif // OG
 }
 
 
@@ -564,4 +607,17 @@ void CompositeRenderObjClass::Set_User_Data(void *value, bool recursive)
 		}
 	}
 }
+
+#ifdef ZH
+const char * CompositeRenderObjClass::Get_Base_Model_Name (void) const
+{
+	if (BaseModelName.Is_Empty()) {
+		return NULL;
+	}
+#endif // ZH
+
+#ifdef ZH
+	return BaseModelName;
+}
+#endif // ZH
 

@@ -22,13 +22,33 @@
  *                                                                                             * 
  *                 Project Name : Command & Conquer                                            * 
  *                                                                                             * 
+#ifdef OG
  *                     $Archive:: /G/wwlib/rawfile.h                                          $* 
+#endif // OG
+#ifdef ZH
+ *                     $Archive:: /Commando/Code/wwlib/rawfile.h                              $* 
+#endif // ZH
  *                                                                                             * 
+#ifdef OG
  *                      $Author:: Neal_k                                                      $*
+#endif // OG
+#ifdef ZH
+ *                      $Author:: Jani_p                                                      $*
+#endif // ZH
  *                                                                                             * 
+#ifdef OG
  *                     $Modtime:: 10/04/99 10:25a                                             $*
+#endif // OG
+#ifdef ZH
+ *                     $Modtime:: 11/25/01 11:52a                                             $*
+#endif // ZH
  *                                                                                             * 
+#ifdef OG
  *                    $Revision:: 8                                                           $*
+#endif // OG
+#ifdef ZH
+ *                    $Revision:: 10                                                          $*
+#endif // ZH
  *                                                                                             *
  *---------------------------------------------------------------------------------------------* 
  * Functions:                                                                                  * 
@@ -59,6 +79,9 @@
 #endif
 
 #include	"wwfile.h"
+#ifdef ZH
+#include "wwstring.h"
+#endif // ZH
 
 
 #ifndef WWERROR
@@ -110,9 +133,15 @@ class RawFileClass : public FileClass
 		virtual unsigned long Get_Date_Time(void);
 		virtual bool Set_Date_Time(unsigned long datetime);
 		virtual void Error(int error, int canretry = false, char const * filename=NULL);
+#ifdef OG
 
 		void Bias(int start, int length=-1);
 
+#endif // OG
+#ifdef ZH
+		virtual void Bias(int start, int length=-1);
+
+#endif // ZH
 		virtual void * Get_File_Handle(void) { return Handle; } 
 
 		virtual void	Attach (void *handle, int rights=READ);
@@ -148,11 +177,17 @@ class RawFileClass : public FileClass
 			void * Handle;
 		#endif
 
+#ifdef OG
 		/*
 		**	This points to the filename as a NULL terminated string. It may point to either a
 		**	constant or an allocated string as indicated by the "Allocated" flag.
 		*/
 		char const * Filename;
+#endif // OG
+#ifdef ZH
+		StringClass Filename;
+
+#endif // ZH
 
 		//
 		// file date and time are in the following formats:
@@ -167,6 +202,7 @@ class RawFileClass : public FileClass
 		//
 		unsigned short Date;
 		unsigned short Time;
+#ifdef OG
 
 		/*
 		**	Filenames that were assigned as part of the construction process
@@ -176,6 +212,7 @@ class RawFileClass : public FileClass
 		**	(using strdup()).
 		*/
 		bool Allocated;
+#endif // OG
 };
 
 
@@ -194,6 +231,10 @@ class RawFileClass : public FileClass
  *                                                                                             *
  * HISTORY:                                                                                    *
  *   10/18/1994 JLB : Created.                                                                 *
+#ifdef ZH
+ *   11/25/2001 Jani: Note that this is virtual function and thus can't be inlined. Is there a *
+ *					 reason for it to be virtual?																	  *
+#endif // ZH
  *=============================================================================================*/
 inline char const * RawFileClass::File_Name(void) const
 {

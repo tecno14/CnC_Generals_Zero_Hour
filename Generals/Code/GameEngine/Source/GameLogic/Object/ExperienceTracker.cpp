@@ -103,7 +103,12 @@ void ExperienceTracker::setMinVeterancyLevel( VeterancyLevel newLevel )
 }
 
 //-------------------------------------------------------------------------------------------------
+#ifdef OG
 void ExperienceTracker::setVeterancyLevel( VeterancyLevel newLevel )
+#endif // OG
+#ifdef ZH
+void ExperienceTracker::setVeterancyLevel( VeterancyLevel newLevel, Bool provideFeedback )
+#endif // ZH
 {
 	// This does not check for IsTrainable, because this function is for explicit setting,
 	// so the setter is assumed to know what they are doing.  The game function
@@ -114,7 +119,12 @@ void ExperienceTracker::setVeterancyLevel( VeterancyLevel newLevel )
 		m_currentLevel = newLevel;
 		m_currentExperience = m_parent->getTemplate()->getExperienceRequired(m_currentLevel); //Minimum for this level
 		if (m_parent)
+#ifdef OG
 			m_parent->onVeterancyLevelChanged( oldLevel, newLevel );
+#endif // OG
+#ifdef ZH
+			m_parent->onVeterancyLevelChanged( oldLevel, newLevel, provideFeedback );
+#endif // ZH
 	}
 }
 
@@ -190,7 +200,12 @@ void ExperienceTracker::addExperiencePoints( Int experienceGain, Bool canScaleFo
 
 }
 //-------------------------------------------------------------------------------------------------
+#ifdef OG
 void ExperienceTracker::setExperienceAndLevel( Int experienceIn )
+#endif // OG
+#ifdef ZH
+void ExperienceTracker::setExperienceAndLevel( Int experienceIn, Bool provideFeedback )
+#endif // ZH
 {
 	if( m_experienceSink != INVALID_ID )
 	{
@@ -199,7 +214,12 @@ void ExperienceTracker::setExperienceAndLevel( Int experienceIn )
 		if( sinkPointer )
 		{
 			// Not a fatal failure if not valid, he died when I was in the air.
+#ifdef OG
 			sinkPointer->getExperienceTracker()->setExperienceAndLevel( experienceIn );
+#endif // OG
+#ifdef ZH
+			sinkPointer->getExperienceTracker()->setExperienceAndLevel( experienceIn, provideFeedback );
+#endif // ZH
 			return;
 		}
 	}
@@ -225,7 +245,12 @@ void ExperienceTracker::setExperienceAndLevel( Int experienceIn )
 	if( oldLevel != m_currentLevel )
 	{
 		// Edge trigger special level gain effects.
+#ifdef OG
 		m_parent->onVeterancyLevelChanged( oldLevel, m_currentLevel ); //<<== paradox! this may be a level lost!
+#endif // OG
+#ifdef ZH
+		m_parent->onVeterancyLevelChanged( oldLevel, m_currentLevel, provideFeedback ); //<<== paradox! this may be a level lost!
+#endif // ZH
 	}
 
 }

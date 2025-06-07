@@ -22,13 +22,33 @@
  *                                                                                             *
  *                 Project Name : Command & Conquer                                            *
  *                                                                                             *
+#ifdef OG
  *                     $Archive:: /G/wwlib/listnode.h                                         $*
+#endif // OG
+#ifdef ZH
+ *                     $Archive:: /Commando/Code/wwlib/listnode.h                             $*
+#endif // ZH
  *                                                                                             *
+#ifdef OG
  *                      $Author:: David_m                                                     $*
+#endif // OG
+#ifdef ZH
+ *                      $Author:: Ian_l                                                       $*
+#endif // ZH
  *                                                                                             *
+#ifdef OG
  *                     $Modtime:: 4/05/00 12:34p                                              $*
+#endif // OG
+#ifdef ZH
+ *                     $Modtime:: 9/20/01 9:46p                                               $*
+#endif // ZH
  *                                                                                             *
+#ifdef OG
  *                    $Revision:: 3                                                           $*
+#endif // OG
+#ifdef ZH
+ *                    $Revision:: 4                                                           $*
+#endif // ZH
  *                                                                                             *
  *---------------------------------------------------------------------------------------------*
  * Functions:                                                                                  *

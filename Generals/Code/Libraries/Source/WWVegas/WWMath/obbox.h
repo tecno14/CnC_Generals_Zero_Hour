@@ -24,12 +24,33 @@
  *                                                                                             *
  *                     $Archive:: /Commando/Code/wwmath/obbox.h                               $*
  *                                                                                             *
+#ifdef OG
  *                       Author:: Greg_h                                                       *
+
+#endif // OG
+#ifdef ZH
+ *                    Org Author:: Greg_h                                                       *
  *                                                                                             *
+ *                       Author : Kenny Mitchell                                               * 
+#endif // ZH
+ *                                                                                             *
+#ifdef OG
  *                     $Modtime:: 6/29/00 6:51p                                               $*
+#endif // OG
+#ifdef ZH
+ *                     $Modtime:: 06/26/02 4:04p                                             $*
+#endif // ZH
  *                                                                                             *
+#ifdef OG
  *                    $Revision:: 23                                                          $*
+#endif // OG
+#ifdef ZH
+ *                    $Revision:: 24                                                          $*
+#endif // ZH
  *                                                                                             *
+#ifdef ZH
+ * 06/26/02 KM Matrix name change to avoid MAX conflicts                                       *
+#endif // ZH
  *---------------------------------------------------------------------------------------------*
  * Functions:                                                                                  *
  *   OBBoxClass::Transform -- transform an oriented box                                        *
@@ -88,7 +109,12 @@ public:
 		Extent(extent)
 	{ }
 	
+#ifdef OG
 	OBBoxClass(const Vector3 & center,const Vector3 & extent,const Matrix3 & basis) :
+#endif // OG
+#ifdef ZH
+	OBBoxClass(const Vector3 & center,const Vector3 & extent,const Matrix3x3 & basis) :
+#endif // ZH
 		Basis(basis),
 		Center(center),
 		Extent(extent)
@@ -106,7 +132,12 @@ public:
 	void		Compute_Point(float params[3],Vector3 * set_point) const;
 	void		Compute_Axis_Aligned_Extent(Vector3 * set_extent) const;
 
+#ifdef OG
 	Matrix3	Basis;
+#endif // OG
+#ifdef ZH
+	Matrix3x3	Basis;
+#endif // ZH
 	Vector3	Center;
 	Vector3	Extent;
 
@@ -166,7 +197,12 @@ inline void OBBoxClass::Transform
 
 	out->Extent = in.Extent;
 	Matrix3D::Transform_Vector(tm,in.Center,&(out->Center));
+#ifdef OG
 	Matrix3::Multiply(tm,in.Basis,&(out->Basis));
+#endif // OG
+#ifdef ZH
+	Matrix3x3::Multiply(tm,in.Basis,&(out->Basis));
+#endif // ZH
 }
 
 
@@ -193,7 +229,12 @@ inline void OBBoxClass::Compute_Point(float params[3],Vector3 * set_point) const
 	point.Y *= params[1];
 	point.Z *= params[2];
 
+#ifdef OG
 	Matrix3::Rotate_Vector(Basis,point,set_point);
+#endif // OG
+#ifdef ZH
+	Matrix3x3::Rotate_Vector(Basis,point,set_point);
+#endif // ZH
 	Vector3::Add(Center,*set_point,set_point);
 }
 

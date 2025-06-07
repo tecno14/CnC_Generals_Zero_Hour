@@ -41,12 +41,18 @@
 // ------------------------------------------------------------------------------------------------
 class SupplyCenterDockUpdateModuleData : public DockUpdateModuleData
 {
-
 public:
-
   SupplyCenterDockUpdateModuleData( void );
-	
+#ifdef ZH
 	static void buildFieldParse(MultiIniFieldParse& p);
+#endif // ZH
+	
+#ifdef OG
+	static void buildFieldParse(MultiIniFieldParse& p);
+#endif // OG
+#ifdef ZH
+	UnsignedInt m_grantTemporaryStealthFrames;
+#endif // ZH
 };
 
 // ------------------------------------------------------------------------------------------------

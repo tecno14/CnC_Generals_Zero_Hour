@@ -35,8 +35,14 @@ class RetranslateDlg : public CDialog
 // Construction
 public:
 
+#ifdef OG
 	NoxText *newtext;
 	NoxText *oldtext;
+#endif // OG
+#ifdef ZH
+	BabylonText *newtext;
+	BabylonText *oldtext;
+#endif // ZH
 
 	RetranslateDlg(CWnd* pParent = NULL);   // standard constructor
 

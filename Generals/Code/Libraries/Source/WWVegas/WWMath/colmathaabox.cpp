@@ -26,9 +26,19 @@
  *                                                                                             *
  *                       Author:: Greg Hjelstrom                                               *
  *                                                                                             *
+#ifdef OG
  *                     $Modtime:: 11/14/00 2:46p                                              $*
+#endif // OG
+#ifdef ZH
+ *                     $Modtime:: 8/30/01 7:40p                                               $*
+#endif // ZH
  *                                                                                             *
+#ifdef OG
  *                    $Revision:: 21                                                          $*
+#endif // OG
+#ifdef ZH
+ *                    $Revision:: 22                                                          $*
+#endif // ZH
  *                                                                                             *
  *---------------------------------------------------------------------------------------------*
  * Functions:                                                                                  *
@@ -583,10 +593,22 @@ exit:
 
 		result->Fraction = context.MaxFrac;
 		result->Normal.Set(0,0,0);
+#ifdef OG
 		result->Normal[context.AxisId] = context.Side;
+#endif // OG
+#ifdef ZH
+		result->Normal[context.AxisId] = -context.Side;
+#endif // ZH
 
 		if (result->ComputeContactPoint) {
+#ifdef OG
 			WWASSERT(0); // TODO
+
+#endif // OG
+#ifdef ZH
+			//WWASSERT(0); // TODO
+			WWDEBUG_SAY(("AABox-AABox collision does not currently support contact point computation\r\n"));
+#endif // ZH
 		}
 
 		return true;

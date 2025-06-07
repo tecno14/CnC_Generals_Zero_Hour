@@ -66,11 +66,33 @@ public:
 	// unique to W3DAssetManager
 	virtual HAnimClass *	Get_HAnim(const char * name);
 	virtual bool Load_3D_Assets( const char * filename ); // This CANNOT be Bool, as it will not inherit properly if you make Bool == Int
+#ifdef OG
 	virtual TextureClass *			Get_Texture(
+
+#endif // OG
+#ifdef ZH
+
+	virtual TextureClass *	Get_Texture
+	(
+#endif // ZH
 		const char * filename, 
+#ifdef OG
 		TextureClass::MipCountType mip_level_count=TextureClass::MIP_LEVELS_ALL,
+#endif // OG
+#ifdef ZH
+		MipCountType mip_level_count=MIP_LEVELS_ALL,
+#endif // ZH
 		WW3DFormat texture_format=WW3D_FORMAT_UNKNOWN,
+#ifdef OG
 		bool allow_compression=true);
+
+#endif // OG
+#ifdef ZH
+		bool allow_compression=true,
+		TextureBaseClass::TexAssetType type=TextureBaseClass::TEX_REGULAR,
+		bool allow_reduction=true
+	);
+#endif // ZH
 
 	//'Generals' customizations
 	void Report_Used_Assets(void);

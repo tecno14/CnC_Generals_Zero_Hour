@@ -20,7 +20,12 @@
 //
 
 #include "stdafx.h"
+#ifdef OG
 #include "noxstring.h"
+#endif // OG
+#ifdef ZH
+#include "Babylon.h"
+#endif // ZH
 #include "VerifyTextDlg.h"
 
 #ifdef _DEBUG

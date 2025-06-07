@@ -26,45 +26,100 @@
 #pragma once
 #endif // _MSC_VER > 1000
 
+#ifdef OG
 class CNoxstringDlg;
+#endif // OG
+#ifdef ZH
+class CBabylonDlg;
+#endif // ZH
 
 /////////////////////////////////////////////////////////////////////////////
+#ifdef OG
 // CNoxstringDlgAutoProxy command target
+#endif // OG
+#ifdef ZH
+// CBabylonDlgAutoProxy command target
+#endif // ZH
 
+#ifdef OG
 class CNoxstringDlgAutoProxy : public CCmdTarget
+#endif // OG
+#ifdef ZH
+class CBabylonDlgAutoProxy : public CCmdTarget
+#endif // ZH
 {
+#ifdef OG
 	DECLARE_DYNCREATE(CNoxstringDlgAutoProxy)
+#endif // OG
+#ifdef ZH
+	DECLARE_DYNCREATE(CBabylonDlgAutoProxy)
+#endif // ZH
 
+#ifdef OG
 	CNoxstringDlgAutoProxy();           // protected constructor used by dynamic creation
+#endif // OG
+#ifdef ZH
+	CBabylonDlgAutoProxy();           // protected constructor used by dynamic creation
+#endif // ZH
 
 // Attributes
 public:
+#ifdef OG
 	CNoxstringDlg* m_pDialog;
+#endif // OG
+#ifdef ZH
+	CBabylonDlg* m_pDialog;
+#endif // ZH
 
 // Operations
 public:
 
 // Overrides
 	// ClassWizard generated virtual function overrides
+#ifdef OG
 	//{{AFX_VIRTUAL(CNoxstringDlgAutoProxy)
+#endif // OG
+#ifdef ZH
+	//{{AFX_VIRTUAL(CBabylonDlgAutoProxy)
+#endif // ZH
 	public:
 	virtual void OnFinalRelease();
 	//}}AFX_VIRTUAL
 
 // Implementation
 protected:
+#ifdef OG
 	virtual ~CNoxstringDlgAutoProxy();
+#endif // OG
+#ifdef ZH
+	virtual ~CBabylonDlgAutoProxy();
+#endif // ZH
 
 	// Generated message map functions
+#ifdef OG
 	//{{AFX_MSG(CNoxstringDlgAutoProxy)
+#endif // OG
+#ifdef ZH
+	//{{AFX_MSG(CBabylonDlgAutoProxy)
+#endif // ZH
 		// NOTE - the ClassWizard will add and remove member functions here.
 	//}}AFX_MSG
 
 	DECLARE_MESSAGE_MAP()
+#ifdef OG
 	DECLARE_OLECREATE(CNoxstringDlgAutoProxy)
+#endif // OG
+#ifdef ZH
+	DECLARE_OLECREATE(CBabylonDlgAutoProxy)
+#endif // ZH
 
 	// Generated OLE dispatch map functions
+#ifdef OG
 	//{{AFX_DISPATCH(CNoxstringDlgAutoProxy)
+#endif // OG
+#ifdef ZH
+	//{{AFX_DISPATCH(CBabylonDlgAutoProxy)
+#endif // ZH
 		// NOTE - the ClassWizard will add and remove member functions here.
 	//}}AFX_DISPATCH
 	DECLARE_DISPATCH_MAP()

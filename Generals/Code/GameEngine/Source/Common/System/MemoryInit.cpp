@@ -61,6 +61,7 @@ void userMemoryManagerGetDmaParms(Int *numSubPools, const PoolInitRec **pParms)
 	static const PoolInitRec defaultDMA[7] = 
 	{
 		// name, allocsize, initialcount, overflowcount
+#ifdef OG
 		{ "dmaPool_16", 16,			65536,	1024 },
 		{ "dmaPool_32", 32,			150000,	1024 },
 		{ "dmaPool_64", 64,			60000,	1024 },
@@ -68,6 +69,16 @@ void userMemoryManagerGetDmaParms(Int *numSubPools, const PoolInitRec **pParms)
 		{ "dmaPool_256", 256,		8192,		1024 },
 		{ "dmaPool_512", 512,		8192,		1024 },
 		{ "dmaPool_1024", 1024, 24000,	1024 }
+#endif // OG
+#ifdef ZH
+		{ "dmaPool_16", 16,			130000,	10000 },
+		{ "dmaPool_32", 32,			250000,	10000 },
+		{ "dmaPool_64", 64,			100000,	10000 },
+		{ "dmaPool_128", 128,		80000,	10000 },
+		{ "dmaPool_256", 256,		20000,	5000 },
+		{ "dmaPool_512", 512,		16000,	5000 },
+		{ "dmaPool_1024", 1024, 6000,		1024}
+#endif // ZH
 	};
 
 	*numSubPools = 7;
@@ -93,47 +104,92 @@ static PoolSizeRec sizes[] =
 	{ "MusicTrack", 32, 32 },
 	{ "PositionalSoundPool", 32, 32 },
 	{ "GameMessage", 2048, 32 },
+#ifdef OG
 	{ "NameKeyBucketPool", 4096, 32 },
+#endif // OG
+#ifdef ZH
+	{ "NameKeyBucketPool", 9000, 1024 },
+#endif // ZH
 	{ "ObjectSellInfo", 16, 16 },
 	{ "ProductionPrerequisitePool", 1024, 32 },
 	{ "RadarObject", 512, 32 },
 	{ "ResourceGatheringManager", 16, 16 },
 	{ "SightingInfo", 8192, 2048 },// Looks big, but all 3000 objects used to have 4 just built in.
+#ifdef OG
 	{ "SpecialPowerTemplate", 64, 32 },
+#endif // OG
+#ifdef ZH
+	{ "SpecialPowerTemplate", 84, 32 },
+#endif // ZH
 	{ "StateMachinePool", 32, 32 },
 	{ "TeamPool", 128, 32 },	// if you increase this, increase player/team relation map pools
 	{ "PlayerRelationMapPool", 128, 32 },
 	{ "TeamRelationMapPool", 128, 32 },
 	{ "TeamPrototypePool", 256, 32 },
 	{ "TerrainType", 256, 32 },
+#ifdef OG
 	{ "ThingTemplatePool", 1200, 32 },
+#endif // OG
+#ifdef ZH
+	{ "ThingTemplatePool", 2120, 32 },
+#endif // ZH
 	{ "TunnelTracker", 16, 16 },
 	{ "Upgrade", 16, 16 },
 	{ "UpgradeTemplate", 128, 16 },
 	{ "Anim2D", 32, 32 },
+#ifdef OG
 	{ "CommandButton", 300, 16 },
 	{ "CommandSet", 256, 16 },
+#endif // OG
+#ifdef ZH
+	{ "CommandButton", 1024, 256 },
+	{ "CommandSet", 820, 16 },
+#endif // ZH
 	{ "DisplayString", 32, 32 },
 	{ "WebBrowserURL", 16, 16 },
 	{ "Drawable", 4096, 32 },
 	{ "Image", 2048, 32 },
+#ifdef OG
 	{ "ParticlePool", 4096, 256 },  
 	{ "ParticleSystemTemplatePool", 768, 32 },  
+#endif // OG
+#ifdef ZH
+	{ "ParticlePool", 1400, 1024 },  
+	{ "ParticleSystemTemplatePool", 1100, 32 },  
+#endif // ZH
 	{ "ParticleSystemPool", 1024, 32 },  
+#ifdef OG
 	{ "TerrainRoadType", 64, 64, },
+#endif // OG
+#ifdef ZH
+	{ "TerrainRoadType", 100, 32, },
+#endif // ZH
 	{ "WindowLayoutPool", 32, 32 },
 	{ "AnimatedParticleSysBoneClientUpdate", 16, 16 },
+#ifdef OG
 	{ "SwayClientUpdate", 4096, 32 },
+#endif // OG
+#ifdef ZH
+	{ "SwayClientUpdate", 32, 32 },
+#endif // ZH
 	{ "BeaconClientUpdate", 64, 32 },
 	{ "AIGroupPool", 64, 32 },  
 	{ "AIDockMachinePool", 256, 32 },
 	{ "AIGuardMachinePool", 32, 32 },
+#ifdef ZH
+	{ "AIGuardRetaliateMachinePool", 32, 32 },
+#endif // ZH
 	{ "AITNGuardMachinePool", 32, 32 },
 	{ "PathNodePool", 8192, 1024 },  
 	{ "PathPool", 256, 16 },       
 	{ "WorkOrder", 32, 32 },  
 	{ "TeamInQueue", 32, 32 },
+#ifdef OG
 	{ "AIPlayer", 8, 8 },  
+#endif // OG
+#ifdef ZH
+	{ "AIPlayer", 12, 4 },  
+#endif // ZH
 	{ "AISkirmishPlayer", 8, 8 },  
 	{ "AIStateMachine",  600, 32 },
 	{ "JetAIStateMachine",  64, 32 },
@@ -142,32 +198,88 @@ static PoolSizeRec sizes[] =
 	{ "AIAttackThenIdleStateMachine", 512, 32 },
 	{ "AttackStateMachine",  512, 32 },
 	{ "CrateTemplate", 32, 32 },
+#ifdef OG
 	{ "ExperienceTrackerPool", 4096, 256 }, 
+#endif // OG
+#ifdef ZH
+	{ "ExperienceTrackerPool", 2048, 512 }, 
+#endif // ZH
 	{ "FiringTrackerPool", 4096, 256 }, 
 	{ "ObjectRepulsorHelper", 1024, 256 }, 
+#ifdef OG
 	{ "ObjectSMCHelperPool", 4096, 256 }, 
+#endif // OG
+#ifdef ZH
+	{ "ObjectSMCHelperPool", 2048, 256 }, 
+#endif // ZH
 	{ "ObjectWeaponStatusHelperPool", 4096, 256 }, 
+#ifdef OG
 	{ "ObjectDefectionHelperPool", 4096, 256 }, 
+
+#endif // OG
+#ifdef ZH
+	{ "ObjectDefectionHelperPool", 2048, 256 }, 
+	{ "StatusDamageHelper", 1500, 256 },
+	{ "SubdualDamageHelper", 1500, 256 }, 
+	{ "TempWeaponBonusHelper", 4096, 256 },
+#endif // ZH
 	{ "Locomotor", 2048, 32 },
+#ifdef OG
 	{ "LocomotorTemplate", 128, 32	},
 	{ "ObjectPool", 4096, 32 },
+#endif // OG
+#ifdef ZH
+	{ "LocomotorTemplate", 192, 32	},
+	{ "ObjectPool", 1500, 256 },
+#endif // ZH
 	{ "SimpleObjectIteratorPool", 32, 32 },
 	{ "SimpleObjectIteratorClumpPool", 4096, 32 },
+#ifdef OG
 	{ "PartitionDataPool", 4096, 32 },
+#endif // OG
+#ifdef ZH
+	{ "PartitionDataPool", 2048, 512 },
+#endif // ZH
 	{ "BuildEntry", 32, 32 },
 	{ "Weapon", 4096, 32 },
+#ifdef OG
 	{ "WeaponTemplate", 192, 32 },
+#endif // OG
+#ifdef ZH
+	{ "WeaponTemplate", 360, 32 },
+#endif // ZH
 	{ "AIUpdateInterface", 600, 32 },
 	{ "ActiveBody", 1024, 32 },
 	{ "ActiveShroudUpgrade", 32, 32 },
 	{ "AssistedTargetingUpdate", 32, 32 },
+#ifdef OG
 	{ "AudioEventInfo", 1200, 64 },
+#endif // OG
+#ifdef ZH
+	{ "AudioEventInfo", 4096, 64 },
+#endif // ZH
 	{ "AudioRequest", 256, 8 },
+#ifdef OG
 	{ "AutoHealBehavior", 4096, 32 },
 	{ "BaseRegenerateUpdate", 64, 32 },
+
+#endif // OG
+#ifdef ZH
+	{ "AutoHealBehavior", 1024, 256 },
+	{ "WeaponBonusUpdate", 16, 16 },
+	{ "GrantStealthBehavior", 4096, 32 },
+	{ "NeutronBlastBehavior", 4096, 32 },
+	{ "CountermeasuresBehavior", 256, 32 },
+	{ "BaseRegenerateUpdate", 128, 32 },
+#endif // ZH
 	{ "BoneFXDamage", 64, 32 },
 	{ "BoneFXUpdate", 64, 32 },
+#ifdef OG
 	{ "BridgeBehavior", 32, 32 },
+#endif // OG
+#ifdef ZH
+	{ "BridgeBehavior", 4, 4 },
+#endif // ZH
 	{ "BridgeTowerBehavior", 32, 32 },
 	{ "BridgeScaffoldBehavior", 32, 32 },
 	{ "CaveContain", 16, 16 },
@@ -177,11 +289,17 @@ static PoolSizeRec sizes[] =
 	{ "EjectPilotDie", 1024, 32 },
 	{ "CrushDie", 1024, 32 },
 	{ "DamDie", 8, 8 },
+#ifdef OG
 	{ "DelayedUpgrade", 32, 32 },
 	{ "DelayedWeaponSetUpgradeUpdate", 32, 32 },
+#endif // OG
 	{ "DeliverPayloadStateMachine", 32, 32 },
 	{ "DeliverPayloadAIUpdate", 32, 32 },
 	{ "DeletionUpdate", 128, 32 },
+#ifdef ZH
+	{ "SmartBombTargetHomingUpdate", 8, 8 },
+  { "DynamicAudioEventInfo", 16, 256 }, // Note: some levels have none, some have lots. Since all are allocated at level load time, we can set this low for the levels with none.
+#endif // ZH
 	{ "HackInternetStateMachine", 32, 32 },
 	{ "HackInternetAIUpdate", 32, 32 },
 	{ "MissileAIUpdate", 512, 32 },
@@ -197,17 +315,30 @@ static PoolSizeRec sizes[] =
 	{ "FirestormDynamicGeometryInfoUpdate", 16, 16 },
 	{ "FireWeaponCollide", 2048, 32 },
 	{ "FireWeaponUpdate", 32, 32 },
+#ifdef OG
 	{ "FlammableUpdate", 4096, 256 },
+#endif // OG
+#ifdef ZH
+	{ "FlammableUpdate", 512, 256 },
+#endif // ZH
 	{ "FloatUpdate", 512, 128 },
 	{ "TensileFormationUpdate", 256, 32 },
 	{ "GarrisonContain", 256, 32 },
 	{ "HealCrateCollide", 32, 32 },
 	{ "HeightDieUpdate", 32, 32 },
 	{ "FireWeaponWhenDamagedBehavior", 32, 32 },
+#ifdef OG
 	{ "FireWeaponWhenDeadBehavior", 64, 32 },
+#endif // OG
+#ifdef ZH
+	{ "FireWeaponWhenDeadBehavior", 128, 64 },
+#endif // ZH
 	{ "GenerateMinefieldBehavior", 32, 32 },
 	{ "HelicopterSlowDeathBehavior", 64, 32 },
 	{ "ParkingPlaceBehavior", 32, 32 },
+#ifdef ZH
+	{ "FlightDeckBehavior", 8, 8 },
+#endif // ZH
 #ifdef ALLOW_SURRENDER
 	{ "POWTruckAIUpdate", 32, 32, },
 	{ "POWTruckBehavior", 32, 32, },
@@ -216,12 +347,28 @@ static PoolSizeRec sizes[] =
 	{ "PropagandaCenterBehavior", 16, 16 },
 #endif
 	{ "PropagandaTowerBehavior", 16, 16 },
+#ifdef ZH
+	{ "BunkerBusterBehavior", 16, 16 },
+#endif // ZH
 	{ "ObjectTracker", 128, 32 },
 	{ "OCLUpdate", 16, 16 },
+#ifdef OG
 	{ "BodyParticleSystem", 128, 64 },
+#endif // OG
+#ifdef ZH
+	{ "BodyParticleSystem", 196, 64 },
+#endif // ZH
 	{ "HighlanderBody", 2048, 128 },
+#ifdef ZH
+	{ "UndeadBody", 32, 32 },
+#endif // ZH
 	{ "HordeUpdate", 128, 32 },
+#ifdef OG
 	{ "ImmortalBody", 2048, 128 },
+#endif // OG
+#ifdef ZH
+	{ "ImmortalBody", 128, 256 },
+#endif // ZH
 	{ "InactiveBody", 2048, 32 },
 	{ "InstantDeathBehavior", 512, 32 },
 	{ "LaserUpdate", 32, 32 },
@@ -232,18 +379,38 @@ static PoolSizeRec sizes[] =
 	{ "PilotFindVehicleUpdate", 256, 32 },
 	{ "DemoTrapUpdate", 32, 32 },
 	{ "ParticleUplinkCannonUpdate", 16, 16 },
+#ifdef ZH
+	{ "SpectreGunshipUpdate", 8, 8 },
+	{ "SpectreGunshipDeploymentUpdate", 8, 8 },
+#endif // ZH
 	{ "BaikonurLaunchPower", 4, 4 },
 	{ "RadiusDecalUpdate", 16, 16 },
 	{ "BattlePlanUpdate", 32, 32 },
+#ifdef OG
 	{ "LifetimeUpdate", 256, 32 },
+#endif // OG
+#ifdef ZH
+	{ "LifetimeUpdate", 32, 32 },
+#endif // ZH
 	{ "LocomotorSetUpgrade", 512, 128 },
+#ifdef ZH
+	{ "LockWeaponCreate", 64, 128 },
+#endif // ZH
 	{ "AutoDepositUpdate", 256, 32 },
 	{ "NeutronMissileUpdate", 512, 32 },
+#ifdef OG
 	{ "MoneyCrateCollide", 32, 32 },
+#endif // OG
+#ifdef ZH
+	{ "MoneyCrateCollide", 48, 16 },
+#endif // ZH
 	{ "NeutronMissileSlowDeathBehavior", 8, 8 },
 	{ "OpenContain", 128, 32 },
 	{ "OverchargeBehavior", 32, 32 },
 	{ "OverlordContain", 32, 32 },
+#ifdef ZH
+	{ "HelixContain", 32, 32 },
+#endif // ZH
 	{ "ParachuteContain", 128, 32 },
 	{ "PhysicsBehavior", 600, 32 },
 	{ "PoisonedBehavior", 512, 64 },
@@ -254,13 +421,24 @@ static PoolSizeRec sizes[] =
 	{ "QueueProductionExitUpdate", 32, 32 },
 	{ "RadarUpdate", 16, 16 },
 	{ "RadarUpgrade", 16, 16 },
+#ifdef ZH
+	{ "AnimationSteeringUpdate", 1024, 32 },
+#endif // ZH
 	{ "SupplyWarehouseCripplingBehavior", 16, 16 },
 	{ "CostModifierUpgrade", 32, 32 },
 	{ "CashBountyPower", 32, 32 },
 	{ "CleanupAreaPower", 32, 32 },
+#ifdef OG
 	{ "ObjectCreationUpgrade", 128, 32 },
+#endif // OG
+#ifdef ZH
+	{ "ObjectCreationUpgrade", 196, 32 },
+#endif // ZH
 	{ "MinefieldBehavior", 256, 32 },
 	{ "JetSlowDeathBehavior", 64, 32 },
+#ifdef ZH
+	{ "BattleBusSlowDeathBehavior", 64, 32 },
+#endif // ZH
 	{ "RebuildHoleBehavior", 64, 32 },
 	{ "RebuildHoleExposeDie", 64, 32 },
 	{ "RepairDockUpdate", 32, 32 },
@@ -274,7 +452,12 @@ static PoolSizeRec sizes[] =
 	{ "SalvageCrateCollide", 32, 32 },
 	{ "ShroudCrateCollide", 32, 32 },
 	{ "SlavedUpdate", 64, 32 },
+#ifdef OG
 	{ "SlowDeathBehavior", 4096, 32 },
+#endif // OG
+#ifdef ZH
+	{ "SlowDeathBehavior", 1400, 256 },
+#endif // ZH
 	{ "SpyVisionUpdate", 16, 16 },
 	{ "DefaultProductionExitUpdate", 32, 32 },
 	{ "SpawnPointProductionExitUpdate", 32, 32 },
@@ -295,15 +478,35 @@ static PoolSizeRec sizes[] =
 	{ "SupplyCenterProductionExitUpdate", 32, 32 },
 	{ "SupplyTruckStateMachine", 256, 32 },
 	{ "SupplyTruckAIUpdate", 32, 32 },
+#ifdef OG
 	{ "SupplyWarehouseCreate", 32, 32 },
 	{ "SupplyWarehouseDockUpdate", 32, 32 },
+#endif // OG
+#ifdef ZH
+	{ "SupplyWarehouseCreate", 48, 16 },
+	{ "SupplyWarehouseDockUpdate", 48, 16 },
+#endif // ZH
 	{ "EnemyNearUpdate", 1024, 32 },
 	{ "TechBuildingBehavior", 32, 32 },
+#ifdef OG
 	{ "ToppleUpdate", 2048, 32 },
 	{ "TransitionDamageFX", 256, 32 },
+#endif // OG
+#ifdef ZH
+	{ "ToppleUpdate", 256, 128 },
+	{ "TransitionDamageFX", 384, 128 },
+#endif // ZH
 	{ "TransportAIUpdate", 64, 32 },
 	{ "TransportContain", 128, 32 },
+#ifdef OG
 	{ "TunnelContain", 16, 16 },
+
+#endif // OG
+#ifdef ZH
+	{ "RiderChangeContain", 128, 32 },
+	{ "InternetHackContain", 16, 16 },
+	{ "TunnelContain", 8, 8 },
+#endif // ZH
 	{ "TunnelContainDie", 32, 32 },
 	{ "TunnelCreate", 32, 32 },
 	{ "TurretAI", 256, 32 },
@@ -313,8 +516,23 @@ static PoolSizeRec sizes[] =
 	{ "UnpauseSpecialPowerUpgrade", 32, 32 },
 	{ "VeterancyCrateCollide", 32, 32 },
 	{ "VeterancyGainCreate", 512, 128 },
+#ifdef OG
 	{ "ConvertToCarBombCrateCollide", 32, 32 },
 	{ "ConvertToHijackedVehicleCrateCollide", 32, 32 },
+
+#endif // OG
+#ifdef ZH
+	{ "ConvertToCarBombCrateCollide", 256, 128 },
+	{ "ConvertToHijackedVehicleCrateCollide", 256, 128 },
+	{ "SabotageCommandCenterCrateCollide", 256, 128 },
+	{ "SabotageFakeBuildingCrateCollide", 256, 128 },
+	{ "SabotageInternetCenterCrateCollide", 256, 128 },
+	{ "SabotageMilitaryFactoryCrateCollide", 256, 128 },
+	{ "SabotagePowerPlantCrateCollide", 256, 128 },
+	{ "SabotageSuperweaponCrateCollide", 256, 128 },
+	{ "SabotageSupplyCenterCrateCollide", 256, 128 },
+	{ "SabotageSupplyDropzoneCrateCollide", 256, 128 },
+#endif // ZH
 	{ "JetAIUpdate", 64, 32 },
 	{ "ChinookAIUpdate", 32, 32 },
 	{ "WanderAIUpdate", 32, 32 },
@@ -331,33 +549,84 @@ static PoolSizeRec sizes[] =
 
 	{ "DozerActionStateMachine", 256, 32 },
 	{ "DozerPrimaryStateMachine", 256, 32 },
+#ifdef OG
 	{ "W3DDisplayString", 1024, 128 },
+#endif // OG
+#ifdef ZH
+	{ "W3DDisplayString", 1400, 128 },
+#endif // ZH
 	{ "W3DDefaultDraw", 1024, 128 },
+#ifdef OG
 	{ "W3DDebrisDraw", 1024, 128 },
+#endif // OG
+#ifdef ZH
+	{ "W3DDebrisDraw", 128, 128 },
+#endif // ZH
 	{ "W3DDependencyModelDraw", 64, 64 },
 	{ "W3DLaserDraw", 32, 32 },
+#ifdef OG
 	{ "W3DModelDraw", 4096, 128 },
+#endif // OG
+#ifdef ZH
+	{ "W3DModelDraw", 2048, 512 },
+#endif // ZH
 	{ "W3DOverlordTankDraw", 64, 64 },
+#ifdef ZH
+	{ "W3DOverlordTruckDraw", 64, 64 },
+	{ "W3DOverlordAircraftDraw", 64, 64 },
+#endif // ZH
 	{ "W3DPoliceCarDraw", 32, 32 },
 	{ "W3DProjectileStreamDraw", 32, 32 },
 	{ "W3DRopeDraw", 32, 32 },
 	{ "W3DScienceModelDraw", 32, 32 },
+#ifdef OG
 	{ "W3DSupplyDraw", 32, 32 },
+#endif // OG
+#ifdef ZH
+	{ "W3DSupplyDraw", 40, 16 },
+#endif // ZH
 	{ "W3DTankDraw", 256, 32 },
+#ifdef ZH
+	{ "W3DTreeDraw", 16, 16 },
+	{ "W3DPropDraw", 16, 16 },
+#endif // ZH
 	{ "W3DTracerDraw", 64, 32 },
 	{ "W3DTruckDraw", 128, 32 },
 	{ "W3DTankTruckDraw", 32, 16 },
+#ifdef ZH
+	{ "W3DTreeTextureClass", 4, 4 },
+#endif // ZH
 	{ "DefaultSpecialPower", 32, 32 },
+#ifdef OG
 	{ "OCLSpecialPower", 32, 32 },
+
+#endif // OG
+#ifdef ZH
+	{ "OCLSpecialPower", 96, 32 },
+	{ "FireWeaponPower", 32, 32 },
+#endif // ZH
 #ifdef ALLOW_DEMORALIZE
 	{ "DemoralizeSpecialPower", 16, 16, },
 #endif
 	{ "CashHackSpecialPower", 32, 32 },
 	{ "CommandSetUpgrade", 32, 32 },
+#ifdef ZH
+	{ "PassengersFireUpgrade", 32, 32 },
+#endif // ZH
 	{ "GrantUpgradeCreate", 256, 32 },
+#ifdef ZH
+	{ "GrantScienceUpgrade", 256, 32 },
+	{ "ReplaceObjectUpgrade", 32, 32 },
+	{ "ModelConditionUpgrade", 32, 32 },
+#endif // ZH
 	{ "SpyVisionSpecialPower", 256, 32 },
 	{ "StealthDetectorUpdate", 256, 32 },
+#ifdef OG
 	{ "StealthUpdate", 256, 32 },
+#endif // OG
+#ifdef ZH
+	{ "StealthUpdate", 512, 128 },
+#endif // ZH
 	{ "StealthUpgrade", 256, 32 },
 	{ "StatusBitsUpgrade", 128, 128 },
 	{ "SubObjectsUpgrade", 128, 128 },
@@ -368,16 +637,30 @@ static PoolSizeRec sizes[] =
 	{ "FireOCLAfterWeaponCooldownUpdate", 64, 32 },
 	{ "HijackerUpdate", 64, 32 },
 	{ "ChinaMinesUpgrade", 64, 32 },
+#ifdef OG
 	{ "PowerPlantUpdate", 16, 16 },
 	{ "PowerPlantUpgrade", 16, 16 },
+#endif // OG
+#ifdef ZH
+	{ "PowerPlantUpdate", 48, 16 },
+	{ "PowerPlantUpgrade", 48, 16 },
+#endif // ZH
 	{ "DefectorSpecialPower", 16, 16 },
 	{ "CheckpointUpdate", 16, 16 },
 	{ "MobNexusContain", 128, 32 },
 	{ "MobMemberSlavedUpdate", 64, 32 },
 	{ "EMPUpdate", 64, 32 },
+#ifdef ZH
+	{ "LeafletDropBehavior", 64, 32 },
+#endif // ZH
 	{ "Overridable", 32, 32 },
 
+#ifdef OG
 	{ "W3DGameWindow", 1024, 32 },
+#endif // OG
+#ifdef ZH
+	{ "W3DGameWindow", 700, 256 },
+#endif // ZH
 	{ "SuccessState", 32, 32 },
 	{ "FailureState", 32, 32 },
 	{ "ContinueState", 32, 32 },
@@ -391,6 +674,14 @@ static PoolSizeRec sizes[] =
 	{ "AIGuardReturnState", 32, 32 },
 	{ "AIGuardPickUpCrateState", 32, 32 },
 	{ "AIGuardAttackAggressorState", 32, 32 },
+#ifdef ZH
+	{ "AIGuardRetaliateInnerState", 32, 32 },
+	{ "AIGuardRetaliateIdleState", 32, 32 },
+	{ "AIGuardRetaliateOuterState", 32, 32 },
+	{ "AIGuardRetaliateReturnState", 32, 32 },
+	{ "AIGuardRetaliatePickUpCrateState", 32, 32 },
+	{ "AIGuardRetaliateAttackAggressorState", 32, 32 },
+#endif // ZH
 	{ "AITNGuardInnerState", 32, 32 },
 	{ "AITNGuardIdleState", 32, 32 },
 	{ "AITNGuardOuterState", 32, 32 },
@@ -406,7 +697,13 @@ static PoolSizeRec sizes[] =
 	{ "AIDeadState", 600, 32 },
 	{ "AIDockState", 600, 32 },
 	{ "AIExitState", 600, 32 },
+#ifdef ZH
+	{ "AIExitInstantlyState", 600, 32 },
+#endif // ZH
 	{ "AIGuardState", 600, 32 },
+#ifdef ZH
+	{ "AIGuardRetaliateState", 600, 32 },
+#endif // ZH
 	{ "AITunnelNetworkGuardState", 600, 32 },
 	{ "AIHuntState", 600, 32 },
 	{ "AIAttackAreaState", 600, 32 },
@@ -479,28 +776,64 @@ static PoolSizeRec sizes[] =
 	{ "AIWanderState", 600, 32 },
 	{ "AIPanicState", 600, 32 },
 	{ "ChinookMoveToBldgState", 32, 32 },
+#ifdef OG
 	{ "ScienceInfo", 64, 32 },
+
+#endif // OG
+#ifdef ZH
+	{ "ChinookRecordCreationState", 32, 32 },
+	{ "ScienceInfo", 96, 32 },
+#endif // ZH
 	{ "RankInfo", 32, 32 },
 
 	{ "FireWeaponNugget", 32, 32 },
 	{ "AttackNugget", 32, 32 },
+#ifdef OG
 	{ "DeliverPayloadNugget", 32, 32 },
+#endif // OG
+#ifdef ZH
+	{ "DeliverPayloadNugget", 48, 32 },
+#endif // ZH
 	{ "ApplyRandomForceNugget", 32, 32 },
+#ifdef OG
 	{ "GenericObjectCreationNugget", 512, 32 },
 	{ "SoundFXNugget", 256, 32 },
+#endif // OG
+#ifdef ZH
+	{ "GenericObjectCreationNugget", 632, 32 },
+	{ "SoundFXNugget", 320, 32 },
+#endif // ZH
 	{ "TracerFXNugget", 32, 32 },
 	{ "RayEffectFXNugget", 32, 32 },
+#ifdef OG
 	{ "LightPulseFXNugget", 64, 32 },
 	{ "ViewShakeFXNugget", 128, 32 },
 	{ "TerrainScorchFXNugget", 32, 32 },
 	{ "ParticleSystemFXNugget", 600, 32 },
+#endif // OG
+#ifdef ZH
+	{ "LightPulseFXNugget", 68, 32 },
+	{ "ViewShakeFXNugget", 140, 32 },
+	{ "TerrainScorchFXNugget", 48, 32 },
+	{ "ParticleSystemFXNugget", 832, 32 },
+#endif // ZH
 	{ "FXListAtBonePosFXNugget", 32, 32 },
 	{ "Squad", 256, 32 },
+#ifdef OG
 	{ "BuildListInfo", 256, 32 },
+#endif // OG
+#ifdef ZH
+	{ "BuildListInfo", 400, 64 },
+#endif // ZH
 
 	{ "ScriptGroup", 128, 32 },
 	{ "OrCondition", 1024, 256 },
+#ifdef OG
 	{ "ScriptAction", 2048, 512 },
+#endif // OG
+#ifdef ZH
+	{ "ScriptAction", 2600, 512 },
+#endif // ZH
 	{ "Script", 1024, 256 },
 	{ "Parameter", 8192, 1024 },
 	{ "Condition", 2048, 256 },
@@ -514,27 +847,62 @@ static PoolSizeRec sizes[] =
 	{ "KindOfPercentProductionChange", 32, 32 },
 	{ "UserParser", 4096, 256 },
 	{ "XferBlockData", 32, 32 },
+#ifdef OG
 	{ "EvaCheckInfo", 32, 32 },
+#endif // OG
+#ifdef ZH
+	{ "EvaCheckInfo", 52, 16 },
+#endif // ZH
 	{ "SuperweaponInfo", 32, 32 },
 	{ "NamedTimerInfo", 32, 32 },
 	{ "PopupMessageData", 32, 32 },
 	{ "FloatingTextData", 32, 32 },
+#ifdef OG
 	{ "MapObject", 4096, 32 },
+#endif // OG
+#ifdef ZH
+	{ "MapObject", 5000, 1024 },
+#endif // ZH
 	{ "Waypoint", 1024, 32 },
+#ifdef OG
 	{ "PolygonTrigger", 128, 32 },
+#endif // OG
+#ifdef ZH
+	{ "PolygonTrigger", 64, 64 },
+#endif // ZH
 	{ "Bridge", 32, 32 },
+#ifdef OG
 	{ "Mapping", 128, 32 },
+#endif // OG
+#ifdef ZH
+	{ "Mapping", 384, 64 },
+#endif // ZH
 	{ "OutputChunk", 32, 32 },
 	{ "InputChunk", 32, 32 },
 	{ "AnimateWindow", 32, 32 },
 	{ "GameFont", 32, 32 },
 	{ "NetCommandRef", 256, 32 },
+#ifdef OG
 	{ "GameMessageArgument", 128, 32 },
+#endif // OG
+#ifdef ZH
+	{ "GameMessageArgument", 1024, 256 },
+#endif // ZH
 	{ "GameMessageParserArgumentType", 32, 32 },
 	{ "GameMessageParser", 32, 32 },
+#ifdef OG
 	{ "WeaponBonusSet", 32, 32 },
+#endif // OG
+#ifdef ZH
+	{ "WeaponBonusSet", 96, 32 },
+#endif // ZH
 	{ "Campaign", 32, 32 },
+#ifdef OG
 	{ "Mission", 32, 32 },
+#endif // OG
+#ifdef ZH
+	{ "Mission", 88, 32 },
+#endif // ZH
 	{ "ModalWindow", 32, 32 },
 	{ "NetPacket", 32, 32 },
 	{ "AISideInfo", 32, 32 },
@@ -578,15 +946,32 @@ static PoolSizeRec sizes[] =
 	{ "FrameDataManager", 32, 32 },
 	{ "DrawableIconInfo", 32, 32 },
 	{ "TintEnvelope", 128, 32 },
+#ifdef OG
 	{ "DynamicAudioEventRTS", 1024, 256 },
+#endif // OG
+#ifdef ZH
+	{ "DynamicAudioEventRTS", 4000, 256 },
+#endif // ZH
 	{ "DrawableLocoInfo", 128, 32 },
+#ifdef OG
 	{ "W3DPrototypeClass", 2048, 32 },
+#endif // OG
+#ifdef ZH
+	{ "W3DPrototypeClass", 512, 256 },
+#endif // ZH
 	{ "EnumeratedIP", 32, 32 },
 	{ "WaterTransparencySetting", 4, 4 },
-	
+#ifdef ZH
+	{ "WeatherSetting", 4, 4 },
+#endif // ZH
 
 	// W3D pools!
+#ifdef OG
 	{ "BoxPrototypeClass", 512, 32 },
+#endif // OG
+#ifdef ZH
+	{ "BoxPrototypeClass", 128, 128 },
+#endif // ZH
 	{ "SpherePrototypeClass", 32, 32 },
 	{ "SoundRenderObjPrototypeClass", 32, 32 },
 	{ "RingPrototypeClass", 32, 32 },
@@ -594,14 +979,27 @@ static PoolSizeRec sizes[] =
 	{ "HModelPrototypeClass", 256, 32 },
 	{ "ParticleEmitterPrototypeClass", 32, 32 },
 	{ "NullPrototypeClass", 32, 32 },
+#ifdef OG
 	{ "HLodPrototypeClass", 512, 32 },
+
+#endif // OG
+#ifdef ZH
+	{ "HLodPrototypeClass", 700, 128 },
+	{ "HLodDefClass", 700, 128 },
+#endif // ZH
 	{ "DistLODPrototypeClass", 32, 32 },
 	{ "DazzlePrototypeClass", 32, 32 },
 	{ "CollectionPrototypeClass", 32, 32 },
 	{ "BoxPrototypeClass", 256, 32 },
 	{ "AggregatePrototypeClass", 32, 32 },
+#ifdef OG
 	{ "OBBoxRenderObjClass", 16384, 32 },
+#endif // OG
+#ifdef ZH
+	{ "OBBoxRenderObjClass", 512, 128 },
+#endif // ZH
 	{ "AABoxRenderObjClass", 32, 32 },
+#ifdef OG
 	{ "VertexMaterialClass", 16384, 32 },
 	{ "TextureClass", 1024, 32 },
 	{ "CloudMapTerrainTextureClass", 32, 32 },
@@ -614,20 +1012,57 @@ static PoolSizeRec sizes[] =
 	{ "HTreeClass", 8192, 32 },
 	{ "HLodDefClass", 512, 32 },
 	{ "HLodClass", 4096, 32 },
+#endif // OG
+#ifdef ZH
+	{ "VertexMaterialClass", 6000, 2048 },
+	{ "TextureClass", 1200, 256 },
+	{ "CloudMapTerrainTextureClass", 4, 4 },
+	{ "ScorchTextureClass", 4, 4 },
+	{ "LightMapTerrainTextureClass", 4, 4 },
+	{ "AlphaEdgeTextureClass", 4, 4 },
+	{ "AlphaTerrainTextureClass", 4, 4 },
+	{ "TerrainTextureClass", 4, 4 },
+	{ "MeshClass", 14000, 2000 },
+	{ "HTreeClass", 2048, 512 },
+	{ "HLodClass", 2048, 512 },
+
+#endif // ZH
 	{ "MeshModelClass", 8192, 32 },
 	{ "ShareBufferClass", 32768, 1024 },
+#ifdef OG
 	{ "AABTreeClass", 32, 32 },
+#endif // OG
+#ifdef ZH
+	{ "AABTreeClass", 300, 128 },
+#endif // ZH
 	{ "MotionChannelClass", 16384, 32 },
+#ifdef OG
 	{ "BitChannelClass", 64, 32 },
 	{ "TimeCodedMotionChannelClass", 32, 32 },
+#endif // OG
+#ifdef ZH
+	{ "BitChannelClass", 84, 32 },
+	{ "TimeCodedMotionChannelClass", 116, 32 },
+#endif // ZH
 	{ "AdaptiveDeltaMotionChannelClass", 32, 32 },
 	{ "TimeCodedBitChannelClass", 32, 32 },
 	{ "UVBufferClass", 8192, 32 },
+#ifdef OG
 	{ "TexBufferClass", 512, 32 },
 	{ "MatBufferClass", 512, 32 },
+#endif // OG
+#ifdef ZH
+	{ "TexBufferClass", 384, 128 },
+	{ "MatBufferClass", 256, 128 },
+#endif // ZH
 	{ "MatrixMapperClass", 32, 32 },
 	{ "ScaleTextureMapperClass", 32, 32 },
+#ifdef OG
 	{ "LinearOffsetTextureMapperClass", 32, 32 },
+#endif // OG
+#ifdef ZH
+	{ "LinearOffsetTextureMapperClass", 96, 32 },
+#endif // ZH
 	{ "GridTextureMapperClass", 32, 32 },
 	{ "RotateTextureMapperClass", 32, 32 },
 	{ "SineLinearOffsetTextureMapperClass", 32, 32 },
@@ -643,18 +1078,38 @@ static PoolSizeRec sizes[] =
 	{ "ScreenMapperClass", 32, 32 },
 	{ "RandomTextureMapperClass", 32, 32 },
 	{ "BumpEnvTextureMapperClass", 32, 32 },
+#ifdef OG
 	{ "MeshLoadContextClass", 32, 32 },
+#endif // OG
+#ifdef ZH
+	{ "MeshLoadContextClass", 4, 4 },
+#endif // ZH
 	{ "MaterialInfoClass", 8192, 32 },
 	{ "MeshMatDescClass", 8192, 32 },
 	{ "TextureLoadTaskClass", 256, 32 },
+#ifdef OG
 	{ "SortingNodeStruct", 256, 32 },
+#endif // OG
+#ifdef ZH
+	{ "SortingNodeStruct", 288, 32 },
+#endif // ZH
 	{ "ProxyArrayClass", 32, 32 },
+#ifdef OG
 	{ "Line3DClass", 128, 32 },
+#endif // OG
+#ifdef ZH
+	{ "Line3DClass", 8, 8 },
+#endif // ZH
 	{ "Render2DClass", 64, 32 },
 	{ "SurfaceClass", 128, 32 },
 	{ "FontCharsClassCharDataStruct", 1024, 32 },
 	{ "FontCharsBuffer", 16, 4 },
+#ifdef OG
 	{ "FVFInfoClass", 128, 32 },
+#endif // OG
+#ifdef ZH
+	{ "FVFInfoClass", 152, 64 },
+#endif // ZH
 	{ "TerrainTracksRenderObjClass", 128, 32 },
 	{ "DynamicIBAccessClass", 32, 32 },
 	{ "DX8IndexBufferClass", 128, 32 },
@@ -667,7 +1122,11 @@ static PoolSizeRec sizes[] =
 	{ "DynamicMeshModel", 32, 32 },
 	{ "GapFillerClass", 32, 32 },
 	{ "FontCharsClass", 64, 32 },
-
+#ifdef ZH
+	{ "ThumbnailManagerClass", 32, 32},
+	{ "SmudgeSet", 32, 32},
+	{ "Smudge", 128, 32},
+#endif // ZH
 	{ 0, 0, 0 }
 };
 

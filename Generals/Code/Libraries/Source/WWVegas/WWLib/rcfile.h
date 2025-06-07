@@ -26,9 +26,19 @@
  *                                                                                             *
  *                       Author:: Greg Hjelstrom                                               *
  *                                                                                             *
+#ifdef OG
  *                     $Modtime:: 7/09/99 1:37p                                               $*
+#endif // OG
+#ifdef ZH
+ *                     $Modtime:: 11/02/01 1:21p                                              $*
+#endif // ZH
  *                                                                                             *
+#ifdef OG
  *                    $Revision:: 7                                                           $*
+#endif // OG
+#ifdef ZH
+ *                    $Revision:: 8                                                           $*
+#endif // ZH
  *                                                                                             *
  *---------------------------------------------------------------------------------------------*
  * Functions:                                                                                  *
@@ -76,6 +86,9 @@ class ResourceFileClass : public FileClass
 		virtual int Write(void const * /*buffer*/, int /*size*/)	{ return 0; }
 		virtual void Close(void)											{ }
 		virtual void Error(int error, int canretry = false, char const * filename=NULL);
+#ifdef ZH
+		virtual void Bias(int start, int length=-1) {}
+#endif // ZH
 
 		virtual unsigned char *Peek_Data(void) const					{ return FileBytes; }
 

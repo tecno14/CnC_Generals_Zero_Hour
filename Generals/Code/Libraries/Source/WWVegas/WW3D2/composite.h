@@ -26,9 +26,19 @@
  *                                                                                             *
  *                       Author:: Greg Hjelstrom                                               *
  *                                                                                             *
+#ifdef OG
  *                     $Modtime:: 5/30/01 2:17p                                               $*
+#endif // OG
+#ifdef ZH
+ *                     $Modtime:: 11/25/01 12:25p                                             $*
+#endif // ZH
  *                                                                                             *
+#ifdef OG
  *                    $Revision:: 4                                                           $*
+#endif // OG
+#ifdef ZH
+ *                    $Revision:: 5                                                           $*
+#endif // ZH
  *                                                                                             *
  *---------------------------------------------------------------------------------------------*
  * Functions:                                                                                  *
@@ -43,6 +53,9 @@
 #define COMPOSITE_H
 
 #include "rendobj.h"
+#ifdef ZH
+#include "wwstring.h"
+#endif // ZH
 
 /*
 ** CompositeRenderObjClass
@@ -64,7 +77,12 @@ public:
 
 	virtual const char *			Get_Name(void) const;
 	virtual void					Set_Name(const char * name);
+#ifdef OG
 	virtual const char *			Get_Base_Model_Name (void) const { return BaseModelName; }
+#endif // OG
+#ifdef ZH
+	virtual const char *			Get_Base_Model_Name (void) const;
+#endif // ZH
 	virtual void					Set_Base_Model_Name (const char *name);
 	virtual int						Get_Num_Polys(void) const;
 	virtual void					Notify_Added(SceneClass * scene);
@@ -87,8 +105,14 @@ public:
 
 protected:
 
+#ifdef OG
 	char *							Name;						// name of the render object
 	char *							BaseModelName;			// name of the original render obj (before aggregation)
+#endif // OG
+#ifdef ZH
+	StringClass						Name;						// name of the render object
+	StringClass						BaseModelName;			// name of the original render obj (before aggregation)
+#endif // ZH
 	SphereClass						ObjSphere;				// object-space bounding sphere
 	AABoxClass						ObjBox;					// object-space bounding box
 };

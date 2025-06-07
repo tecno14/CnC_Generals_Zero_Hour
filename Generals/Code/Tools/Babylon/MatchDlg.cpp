@@ -20,7 +20,12 @@
 //
 
 #include "stdafx.h"
+#ifdef OG
 #include "noxstring.h"
+#endif // OG
+#ifdef ZH
+#include "Babylon.h"
+#endif // ZH
 #include "MatchDlg.h"
 
 #ifdef _DEBUG
@@ -29,12 +34,24 @@
 static char THIS_FILE[] = __FILE__;
 #endif
 
+#ifdef OG
 NoxText *MatchingNoxText = NULL;
 NoxText *MatchOriginalText;
 NoxLabel *MatchLabel;
+#endif // OG
+#ifdef ZH
+BabylonText *MatchingBabylonText = NULL;
+BabylonText *MatchOriginalText;
+BabylonLabel *MatchLabel;
+#endif // ZH
 
 #define MAX_MATCH 256
+#ifdef OG
 static NoxText *current_match = NULL;
+#endif // OG
+#ifdef ZH
+static BabylonText *current_match = NULL;
+#endif // ZH
 
 /////////////////////////////////////////////////////////////////////////////
 // CMatchDlg dialog
@@ -74,21 +91,36 @@ void CMatchDlg::OnCancel()
 {
 	// TODO: Add extra cleanup here
 	
+#ifdef OG
 	MatchingNoxText = NULL;	
+#endif // OG
+#ifdef ZH
+	MatchingBabylonText = NULL;	
+#endif // ZH
 	CDialog::OnCancel();
 }
 
 void CMatchDlg::OnNomatch() 
 {
 	// TODO: Add your control notification handler code here
+#ifdef OG
 	MatchingNoxText = NULL;	
+#endif // OG
+#ifdef ZH
+	MatchingBabylonText = NULL;	
+#endif // ZH
 	CDialog::OnOK ();
 }
 
 void CMatchDlg::OnMatch() 
 {
 	// TODO: Add your control notification handler code here
+#ifdef OG
 	if ( (MatchingNoxText = current_match ) )
+#endif // OG
+#ifdef ZH
+	if ( (MatchingBabylonText = current_match ) )
+#endif // ZH
 	{
 		CButton *check = (CButton *) GetDlgItem ( IDC_CHECKRETRANSLATE );
 
@@ -99,7 +131,12 @@ void CMatchDlg::OnMatch()
 
 BOOL CMatchDlg::OnInitDialog() 
 {
+#ifdef OG
 	NoxText *text;
+#endif // OG
+#ifdef ZH
+	BabylonText *text;
+#endif // ZH
 	ListSearch sh;
 	int index;
 	CStatic *newtext;
@@ -149,7 +186,12 @@ BOOL CMatchDlg::OnInitDialog()
 
 	combo->SetCurSel ( 0 );
 	OnSelchangeMatchcombo();
+#ifdef OG
 	MatchingNoxText = NULL;	
+#endif // OG
+#ifdef ZH
+	MatchingBabylonText = NULL;	
+#endif // ZH
 	// TODO: Add extra initialization here
 	
 	return TRUE;  // return TRUE unless you set the focus to a control
@@ -168,7 +210,12 @@ void CMatchDlg::OnSelchangeMatchcombo()
 	if ( index >= 0  )
 	{
 		CStatic *newtext = (CStatic *) GetDlgItem ( IDC_MATCHTEXT );
+#ifdef OG
 		current_match = (NoxText *) combo->GetItemDataPtr ( index );
+#endif // OG
+#ifdef ZH
+		current_match = (BabylonText *) combo->GetItemDataPtr ( index );
+#endif // ZH
 		newtext->SetWindowText ( current_match->GetSB());
 	}
 	else

@@ -72,14 +72,46 @@ private:
 		}
 	};
 
+#ifdef ZH
+	struct MapHelper
+	{
+		bool operator()(const BITSET& a, const BITSET& b) const
+		{
+			int i;
+			if (a.size() < b.size()) {
+				return true;
+			}
+			for (i = 0; i < a.size(); ++i) {
+				bool aVal = a.test(i);
+				bool bVal = b.test(i);
+				if (aVal && bVal) continue;
+				if (!aVal && !bVal) continue;
+				if (!aVal) return true;
+				return false;
+			}
+			return false; // all bits match.
+		}
+	};
+
+#endif // ZH
 	//-------------------------------------------------------------------------------------------------
+#ifdef OG
 	typedef std::hash_map< BITSET, const MATCHABLE*, HashMapHelper, HashMapHelper > MatchMap;
+
+#endif // OG
+#ifdef ZH
+	//typedef std::hash_map< BITSET, const MATCHABLE*, HashMapHelper, HashMapHelper > HashMatchMap;
+	typedef std::map< const BITSET, const MATCHABLE*, MapHelper> MatchMap;
+#endif // ZH
 
 	//-------------------------------------------------------------------------------------------------
 	// MEMBER VARS
 	//-------------------------------------------------------------------------------------------------
 	
 	mutable MatchMap m_bestMatches;
+#ifdef ZH
+	//mutable HashMatchMap m_bestHashMatches;
+#endif // ZH
 
 	//-------------------------------------------------------------------------------------------------
 	// METHODS
@@ -176,16 +208,38 @@ public:
 	const MATCHABLE* findBestInfo(const std::vector<MATCHABLE>& v, const BITSET& bits) const
 	{
 		MatchMap::const_iterator it = m_bestMatches.find(bits);
+#ifdef ZH
+
+		const MATCHABLE *first = NULL;
+#endif // ZH
 		if (it != m_bestMatches.end())
 		{
+#ifdef OG
 			return (*it).second;
+#endif // OG
+#ifdef ZH
+			first = (*it).second;
+#endif // ZH
 		}
+#ifdef ZH
+		if (first != NULL) {
+			return first;
+		}
+#endif // ZH
 
 		const MATCHABLE* info = findBestInfoSlow(v, bits);
 
 		DEBUG_ASSERTCRASH(info != NULL, ("no suitable match for criteria was found!\n"));
+#ifdef OG
 		if (info != NULL)
+#endif // OG
+#ifdef ZH
+		if (info != NULL) {
+#endif // ZH
 			m_bestMatches[bits] = info;
+#ifdef ZH
+		}
+#endif // ZH
 
 		return info;
 	}

@@ -66,7 +66,9 @@ static void setupGameStart(AsciiString mapName)
 
 static void doGameStart( void )
 {
+#ifdef OG
 #if !defined(_PLAYTEST)
+#endif // OG
 	startGame = false;
 
 	if (TheGameLogic->isInGame())
@@ -88,7 +90,9 @@ static void doGameStart( void )
 	*/
 
 	isShuttingDown = true;
+#ifdef OG
 #endif
+#endif // OG
 }
 
 

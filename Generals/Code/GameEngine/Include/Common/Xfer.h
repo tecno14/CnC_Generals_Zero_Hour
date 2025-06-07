@@ -38,6 +38,9 @@
 #include "Common/STLTypedefs.h"
 #include "Common/ModelState.h"
 #include "Common/Science.h"
+#ifdef ZH
+#include "Common/Upgrade.h"
+#endif // ZH
 
 // FORWARD REFERENCES /////////////////////////////////////////////////////////////////////////////
 class Snapshot;
@@ -163,12 +166,20 @@ public:
 	virtual void xferRGBAColorInt( RGBAColorInt *rgbaColorInt );
 	virtual void xferObjectID( ObjectID *objectID );
 	virtual void xferDrawableID( DrawableID *drawableID );
+#ifdef ZH
+	virtual void xferSTLObjectIDVector( std::vector<ObjectID> *objectIDVectorData );
+#endif // ZH
 	virtual void xferSTLObjectIDList( std::list< ObjectID > *objectIDListData );
 	virtual void xferSTLIntList( std::list< Int > *intListData );
 	virtual void xferScienceType( ScienceType *science );
 	virtual void xferScienceVec( ScienceVec *scienceVec );
 	virtual void xferKindOf( KindOfType *kindOfData );
+#ifdef OG
 	virtual void xferUpgradeMask( Int64 *upgradeMaskData );
+#endif // OG
+#ifdef ZH
+	virtual void xferUpgradeMask( UpgradeMaskType *upgradeMaskData );
+#endif // ZH
 	virtual void xferUser( void *data, Int dataSize );
 	virtual void xferMatrix3D( Matrix3D* mtx );
 	virtual void xferMapName( AsciiString *mapNameData );

@@ -24,12 +24,33 @@
  *                                                                                             *
  *                     $Archive:: /Commando/Code/ww3d2/rinfo.cpp                              $*
  *                                                                                             *
+#ifdef OG
  *                       Author:: Greg Hjelstrom                                               *
+
+#endif // OG
+#ifdef ZH
+ *                   Org Author:: Greg Hjelstrom                                               *
  *                                                                                             *
+ *                       Author : Kenny Mitchell                                               * 
+#endif // ZH
+ *                                                                                             *
+#ifdef OG
  *                     $Modtime:: 8/24/01 3:31p                                               $*
+#endif // OG
+#ifdef ZH
+ *                     $Modtime:: 06/27/02 1:27p                                              $*
+#endif // ZH
  *                                                                                             *
+#ifdef OG
  *                    $Revision:: 13                                                          $*
+#endif // OG
+#ifdef ZH
+ *                    $Revision:: 15                                                          $*
+#endif // ZH
  *                                                                                             *
+#ifdef ZH
+ * 06/27/02 KM Render to shadow buffer texture support														*
+#endif // ZH
  *---------------------------------------------------------------------------------------------*
  * Functions:                                                                                  *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
@@ -52,7 +73,13 @@ RenderInfoClass::RenderInfoClass(CameraClass & cam) :
 	fog_scale(0.0f),
 	light_environment(0),
 	AdditionalMaterialPassCount(0),
+#ifdef ZH
+	RejectedMaterialPasses(0),
+#endif // ZH
 	OverrideFlagLevel(0),
+#ifdef ZH
+	Texture_Projector(NULL),
+#endif // ZH
 	alphaOverride(1.0f),
 	materialPassAlphaOverride(1.0f),
 	materialPassEmissiveOverride(1.0f)
@@ -68,21 +95,40 @@ RenderInfoClass::~RenderInfoClass(void)
 void RenderInfoClass::Push_Material_Pass(MaterialPassClass * matpass)
 {
 	// add to the end of the array
+#ifdef ZH
+	if (AdditionalMaterialPassCount<MAX_ADDITIONAL_MATERIAL_PASSES-1) {
+
+#endif // ZH
 	if (matpass) {
 		matpass->Add_Ref();
 	}
+#ifdef OG
 	WWASSERT(AdditionalMaterialPassCount<MAX_ADDITIONAL_MATERIAL_PASSES);
+#endif // OG
 	AdditionalMaterialPassArray[AdditionalMaterialPassCount++]=matpass;
+#ifdef ZH
+	} else {
+		RejectedMaterialPasses++;
+	}
+#endif // ZH
 }
 
 void RenderInfoClass::Pop_Material_Pass(void)
 {
+#ifdef ZH
+	if (RejectedMaterialPasses == 0) {
+#endif // ZH
 	// remove from the end of the array
 	WWASSERT(AdditionalMaterialPassCount>0);
 	AdditionalMaterialPassCount--;
 	MaterialPassClass * mpass = AdditionalMaterialPassArray[AdditionalMaterialPassCount];
 	if (mpass != NULL) {
 		mpass->Release_Ref();
+#ifdef ZH
+		}
+	} else {
+		RejectedMaterialPasses--;
+#endif // ZH
 	}
 }
 

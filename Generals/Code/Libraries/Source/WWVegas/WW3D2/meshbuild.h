@@ -24,12 +24,33 @@
  *                                                                                             *
  *                     $Archive:: /Commando/Code/ww3d2/meshbuild.h                            $*
  *                                                                                             *
+#ifdef OG
  *                       Author:: Greg_h                                                       *
+#endif // OG
+#ifdef ZH
+ *                   Org Author:: Greg_h                                                       *
+#endif // ZH
  *                                                                                             *
+#ifdef OG
  *                     $Modtime:: 1/08/01 10:04a                                              $*
+#endif // OG
+#ifdef ZH
+ *                       Author : Kenny Mitchell                                               * 
+#endif // ZH
  *                                                                                             *
+#ifdef OG
  *                    $Revision:: 1                                                           $*
+#endif // OG
+#ifdef ZH
+ *                     $Modtime:: 06/27/02 9:23a                                              $*
+#endif // ZH
  *                                                                                             *
+#ifdef ZH
+ *                    $Revision:: 2                                                           $*
+ *                                                                                             *
+ * 
+ * 06/27/02 KM Shader system MAX plugin updates                                       *
+#endif // ZH
  *---------------------------------------------------------------------------------------------*
  * Functions:                                                                                  *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
@@ -96,7 +117,12 @@ public:
 		STATE_MESH_PROCESSED,			// mesh builder has processed the mesh
 	
 		MAX_PASSES = 4,					// maximum number of material passes supported
+#ifdef OG
 		MAX_STAGES = 2,					// maximum number of texture stages supported in a single pass
+#endif // OG
+#ifdef ZH
+		MAX_STAGES = 8,					// maximum number of texture stages supported in a single pass
+#endif // ZH
 	};
 
 	/*
@@ -223,6 +249,11 @@ public:
 	*/
 	void							Compute_Bounding_Box(Vector3 * set_min,Vector3 * set_max);
 	void							Compute_Bounding_Sphere(Vector3 * set_center,float * set_radius);
+#ifdef ZH
+
+	// For per-pixel lighting KM
+	void							Compute_Tangent_Basis();
+#endif // ZH
 
 	/*
 	** World information managment.  Used to give the mesh builder information

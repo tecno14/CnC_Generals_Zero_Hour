@@ -39,8 +39,10 @@
 #include "GameLogic/GameLogic.h"
 #include "GameLogic/Object.h"
 
+#ifdef OG
 #include "GameLogic/Module/StealthUpdate.h"
 
+#endif // OG
 #include "GameClient/Color.h"
 #include "GameClient/Display.h"
 #include "GameClient/GameClient.h"
@@ -48,6 +50,9 @@
 #include "GameClient/Image.h"
 #include "GameClient/Line2D.h"
 #include "GameClient/TerrainVisual.h"
+#ifdef ZH
+#include "GameClient/Water.h"
+#endif // ZH
 #include "W3DDevice/Common/W3DRadar.h"
 #include "W3DDevice/GameClient/HeightMap.h"
 #include "W3DDevice/GameClient/W3DShroud.h"
@@ -83,7 +88,12 @@ static WW3DFormat findFormat(const WW3DFormat formats[])
 	for( Int i = 0; formats[ i ] != WW3D_FORMAT_UNKNOWN; i++ )
 	{
 
+#ifdef OG
 		if( DX8Caps::Support_Texture_Format( formats[ i ] ) )
+#endif // OG
+#ifdef ZH
+		if( DX8Wrapper::Get_Current_Caps()->Support_Texture_Format( formats[ i ] ) )
+#endif // ZH
 		{
 
 			return formats[ i ];
@@ -276,8 +286,6 @@ void W3DRadar::drawHeroIcon( Int pixelX, Int pixelY, Int width, Int height, cons
 		TheDisplay->drawImage( image, offsetScreen.x , offsetScreen.y, offsetScreen.x + iconWidth, offsetScreen.y + iconHeight );
 	}
 }
-
-
 
 //-------------------------------------------------------------------------------------------------
 /** Draw a "box" into the texture passed in that represents the viewable area for
@@ -616,7 +624,6 @@ void W3DRadar::drawIcons( Int pixelX, Int pixelY, Int width, Int height )
 	}
 }
 
-
 //-------------------------------------------------------------------------------------------------
 /** Render an object list into the texture passed in */
 //-------------------------------------------------------------------------------------------------
@@ -698,13 +705,20 @@ void W3DRadar::renderObjectList( const RadarObject *listHead, TextureClass *text
 		// Now it twinkles for any stealthed object, whether locally controlled or neutral-observier-viewed
 		if( obj->testStatus( OBJECT_STATUS_STEALTHED ) )
 		{
+#ifdef OG
 			static NameKeyType key_StealthUpdate = NAMEKEY( "StealthUpdate" );
 			StealthUpdate* stealth = (StealthUpdate*)obj->findUpdateModule( key_StealthUpdate );
 			if( !stealth )
 				continue;
 
+#endif // OG
       if ( ThePlayerList->getLocalPlayer()->getRelationship(obj->getTeam()) == ENEMIES )
+#ifdef OG
         if( !obj->testStatus( OBJECT_STATUS_DETECTED ) && !stealth->isDisguised() )
+#endif // OG
+#ifdef ZH
+        if( !obj->testStatus( OBJECT_STATUS_DETECTED ) && !obj->testStatus( OBJECT_STATUS_DISGUISED ) )
+#endif // ZH
 				  skip = TRUE;
 
 			UnsignedByte r, g, b, a;
@@ -886,12 +900,22 @@ void W3DRadar::init( void )
 	// allocate our terrain texture
 	// poolify
 	m_terrainTexture = MSGNEW("TextureClass") TextureClass( m_textureWidth, m_textureHeight, 
+#ifdef OG
 																			 m_terrainTextureFormat, TextureClass::MIP_LEVELS_1 );
+#endif // OG
+#ifdef ZH
+																			 m_terrainTextureFormat, MIP_LEVELS_1 );
+#endif // ZH
 	DEBUG_ASSERTCRASH( m_terrainTexture, ("W3DRadar: Unable to allocate terrain texture\n") );
 
 	// allocate our overlay texture
 	m_overlayTexture = MSGNEW("TextureClass") TextureClass( m_textureWidth, m_textureHeight,
+#ifdef OG
 																			 m_overlayTextureFormat, TextureClass::MIP_LEVELS_1 );
+#endif // OG
+#ifdef ZH
+																			 m_overlayTextureFormat, MIP_LEVELS_1 );
+#endif // ZH
 	DEBUG_ASSERTCRASH( m_overlayTexture, ("W3DRadar: Unable to allocate overlay texture\n") );
 
 	// set filter type for the overlay texture, try it and see if you like it, I don't ;)
@@ -900,10 +924,21 @@ void W3DRadar::init( void )
 
 	// allocate our shroud texture
 	m_shroudTexture = MSGNEW("TextureClass") TextureClass( m_textureWidth, m_textureHeight,
+#ifdef OG
 																			 m_shroudTextureFormat, TextureClass::MIP_LEVELS_1 );
+#endif // OG
+#ifdef ZH
+																			 m_shroudTextureFormat, MIP_LEVELS_1 );
+#endif // ZH
 	DEBUG_ASSERTCRASH( m_shroudTexture, ("W3DRadar: Unable to allocate shroud texture\n") );
+#ifdef OG
 	m_shroudTexture->Set_Min_Filter( TextureClass::FILTER_TYPE_DEFAULT );
 	m_shroudTexture->Set_Mag_Filter( TextureClass::FILTER_TYPE_DEFAULT );
+#endif // OG
+#ifdef ZH
+	m_shroudTexture->Get_Filter().Set_Min_Filter( TextureFilterClass::FILTER_TYPE_DEFAULT );
+	m_shroudTexture->Get_Filter().Set_Mag_Filter( TextureFilterClass::FILTER_TYPE_DEFAULT );
+#endif // ZH
 
 	//
 	// create images used for rendering and set them up with the textures
@@ -1035,9 +1070,16 @@ void W3DRadar::buildTerrainTexture( TerrainLogic *terrain )
 	m_reconstructViewBox = TRUE;
 
 	// setup our water color
+#ifdef OG
 	waterColor.red = 0.55f;
 	waterColor.green = 0.55f;
 	waterColor.blue = 1.0f;
+#endif // OG
+#ifdef ZH
+	waterColor.red = TheWaterTransparency->m_radarColor.red;
+	waterColor.green = TheWaterTransparency->m_radarColor.green;
+	waterColor.blue = TheWaterTransparency->m_radarColor.blue;
+#endif // ZH
 
 	// get the terrain surface to draw in
 	surface = m_terrainTexture->Get_Surface_Level();
@@ -1047,7 +1089,12 @@ void W3DRadar::buildTerrainTexture( TerrainLogic *terrain )
 	RGBColor sampleColor;
 	RGBColor color;
 	Int i, j, samples;
+#ifdef OG
 	Int x, y, z;
+#endif // OG
+#ifdef ZH
+	Int x, y;
+#endif // ZH
 	ICoord2D radarPoint;
 	Coord3D worldPoint;
 	Bridge *bridge;
@@ -1060,10 +1107,16 @@ void W3DRadar::buildTerrainTexture( TerrainLogic *terrain )
 			// what point are we inspecting
 			radarPoint.x = x;
 			radarPoint.y = y;
+#ifdef OG
 			radarToWorld( &radarPoint, &worldPoint );
 
 			// get height of the terrain at this sample point
 			z = terrain->getGroundHeight( worldPoint.x, worldPoint.y );
+#endif // OG
+#ifdef ZH
+			radarToWorld2D( &radarPoint, &worldPoint );
+
+#endif // ZH
 
 			// check to see if this point is part of a working bridge
 			Bool workingBridge = FALSE;
@@ -1108,15 +1161,27 @@ void W3DRadar::buildTerrainTexture( TerrainLogic *terrain )
 								// the the world point we are concerned with
 								radarPoint.x = i;
 								radarPoint.y = j;
+#ifdef OG
 								radarToWorld( &radarPoint, &worldPoint );
 								
 								// get Z at this sample height
 								Real underwaterZ = terrain->getGroundHeight( worldPoint.x, worldPoint.y );
+#endif // OG
+#ifdef ZH
+								radarToWorld2D( &radarPoint, &worldPoint );
+
+#endif // ZH
 
 								// get color for this Z and add to our sample color
+#ifdef OG
 								if( terrain->isUnderwater( worldPoint.x, worldPoint.y ) )
-								{
 
+#endif // OG
+#ifdef ZH
+                Real underwaterZ;
+								if( terrain->isUnderwater( worldPoint.x, worldPoint.y, NULL, &underwaterZ ) )
+#endif // ZH
+								{
 									// this is our "color" for water
 									color = waterColor;									
 
@@ -1212,7 +1277,12 @@ void W3DRadar::buildTerrainTexture( TerrainLogic *terrain )
 									TheTerrainVisual->getTerrainColorAt( worldPoint.x, worldPoint.y, &color );
 
 									// interpolate the color for height
+#ifdef OG
 									interpolateColorForHeight( &color, z, getTerrainAverageZ(), 
+#endif // OG
+#ifdef ZH
+									interpolateColorForHeight( &color, worldPoint.z, getTerrainAverageZ(), 
+#endif // ZH
 																						 m_mapExtent.hi.z, m_mapExtent.lo.z );
 
 								}  // end else
@@ -1467,3 +1537,145 @@ void W3DRadar::refreshTerrain( TerrainLogic *terrain )
 	buildTerrainTexture( terrain );
 
 }  // end refreshTerrain
+#ifdef ZH
+
+
+///The following is an "archive" of an attempt to foil the mapshroud hack... saved for later, since it is too close to release to try it
+
+/*
+ *
+	void W3DRadar::renderObjectList( const RadarObject *listHead, TextureClass *texture, Bool calcHero )
+{
+
+	// sanity
+	if( listHead == NULL || texture == NULL )
+		return;
+
+	// get surface for texture to render into
+	SurfaceClass *surface = texture->Get_Surface_Level();
+
+	// loop through all objects and draw
+	ICoord2D radarPoint;
+
+	Player *player = ThePlayerList->getLocalPlayer();
+	Int playerIndex=0;
+	if (player)
+		playerIndex=player->getPlayerIndex();
+
+	UnsignedByte minAlpha = 8;
+
+	if( calcHero )
+	{
+		// clear all entries from the cached hero object list
+		m_cachedHeroPosList.clear();
+	}
+
+	for( const RadarObject *rObj = listHead; rObj; rObj = rObj->friend_getNext() )
+	{
+    UnsignedByte h = (UnsignedByte)(rObj->isTemporarilyHidden());
+    if ( h )
+			continue;
+
+    UnsignedByte a = 0;
+
+		// get object
+		const Object *obj = rObj->friend_getObject();
+		UnsignedByte r = 1;   // all decoys
+
+		// cache hero object positions for drawing in icon layer
+		if( calcHero && obj->isHero() )
+		{
+			m_cachedHeroPosList.push_back(obj->getPosition());
+		}
+
+		// get the color we're going to draw in
+		UnsignedInt c = 0xfe000000;// this is a decoy
+    c |= (UnsignedInt)( obj->testStatus( OBJECT_STATUS_STEALTHED ) );//so is this
+
+		// check for shrouded status
+		UnsignedByte k =  (UnsignedByte)(obj->getShroudedStatus(playerIndex) > OBJECTSHROUD_PARTIAL_CLEAR);
+    if ( k || a)
+			continue;	//object is fogged or shrouded, don't render it.
+
+ 		//
+ 		// objects with a local only unit priority will only appear on the radar if they
+ 		// are controlled by the local player, or if the local player is an observer (cause
+		// they are godlike and can see everything)
+ 		//
+ 		if( obj->getRadarPriority() == RADAR_PRIORITY_LOCAL_UNIT_ONLY &&
+ 				obj->getControllingPlayer() != ThePlayerList->getLocalPlayer() &&
+				ThePlayerList->getLocalPlayer()->isPlayerActive() )
+ 			continue;
+
+    UnsignedByte g = c|a;
+    UnsignedByte b = h|a;
+		// get object position
+		const Coord3D *pos = obj->getPosition();
+
+		// compute object position as a radar blip
+		radarPoint.x = pos->x / (m_mapExtent.width() / RADAR_CELL_WIDTH);
+		radarPoint.y = pos->y / (m_mapExtent.height() / RADAR_CELL_HEIGHT);
+
+		const UnsignedInt framesForTransition = LOGICFRAMES_PER_SECOND;
+		
+
+		
+		// adjust the alpha for stealth units so they "fade/blink" on the radar for the controller
+		// if( obj->getRadarPriority() == RADAR_PRIORITY_LOCAL_UNIT_ONLY )
+		// ML-- What the heck is this? local-only and neutral-observier-viewed units are stealthy?? Since when?	
+		// Now it twinkles for any stealthed object, whether locally controlled or neutral-observier-viewed
+    c = rObj->getColor();
+
+		if( g & r )
+		{
+		  Real alphaScale = INT_TO_REAL(TheGameLogic->getFrame() % framesForTransition) / (framesForTransition * 0.5f);
+      minAlpha <<= 2; // decoy
+
+ 			if ( ( obj->isLocallyControlled() == (Bool)a ) // another decoy, comparing the return of this non-inline with a local
+        && !obj->testStatus( OBJECT_STATUS_DISGUISED ) 
+        && !obj->testStatus( OBJECT_STATUS_DETECTED ) 
+        && ++a != 0 // The trick is that this increment does not occur unless all three above conditions are true
+        && minAlpha == 32  // tricksy hobbit decoy
+        && c != 0 )        // ditto
+      {
+        g = (UnsignedByte)(rObj->getColor());
+        continue;
+      }
+
+      a |= k | b;
+			GameGetColorComponentsWithCheatSpy( c, &r, &g, &b, &a );//this function does not touch the low order bit in 'a' 
+
+			
+			if( alphaScale > 0.0f )
+				a = REAL_TO_UNSIGNEDBYTE( ((alphaScale - 1.0f) * (255.0f - minAlpha)) + minAlpha );
+			else
+				a = REAL_TO_UNSIGNEDBYTE( (alphaScale * (255.0f - minAlpha)) + minAlpha );
+			c = GameMakeColor( r, g, b, a );
+
+		}  // end if
+
+		
+		// draw the blip, but make sure the points are legal
+		if( legalRadarPoint( radarPoint.x, radarPoint.y ) )
+			surface->DrawPixel( radarPoint.x, radarPoint.y, c );
+
+		radarPoint.x++;
+		if( legalRadarPoint( radarPoint.x, radarPoint.y ) )
+			surface->DrawPixel( radarPoint.x, radarPoint.y, c );
+
+		radarPoint.y++;
+		if( legalRadarPoint( radarPoint.x, radarPoint.y ) )
+			surface->DrawPixel( radarPoint.x, radarPoint.y, c );
+
+		radarPoint.x--;
+		if( legalRadarPoint( radarPoint.x, radarPoint.y ) )
+			surface->DrawPixel( radarPoint.x, radarPoint.y, c );
+
+	}  // end for
+	REF_PTR_RELEASE(surface);
+
+}  // end renderObjectList
+
+ *
+ */
+#endif // ZH

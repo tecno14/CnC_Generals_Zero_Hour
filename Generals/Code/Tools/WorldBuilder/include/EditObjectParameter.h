@@ -48,6 +48,9 @@ public:
 	//{{AFX_VIRTUAL(EditObjectParameter)
 	protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
+#ifdef ZH
+	virtual BOOL OnNotify(WPARAM wParam, LPARAM lParam, LRESULT* pResult);
+#endif // ZH
 	//}}AFX_VIRTUAL
 
 // Implementation

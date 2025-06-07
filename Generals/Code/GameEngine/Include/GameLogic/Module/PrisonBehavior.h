@@ -71,7 +71,12 @@ public:
 	virtual void onDelete( void );
 
 	// contain methods
+#ifdef OG
 	virtual void onContaining( Object *obj );
+#endif // OG
+#ifdef ZH
+	virtual void onContaining( Object *obj, Bool wasSelected );
+#endif // ZH
 	virtual void onRemoving( Object *obj );
 
 protected:

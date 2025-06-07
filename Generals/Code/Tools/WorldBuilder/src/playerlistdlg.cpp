@@ -338,6 +338,9 @@ void PlayerListDlg::OnEditplayer()
 	AfxMessageBox("Implement me. (Sorry.)");
 	return;
 
+#ifdef ZH
+#if 0
+#endif // ZH
 	Dict *playerDict = m_sides.getSideInfo(m_curPlayerIdx)->getDict();
 	AsciiString pnameold = playerDict->getAsciiString(TheKey_playerName);
 	Bool isneutral = pnameold.isEmpty();
@@ -375,6 +378,9 @@ void PlayerListDlg::OnEditplayer()
 
 		updateTheUI();
 	}
+#ifdef ZH
+#endif
+#endif // ZH
 }
 
 void PlayerListDlg::OnRemoveplayer() 
@@ -836,31 +842,71 @@ void PlayerListDlg::OnChangePlayerdisplayname()
 	updateTheUI();
 }
 
+#ifdef OG
 void PlayerListDlg::OnAddskirmishplayers() 
+
+#endif // OG
+#ifdef ZH
+static void addSide(SidesList *sides, AsciiString faction, 
+										AsciiString playerName, UnsignedShort *playerUName)
+#endif // ZH
 {
+#ifdef OG
 	// PlyrCivilian
 
 	AsciiString addedPTName = "FactionCivilian";
 	AsciiString pname = "PlyrCivilian";
 	UnicodeString pnameu;
 	pnameu = L"PlyrCivilian";
+#endif // OG
+#ifdef ZH
+	if (!sides->findSideInfo(playerName)) {
 
+#endif // ZH
+
+#ifdef OG
 	if (!m_sides.findSideInfo(pname)) {
 
+#endif // OG
 		Dict newPlayerDict;
+#ifdef OG
 		newPlayerDict.setAsciiString(TheKey_playerName, pname);
+
+#endif // OG
+#ifdef ZH
+		UnicodeString playerUStr;
+		playerUStr = playerUName;
+		newPlayerDict.setAsciiString(TheKey_playerName, playerName);
+#endif // ZH
 		newPlayerDict.setBool(TheKey_playerIsHuman, false);
+#ifdef OG
 		newPlayerDict.setUnicodeString(TheKey_playerDisplayName, pnameu);
 		newPlayerDict.setAsciiString(TheKey_playerFaction, addedPTName);
+#endif // OG
+#ifdef ZH
+		newPlayerDict.setUnicodeString(TheKey_playerDisplayName, playerUStr);
+		newPlayerDict.setAsciiString(TheKey_playerFaction, faction);
+#endif // ZH
 		newPlayerDict.setAsciiString(TheKey_playerEnemies, AsciiString(""));
 		newPlayerDict.setAsciiString(TheKey_playerAllies, AsciiString(""));
 
 		ensureValidPlayerName(&newPlayerDict);
+#ifdef OG
 		m_sides.addSide(&newPlayerDict);
+#endif // OG
+#ifdef ZH
+		sides->addSide(&newPlayerDict);
+#endif // ZH
 
+#ifdef OG
 		Bool modified = m_sides.validateSides();
+#endif // OG
+#ifdef ZH
+		Bool modified = sides->validateSides();
+#endif // ZH
 		DEBUG_ASSERTLOG(!modified,("had to clean up sides in PlayerListDlg::OnNewplayer"));
 	}
+#ifdef OG
 
 	addedPTName = "FactionAmerica";
 	pname = "SkirmishAmerica";
@@ -881,14 +927,32 @@ void PlayerListDlg::OnAddskirmishplayers()
 
 		Bool modified = m_sides.validateSides();
 		DEBUG_ASSERTLOG(!modified,("had to clean up sides in PlayerListDlg::OnNewplayer"));
+#endif // OG
 	}
 
+#ifdef OG
 	addedPTName = "FactionChina";
 	pname = "SkirmishChina";
 	pnameu = L"SkirmishChina";
+#endif // OG
+#ifdef ZH
+void PlayerListDlg::OnAddskirmishplayers() 
+{
+	// PlyrCivilian
+#endif // ZH
 
+#ifdef OG
 	if (!m_sides.findSideInfo(pname)) {
 
+#endif // OG
+#ifdef ZH
+	addSide(&m_sides, "FactionCivilian", "PlyrCivilian", L"PlyrCivilian");
+	addSide(&m_sides, "FactionAmerica", "SkirmishAmerica", L"SkirmishAmerica");
+	addSide(&m_sides, "FactionChina", "SkirmishChina", L"SkirmishChina");
+	addSide(&m_sides, "FactionGLA", "SkirmishGLA", L"SkirmishGLA");
+#endif // ZH
+
+#ifdef OG
 		Dict newPlayerDict;
 		newPlayerDict.setAsciiString(TheKey_playerName, pname);
 		newPlayerDict.setBool(TheKey_playerIsHuman, false);
@@ -924,5 +988,18 @@ void PlayerListDlg::OnAddskirmishplayers()
 		Bool modified = m_sides.validateSides();
 		DEBUG_ASSERTLOG(!modified,("had to clean up sides in PlayerListDlg::OnNewplayer"));
 	}
+#endif // OG
+#ifdef ZH
+	addSide(&m_sides, "FactionAmericaAirForceGeneral", "SkirmishAmericaAirForceGeneral", L"SkirmishAmericaAirForceGeneral");
+	addSide(&m_sides, "FactionAmericaLaserGeneral", "SkirmishAmericaLaserGeneral", L"SkirmishAmericaLaserGeneral");
+	addSide(&m_sides, "FactionAmericaSuperWeaponGeneral", "SkirmishAmericaSuperWeaponGeneral", L"SkirmishAmericaSuperWeaponGeneral");
+	addSide(&m_sides, "FactionChinaTankGeneral", "SkirmishChinaTankGeneral", L"SkirmishChinaTankGeneral");
+	addSide(&m_sides, "FactionChinaNukeGeneral", "SkirmishChinaNukeGeneral", L"SkirmishChinaNukeGeneral");
+	addSide(&m_sides, "FactionChinaInfantryGeneral", "SkirmishChinaInfantryGeneral", L"SkirmishChinaInfantryGeneral");
+	addSide(&m_sides, "FactionGLADemolitionGeneral", "SkirmishGLADemolitionGeneral", L"SkirmishGLADemolitionGeneral");
+	addSide(&m_sides, "FactionGLAToxinGeneral", "SkirmishGLAToxinGeneral", L"SkirmishGLAToxinGeneral");
+	addSide(&m_sides, "FactionGLAStealthGeneral", "SkirmishGLAStealthGeneral", L"SkirmishGLAStealthGeneral");
+
+#endif // ZH
 	updateTheUI();
 }

@@ -44,13 +44,27 @@
 #include "GameLogic/Object.h"
 #include "GameLogic/PartitionManager.h"
 
+#ifdef ZH
+#ifdef _INTERNAL
+// for occasional debugging...
+//#pragma optimize("", off)
+//#pragma MESSAGE("************************************** WARNING, optimization disabled for debugging purposes")
+#endif
+
+#endif // ZH
 //-------------------------------------------------------------------------------------------------
 //-------------------------------------------------------------------------------------------------
 struct AutoHealPlayerScanHelper
 {
 	KindOfMaskType m_kindOfToTest;
+#ifdef ZH
+	KindOfMaskType m_forbiddenKindOf;
+#endif // ZH
 	Object *m_theHealer;
 	ObjectPointerList *m_objectList;	
+#ifdef ZH
+	Bool m_skipSelfForHealing;
+#endif // ZH
 };
 
 static void checkForAutoHeal( Object *testObj, void *userData )
@@ -65,11 +79,21 @@ static void checkForAutoHeal( Object *testObj, void *userData )
 		return;
 
 	if( testObj->isOffMap() )
+#ifdef ZH
+		return;
+
+	if( helper->m_skipSelfForHealing && testObj == helper->m_theHealer )
+#endif // ZH
 		return;
 
 	if( !testObj->isAnyKindOf(helper->m_kindOfToTest) )
 		return;
 
+#ifdef ZH
+	if( testObj->isAnyKindOf( helper->m_forbiddenKindOf ) )
+		return;
+
+#endif // ZH
 	if( testObj->getBodyModule()->getHealth() >= testObj->getBodyModule()->getMaxHealth() )
 		return;
 
@@ -195,9 +219,19 @@ UpdateSleepTime AutoHealBehavior::update( void )
 		if( owningPlayer )
 		{
 			AutoHealPlayerScanHelper helper;
+#ifdef OG
 			helper.m_kindOfToTest = getAutoHealBehaviorModuleData()->m_kindOf;
+
+#endif // OG
+#ifdef ZH
+			helper.m_kindOfToTest = d->m_kindOf;
+			helper.m_forbiddenKindOf = d->m_forbiddenKindOf;
+#endif // ZH
 			helper.m_objectList = &objectsToHeal;
 			helper.m_theHealer = getObject();
+#ifdef ZH
+			helper.m_skipSelfForHealing = d->m_skipSelfForHealing;
+#endif // ZH
 
 			// Smack all objects with this function, and we will end up with a list of Objects deserving of pulseHealObject
 			owningPlayer->iterateObjects( checkForAutoHeal, &helper );
@@ -243,7 +277,17 @@ UpdateSleepTime AutoHealBehavior::update( void )
 		{
 			// do not heal if we are at max health already
 			BodyModuleInterface *body = obj->getBodyModule();
+#ifdef OG
 			if( body->getHealth() < body->getMaxHealth() && obj->isAnyKindOf( d->m_kindOf ) )
+
+#endif // OG
+#ifdef ZH
+			if( body->getHealth() < body->getMaxHealth() )
+			{
+				if( obj->isAnyKindOf( d->m_kindOf ) && !obj->isAnyKindOf( d->m_forbiddenKindOf ) )
+				{
+					if( !d->m_skipSelfForHealing || obj != getObject() )
+#endif // ZH
 			{
 				pulseHealObject( obj );
 
@@ -262,10 +306,15 @@ UpdateSleepTime AutoHealBehavior::update( void )
 							TheInGameUI->addWorldAnimation( animTemplate,	&iconPosition, WORLD_ANIM_FADE_ON_EXPIRE,
 																							TheGlobalData->m_getHealedAnimationDisplayTimeInSeconds,
 																							TheGlobalData->m_getHealedAnimationZRisePerSecond);
+#ifdef ZH
+								}
+#endif // ZH
 						}
 					}
 				}
-			
+#ifdef ZH
+				}
+#endif // ZH
 			}
 		}  // end for obj
 

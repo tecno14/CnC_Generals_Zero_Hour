@@ -28,9 +28,19 @@
  *                                                                                             *
  *                      $Author:: Jani_p                                                      $*
  *                                                                                             *
+#ifdef OG
  *                     $Modtime:: 6/27/01 7:52p                                               $*
+#endif // OG
+#ifdef ZH
+ *                     $Modtime:: 11/25/01 6:06p                                              $*
+#endif // ZH
  *                                                                                             *
+#ifdef OG
  *                    $Revision:: 4                                                           $*
+#endif // OG
+#ifdef ZH
+ *                    $Revision:: 5                                                           $*
+#endif // ZH
  *                                                                                             *
  *---------------------------------------------------------------------------------------------*
  * Functions:                                                                                  *
@@ -178,6 +188,9 @@ void HRawAnimClass::Free(void)
 {
 	if (NodeMotion != NULL) {
 		delete[] NodeMotion;
+#ifdef ZH
+		NodeMotion = NULL;
+#endif // ZH
 	}
 }
 
@@ -327,7 +340,14 @@ bool HRawAnimClass::read_channel(ChunkLoadClass & cload,MotionChannelClass * * n
 	bool result = (*newchan)->Load_W3D(cload);	
 	
 	if (result && pre30) {
+#ifdef OG
 		(*newchan)->PivotIdx += 1;
+
+#endif // OG
+#ifdef ZH
+//		(*newchan)->PivotIdx += 1;
+		(*newchan)->Set_Pivot((*newchan)->Get_Pivot()+1);
+#endif // ZH
 	}
 	
 	return result;

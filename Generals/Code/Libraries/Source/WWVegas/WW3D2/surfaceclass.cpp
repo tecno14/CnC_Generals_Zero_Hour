@@ -22,15 +22,35 @@
  *                                                                                             *
  *                 Project Name : WW3D                                                         *
  *                                                                                             *
+#ifdef OG
  *                     $Archive:: /VSS_Sync/ww3d2/surfaceclass.cpp                            $*
+#endif // OG
+#ifdef ZH
+ *                     $Archive:: /Commando/Code/ww3d2/surfaceclass.cpp                       $*
+#endif // ZH
  *                                                                                             *
  *              Original Author:: Nathaniel Hoffman                                            *
  *                                                                                             *
+#ifdef OG
  *                      $Author:: Vss_sync                                                    $*
+#endif // OG
+#ifdef ZH
+ *                      $Author:: Greg_h2                                                     $*
+#endif // ZH
  *                                                                                             *
+#ifdef OG
  *                     $Modtime:: 8/29/01 7:29p                                               $*
+#endif // OG
+#ifdef ZH
+ *                     $Modtime:: 8/30/01 2:01p                                               $*
+#endif // ZH
  *                                                                                             *
+#ifdef OG
  *                    $Revision:: 24                                                          $*
+#endif // OG
+#ifdef ZH
+ *                    $Revision:: 25                                                          $*
+#endif // ZH
  *                                                                                             *
  *---------------------------------------------------------------------------------------------*
  * Functions:                                                                                  *
@@ -602,8 +622,14 @@ void SurfaceClass::FindBB(Vector2i *min,Vector2i*max)
 	// the assumption here is that whenever a pixel has alpha it's in the MSB
 	for (y = min->J; y < max->J; y++) {
 		for (x = min->I; x < max->I; x++) {
+#ifdef ZH
+
+			// HY - this is not endian safe
+#endif // ZH
 			unsigned char *alpha=(unsigned char*) ((unsigned int)lock_rect.pBits+(y-min->J)*lock_rect.Pitch+(x-min->I)*size);
+#ifdef OG
 			#pragma MESSAGE("HY - this is not endian safe")
+#endif // OG
 			unsigned char myalpha=alpha[size-1];
 			myalpha=(myalpha>>(8-alphabits)) & mask;
 			if (myalpha) {
@@ -676,8 +702,13 @@ bool SurfaceClass::Is_Transparent_Column(unsigned int column)
 	// the assumption here is that whenever a pixel has alpha it's in the MSB
 	for (y = 0; y < (int) sd.Height; y++)
 	{
+#ifdef ZH
+		// HY - this is not endian safe
+#endif // ZH
 		unsigned char *alpha=(unsigned char*) ((unsigned int)lock_rect.pBits+y*lock_rect.Pitch);		
+#ifdef OG
 		#pragma MESSAGE("HY - this is not endian safe")
+#endif // OG
 		unsigned char myalpha=alpha[size-1];		
 		myalpha=(myalpha>>(8-alphabits)) & mask;		
 		if (myalpha) {
@@ -920,15 +951,52 @@ bool SurfaceClass::Is_Monochrome(void)
 	unsigned int x,y;
 	SurfaceDescription sd;
 	Get_Description(sd);
+#ifdef ZH
+	bool is_compressed = false;
+#endif // ZH
 
 	switch (sd.Format)
 	{
+#ifdef ZH
+		// these formats are always monochrome
+#endif // ZH
 		case WW3D_FORMAT_A8L8:	
 		case WW3D_FORMAT_A8:		
 		case WW3D_FORMAT_L8:
 		case WW3D_FORMAT_A4L4:
 			return true;
+#ifdef ZH
 		break;
+		// these formats cannot be determined to be monochrome or not
+		case WW3D_FORMAT_UNKNOWN:
+		case WW3D_FORMAT_A8P8:
+		case WW3D_FORMAT_P8:	
+		case WW3D_FORMAT_U8V8:		// Bumpmap
+		case WW3D_FORMAT_L6V5U5:	// Bumpmap
+		case WW3D_FORMAT_X8L8V8U8:	// Bumpmap
+			return false;
+		break;
+		// these formats need decompression first	
+		case WW3D_FORMAT_DXT1:
+		case WW3D_FORMAT_DXT2:
+		case WW3D_FORMAT_DXT3:
+		case WW3D_FORMAT_DXT4:
+		case WW3D_FORMAT_DXT5:
+			is_compressed = true;
+#endif // ZH
+		break;
+#ifdef ZH
+	}
+
+	// if it's in some compressed texture format, be sure to decompress first	
+	if (is_compressed) {
+		WW3DFormat new_format = Get_Valid_Texture_Format(sd.Format, false);
+		SurfaceClass *new_surf = NEW_REF( SurfaceClass, (sd.Width, sd.Height, new_format) );
+		new_surf->Copy(0, 0, 0, 0, sd.Width, sd.Height, this);
+		bool result = new_surf->Is_Monochrome();
+		REF_PTR_RELEASE(new_surf);
+		return result;
+#endif // ZH
 	}
 
 	int pitch,size;

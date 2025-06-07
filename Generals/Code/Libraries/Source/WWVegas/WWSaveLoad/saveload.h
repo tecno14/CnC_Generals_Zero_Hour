@@ -26,9 +26,19 @@
  *                                                                                             *
  *                       Author:: Greg Hjelstrom                                               *
  *                                                                                             *
+#ifdef OG
  *                     $Modtime:: 4/16/01 4:35p                                               $*
+#endif // OG
+#ifdef ZH
+ *                     $Modtime:: 9/19/01 4:13p                                               $*
+#endif // ZH
  *                                                                                             *
+#ifdef OG
  *                    $Revision:: 11                                                          $*
+#endif // OG
+#ifdef ZH
+ *                    $Revision:: 12                                                          $*
+#endif // ZH
  *                                                                                             *
  *---------------------------------------------------------------------------------------------*
  * Functions:                                                                                  *
@@ -148,8 +158,14 @@ public:
 	*/
 	static bool		Save (ChunkSaveClass &csave, SaveLoadSubSystemClass & subsystem);
 	static bool		Load (ChunkLoadClass &cload,bool auto_post_load = true);	
+#ifdef OG
 	static bool		Post_Load_Processing (void);
 
+#endif // OG
+#ifdef ZH
+	static bool		Post_Load_Processing (void(*network_callback)(void));
+
+#endif // ZH
 	/*
 	** Look up the persist factory for a given chunk id
 	*/

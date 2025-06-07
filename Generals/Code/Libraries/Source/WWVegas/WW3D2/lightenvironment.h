@@ -26,12 +26,30 @@
  *                                                                                             *
  *              Original Author:: Greg Hjelstrom                                               *
  *                                                                                             *
+#ifdef OG
  *                      $Author:: Naty_h                                                      $*
+#endif // OG
+#ifdef ZH
+ *                      $Author:: Kenny Mitchell                                              $*
+#endif // ZH
  *                                                                                             *
+#ifdef OG
  *                     $Modtime:: 4/01/01 12:01a                                              $*
+#endif // OG
+#ifdef ZH
+ *                     $Modtime:: 06/27/02 9:23a                                              $*
+#endif // ZH
  *                                                                                             *
+#ifdef OG
  *                    $Revision:: 4                                                           $*
+#endif // OG
+#ifdef ZH
+ *                    $Revision:: 5                                                           $*
+#endif // ZH
  *                                                                                             *
+#ifdef ZH
+ * 06/27/02 KM Shader system light environment updates                                       *
+#endif // ZH
  *---------------------------------------------------------------------------------------------*
  * Functions:                                                                                  *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
@@ -90,6 +108,11 @@ public:
 	void					Reset(const Vector3 & object_center,const Vector3 & scene_ambient);
 	void					Add_Light(const LightClass & light);
 	void					Pre_Render_Update(const Matrix3D & camera_tm);
+#ifdef ZH
+	void					Add_Fill_Light(void);
+	void					Calculate_Fill_Light(void);
+	void					Set_Fill_Intensity(float intensity)			{ FillIntensity = intensity; }
+#endif // ZH
 
 	/*
 	** Accessors 
@@ -114,7 +137,25 @@ public:
 	static void			Set_Lighting_LOD_Cutoff(float inten);
 	static float		Get_Lighting_LOD_Cutoff(void);
 
+#ifdef ZH
+	static int			Get_Max_Lights() { return MAX_LIGHTS; }
+#endif // ZH
 	enum { MAX_LIGHTS = 4 };	//Made this public, so other code can tell how many lights are allowed. - MW
+#ifdef ZH
+
+	inline bool operator== (const LightEnvironmentClass& that) const
+	{
+		if (LightCount!=that.LightCount) return false;
+		bool dif=!(ObjectCenter==that.ObjectCenter);
+		dif|=OutputAmbient!=that.OutputAmbient;
+		for (int i=0;i<LightCount;++i) {
+			dif|=!(OutputLights[i].Diffuse==that.OutputLights[i].Diffuse);
+			dif|=!(OutputLights[i].Direction==that.OutputLights[i].Direction);
+			if (dif) return false;
+		}
+		return true;
+	}
+#endif // ZH
 
 protected:
 
@@ -152,11 +193,20 @@ protected:
 	*/
 	int					LightCount;
 	Vector3				ObjectCenter;					// center of the object to be lit
+#ifdef OG
 	InputLightStruct	InputLights[MAX_LIGHTS];	// input lights
+#endif // OG
+#ifdef ZH
+	InputLightStruct	InputLights[MAX_LIGHTS];	// Sorted list of input lights from the greatest contributor to the least
+#endif // ZH
 
 	Vector3				OutputAmbient;					// scene ambient + lights' ambients
 	OutputLightStruct	OutputLights[MAX_LIGHTS];	// ouput lights
 
+#ifdef ZH
+	InputLightStruct 	FillLight;						// Used to store the calculated fill light
+	float					FillIntensity;					// Used to determine how strong the fill light should be
+#endif // ZH
 };
 
 

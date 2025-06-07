@@ -24,12 +24,33 @@
  *                                                                                             *
  *                     $Archive:: /Commando/Code/wwmath/matrix3.cpp                           $*
  *                                                                                             *
+#ifdef OG
  *                       Author:: Greg_h                                                       *
+
+#endif // OG
+#ifdef ZH
+ *                   Org Author:: Greg_h                                                       *
  *                                                                                             *
+ *                       Author : Kenny Mitchell                                               * 
+#endif // ZH
+ *                                                                                             *
+#ifdef OG
  *                     $Modtime:: 5/11/01 10:10a                                              $*
+#endif // OG
+#ifdef ZH
+ *                     $Modtime:: 06/26/02 4:04p                                             $*
+#endif // ZH
  *                                                                                             *
+#ifdef OG
  *                    $Revision:: 16                                                          $*
+#endif // OG
+#ifdef ZH
+ *                    $Revision:: 17                                                          $*
+#endif // ZH
  *                                                                                             *
+#ifdef ZH
+ * 06/26/02 KM Matrix name change to avoid MAX conflicts                                       *
+#endif // ZH
  *---------------------------------------------------------------------------------------------*
  * Functions:                                                                                  *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
@@ -42,72 +63,127 @@
 
 
 /*
+#ifdef OG
 ** Some pre-initialized Matrix3's
+#endif // OG
+#ifdef ZH
+** Some pre-initialized Matrix3x3's
+#endif // ZH
 */
+#ifdef OG
 const Matrix3 Matrix3::Identity
+#endif // OG
+#ifdef ZH
+const Matrix3x3 Matrix3x3::Identity
+#endif // ZH
 (
 	1.0,	0.0,	0.0,
 	0.0,	1.0,	0.0,
 	0.0,	0.0,	1.0
 );
 
+#ifdef OG
 const Matrix3 Matrix3::RotateX90
+#endif // OG
+#ifdef ZH
+const Matrix3x3 Matrix3x3::RotateX90
+#endif // ZH
 (
 	1.0,	0.0,	0.0,
 	0.0,	0.0, -1.0,
 	0.0,	1.0,	0.0
 );
 
+#ifdef OG
 const Matrix3 Matrix3::RotateX180
+#endif // OG
+#ifdef ZH
+const Matrix3x3 Matrix3x3::RotateX180
+#endif // ZH
 (
 	1.0,	0.0,	0.0,
 	0.0, -1.0,	0.0,
 	0.0,	0.0, -1.0
 );
 
+#ifdef OG
 const Matrix3 Matrix3::RotateX270
+#endif // OG
+#ifdef ZH
+const Matrix3x3 Matrix3x3::RotateX270
+#endif // ZH
 (
 	1.0,	0.0,	0.0,
 	0.0,	0.0,	1.0,
 	0.0, -1.0,	0.0
 );
 
+#ifdef OG
 const Matrix3 Matrix3::RotateY90
+#endif // OG
+#ifdef ZH
+const Matrix3x3 Matrix3x3::RotateY90
+#endif // ZH
 (
 	0.0,	0.0,	1.0,
 	0.0,	1.0,	0.0,
   -1.0,	0.0,	0.0
 );
 
+#ifdef OG
 const Matrix3 Matrix3::RotateY180
+#endif // OG
+#ifdef ZH
+const Matrix3x3 Matrix3x3::RotateY180
+#endif // ZH
 (
   -1.0,	0.0,	0.0,
 	0.0,	1.0,	0.0,
 	0.0,	0.0, -1.0
 );
 
+#ifdef OG
 const Matrix3 Matrix3::RotateY270
+#endif // OG
+#ifdef ZH
+const Matrix3x3 Matrix3x3::RotateY270
+#endif // ZH
 (
 	0.0,	0.0, -1.0,
 	0.0,	1.0,	0.0,
 	1.0,	0.0,	0.0
 );
 
+#ifdef OG
 const Matrix3 Matrix3::RotateZ90
+#endif // OG
+#ifdef ZH
+const Matrix3x3 Matrix3x3::RotateZ90
+#endif // ZH
 (
 	0.0, -1.0,	0.0,
 	1.0,	0.0,	0.0,
 	0.0,	0.0,	1.0
 );
 
+#ifdef OG
 const Matrix3 Matrix3::RotateZ180
+#endif // OG
+#ifdef ZH
+const Matrix3x3 Matrix3x3::RotateZ180
+#endif // ZH
 (
   -1.0,	0.0,	0.0,
 	0.0, -1.0,	0.0,
 	0.0,	0.0,	1.0
 );
 
+#ifdef OG
 const Matrix3 Matrix3::RotateZ270
+#endif // OG
+#ifdef ZH
+const Matrix3x3 Matrix3x3::RotateZ270
+#endif // ZH
 (
 	0.0,	1.0,	0.0,
   -1.0,	0.0,	0.0,
@@ -117,7 +193,12 @@ const Matrix3 Matrix3::RotateZ270
 
 
 /*********************************************************************************************** 
+#ifdef OG
  * Matrix3::Matrix3 -- Convert a Matrix3D (fake 4x4) to a Matrix3                              * 
+#endif // OG
+#ifdef ZH
+ * Matrix3x3::Matrix3x3 -- Convert a Matrix3D (fake 4x4) to a Matrix3x3                              * 
+#endif // ZH
  *                                                                                             * 
  * INPUT:                                                                                      * 
  *                                                                                             * 
@@ -128,35 +209,60 @@ const Matrix3 Matrix3::RotateZ270
  * HISTORY:                                                                                    * 
  *   06/02/1997 GH  : Created.                                                                 * 
  *=============================================================================================*/
+#ifdef OG
 Matrix3::Matrix3(const Matrix3D & m)
+#endif // OG
+#ifdef ZH
+Matrix3x3::Matrix3x3(const Matrix3D & m)
+#endif // ZH
 {
 	Row[0].Set(m[0][0],m[0][1],m[0][2]);
 	Row[1].Set(m[1][0],m[1][1],m[1][2]);
 	Row[2].Set(m[2][0],m[2][1],m[2][2]);
 }
 
+#ifdef OG
 Matrix3::Matrix3(const Matrix4 & m)
+#endif // OG
+#ifdef ZH
+Matrix3x3::Matrix3x3(const Matrix4x4 & m)
+#endif // ZH
 {
 	Row[0].Set(m[0][0],m[0][1],m[0][2]);
 	Row[1].Set(m[1][0],m[1][1],m[1][2]);
 	Row[2].Set(m[2][0],m[2][1],m[2][2]);
 }
 
+#ifdef OG
 void Matrix3::Set(const Matrix3D & m)
+#endif // OG
+#ifdef ZH
+void Matrix3x3::Set(const Matrix3D & m)
+#endif // ZH
 {
 	Row[0].Set(m[0][0],m[0][1],m[0][2]);
 	Row[1].Set(m[1][0],m[1][1],m[1][2]);
 	Row[2].Set(m[2][0],m[2][1],m[2][2]);
 }
 
+#ifdef OG
 void Matrix3::Set(const Matrix4 & m)
+#endif // OG
+#ifdef ZH
+void Matrix3x3::Set(const Matrix4x4 & m)
+#endif // ZH
 {
 	Row[0].Set(m[0][0],m[0][1],m[0][2]);
 	Row[1].Set(m[1][0],m[1][1],m[1][2]);
 	Row[2].Set(m[2][0],m[2][1],m[2][2]);
 }
 
+#ifdef OG
 void Matrix3::Set(const Quaternion & q)
+#endif // OG
+#ifdef ZH
+void Matrix3x3::Set(const Quaternion & q)
+#endif // ZH
 {
 	Row[0][0] = (float)(1.0 - 2.0 * (q[1] * q[1] + q[2] * q[2]));
 	Row[0][1] = (float)(2.0 * (q[0] * q[1] - q[2] * q[3]));
@@ -172,7 +278,12 @@ void Matrix3::Set(const Quaternion & q)
 }
 
 
+#ifdef OG
 Matrix3 & Matrix3::operator = (const Matrix3D & m)
+#endif // OG
+#ifdef ZH
+Matrix3x3 & Matrix3x3::operator = (const Matrix3D & m)
+#endif // ZH
 {
 	Row[0].Set(m[0][0],m[0][1],m[0][2]);
 	Row[1].Set(m[1][0],m[1][1],m[1][2]);
@@ -180,7 +291,12 @@ Matrix3 & Matrix3::operator = (const Matrix3D & m)
 	return *this; 
 }
 
+#ifdef OG
 Matrix3 & Matrix3::operator = (const Matrix4 & m)
+#endif // OG
+#ifdef ZH
+Matrix3x3 & Matrix3x3::operator = (const Matrix4x4 & m)
+#endif // ZH
 {
 	Row[0].Set(m[0][0],m[0][1],m[0][2]);
 	Row[1].Set(m[1][0],m[1][1],m[1][2]);
@@ -188,7 +304,12 @@ Matrix3 & Matrix3::operator = (const Matrix4 & m)
 	return *this; 
 }
 
+#ifdef OG
 void Matrix3::Multiply(const Matrix3D & a, const Matrix3 & b,Matrix3 * res)
+#endif // OG
+#ifdef ZH
+void Matrix3x3::Multiply(const Matrix3D & a, const Matrix3x3 & b,Matrix3x3 * res)
+#endif // ZH
 {
 	#define ROWCOL(i,j) a[i][0]*b[0][j] + a[i][1]*b[1][j] + a[i][2]*b[2][j]
     
@@ -207,7 +328,12 @@ void Matrix3::Multiply(const Matrix3D & a, const Matrix3 & b,Matrix3 * res)
 	#undef ROWCOL
 }
 
+#ifdef OG
 void Matrix3::Multiply(const Matrix3 & a, const Matrix3D & b,Matrix3 * res)
+#endif // OG
+#ifdef ZH
+void Matrix3x3::Multiply(const Matrix3x3 & a, const Matrix3D & b,Matrix3x3 * res)
+#endif // ZH
 {
 	#define ROWCOL(i,j) a[i][0]*b[0][j] + a[i][1]*b[1][j] + a[i][2]*b[2][j]
     
@@ -226,11 +352,21 @@ void Matrix3::Multiply(const Matrix3 & a, const Matrix3D & b,Matrix3 * res)
 	#undef ROWCOL
 }
 
+#ifdef OG
 Matrix3 operator * (const Matrix3D & a, const Matrix3 & b)
+#endif // OG
+#ifdef ZH
+Matrix3x3 operator * (const Matrix3D & a, const Matrix3x3 & b)
+#endif // ZH
 {
 	#define ROWCOL(i,j) a[i][0]*b[0][j] + a[i][1]*b[1][j] + a[i][2]*b[2][j]
     
+#ifdef OG
 	return Matrix3(
+#endif // OG
+#ifdef ZH
+	return Matrix3x3(
+#endif // ZH
 			Vector3(ROWCOL(0,0), ROWCOL(0,1), ROWCOL(0,2) ),
 			Vector3(ROWCOL(1,0), ROWCOL(1,1), ROWCOL(1,2) ),
 			Vector3(ROWCOL(2,0), ROWCOL(2,1), ROWCOL(2,2) )
@@ -239,11 +375,21 @@ Matrix3 operator * (const Matrix3D & a, const Matrix3 & b)
 	#undef ROWCOL
 }
 
+#ifdef OG
 Matrix3 operator * (const Matrix3 & a, const Matrix3D & b)
+#endif // OG
+#ifdef ZH
+Matrix3x3 operator * (const Matrix3x3 & a, const Matrix3D & b)
+#endif // ZH
 {
 	#define ROWCOL(i,j) a[i][0]*b[0][j] + a[i][1]*b[1][j] + a[i][2]*b[2][j]
     
+#ifdef OG
 	return Matrix3(
+#endif // OG
+#ifdef ZH
+	return Matrix3x3(
+#endif // ZH
 			Vector3(ROWCOL(0,0), ROWCOL(0,1), ROWCOL(0,2) ),
 			Vector3(ROWCOL(1,0), ROWCOL(1,1), ROWCOL(1,2) ),
 			Vector3(ROWCOL(2,0), ROWCOL(2,1), ROWCOL(2,2) )
@@ -255,17 +401,38 @@ Matrix3 operator * (const Matrix3 & a, const Matrix3D & b)
 
 #if 0
 
+#ifdef OG
 void Matrix3::Compute_Jacobi_Rotation(int i,int j,Matrix3 * r,Matrix3 * rinv)
+#endif // OG
+#ifdef ZH
+void Matrix3x3::Compute_Jacobi_Rotation(int i,int j,Matrix3x3 * r,Matrix3x3 * rinv)
+#endif // ZH
 {
 
 }
 
+#ifdef OG
 void Matrix3::Symmetric_Eigen_Solve(void)
+#endif // OG
+#ifdef ZH
+void Matrix3x3::Symmetric_Eigen_Solve(void)
+#endif // ZH
 {
+#ifdef OG
 	Matrix3 eigen_vals = *this;
 	Matrix3 eigen_vecs(1);
+#endif // OG
+#ifdef ZH
+	Matrix3x3 eigen_vals = *this;
+	Matrix3x3 eigen_vecs(1);
+#endif // ZH
 
+#ifdef OG
 	Matrix3 jr,jrinv;
+#endif // OG
+#ifdef ZH
+	Matrix3x3 jr,jrinv;
+#endif // ZH
 
 	while (!done) {
 		eigen_vals.Compute_Jacobi_Rotation(i,j,&jr,&jrinv);
@@ -284,10 +451,21 @@ void Matrix3::Symmetric_Eigen_Solve(void)
 #endif
 
 
+#ifdef OG
 void Matrix3::Multiply(const Matrix3 & A,const Matrix3 & B,Matrix3 * set_res)
+#endif // OG
+#ifdef ZH
+void Matrix3x3::Multiply(const Matrix3x3 & A,const Matrix3x3 & B,Matrix3x3 * set_res)
+#endif // ZH
 {
+#ifdef OG
 	Matrix3 tmp;
 	Matrix3 * Aptr;
+#endif // OG
+#ifdef ZH
+	Matrix3x3 tmp;
+	Matrix3x3 * Aptr;
+#endif // ZH
 	float tmp1,tmp2,tmp3;
 
 	// Check for aliased parameters, copy the 'A' matrix into a temporary if the 
@@ -297,7 +475,12 @@ void Matrix3::Multiply(const Matrix3 & A,const Matrix3 & B,Matrix3 * set_res)
 		tmp = A;
 		Aptr = &tmp;
 	} else {
+#ifdef OG
 		Aptr = (Matrix3 *)&A;	
+#endif // OG
+#ifdef ZH
+		Aptr = (Matrix3x3 *)&A;	
+#endif // ZH
 	}
 
 	tmp1 = B[0][0];
@@ -325,7 +508,12 @@ void Matrix3::Multiply(const Matrix3 & A,const Matrix3 & B,Matrix3 * set_res)
 	(*set_res)[2][2] = (float)((*Aptr)[2][0]*tmp1 + (*Aptr)[2][1]*tmp2 + (*Aptr)[2][2]*tmp3);
 }
 
+#ifdef OG
 int Matrix3::Is_Orthogonal(void) const
+#endif // OG
+#ifdef ZH
+int Matrix3x3::Is_Orthogonal(void) const
+#endif // ZH
 {
 	Vector3 x(Row[0].X,Row[0].Y,Row[0].Z);
 	Vector3 y(Row[1].X,Row[1].Y,Row[1].Z);
@@ -342,7 +530,12 @@ int Matrix3::Is_Orthogonal(void) const
 	return 1;
 }
 
+#ifdef OG
 void Matrix3::Re_Orthogonalize(void)
+#endif // OG
+#ifdef ZH
+void Matrix3x3::Re_Orthogonalize(void)
+#endif // ZH
 {
 	Vector3 x(Row[0][0],Row[0][1],Row[0][2]);
 	Vector3 y(Row[1][0],Row[1][1],Row[1][2]);

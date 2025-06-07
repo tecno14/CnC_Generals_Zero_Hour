@@ -47,16 +47,31 @@ class TerrainTextureClass : public TextureClass
 	W3DMPO_GLUE(TerrainTextureClass)
 protected:
 	virtual void Apply(unsigned int stage);
+#ifdef OG
 	int update256(WorldHeightMap *htMap);///< Sets the pixels, and returns the actual height of the texture.
+#endif // OG
 
 public:
+#ifdef ZH
 		/// Create texture for a height map.
+		TerrainTextureClass(int height);
+
+#endif // ZH
+		/// Create texture for a height map.
+#ifdef OG
 		TerrainTextureClass(int height, MipCountType mipLevelCount = MIP_LEVELS_3 );
+#endif // OG
+#ifdef ZH
+		TerrainTextureClass(int height, int width);
+#endif // ZH
 
 		// just use default destructor. ~TerrainTextureClass(void);
 public:
 	int update(WorldHeightMap *htMap); ///< Sets the pixels, and returns the actual height of the texture.
-
+#ifdef ZH
+	Bool updateFlat(WorldHeightMap *htMap, Int xCell, Int yCell, Int cellWidth, Int pixelsPerCell); ///< Sets the pixels.
+	void setLOD(Int LOD);
+#endif // ZH
 };
 
 

@@ -16,7 +16,12 @@
 **	along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#ifdef OG
 /* $Header: /Commando/Code/ww3d2/htreemgr.h 1     1/22/01 3:36p Greg_h $ */
+#endif // OG
+#ifdef ZH
+/* $Header: /Commando/Code/ww3d2/htreemgr.h 2     9/19/01 6:17p Jani_p $ */
+#endif // ZH
 /*********************************************************************************************** 
  ***                            Confidential - Westwood Studios                              *** 
  *********************************************************************************************** 
@@ -27,9 +32,19 @@
  *                                                                                             * 
  *                       Author:: Greg_h                                                       * 
  *                                                                                             * 
+#ifdef OG
  *                     $Modtime:: 1/08/01 10:04a                                              $* 
+#endif // OG
+#ifdef ZH
+ *                     $Modtime:: 9/13/01 7:22p                                               $* 
+#endif // ZH
  *                                                                                             * 
+#ifdef OG
  *                    $Revision:: 1                                                           $* 
+#endif // OG
+#ifdef ZH
+ *                    $Revision:: 2                                                           $* 
+#endif // ZH
  *                                                                                             * 
  *---------------------------------------------------------------------------------------------* 
  * Functions:                                                                                  * 
@@ -45,11 +60,17 @@
 
 #include "always.h"
 #include "bittype.h"
+#ifdef ZH
+#include "hashtemplate.h"
+#endif // ZH
 
 class FileClass;
 class ChunkLoadClass;
 class HTreeClass;
 class W3DExclusionListClass;
+#ifdef ZH
+class StringClass;
+#endif // ZH
 
 /*
 
@@ -88,6 +109,9 @@ private:
 
 	int							NumTrees;
 	HTreeClass *				TreePtr[MAX_TREES];		// TODO: no no! make this dynamic...
+#ifdef ZH
+	HashTemplateClass<StringClass,HTreeClass*> TreeHash;
+#endif // ZH
 
 };
 

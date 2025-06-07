@@ -26,9 +26,19 @@
  *                                                                         * 
  *                      $Author:: Jani_p                                  $* 
  *                                                                         * 
+#ifdef OG
  *                     $Modtime:: 8/23/01 5:38p                           $* 
+#endif // OG
+#ifdef ZH
+ *                     $Modtime:: 9/20/01 10:10a                          $* 
+#endif // ZH
  *                                                                         * 
+#ifdef OG
  *                    $Revision:: 3                                       $* 
+#endif // OG
+#ifdef ZH
+ *                    $Revision:: 5                                       $* 
+#endif // ZH
  *                                                                         * 
  *-------------------------------------------------------------------------* 
  * Functions:                                                              * 
@@ -179,7 +189,12 @@ int					PredictiveLODOptimizerClass::NumObjects = 0;
 float					PredictiveLODOptimizerClass::TotalCost = 0.0f;
 LODHeapNode *		PredictiveLODOptimizerClass::VisibleObjArray1;
 LODHeapNode	*		PredictiveLODOptimizerClass::VisibleObjArray2;
+#ifdef OG
 int					PredictiveLODOptimizerClass::NumVisibleObjects;
+#endif // OG
+#ifdef ZH
+int					PredictiveLODOptimizerClass::VisibleObjArraySize;
+#endif // ZH
 
 
 /************************************************************************** 
@@ -391,12 +406,21 @@ void PredictiveLODOptimizerClass::Free(void)
 	if (VisibleObjArray1) delete[] VisibleObjArray1;
 	VisibleObjArray1=NULL;
 	VisibleObjArray2=NULL;
+#ifdef ZH
+	VisibleObjArraySize = 0;
+#endif // ZH
 }
 
 void PredictiveLODOptimizerClass::AllocVisibleObjArrays(int num_objects)
 {
+#ifdef OG
 	if (NumVisibleObjects<num_objects) {
 		NumVisibleObjects=num_objects;
+#endif // OG
+#ifdef ZH
+	if (VisibleObjArraySize<num_objects) {
+		VisibleObjArraySize=num_objects;
+#endif // ZH
 		if (VisibleObjArray1) delete[] VisibleObjArray1;	// Only the first array is actually allocated
 		VisibleObjArray1=W3DNEWARRAY LODHeapNode[2*(num_objects + 1)];
 		VisibleObjArray2=VisibleObjArray1+(num_objects + 1);

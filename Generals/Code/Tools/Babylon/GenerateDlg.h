@@ -76,7 +76,12 @@ protected:
 	afx_msg void OnSelectall();
 	afx_msg void OnInvert();
 	afx_msg void OnChangePrefix();
+#ifdef OG
 	afx_msg void OnNoxstr();
+#endif // OG
+#ifdef ZH
+	afx_msg void OnBabylonstr();
+#endif // ZH
 	afx_msg void OnUnicode();
 	virtual void OnCancel();
 	virtual void OnOK();

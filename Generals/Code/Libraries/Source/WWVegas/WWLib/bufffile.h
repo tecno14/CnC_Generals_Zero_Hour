@@ -24,11 +24,26 @@
  *                                                                                             * 
  *                     $Archive:: /Commando/Code/wwlib/bufffile.h                             $* 
  *                                                                                             * 
+#ifdef OG
  *                      $Author:: Byon_g                                                      $*
+#endif // OG
+#ifdef ZH
+ *                      $Author:: Ian_l                                                       $*
+#endif // ZH
  *                                                                                             * 
+#ifdef OG
  *                     $Modtime:: 5/02/00 11:09a                                              $*
+#endif // OG
+#ifdef ZH
+ *                     $Modtime:: 10/31/01 3:33p                                              $*
+#endif // ZH
  *                                                                                             * 
+#ifdef OG
  *                    $Revision:: 2                                                           $*
+#endif // OG
+#ifdef ZH
+ *                    $Revision:: 3                                                           $*
+#endif // ZH
  *                                                                                             *
  *---------------------------------------------------------------------------------------------* 
  * Functions:                                                                                  * 
@@ -70,9 +85,15 @@ class BufferedFileClass : public RawFileClass
 
 	protected:
 
+#ifdef ZH
+		static	void		Set_Desired_Buffer_Size( int size ) { _DesiredBufferSize = size; }
+
+#endif // ZH
 		void					Reset_Buffer( void );
+#ifdef OG
 
 		static	void		Set_Desired_Buffer_Size( int size ) { _DesiredBufferSize = size; }
+#endif // OG
 
 	private:
 		unsigned char *	Buffer;				// The read buffer 

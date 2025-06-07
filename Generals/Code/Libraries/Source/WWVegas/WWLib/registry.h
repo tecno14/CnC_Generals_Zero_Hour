@@ -24,11 +24,26 @@
  *                                                                                             *
  *                     $Archive:: /Commando/Code/wwlib/registry.h                             $*
  *                                                                                             *
+#ifdef OG
  *                      $Author:: Patrick                                                     $*
+#endif // OG
+#ifdef ZH
+ *                      $Author:: Steve_t                                                     $*
+#endif // ZH
  *                                                                                             *
+#ifdef OG
  *                     $Modtime:: 8/16/01 11:28a                                              $*
+#endif // OG
+#ifdef ZH
+ *                     $Modtime:: 11/21/01 3:42p                                              $*
+#endif // ZH
  *                                                                                             *
+#ifdef OG
  *                    $Revision:: 8                                                           $*
+#endif // OG
+#ifdef ZH
+ *                    $Revision:: 12                                                          $*
+#endif // ZH
  *                                                                                             *
  *---------------------------------------------------------------------------------------------*
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
@@ -47,14 +62,27 @@
 #include "vector.h"
 #include "wwstring.h"
 #include "widestring.h"
+#ifdef ZH
+
+class INIClass;
+#endif // ZH
 
 /*
 **
 */
 class	RegistryClass {
 public:
+#ifdef ZH
+	static bool Exists(const char* sub_key);
+
+#endif // ZH
 	// Constructor & Destructor
+#ifdef OG
 	RegistryClass( const char * sub_key );
+#endif // OG
+#ifdef ZH
+	RegistryClass( const char * sub_key, bool create = true );
+#endif // ZH
 	~RegistryClass( void );
 
 	bool	Is_Valid( void )		{ return IsValid; }
@@ -92,10 +120,38 @@ public:
 	// Delete support
 	void	Delete_Value( const char * name);
 	void	Deleta_All_Values( void );
+#ifdef ZH
 
+	// Read only.
+	static void Set_Read_Only(bool set) {IsLocked = set;}
+#endif // ZH
+
+#ifdef ZH
+	//
+	// Bulk registry operations. BE VERY VERY CAREFUL USING THESE
+	//
+	static void Delete_Registry_Tree(char *path);
+	static void Load_Registry(const char *filename, char *old_path, char *new_path);
+	static void Save_Registry(const char *filename, char *path);
+
+#endif // ZH
 private:
+#ifdef ZH
+
+	static void Delete_Registry_Values(HKEY key);
+	static void Save_Registry_Tree(char *path, INIClass *ini);
+	static void Save_Registry_Values(HKEY key, char *path, INIClass *ini);
+
+#endif // ZH
 	int	Key;
 	bool	IsValid;
+#ifdef ZH
+
+	//
+	// Use this to make the registry 'read only'. Useful for running multiple copies of the app.
+	//
+	static bool IsLocked;
+#endif // ZH
 };
 
 #endif // REGISTRY_H

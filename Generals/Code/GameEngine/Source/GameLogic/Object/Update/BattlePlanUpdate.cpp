@@ -135,7 +135,12 @@ BattlePlanUpdateModuleData::BattlePlanUpdateModuleData()
 
 //-------------------------------------------------------------------------------------------------
 BattlePlanUpdate::BattlePlanUpdate( Thing *thing, const ModuleData* moduleData ) : 
+#ifdef OG
 	UpdateModule( thing, moduleData ),
+#endif // OG
+#ifdef ZH
+	SpecialPowerUpdateModule( thing, moduleData ),
+#endif // ZH
 	m_bonuses(NULL)
 {
 	const BattlePlanUpdateModuleData *data = getBattlePlanUpdateModuleData();
@@ -264,12 +269,22 @@ void BattlePlanUpdate::onObjectCreated()
 }
 
 //-------------------------------------------------------------------------------------------------
+#ifdef OG
 void BattlePlanUpdate::initiateIntentToDoSpecialPower(const SpecialPowerTemplate *specialPowerTemplate, const Object *targetObj, const Coord3D *targetPos, UnsignedInt commandOptions, Int locationCount )
+#endif // OG
+#ifdef ZH
+Bool BattlePlanUpdate::initiateIntentToDoSpecialPower(const SpecialPowerTemplate *specialPowerTemplate, const Object *targetObj, const Coord3D *targetPos, const Waypoint *way, UnsignedInt commandOptions )
+#endif // ZH
 {
 	if( m_specialPowerModule->getSpecialPowerTemplate() != specialPowerTemplate )
 	{
 		//Check to make sure our modules are connected.
+#ifdef OG
 		return;
+#endif // OG
+#ifdef ZH
+		return FALSE;
+#endif // ZH
 	}
 
 	//Set the desired status based on the command button option!
@@ -285,6 +300,16 @@ void BattlePlanUpdate::initiateIntentToDoSpecialPower(const SpecialPowerTemplate
 	{
 		m_desiredPlan = PLANSTATUS_SEARCHANDDESTROY;
 	}
+#ifdef ZH
+	else
+	{
+		DEBUG_CRASH( ("Selected an unsupported strategy for strategy center.") );
+		return FALSE;
+	}
+
+	getObject()->getControllingPlayer()->getAcademyStats()->recordBattlePlanSelected();
+	return TRUE;
+#endif // ZH
 }
 
 Bool BattlePlanUpdate::isPowerCurrentlyInUse( const CommandButton *command ) const
@@ -530,7 +555,14 @@ void BattlePlanUpdate::setStatus( TransitionStatus newStatus )
 																	 obj->getPosition(),
 																	 RADAR_EVENT_BATTLE_PLAN );
 
+#ifdef OG
 			createVisionObject();
+
+#endif // OG
+#ifdef ZH
+			//this is now handled with ShroudRevealToAllRange in thingTemplate
+			//createVisionObject();
+#endif // ZH
 
 			switch( m_currentPlan )
 			{

@@ -24,11 +24,26 @@
  *                                                                                             * 
  *                     $Archive:: /Commando/Code/wwlib/rndstrng.h                             $* 
  *                                                                                             * 
+#ifdef OG
  *                      $Author:: Byon_g                                                      $*
+#endif // OG
+#ifdef ZH
+ *                      $Author:: Jani_p                                                      $*
+#endif // ZH
  *                                                                                             * 
+#ifdef OG
  *                     $Modtime:: 11/03/99 2:26p                                              $*
+#endif // OG
+#ifdef ZH
+ *                     $Modtime:: 9/01/01 11:03a                                              $*
+#endif // ZH
  *                                                                                             * 
+#ifdef OG
  *                    $Revision:: 2                                                           $*
+#endif // OG
+#ifdef ZH
+ *                    $Revision:: 3                                                           $*
+#endif // ZH
  *                                                                                             *
  *---------------------------------------------------------------------------------------------* 
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
@@ -51,9 +66,11 @@ class	StringClass;
 class	RandomStringClass {
 
 public:
+#ifdef OG
 	RandomStringClass( void );
 	~RandomStringClass( void );
 
+#endif // OG
 	// Add a string to the class.  
 	// (future version may have a weight parameter)
 	void Add_String( const char * str );
@@ -62,7 +79,12 @@ public:
 	const char * Get_String( void );
 
 private:
+#ifdef OG
 	DynamicVectorClass<StringClass*>	Strings;
+#endif // OG
+#ifdef ZH
+	DynamicVectorClass<StringClass>	Strings;
+#endif // ZH
 	Random2Class							Randomizer;
 };
 

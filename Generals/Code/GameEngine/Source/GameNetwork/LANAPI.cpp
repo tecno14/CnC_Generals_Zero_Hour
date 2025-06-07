@@ -359,43 +359,88 @@ void LANAPI::update( void )
 			{
 				// Location specification
 			case LANMessage::MSG_REQUEST_LOCATIONS:		// Hey, where is everybody?
+#ifdef OG
 //				DEBUG_LOG(("LANAPI::update - got a MSG_REQUEST_LOCATIONS from 0x%08x\n", senderIP));
+#endif // OG
+#ifdef ZH
+				DEBUG_LOG(("LANAPI::update - got a MSG_REQUEST_LOCATIONS from 0x%08x\n", senderIP));
+#endif // ZH
 				handleRequestLocations( msg, senderIP );
 				break;
 			case LANMessage::MSG_GAME_ANNOUNCE:				// Here someone is, and here's his game info!
+#ifdef OG
 //				DEBUG_LOG(("LANAPI::update - got a MSG_GAME_ANNOUNCE from 0x%08x\n", senderIP));
+#endif // OG
+#ifdef ZH
+				DEBUG_LOG(("LANAPI::update - got a MSG_GAME_ANNOUNCE from 0x%08x\n", senderIP));
+#endif // ZH
 				handleGameAnnounce( msg, senderIP );
 				break;
 			case LANMessage::MSG_LOBBY_ANNOUNCE:			// Hey, I'm in the lobby!
+#ifdef OG
 //				DEBUG_LOG(("LANAPI::update - got a MSG_LOBBY_ANNOUNCE from 0x%08x\n", senderIP));
+#endif // OG
+#ifdef ZH
+				DEBUG_LOG(("LANAPI::update - got a MSG_LOBBY_ANNOUNCE from 0x%08x\n", senderIP));
+#endif // ZH
 				handleLobbyAnnounce( msg, senderIP );
 				break;
 			case LANMessage::MSG_REQUEST_GAME_INFO:
+#ifdef OG
 //				DEBUG_LOG(("LANAPI::update - got a MSG_REQUEST_GAME_INFO from 0x%08x\n", senderIP));
+#endif // OG
+#ifdef ZH
+				DEBUG_LOG(("LANAPI::update - got a MSG_REQUEST_GAME_INFO from 0x%08x\n", senderIP));
+#endif // ZH
 				handleRequestGameInfo( msg, senderIP );
 				break;
 
 				// Joining games
 			case LANMessage::MSG_REQUEST_JOIN:				// Let me in!  Let me in!
+#ifdef OG
 //				DEBUG_LOG(("LANAPI::update - got a MSG_REQUEST_JOIN from 0x%08x\n", senderIP));
+#endif // OG
+#ifdef ZH
+				DEBUG_LOG(("LANAPI::update - got a MSG_REQUEST_JOIN from 0x%08x\n", senderIP));
+#endif // ZH
 				handleRequestJoin( msg, senderIP );
 				break;
 			case LANMessage::MSG_JOIN_ACCEPT:					// Okay, you can join.
+#ifdef OG
 //				DEBUG_LOG(("LANAPI::update - got a MSG_JOIN_ACCEPT from 0x%08x\n", senderIP));
+#endif // OG
+#ifdef ZH
+				DEBUG_LOG(("LANAPI::update - got a MSG_JOIN_ACCEPT from 0x%08x\n", senderIP));
+#endif // ZH
 				handleJoinAccept( msg, senderIP );
 				break;
 			case LANMessage::MSG_JOIN_DENY:						// Go away!  We don't want any!
+#ifdef OG
 //				DEBUG_LOG(("LANAPI::update - got a MSG_JOIN_DENY from 0x%08x\n", senderIP));
+#endif // OG
+#ifdef ZH
+				DEBUG_LOG(("LANAPI::update - got a MSG_JOIN_DENY from 0x%08x\n", senderIP));
+#endif // ZH
 				handleJoinDeny( msg, senderIP );
 				break;
 
 				// Leaving games, lobby
 			case LANMessage::MSG_REQUEST_GAME_LEAVE:				// I'm outa here!
+#ifdef OG
 //				DEBUG_LOG(("LANAPI::update - got a MSG_REQUEST_GAME_LEAVE from 0x%08x\n", senderIP));
+#endif // OG
+#ifdef ZH
+				DEBUG_LOG(("LANAPI::update - got a MSG_REQUEST_GAME_LEAVE from 0x%08x\n", senderIP));
+#endif // ZH
 				handleRequestGameLeave( msg, senderIP );
 				break;
 			case LANMessage::MSG_REQUEST_LOBBY_LEAVE:				// I'm outa here!
+#ifdef OG
 //				DEBUG_LOG(("LANAPI::update - got a MSG_REQUEST_LOBBY_LEAVE from 0x%08x\n", senderIP));
+#endif // OG
+#ifdef ZH
+				DEBUG_LOG(("LANAPI::update - got a MSG_REQUEST_LOBBY_LEAVE from 0x%08x\n", senderIP));
+#endif // ZH
 				handleRequestLobbyLeave( msg, senderIP );
 				break;
 
@@ -416,7 +461,12 @@ void LANAPI::update( void )
 				handleGameStartTimer( msg, senderIP );
 				break;
 			case LANMessage::MSG_GAME_OPTIONS:				// Here's some info about the game.
+#ifdef OG
 //				DEBUG_LOG(("LANAPI::update - got a MSG_GAME_OPTIONS from 0x%08x\n", senderIP));
+#endif // OG
+#ifdef ZH
+				DEBUG_LOG(("LANAPI::update - got a MSG_GAME_OPTIONS from 0x%08x\n", senderIP));
+#endif // ZH
 				handleGameOptions( msg, senderIP );
 				break;
 			case LANMessage::MSG_INACTIVE:		// someone is telling us that we're inactive.

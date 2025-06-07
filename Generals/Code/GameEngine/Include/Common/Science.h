@@ -81,6 +81,10 @@ class ScienceStore : public SubsystemInterface
 	friend class ScienceInfo;
 
 public:
+#ifdef ZH
+	virtual ~ScienceStore();
+
+#endif // ZH
 	void init();
 	void reset();
 	void update() { }

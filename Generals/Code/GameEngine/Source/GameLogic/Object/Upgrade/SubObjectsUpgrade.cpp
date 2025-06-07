@@ -85,17 +85,32 @@ SubObjectsUpgrade::~SubObjectsUpgrade( void )
 void SubObjectsUpgrade::upgradeImplementation( )
 {
 	const SubObjectsUpgradeModuleData *data = getSubObjectsUpgradeModuleData();
+#ifdef OG
 	Int64 activation, conflicting;
+#endif // OG
+#ifdef ZH
+	UpgradeMaskType activation, conflicting;
+#endif // ZH
 	getUpgradeActivationMasks( activation, conflicting );
 	
 	//First make sure we have the right combination of upgrades
 
+#ifdef OG
 	if( getObject()->getObjectCompletedUpgradeMask() & conflicting )
+#endif // OG
+#ifdef ZH
+	if( getObject()->getObjectCompletedUpgradeMask().testForAny( conflicting ) )
+#endif // ZH
 	{
 		//If it has ANY of the conflicting OBJECT upgrades, then don't do it!
 		return;
 	}
+#ifdef OG
 	if( getObject()->getControllingPlayer()->getCompletedUpgradeMask() & conflicting )
+#endif // OG
+#ifdef ZH
+	if( getObject()->getControllingPlayer()->getCompletedUpgradeMask().testForAny( conflicting ) )
+#endif // ZH
 	{
 		//If it has ANY of the conflicting PLAYER upgrades, then don't do it!
 		return;

@@ -26,11 +26,26 @@
  *                                                                                             *
  *              Original Author:: Greg Hjelstrom                                               *
  *                                                                                             *
+#ifdef OG
  *                      $Author:: Greg_h                                                      $*
+#endif // OG
+#ifdef ZH
+ *                      $Author:: Jani_p                                                      $*
+#endif // ZH
  *                                                                                             *
+#ifdef OG
  *                     $Modtime:: 5/17/01 10:41a                                              $*
+#endif // OG
+#ifdef ZH
+ *                     $Modtime:: 11/24/01 5:42p                                              $*
+#endif // ZH
  *                                                                                             *
+#ifdef OG
  *                    $Revision:: 4                                                           $*
+#endif // OG
+#ifdef ZH
+ *                    $Revision:: 6                                                           $*
+#endif // ZH
  *                                                                                             *
  *---------------------------------------------------------------------------------------------*
  * Functions:                                                                                  *
@@ -51,6 +66,9 @@
 #include "simplevec.h"
 #include "bittype.h"
 #include "plane.h"
+#ifdef ZH
+#include "meshgeometry.h"
+#endif // ZH
 
 
 class CameraClass;
@@ -79,6 +97,11 @@ public:
 	void						Set_Frontface_ID(uint32 id)	{ FrontfaceID = id; }
 	uint32					Get_Backface_ID(void)			{ return BackfaceID; }
 	uint32					Get_Frontface_ID(void)			{ return FrontfaceID; }
+#ifdef ZH
+
+	void						Enable_Two_Sided_Rendering(bool onoff)		{ TwoSidedRenderingEnabled = onoff; }
+	bool						Is_Two_Sided_Rendering_Enabled(void)		{ return TwoSidedRenderingEnabled; }
+#endif // ZH
 
 	enum ModeType { OCCLUDER_MODE = 0, NON_OCCLUDER_MODE };
 	void						Set_Render_Mode(ModeType mode) { RenderMode = mode; }
@@ -107,6 +130,9 @@ protected:
 	uint32					CurID;
 	int						PixelCounter;
 	ModeType					RenderMode;
+#ifdef ZH
+	bool						TwoSidedRenderingEnabled;
+#endif // ZH
 
 	int						ResWidth;
 	int						ResHeight;
@@ -164,6 +190,11 @@ public:
 	uint32				Get_Backface_ID(void)			{ return IDBuffer.Get_Backface_ID(); }
 	uint32				Get_Frontface_ID(void)			{ return IDBuffer.Get_Frontface_ID(); }
 
+#ifdef ZH
+	void					Enable_Two_Sided_Rendering(bool onoff)		{ IDBuffer.Enable_Two_Sided_Rendering(onoff); }
+	bool					Is_Two_Sided_Rendering_Enabled(void)		{ return IDBuffer.Is_Two_Sided_Rendering_Enabled(); }
+
+#endif // ZH
 	void					Set_Resolution(int width,int height);
 	void					Get_Resolution(int * set_width,int * set_height);
 
@@ -181,7 +212,12 @@ public:
 	CameraClass *		Peek_Camera(void);
 
 	void					Clear(void)							{ IDBuffer.Clear(); }
+#ifdef OG
 	bool					Render_Triangles(const Vector3 * verts,int vcount,const Vector3i * tris, int tcount,const AABoxClass & bounds);
+#endif // OG
+#ifdef ZH
+	bool					Render_Triangles(const Vector3 * verts,int vcount,const TriIndex * tris, int tcount,const AABoxClass & bounds);
+#endif // ZH
 	const uint32 *		Get_Pixel_Row(int y,int min_x,int max_x) { return IDBuffer.Get_Pixel_Row(y,min_x,max_x); }
 
 protected:
@@ -189,8 +225,14 @@ protected:
 	void					Update_MV_Transform(void);
 	const Matrix3D &	Get_MV_Transform(void);
 	Vector3 *			Get_Temp_Vertex_Buffer(int count);
+#ifdef OG
 	bool					Render_Triangles_Clip(const Vector3 * verts,int vcount,const Vector3i * tris, int tcount);
 	bool					Render_Triangles_No_Clip(const Vector3 * verts,int vcount,const Vector3i * tris, int tcount);
+#endif // OG
+#ifdef ZH
+	bool					Render_Triangles_Clip(const Vector3 * verts,int vcount,const TriIndex * tris, int tcount);
+	bool					Render_Triangles_No_Clip(const Vector3 * verts,int vcount,const TriIndex * tris, int tcount);
+#endif // ZH
 	
 	Matrix3D				ModelTransform;			// AKA "World Transform"
 	CameraClass *		Camera;

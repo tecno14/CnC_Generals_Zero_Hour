@@ -26,11 +26,26 @@
  *                                                                                             *
  *              Original Author:: Greg Hjelstrom                                               *
  *                                                                                             *
+#ifdef OG
  *                      $Author:: Greg_h                                                      $*
+#endif // OG
+#ifdef ZH
+ *                      $Author:: Jani_p                                                      $*
+#endif // ZH
  *                                                                                             *
+#ifdef OG
  *                     $Modtime:: 6/14/01 9:32a                                               $*
+#endif // OG
+#ifdef ZH
+ *                     $Modtime:: 11/24/01 6:18p                                              $*
+#endif // ZH
  *                                                                                             *
+#ifdef OG
  *                    $Revision:: 6                                                           $*
+#endif // OG
+#ifdef ZH
+ *                    $Revision:: 7                                                           $*
+#endif // ZH
  *                                                                                             *
  *---------------------------------------------------------------------------------------------*
  * Functions:                                                                                  *
@@ -53,6 +68,9 @@
 #include "vector4.h"
 #include "shader.h"
 #include "vertmaterial.h"
+#ifdef ZH
+#include "meshgeometry.h"
+#endif // ZH
 
 class MeshClass;
 class RenderInfoClass;
@@ -148,7 +166,12 @@ protected:
 	/*
 	** Connectivity
 	*/
+#ifdef OG
 	SimpleDynVecClass<Vector3i>						Polys;
+#endif // OG
+#ifdef ZH
+	SimpleDynVecClass<TriIndex>						Polys;
+#endif // ZH
 
 	/*
 	** Geometry
@@ -213,7 +236,12 @@ protected:
 	/*
 	** Connectivity
 	*/
+#ifdef OG
 	SimpleDynVecClass<Vector3i>						Polys;
+#endif // OG
+#ifdef ZH
+	SimpleDynVecClass<TriIndex>						Polys;
+#endif // ZH
 
 	/*
 	** Indirected vertex indices (for copying dynamically updated mesh geometry)

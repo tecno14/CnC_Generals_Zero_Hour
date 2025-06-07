@@ -22,12 +22,12 @@
 #include <windows.h>
 #include "jsupport.h"
 
-// ‘O’u‹Ö‘¥•¶š
+// ï¿½Oï¿½uï¿½Ö‘ï¿½ï¿½ï¿½ï¿½ï¿½
 // Can't set these characters on top of line
 static BOOL IsDBCSInvalidAtTop(unsigned int c)
 {
-	static BYTE * dtbl = (BYTE *)"‘‹fhñŒABXrtvxzl‚Ÿ‚¡‚£‚¥‚§‚Á‚á‚ã‚å‚ìJKTUƒ@ƒBƒDƒFƒHƒbƒƒƒ…ƒ‡ƒƒ•ƒ–E[RSI“jCDFGHnp";
-	static BYTE * stbl = (BYTE *)"!%),.:;?]}¡£¤¥Şß";
+	static BYTE * dtbl = (BYTE *)"ï¿½ï¿½ï¿½ï¿½ï¿½fï¿½hï¿½ñŒï¿½ï¿½ï¿½ï¿½Aï¿½Bï¿½Xï¿½rï¿½tï¿½vï¿½xï¿½zï¿½lï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Jï¿½Kï¿½Tï¿½Uï¿½@ï¿½Bï¿½Dï¿½Fï¿½Hï¿½bï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Eï¿½[ï¿½Rï¿½Sï¿½Iï¿½ï¿½ï¿½jï¿½Cï¿½Dï¿½Fï¿½Gï¿½Hï¿½nï¿½p";
+	static BYTE * stbl = (BYTE *)"!%),.:;?]}ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½";
 
 	if(c<0x100)
 	{
@@ -50,12 +50,12 @@ static BOOL IsDBCSInvalidAtTop(unsigned int c)
 	return FALSE;
 }
 
-// Œã’u‹Ö‘¥•¶š
+// ï¿½ï¿½uï¿½Ö‘ï¿½ï¿½ï¿½ï¿½ï¿½
 // Can't set these characters on end of line
 static BOOL IsDBCSInvalidAtEnd( unsigned int c )
 {
-	static BYTE * dtbl = (BYTE *)"egqsuwykimo’";
-	static BYTE * stbl = (BYTE *)"¢({[";
+	static BYTE * dtbl = (BYTE *)"ï¿½eï¿½gï¿½qï¿½sï¿½uï¿½wï¿½yï¿½kï¿½iï¿½mï¿½oï¿½ï¿½ï¿½ï¿½ï¿½ï¿½";
+	static BYTE * stbl = (BYTE *)"ï¿½({[";
 
 	if(c<0x100)
 	{

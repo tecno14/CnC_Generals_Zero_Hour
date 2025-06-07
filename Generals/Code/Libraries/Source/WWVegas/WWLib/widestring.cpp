@@ -26,9 +26,19 @@
  *                                                                                             *
  *                       Author:: Patrick Smith                                                *
  *                                                                                             *
+#ifdef OG
  *                     $Modtime:: 8/28/01 10:26a                                              $*
+#endif // OG
+#ifdef ZH
+ *                     $Modtime:: 2/06/02 5:27p                                               $*
+#endif // ZH
  *                                                                                             *
+#ifdef OG
  *                    $Revision:: 5                                                           $*
+#endif // OG
+#ifdef ZH
+ *                    $Revision:: 13                                                          $*
+#endif // ZH
  *                                                                                             *
  *---------------------------------------------------------------------------------------------*
  * Functions:                                                                                  *
@@ -47,7 +57,12 @@
 
 int		WideStringClass::m_UsedTempStringCount	= 0;
 
+#ifdef OG
 CriticalSectionClass WideStringClass::m_TempMutex;
+#endif // OG
+#ifdef ZH
+FastCriticalSectionClass WideStringClass::m_TempMutex;
+#endif // ZH
 
 WCHAR		WideStringClass::m_NullChar				= 0;
 WCHAR *	WideStringClass::m_EmptyString			= &m_NullChar;
@@ -98,7 +113,12 @@ WideStringClass::Get_String (int length, bool is_temp)
 			//	Make sure no one else is requesting a temp pointer
 			// at the same time we are.
 			//
+#ifdef OG
 			CriticalSectionClass::LockClass lock(m_TempMutex);
+#endif // OG
+#ifdef ZH
+			FastCriticalSectionClass::LockClass lock(m_TempMutex);
+#endif // ZH
 
 			//
 			//	Try to find an available temporary buffer
@@ -168,9 +188,11 @@ WideStringClass::Resize (int new_len)
 void
 WideStringClass::Uninitialised_Grow (int new_len)
 {
+#ifdef OG
 //	if ( new_len <= 1 ) {
 //		Set_Buffer_And_Allocated_Length (m_EmptyString, 0);
 //	} else {
+#endif // OG
 		int allocated_len = Get_Allocated_Length ();
 		if (new_len > allocated_len) {
 			
@@ -181,7 +203,16 @@ WideStringClass::Uninitialised_Grow (int new_len)
 			Set_Buffer_And_Allocated_Length (new_buffer, new_len);
 		}
 
+#ifdef OG
 //	}
+
+#endif // OG
+#ifdef ZH
+	//
+	// Whenever this function is called, clear the cached length 
+	//
+	Store_Length (0);
+#endif // ZH
 	return ;
 }
 
@@ -206,11 +237,19 @@ WideStringClass::Free_String (void)
 				//	Make sure no one else is modifying a temp pointer
 				// at the same time we are.
 				//
+#ifdef OG
 				CriticalSectionClass::LockClass lock(m_TempMutex);
+#endif // OG
+#ifdef ZH
+				FastCriticalSectionClass::LockClass lock(m_TempMutex);
+#endif // ZH
 				
 				//
 				//	Release our hold on this temporary buffer
 				//
+#ifdef ZH
+				m_Buffer[0]				= 0;
+#endif // ZH
 				m_FreeTempPtr[index]	= m_Buffer;
 				m_ResTempPtr[index]	= 0;
 				m_UsedTempStringCount --;
@@ -245,6 +284,12 @@ WideStringClass::Free_String (void)
 int _cdecl
 WideStringClass::Format_Args (const WCHAR *format, const va_list & arg_list )
 {
+#ifdef ZH
+	if (format == NULL) {
+		return 0;
+	}
+
+#endif // ZH
 	//
 	// Make a guess at the maximum length of the resulting string
 	//
@@ -272,6 +317,12 @@ WideStringClass::Format_Args (const WCHAR *format, const va_list & arg_list )
 int _cdecl
 WideStringClass::Format (const WCHAR *format, ...)
 {
+#ifdef ZH
+	if (format == NULL) {
+		return 0;
+	}
+
+#endif // ZH
 	va_list arg_list;
 	va_start (arg_list, format);
 
@@ -305,3 +356,51 @@ WideStringClass::Release_Resources (void)
 {
 	return ;
 }
+#ifdef ZH
+
+///////////////////////////////////////////////////////////////////
+// Convert_From
+///////////////////////////////////////////////////////////////////
+bool WideStringClass::Convert_From (const char *text)
+{
+	if (text != NULL) {
+		
+		int length;
+
+		length = MultiByteToWideChar (CP_ACP, 0, text, -1, NULL, 0);
+		if (length > 0) {
+
+			Uninitialised_Grow (length);
+			Store_Length (length - 1);
+
+			// Convert.
+			MultiByteToWideChar (CP_ACP, 0, text, -1, m_Buffer, length);
+
+			// Success.
+			return (true);
+		}
+   }
+
+	// Failure.
+	return (false);
+}
+
+///////////////////////////////////////////////////////////////////
+// Test if a Unicode string is within the ANSI range. (0 - 255)
+///////////////////////////////////////////////////////////////////
+bool WideStringClass::Is_ANSI(void)
+	{
+	if (m_Buffer) {
+		for (int index = 0; m_Buffer[index] != 0; index++) {
+			unsigned short value = m_Buffer[index];
+
+			if (value > 255) {
+				return false;
+			}
+		}
+	}
+
+	return true;
+	}
+
+#endif // ZH

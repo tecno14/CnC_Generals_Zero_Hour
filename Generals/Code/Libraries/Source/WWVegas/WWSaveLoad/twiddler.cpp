@@ -26,9 +26,19 @@
  *                                                                                             *
  *                       Author:: Patrick Smith                                                *
  *                                                                                             *
+#ifdef OG
  *                     $Modtime:: 6/27/00 2:34p                                               $*
+#endif // OG
+#ifdef ZH
+ *                     $Modtime:: 12/10/01 12:40p                                             $*
+#endif // ZH
  *                                                                                             *
+#ifdef OG
  *                    $Revision:: 2                                                           $*
+#endif // OG
+#ifdef ZH
+ *                    $Revision:: 3                                                           $*
+#endif // ZH
  *                                                                                             *
  *---------------------------------------------------------------------------------------------*
  * Functions:                                                                                  *
@@ -42,6 +52,9 @@
 #include "persistfactory.h"
 #include "win.h"
 #include "wwhack.h"
+#ifdef ZH
+#include "systimer.h"
+#endif // ZH
 
 
 DECLARE_FORCE_LINK( Twiddler )
@@ -111,7 +124,12 @@ TwiddlerClass::Twiddle (void) const
 		//
 		//	Get a random index into our definition list
 		//
+#ifdef OG
 		RandomClass randomizer (::GetTickCount ());
+#endif // OG
+#ifdef ZH
+		RandomClass randomizer (TIMEGETTIME ());
+#endif // ZH
 		int index = randomizer (0, m_DefinitionList.Count () - 1);
 
 		//

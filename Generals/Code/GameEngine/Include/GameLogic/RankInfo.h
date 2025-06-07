@@ -49,11 +49,20 @@ public:
 	Int							m_sciencePurchasePointsGranted;
 	ScienceVec			m_sciencesGranted;
 };
+#ifdef OG
 EMPTY_DTOR(RankInfo)
+#endif // OG
+#ifdef ZH
+//EMPTY_DTOR(RankInfo)
+#endif // ZH
 
 //-------------------------------------------------------------------------------------------------
 class RankInfoStore : public SubsystemInterface
 {
+#ifdef ZH
+public:
+	virtual ~RankInfoStore();
+#endif // ZH
 
 public:
 	void init();

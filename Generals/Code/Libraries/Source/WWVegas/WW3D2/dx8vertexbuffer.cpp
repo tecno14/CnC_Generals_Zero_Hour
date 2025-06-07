@@ -26,12 +26,30 @@
  *                                                                                             *
  *              Original Author:: Jani Penttinen                                               *
  *                                                                                             *
+#ifdef OG
  *                      $Author:: Jani_p                                                      $*
+#endif // OG
+#ifdef ZH
+ *                      $Author:: Kenny Mitchell                                               * 
+#endif // ZH
  *                                                                                             *
+#ifdef OG
  *                     $Modtime:: 7/10/01 1:33p                                               $*
+#endif // OG
+#ifdef ZH
+ *                     $Modtime:: 06/26/02 5:06p                                             $*
+#endif // ZH
  *                                                                                             *
+#ifdef OG
  *                    $Revision:: 34                                                          $*
+#endif // OG
+#ifdef ZH
+ *                    $Revision:: 39                                                          $*
+#endif // ZH
  *                                                                                             *
+#ifdef ZH
+ * 06/26/02 KM VB Vertex format size update for shaders                                       *
+#endif // ZH
  *---------------------------------------------------------------------------------------------*
  * Functions:                                                                                  *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
@@ -43,6 +61,9 @@
 #include "dx8fvf.h"
 #include "dx8caps.h"
 #include "thread.h"
+#ifdef ZH
+#include "wwmemlog.h"
+#endif // ZH
 #include <D3dx8core.h>
 
 #define DEFAULT_VB_SIZE 5000
@@ -72,15 +93,30 @@ static int _VertexBufferTotalSize;
 //
 // ----------------------------------------------------------------------------
 
+#ifdef OG
 VertexBufferClass::VertexBufferClass(unsigned type_, unsigned FVF, unsigned short vertex_count_)
+#endif // OG
+#ifdef ZH
+VertexBufferClass::VertexBufferClass(unsigned type_, unsigned FVF, unsigned short vertex_count_, unsigned vertex_size)
+#endif // ZH
 	:
 	VertexCount(vertex_count_),
 	type(type_),
 	engine_refs(0)
 {
+#ifdef ZH
+	WWMEMLOG(MEM_RENDERER);
+#endif // ZH
 	WWASSERT(VertexCount);
 	WWASSERT(type==BUFFER_TYPE_DX8 || type==BUFFER_TYPE_SORTING);
+#ifdef OG
 	fvf_info=W3DNEW FVFInfoClass(FVF);
+
+#endif // OG
+#ifdef ZH
+	WWASSERT((FVF!=0 && vertex_size==0) || (FVF==0 && vertex_size!=0));
+	fvf_info=W3DNEW FVFInfoClass(FVF,vertex_size);
+#endif // ZH
 
 	_VertexBufferCount++;
 	_VertexBufferTotalVertices+=VertexCount;
@@ -149,7 +185,12 @@ void VertexBufferClass::Release_Engine_Ref() const
 //
 // ----------------------------------------------------------------------------
 
+#ifdef OG
 VertexBufferClass::WriteLockClass::WriteLockClass(VertexBufferClass* VertexBuffer)
+#endif // OG
+#ifdef ZH
+VertexBufferClass::WriteLockClass::WriteLockClass(VertexBufferClass* VertexBuffer, int flags)
+#endif // ZH
 	:
 	VertexBufferLockClass(VertexBuffer)
 {
@@ -174,7 +215,12 @@ VertexBufferClass::WriteLockClass::WriteLockClass(VertexBufferClass* VertexBuffe
 			0,
 			0,
 			(unsigned char**)&Vertices,
+#ifdef OG
 			0));	// Default (no) flags
+#endif // OG
+#ifdef ZH
+			flags));	//flags
+#endif // ZH
 		break;
 	case BUFFER_TYPE_SORTING:
 		Vertices=static_cast<SortingVertexBufferClass*>(VertexBuffer)->VertexBuffer;
@@ -283,6 +329,9 @@ SortingVertexBufferClass::SortingVertexBufferClass(unsigned short VertexCount)
 	:
 	VertexBufferClass(BUFFER_TYPE_SORTING, dynamic_fvf_type, VertexCount)
 {
+#ifdef ZH
+	WWMEMLOG(MEM_RENDERER);
+#endif // ZH
 	VertexBuffer=W3DNEWARRAY VertexFormatXYZNDUV2[VertexCount];
 }
 
@@ -302,9 +351,19 @@ SortingVertexBufferClass::~SortingVertexBufferClass()
 
 //	bool dynamic=false,bool softwarevp=false);
 
+#ifdef OG
 DX8VertexBufferClass::DX8VertexBufferClass(unsigned FVF, unsigned short vertex_count_, UsageType usage)
+#endif // OG
+#ifdef ZH
+DX8VertexBufferClass::DX8VertexBufferClass(unsigned FVF, unsigned short vertex_count_, UsageType usage, unsigned vertex_size)
+#endif // ZH
 	:
+#ifdef OG
 	VertexBufferClass(BUFFER_TYPE_DX8, FVF, vertex_count_),
+#endif // OG
+#ifdef ZH
+	VertexBufferClass(BUFFER_TYPE_DX8, FVF, vertex_count_, vertex_size),
+#endif // ZH
 	VertexBuffer(NULL)
 {
 	Create_Vertex_Buffer(usage);
@@ -419,10 +478,21 @@ void DX8VertexBufferClass::Create_Vertex_Buffer(UsageType usage)
 	WWDEBUG_SAY(("CreateVertexBuffer(fvfsize=%d, vertex_count=%d, D3DUSAGE_WRITEONLY|%s|%s, fvf: %s, %s)\n",
 		FVF_Info().Get_FVF_Size(),
 		VertexCount,
+#ifdef OG
 		usage&USAGE_DYNAMIC ? "D3DUSAGE_DYNAMIC" : "-",
 		usage&USAGE_SOFTWAREPROCESSING ? "D3DUSAGE_SOFTWAREPROCESSING" : "-",
+#endif // OG
+#ifdef ZH
+		(usage&USAGE_DYNAMIC) ? "D3DUSAGE_DYNAMIC" : "-",
+		(usage&USAGE_SOFTWAREPROCESSING) ? "D3DUSAGE_SOFTWAREPROCESSING" : "-",
+#endif // ZH
 		fvf_name,
+#ifdef OG
 		dynamic ? "D3DPOOL_DEFAULT" : "D3DPOOL_MANAGED"));
+#endif // OG
+#ifdef ZH
+		(usage&USAGE_DYNAMIC) ? "D3DPOOL_DEFAULT" : "D3DPOOL_MANAGED"));
+#endif // ZH
 	_DX8VertexBufferCount++;
 	WWDEBUG_SAY(("Current vertex buffer count: %d\n",_DX8VertexBufferCount));
 #endif
@@ -432,9 +502,19 @@ void DX8VertexBufferClass::Create_Vertex_Buffer(UsageType usage)
 		((usage&USAGE_DYNAMIC) ? D3DUSAGE_DYNAMIC : 0)|
 		((usage&USAGE_NPATCHES) ? D3DUSAGE_NPATCHES : 0)|
 		((usage&USAGE_SOFTWAREPROCESSING) ? D3DUSAGE_SOFTWAREPROCESSING : 0);
+#ifdef ZH
+	if (!DX8Wrapper::Get_Current_Caps()->Support_TnL()) {
+		usage_flags|=D3DUSAGE_SOFTWAREPROCESSING;
+	}
+#endif // ZH
 
 	// New Code
+#ifdef OG
 	if (!DX8Caps::Use_TnL()) {
+#endif // OG
+#ifdef ZH
+	if (!DX8Wrapper::Get_Current_Caps()->Support_TnL()) {
+#endif // ZH
 		usage_flags|=D3DUSAGE_SOFTWAREPROCESSING;
 	}
 
@@ -450,8 +530,17 @@ void DX8VertexBufferClass::Create_Vertex_Buffer(UsageType usage)
 
 	WWDEBUG_SAY(("Vertex buffer creation failed, trying to release assets...\n"));
 
+#ifdef OG
 	// Vertex buffer creation failed.  Must be out of memory. Try releasing all our D3D assets and re-creating
 	// them.
+
+#endif // OG
+#ifdef ZH
+	// Vertex buffer creation failed, so try releasing least used textures and flushing the mesh cache.
+
+	// Free all textures that haven't been used in the last 5 seconds
+	TextureClass::Invalidate_Old_Unused_Textures(5000);
+#endif // ZH
 
 	// Invalidate the mesh cache
 	WW3D::_Invalidate_Mesh_Cache();
@@ -758,6 +847,9 @@ void DynamicVBAccessClass::_Deinit()
 
 void DynamicVBAccessClass::Allocate_DX8_Dynamic_Buffer()
 {
+#ifdef ZH
+	WWMEMLOG(MEM_RENDERER);
+#endif // ZH
 	WWASSERT(!_DynamicDX8VertexBufferInUse);
 	_DynamicDX8VertexBufferInUse=true;
 
@@ -772,7 +864,12 @@ void DynamicVBAccessClass::Allocate_DX8_Dynamic_Buffer()
 	// Create a new vb if one doesn't exist currently
 	if (!_DynamicDX8VertexBuffer) {
 		unsigned usage=DX8VertexBufferClass::USAGE_DYNAMIC;
+#ifdef OG
 		if (DX8Caps::Support_NPatches()) {
+#endif // OG
+#ifdef ZH
+		if (DX8Wrapper::Get_Current_Caps()->Support_NPatches()) {
+#endif // ZH
 			usage|=DX8VertexBufferClass::USAGE_NPATCHES;
 		}
 
@@ -794,6 +891,9 @@ void DynamicVBAccessClass::Allocate_DX8_Dynamic_Buffer()
 
 void DynamicVBAccessClass::Allocate_Sorting_Dynamic_Buffer()
 {
+#ifdef ZH
+	WWMEMLOG(MEM_RENDERER);
+#endif // ZH
 	WWASSERT(!_DynamicSortingVertexArrayInUse);
 	_DynamicSortingVertexArrayInUse=true;
 
@@ -824,7 +924,12 @@ DynamicVBAccessClass::WriteLockClass::WriteLockClass(DynamicVBAccessClass* dynam
 	switch (DynamicVBAccess->Get_Type()) {
 	case BUFFER_TYPE_DYNAMIC_DX8:
 #ifdef VERTEX_BUFFER_LOG
+#ifdef OG
 		{
+#endif // OG
+#ifdef ZH
+/*		{
+#endif // ZH
 		WWASSERT(!dx8_lock);
 		dx8_lock++;
 		StringClass fvf_name;
@@ -835,6 +940,9 @@ DynamicVBAccessClass::WriteLockClass::WriteLockClass(DynamicVBAccessClass* dynam
 			DynamicVBAccess->VertexBuffer->FVF_Info().Get_FVF_Size(),
 			fvf_name));
 		}
+#ifdef ZH
+*/
+#endif // ZH
 #endif
 		WWASSERT(_DynamicDX8VertexBuffer);
 //		WWASSERT(!_DynamicDX8VertexBuffer->Engine_Refs());
@@ -866,9 +974,17 @@ DynamicVBAccessClass::WriteLockClass::~WriteLockClass()
 	switch (DynamicVBAccess->Get_Type()) {
 	case BUFFER_TYPE_DYNAMIC_DX8:
 #ifdef VERTEX_BUFFER_LOG
+#ifdef OG
 		dx8_lock--;
+#endif // OG
+#ifdef ZH
+/*		dx8_lock--;
+#endif // ZH
 		WWASSERT(!dx8_lock);
 		WWDEBUG_SAY(("DynamicVertexBuffer->Unlock()\n"));
+#ifdef ZH
+*/
+#endif // ZH
 #endif
 		DX8_Assert();
 		DX8_ErrorCode(static_cast<DX8VertexBufferClass*>(DynamicVBAccess->VertexBuffer)->Get_DX8_Vertex_Buffer()->Unlock());
