@@ -1,4 +1,6 @@
-﻿namespace GeneralsCombiner;
+﻿using System.Text.RegularExpressions;
+
+namespace GeneralsCombiner;
 
 public static class Extensions
 {
@@ -6,4 +8,7 @@ public static class Extensions
         .Replace("#\tCommand & Conquer Generals Zero Hour™", "#\tCommand & Conquer Generals™")
         .Replace("**\tCommand & Conquer Generals Zero Hour", "**\tCommand & Conquer Generals")
         .Replace(";\tCommand & Conquer Generals Zero Hour", ";\tCommand & Conquer Generals");
+
+    public static bool ContainsWord(this string text, string word) =>
+        Regex.IsMatch(text, $@"\b{Regex.Escape(word)}\b", RegexOptions.IgnoreCase);
 }
