@@ -59,7 +59,7 @@ enum
 #include "W3DDevice/GameClient/W3DTreeBuffer.h"
 
 #include <stdio.h>
-#include <string.h>
+#include <cstring>
 #include <assetmgr.h>
 #include <texture.h>
 #ifdef OG

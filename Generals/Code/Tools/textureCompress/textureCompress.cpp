@@ -24,9 +24,9 @@
 //#include <afxwin.h>
 #include <windows.h>
 #include <lmcons.h>
-#include <stdlib.h>
+#include <cstdlib>
 #include <stdio.h>
-#include <string.h>
+#include <cstring>
 
 #include "resource.h"
 #include <map>

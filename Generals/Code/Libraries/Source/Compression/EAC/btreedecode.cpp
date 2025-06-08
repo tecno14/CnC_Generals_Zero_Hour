@@ -21,7 +21,7 @@
 #ifndef __BTRREAD
 #define __BTRREAD 1
 
-#include <string.h>
+#include <cstring>
 #include "codex.h"
 #include "btreecodex.h"
 

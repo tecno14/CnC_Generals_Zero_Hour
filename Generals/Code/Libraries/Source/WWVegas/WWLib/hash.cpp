@@ -42,7 +42,7 @@
 #include "osdep.h"
 #endif
 
-#include <string.h>
+#include <cstring>
 
 /*
 ** HashTableClass

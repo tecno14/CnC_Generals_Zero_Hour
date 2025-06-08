@@ -27,7 +27,7 @@
 // Desc:    Display string Manager for W3D
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
-#include <stdlib.h>
+#include <cstdlib>
 
 #include "Common/Debug.h"
 #include "GameClient/GameClient.h"

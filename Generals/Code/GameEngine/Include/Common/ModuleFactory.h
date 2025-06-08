@@ -40,7 +40,7 @@
 #define __MODULEFACTORY_H_
 
 // INCLUDES ///////////////////////////////////////////////////////////////////////////////////////
-#include <stdlib.h>
+#include <cstdlib>
 
 #include "Common/GameMemory.h"
 #include "Common/SubsystemInterface.h"

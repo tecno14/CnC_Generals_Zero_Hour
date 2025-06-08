@@ -27,7 +27,7 @@
   #include <process.h>
 #endif
 #include "wstypes.h"
-#include <stdlib.h>
+#include <cstdlib>
 
 #ifdef _WIN32
   #include <wtypes.h>

@@ -33,7 +33,7 @@
 #define _BASE_TYPE_H_
 
 #include <math.h>
-#include <string.h>
+#include <cstring>
 
 /*
 **	Turn off some unneeded warnings.

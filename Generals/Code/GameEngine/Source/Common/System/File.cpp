@@ -48,7 +48,7 @@
 #include "PreRTS.h"
 
 #include <assert.h>
-#include <string.h>
+#include <cstring>
 #include <stdarg.h>
 #include <stdio.h>
 

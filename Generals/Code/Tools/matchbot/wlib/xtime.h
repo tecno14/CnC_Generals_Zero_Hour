@@ -34,7 +34,7 @@ function :-)
 
 
 #include <stdio.h>
-#include <stdlib.h>
+#include <cstdlib>
 #include <assert.h>
 #include <sys/types.h>
 
@@ -48,7 +48,7 @@ function :-)
 #endif
 
 #include <time.h>
-#include <string.h>
+#include <cstring>
 
 #include "wstypes.h"
 

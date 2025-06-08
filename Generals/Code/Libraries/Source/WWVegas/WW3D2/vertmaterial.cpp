@@ -48,7 +48,7 @@
 #include "dx8wrapper.h"
 
 #include <stdio.h>
-#include <string.h>
+#include <cstring>
 
 static unsigned int unique=1;
 

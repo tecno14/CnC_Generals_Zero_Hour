@@ -48,7 +48,7 @@
 #include "mutex.h"
 #include <malloc.h>
 #include <stddef.h> //size_t & ptrdiff_t definition
-#include <string.h>
+#include <cstring>
 
 ///////////////////////////////////////////////////////////////////////////////
 // Forward Declarations

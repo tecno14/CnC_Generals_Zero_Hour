@@ -47,9 +47,9 @@
 
 #include "PreRTS.h"
 #include <stdio.h>
-#include <stdlib.h>
+#include <cstdlib>
 #include <stdarg.h>
-#include <string.h>
+#include <cstring>
 
 #include "Common/string.h"
 

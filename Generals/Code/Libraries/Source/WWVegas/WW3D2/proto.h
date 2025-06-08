@@ -43,7 +43,7 @@
 #define PROTO_H
 
 #include "always.h"
-#include <stdlib.h>
+#include <cstdlib>
 #include "w3d_file.h"
 
 class RenderObjClass;

@@ -39,7 +39,7 @@
 
 #include "bw_render.h"
 #include "vp.h"
-#include <string.h>
+#include <cstring>
 
 BW_Render::Buffer::Buffer(unsigned char* buffer_, int scale_)
 	:

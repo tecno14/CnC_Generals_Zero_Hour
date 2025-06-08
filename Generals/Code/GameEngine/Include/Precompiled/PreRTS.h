@@ -49,7 +49,7 @@ class STLSpecialAlloc;
 #include <direct.h>
 #include <EXCPT.H>
 #include <float.h>
-#include <fstream.h>
+#include <fstream>
 #include <imagehlp.h>
 #include <io.h>
 #include <limits.h>
@@ -68,8 +68,8 @@ class STLSpecialAlloc;
 #include <stdarg.h>
 #include <stddef.h>
 #include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
+#include <cstdlib>
+#include <cstring>
 #include <sys/stat.h>
 #include <sys/timeb.h>
 #include <sys/types.h>

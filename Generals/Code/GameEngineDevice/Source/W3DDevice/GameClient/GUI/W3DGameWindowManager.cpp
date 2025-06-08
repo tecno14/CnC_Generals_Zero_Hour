@@ -29,7 +29,7 @@
 //						window controls.
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
-#include <stdlib.h>
+#include <cstdlib>
 
 #include "GameClient/Image.h"
 #include "W3DDevice/GameClient/W3DGameWindowManager.h"

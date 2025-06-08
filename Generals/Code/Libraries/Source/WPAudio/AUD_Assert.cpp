@@ -43,7 +43,7 @@
 **            Includes                                                      **
 *****************************************************************************/
 
-#include <string.h>
+#include <cstring>
 #include <stdarg.h>
 #include <assert.h>
 //#include <windows.h>

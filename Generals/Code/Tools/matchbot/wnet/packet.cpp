@@ -35,9 +35,9 @@
  *   PacketClass::~PacketClass -- destroys a packet class be freeing list  * 
  *   PacketClass::Add_Field -- Adds a FieldClass entry to head of packet li* 
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
-#include <stdlib.h>
+#include <cstdlib>
 #include <stdio.h>
-#include <string.h>
+#include <cstring>
 #include <sys/types.h>
 #ifndef _WINDOWS
 #include <netinet/in.h>

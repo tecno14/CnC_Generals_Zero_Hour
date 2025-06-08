@@ -35,7 +35,7 @@
 // SYSTEM INCLUDES ////////////////////////////////////////////////////////////
 #define WIN32_LEAN_AND_MEAN  // only bare bones windows stuff wanted
 #include <windows.h>
-#include <stdlib.h>
+#include <cstdlib>
 #include <crtdbg.h>
 #include <eh.h>
 #include <ole2.h>
@@ -51,7 +51,7 @@
 #include "Common/GameSounds.h"
 #include "Common/Debug.h"
 #include "Common/GameMemory.h"
-#include "Common/SafeDisc/CdaPfn.h"
+//#include "Common/SafeDisc/CdaPfn.h"
 #include "Common/StackDump.h"
 #include "Common/MessageStream.h"
 #include "Common/Team.h"
@@ -1111,7 +1111,7 @@ GameEngine *CreateGameEngine( void )
 // SYSTEM INCLUDES ////////////////////////////////////////////////////////////
 #define WIN32_LEAN_AND_MEAN  // only bare bones windows stuff wanted
 #include <windows.h>
-#include <stdlib.h>
+#include <cstdlib>
 #include <crtdbg.h>
 #include <eh.h>
 #include <ole2.h>
@@ -1127,7 +1127,7 @@ GameEngine *CreateGameEngine( void )
 #include "Common/GameSounds.h"
 #include "Common/Debug.h"
 #include "Common/GameMemory.h"
-#include "Common/SafeDisc/CdaPfn.h"
+//#include "Common/SafeDisc/CdaPfn.h"
 #include "Common/StackDump.h"
 #include "Common/MessageStream.h"
 #include "Common/Registry.h"

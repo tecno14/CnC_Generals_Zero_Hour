@@ -20,10 +20,10 @@
 #define UDP_HEADER
 
 #include <stdio.h>
-#include <stdlib.h>
+#include <cstdlib>
 #include <ctype.h>
 #include <errno.h>
-#include <string.h>
+#include <cstring>
 
 #ifdef _WINDOWS
 #include <winsock.h>

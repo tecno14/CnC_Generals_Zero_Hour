@@ -65,11 +65,11 @@
 #include "wwdebug.h"
 #include <windows.h>
 //#include "win.h" can use this if allowed to see wwlib
-#include <stdlib.h>
+#include <cstdlib>
 #include <stdarg.h>
 #include <stdio.h>
 #include <assert.h>
-#include <string.h>
+#include <cstring>
 #ifdef ZH
 #include <signal.h>
 #include "except.h"

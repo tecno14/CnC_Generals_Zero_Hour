@@ -60,8 +60,8 @@
 #include "aabtreebuilder.h"
 #include "chunkio.h"
 #include "w3d_file.h"
-#include <stdlib.h>
-#include <string.h>
+#include <cstdlib>
+#include <cstring>
 #include <assert.h>
 
 #define WWASSERT	assert					// can't use WWASSERT because we use this module in the MAX plugin...

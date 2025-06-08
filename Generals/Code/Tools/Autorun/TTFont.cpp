@@ -53,7 +53,7 @@
 #include <windowsx.h>
 #include <assert.h>
 #include <ctype.h>
-#include <stdlib.h>
+#include <cstdlib>
 #include "args.h"
 #include "autorun.h"
 #include "rect.h"
@@ -1531,7 +1531,7 @@ bool Is_True_Type_Font( TextPrintType flags )
 #include <windowsx.h>
 #include <assert.h>
 #include <ctype.h>
-#include <stdlib.h>
+#include <cstdlib>
 #include "args.h"
 #include "autorun.h"
 #include "rect.h"

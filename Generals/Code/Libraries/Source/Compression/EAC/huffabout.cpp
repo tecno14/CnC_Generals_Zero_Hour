@@ -56,7 +56,7 @@
 /*------------------------------------------------------------------*/
 /* END ABSTRACT */
 
-#include <string.h>
+#include <cstring>
 #include "codex.h"
 #include "huffcodex.h"
 

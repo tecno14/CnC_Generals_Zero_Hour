@@ -58,7 +58,7 @@ will you be ready to leave grasshopper.
 #include "wstypes.h"
 
 #ifdef _WINDOWS
-#include <iostream.h>
+#include <iostream>
 #include <strstrea.h>
 #else
 #include <iostream>

@@ -27,7 +27,7 @@
 // Desct:	 In game user interface implementation for W3D
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
-#include <stdlib.h>
+#include <cstdlib>
 
 #include "Common/GlobalData.h"
 #include "Common/ThingTemplate.h"

@@ -36,7 +36,7 @@
 
 
 #include "rcfile.h"
-#include <stdlib.h>
+#include <cstdlib>
 
 const char * RESOURCE_FILE_TYPE_NAME = "File";
 

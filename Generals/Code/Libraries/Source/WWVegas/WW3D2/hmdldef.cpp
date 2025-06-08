@@ -38,7 +38,7 @@
 
 #include "hmdldef.h"
 #include <assert.h>
-#include <string.h>
+#include <cstring>
 #include "w3d_file.h"
 #include "chunkio.h"
 #include "snappts.h"

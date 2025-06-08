@@ -67,8 +67,8 @@
 
 #include "composite.h"
 #include "wwdebug.h"
-#include <stdlib.h>
-#include <string.h>
+#include <cstdlib>
+#include <cstring>
 
 
 /***********************************************************************************************

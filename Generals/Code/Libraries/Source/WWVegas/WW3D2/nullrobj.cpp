@@ -48,7 +48,7 @@
 #include "nullrobj.h"
 #include "chunkio.h"
 
-#include <string.h>
+#include <cstring>
 
 
 NullLoaderClass _NullLoader;

@@ -22,7 +22,7 @@
 #include "iff.h"
 #include <fcntl.h>      
 #include <io.h>
-#include <stdlib.h>
+#include <cstdlib>
 #include <stdio.h>
 
 #define IFF_RAWREAD(iff,data,size,label)		{if ( IFF_rawread ( (iff), (data), (size)) != (size)) goto label;}

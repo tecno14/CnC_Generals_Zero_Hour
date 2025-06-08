@@ -54,7 +54,7 @@
 #include "wwdebug.h"
 #include "wwmemlog.h"
 #include "twiddler.h"
-#include <string.h>
+#include <cstring>
 #include "wwprofile.h"
 
 

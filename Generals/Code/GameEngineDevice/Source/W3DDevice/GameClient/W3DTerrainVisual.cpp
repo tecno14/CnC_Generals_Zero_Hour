@@ -30,7 +30,7 @@
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
 #include <stdio.h>
-#include <stdlib.h>
+#include <cstdlib>
 #include <windows.h>
 
 #include "Common/GameState.h"
@@ -865,7 +865,7 @@ void W3DTerrainVisual::loadPostProcess( void )
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
 #include <stdio.h>
-#include <stdlib.h>
+#include <cstdlib>
 #include <windows.h>
 
 #include "Common/GameState.h"

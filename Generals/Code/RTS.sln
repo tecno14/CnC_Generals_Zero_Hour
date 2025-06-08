@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.21005.1
+# Visual Studio Version 17
+VisualStudioVersion = 17.12.35707.178 d17.12
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{059D6162-CD51-11D0-AE1F-00A0C90FFFC3}") = "Benchmark", "LIBRARIES\SOURCE\Benchmark\Benchmark.dsp", "{012433DA-4E0F-471A-BD1B-11E1C86B27F0}"
 EndProject

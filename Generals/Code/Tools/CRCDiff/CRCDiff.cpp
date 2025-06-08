@@ -22,7 +22,7 @@
 #include "misc.h"
 #include <iostream>
 #include <list>
-#include <stdlib.h>
+#include <cstdlib>
 #include <stdio.h>
 
 //=============================================================================

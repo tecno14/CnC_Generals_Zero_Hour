@@ -39,7 +39,7 @@
 #ifndef GEOMETRYEXPORTTASK_H
 #define GEOMETRYEXPORTTASK_H
 
-#include <string.h>
+#include <cstring>
 #include <Max.h>
 #include "w3d_file.h"
 #include "vector.h"

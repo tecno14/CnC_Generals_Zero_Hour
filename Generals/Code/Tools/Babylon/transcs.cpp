@@ -24,8 +24,8 @@
 #include <windows.h>
 #include <winnls.h>
 #include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
+#include <cstdlib>
+#include <cstring>
 #include <memory.h>
 
 void CreateTranslationTable ( void )

@@ -38,7 +38,7 @@ the left is used for retrieval and it must be specified in uppercase
 for the 'get' functions. E.g. getString("KEY",valWstring);
 \***************************************************************************/
 
-#include <stdlib.h>
+#include <cstdlib>
 #include <stdio.h>
 #include <ctype.h>
 

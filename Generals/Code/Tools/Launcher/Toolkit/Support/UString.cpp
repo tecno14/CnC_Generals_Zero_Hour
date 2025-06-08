@@ -37,8 +37,8 @@
 #include "VisualC.h"
 #include "UString.h"
 #include "StringConvert.h"
-#include <string.h>
-#include <stdlib.h>
+#include <cstring>
+#include <cstdlib>
 #include <assert.h>
 
 // Convert character to lowercase

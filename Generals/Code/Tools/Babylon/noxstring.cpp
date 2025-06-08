@@ -26,7 +26,7 @@
 #include "xlstuff.h"
 
 #include <direct.h>
-#include <stdlib.h>
+#include <cstdlib>
 #include <stdio.h>
 
 #ifdef _DEBUG

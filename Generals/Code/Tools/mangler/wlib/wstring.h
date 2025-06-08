@@ -30,7 +30,7 @@ Last Update : June 17, 1997
 #define WSTRING_HEADER
 
 #include <stdio.h>
-#include <stdlib.h>
+#include <cstdlib>
 #include "wstypes.h"
 
 class Wstring

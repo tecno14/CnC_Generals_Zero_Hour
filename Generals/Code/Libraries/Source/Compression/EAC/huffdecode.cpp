@@ -21,7 +21,7 @@
 #ifndef __HUFREAD
 #define __HUFREAD 1
 
-#include <string.h>
+#include <cstring>
 #include "codex.h"
 #include "huffcodex.h"
 

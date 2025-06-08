@@ -56,7 +56,7 @@
 #ifdef ZH
 #include "win.h"
 #endif // ZH
-#include <string.h>
+#include <cstring>
 #include <stdarg.h>
 #include <tchar.h>
 #ifdef OG

@@ -53,7 +53,7 @@
 #include <sys/stat.h>
 #include <sys/types.h>
 #include <ctype.h>
-#include <stdlib.h>
+#include <cstdlib>
 #include <assert.h>
 
 #define BOOL						int
@@ -272,7 +272,7 @@ class StandardFileClass
 #include <sys/stat.h>
 #include <sys/types.h>
 #include <ctype.h>
-#include <stdlib.h>
+#include <cstdlib>
 #include <assert.h>
 
 #define BOOL						int

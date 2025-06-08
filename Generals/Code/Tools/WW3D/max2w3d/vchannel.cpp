@@ -38,8 +38,8 @@
 
 #include "vchannel.h"
 #include <assert.h>
-#include <string.h>
-#include <stdlib.h>
+#include <cstring>
+#include <cstdlib>
 #include "w3d_file.h"
 #include "w3dquat.h"
 #include "bchannel.h"

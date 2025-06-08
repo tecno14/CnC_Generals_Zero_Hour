@@ -28,7 +28,7 @@
 // Debug I/O class flat (flat or split log file)
 //////////////////////////////////////////////////////////////////////////////
 #include "_pch.h"
-#include <stdlib.h>
+#include <cstdlib>
 #include <new>      // needed for placement new prototype
 
 DebugIOFlat::OutputStream::OutputStream(const char *filename, unsigned maxSize):

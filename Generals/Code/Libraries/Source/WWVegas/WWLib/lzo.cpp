@@ -40,7 +40,7 @@
 #include "lzo.h"
 #include "mutex.h"
 #include "wwdebug.h"
-#include <stdlib.h>
+#include <cstdlib>
 
 /*
 ** Work Buffer for the LZOCompressor...

@@ -19,12 +19,12 @@
 #ifndef SYSLOGD_HEADER
 #define SYSLOGD_HEADER
 
-#include <stdlib.h>
+#include <cstdlib>
 #include <stdio.h>
 #ifndef _WINDOWS
 #include <syslog.h>
 #endif
-#include <string.h>
+#include <cstring>
 
 // Windows headers have a tendency to redefine IN
 #ifdef IN

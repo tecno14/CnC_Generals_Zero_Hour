@@ -54,7 +54,7 @@
 #include "W3DDevice/GameClient/W3DWaypointBuffer.h"
 
 #include <stdio.h>
-#include <string.h>
+#include <cstring>
 #include <assetmgr.h>
 #include <texture.h>
 

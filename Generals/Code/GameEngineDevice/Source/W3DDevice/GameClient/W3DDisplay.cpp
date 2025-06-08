@@ -34,7 +34,7 @@
 static void drawFramerateBar(void);
 
 // SYSTEM INCLUDES ////////////////////////////////////////////////////////////
-#include <stdlib.h>
+#include <cstdlib>
 #include <windows.h>
 #include <io.h>
 #include <time.h>

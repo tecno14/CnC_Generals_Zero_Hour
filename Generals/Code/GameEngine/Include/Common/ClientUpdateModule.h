@@ -33,7 +33,7 @@
 #define __ClientUpdateModule_H_
 
 // INCLUDES ///////////////////////////////////////////////////////////////////////////////////////
-#include <stdlib.h>
+#include <cstdlib>
 
 #include "Common/Module.h"
 

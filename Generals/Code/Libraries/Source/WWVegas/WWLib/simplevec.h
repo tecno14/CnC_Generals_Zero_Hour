@@ -56,7 +56,7 @@
 
 #include "always.h"
 #include <assert.h>
-#include <string.h>		// for memmove
+#include <cstring>		// for memmove
 
 
 #if (_MSC_VER >= 1200)

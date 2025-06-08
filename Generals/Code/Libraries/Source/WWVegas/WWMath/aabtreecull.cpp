@@ -38,7 +38,7 @@
 #include "aabtreecull.h"
 #include "chunkio.h"
 #include "iostruct.h"
-#include <string.h>
+#include <cstring>
 #include "sphere.h"
 #include "colmath.h"
 #include "colmathinlines.h"

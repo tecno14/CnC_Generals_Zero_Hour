@@ -42,7 +42,7 @@
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
 #include "renderobjectrecycler.h"
-#include <string.h>
+#include <cstring>
 #include "rendobj.h"
 #include "assetmgr.h"
 #include "part_emt.h"

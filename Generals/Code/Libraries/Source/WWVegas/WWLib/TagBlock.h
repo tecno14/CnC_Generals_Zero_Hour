@@ -46,7 +46,7 @@
 #include "crc.h"
 #include "rawfile.h"
 
-#include <string.h>
+#include <cstring>
 
 class TagBlockHandle;
 class TagBlockIndex;

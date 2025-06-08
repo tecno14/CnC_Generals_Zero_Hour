@@ -30,9 +30,9 @@ string to it's own memory (for assignment or construction).
 \***************************************************************************/
 
 #include <ctype.h>
-#include <stdlib.h>
+#include <cstdlib>
 #include <stdio.h>
-#include <string.h>
+#include <cstring>
 
 #include "wstring.h"
 

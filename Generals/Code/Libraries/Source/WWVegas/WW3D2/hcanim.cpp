@@ -56,7 +56,7 @@
 #include "chunkio.h"
 #include "w3d_file.h"
 #include "wwdebug.h"
-#include <string.h>
+#include <cstring>
 #include <nstrdup.h>
 
 

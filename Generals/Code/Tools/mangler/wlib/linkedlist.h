@@ -37,8 +37,8 @@ If you want to store pointers then the template should be of a pointer type.
 #define LINKEDLIST_HEADER    
 
 #include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
+#include <cstdlib>
+#include <cstring>
 #include <assert.h>
 
 #include "wstypes.h"

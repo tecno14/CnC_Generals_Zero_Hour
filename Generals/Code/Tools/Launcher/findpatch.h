@@ -19,7 +19,7 @@
 #ifndef FINDPATCH_HEADER
 #define FINDPATCH_HEADER
 
-#include <stdlib.h>
+#include <cstdlib>
 #include <stdio.h>
 #include <windows.h>
 #include <direct.h>

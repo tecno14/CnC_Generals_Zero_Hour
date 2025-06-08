@@ -67,7 +67,7 @@
 #include "mapper.h"
 #include "wwstring.h"
 
-#include <string.h>
+#include <cstring>
 
 class ChunkLoadClass;
 class ChunkSaveClass;

@@ -17,7 +17,7 @@
 */
 
 #include <stdio.h>
-#include <string.h>
+#include <cstring>
 #include "encrypt.h"
 
 #define MAX_CHARS 65

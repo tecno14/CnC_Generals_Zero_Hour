@@ -59,8 +59,8 @@
 
 #include "vector.h"
 #ifdef OG
-#include <stdlib.h>
-#include <string.h>
+#include <cstdlib>
+#include <cstring>
 
 #endif // OG
 #ifdef ZH

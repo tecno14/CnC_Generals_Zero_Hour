@@ -72,7 +72,7 @@
 
 #include <math.h>
 #include <assert.h>
-#include <stdlib.h>
+#include <cstdlib>
 //#include <stdio.h>
 #include "vector3.h"
 #include "matrix3.h"

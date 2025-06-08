@@ -40,7 +40,7 @@
 
 #include "pivot.h"
 #include "wwmath.h"
-#include <string.h>
+#include <cstring>
 
 
 /*********************************************************************************************** 

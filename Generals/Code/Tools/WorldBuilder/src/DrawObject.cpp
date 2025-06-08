@@ -21,8 +21,8 @@
 #include "DrawObject.h"
 
 #include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
+#include <cstdlib>
+#include <cstring>
 #include <assetmgr.h>
 #include <texture.h>
 #include <tri.h>

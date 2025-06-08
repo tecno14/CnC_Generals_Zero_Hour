@@ -21,7 +21,7 @@
 // Desc:       Win32 direct input implementation for the mouse
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
-#include <stdlib.h>
+#include <cstdlib>
 #include <windows.h>
 #include <assert.h>
 

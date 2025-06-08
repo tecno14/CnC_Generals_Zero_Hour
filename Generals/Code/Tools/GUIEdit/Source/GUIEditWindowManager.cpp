@@ -32,7 +32,7 @@
 //						 here for editing and interacting with the GUI windows.
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
-#include <stdlib.h>
+#include <cstdlib>
 #include <stdio.h>
 
 #include "Common/Debug.h"

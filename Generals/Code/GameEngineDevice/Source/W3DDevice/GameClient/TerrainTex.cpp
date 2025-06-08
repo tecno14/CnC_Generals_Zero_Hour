@@ -45,7 +45,7 @@
 //-----------------------------------------------------------------------------
 //         Includes                                                      
 //-----------------------------------------------------------------------------
-#include <stdlib.h>
+#include <cstdlib>
 
 #include "W3DDevice/GameClient/TerrainTex.h"
 #include "W3DDevice/GameClient/WorldHeightMap.h"

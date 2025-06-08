@@ -53,8 +53,8 @@
 */
 
 #define __NOINLINE__ 1
-#include <stdlib.h>
-#include <string.h>
+#include <cstdlib>
+#include <cstring>
 #include <stdio.h>
 #include "gimex.h"
 #include "wnd_file.h"

@@ -27,7 +27,7 @@
 #include "bitmaphandler.h"
 #ifdef ZH
 #include "colorspace.h"
-#include <string.h>
+#include <cstring>
 #include <ddraw.h>
 #endif // ZH
 

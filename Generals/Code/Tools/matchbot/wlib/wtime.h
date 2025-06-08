@@ -25,7 +25,7 @@ wtime                      Neal Kettler
 
 
 #include <stdio.h>
-#include <stdlib.h>
+#include <cstdlib>
 #include <assert.h>
 #include <sys/types.h>
 
@@ -39,7 +39,7 @@ wtime                      Neal Kettler
 #endif
 
 #include <time.h>
-#include <string.h>
+#include <cstring>
 
 #include "wstypes.h"
 

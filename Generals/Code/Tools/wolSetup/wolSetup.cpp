@@ -25,7 +25,7 @@
 #endif
 #include <windows.h>
 #include <stdio.h>
-#include <stdlib.h>
+#include <cstdlib>
 
 #include "resource.h"
 #include "wolSetup.h"

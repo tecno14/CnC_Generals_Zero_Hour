@@ -352,7 +352,7 @@ GPOS      GCALL gtell(GSTREAM *g);
 /* Memory Functions */
 
 #if !defined(galloc)
-#include <stdlib.h>
+#include <cstdlib>
 #define galloc malloc
 //void *  GCALL galloc(int size);
 #endif

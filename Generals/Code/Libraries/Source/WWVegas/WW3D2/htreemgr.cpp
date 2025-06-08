@@ -60,7 +60,7 @@
 
 
 #include "htreemgr.h"
-#include <string.h>
+#include <cstring>
 #include "htree.h"
 #include "chunkio.h"
 #include "wwmemlog.h"

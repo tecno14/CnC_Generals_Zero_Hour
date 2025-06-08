@@ -30,7 +30,7 @@
 #include "_pch.h"
 #include <new>
 #include <stdio.h>
-#include <stdlib.h>
+#include <cstdlib>
 
 //////////////////////////////////////////////////////////////////////////////
 // ProfileResultFileCSV

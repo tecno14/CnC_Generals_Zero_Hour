@@ -21,7 +21,7 @@
 #ifndef __REFWRITE
 #define __REFWRITE 1
 
-#include <string.h>
+#include <cstring>
 #include "codex.h"
 #include "refcodex.h"
 

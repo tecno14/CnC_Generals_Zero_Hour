@@ -57,7 +57,7 @@ will you be ready to leave grasshopper.
 #include <iostream>
 #endif // OG
 #ifdef ZH
-#include <iostream.h>
+#include <iostream>
 #endif // ZH
 #include "odevice.h"
 #include "streamer.h"

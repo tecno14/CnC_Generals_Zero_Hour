@@ -25,10 +25,10 @@ TCP                   Neal Kettler        neal@westwood.com
 #define TCP_HEADER
 
 #include <stdio.h>
-#include <stdlib.h>
+#include <cstdlib>
 #include <ctype.h>
 #include <errno.h>
-#include <string.h>
+#include <cstring>
 #include <assert.h>
 
 #ifdef _WINDOWS

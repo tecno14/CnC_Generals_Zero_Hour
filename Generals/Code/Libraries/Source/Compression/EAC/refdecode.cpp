@@ -21,7 +21,7 @@
 #ifndef __REFREAD
 #define __REFREAD 1
 
-#include <string.h>
+#include <cstring>
 #include "codex.h"
 #include "refcodex.h"
 

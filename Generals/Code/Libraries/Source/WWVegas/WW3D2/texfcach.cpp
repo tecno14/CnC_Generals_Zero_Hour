@@ -68,7 +68,7 @@
 #include <srTextureIFace.hpp>
 						  
 #include <direct.h>
-#include <stdlib.h>
+#include <cstdlib>
 #include <stdio.h>
 #ifdef _UNIX
 #include "osdep.h"

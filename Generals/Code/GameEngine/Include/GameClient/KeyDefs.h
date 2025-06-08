@@ -57,7 +57,7 @@
 #define __KEYDEFS_H_
 
 // SYSTEM INCLUDES ////////////////////////////////////////////////////////////
-#include <stdlib.h>
+#include <cstdlib>
 #ifndef DIRECTINPUT_VERSION
 #	define DIRECTINPUT_VERSION	0x800
 #endif

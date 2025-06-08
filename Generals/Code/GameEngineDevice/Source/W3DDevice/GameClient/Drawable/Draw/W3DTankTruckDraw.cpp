@@ -26,7 +26,7 @@
 // Draw TankTrucks.  Actually, this draws quad cannon which has both treads and wheels.
 // Author: Mark Wilczynski, August 2002
 
-#include <stdlib.h>
+#include <cstdlib>
 #include <math.h>
 
 #include "Common/Thing.h"

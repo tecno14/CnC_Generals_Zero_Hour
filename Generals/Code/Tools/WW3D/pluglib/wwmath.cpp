@@ -36,7 +36,7 @@
 
 
 #include "wwmath.h"
-#include <stdlib.h>
+#include <cstdlib>
 
 /*
 **

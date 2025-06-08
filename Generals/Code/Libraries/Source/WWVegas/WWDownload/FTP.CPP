@@ -26,7 +26,7 @@
 #include <stdio.h>
 #include <sys/types.h>
 #include <sys/timeb.h>
-#include <stdlib.h>
+#include <cstdlib>
 #include <process.h>
 #include <sys/stat.h>
 #include <io.h>

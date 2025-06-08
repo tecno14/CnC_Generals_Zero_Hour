@@ -20,7 +20,7 @@
 #include "wolsetup.h"
 #include <windows.h>
 #include <winnt.h>
-#include <stdlib.h>
+#include <cstdlib>
 
 /**
 	* Retrieve version information from files version resource.

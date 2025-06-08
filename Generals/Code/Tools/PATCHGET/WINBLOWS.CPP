@@ -19,7 +19,7 @@
 #define WIN32_LEAN_AND_MEAN
 #include <windows.h>
 #include <windowsx.h>
-#include <stdlib.h>
+#include <cstdlib>
 #include <stdio.h>
 #include <stdarg.h>
 

@@ -20,7 +20,7 @@
 // If you link with this it will automatically call the COM initialization stuff 
 //
 #include "cominit.h"
-#include <stdlib.h>
+#include <cstdlib>
 #include <stdio.h>
 #include <windows.h>
 #include <objbase.h>

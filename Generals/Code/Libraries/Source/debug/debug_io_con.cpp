@@ -28,7 +28,7 @@
 // Debug I/O class con (console window)
 //////////////////////////////////////////////////////////////////////////////
 #include "_pch.h"
-#include <stdlib.h>
+#include <cstdlib>
 #include <new>      // needed for placement new prototype
 
 DebugIOCon::DebugIOCon(void):

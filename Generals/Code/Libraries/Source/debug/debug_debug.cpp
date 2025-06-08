@@ -28,9 +28,9 @@
 // Debug class implementation
 //////////////////////////////////////////////////////////////////////////////
 #include "_pch.h"
-#include <stdlib.h>
+#include <cstdlib>
 #include <stdio.h>
-#include <string.h>
+#include <cstring>
 #include <new>      // needed for placement new prototype
 
 // a little dummy variable that makes the linker actually include

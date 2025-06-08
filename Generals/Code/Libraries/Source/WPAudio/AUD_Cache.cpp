@@ -43,7 +43,7 @@
 **            Includes                                                      **
 *****************************************************************************/
 
-#include <string.h>
+#include <cstring>
 #include <memory.h>
 
 #include <wpaudio/altypes.h>						//  always include this header first 

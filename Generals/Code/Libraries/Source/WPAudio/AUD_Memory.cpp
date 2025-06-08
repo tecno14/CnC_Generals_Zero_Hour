@@ -43,7 +43,7 @@
 **            Includes                                                      **
 *****************************************************************************/
 
-#include <string.h>
+#include <cstring>
 
 #include <wpaudio/altypes.h>
 #include <wpaudio/memory.h>

@@ -25,7 +25,7 @@
 // W3DDynamicLight.cpp
 // Class to handle dynamic lights.
 // Author: John Ahlquist, April 2001
-#include <stdlib.h>
+#include <cstdlib>
 
 #include "W3DDevice/GameClient/W3DDynamicLight.h"
 

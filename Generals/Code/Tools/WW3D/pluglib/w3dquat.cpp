@@ -59,9 +59,9 @@
 //#include <iostream>
 #endif // OG
 #ifdef ZH
-//#include <iostream.h>
+//#include <iostream>
 #endif // ZH
-#include <stdlib.h>
+#include <cstdlib>
 #include <math.h>
 #include <assert.h>
 

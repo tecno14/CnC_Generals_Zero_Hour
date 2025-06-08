@@ -37,7 +37,7 @@
 #ifndef __GUIEDITWINDOWMANAGER_H_
 #define __GUIEDITWINDOWMANAGER_H_
 
-#include <stdlib.h>
+#include <cstdlib>
 #include "W3DDevice/GameClient/W3DGameWindowManager.h"
 
 //-------------------------------------------------------------------------------------------------

@@ -56,8 +56,8 @@
 #define __PARAMETER_H
 
 #include "always.h"
-#include <string.h>
-#include <stdlib.h>
+#include <cstring>
+#include <cstdlib>
 #include "parametertypes.h"
 #include "vector.h"
 #include "wwstring.h"

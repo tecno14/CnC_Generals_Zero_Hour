@@ -61,7 +61,7 @@
 #include "aabox.h"
 #include "lineseg.h"
 #include "obbox.h"
-#include <string.h>
+#include <cstring>
 
 class ChunkLoadClass;
 class ChunkSaveClass;

@@ -39,9 +39,9 @@
 #define  AUTORUN_H
 
 #include <tchar.h>
-#include <string.h>
+#include <cstring>
 #include <stdio.h>
-#include <stdlib.h>
+#include <cstdlib>
 #include "ttfont.h"
 
 

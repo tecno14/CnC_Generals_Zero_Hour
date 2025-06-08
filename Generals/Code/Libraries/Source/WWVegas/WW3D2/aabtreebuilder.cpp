@@ -75,8 +75,8 @@
 #include "aabtreebuilder.h"
 #include "chunkio.h"
 #include "w3d_file.h"
-#include <stdlib.h>
-#include <string.h>
+#include <cstdlib>
+#include <cstring>
 #include <assert.h>
 
 #ifdef ZH

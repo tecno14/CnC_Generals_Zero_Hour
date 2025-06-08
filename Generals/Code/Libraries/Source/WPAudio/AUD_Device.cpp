@@ -45,7 +45,7 @@
 
 #include <wpaudio/altypes.h>
 #include <stdio.h>
-#include <string.h>
+#include <cstring>
 
 #include <wpaudio/memory.h>
 #include <wpaudio/list.h>

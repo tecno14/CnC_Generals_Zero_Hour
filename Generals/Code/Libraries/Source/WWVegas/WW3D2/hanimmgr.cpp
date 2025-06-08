@@ -62,7 +62,7 @@
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
 #include "hanimmgr.h"
-#include <string.h>
+#include <cstring>
 #include "hanim.h"
 #include "hrawanim.h"
 #include "hcanim.h"

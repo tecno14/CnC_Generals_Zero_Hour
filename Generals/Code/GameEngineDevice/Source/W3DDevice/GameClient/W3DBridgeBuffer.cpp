@@ -48,7 +48,7 @@
 #include "W3DDevice/GameClient/W3DBridgeBuffer.h"
 
 #include <stdio.h>
-#include <string.h>
+#include <cstring>
 #include "W3DDevice/GameClient/W3DAssetManager.h"
 #include <texture.h>
 #include "common/GlobalData.h"

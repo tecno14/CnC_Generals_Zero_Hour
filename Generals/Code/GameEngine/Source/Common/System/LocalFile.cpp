@@ -50,9 +50,9 @@
 #include <stdio.h>
 #include <fcntl.h>
 #include <io.h>
-#include <string.h>
+#include <cstring>
 #include <sys/stat.h>
-#include <stdlib.h>
+#include <cstdlib>
 #include <ctype.h>
 
 #include "Common/LocalFile.h"

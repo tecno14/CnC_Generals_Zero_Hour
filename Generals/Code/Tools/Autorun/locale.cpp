@@ -18,7 +18,7 @@
 
 /* Copyright (C) Electronic Arts Canada Inc. 1998-1999.  All rights reserved. */
 
-#include <string.h>
+#include <cstring>
 #include <assert.h>
 #include "gimex.h"      /* for file and memory IO only */
 #include "locale.h" 
@@ -698,7 +698,7 @@ void LOCALE_freetable(void)
 ;
 */
 
-#include <stdlib.h>     // for bsearch function
+#include <cstdlib>     // for bsearch function
 
 static int compare ( const void* arg1, const void* arg2 )
 {

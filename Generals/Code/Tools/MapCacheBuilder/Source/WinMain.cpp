@@ -39,8 +39,8 @@
 
 // SYSTEM INCLUDES ////////////////////////////////////////////////////////////
 #include <windows.h>
-#include <stdlib.h>
-#include <string.h>
+#include <cstdlib>
+#include <cstring>
 
 // USER INCLUDES //////////////////////////////////////////////////////////////
 #include "Lib/BaseType.h"

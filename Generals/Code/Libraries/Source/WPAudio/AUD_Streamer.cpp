@@ -44,7 +44,7 @@
 *****************************************************************************/
 
 #include <stdio.h>
-#include <string.h>
+#include <cstring>
 
 #include <wpaudio/altypes.h>
 #include <wpaudio/Streamer.h>

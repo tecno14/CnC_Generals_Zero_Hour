@@ -45,9 +45,9 @@
 
 #define _DEFINE_EVENT_TOKENS
 
-#include <stdlib.h>
+#include <cstdlib>
 #include <stdio.h>
-#include <string.h>
+#include <cstring>
 
 
 #include <wpaudio/altypes.h>

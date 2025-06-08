@@ -26,7 +26,7 @@
 // Draw Trucks.  Actually, this draws rocket buggies.
 // Author: John Ahlquist, March 2002
 
-#include <stdlib.h>
+#include <cstdlib>
 #include <math.h>
 
 #include "Common/Thing.h"

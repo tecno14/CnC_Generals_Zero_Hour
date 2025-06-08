@@ -19,11 +19,11 @@
 #ifndef STREAMER_HEADER
 #define STREAMER_HEADER
 
-#include <stdlib.h>
+#include <cstdlib>
 #include <stdio.h>
 #include <stdarg.h>
-#include <iostream.h>
-#include <string.h>
+#include <iostream>
+#include <cstring>
 
 // Windows headers have a tendency to redefine IN
 #ifdef IN

@@ -21,7 +21,7 @@
 // Author: Jeff Brown, January 1999
 
 #include <stdio.h>
-#include <stdlib.h>
+#include <cstdlib>
 #include "Lib/basetype.h"
 #include "Noxcompress.h"
 #ifdef OG

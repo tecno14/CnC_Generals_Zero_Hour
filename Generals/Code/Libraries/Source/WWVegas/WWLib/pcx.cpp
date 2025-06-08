@@ -36,7 +36,7 @@
 
 #include	"always.h"
 #include	"pcx.h"
-#include <stdlib.h>
+#include <cstdlib>
 
 
 /***************************************************************************

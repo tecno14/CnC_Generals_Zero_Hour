@@ -35,7 +35,7 @@
 #define  DRAWBUTTONS_H
 
 #include <tchar.h>
-#include <stdlib.h>
+#include <cstdlib>
 #include "ttfont.h"
 
 

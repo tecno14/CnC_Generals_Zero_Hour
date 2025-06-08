@@ -25,7 +25,7 @@
 #pragma warning(disable : 4514)	// unreferenced inline function removed....
 
 #include "srandom.h"
-#include <stdlib.h>
+#include <cstdlib>
 #include <stdio.h>
 #ifdef _UNIX
 #include "osdep.h"
@@ -224,7 +224,7 @@ void SecureRandomClass::Generate_Seed(void)
 #pragma warning(disable : 4514)	// unreferenced inline function removed....
 
 #include "srandom.h"
-#include <stdlib.h>
+#include <cstdlib>
 #include <stdio.h>
 #ifdef _UNIX
 #include "osdep.h"

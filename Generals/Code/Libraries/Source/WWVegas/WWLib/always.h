@@ -57,7 +57,7 @@
 #ifdef STEVES_NEW_CATCHER
 
 	#include	<crtdbg.h>
-	#include <stdlib.h>
+	#include <cstdlib>
 	#include <malloc.h>
 
 	#define   malloc(s)         _malloc_dbg(s, _NORMAL_BLOCK, __FILE__, __LINE__)
@@ -313,7 +313,7 @@ template <class T> T max(T a,T b)
 #ifdef STEVES_NEW_CATCHER
 
 	#include	<crtdbg.h>
-	#include <stdlib.h>
+	#include <cstdlib>
 	#include <malloc.h>
 
 	#define   malloc(s)         _malloc_dbg(s, _NORMAL_BLOCK, __FILE__, __LINE__)

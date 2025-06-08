@@ -68,7 +68,7 @@
 #endif
 #include <malloc.h>
 #include <memory.h>
-#include <string.h>
+#include <cstring>
 #ifdef TGA_USES_WWLIB_FILE_CLASSES
 #include "wwfile.h"
 #include "ffactory.h"
@@ -1469,7 +1469,7 @@ long Targa_Error_Handler(long load_err,const char* filename)
 #endif
 #include <malloc.h>
 #include <memory.h>
-#include <string.h>
+#include <cstring>
 #ifdef TGA_USES_WWLIB_FILE_CLASSES
 #include "wwfile.h"
 #include "ffactory.h"

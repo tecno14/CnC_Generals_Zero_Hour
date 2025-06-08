@@ -39,8 +39,8 @@ your hashing function is good.
 #define DICTIONARY_HEADER    
 
 #include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
+#include <cstdlib>
+#include <cstring>
 #include <assert.h>
 
 #include "wstypes.h"

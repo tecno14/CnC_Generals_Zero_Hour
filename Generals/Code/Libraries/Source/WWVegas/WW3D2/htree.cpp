@@ -74,7 +74,7 @@
 #include "htree.h"
 #include "hanim.h"
 #include "hcanim.h"
-#include <string.h>
+#include <cstring>
 #include <assert.h>
 #include "wwmath.h"
 #include "chunkio.h"

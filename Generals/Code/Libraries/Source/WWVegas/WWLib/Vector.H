@@ -75,7 +75,7 @@
 #include "always.h"
 #include	<assert.h>
 #include	<stdlib.h>
-#include <string.h>
+#include <cstring>
 #ifdef ZH
 #include <new.h>
 #endif // ZH

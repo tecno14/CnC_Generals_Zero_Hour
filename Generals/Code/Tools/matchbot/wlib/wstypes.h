@@ -41,9 +41,9 @@ Standard type definitions for the sake of portability and readability.
 #define _POSIX_PTHREAD_SEMANTICS
 #define __EXTENSIONS__
 #endif
-#include <stdlib.h>
+#include <cstdlib>
 #include <stdio.h>
-#include <string.h>
+#include <cstring>
 #ifndef _WINDOWS
 #include <unistd.h>
 #include <sys/time.h>

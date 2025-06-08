@@ -27,7 +27,7 @@
 // Desc:       Function lexicon for w3d specific function pointers
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
-#include <stdlib.h>
+#include <cstdlib>
 
 #include "GameClient/GameWindow.h"
 #include "W3DDevice/Common/W3DFunctionLexicon.h"

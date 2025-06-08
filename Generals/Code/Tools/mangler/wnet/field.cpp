@@ -32,7 +32,7 @@
  *-------------------------------------------------------------------------* 
  * Functions:                                                              * 
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
-#include <string.h>
+#include <cstring>
 #include <sys/types.h>
 #ifndef _WINDOWS
 #include <netinet/in.h>

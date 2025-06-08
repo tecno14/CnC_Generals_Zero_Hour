@@ -49,7 +49,7 @@
 #include "W3DDevice/GameClient/W3DTerrainBackground.h"
 
 #include <stdio.h>
-#include <string.h>
+#include <cstring>
 #include <assetmgr.h>
 #include <texture.h>
 #include "common/GlobalData.h"

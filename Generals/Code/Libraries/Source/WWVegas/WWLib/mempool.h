@@ -66,7 +66,7 @@
 #include "mutex.h"
 #include <new.h>
 #endif // ZH
-#include <stdlib.h>
+#include <cstdlib>
 #include <stddef.h>
 
 
@@ -171,12 +171,14 @@ private:
 ** Macro to declare the allocator for your class.  Put this in the cpp file for
 ** the class.
 */
-#define DEFINE_AUTO_POOL(T,BLOCKSIZE) \
 #ifdef OG
+#define DEFINE_AUTO_POOL(T,BLOCKSIZE) \
 ObjectPoolClass<T,BLOCKSIZE> AutoPoolClass<T,BLOCKSIZE>::Allocator
 #endif // OG
+
 #ifdef ZH
-ObjectPoolClass<T,BLOCKSIZE> AutoPoolClass<T,BLOCKSIZE>::Allocator;
+#define DEFINE_AUTO_POOL(T,BLOCKSIZE) \
+ObjectPoolClass<T, BLOCKSIZE> AutoPoolClass<T, BLOCKSIZE>::Allocator;
 #endif // ZH
 
 

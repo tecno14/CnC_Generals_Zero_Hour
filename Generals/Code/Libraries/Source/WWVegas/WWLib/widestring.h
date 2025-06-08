@@ -51,7 +51,7 @@
 #ifndef __WIDESTRING_H
 #define __WIDESTRING_H
 
-#include <string.h>
+#include <cstring>
 #include <stdarg.h>
 #include "always.h"
 #include "wwdebug.h"

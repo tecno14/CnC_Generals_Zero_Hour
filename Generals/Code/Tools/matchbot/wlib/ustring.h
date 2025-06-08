@@ -19,9 +19,9 @@
 #ifndef USTRING_HEADER
 #define USTRING_HEADER
 
-#include <stdlib.h>
+#include <cstdlib>
 #include <stdio.h>
-#include <iostream.h>
+#include <iostream>
 #include <string>
 
 // Windows headers have a tendency to redefine IN
