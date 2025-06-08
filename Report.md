@@ -5,14 +5,17 @@
 
 Below is a list of projects and their availability across different games:  
 
+☑ Missing
+☐ Exist
+
 | #  | Game                | Generals | GeneralsMD |
 |----|---------------------|---------|------------|
-| 1  | Benchmark          | ☐       | ☑          |
-| 2  | GameSpyHTTP        | ☐       | ☐          |
-| 3  | GameSpyPatching    | ☐       | ☐          |
-| 4  | GameSpyPeer        | ☐       | ☐          |
-| 5  | GameSpyPresence    | ☐       | ☐          |
-| 6  | GameSpyStats       | ☐       | ☐          |
+| 1  | Benchmark          | ☑       | ☐          |
+| 2  | GameSpyHTTP        | ☑       | ☑          |
+| 3  | GameSpyPatching    | ☑       | ☑          |
+| 4  | GameSpyPeer        | ☑       | ☑          |
+| 5  | GameSpyPresence    | ☑       | ☑          |
+| 6  | GameSpyStats       | ☑       | ☑          |
 
 ---
 
@@ -29,7 +32,7 @@ We need to find or write replacements (or remove code using them entirely) for t
 | 5  | BYTEmark                             | `\Code\Libraries\Source\Benchmark`           | ☐
 | 6  | RAD Miles Sound System SDK           | `\Code\Libraries\Source\WWVegas\Miles6\`     | ☑
 | 7  | RAD Bink SDK                         | `\Code\GameEngineDevice\Include\VideoDevice\Bink` | ☐
-| 8  | SafeDisk API                         | `\Code\GameEngine\Include\Common\SafeDisk` <br> `\Code\Tools\Launcher\SafeDisk\` | ☐
+| 8  | SafeDisk API                         | `\Code\GameEngine\Include\Common\SafeDisk` <br> `\Code\Tools\Launcher\SafeDisk\` | ☑
 | 9  | Miles Sound System "Asimp3"          | `\Code\Libraries\WPAudio\Asimp3`             | ☐
 | 10 | GameSpy SDK                          | `\Code\Libraries\Source\GameSpy\`            | ☐
 | 11 | ZLib (1.1.4)                         | `\Code\Libraries\Source\Compression\ZLib\`   | ☑
@@ -44,9 +47,13 @@ We need to find or write replacements (or remove code using them entirely) for t
 | 1  | Update project files and `.sln` solutions  | ✅ Done |
 | 2  | Adding dependencies and try build  | ⏳ In Progress |
 | 3  | Move dependencies into shared folder  | ⏳ In Progress |
-| 4  | Merge Generals and Generals ZH codebase    | ❌ Not Started |
+| 4  | Merge Generals and Generals ZH codebase    | ✅ Done |
 
----
+-----
+-----
+-----
+-----
+# Notes for me: (nothing important)
 
 ## **Symbols for Reference**  
 
