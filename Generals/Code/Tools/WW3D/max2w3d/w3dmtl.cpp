@@ -1092,7 +1092,8 @@ int W3dMaterialDescClass::Add_Vertex_Material(W3dVertexMaterialStruct * vmat,
 	}
 
 	int crc = Compute_Crc(*vmat, mapper_args0, mapper_args1);
-	for (int vi=0; vi<VertexMaterials.Count(); vi++) {
+	int vi = 0;
+	for (; vi < VertexMaterials.Count(); vi++) {
 		if ((crc == VertexMaterials[vi].Crc) && (pass == VertexMaterials[vi].PassIndex)) {
 			break;
 		}
@@ -1115,7 +1116,8 @@ int W3dMaterialDescClass::Add_Vertex_Material(W3dVertexMaterialStruct * vmat,
 int W3dMaterialDescClass::Add_Shader(const W3dShaderStruct & shader,int pass)
 {
 	int crc = Compute_Crc(shader);
-	for (int si=0; si<Shaders.Count(); si++) {
+	int si = 0;
+	for (; si < Shaders.Count(); si++) {
 		if (crc == Shaders[si].Crc) break;
 	}
 	
@@ -1136,7 +1138,8 @@ int W3dMaterialDescClass::Add_Texture(W3dMapClass * map,int pass,int stage)
 	}
 
 	int crc = Compute_Crc(*map);
-	for (int ti=0; ti<Textures.Count(); ti++) {
+	int ti = 0;
+	for (; ti < Textures.Count(); ti++) {
 		if (crc == Textures[ti].Crc) {
 			break;
 		}

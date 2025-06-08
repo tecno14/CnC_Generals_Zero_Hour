@@ -88,6 +88,7 @@ will you be ready to leave grasshopper.
 }
 
 // Print an error message
+#ifdef OG
 #define ERRMSG(X)\
 {\
   char     timebuf[40]; \
@@ -95,14 +96,20 @@ will you be ready to leave grasshopper.
   strcpy(timebuf,ctime(&clock)); \
   if (MsgManager::errorStream()) \
     (*(MsgManager::errorStream())) << "ERR " << timebuf << " [" << \
-#ifdef OG
         __FILE__ <<  " " << __LINE__ << "] " << X << std::endl; \
+}
 #endif // OG
 #ifdef ZH
-        __FILE__ <<  " " << __LINE__ << "] " << X << endl; \
-#endif // ZH
+#define ERRMSG(X)\
+{\
+  char     timebuf[40]; \
+  time_t   clock=time(NULL); \
+  strcpy(timebuf,ctime(&clock)); \
+  if (MsgManager::errorStream()) \
+    (*(MsgManager::errorStream())) << "ERR " << timebuf << " [" << \
+__FILE__ << " " << __LINE__ << "] " << X << endl; \
 }
-
+#endif // ZH
 
 // Just get a stream to the information device, no extra junk
 #define INFSTREAM(X)\
@@ -151,18 +158,23 @@ will you be ready to leave grasshopper.
        "]: " << ##V << " = " << V << endl; \
 }
 
-
+#ifdef OG
 #define DBGMSG(X)\
 {\
   if (MsgManager::debugStream()) \
     (*(MsgManager::debugStream())) << "DBG [" << __FILE__ <<  \
-#ifdef OG
     " " << __LINE__ << "] " << X << std::endl;\
-#endif // OG
-#ifdef ZH
-    " " << __LINE__ << "] " << X << endl;\
-#endif // ZH
 }
+#endif // OG
+/////
+#ifdef ZH
+#define DBGMSG(X)\
+{\
+  if (MsgManager::debugStream()) \
+    (*(MsgManager::debugStream())) << "DBG [" << __FILE__ <<  \
+" " << __LINE__ << "] " << X << endl; \
+}
+#endif // ZH
 
 // Just get a stream to the debugging device, no extra junk
 #define DBGSTREAM(X)\

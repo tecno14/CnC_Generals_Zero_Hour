@@ -557,13 +557,10 @@ WWINLINE void Matrix4x4::Init(const Vector4 & r0, const Vector4 & r1, const Vect
 	Row[0] = r0; Row[1] = r1; Row[2] = r2; Row[3] = r3; 
 }
 
-
+#ifdef ZH
 /***********************************************************************************************
-#ifdef OG
  * Matrix4::Init_Ortho -- Initialize to an orthographic projection matrix                      *
 
-#endif // OG
-#ifdef ZH
  * Matrix4x4::Init -- Initializes the rows from the given 16 floats                              *
  *                                                                                             *
  * INPUT:                                                                                      *
@@ -583,10 +580,10 @@ WWINLINE void Matrix4x4::Init(float m11,float m12,float m13,float m14, float m21
 	Row[2].Set(m31,m32,m33,m34);
 	Row[3].Set(m41,m42,m43,m44);
 }
+#endif // ZH
 
 /***********************************************************************************************
  * Matrix4x4::Init_Ortho -- Initialize to an orthographic projection matrix                      *
-#endif // ZH
  *                                                                                             *
  * You can find the formulas for this in the appendix of the OpenGL programming guide.  Also   *
  * this happens to be the same convention used by Surrender.                                   *

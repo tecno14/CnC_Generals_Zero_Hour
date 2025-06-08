@@ -62,13 +62,14 @@ const Int MAX_GLOBAL_LIGHTS	= 3;
   *	Defines all global game data used by the system
 	* @todo Change this entire system. Otherwise this will end up a huge class containing tons of variables,
 #ifdef OG
-	* and will cause re-compilation dependancies throughout the codebase. */
+	* and will cause re-compilation dependancies throughout the codebase. 
 
 #endif // OG
 #ifdef ZH
 	* and will cause re-compilation dependancies throughout the codebase. 
-  * OOPS -- TOO LATE! :) */
+  * OOPS -- TOO LATE! :) 
 #endif // ZH
+*/
 //-------------------------------------------------------------------------------------------------
 class GlobalData : public SubsystemInterface
 {

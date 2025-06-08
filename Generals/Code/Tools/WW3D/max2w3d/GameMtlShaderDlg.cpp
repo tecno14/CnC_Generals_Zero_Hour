@@ -341,7 +341,8 @@ void GameMtlShaderDlg::Apply_Preset(int preset_index)
  *=============================================================================================*/
 void GameMtlShaderDlg::Set_Preset(void)
 {
-	for (int i = 0; i < NUM_SHADER_BLEND_PRESETS; i++) {
+	int i = 0;
+	for (; i < NUM_SHADER_BLEND_PRESETS; i++) {
 		if (CompareShaderToBlendPreset(ShaderBlendSettingPresets[i])) break;
 	}
 	SendDlgItemMessage(m_hWnd, IDC_PRESET_COMBO, CB_SETCURSEL, i, 0);

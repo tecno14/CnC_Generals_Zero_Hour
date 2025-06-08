@@ -209,7 +209,7 @@ MeshDeformSetClass::Collapse_Keyframe_Data (int keyframe)
 	//
 	//	Collapse the vertex color data
 	//
-	for (index = 0; index < colors.Count (); index ++) {
+	for (int index = 0; index < colors.Count (); index ++) {
 		VERT_INFO &info = colors[index];
 		
 		//
@@ -357,7 +357,7 @@ MeshDeformSetClass::Update_Current_Data (void)
 	//
 	//	Collapse all unsused data from the remainder of the keyframes
 	//
-	for (index = 0; index < m_KeyFrames.Count (); index ++) {
+	for (int index = 0; index < m_KeyFrames.Count (); index ++) {
 		//Collapse_Keyframe_Data (index);
 	}
 
@@ -653,7 +653,7 @@ MeshDeformSetClass::Apply_Position_Changes
 	//
 	int to = -1;
 	if (frame_to_check >= 0) {
-		for (key_frame = frame_to_check; (key_frame < m_KeyFrames.Count ()) && (to == -1); key_frame ++) {
+		for (int key_frame = frame_to_check; (key_frame < m_KeyFrames.Count ()) && (to == -1); key_frame ++) {
 			if (m_KeyFrames[key_frame]->affected_verts[vert]) {
 				to = key_frame;
 			}
@@ -751,7 +751,7 @@ MeshDeformSetClass::Apply_Color_Changes
 	//
 	int to = -1;
 	if (frame_to_check >= 0) {
-		for (key_frame = frame_to_check; (key_frame < m_KeyFrames.Count ()) && (to == -1); key_frame ++) {
+		for (int key_frame = frame_to_check; (key_frame < m_KeyFrames.Count ()) && (to == -1); key_frame ++) {
 			if (m_KeyFrames[key_frame]->affected_colors[vert]) {
 				to = key_frame;
 			}
@@ -834,7 +834,7 @@ MeshDeformSetClass::Apply_Color_Changes
 	// Determine where we should end interpolating this vert
 	//
 	int to = -1;
-	for (key_frame = frame_to_check; (key_frame < m_KeyFrames.Count ()) && (to == -1); key_frame ++) {
+	for (int key_frame = frame_to_check; (key_frame < m_KeyFrames.Count ()) && (to == -1); key_frame ++) {
 		if (m_KeyFrames[key_frame]->affected_colors[vert_index]) {
 			to = key_frame;
 		}
@@ -927,7 +927,7 @@ MeshDeformSetClass::Update_Mesh (TriObject &tri_obj)
 		//
 		//	Copy the vertex colors from the triangle object
 		//
-		for (vert_color = 0; vert_color < m_pMesh->numCVerts; vert_color ++) {
+		for (int vert_color = 0; vert_color < m_pMesh->numCVerts; vert_color ++) {
 			m_pMesh->vertCol[vert_color] = tri_obj.mesh.vertCol[vert_color];
 		}
 

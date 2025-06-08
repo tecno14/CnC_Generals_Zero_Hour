@@ -577,7 +577,7 @@ void GameMtlDlg::Set_Pass_Count_Dialog(void)
 
 			TheMtl->Set_Pass_Count(res);
 
-			for(i = 0; i < TheMtl->Get_Pass_Count(); i++)
+			for(int i = 0; i < TheMtl->Get_Pass_Count(); i++)
 			{
 				PassDialog[i] = new GameMtlPassDlg(HwndEdit, IParams, TheMtl, i); 
 			}

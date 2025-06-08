@@ -311,7 +311,8 @@ void PS2GameMtlShaderDlg::Apply_Preset(int preset_index)
  *=============================================================================================*/
 void PS2GameMtlShaderDlg::Set_Preset(void)
 {
-	for (int i = 0; i < NUM_PS2_SHADER_BLEND_PRESETS; i++) {
+	int i = 0;
+	for (; i < NUM_PS2_SHADER_BLEND_PRESETS; i++) {
 		if (CompareShaderToBlendPreset(PS2ShaderBlendSettingPresets[i])) break;
 	}
 	SendDlgItemMessage(m_hWnd, IDC_PS2_PRESET_COMBO, CB_SETCURSEL, i, 0);
